@@ -10,10 +10,6 @@ import com.example.blacklister.R
 
 class LogListFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = LogListFragment()
-    }
-
     private lateinit var viewModel: LogListViewModel
 
     override fun onCreateView(

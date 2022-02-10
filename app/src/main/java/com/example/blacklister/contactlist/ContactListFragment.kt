@@ -10,10 +10,6 @@ import com.example.blacklister.R
 
 class ContactListFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ContactListFragment()
-    }
-
     private lateinit var viewModel: ContactListViewModel
 
     override fun onCreateView(

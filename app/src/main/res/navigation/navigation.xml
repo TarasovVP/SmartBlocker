@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@+id/fragment_login">
+    app:startDestination="@+id/fragment_main">
 
     <fragment
         android:id="@+id/fragment_login"
@@ -18,5 +18,21 @@
     <fragment
         android:id="@+id/fragment_main"
         android:name="com.example.blacklister.main.MainFragment" />
+
+    <fragment
+        android:id="@+id/fragment_log_list"
+        android:name="com.example.blacklister.loglist.LogListFragment" />
+
+    <fragment
+        android:id="@+id/fragment_contact_list"
+        android:name="com.example.blacklister.contactlist.ContactListFragment" />
+
+    <fragment
+        android:id="@+id/fragment_number_list"
+        android:name="com.example.blacklister.numberlist.NumberListFragment" />
+
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="com.example.blacklister.settings.SettingsFragment" />
 
 </navigation>
