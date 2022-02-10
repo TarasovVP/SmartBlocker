@@ -10,10 +10,6 @@ import com.example.blacklister.R
 
 class RegistryFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = RegistryFragment()
-    }
-
     private lateinit var viewModel: RegistryViewModel
 
     override fun onCreateView(
