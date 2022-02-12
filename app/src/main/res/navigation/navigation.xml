@@ -5,15 +5,15 @@
 
     <fragment
         android:id="@+id/fragment_login"
-        android:name="com.example.blacklister.login.LoginFragment" />
+        android:name="com.example.blacklister.ui.login.LoginFragment" />
 
     <fragment
         android:id="@+id/fragment_onboarding"
-        android:name="com.example.blacklister.onboarding.OnboardingFragment" />
+        android:name="com.example.blacklister.ui.onboarding.OnboardingFragment" />
 
     <fragment
         android:id="@+id/fragment_registry"
-        android:name="com.example.blacklister.registry.RegistryFragment" />
+        android:name="com.example.blacklister.ui.registry.RegistryFragment" />
 
     <fragment
         android:id="@+id/fragment_main"
@@ -21,18 +21,18 @@
 
     <fragment
         android:id="@+id/fragment_log_list"
-        android:name="com.example.blacklister.loglist.LogListFragment" />
+        android:name="com.example.blacklister.ui.loglist.LogListFragment" />
 
     <fragment
         android:id="@+id/fragment_contact_list"
-        android:name="com.example.blacklister.contactlist.ContactListFragment" />
+        android:name="com.example.blacklister.ui.contactlist.ContactListFragment" />
 
     <fragment
         android:id="@+id/fragment_number_list"
-        android:name="com.example.blacklister.numberlist.NumberListFragment" />
+        android:name="com.example.blacklister.ui.numberlist.NumberListFragment" />
 
     <fragment
         android:id="@+id/fragment_settings"
-        android:name="com.example.blacklister.settings.SettingsFragment" />
+        android:name="com.example.blacklister.ui.settings.SettingsFragment" />
 
 </navigation>

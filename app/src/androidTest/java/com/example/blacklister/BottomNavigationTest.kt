@@ -23,6 +23,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.rule.ActivityTestRule
+import com.example.blacklister.ui.MainActivity
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -93,6 +94,8 @@ class BottomNavigationTest {
 
         openThirdScreen()
 
+        assertThirdScreen()
+
         openFirstScreen()
 
         assertFirstScreen()
@@ -142,7 +145,7 @@ class BottomNavigationTest {
     }
 
     private fun assertThirdScreen() {
-        onView(withText(R.string.number_list_))
+        onView(withId(R.id.number_list_text))
             .check(matches(isDisplayed()))
     }
 

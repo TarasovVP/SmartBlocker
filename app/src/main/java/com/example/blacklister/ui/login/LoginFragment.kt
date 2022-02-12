@@ -1,18 +1,21 @@
-package com.example.blacklister.login
+package com.example.blacklister.ui.login
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.R
+import com.example.blacklister.databinding.LoginFragmentBinding
+import com.example.blacklister.ui.base.BaseBindingFragment
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseBindingFragment<LoginFragmentBinding>() {
 
     private lateinit var viewModel: LoginViewModel
+
+    override fun getViewBinding() = LoginFragmentBinding.inflate(layoutInflater)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

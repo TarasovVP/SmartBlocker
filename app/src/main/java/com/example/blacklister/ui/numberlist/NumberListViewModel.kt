@@ -1,4 +1,4 @@
-package com.example.blacklister.numberlist
+package com.example.blacklister.ui.numberlist
 
 import androidx.lifecycle.ViewModel
 

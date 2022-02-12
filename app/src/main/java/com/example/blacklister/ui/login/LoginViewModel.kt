@@ -1,4 +1,4 @@
-package com.example.blacklister.login
+package com.example.blacklister.ui.login
 
 import androidx.lifecycle.ViewModel
 

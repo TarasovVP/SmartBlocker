@@ -1,4 +1,4 @@
-package com.example.blacklister.registry
+package com.example.blacklister.ui.registry
 
 import androidx.lifecycle.ViewModel
 

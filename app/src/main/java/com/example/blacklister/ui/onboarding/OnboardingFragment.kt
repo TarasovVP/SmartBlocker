@@ -1,4 +1,4 @@
-package com.example.blacklister.onboarding
+package com.example.blacklister.ui.onboarding
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,12 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.example.blacklister.R
+import com.example.blacklister.databinding.NumberListFragmentBinding
+import com.example.blacklister.ui.base.BaseBindingFragment
 
-class OnboardingFragment : Fragment() {
+class OnboardingFragment : BaseBindingFragment<NumberListFragmentBinding>() {
 
     private lateinit var viewModel: OnboardingViewModel
+
+    override fun getViewBinding() = NumberListFragmentBinding.inflate(layoutInflater)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

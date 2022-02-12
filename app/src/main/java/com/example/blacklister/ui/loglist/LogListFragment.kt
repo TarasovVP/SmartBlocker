@@ -1,4 +1,4 @@
-package com.example.blacklister.loglist
+package com.example.blacklister.ui.loglist
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.blacklister.R
+import com.example.blacklister.databinding.LogListFragmentBinding
+import com.example.blacklister.databinding.LoginFragmentBinding
+import com.example.blacklister.ui.base.BaseBindingFragment
 
-class LogListFragment : Fragment() {
+class LogListFragment : BaseBindingFragment<LogListFragmentBinding>() {
 
     private lateinit var viewModel: LogListViewModel
+
+    override fun getViewBinding() = LogListFragmentBinding.inflate(layoutInflater)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

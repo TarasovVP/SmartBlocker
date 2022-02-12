@@ -1,4 +1,4 @@
-package com.example.blacklister.settings
+package com.example.blacklister.ui.settings
 
 import androidx.lifecycle.ViewModel
 

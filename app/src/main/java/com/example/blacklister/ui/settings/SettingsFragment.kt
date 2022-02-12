@@ -1,4 +1,4 @@
-package com.example.blacklister.settings
+package com.example.blacklister.ui.settings
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,10 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.blacklister.R
+import com.example.blacklister.databinding.NumberListFragmentBinding
+import com.example.blacklister.ui.base.BaseBindingFragment
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseBindingFragment<NumberListFragmentBinding>() {
 
     private lateinit var viewModel: SettingsViewModel
+
+    override fun getViewBinding() = NumberListFragmentBinding.inflate(layoutInflater)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

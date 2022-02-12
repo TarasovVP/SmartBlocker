@@ -1,4 +1,4 @@
-package com.example.blacklister.onboarding
+package com.example.blacklister.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 
