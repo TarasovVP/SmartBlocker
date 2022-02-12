@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Blacklister</string>
+    <string name="log_list_">Журнал_</string>
+    <string name="contact_list_">Контакты_</string>
+    <string name="number_list_">Номера_</string>
+    <string name="settings_">Настройки_</string>
     <string name="log_list">Журнал</string>
     <string name="contact_list">Контакты</string>
     <string name="number_list">Номера</string>
     <string name="settings">Настройки</string>
+    <string name="login">Логин</string>
+    <string name="next">Дальше</string>
 </resources>

@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.blacklister.R
 
 class LoginFragment : Fragment() {
@@ -16,7 +18,12 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.login_fragment, container, false)
+        val view = inflater.inflate(R.layout.login_fragment, container, false)
+        val button = view.findViewById<Button>(R.id.login_next)
+        button.setOnClickListener {
+            findNavController().navigate(R.id.fragment_log_list)
+        }
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
