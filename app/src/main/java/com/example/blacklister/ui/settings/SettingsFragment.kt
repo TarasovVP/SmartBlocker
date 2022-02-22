@@ -1,32 +1,12 @@
 package com.example.blacklister.ui.settings
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.blacklister.R
-import com.example.blacklister.databinding.NumberListFragmentBinding
-import com.example.blacklister.ui.base.BaseBindingFragment
+import com.example.blacklister.databinding.SettingsFragmentBinding
+import com.example.blacklister.ui.base.BaseFragment
 
-class SettingsFragment : BaseBindingFragment<NumberListFragmentBinding>() {
+class SettingsFragment : BaseFragment<SettingsFragmentBinding, SettingsViewModel>() {
 
-    private lateinit var viewModel: SettingsViewModel
+    override fun getViewBinding() = SettingsFragmentBinding.inflate(layoutInflater)
 
-    override fun getViewBinding() = NumberListFragmentBinding.inflate(layoutInflater)
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.settings_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+    override val viewModelClass = SettingsViewModel::class.java
 
 }

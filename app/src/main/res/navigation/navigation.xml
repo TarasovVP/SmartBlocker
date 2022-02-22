@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragment_onboarding"
-        android:name="com.example.blacklister.ui.onboarding.OnboardingFragment" />
+        android:name="com.example.blacklister.ui.onboarding.OnBoardingFragment" />
 
     <fragment
         android:id="@+id/fragment_registry"
