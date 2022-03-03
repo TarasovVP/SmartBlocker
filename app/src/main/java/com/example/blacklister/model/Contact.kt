@@ -1,3 +1,13 @@
 package com.example.blacklister.model
 
-data class Contact(var id: Int = 0, var name: String = "", var number: String = "")
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Contact(
+    var id: String = "",
+    var name: String? = "",
+    var photoUrl: String? = "",
+    var phone: String? = "",
+    var isPhoneClient: Boolean = false
+) : Parcelable
