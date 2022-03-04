@@ -1,11 +1,11 @@
 package com.example.blacklister.ui.numberlist
 
-import com.example.blacklister.databinding.NumberListFragmentBinding
+import com.example.blacklister.databinding.FragmentNumebrListBinding
 import com.example.blacklister.ui.base.BaseFragment
 
-class NumberListFragment : BaseFragment<NumberListFragmentBinding, NumberListViewModel>() {
+class NumberListFragment : BaseFragment<FragmentNumebrListBinding, NumberListViewModel>() {
 
-    override fun getViewBinding() = NumberListFragmentBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentNumebrListBinding.inflate(layoutInflater)
 
     override val viewModelClass = NumberListViewModel::class.java
 

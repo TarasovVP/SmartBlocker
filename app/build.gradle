@@ -59,4 +59,10 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-testing:2.5.0-alpha02'
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
