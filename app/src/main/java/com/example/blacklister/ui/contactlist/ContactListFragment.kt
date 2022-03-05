@@ -27,6 +27,7 @@ class ContactListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.contactListRecyclerView?.initRecyclerView()
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 READ_CONTACTS
@@ -42,7 +43,8 @@ class ContactListFragment :
         }
         with(viewModel) {
             contactLiveData.observe(viewLifecycleOwner, {
-                Log.e("contactTAG", "contactList ${Gson().toJson(it)}")
+                onInitialDataLoaded(it)
+                Log.e("contactTAG", "contactList ${Gson().toJson(it)} adapter?.all?.size ${adapter?.all?.size}")
             })
         }
     }

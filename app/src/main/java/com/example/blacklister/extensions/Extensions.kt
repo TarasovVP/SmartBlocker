@@ -2,6 +2,11 @@ package com.example.blacklister.extensions
 
 import android.content.Context
 import android.provider.ContactsContract
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.example.blacklister.R
 import com.example.blacklister.model.Contact
 import java.util.*
 
@@ -53,4 +58,18 @@ fun Context.contactList(): ArrayList<Contact> {
             contactsById.values.toList().sortedWith(compareBy { it.name })
         }
     return ArrayList<Contact>(contacts.toList())
+}
+
+fun ImageView.loadCircleImage(photoUrl: String?) {
+    if (photoUrl.isNullOrEmpty()) {
+        this.setImageResource(R.drawable.ic_avatar)
+    } else {
+        Glide.with(this.context)
+            .load(photoUrl)
+            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+            .placeholder(R.drawable.ic_avatar)
+            .error(R.drawable.ic_avatar)
+            .circleCrop()
+            .into(this)
+    }
 }

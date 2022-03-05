@@ -11,8 +11,8 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, M : Any> : Base
 
     abstract fun createAdapter(): BaseAdapter<M, *>?
 
-    protected fun RecyclerView.initRecyclerView(@RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL) {
-        layoutManager = LinearLayoutManager(context, orientation, false)
+    protected fun RecyclerView.initRecyclerView() {
+        layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         this.adapter = this@BaseListFragment.adapter
     }
 
@@ -21,13 +21,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, M : Any> : Base
             clear()
             addAll(newData)
             notifyDataSetChanged()
-        }
-    }
-
-    protected open fun onDataRangeLoaded(newData: List<M>) {
-        adapter?.apply {
-            addAll(newData)
-            if (newData.isNotEmpty()) notifyItemRangeInserted(itemCount, newData.size)
         }
     }
 

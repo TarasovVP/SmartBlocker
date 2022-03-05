@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <dimen name="size_0">0dp</dimen>
+
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_17">17sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_30">30sp</dimen>
+    <dimen name="text_size_36">36sp</dimen>
+
+    <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_9">9dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_11">11dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_13">13dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_17">17dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_21">21dp</dimen>
+    <dimen name="margin_22">22dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_25">25dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_33">33dp</dimen>
+    <dimen name="margin_34">34dp</dimen>
+    <dimen name="margin_35">35dp</dimen>
+    <dimen name="margin_37">37dp</dimen>
+    <dimen name="margin_38">38dp</dimen>
+    <dimen name="margin_45">45dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
+    <dimen name="margin_51">51dp</dimen>
+    <dimen name="margin_65">65dp</dimen>
+    <dimen name="margin_82">82dp</dimen>
+    <dimen name="margin_100">100dp</dimen>
+    <dimen name="margin_110">110dp</dimen>
+
+    <dimen name="padding_1">1dp</dimen>
+    <dimen name="padding_2">2dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
+    <dimen name="padding_14">14dp</dimen>
+    <dimen name="padding_15">15dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_17">17dp</dimen>
+    <dimen name="padding_18">18dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="padding_22">22dp</dimen>
+    <dimen name="padding_25">25dp</dimen>
+    <dimen name="padding_27">27dp</dimen>
+    <dimen name="padding_30">30dp</dimen>
+    <dimen name="padding_35">35dp</dimen>
+    <dimen name="padding_36">36dp</dimen>
+    <dimen name="padding_46">46dp</dimen>
+    <dimen name="padding_50">50dp</dimen>
+    <dimen name="padding_72">72dp</dimen>
+
+    <dimen name="pageMargin">12dp</dimen>
+    <dimen name="offset">15dp</dimen>
+    <dimen name="offsetMargin">26dp</dimen>
+
+    <dimen name="card_pager_offset">4dp</dimen>
+    <dimen name="card_pager_margin">32dp</dimen>
+    <dimen name="card_pager_margin_left">16dp</dimen>
+
+    <dimen name="cardHeight">216dp</dimen>
+    <dimen name="copyTextHeight">21dp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">62dp</dimen>
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
+
+    <dimen name="keyboard_row_height">78dp</dimen>
+    <dimen name="keyboard_text_size">30sp</dimen>
+    <dimen name="keyboard_row_height_small">48dp</dimen>
+    <dimen name="keyboard_text_size_small">24sp</dimen>
+
+    <dimen name="pie_chart_circle">180dp</dimen>
+    <dimen name="pie_chart_center">90dp</dimen>
+    <dimen name="pie_chart_radius">50dp</dimen>
+    <dimen name="text_size_32">32sp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_32">32dp</dimen>
+</resources>
