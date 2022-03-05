@@ -7,11 +7,12 @@ import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseViewHolder
 
-class ContactAdapter : BaseAdapter<Contact, BaseViewHolder<Contact>>(ArrayList()) {
+class ContactAdapter(private val listener: ContactClickListener) :
+    BaseAdapter<Contact, BaseViewHolder<Contact>>(ArrayList()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val binding =
             ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ContactViewHolder(binding)
+        return ContactViewHolder(binding, listener)
     }
 }

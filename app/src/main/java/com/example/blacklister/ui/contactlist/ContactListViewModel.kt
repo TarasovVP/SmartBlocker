@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.blacklister.extensions.contactList
 import com.example.blacklister.model.Contact
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 
 class ContactListViewModel(application: Application) : AndroidViewModel(application) {
 

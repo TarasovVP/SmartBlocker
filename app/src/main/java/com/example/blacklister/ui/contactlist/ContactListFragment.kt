@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.navigation.fragment.findNavController
+import com.example.blacklister.R
 import com.example.blacklister.databinding.ContactListFragmentBinding
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
@@ -21,7 +23,12 @@ class ContactListFragment :
 
     override fun createAdapter(): BaseAdapter<Contact, *>? {
         return context?.let {
-            ContactAdapter()
+            ContactAdapter(object : ContactClickListener {
+                override fun onContactClicked(position: Contact) {
+                    findNavController().navigate(R.id.fragment_contact_detail)
+                }
+
+            })
         }
     }
 

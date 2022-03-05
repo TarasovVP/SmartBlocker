@@ -31,4 +31,8 @@
         android:id="@+id/fragment_settings"
         android:name="com.example.blacklister.ui.settings.SettingsFragment" />
 
+    <fragment
+        android:id="@+id/fragment_contact_detail"
+        android:name="com.example.blacklister.ui.contactdetail.ContactDetailFragment" />
+
 </navigation>

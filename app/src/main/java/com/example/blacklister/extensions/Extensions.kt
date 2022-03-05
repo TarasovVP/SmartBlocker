@@ -39,7 +39,6 @@ fun Context.contactList(): ArrayList<Contact> {
             val nameField = getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
             val photoUri = getColumnIndex(ContactsContract.Contacts.PHOTO_URI)
             val dataField = getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
-
             while (moveToNext()) {
                 when (getString(mimeTypeField)) {
                     ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE -> {
