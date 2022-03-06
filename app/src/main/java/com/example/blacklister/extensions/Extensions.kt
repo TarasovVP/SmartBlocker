@@ -4,13 +4,18 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.ContactsContract
+import android.telecom.TelecomManager
+import android.telephony.TelephonyManager
+import android.util.Log
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.blacklister.R
 import com.example.blacklister.model.Contact
+import com.example.blacklister.utils.CallReceiver
 import java.util.*
 
 fun Context.contactList(): ArrayList<Contact> {
@@ -81,4 +86,26 @@ fun Context.isPermissionAccepted(permission: String): Boolean {
         return true
     }
     return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+}
+
+fun Context.breakCallNougatAndLower() {
+    val telephony = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    try {
+        val c = Class.forName(telephony.javaClass.name)
+        val m = c.getDeclaredMethod("getITelephony")
+        m.isAccessible = true
+        val telephonyService: ITelephony = m.invoke(telephony) as ITelephony
+        telephonyService.endCall()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
+fun Context.breakCallPieAndHigher() {
+    val telecomManager = this.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+    try {
+        telecomManager.javaClass.getMethod("endCall").invoke(telecomManager)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }

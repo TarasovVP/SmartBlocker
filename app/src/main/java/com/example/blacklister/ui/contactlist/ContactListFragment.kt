@@ -1,6 +1,7 @@
 package com.example.blacklister.ui.contactlist
 
 import android.Manifest.permission.*
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -34,10 +35,15 @@ class ContactListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.contactListRecyclerView?.initRecyclerView()
-        if (context?.isPermissionAccepted(READ_CONTACTS) != true || context?.isPermissionAccepted(READ_PHONE_STATE) != true || context?.isPermissionAccepted(CALL_PHONE) != true) {
+        if (context?.isPermissionAccepted(READ_CONTACTS) != true || context?.isPermissionAccepted(READ_PHONE_STATE) != true || context?.isPermissionAccepted(CALL_PHONE) != true || context?.isPermissionAccepted(READ_CALL_LOG) != true  || context?.isPermissionAccepted(
+                ANSWER_PHONE_CALLS) != true) {
+                    val permissionsArray = arrayListOf(READ_CONTACTS, READ_PHONE_STATE, CALL_PHONE, READ_CALL_LOG)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                permissionsArray.add(ANSWER_PHONE_CALLS)
+            }
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(READ_CONTACTS, READ_PHONE_STATE, CALL_PHONE),
+                permissionsArray.toTypedArray(),
                 READ_CONTACTS_REQUEST_CODE
             )
         } else {
@@ -58,7 +64,8 @@ class ContactListFragment :
         if (requestCode != READ_CONTACTS_REQUEST_CODE) {
             return
         }
-        if (context?.isPermissionAccepted(READ_CONTACTS) == true && context?.isPermissionAccepted(READ_PHONE_STATE) == true && context?.isPermissionAccepted(CALL_PHONE) == true) {
+        if (context?.isPermissionAccepted(READ_CONTACTS) == true && context?.isPermissionAccepted(READ_PHONE_STATE) == true && context?.isPermissionAccepted(CALL_PHONE) == true && context?.isPermissionAccepted(READ_CALL_LOG) == true && context?.isPermissionAccepted(
+                ANSWER_PHONE_CALLS) == true) {
             viewModel.getContactList()
         } else {
             Toast.makeText(context, "To continue - give all necessary permissions", Toast.LENGTH_LONG).show()
