@@ -1,8 +1,11 @@
 package com.example.blacklister.extensions
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.provider.ContactsContract
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -71,4 +74,11 @@ fun ImageView.loadCircleImage(photoUrl: String?) {
             .circleCrop()
             .into(this)
     }
+}
+
+fun Context.isPermissionAccepted(permission: String): Boolean {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        return true
+    }
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 }

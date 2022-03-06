@@ -1,18 +1,17 @@
 package com.example.blacklister.ui.contactlist
 
-import android.Manifest.permission.READ_CONTACTS
-import android.content.pm.PackageManager
+import android.Manifest.permission.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.R
 import com.example.blacklister.databinding.ContactListFragmentBinding
+import com.example.blacklister.extensions.isPermissionAccepted
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
-import com.google.gson.Gson
 
 class ContactListFragment :
     BaseListFragment<ContactListFragmentBinding, ContactListViewModel, Contact>() {
@@ -35,14 +34,10 @@ class ContactListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.contactListRecyclerView?.initRecyclerView()
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                READ_CONTACTS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (context?.isPermissionAccepted(READ_CONTACTS) != true || context?.isPermissionAccepted(READ_PHONE_STATE) != true || context?.isPermissionAccepted(CALL_PHONE) != true) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(READ_CONTACTS),
+                arrayOf(READ_CONTACTS, READ_PHONE_STATE, CALL_PHONE),
                 READ_CONTACTS_REQUEST_CODE
             )
         } else {
@@ -51,7 +46,6 @@ class ContactListFragment :
         with(viewModel) {
             contactLiveData.observe(viewLifecycleOwner, {
                 onInitialDataLoaded(it)
-                Log.e("contactTAG", "contactList ${Gson().toJson(it)} adapter?.all?.size ${adapter?.all?.size}")
             })
         }
     }
@@ -64,12 +58,10 @@ class ContactListFragment :
         if (requestCode != READ_CONTACTS_REQUEST_CODE) {
             return
         }
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                READ_CONTACTS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (context?.isPermissionAccepted(READ_CONTACTS) == true && context?.isPermissionAccepted(READ_PHONE_STATE) == true && context?.isPermissionAccepted(CALL_PHONE) == true) {
             viewModel.getContactList()
+        } else {
+            Toast.makeText(context, "To continue - give all necessary permissions", Toast.LENGTH_LONG).show()
         }
     }
 
