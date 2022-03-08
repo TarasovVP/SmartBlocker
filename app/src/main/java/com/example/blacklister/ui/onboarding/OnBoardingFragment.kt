@@ -9,4 +9,8 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnboardingVie
 
     override val viewModelClass = OnboardingViewModel::class.java
 
+    override fun observeLiveData() {
+
+    }
+
 }

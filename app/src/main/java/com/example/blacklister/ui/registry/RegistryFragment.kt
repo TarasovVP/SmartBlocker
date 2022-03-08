@@ -9,4 +9,8 @@ class RegistryFragment : BaseFragment<FragmentRegistryBinding, RegistryViewModel
 
     override val viewModelClass = RegistryViewModel::class.java
 
+    override fun observeLiveData() {
+
+    }
+
 }

@@ -9,4 +9,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
     override val viewModelClass = SettingsViewModel::class.java
 
+    override fun observeLiveData() {
+
+    }
+
 }

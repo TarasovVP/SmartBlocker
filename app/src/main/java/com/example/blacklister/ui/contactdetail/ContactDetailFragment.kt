@@ -9,4 +9,8 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
 
     override val viewModelClass = ContactDetailViewModel::class.java
 
+    override fun observeLiveData() {
+
+    }
+
 }

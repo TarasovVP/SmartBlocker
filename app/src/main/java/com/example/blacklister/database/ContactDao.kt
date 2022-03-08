@@ -7,14 +7,17 @@ import com.example.blacklister.model.Contact
 @Dao
 interface ContactDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllDeposits(contacts: List<Contact>?)
+    fun insertAllContacts(contacts: List<Contact>?)
+
+    @Query("SELECT * FROM contact")
+    fun getAllContacts(): LiveData<List<Contact>>
 
     @Query("SELECT * FROM contact WHERE id = :id")
-    fun getDepositById(id: String): LiveData<Contact?>
+    fun getContactById(id: String): LiveData<Contact?>
 
     @Update
-    fun updateDeposit(contact: Contact)
+    fun updateContact(contact: Contact)
 
     @Query("DELETE FROM contact")
-    fun deleteAllDeposits()
+    fun deleteAllContacts()
 }

@@ -1,23 +1,22 @@
 package com.example.blacklister.ui.contactlist
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.blacklister.extensions.contactList
-import com.example.blacklister.model.Contact
+import com.example.blacklister.provider.ContactRepositoryImpl
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 
 class ContactListViewModel(application: Application) : AndroidViewModel(application) {
 
-    val contactLiveData = MutableLiveData<List<Contact>>()
+    private val contactRepository = ContactRepositoryImpl
+
+    val contactLiveData = contactRepository.subscribeToContacts()
 
     fun getContactList() {
         viewModelScope.launch {
             val contactList = getApplication<Application>().contactList()
-            contactLiveData.postValue(contactList)
+            contactRepository.inasertContacts(contactList)
         }
     }
 }

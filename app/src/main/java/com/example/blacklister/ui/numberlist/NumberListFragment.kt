@@ -9,4 +9,8 @@ class NumberListFragment : BaseFragment<FragmentNumebrListBinding, NumberListVie
 
     override val viewModelClass = NumberListViewModel::class.java
 
+    override fun observeLiveData() {
+
+    }
+
 }

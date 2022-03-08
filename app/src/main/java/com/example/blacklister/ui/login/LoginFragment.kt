@@ -21,4 +21,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         }
     }
 
+    override fun observeLiveData() {
+
+    }
+
 }

@@ -9,4 +9,8 @@ class LogListFragment : BaseFragment<FragmentLogListBinding, LogListViewModel>()
 
     override val viewModelClass = LogListViewModel::class.java
 
+    override fun observeLiveData() {
+
+    }
+
 }
