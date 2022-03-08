@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/fragment_log_list"
+        android:id="@+id/logListFragment"
         android:title="@string/log_list"
         android:contentDescription="@string/log_list"/>
     <item
-        android:id="@+id/fragment_contact_list"
+        android:id="@+id/contactListFragment"
         android:title="@string/contact_list"
         android:contentDescription="@string/contact_list"/>
     <item
-        android:id="@+id/fragment_number_list"
+        android:id="@+id/numberListFragment"
         android:title="@string/number_list"
         android:contentDescription="@string/number_list"/>
     <item
-        android:id="@+id/fragment_settings"
+        android:id="@+id/settingsFragment"
         android:title="@string/settings"
         android:contentDescription="@string/settings"/>
 </menu>

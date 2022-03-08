@@ -1,6 +1,10 @@
 package com.example.blacklister.ui.contactdetail
 
+import android.os.Bundle
+import android.view.View
+import androidx.navigation.fragment.navArgs
 import com.example.blacklister.databinding.FragmentContactDetailBinding
+import com.example.blacklister.extensions.loadCircleImage
 import com.example.blacklister.ui.base.BaseFragment
 
 class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, ContactDetailViewModel>() {
@@ -8,6 +12,16 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     override fun getViewBinding() = FragmentContactDetailBinding.inflate(layoutInflater)
 
     override val viewModelClass = ContactDetailViewModel::class.java
+
+    private val args: ContactDetailFragmentArgs by navArgs()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.contactDetailName?.text = args.contact?.name
+        binding?.contactDetailPhone?.text = args.contact?.phone
+        binding?.contactDetailBlackListNumber?.isChecked = args.contact?.isBlackList == true
+        binding?.contactDetailAvatar?.loadCircleImage(args.contact?.photoUrl)
+    }
 
     override fun observeLiveData() {
 

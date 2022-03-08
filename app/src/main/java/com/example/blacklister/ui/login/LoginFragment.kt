@@ -17,7 +17,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.loginNext?.setSafeOnClickListener {
-            findNavController().navigate(R.id.fragment_log_list)
+            findNavController().navigate(R.id.startLogList)
         }
     }
 

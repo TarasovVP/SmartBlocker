@@ -12,5 +12,6 @@ data class Contact(
     var name: String? = "",
     var photoUrl: String? = "",
     var phone: String? = "",
-    var isPhoneClient: Boolean = false
+    var isPhoneClient: Boolean = false,
+    var isBlackList: Boolean = false
 ) : Parcelable

@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             bottomNavigationView.isVisible =
-                destination.id == R.id.fragment_log_list || destination.id == R.id.fragment_contact_list || destination.id == R.id.fragment_number_list || destination.id == R.id.fragment_settings
+                destination.id == R.id.logListFragment || destination.id == R.id.contactListFragment || destination.id == R.id.numberListFragment || destination.id == R.id.settingsFragment
         }
     }
 }
