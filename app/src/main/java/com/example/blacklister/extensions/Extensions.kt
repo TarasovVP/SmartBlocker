@@ -6,7 +6,6 @@ import android.os.Build
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
@@ -15,8 +14,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.blacklister.R
 import com.example.blacklister.model.Contact
-import com.example.blacklister.utils.CallReceiver
 import java.util.*
+
+private const val PHONE_NUMBER_CODE = "+380"
+private const val PHONE_NUMBER_CODE_ = "380"
 
 fun Context.contactList(): ArrayList<Contact> {
     val projection = arrayOf(
@@ -56,7 +57,7 @@ fun Context.contactList(): ArrayList<Contact> {
                             val photoUrl = getString(photoUri)
                             val name = getString(nameField)
                             contactsById[data] =
-                                Contact(id = id, name = name, photoUrl = photoUrl, phone = data)
+                                Contact(id = id, name = name, photoUrl = photoUrl, phone = data.formattedPhoneNumber())
                         }
                     }
                 }
@@ -108,4 +109,18 @@ fun Context.breakCallPieAndHigher() {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+fun String.formattedPhoneNumber(): String {
+    var phone = Regex("[^0-9]").replace(this, "")
+    if (phone.isEmpty() || phone.length < 10) return ""
+    phone = when {
+        phone.startsWith(PHONE_NUMBER_CODE_) && phone.length > 3 -> {
+            phone.substring(3)
+        }
+        else -> {
+            phone
+        }
+    }
+    return String.format("%s%s", PHONE_NUMBER_CODE, phone)
 }

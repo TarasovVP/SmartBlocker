@@ -7,6 +7,7 @@ import com.example.blacklister.ui.BlackListerApp
 interface ContactRepository {
     suspend fun inasertContacts(list: List<Contact>)
     fun subscribeToContacts(): LiveData<List<Contact>>?
+    fun updateContact(contact: Contact)
 }
 
 object ContactRepositoryImpl : ContactRepository {
@@ -19,6 +20,10 @@ object ContactRepositoryImpl : ContactRepository {
 
     override fun subscribeToContacts(): LiveData<List<Contact>>? {
         return dao?.getAllContacts()
+    }
+
+    override fun updateContact(contact: Contact) {
+        dao?.updateContact(contact)
     }
 
 

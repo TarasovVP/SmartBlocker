@@ -24,7 +24,7 @@
         android:gravity="top"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/item_contact_number"
-        app:layout_constraintEnd_toStartOf="@+id/item_contact_rb_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_contact_black_list_icon"
         app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,28 +35,18 @@
         android:layout_marginHorizontal="@dimen/margin_15"
         android:paddingVertical="@dimen/padding_5"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_contact_rb_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_contact_black_list_icon"
         app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
         app:layout_constraintTop_toBottomOf="@+id/item_contact_name" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/item_contact_rb_icon"
+    <ImageView
+        android:id="@+id/item_contact_black_list_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:visibility="gone"
         android:layout_marginEnd="@dimen/margin_15"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_contact_check_box"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/item_contact_check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="end|center_vertical"
-        android:visibility="gone"
-        android:focusable="false"
-        android:clickable="false"
+        android:src="@drawable/ic_stop"
+        app:layout_constraintStart_toEndOf="@+id/item_contact_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
