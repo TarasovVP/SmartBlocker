@@ -3,7 +3,6 @@ package com.example.blacklister.ui.contactlist
 import android.Manifest.permission.*
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -13,7 +12,6 @@ import com.example.blacklister.extensions.isPermissionAccepted
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
-import com.google.gson.Gson
 
 class ContactListFragment :
     BaseListFragment<ContactListFragmentBinding, ContactListViewModel, Contact>() {
@@ -26,7 +24,11 @@ class ContactListFragment :
         return context?.let {
             ContactAdapter(object : ContactClickListener {
                 override fun onContactClicked(contact: Contact) {
-                    findNavController().navigate(ContactListFragmentDirections.startContactDetail(contact = contact))
+                    findNavController().navigate(
+                        ContactListFragmentDirections.startContactDetail(
+                            contact = contact
+                        )
+                    )
                 }
 
             })
