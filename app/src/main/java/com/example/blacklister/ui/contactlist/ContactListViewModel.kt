@@ -3,7 +3,6 @@ package com.example.blacklister.ui.contactlist
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.blacklister.extensions.contactList
 import com.example.blacklister.model.BlackNumber
@@ -18,19 +17,16 @@ class ContactListViewModel(application: Application) : AndroidViewModel(applicat
     private val blackNumberRepository = BlackNumberRepositoryImpl
 
     val contactLiveData = contactRepository.subscribeToContacts()
-    val blackNumberLiveData = MutableLiveData<List<BlackNumber>?>()
 
     fun getContactList() {
         viewModelScope.launch {
-            val contactList = getApplication<Application>().contactList()
-            contactRepository.inasertContacts(contactList)
-        }
-    }
-
-    fun getBlackNumberList() {
-        viewModelScope.launch {
             val blackNumberList = blackNumberRepository.allBlackNumbers()
-            blackNumberLiveData.postValue(blackNumberList)
+            val contactList = getApplication<Application>().contactList()
+            contactList.forEach { contact ->
+                contact.isBlackList =
+                    blackNumberList?.contains(BlackNumber(contact.phone.toString())) == true
+            }
+            contactRepository.inasertContacts(contactList)
         }
     }
 }

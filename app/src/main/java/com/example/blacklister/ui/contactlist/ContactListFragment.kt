@@ -3,12 +3,14 @@ package com.example.blacklister.ui.contactlist
 import android.Manifest.permission.*
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.ContactListFragmentBinding
 import com.example.blacklister.extensions.isPermissionAccepted
+import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
@@ -65,8 +67,8 @@ class ContactListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            contactLiveData?.observe(viewLifecycleOwner, {
-                onInitialDataLoaded(it)
+            contactLiveData?.observe(viewLifecycleOwner, { contactList ->
+                onInitialDataLoaded(contactList)
             })
         }
     }
