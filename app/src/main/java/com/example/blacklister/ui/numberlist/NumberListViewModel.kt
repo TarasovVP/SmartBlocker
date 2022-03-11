@@ -18,4 +18,11 @@ class NumberListViewModel : ViewModel() {
             blackNumberList.postValue(blackNumberRepository.allBlackNumbers())
         }
     }
+
+    fun deleteBlackNumber(blackNumber: BlackNumber) {
+        viewModelScope.launch {
+            blackNumberRepository.deleteBlackNumber(blackNumber)
+            blackNumberList.postValue(blackNumberRepository.allBlackNumbers())
+        }
+    }
 }

@@ -43,10 +43,25 @@
 
     <fragment
         android:id="@+id/numberListFragment"
-        android:name="com.example.blacklister.ui.numberlist.NumberListFragment" />
+        android:name="com.example.blacklister.ui.numberlist.NumberListFragment" >
+        <action
+            android:id="@+id/startInfoDialog"
+            app:destination="@id/infoDialog"/>
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.blacklister.ui.settings.SettingsFragment" />
+
+    <dialog
+        android:id="@+id/infoDialog"
+        android:name="com.example.blacklister.ui.dialogs.InfoDialog" >
+        <argument
+            android:name="blackNumber"
+            android:defaultValue="@null"
+            app:argType="com.example.blacklister.model.BlackNumber"
+            app:nullable="true"/>
+    </dialog>
+
 
 </navigation>

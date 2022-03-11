@@ -1,19 +1,26 @@
 package com.example.blacklister.extensions
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.view.LayoutInflater
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.blacklister.R
+import com.example.blacklister.databinding.DialogInfoBinding
 import com.example.blacklister.model.Contact
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.*
 
 private const val PHONE_NUMBER_CODE = "+380"

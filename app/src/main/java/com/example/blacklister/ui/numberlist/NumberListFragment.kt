@@ -2,10 +2,12 @@ package com.example.blacklister.ui.numberlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentNumebrListBinding
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
+import com.example.blacklister.ui.dialogs.InfoDialog.Companion.BLACK_NUMBER
 
 class NumberListFragment :
     BaseListFragment<FragmentNumebrListBinding, NumberListViewModel, BlackNumber>() {
@@ -18,9 +20,8 @@ class NumberListFragment :
         return context?.let {
             BlackNumberAdapter(object : BlackNumberClickListener {
                 override fun onBlackNumberClicked(blackNumber: BlackNumber) {
-
+                    findNavController().navigate(NumberListFragmentDirections.startInfoDialog(blackNumber = blackNumber))
                 }
-
             })
         }
     }
@@ -29,6 +30,14 @@ class NumberListFragment :
         super.onViewCreated(view, savedInstanceState)
         binding?.numberListRecyclerView?.initRecyclerView()
         viewModel.getBlackNumberList()
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(BLACK_NUMBER)
+            ?.observe(
+                viewLifecycleOwner
+            ) { blackNumber ->
+                blackNumber?.let {
+                    viewModel.deleteBlackNumber(it)
+                }
+            }
     }
 
     override fun observeLiveData() {

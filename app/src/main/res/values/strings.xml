@@ -10,4 +10,7 @@
     <string name="settings">Настройки</string>
     <string name="login">Логин</string>
     <string name="next">Дальше</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="delete">Delete %s?</string>
 </resources>

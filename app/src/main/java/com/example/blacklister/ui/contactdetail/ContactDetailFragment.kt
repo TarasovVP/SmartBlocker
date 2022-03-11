@@ -1,13 +1,11 @@
 package com.example.blacklister.ui.contactdetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import com.example.blacklister.databinding.FragmentContactDetailBinding
 import com.example.blacklister.extensions.loadCircleImage
 import com.example.blacklister.ui.base.BaseFragment
-import com.google.gson.Gson
 
 class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, ContactDetailViewModel>() {
 
