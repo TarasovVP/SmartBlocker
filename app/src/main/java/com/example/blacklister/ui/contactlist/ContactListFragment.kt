@@ -40,28 +40,8 @@ class ContactListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.contactListRecyclerView?.initRecyclerView()
-        if (context?.isPermissionAccepted(READ_CONTACTS) != true || context?.isPermissionAccepted(
-                READ_PHONE_STATE
-            ) != true || context?.isPermissionAccepted(CALL_PHONE) != true || context?.isPermissionAccepted(
-                READ_CALL_LOG
-            ) != true || context?.isPermissionAccepted(
-                ANSWER_PHONE_CALLS
-            ) != true
-        ) {
-            val permissionsArray =
-                arrayListOf(READ_CONTACTS, READ_PHONE_STATE, CALL_PHONE, READ_CALL_LOG)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                permissionsArray.add(ANSWER_PHONE_CALLS)
-            }
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                permissionsArray.toTypedArray(),
-                READ_CONTACTS_REQUEST_CODE
-            )
-        } else {
-            if (adapter?.all.isNullOrEmpty()) {
-                viewModel.getContactList()
-            }
+        if (adapter?.all.isNullOrEmpty()) {
+            viewModel.getContactList()
         }
     }
 
@@ -71,37 +51,5 @@ class ContactListFragment :
                 onInitialDataLoaded(contactList)
             })
         }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        if (requestCode != READ_CONTACTS_REQUEST_CODE) {
-            return
-        }
-        if (context?.isPermissionAccepted(READ_CONTACTS) == true && context?.isPermissionAccepted(
-                READ_PHONE_STATE
-            ) == true && context?.isPermissionAccepted(CALL_PHONE) == true && context?.isPermissionAccepted(
-                READ_CALL_LOG
-            ) == true && context?.isPermissionAccepted(
-                ANSWER_PHONE_CALLS
-            ) == true
-        ) {
-            if (adapter?.all.isNullOrEmpty()) {
-                viewModel.getContactList()
-            }
-        } else {
-            Toast.makeText(
-                context,
-                "To continue - give all necessary permissions",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
-    companion object {
-        const val READ_CONTACTS_REQUEST_CODE = 500
     }
 }

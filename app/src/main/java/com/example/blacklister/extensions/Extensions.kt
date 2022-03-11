@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
@@ -22,6 +24,9 @@ import com.example.blacklister.databinding.DialogInfoBinding
 import com.example.blacklister.model.Contact
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.*
+import android.provider.CallLog
+import kotlin.collections.ArrayList
+
 
 private const val PHONE_NUMBER_CODE = "+380"
 private const val PHONE_NUMBER_CODE_ = "380"
@@ -72,7 +77,30 @@ fun Context.contactList(): ArrayList<Contact> {
             close()
             contactsById.values.toList().sortedWith(compareBy { it.name })
         }
-    return ArrayList<Contact>(contacts.toList())
+    return ArrayList(contacts.toList())
+}
+
+fun Context.callLogList(): ArrayList<com.example.blacklister.model.CallLog> {
+    val projection = arrayOf(
+        CallLog.Calls.CACHED_NAME,
+        CallLog.Calls.NUMBER,
+        CallLog.Calls.TYPE,
+        CallLog.Calls.DATE
+    )
+
+    val callLogList = ArrayList<com.example.blacklister.model.CallLog>()
+    val cursor: Cursor? = this.contentResolver.query(Uri.parse("content://call_log/calls"), projection, null, null, null)
+    while (cursor?.moveToNext() == true) {
+        val name: String = cursor.getString(0)
+        val phone: String = cursor.getString(1)
+        val type: String =
+            cursor.getString(2)
+        val time: String =
+            cursor.getString(3)
+        callLogList.add(com.example.blacklister.model.CallLog(name = name, phone = phone, type = type, time = time))
+    }
+    cursor?.close()
+    return callLogList
 }
 
 fun ImageView.loadCircleImage(photoUrl: String?) {
