@@ -5,7 +5,7 @@ import com.example.blacklister.model.CallLog
 import com.example.blacklister.ui.BlackListerApp
 
 interface CallLogRepository {
-    suspend fun inasertCallLogs(callLogList: List<CallLog>)
+    suspend fun insertCallLogs(callLogList: List<CallLog>)
     fun subscribeToCallLogs(): LiveData<List<CallLog>>?
     fun updateCallLog(callLog: CallLog)
 }
@@ -14,7 +14,7 @@ object CallLogRepositoryImpl : CallLogRepository {
 
     private val dao = BlackListerApp.instance?.database?.callLogDao()
 
-    override suspend fun inasertCallLogs(callLogList: List<CallLog>) {
+    override suspend fun insertCallLogs(callLogList: List<CallLog>) {
         dao?.insertAllCallLogs(callLogList)
     }
 

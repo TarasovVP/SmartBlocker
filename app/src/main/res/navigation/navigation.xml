@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/logListFragment"
-        android:name="com.example.blacklister.ui.loglist.LogListFragment" />
+        android:name="com.example.blacklister.ui.callloglist.CallLogListFragment" />
 
     <fragment
         android:id="@+id/contactListFragment"

@@ -10,7 +10,7 @@ interface CallLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllCallLogs(callLogs: List<CallLog>?)
 
-    @Query("SELECT * FROM contact")
+    @Query("SELECT * FROM callLog")
     fun getAllCallLogs(): LiveData<List<CallLog>>
 
     @Query("SELECT * FROM callLog WHERE phone = :phone")

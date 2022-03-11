@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.blacklister.R
+import com.example.blacklister.constants.Constants.BLACK_NUMBER
 import com.example.blacklister.databinding.DialogInfoBinding
 import com.example.blacklister.utils.setSafeOnClickListener
 
@@ -53,9 +54,5 @@ class InfoDialog : DialogFragment() {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(BLACK_NUMBER, args.blackNumber)
             dismiss()
         }
-    }
-
-    companion object {
-        const val BLACK_NUMBER = "blackNumber"
     }
 }
