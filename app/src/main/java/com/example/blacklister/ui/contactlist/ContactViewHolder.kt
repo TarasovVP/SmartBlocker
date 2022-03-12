@@ -1,6 +1,5 @@
 package com.example.blacklister.ui.contactlist
 
-import android.util.Log
 import androidx.core.view.isVisible
 import com.example.blacklister.databinding.ItemContactBinding
 import com.example.blacklister.extensions.loadCircleImage

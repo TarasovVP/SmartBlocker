@@ -15,7 +15,8 @@ data class CallLog(
     var name: String? = "",
     @PrimaryKey var phone: String = "",
     var type: String? = "",
-    var time: String? = ""
+    var time: String? = "",
+    var isBlackList: Boolean = false
 ) : Parcelable {
     fun callLogIcon(): Int {
         return when (type) {

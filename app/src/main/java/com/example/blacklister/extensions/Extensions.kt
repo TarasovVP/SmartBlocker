@@ -17,11 +17,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
+import com.example.blacklister.constants.Constants.DATE_FORMAT
 import com.example.blacklister.constants.Constants.END_CALL
 import com.example.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.example.blacklister.constants.Constants.PHONE_NUMBER_CODE
 import com.example.blacklister.constants.Constants.PHONE_NUMBER_CODE_
 import com.example.blacklister.model.Contact
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 fun Context.contactList(): ArrayList<Contact> {
     val projection = arrayOf(
@@ -77,7 +81,7 @@ fun Context.contactList(): ArrayList<Contact> {
     return ArrayList(contacts.toList())
 }
 
-fun Context.callLogList(): ArrayList<com.example.blacklister.model.CallLog> {
+fun Context.callLogList(): List<com.example.blacklister.model.CallLog> {
     val projection = arrayOf(
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
@@ -93,12 +97,12 @@ fun Context.callLogList(): ArrayList<com.example.blacklister.model.CallLog> {
         null,
         null
     )
-    while (cursor?.moveToNext() == true) {
-        val name: String = cursor.getString(0)
+    while (cursor != null && cursor.moveToNext()) {
+        val name: String? = cursor.getString(0)
         val phone: String = cursor.getString(1)
-        val type: String =
+        val type: String? =
             cursor.getString(2)
-        val time: String =
+        val time: String? =
             cursor.getString(3)
         callLogList.add(
             com.example.blacklister.model.CallLog(
@@ -110,7 +114,7 @@ fun Context.callLogList(): ArrayList<com.example.blacklister.model.CallLog> {
         )
     }
     cursor?.close()
-    return callLogList
+    return callLogList.sortedWith(compareBy { it.time })
 }
 
 fun ImageView.loadCircleImage(photoUrl: String?) {
@@ -168,4 +172,15 @@ fun String.formattedPhoneNumber(): String {
         }
     }
     return String.format("%s%s", PHONE_NUMBER_CODE, phone)
+}
+
+fun String.dateFromMilliseconds(): String {
+    val millis = try {
+        this.toLong()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        0
+    }
+    val dateFormatter = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+    return if (millis <= 0) "" else dateFormatter.format(Date(millis))
 }

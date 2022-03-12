@@ -7,8 +7,8 @@
         android:id="@+id/loginFragment"
         android:name="com.example.blacklister.ui.login.LoginFragment" >
         <action
-            android:id="@+id/startLogList"
-            app:destination="@id/logListFragment"/>
+            android:id="@+id/startCallLogList"
+            app:destination="@id/callLogListFragment"/>
     </fragment>
 
     <fragment
@@ -20,8 +20,12 @@
         android:name="com.example.blacklister.ui.registry.RegistryFragment" />
 
     <fragment
-        android:id="@+id/logListFragment"
-        android:name="com.example.blacklister.ui.callloglist.CallLogListFragment" />
+        android:id="@+id/callLogListFragment"
+        android:name="com.example.blacklister.ui.callloglist.CallLogListFragment" >
+        <action
+            android:id="@+id/startContactDetail"
+            app:destination="@id/contactDetailFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/contactListFragment"

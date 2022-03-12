@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/logListFragment"
+        android:id="@+id/callLogListFragment"
         android:title="@string/log_list"
         android:contentDescription="@string/log_list"/>
     <item

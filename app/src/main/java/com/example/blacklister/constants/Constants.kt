@@ -12,4 +12,5 @@ object Constants {
     const val OUTCOMING_CALL = "2"
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
+    const val DATE_FORMAT = "dd.MM.yyyy hh:mm:ss"
 }

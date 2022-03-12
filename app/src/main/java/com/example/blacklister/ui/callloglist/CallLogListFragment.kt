@@ -2,8 +2,10 @@ package com.example.blacklister.ui.callloglist
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
 import com.example.blacklister.model.CallLog
+import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
 
@@ -23,7 +25,7 @@ class CallLogListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callLogLiveData?.observe(viewLifecycleOwner, { callLogList ->
-                onInitialDataLoaded(callLogList)
+                onInitialDataLoaded(callLogList.asReversed())
             })
         }
     }
@@ -32,7 +34,15 @@ class CallLogListFragment :
         return context?.let {
             CallLogAdapter(object : CallLogClickListener {
                 override fun onCallLogClicked(callLog: CallLog) {
-
+                    findNavController().navigate(
+                        CallLogListFragmentDirections.startContactDetail(
+                            contact = Contact(
+                                name = callLog.name,
+                                phone = callLog.phone,
+                                isBlackList = callLog.isBlackList
+                            )
+                        )
+                    )
                 }
             })
         }
