@@ -1,6 +1,5 @@
 package com.example.blacklister.provider
 
-import androidx.lifecycle.LiveData
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.ui.BlackListerApp
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
+import com.example.blacklister.extensions.formattedPhoneNumber
 import com.example.blacklister.model.CallLog
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
@@ -38,7 +39,7 @@ class CallLogListFragment :
                         CallLogListFragmentDirections.startContactDetail(
                             contact = Contact(
                                 name = callLog.name,
-                                phone = callLog.phone,
+                                phone = callLog.phone.formattedPhoneNumber(),
                                 isBlackList = callLog.isBlackList
                             )
                         )

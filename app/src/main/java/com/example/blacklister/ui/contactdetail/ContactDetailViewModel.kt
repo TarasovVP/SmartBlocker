@@ -1,14 +1,12 @@
 package com.example.blacklister.ui.contactdetail
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
 import com.example.blacklister.provider.BlackNumberRepositoryImpl
 import com.example.blacklister.provider.ContactRepositoryImpl
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 class ContactDetailViewModel(application: Application) : AndroidViewModel(application) {
@@ -19,7 +17,8 @@ class ContactDetailViewModel(application: Application) : AndroidViewModel(applic
     fun updateContact(contact: Contact) {
         viewModelScope.launch {
             contactRepository.updateContact(contact)
-            contact.phone?.let { phone -> BlackNumber(blackNumber = phone) }?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
+            contact.phone?.let { phone -> BlackNumber(blackNumber = phone) }
+                ?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
         }
     }
 

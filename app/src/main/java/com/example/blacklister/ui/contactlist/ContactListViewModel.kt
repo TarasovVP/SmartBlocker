@@ -1,14 +1,13 @@
 package com.example.blacklister.ui.contactlist
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blacklister.extensions.contactList
+import com.example.blacklister.extensions.formattedPhoneNumber
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.provider.BlackNumberRepositoryImpl
 import com.example.blacklister.provider.ContactRepositoryImpl
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 class ContactListViewModel(application: Application) : AndroidViewModel(application) {
@@ -24,7 +23,11 @@ class ContactListViewModel(application: Application) : AndroidViewModel(applicat
             val contactList = getApplication<Application>().contactList()
             contactList.forEach { contact ->
                 contact.isBlackList =
-                    blackNumberList?.contains(BlackNumber(contact.phone.toString())) == true
+                    blackNumberList?.contains(contact.phone?.formattedPhoneNumber()?.let {
+                        BlackNumber(
+                            it
+                        )
+                    }) == true
             }
             contactRepository.inasertContacts(contactList)
         }

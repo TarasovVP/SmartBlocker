@@ -24,7 +24,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             if (isGranted?.values?.contains(false) == true) {
                 Toast.makeText(
                     context,
-                    "To continue - give all necessary permissions",
+                    getString(R.string.glve_all_permissions),
                     Toast.LENGTH_LONG
                 ).show()
             } else {

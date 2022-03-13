@@ -18,10 +18,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
 import com.example.blacklister.constants.Constants.DATE_FORMAT
+import com.example.blacklister.constants.Constants.EIGHT_ZERO
 import com.example.blacklister.constants.Constants.END_CALL
 import com.example.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.example.blacklister.constants.Constants.PHONE_NUMBER_CODE
-import com.example.blacklister.constants.Constants.PHONE_NUMBER_CODE_
+import com.example.blacklister.constants.Constants.THREE_EIGHT_ZERO
+import com.example.blacklister.constants.Constants.ZERO
 import com.example.blacklister.model.Contact
 import java.text.SimpleDateFormat
 import java.util.*
@@ -164,7 +166,13 @@ fun String.formattedPhoneNumber(): String {
     var phone = Regex("[^0-9]").replace(this, "")
     if (phone.isEmpty() || phone.length < 10) return ""
     phone = when {
-        phone.startsWith(PHONE_NUMBER_CODE_) && phone.length > 3 -> {
+        phone.startsWith(ZERO) && phone.length > 1 -> {
+            phone.substring(1)
+        }
+        phone.startsWith(EIGHT_ZERO) && phone.length > 2 -> {
+            phone.substring(2)
+        }
+        phone.startsWith(THREE_EIGHT_ZERO) && phone.length > 3 -> {
             phone.substring(3)
         }
         else -> {

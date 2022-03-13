@@ -46,12 +46,16 @@ class InfoDialog : DialogFragment() {
     }
 
     private fun initUI() {
-        binding.dialogInfoTitle.text = String.format(getString(R.string.delete), args.blackNumber?.blackNumber)
+        binding.dialogInfoTitle.text =
+            String.format(getString(R.string.delete), args.blackNumber?.blackNumber)
         binding.dialogInfoCancel.setSafeOnClickListener {
             dismiss()
         }
         binding.dialogInfoConfirm.setSafeOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(BLACK_NUMBER, args.blackNumber)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                BLACK_NUMBER,
+                args.blackNumber
+            )
             dismiss()
         }
     }
