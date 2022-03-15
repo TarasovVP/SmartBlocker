@@ -5,20 +5,21 @@ import android.app.*
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.example.blacklister.constants.Constants.FOREGROUND_CALL_SERVICE
 import com.example.blacklister.constants.Constants.FOREGROUND_ID
 import com.example.blacklister.constants.Constants.NOTIFICATION_CHANNEL
 import com.example.blacklister.constants.Constants.PHONE_STATE
 import com.example.blacklister.ui.MainActivity
+import java.util.function.Consumer
 
 
 class ForegroundCallService : Service() {
 
     private var callReceiver: CallReceiver? = null
+    private var notificationBuilder: NotificationCompat.Builder? = null
 
     override fun onBind(arg0: Intent): IBinder? {
         return null
@@ -26,6 +27,7 @@ class ForegroundCallService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        notificationBuilder = notificationBuilder()
         registerScreenOffReceiver()
     }
 
@@ -36,17 +38,20 @@ class ForegroundCallService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(FOREGROUND_ID, notificationBuilder())
+        startForeground(FOREGROUND_ID, notificationBuilder?.build())
         return START_STICKY
     }
 
     private fun registerScreenOffReceiver() {
-        callReceiver = CallReceiver()
+        callReceiver = CallReceiver { phone ->
+            notificationBuilder?.setContentText(phone)
+            startForeground(FOREGROUND_ID, notificationBuilder?.build())
+        }
         val filter = IntentFilter(PHONE_STATE)
         registerReceiver(callReceiver, filter)
     }
 
-    private fun notificationBuilder(): Notification {
+    private fun notificationBuilder(): NotificationCompat.Builder {
         val notificationIntent = Intent(this, MainActivity::class.java)
 
         val pendingIntent =
@@ -60,22 +65,11 @@ class ForegroundCallService : Service() {
             NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
 
         builder.setSmallIcon(R.drawable.ic_delete)
-            .setContentTitle("")
+            .setContentTitle("Blacklister")
             .setContentText("")
             .setSmallIcon(R.drawable.ic_delete)
             .setContentIntent(pendingIntent)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val chan = NotificationChannel(
-                NOTIFICATION_CHANNEL,
-                FOREGROUND_CALL_SERVICE, NotificationManager.IMPORTANCE_HIGH
-            )
-            chan.lightColor = Color.BLUE
-            chan.importance = NotificationManager.IMPORTANCE_NONE
-            chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-            val service = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            service.createNotificationChannel(chan)
-        }
-        return builder.build()
+        return builder
     }
 }

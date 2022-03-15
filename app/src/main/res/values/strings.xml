@@ -14,4 +14,5 @@
     <string name="ok">Ok</string>
     <string name="delete">Delete %s?</string>
     <string name="glve_all_permissions">To continue - give all necessary permissions</string>
+    <string name="bg_work_on">Работа в фоновом режиме</string>
 </resources>

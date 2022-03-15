@@ -1,7 +1,7 @@
 package com.example.blacklister.provider
 
 import com.example.blacklister.model.BlackNumber
-import com.example.blacklister.ui.BlackListerApp
+import com.example.blacklister.BlackListerApp
 
 interface BlackNumberRepository {
     suspend fun allBlackNumbers(): List<BlackNumber>?

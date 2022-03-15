@@ -1,8 +1,9 @@
-package com.example.blacklister.ui
+package com.example.blacklister
 
 import android.app.Application
 import androidx.room.Room
 import com.example.blacklister.database.AppDatabase
+import com.example.blacklister.extensions.createNotificationChannel
 
 class BlackListerApp : Application() {
 
@@ -15,6 +16,7 @@ class BlackListerApp : Application() {
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
+        createNotificationChannel()
     }
 
     companion object {

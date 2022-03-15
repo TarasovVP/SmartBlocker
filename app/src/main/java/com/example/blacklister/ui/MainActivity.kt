@@ -13,6 +13,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
+
+    var callIntent: Intent? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,12 +33,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun startService() {
-        val service = Intent(this, ForegroundCallService::class.java)
+    fun startService() {
+        callIntent = Intent(this, ForegroundCallService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(service)
+            startForegroundService(callIntent)
         } else {
-            startService(service)
+            startService(callIntent)
         }
+    }
+
+    fun stopService() {
+        stopService(callIntent)
     }
 }

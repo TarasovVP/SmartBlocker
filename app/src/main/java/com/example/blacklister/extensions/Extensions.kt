@@ -1,5 +1,6 @@
 package com.example.blacklister.extensions
 
+import android.app.*
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -28,6 +29,11 @@ import com.example.blacklister.model.Contact
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.graphics.Color
+import com.example.blacklister.constants.Constants
+
 
 fun Context.contactList(): ArrayList<Contact> {
     val projection = arrayOf(
@@ -191,4 +197,28 @@ fun String.dateFromMilliseconds(): String {
     }
     val dateFormatter = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
     return if (millis <= 0) "" else dateFormatter.format(Date(millis))
+}
+
+fun Activity.isServiceRunning(serviceClass: Class<*>): Boolean {
+    val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+    for (service in manager!!.getRunningServices(Int.MAX_VALUE)) {
+        if (serviceClass.name == service.service.className) {
+            return true
+        }
+    }
+    return false
+}
+
+fun Context.createNotificationChannel() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val chan = NotificationChannel(
+            Constants.NOTIFICATION_CHANNEL,
+            Constants.FOREGROUND_CALL_SERVICE, NotificationManager.IMPORTANCE_HIGH
+        )
+        chan.lightColor = Color.BLUE
+        chan.importance = NotificationManager.IMPORTANCE_NONE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        val service = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(chan)
+    }
 }

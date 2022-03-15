@@ -2,7 +2,7 @@ package com.example.blacklister.provider
 
 import androidx.lifecycle.LiveData
 import com.example.blacklister.model.CallLog
-import com.example.blacklister.ui.BlackListerApp
+import com.example.blacklister.BlackListerApp
 
 interface CallLogRepository {
     suspend fun insertCallLogs(callLogList: List<CallLog>)

@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_log_list.xml" value="0.11145833333333334" />
         <entry key="app/src/main/res/layout/fragment_numebr_list.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/item_black_number.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/item_call_log.xml" value="0.11145833333333334" />
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.2807971014492754" />

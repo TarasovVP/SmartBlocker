@@ -5,9 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
 
-    <TextView
+    <CheckBox
+        android:id="@+id/settings_back_ground_cb"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/settings_" />
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/bg_work_on" />
 
 </FrameLayout>
