@@ -36,7 +36,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) ?: ""
         val blackNumber = BlackListerApp.instance?.database?.blackNumberDao()?.getBlackNumber(phone)
         Log.e("callTAG", "CallReceiver onReceive telephony.callState ${telephony.callState}")
-        if (blackNumber == null) return
+        blackNumber ?: return
         if (telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
             Log.e("callTAG", "CallReceiver telephony.callState == TelephonyManager.CALL_STATE_RINGING phone $phone blackNumber.blackNumber ${blackNumber.blackNumber}")
             phoneListener.invoke("phone ${blackNumber.blackNumber}")

@@ -14,7 +14,7 @@ object Constants {
     const val OUTCOMING_CALL = "2"
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
-    const val DATE_FORMAT = "dd.MM.yyyy hh:mm:ss"
+    const val DATE_FORMAT = "dd.MM.yyyy HH:mm:ss"
     const val NOTIFICATION_CHANNEL = "NOTIFICATION_CHANNEL"
     const val FOREGROUND_CALL_SERVICE = "foregroundCallService"
     const val FOREGROUND_ID = 99

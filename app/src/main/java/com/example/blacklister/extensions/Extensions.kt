@@ -19,6 +19,7 @@ import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.blacklister.BlackListerApp
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
@@ -118,14 +119,16 @@ fun Context.callLogList(): List<com.example.blacklister.model.CallLog> {
             cursor.getString(2)
         val time: String? =
             cursor.getString(3)
-        callLogList.add(
+        time?.let {
             com.example.blacklister.model.CallLog(
                 name = name,
                 phone = phone,
                 type = type,
-                time = time
+                time = it
             )
-        )
+        }?.let { callLog ->
+            callLogList.add(callLog)
+        }
     }
     cursor?.close()
     return callLogList.sortedWith(compareBy { it.time })
@@ -149,11 +152,15 @@ fun Context.deleteLastMissedCall(phone: String) {
 
     while (cursor?.moveToNext() == true) {
         val phoneNumber: String = cursor.getString(1)
+        val name: String? = cursor.getString(0)
+        val type: String? =
+            cursor.getString(2)
         val time: String? =
             cursor.getString(3)
         val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
         if (phone == phoneNumber.formattedPhoneNumber()) {
             this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
+            BlackListerApp.instance?.database?.callLogDao()?.insertCallLog(time?.let { com.example.blacklister.model.CallLog(name = name, type = type, phone = phoneNumber, time = it, isBlackList = true) })
             break
         }
     }

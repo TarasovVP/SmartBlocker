@@ -31,4 +31,8 @@ object CallLogRepositoryImpl : CallLogRepository {
         dao?.deleteAllCallLogs()
     }
 
+    fun getAllCallLogs(): List<CallLog>? {
+        return dao?.allCallLogs()
+    }
+
 }

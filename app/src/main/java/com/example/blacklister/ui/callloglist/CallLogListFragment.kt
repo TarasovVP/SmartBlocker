@@ -26,7 +26,7 @@ class CallLogListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callLogLiveData?.observe(viewLifecycleOwner, { callLogList ->
-                onInitialDataLoaded(callLogList.asReversed())
+                onInitialDataLoaded(callLogList.sortedBy { it.time }.reversed())
             })
         }
     }
@@ -39,7 +39,7 @@ class CallLogListFragment :
                         CallLogListFragmentDirections.startContactDetail(
                             contact = Contact(
                                 name = callLog.name,
-                                phone = callLog.phone.formattedPhoneNumber(),
+                                phone = callLog.phone?.formattedPhoneNumber(),
                                 isBlackList = callLog.isBlackList
                             )
                         )
