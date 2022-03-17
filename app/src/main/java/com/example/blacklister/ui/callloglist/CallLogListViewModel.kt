@@ -19,6 +19,7 @@ class CallLogListViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getCallLogList() {
         viewModelScope.launch {
+            repository.deleteAllCallLogs()
             val blackNumberList = blackNumberRepository.allBlackNumbers()
             val callLogList = getApplication<Application>().callLogList()
             callLogList.forEach { callLog ->

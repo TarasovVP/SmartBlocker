@@ -2,8 +2,10 @@ package com.example.blacklister.extensions
 
 import android.app.*
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.provider.CallLog
@@ -11,28 +13,32 @@ import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.widget.ImageView
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.blacklister.R
+import com.example.blacklister.constants.Constants
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
+import com.example.blacklister.constants.Constants.DATE
 import com.example.blacklister.constants.Constants.DATE_FORMAT
+import com.example.blacklister.constants.Constants.DESC
 import com.example.blacklister.constants.Constants.EIGHT_ZERO
 import com.example.blacklister.constants.Constants.END_CALL
 import com.example.blacklister.constants.Constants.GET_IT_TELEPHONY
+import com.example.blacklister.constants.Constants.NUMBER
 import com.example.blacklister.constants.Constants.PHONE_NUMBER_CODE
+import com.example.blacklister.constants.Constants.REJECTED_CALL
 import com.example.blacklister.constants.Constants.THREE_EIGHT_ZERO
+import com.example.blacklister.constants.Constants.TYPE
 import com.example.blacklister.constants.Constants.ZERO
 import com.example.blacklister.model.Contact
+import com.example.blacklister.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import androidx.core.content.ContextCompat.getSystemService
-
-import android.graphics.Color
-import com.example.blacklister.constants.Constants
 
 
 fun Context.contactList(): ArrayList<Contact> {
@@ -125,6 +131,35 @@ fun Context.callLogList(): List<com.example.blacklister.model.CallLog> {
     return callLogList.sortedWith(compareBy { it.time })
 }
 
+fun Context.deleteLastMissedCall(phone: String) {
+    val projection = arrayOf(
+        CallLog.Calls.CACHED_NAME,
+        CallLog.Calls.NUMBER,
+        CallLog.Calls.TYPE,
+        CallLog.Calls.DATE
+    )
+
+    val cursor: Cursor? = this.contentResolver.query(
+        Uri.parse(CALL_LOG_CALL),
+        projection,
+        null,
+        null,
+        "${CallLog.Calls.DATE} $DESC"
+    )
+
+    while (cursor?.moveToNext() == true) {
+        val phoneNumber: String = cursor.getString(1)
+        val time: String? =
+            cursor.getString(3)
+        val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
+        if (phone == phoneNumber.formattedPhoneNumber()) {
+            this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
+            break
+        }
+    }
+    cursor?.close()
+}
+
 fun ImageView.loadCircleImage(photoUrl: String?) {
     if (photoUrl.isNullOrEmpty()) {
         this.setImageResource(R.drawable.ic_avatar)
@@ -189,14 +224,18 @@ fun String.formattedPhoneNumber(): String {
 }
 
 fun String.dateFromMilliseconds(): String {
-    val millis = try {
+    val millis = this.stringToTimeMillis()
+    val dateFormatter = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+    return if (millis <= 0) "" else dateFormatter.format(Date(millis))
+}
+
+fun String.stringToTimeMillis(): Long {
+    return try {
         this.toLong()
     } catch (e: Exception) {
         e.printStackTrace()
         0
     }
-    val dateFormatter = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
-    return if (millis <= 0) "" else dateFormatter.format(Date(millis))
 }
 
 fun Activity.isServiceRunning(serviceClass: Class<*>): Boolean {
@@ -221,4 +260,26 @@ fun Context.createNotificationChannel() {
         val service = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(chan)
     }
+}
+
+fun Context.notificationBuilder(): NotificationCompat.Builder {
+    val notificationIntent = Intent(this, MainActivity::class.java)
+
+    val pendingIntent =
+        PendingIntent.getActivity(
+            this,
+            0,
+            notificationIntent,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        )
+    val builder: NotificationCompat.Builder =
+        NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL)
+
+    builder.setSmallIcon(android.R.drawable.ic_delete)
+        .setContentTitle(getString(R.string.app_name))
+        .setContentText("")
+        .setSmallIcon(android.R.drawable.ic_delete)
+        .setContentIntent(pendingIntent)
+
+    return builder
 }

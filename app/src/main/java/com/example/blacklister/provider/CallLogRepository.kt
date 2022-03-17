@@ -7,7 +7,8 @@ import com.example.blacklister.BlackListerApp
 interface CallLogRepository {
     suspend fun insertCallLogs(callLogList: List<CallLog>)
     fun subscribeToCallLogs(): LiveData<List<CallLog>>?
-    fun updateCallLog(callLog: CallLog)
+    suspend fun updateCallLog(callLog: CallLog)
+    suspend fun deleteAllCallLogs()
 }
 
 object CallLogRepositoryImpl : CallLogRepository {
@@ -22,9 +23,12 @@ object CallLogRepositoryImpl : CallLogRepository {
         return dao?.getAllCallLogs()
     }
 
-    override fun updateCallLog(callLog: CallLog) {
+    override suspend fun updateCallLog(callLog: CallLog) {
         dao?.updateCallLog(callLog)
     }
 
+    override suspend fun deleteAllCallLogs() {
+        dao?.deleteAllCallLogs()
+    }
 
 }

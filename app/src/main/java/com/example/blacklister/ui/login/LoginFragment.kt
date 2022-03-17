@@ -40,7 +40,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     }
 
     private fun checkPermissions() {
-        if (context?.isPermissionAccepted(Manifest.permission.READ_CONTACTS) != true || context?.isPermissionAccepted(
+        if (context?.isPermissionAccepted(Manifest.permission.READ_CONTACTS) != true || context?.isPermissionAccepted(Manifest.permission.WRITE_CALL_LOG) != true || context?.isPermissionAccepted(
                 Manifest.permission.READ_CALL_LOG
             ) != true || context?.isPermissionAccepted(
                 Manifest.permission.ANSWER_PHONE_CALLS
@@ -51,6 +51,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             val permissionsArray =
                 arrayListOf(
                     Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.WRITE_CALL_LOG,
                     Manifest.permission.READ_CALL_LOG,
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.CALL_PHONE

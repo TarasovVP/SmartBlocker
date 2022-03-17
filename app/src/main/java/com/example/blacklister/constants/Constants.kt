@@ -19,4 +19,8 @@ object Constants {
     const val FOREGROUND_CALL_SERVICE = "foregroundCallService"
     const val FOREGROUND_ID = 99
     const val PHONE_STATE = "android.intent.action.PHONE_STATE"
+    const val DESC = "DESC"
+    const val NUMBER = "NUMBER="
+    const val DATE = "DATE="
+    const val TYPE = "TYPE="
 }
