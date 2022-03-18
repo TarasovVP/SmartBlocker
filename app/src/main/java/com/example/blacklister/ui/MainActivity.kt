@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.blacklister.R
+import com.example.blacklister.local.SharedPreferencesUtil
 import com.example.blacklister.utils.ForegroundCallService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -17,12 +18,23 @@ class MainActivity : AppCompatActivity() {
     var callIntent: Intent? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_Blacklister)
         setContentView(R.layout.activity_main)
         startService()
 
         val navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
+
+        val navGraph = navController.navInflater.inflate(R.navigation.navigation)
+        navGraph.setStartDestination(
+            if (SharedPreferencesUtil.isOnBoardingSeen) {
+                R.id.loginFragment
+            } else {
+                R.id.onBoardingFragment
+            }
+        )
+        navController.graph = navGraph
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavigationView.setupWithNavController(navController)

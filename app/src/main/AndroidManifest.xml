@@ -17,7 +17,7 @@
         android:name=".BlackListerApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Blacklister">
+        android:theme="@style/Theme.Blacklister.Launcher">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
