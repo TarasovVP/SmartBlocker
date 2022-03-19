@@ -4,18 +4,18 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/onboarding_left_guideline"
+        android:id="@+id/single_on_boarding_left_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.0426" />
+        app:layout_constraintGuide_percent="0.14" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/onboarding_right_guideline"
+        android:id="@+id/single_on_boarding_right_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.957" />
+        app:layout_constraintGuide_percent="0.86" />
 
     <TextView
         android:id="@+id/single_on_boarding_title"
@@ -24,8 +24,8 @@
         android:textSize="@dimen/text_size_32"
         android:textStyle="bold"
         android:layout_marginTop="@dimen/margin_25"
-        app:layout_constraintEnd_toStartOf="@+id/onboarding_right_guideline"
-        app:layout_constraintStart_toStartOf="@+id/onboarding_left_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/single_on_boarding_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/single_on_boarding_left_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/onboarding_right_guideline"
-        app:layout_constraintStart_toStartOf="@+id/onboarding_left_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/single_on_boarding_right_guideline"
+        app:layout_constraintStart_toStartOf="@+id/single_on_boarding_left_guideline"
         app:layout_constraintTop_toBottomOf="@+id/single_on_boarding_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

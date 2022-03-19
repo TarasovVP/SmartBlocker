@@ -1,7 +1,5 @@
 package com.example.blacklister.ui.onboarding
 
-import android.Manifest
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,9 +10,10 @@ import com.example.blacklister.R
 import com.example.blacklister.constants.Constants.ACCEPT_PERMISSIONS_SCREEN
 import com.example.blacklister.databinding.FragmentOnboardingBinding
 import com.example.blacklister.enum.OnBoarding
-import com.example.blacklister.extensions.isPermissionAccepted
 import com.example.blacklister.local.SharedPreferencesUtil
 import com.example.blacklister.ui.base.BaseFragment
+import com.example.blacklister.utils.PermissionUtil.checkPermissions
+import com.example.blacklister.utils.PermissionUtil.permissionsArray
 import com.example.blacklister.utils.setSafeOnClickListener
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -91,28 +90,8 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
     }
 
     private fun checkPermissions() {
-        if (context?.isPermissionAccepted(Manifest.permission.READ_CONTACTS) != true || context?.isPermissionAccepted(
-                Manifest.permission.WRITE_CALL_LOG
-            ) != true || context?.isPermissionAccepted(
-                Manifest.permission.READ_CALL_LOG
-            ) != true || context?.isPermissionAccepted(
-                Manifest.permission.ANSWER_PHONE_CALLS
-            ) != true || context?.isPermissionAccepted(Manifest.permission.READ_PHONE_STATE) != true || context?.isPermissionAccepted(
-                Manifest.permission.CALL_PHONE
-            ) != true
-        ) {
-            val permissionsArray =
-                arrayListOf(
-                    Manifest.permission.READ_CONTACTS,
-                    Manifest.permission.WRITE_CALL_LOG,
-                    Manifest.permission.READ_CALL_LOG,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.CALL_PHONE
-                )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                permissionsArray.add(Manifest.permission.ANSWER_PHONE_CALLS)
-            }
-            requestPermissionLauncher.launch(permissionsArray.toTypedArray())
+        if (context?.checkPermissions() != true) {
+            requestPermissionLauncher.launch(permissionsArray())
         } else {
             startLoginScreen()
         }

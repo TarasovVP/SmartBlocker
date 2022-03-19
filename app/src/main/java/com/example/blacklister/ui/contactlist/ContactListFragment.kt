@@ -33,9 +33,6 @@ class ContactListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.contactListRecyclerView?.initRecyclerView()
-        if (adapter?.all.isNullOrEmpty()) {
-            viewModel.getContactList()
-        }
     }
 
     override fun observeLiveData() {
@@ -43,6 +40,12 @@ class ContactListFragment :
             contactLiveData?.observe(viewLifecycleOwner, { contactList ->
                 onInitialDataLoaded(contactList)
             })
+        }
+    }
+
+    override fun getDataList() {
+        if (adapter?.all.isNullOrEmpty()) {
+            viewModel.getContactList()
         }
     }
 }

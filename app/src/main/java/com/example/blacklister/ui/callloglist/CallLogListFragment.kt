@@ -22,6 +22,9 @@ class CallLogListFragment :
         super.onViewCreated(view, savedInstanceState)
         Log.e("onBackPressedTAG", "CallLogListFragment onViewCreated")
         binding?.callLogListRecyclerView?.initRecyclerView()
+    }
+
+    override fun getDataList() {
         viewModel.getCallLogList()
     }
 

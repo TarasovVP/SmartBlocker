@@ -20,16 +20,28 @@ class CallLogListViewModel(application: Application) : AndroidViewModel(applicat
     val callLogLiveData = repository.subscribeToCallLogs()
 
     fun getCallLogList() {
-        Log.e("callLogTAG", "CallLogListViewModel getCallLogList repository.getAllCallLogs() ${Gson().toJson(repository.getAllCallLogs())}")
+        Log.e(
+            "callLogTAG",
+            "CallLogListViewModel getCallLogList repository.getAllCallLogs() ${
+                Gson().toJson(repository.getAllCallLogs())
+            }"
+        )
         viewModelScope.launch {
             val blackNumberList = blackNumberRepository.allBlackNumbers()
             val callLogList = getApplication<Application>().callLogList()
             callLogList.forEach { callLog ->
                 callLog.isBlackList =
-                    blackNumberList?.contains(callLog.phone?.formattedPhoneNumber()?.let { phone -> BlackNumber(phone) }) == true
+                    blackNumberList?.contains(
+                        callLog.phone?.formattedPhoneNumber()
+                            ?.let { phone -> BlackNumber(phone) }) == true
             }
             repository.insertCallLogs(callLogList)
-            Log.e("callLogTAG", "CallLogListViewModel viewModelScope.launch repository.getAllCallLogs() ${Gson().toJson(repository.getAllCallLogs())}")
+            Log.e(
+                "callLogTAG",
+                "CallLogListViewModel viewModelScope.launch repository.getAllCallLogs() ${
+                    Gson().toJson(repository.getAllCallLogs())
+                }"
+            )
         }
     }
 }

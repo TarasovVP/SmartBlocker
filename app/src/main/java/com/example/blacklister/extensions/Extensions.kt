@@ -3,7 +3,6 @@ package com.example.blacklister.extensions
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
@@ -14,7 +13,6 @@ import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -160,7 +158,15 @@ fun Context.deleteLastMissedCall(phone: String) {
         val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
         if (phone == phoneNumber.formattedPhoneNumber()) {
             this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
-            BlackListerApp.instance?.database?.callLogDao()?.insertCallLog(time?.let { com.example.blacklister.model.CallLog(name = name, type = type, phone = phoneNumber, time = it, isBlackList = true) })
+            BlackListerApp.instance?.database?.callLogDao()?.insertCallLog(time?.let {
+                com.example.blacklister.model.CallLog(
+                    name = name,
+                    type = type,
+                    phone = phoneNumber,
+                    time = it,
+                    isBlackList = true
+                )
+            })
             break
         }
     }
@@ -179,13 +185,6 @@ fun ImageView.loadCircleImage(photoUrl: String?) {
             .circleCrop()
             .into(this)
     }
-}
-
-fun Context.isPermissionAccepted(permission: String): Boolean {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-        return true
-    }
-    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 }
 
 fun Context.breakCallNougatAndLower() {

@@ -6,6 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.onboarding.OnBoardingFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/on_boarding_left_gd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.14"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/on_boarding_right_gd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.86"/>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/on_boarding_view_pager"
         android:layout_width="match_parent"
@@ -15,10 +29,12 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/on_boarding_tab_layout"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         app:tabBackground="@android:color/transparent"
         android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/on_boarding_left_gd"
+        app:layout_constraintEnd_toStartOf="@+id/on_boarding_right_gd"
         app:layout_constraintTop_toBottomOf="@+id/on_boarding_view_pager"
         app:layout_constraintBottom_toTopOf="@+id/on_boarding_button"/>
 
@@ -28,8 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/margin_15"
+        app:layout_constraintEnd_toStartOf="@+id/on_boarding_right_gd"
+        android:layout_marginVertical="@dimen/margin_15"
         app:layout_constraintTop_toBottomOf="@+id/on_boarding_tab_layout"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

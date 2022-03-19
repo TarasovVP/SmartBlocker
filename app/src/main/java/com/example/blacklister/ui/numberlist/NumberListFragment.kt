@@ -33,7 +33,6 @@ class NumberListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.numberListRecyclerView?.initRecyclerView()
-        viewModel.getBlackNumberList()
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER
         )
@@ -44,6 +43,10 @@ class NumberListFragment :
                     viewModel.deleteBlackNumber(it)
                 }
             }
+    }
+
+    override fun getDataList() {
+        viewModel.getBlackNumberList()
     }
 
     override fun observeLiveData() {

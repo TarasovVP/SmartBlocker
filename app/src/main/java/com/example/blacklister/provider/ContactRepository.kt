@@ -1,8 +1,8 @@
 package com.example.blacklister.provider
 
 import androidx.lifecycle.LiveData
-import com.example.blacklister.model.Contact
 import com.example.blacklister.BlackListerApp
+import com.example.blacklister.model.Contact
 
 interface ContactRepository {
     suspend fun inasertContacts(list: List<Contact>)

@@ -3,22 +3,18 @@ package com.example.blacklister.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.blacklister.MainNavigationDirections
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants
 import com.example.blacklister.local.SharedPreferencesUtil
 import com.example.blacklister.model.BlackNumber
-import com.example.blacklister.ui.numberlist.NumberListFragmentDirections
 import com.example.blacklister.utils.ForegroundCallService
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.gson.Gson
 
 
 class MainActivity : AppCompatActivity() {
