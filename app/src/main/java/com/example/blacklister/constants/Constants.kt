@@ -23,4 +23,5 @@ object Constants {
     const val NUMBER = "NUMBER="
     const val DATE = "DATE="
     const val TYPE = "TYPE="
+    const val ACCEPT_PERMISSIONS_SCREEN = 2
 }

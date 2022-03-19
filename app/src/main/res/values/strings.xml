@@ -18,4 +18,5 @@
     <string name="avoid_call">"BlackLister избавит Вас от навязчивых звонков "</string>
     <string name="receive_notifications">BlackLister будет предупреждать о степени опасности входящих звонков</string>
     <string name="accept_permissions">"Для того чтобы начать приложение должно запросить у вас разрешение. "</string>
+    <string name="accept">Подтвердить</string>
 </resources>
