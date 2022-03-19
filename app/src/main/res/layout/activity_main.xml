@@ -22,6 +22,9 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav"
         android:visibility="gone"
+        app:itemTextColor="@color/white"
+        app:itemBackground="@color/main_bg"
+        app:itemRippleColor="@android:color/holo_red_dark"
         app:layout_constraintTop_toBottomOf="@+id/host_main_fragment"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

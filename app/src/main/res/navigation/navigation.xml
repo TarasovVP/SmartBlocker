@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainNavigation"
     app:startDestination="@+id/loginFragment">
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.example.blacklister.ui.onboarding.OnBoardingFragment" >
+        <action
+            android:id="@+id/startLoginScreen"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@+id/mainNavigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.blacklister.ui.login.LoginFragment" >
         <action
             android:id="@+id/startCallLogList"
-            app:destination="@id/callLogListFragment"/>
+            app:destination="@id/callLogListFragment"
+            app:popUpTo="@+id/mainNavigation"
+            app:popUpToInclusive="true"/>
     </fragment>
-
-    <fragment
-        android:id="@+id/onBoardingFragment"
-        android:name="com.example.blacklister.ui.onboarding.OnBoardingFragment" />
 
     <fragment
         android:id="@+id/registryFragment"
@@ -67,5 +76,7 @@
             app:nullable="true"/>
     </dialog>
 
-
+    <action
+        android:id="@+id/startInfoDialog"
+        app:destination="@id/infoDialog"/>
 </navigation>

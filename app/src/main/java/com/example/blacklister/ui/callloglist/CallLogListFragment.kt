@@ -1,6 +1,7 @@
 package com.example.blacklister.ui.callloglist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
@@ -19,6 +20,7 @@ class CallLogListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("onBackPressedTAG", "CallLogListFragment onViewCreated")
         binding?.callLogListRecyclerView?.initRecyclerView()
         viewModel.getCallLogList()
     }

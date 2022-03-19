@@ -25,6 +25,8 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
 
     override val viewModelClass = OnBoardingViewModel::class.java
 
+    private var currentPosition = 0
+
     override fun observeLiveData() {
 
     }
@@ -38,14 +40,16 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                findNavController().navigate(R.id.loginFragment)
+                findNavController().navigate(R.id.startLoginScreen)
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.onBoardingButton?.setSafeOnClickListener {
-
+            if (currentPosition == 2) {
+                checkPermissions()
+            }
         }
         initViewPager()
     }
@@ -74,6 +78,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
                 viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
+                        currentPosition = position
                         Log.e(
                             "tabTAG",
                             "position $position SharedPreferencesUtil.isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen}"
@@ -106,7 +111,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
             }
             requestPermissionLauncher.launch(permissionsArray.toTypedArray())
         } else {
-            findNavController().navigate(R.id.loginFragment)
+            findNavController().navigate(R.id.startLoginScreen)
         }
     }
 

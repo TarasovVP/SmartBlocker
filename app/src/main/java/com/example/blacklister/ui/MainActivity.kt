@@ -3,45 +3,65 @@ package com.example.blacklister.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.blacklister.MainNavigationDirections
 import com.example.blacklister.R
+import com.example.blacklister.constants.Constants
 import com.example.blacklister.local.SharedPreferencesUtil
+import com.example.blacklister.model.BlackNumber
+import com.example.blacklister.ui.numberlist.NumberListFragmentDirections
 import com.example.blacklister.utils.ForegroundCallService
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 
 
 class MainActivity : AppCompatActivity() {
 
-    var callIntent: Intent? = null
+    private var callIntent: Intent? = null
+    private var navController: NavController? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Blacklister)
         setContentView(R.layout.activity_main)
         startService()
 
-        val navController = (supportFragmentManager.findFragmentById(
+        navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
 
-        val navGraph = navController.navInflater.inflate(R.navigation.navigation)
-        navGraph.setStartDestination(
-            if (SharedPreferencesUtil.isOnBoardingSeen) {
-                R.id.loginFragment
-            } else {
-                R.id.onBoardingFragment
+        navController?.apply {
+            val navGraph = this.navInflater.inflate(R.navigation.navigation)
+            navGraph.setStartDestination(
+                if (SharedPreferencesUtil.isOnBoardingSeen) {
+                    R.id.loginFragment
+                } else {
+                    R.id.onBoardingFragment
+                }
+            )
+            this.graph = navGraph
+
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+            bottomNavigationView.setupWithNavController(this)
+
+            this.addOnDestinationChangedListener { _, destination, _ ->
+                if (destination.id == R.id.infoDialog) return@addOnDestinationChangedListener
+                bottomNavigationView.isVisible =
+                    destination.id == R.id.callLogListFragment || destination.id == R.id.contactListFragment || destination.id == R.id.numberListFragment || destination.id == R.id.settingsFragment
             }
-        )
-        navController.graph = navGraph
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        bottomNavigationView.setupWithNavController(navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            bottomNavigationView.isVisible =
-                destination.id == R.id.callLogListFragment || destination.id == R.id.contactListFragment || destination.id == R.id.numberListFragment || destination.id == R.id.settingsFragment
+            this.currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(Constants.BLACK_NUMBER)
+                ?.observe(
+                    this@MainActivity
+                ) { _ ->
+                    finish()
+                }
         }
     }
 
@@ -56,5 +76,17 @@ class MainActivity : AppCompatActivity() {
 
     fun stopService() {
         stopService(callIntent)
+    }
+
+    override fun onBackPressed() {
+        if (navController?.currentDestination?.id == R.id.onBoardingFragment || navController?.currentDestination?.id == R.id.loginFragment || navController?.currentDestination?.id == R.id.callLogListFragment) {
+            navController?.navigate(
+                MainNavigationDirections.startInfoDialog(
+                    blackNumber = BlackNumber("sdfdsfsdf")
+                )
+            )
+        } else {
+            super.onBackPressed()
+        }
     }
 }
