@@ -32,6 +32,7 @@ class NumberListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipeRefresh = binding?.numberListRefresh
         binding?.numberListRecyclerView?.initRecyclerView()
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER

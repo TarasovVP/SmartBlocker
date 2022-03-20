@@ -25,13 +25,13 @@ class ContactListFragment :
                         )
                     )
                 }
-
             })
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipeRefresh = binding?.contactListRefresh
         binding?.contactListRecyclerView?.initRecyclerView()
     }
 
@@ -44,8 +44,6 @@ class ContactListFragment :
     }
 
     override fun getDataList() {
-        if (adapter?.all.isNullOrEmpty()) {
-            viewModel.getContactList()
-        }
+        viewModel.getContactList()
     }
 }
