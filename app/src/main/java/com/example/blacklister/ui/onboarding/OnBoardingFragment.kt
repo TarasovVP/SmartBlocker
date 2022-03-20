@@ -14,6 +14,7 @@ import com.example.blacklister.local.SharedPreferencesUtil
 import com.example.blacklister.ui.base.BaseFragment
 import com.example.blacklister.utils.PermissionUtil.checkPermissions
 import com.example.blacklister.utils.PermissionUtil.permissionsArray
+import com.example.blacklister.utils.setSafeOnClickListener
 import com.google.android.material.tabs.TabLayoutMediator
 
 class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>() {

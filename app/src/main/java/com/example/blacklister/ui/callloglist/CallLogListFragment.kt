@@ -1,6 +1,8 @@
 package com.example.blacklister.ui.callloglist
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
@@ -19,6 +21,7 @@ class CallLogListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("attachTAG", "CallLogListFragment onViewCreated")
         swipeRefresh = binding?.callLogListRefresh
         binding?.callLogListRecyclerView?.initRecyclerView()
     }
@@ -27,6 +30,7 @@ class CallLogListFragment :
         viewModel.getCallLogList()
     }
 
+
     override fun observeLiveData() {
         with(viewModel) {
             callLogLiveData?.observe(viewLifecycleOwner, { callLogList ->
@@ -34,6 +38,17 @@ class CallLogListFragment :
             })
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e("attachTAG", "CallLogListFragment onStart")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.e("attachTAG", "CallLogListFragment onAttach")
+    }
+
 
     override fun createAdapter(): BaseAdapter<CallLog, *>? {
         return context?.let {
