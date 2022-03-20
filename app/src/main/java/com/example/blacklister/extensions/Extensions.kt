@@ -13,6 +13,7 @@ import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -281,10 +282,10 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
     val builder: NotificationCompat.Builder =
         NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL)
 
-    builder.setSmallIcon(android.R.drawable.ic_delete)
-        .setContentTitle(getString(R.string.app_name))
+    builder.setSmallIcon(R.drawable.ic_logo)
+        .setColor(ContextCompat.getColor(this, R.color.blue))
+        .setContentTitle(getString(R.string.blacklister_is_on))
         .setContentText("")
-        .setSmallIcon(android.R.drawable.ic_delete)
         .setContentIntent(pendingIntent)
 
     return builder

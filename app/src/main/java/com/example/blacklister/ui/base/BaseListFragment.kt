@@ -43,7 +43,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, M : Any> : Base
             if (isGranted?.values?.contains(false) == true) {
                 Toast.makeText(
                     context,
-                    getString(R.string.glve_all_permissions),
+                    getString(R.string.give_all_permissions),
                     Toast.LENGTH_LONG
                 ).show()
             } else {

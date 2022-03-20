@@ -14,7 +14,6 @@ import com.example.blacklister.local.SharedPreferencesUtil
 import com.example.blacklister.ui.base.BaseFragment
 import com.example.blacklister.utils.PermissionUtil.checkPermissions
 import com.example.blacklister.utils.PermissionUtil.permissionsArray
-import com.example.blacklister.utils.setSafeOnClickListener
 import com.google.android.material.tabs.TabLayoutMediator
 
 class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>() {
@@ -34,7 +33,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
             if (isGranted?.values?.contains(false) == true) {
                 Toast.makeText(
                     context,
-                    getString(R.string.glve_all_permissions),
+                    getString(R.string.give_all_permissions),
                     Toast.LENGTH_LONG
                 ).show()
             } else {

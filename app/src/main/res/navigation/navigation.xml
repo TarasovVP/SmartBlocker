@@ -30,7 +30,8 @@
 
     <fragment
         android:id="@+id/callLogListFragment"
-        android:name="com.example.blacklister.ui.callloglist.CallLogListFragment" >
+        android:name="com.example.blacklister.ui.callloglist.CallLogListFragment"
+        android:label="@string/log_list">
         <action
             android:id="@+id/startContactDetail"
             app:destination="@id/contactDetailFragment"/>
@@ -38,7 +39,8 @@
 
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.example.blacklister.ui.contactlist.ContactListFragment" >
+        android:name="com.example.blacklister.ui.contactlist.ContactListFragment"
+        android:label="@string/contact_list">
         <action
             android:id="@+id/startContactDetail"
             app:destination="@id/contactDetailFragment"/>
@@ -56,7 +58,8 @@
 
     <fragment
         android:id="@+id/numberListFragment"
-        android:name="com.example.blacklister.ui.numberlist.NumberListFragment" >
+        android:name="com.example.blacklister.ui.numberlist.NumberListFragment"
+        android:label="@string/number_list">
         <action
             android:id="@+id/startInfoDialog"
             app:destination="@id/infoDialog"/>
@@ -64,7 +67,8 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.blacklister.ui.settings.SettingsFragment" />
+        android:name="com.example.blacklister.ui.settings.SettingsFragment"
+        android:label="@string/settings"/>
 
     <dialog
         android:id="@+id/infoDialog"

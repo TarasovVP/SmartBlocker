@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/host_main_fragment"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/host_main_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -13,7 +21,7 @@
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/navigation"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,8 +30,10 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav"
         android:visibility="gone"
-        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/bottom_nav_color_selector"
         app:itemBackground="@color/main_bg"
+        app:itemTextColor="@color/bottom_nav_color_selector"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintTop_toBottomOf="@+id/host_main_fragment"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
