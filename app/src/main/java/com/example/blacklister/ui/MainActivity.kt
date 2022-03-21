@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     var navigationScreens = arrayListOf(
         R.id.callLogListFragment,
         R.id.contactListFragment,
-        R.id.numberListFragment,
+        R.id.blackNumberListFragment,
         R.id.settingsFragment
     )
 

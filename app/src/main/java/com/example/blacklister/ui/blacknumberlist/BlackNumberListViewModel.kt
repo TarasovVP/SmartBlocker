@@ -1,4 +1,4 @@
-package com.example.blacklister.ui.numberlist
+package com.example.blacklister.ui.blacknumberlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.provider.BlackNumberRepositoryImpl
 import kotlinx.coroutines.launch
 
-class NumberListViewModel : ViewModel() {
+class BlackNumberListViewModel : ViewModel() {
 
     val blackNumberList = MutableLiveData<List<BlackNumber>>()
 

@@ -32,8 +32,10 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
         super.onAttach(context)
         (context as MainActivity).apply {
             if (findNavController().currentDestination?.id != R.id.infoDialog) {
-                bottomNavigationView?.isVisible = navigationScreens.contains(findNavController().currentDestination?.id)
-                toolbar?.isVisible = navigationScreens.contains(findNavController().currentDestination?.id)
+                bottomNavigationView?.isVisible =
+                    navigationScreens.contains(findNavController().currentDestination?.id)
+                toolbar?.isVisible =
+                    navigationScreens.contains(findNavController().currentDestination?.id)
             }
             toolbar?.navigationIcon = ContextCompat.getDrawable(
                 context,

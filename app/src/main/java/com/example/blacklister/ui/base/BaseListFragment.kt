@@ -11,13 +11,14 @@ import com.example.blacklister.R
 import com.example.blacklister.utils.PermissionUtil.checkPermissions
 import com.example.blacklister.utils.PermissionUtil.permissionsArray
 
-abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, M : Any> : BaseFragment<VB, T>() {
+abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter.MainData> :
+    BaseFragment<VB, T>() {
 
-    val adapter: BaseAdapter<M, *>? by lazy { createAdapter() }
+    val adapter: BaseAdapter<D>? by lazy { createAdapter() }
 
     var swipeRefresh: SwipeRefreshLayout? = null
 
-    abstract fun createAdapter(): BaseAdapter<M, *>?
+    abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun getDataList()
 
     protected fun RecyclerView.initRecyclerView() {
@@ -51,16 +52,11 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, M : Any> : Base
             }
         }
 
-    protected open fun onInitialDataLoaded(newData: List<M>) {
+    protected open fun dataLoaded(newData: List<D>, data: BaseAdapter.HeaderData) {
         swipeRefresh?.isRefreshing = false
         adapter?.apply {
-            clear()
-            addAll(newData)
+            setHeaderAndData(newData, data)
             notifyDataSetChanged()
         }
-    }
-
-    protected open fun updateListItems(newData: List<M>) {
-        adapter?.updateListItems(newData, null)
     }
 }

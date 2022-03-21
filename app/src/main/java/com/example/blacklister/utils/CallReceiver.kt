@@ -6,13 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
-import android.util.Log
 import com.example.blacklister.BlackListerApp
 import com.example.blacklister.extensions.breakCallNougatAndLower
 import com.example.blacklister.extensions.breakCallPieAndHigher
 import com.example.blacklister.extensions.deleteLastMissedCall
 import com.example.blacklister.utils.PermissionUtil.checkPermissions
-import com.google.gson.Gson
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -21,8 +19,6 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
-
-        Log.e("callTAG", "CallReceiver intent ${Gson().toJson(intent)}")
 
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
 

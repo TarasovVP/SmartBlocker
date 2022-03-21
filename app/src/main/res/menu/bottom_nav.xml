@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_contact_list"
         android:contentDescription="@string/contact_list"/>
     <item
-        android:id="@+id/numberListFragment"
+        android:id="@+id/blackNumberListFragment"
         android:title="@string/number_list"
         android:icon="@drawable/ic_number_list"
         android:contentDescription="@string/number_list"/>

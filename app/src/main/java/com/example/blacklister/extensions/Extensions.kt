@@ -23,7 +23,7 @@ import com.example.blacklister.R
 import com.example.blacklister.constants.Constants
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
 import com.example.blacklister.constants.Constants.DATE
-import com.example.blacklister.constants.Constants.DATE_FORMAT
+import com.example.blacklister.constants.Constants.DATE_TIME_FORMAT
 import com.example.blacklister.constants.Constants.DESC
 import com.example.blacklister.constants.Constants.EIGHT_ZERO
 import com.example.blacklister.constants.Constants.END_CALL
@@ -34,6 +34,7 @@ import com.example.blacklister.constants.Constants.REJECTED_CALL
 import com.example.blacklister.constants.Constants.THREE_EIGHT_ZERO
 import com.example.blacklister.constants.Constants.TYPE
 import com.example.blacklister.constants.Constants.ZERO
+import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.MainActivity
 import java.text.SimpleDateFormat
@@ -230,9 +231,9 @@ fun String.formattedPhoneNumber(): String {
     return String.format("%s%s", PHONE_NUMBER_CODE, phone)
 }
 
-fun String.dateFromMilliseconds(): String {
+fun String.dateFromMilliseconds(dateFormat: String): String {
     val millis = this.stringToTimeMillis()
-    val dateFormatter = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+    val dateFormatter = SimpleDateFormat(dateFormat, Locale.getDefault())
     return if (millis <= 0) "" else dateFormatter.format(Date(millis))
 }
 
@@ -289,4 +290,41 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
         .setContentIntent(pendingIntent)
 
     return builder
+}
+
+fun <T> List<T>.hashMapFromList(): LinkedHashMap<String, List<T>> {
+    val hashMapFromList = LinkedHashMap<String, List<T>>()
+    val keyList = ArrayList<String>(this.map {
+        when (it) {
+            is BlackNumber -> {
+                it.blackNumber.substring(0, 1)
+            }
+            is Contact -> {
+                it.name?.substring(0, 1)
+            }
+            is com.example.blacklister.model.CallLog -> {
+                it.dateFromTime()
+            }
+            else -> {
+                return@map null
+            }
+        }
+    }.toList().distinct())
+    for (key in keyList) {
+        hashMapFromList[key] = this.filter {
+            key == when (it) {
+                is BlackNumber -> {
+                    it.blackNumber.substring(0, 1)
+                }
+                is Contact -> {
+                    it.name?.substring(0, 1)
+                }
+                is com.example.blacklister.model.CallLog -> {
+                    it.dateFromTime()
+                }
+                else -> it
+            }
+        }
+    }
+    return hashMapFromList
 }

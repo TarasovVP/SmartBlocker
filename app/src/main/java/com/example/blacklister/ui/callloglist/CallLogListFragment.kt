@@ -1,16 +1,18 @@
 package com.example.blacklister.ui.callloglist
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
 import com.example.blacklister.extensions.formattedPhoneNumber
+import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.CallLog
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
+import com.example.blacklister.utils.HeaderDataItem
+import com.google.gson.Gson
 
 class CallLogListFragment :
     BaseListFragment<FragmentCallLogListBinding, CallLogListViewModel, CallLog>() {
@@ -21,7 +23,6 @@ class CallLogListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("attachTAG", "CallLogListFragment onViewCreated")
         swipeRefresh = binding?.callLogListRefresh
         binding?.callLogListRecyclerView?.initRecyclerView()
     }
@@ -34,37 +35,38 @@ class CallLogListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callLogLiveData?.observe(viewLifecycleOwner, { callLogList ->
-                onInitialDataLoaded(callLogList.sortedBy { it.time }.reversed())
-            })
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.e("attachTAG", "CallLogListFragment onStart")
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.e("attachTAG", "CallLogListFragment onAttach")
-    }
-
-
-    override fun createAdapter(): BaseAdapter<CallLog, *>? {
-        return context?.let {
-            CallLogAdapter(object : CallLogClickListener {
-                override fun onCallLogClicked(callLog: CallLog) {
-                    findNavController().navigate(
-                        CallLogListFragmentDirections.startContactDetail(
-                            contact = Contact(
-                                name = callLog.name,
-                                phone = callLog.phone?.formattedPhoneNumber(),
-                                isBlackList = callLog.isBlackList
-                            )
+                val callLogHashMap =
+                    callLogList.sortedBy { it.dateFromTime() }.reversed().hashMapFromList()
+                Log.e(
+                    "hashMapTAG",
+                    "CallLogListFragment callLogHashMap ${Gson().toJson(callLogHashMap)}"
+                )
+                for (callLogEntry in callLogHashMap) {
+                    dataLoaded(
+                        callLogEntry.value,
+                        HeaderDataItem(
+                            headerType = HeaderDataItem.HEADER_TYPE,
+                            header = callLogEntry.key
                         )
                     )
                 }
             })
+        }
+    }
+
+    override fun createAdapter(): BaseAdapter<CallLog>? {
+        return context?.let {
+            CallLogAdapter { callLog ->
+                findNavController().navigate(
+                    CallLogListFragmentDirections.startContactDetail(
+                        contact = Contact(
+                            name = callLog.name,
+                            phone = callLog.phone?.formattedPhoneNumber(),
+                            isBlackList = callLog.isBlackList
+                        )
+                    )
+                )
+            }
         }
     }
 

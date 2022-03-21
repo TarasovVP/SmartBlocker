@@ -1,74 +1,71 @@
 package com.example.blacklister.ui.base
 
-import androidx.recyclerview.widget.DiffUtil
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.example.blacklister.databinding.ItemHeaderBinding
+import com.example.blacklister.utils.HeaderDataItem
 
-abstract class BaseAdapter<T : Any, VH : BaseViewHolder<T>>(
-    data: List<T> = listOf()
-) :
-    RecyclerView.Adapter<VH>() {
+abstract class BaseAdapter<D : BaseAdapter.MainData> :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var mData: ArrayList<MainData>? = null
 
-    protected val data: MutableList<T> = data.toMutableList()
-
-
-    val all: MutableList<T>
-        get() = data
-
-
-    val snapshot: List<T>
-        get() = data.toMutableList()
-
-    override fun getItemCount() = data.size
-
-
-    @Throws(ArrayIndexOutOfBoundsException::class)
-    fun getItem(position: Int): T = data[position]
-
-    fun isEmpty() = data.isEmpty()
-
-    fun isNotEmpty() = data.isNotEmpty()
-
-
-    fun add(item: T) = data.add(item)
-
-    fun replace(oldPosition: Int, newPosition: Int) = data.add(newPosition, remove(oldPosition))
-
-    operator fun set(position: Int, item: T): T = data.set(position, item)
-
-    fun remove(item: T) = data.remove(item)
-
-    fun remove(position: Int): T = data.removeAt(position)
-
-    open fun updateListItems(newItems: List<T>, callback: DiffUtil.Callback?) {
-        callback?.let { DiffUtil.calculateDiff(callback).dispatchUpdatesTo(this) }
-        data.clear()
-        data.addAll(newItems)
+    override fun getItemViewType(position: Int): Int {
+        return if (mData?.get(position) is HeaderData) {
+            (mData?.get(position) as HeaderData).headerType
+        } else 0
     }
 
-    fun updateAllNotify(newObjects: List<T>) {
-        clear()
-        addAll(newObjects)
-        notifyDataSetChanged()
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int
+    ) {
+        if (holder is BaseAdapter<*>.HeaderViewHolder) {
+            holder.bindData(
+                position
+            )
+        }
     }
 
-    fun clear() {
-        data.clear()
+    internal inner class HeaderViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        var binding: ItemHeaderBinding? = ItemHeaderBinding.bind(itemView)
+        fun bindData(position: Int) {
+            val header = getHeaderDataInPosition(position)
+            binding?.itemHeaderText?.text = header.header
+        }
+
     }
 
-    fun addAll(collection: Collection<T>) = data.addAll(collection)
-
-    fun getItemPosition(item: T) = data.indexOf(item)
-
-    open fun insert(item: T, position: Int) {
-        data.add(position, item)
+    override fun getItemCount(): Int {
+        return if (mData == null) {
+            0
+        } else {
+            mData?.size ?: 0
+        }
     }
 
-    fun insertAll(items: Collection<T>, position: Int) {
-        data.addAll(position, items)
+    fun setHeaderAndData(datas: List<D>, header: HeaderData) {
+        mData = mData ?: ArrayList()
+        mData?.add(header)
+        mData?.addAll(datas as Collection<MainData>)
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
-        position.takeUnless { it == RecyclerView.NO_POSITION }?.let { holder.bind(getItem(it)) }
+    protected fun getDataInPosition(position: Int): D {
+        return mData?.get(position) as D
     }
+
+    protected fun getHeaderDataInPosition(position: Int): HeaderDataItem {
+        return mData?.get(position) as HeaderDataItem
+    }
+
+    fun clearData() {
+        mData?.clear()
+    }
+
+    interface HeaderData : MainData {
+        val headerType: Int
+    }
+
+    interface MainData
 }

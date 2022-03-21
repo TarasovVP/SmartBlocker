@@ -1,12 +1,17 @@
 package com.example.blacklister.ui.contactlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.ContactListFragmentBinding
+import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
+import com.example.blacklister.utils.HeaderDataItem
+import com.example.blacklister.utils.HeaderDataItem.Companion.HEADER_TYPE
+import com.google.gson.Gson
 
 class ContactListFragment :
     BaseListFragment<ContactListFragmentBinding, ContactListViewModel, Contact>() {
@@ -15,17 +20,15 @@ class ContactListFragment :
 
     override val viewModelClass = ContactListViewModel::class.java
 
-    override fun createAdapter(): BaseAdapter<Contact, *>? {
+    override fun createAdapter(): BaseAdapter<Contact>? {
         return context?.let {
-            ContactAdapter(object : ContactClickListener {
-                override fun onContactClicked(contact: Contact) {
-                    findNavController().navigate(
-                        ContactListFragmentDirections.startContactDetail(
-                            contact = contact
-                        )
+            ContactAdapter { contact ->
+                findNavController().navigate(
+                    ContactListFragmentDirections.startContactDetail(
+                        contact = contact
                     )
-                }
-            })
+                )
+            }
         }
     }
 
@@ -38,7 +41,14 @@ class ContactListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             contactLiveData?.observe(viewLifecycleOwner, { contactList ->
-                onInitialDataLoaded(contactList)
+                val contactHashMap = contactList.hashMapFromList()
+                adapter?.clearData()
+                for (contactEntry in contactHashMap) {
+                    dataLoaded(
+                        contactEntry.value,
+                        HeaderDataItem(headerType = HEADER_TYPE, header = contactEntry.key)
+                    )
+                }
             })
         }
     }
