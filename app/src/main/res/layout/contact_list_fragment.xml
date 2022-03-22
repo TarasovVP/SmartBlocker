@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.contactlist.ContactListFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/contact_list_left_gd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.04"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/contact_list_right_gd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.96"/>
+
+    <EditText
+        android:id="@+id/contact_list_search"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="wrap_content"
+        style="@style/SearchableEdittext"
+        app:layout_constraintStart_toEndOf="@+id/contact_list_left_gd"
+        app:layout_constraintEnd_toStartOf="@+id/contact_list_right_gd"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/contact_list_refresh"
+        tools:ignore="Autofill,LabelFor" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/contact_list_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_width="@dimen/size_0"
+        android:layout_height="@dimen/size_0"
+        app:layout_constraintStart_toEndOf="@+id/contact_list_left_gd"
+        app:layout_constraintEnd_toStartOf="@+id/contact_list_right_gd"
+        app:layout_constraintTop_toBottomOf="@+id/contact_list_search"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contact_list_recycler_view"
@@ -16,4 +46,4 @@
             android:layout_height="match_parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

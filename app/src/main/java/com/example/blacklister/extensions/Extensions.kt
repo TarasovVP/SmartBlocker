@@ -23,7 +23,6 @@ import com.example.blacklister.R
 import com.example.blacklister.constants.Constants
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
 import com.example.blacklister.constants.Constants.DATE
-import com.example.blacklister.constants.Constants.DATE_TIME_FORMAT
 import com.example.blacklister.constants.Constants.DESC
 import com.example.blacklister.constants.Constants.EIGHT_ZERO
 import com.example.blacklister.constants.Constants.END_CALL

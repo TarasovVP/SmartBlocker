@@ -11,10 +11,8 @@ import com.example.blacklister.constants.Constants.MISSED_CALL
 import com.example.blacklister.constants.Constants.OUTCOMING_CALL
 import com.example.blacklister.constants.Constants.REJECTED_CALL
 import com.example.blacklister.extensions.dateFromMilliseconds
-import com.example.blacklister.extensions.stringToTimeMillis
 import com.example.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @Entity(tableName = "callLog", indices = [Index(value = ["time"], unique = true)])
 @Parcelize

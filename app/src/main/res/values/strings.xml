@@ -20,4 +20,5 @@
     <string name="accept_permissions">"Для того чтобы начать приложение должно запросить у вас разрешение. "</string>
     <string name="accept">Подтвердить</string>
     <string name="blacklister_is_on">Защита нежелательных звонков включена</string>
+    <string name="search">Поиск</string>
 </resources>

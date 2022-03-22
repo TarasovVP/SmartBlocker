@@ -1,24 +1,25 @@
 package com.example.blacklister.ui.blacknumberlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.constants.Constants.BLACK_NUMBER
-import com.example.blacklister.databinding.FragmentBlackNumebrListBinding
+import com.example.blacklister.databinding.FragmentBlackNumberListBinding
 import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
 import com.example.blacklister.utils.HeaderDataItem
-import com.google.gson.Gson
+import java.util.*
 
 class BlackNumberListFragment :
-    BaseListFragment<FragmentBlackNumebrListBinding, BlackNumberListViewModel, BlackNumber>() {
+    BaseListFragment<FragmentBlackNumberListBinding, BlackNumberListViewModel, BlackNumber>() {
 
-    override fun getViewBinding() = FragmentBlackNumebrListBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentBlackNumberListBinding.inflate(layoutInflater)
 
     override val viewModelClass = BlackNumberListViewModel::class.java
+
+    private var blackNumberList: List<BlackNumber>? = null
 
     override fun createAdapter(): BaseAdapter<BlackNumber>? {
         return context?.let {
@@ -32,10 +33,10 @@ class BlackNumberListFragment :
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView() {
         swipeRefresh = binding?.blackNumberListRefresh
-        binding?.blackNumberListRecyclerView?.initRecyclerView()
+        recyclerView = binding?.blackNumberListRecyclerView
+        searchableEditText = binding?.blackNumberListSearch
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER
         )
@@ -55,18 +56,34 @@ class BlackNumberListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             blackNumberList.observe(viewLifecycleOwner, { blackNumberList ->
-                val blackNumberHashMap = blackNumberList.hashMapFromList()
-                for (blackNumberEntry in blackNumberHashMap) {
-                    dataLoaded(
-                        blackNumberEntry.value,
-                        HeaderDataItem(
-                            headerType = HeaderDataItem.HEADER_TYPE,
-                            header = blackNumberEntry.key
-                        )
-                    )
-                }
+                this@BlackNumberListFragment.blackNumberList = blackNumberList
+                setBlackNumberList(blackNumberList)
             })
         }
+    }
+
+    private fun setBlackNumberList(blackNumberList: List<BlackNumber>) {
+        val blackNumberHashMap = blackNumberList.hashMapFromList()
+        for (blackNumberEntry in blackNumberHashMap) {
+            dataLoaded(
+                blackNumberEntry.value,
+                HeaderDataItem(
+                    headerType = HeaderDataItem.HEADER_TYPE,
+                    header = blackNumberEntry.key
+                )
+            )
+        }
+    }
+
+
+    override fun filterDataList() {
+        val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
+            blackNumber.blackNumber.lowercase(Locale.getDefault()).contains(
+                searchableEditText?.text.toString()
+                    .lowercase(Locale.getDefault())
+            )
+        } as ArrayList<BlackNumber>
+        setBlackNumberList(filteredBlackNumberList)
     }
 
 }

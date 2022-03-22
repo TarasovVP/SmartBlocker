@@ -1,8 +1,5 @@
 package com.example.blacklister.ui.callloglist
 
-import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
 import com.example.blacklister.extensions.formattedPhoneNumber
@@ -12,7 +9,7 @@ import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
 import com.example.blacklister.utils.HeaderDataItem
-import com.google.gson.Gson
+import java.util.*
 
 class CallLogListFragment :
     BaseListFragment<FragmentCallLogListBinding, CallLogListViewModel, CallLog>() {
@@ -21,10 +18,12 @@ class CallLogListFragment :
 
     override val viewModelClass = CallLogListViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private var callLogList: List<CallLog>? = null
+
+    override fun initView() {
         swipeRefresh = binding?.callLogListRefresh
-        binding?.callLogListRecyclerView?.initRecyclerView()
+        recyclerView = binding?.callLogListRecyclerView
+        searchableEditText = binding?.callLogListSearch
     }
 
     override fun getDataList() {
@@ -35,23 +34,40 @@ class CallLogListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callLogLiveData?.observe(viewLifecycleOwner, { callLogList ->
-                val callLogHashMap =
-                    callLogList.sortedBy { it.dateFromTime() }.reversed().hashMapFromList()
-                Log.e(
-                    "hashMapTAG",
-                    "CallLogListFragment callLogHashMap ${Gson().toJson(callLogHashMap)}"
-                )
-                for (callLogEntry in callLogHashMap) {
-                    dataLoaded(
-                        callLogEntry.value,
-                        HeaderDataItem(
-                            headerType = HeaderDataItem.HEADER_TYPE,
-                            header = callLogEntry.key
-                        )
-                    )
-                }
+                this@CallLogListFragment.callLogList = callLogList
+                setCallLogList(callLogList)
             })
         }
+    }
+
+    private fun setCallLogList(callLogList: List<CallLog>) {
+        val callLogHashMap =
+            callLogList.sortedBy { it.dateFromTime() }.reversed().hashMapFromList()
+        adapter?.clearData()
+        if (callLogHashMap.isEmpty()) adapter?.clearData()
+        for (callLogEntry in callLogHashMap) {
+            dataLoaded(
+                callLogEntry.value,
+                HeaderDataItem(
+                    headerType = HeaderDataItem.HEADER_TYPE,
+                    header = callLogEntry.key
+                )
+            )
+        }
+        adapter?.notifyDataSetChanged()
+    }
+
+    override fun filterDataList() {
+        val filteredCallLogList = callLogList?.filter { callLog ->
+            callLog.name?.lowercase(Locale.getDefault())?.contains(
+                searchableEditText?.text.toString()
+                    .lowercase(Locale.getDefault())
+            ) == true || callLog.phone?.lowercase(Locale.getDefault())?.contains(
+                searchableEditText?.text.toString()
+                    .lowercase(Locale.getDefault())
+            ) == true
+        } as ArrayList<CallLog>
+        setCallLogList(filteredCallLogList)
     }
 
     override fun createAdapter(): BaseAdapter<CallLog>? {
@@ -69,5 +85,4 @@ class CallLogListFragment :
             }
         }
     }
-
 }

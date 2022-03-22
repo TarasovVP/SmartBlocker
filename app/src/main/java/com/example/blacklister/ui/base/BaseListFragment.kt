@@ -1,7 +1,11 @@
 package com.example.blacklister.ui.base
 
+import android.os.Bundle
+import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,17 +21,24 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
     val adapter: BaseAdapter<D>? by lazy { createAdapter() }
 
     var swipeRefresh: SwipeRefreshLayout? = null
+    var recyclerView: RecyclerView? = null
+    var searchableEditText: EditText? = null
 
     abstract fun createAdapter(): BaseAdapter<D>?
+    abstract fun initView()
     abstract fun getDataList()
+    abstract fun filterDataList()
 
     protected fun RecyclerView.initRecyclerView() {
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         this.adapter = this@BaseListFragment.adapter
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeLiveData()
+        initView()
+        recyclerView?.initRecyclerView()
         if (context?.checkPermissions() == true) {
             swipeRefresh?.isRefreshing = true
             getDataList()
@@ -36,6 +47,9 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
         }
         swipeRefresh?.setOnRefreshListener {
             getDataList()
+        }
+        searchableEditText?.doAfterTextChanged {
+            filterDataList()
         }
     }
 
@@ -56,7 +70,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
         swipeRefresh?.isRefreshing = false
         adapter?.apply {
             setHeaderAndData(newData, data)
-            notifyDataSetChanged()
         }
     }
 }

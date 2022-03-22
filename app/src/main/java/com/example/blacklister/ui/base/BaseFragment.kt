@@ -54,7 +54,6 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = getViewBinding()
-        observeLiveData()
         return binding?.root
     }
 
