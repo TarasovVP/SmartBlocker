@@ -1,24 +1,27 @@
 package com.example.blacklister.provider
 
-import androidx.lifecycle.LiveData
 import com.example.blacklister.BlackListerApp
+import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.Contact
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 interface ContactRepository {
-    suspend fun inasertContacts(list: List<Contact>)
-    fun subscribeToContacts(): LiveData<List<Contact>>?
+    suspend fun insertContacts(list: List<Contact>)
+    fun getAllContacts(): List<Contact>?
     fun updateContact(contact: Contact)
+    suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>>
 }
 
 object ContactRepositoryImpl : ContactRepository {
 
     private val dao = BlackListerApp.instance?.database?.contactDao()
 
-    override suspend fun inasertContacts(list: List<Contact>) {
+    override suspend fun insertContacts(list: List<Contact>) {
         dao?.insertAllContacts(list)
     }
 
-    override fun subscribeToContacts(): LiveData<List<Contact>>? {
+    override fun getAllContacts(): List<Contact>? {
         return dao?.getAllContacts()
     }
 
@@ -26,5 +29,8 @@ object ContactRepositoryImpl : ContactRepository {
         dao?.updateContact(contact)
     }
 
-
+    override suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>> = withContext(
+        Dispatchers.Default) {
+        contactList.hashMapFromList()
+    }
 }

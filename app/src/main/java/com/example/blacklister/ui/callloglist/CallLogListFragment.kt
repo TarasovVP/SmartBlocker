@@ -1,14 +1,13 @@
 package com.example.blacklister.ui.callloglist
 
+import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
 import com.example.blacklister.extensions.formattedPhoneNumber
-import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.CallLog
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
-import com.example.blacklister.utils.HeaderDataItem
 import java.util.*
 
 class CallLogListFragment :
@@ -24,37 +23,30 @@ class CallLogListFragment :
         swipeRefresh = binding?.callLogListRefresh
         recyclerView = binding?.callLogListRecyclerView
         searchableEditText = binding?.callLogListSearch
+        emptyListText = binding?.callLogListEmpty
     }
 
     override fun getDataList() {
+        Log.e("dataTAG", "CallLogListFragment getDataList")
+        swipeRefresh?.isRefreshing = true
         viewModel.getCallLogList()
     }
 
 
     override fun observeLiveData() {
         with(viewModel) {
-            callLogLiveData?.observe(viewLifecycleOwner, { callLogList ->
+            callLogLiveData.observe(viewLifecycleOwner, { callLogList ->
                 this@CallLogListFragment.callLogList = callLogList
-                setCallLogList(callLogList)
+                if (!checkDataListEmptiness(callLogList)) {
+                    getHashMapFromCallLogList(callLogList)
+                }
+                Log.e("dataTAG", "CallLogListFragment observeLiveData setDataList before")
+            })
+            callLogHashMapLiveData.observe(viewLifecycleOwner, { callLogHashMap ->
+                callLogHashMap?.let { setDataList(it) }
+                Log.e("dataTAG", "CallLogListFragment observeLiveData callLogHashMapLiveData callLogHashMap.size ${callLogHashMap?.size}")
             })
         }
-    }
-
-    private fun setCallLogList(callLogList: List<CallLog>) {
-        val callLogHashMap =
-            callLogList.sortedBy { it.dateFromTime() }.reversed().hashMapFromList()
-        adapter?.clearData()
-        if (callLogHashMap.isEmpty()) adapter?.clearData()
-        for (callLogEntry in callLogHashMap) {
-            dataLoaded(
-                callLogEntry.value,
-                HeaderDataItem(
-                    headerType = HeaderDataItem.HEADER_TYPE,
-                    header = callLogEntry.key
-                )
-            )
-        }
-        adapter?.notifyDataSetChanged()
     }
 
     override fun filterDataList() {
@@ -67,7 +59,9 @@ class CallLogListFragment :
                     .lowercase(Locale.getDefault())
             ) == true
         } as ArrayList<CallLog>
-        setCallLogList(filteredCallLogList)
+        if (!checkDataListEmptiness(filteredCallLogList)) {
+            viewModel.getHashMapFromCallLogList(filteredCallLogList)
+        }
     }
 
     override fun createAdapter(): BaseAdapter<CallLog>? {

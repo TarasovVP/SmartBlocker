@@ -1,15 +1,12 @@
 package com.example.blacklister.ui.blacknumberlist
 
-import android.os.Bundle
-import android.view.View
+import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.constants.Constants.BLACK_NUMBER
 import com.example.blacklister.databinding.FragmentBlackNumberListBinding
-import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
-import com.example.blacklister.utils.HeaderDataItem
 import java.util.*
 
 class BlackNumberListFragment :
@@ -37,6 +34,7 @@ class BlackNumberListFragment :
         swipeRefresh = binding?.blackNumberListRefresh
         recyclerView = binding?.blackNumberListRecyclerView
         searchableEditText = binding?.blackNumberListSearch
+        emptyListText = binding?.blackNumberListEmpty
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER
         )
@@ -57,24 +55,16 @@ class BlackNumberListFragment :
         with(viewModel) {
             blackNumberList.observe(viewLifecycleOwner, { blackNumberList ->
                 this@BlackNumberListFragment.blackNumberList = blackNumberList
-                setBlackNumberList(blackNumberList)
+                if (!checkDataListEmptiness(blackNumberList)) {
+                    getHashMapFromBlackNumberList(blackNumberList)
+                }
+            })
+            blackNumberHashMapLiveData.observe(viewLifecycleOwner, { blackNumberHashMap ->
+                blackNumberHashMap?.let { setDataList(it) }
+                Log.e("dataTAG", "BlackNumberListFragment observeLiveData callLogHashMapLiveData blackNumberHashMap.size ${blackNumberHashMap?.size}")
             })
         }
     }
-
-    private fun setBlackNumberList(blackNumberList: List<BlackNumber>) {
-        val blackNumberHashMap = blackNumberList.hashMapFromList()
-        for (blackNumberEntry in blackNumberHashMap) {
-            dataLoaded(
-                blackNumberEntry.value,
-                HeaderDataItem(
-                    headerType = HeaderDataItem.HEADER_TYPE,
-                    header = blackNumberEntry.key
-                )
-            )
-        }
-    }
-
 
     override fun filterDataList() {
         val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
@@ -83,7 +73,8 @@ class BlackNumberListFragment :
                     .lowercase(Locale.getDefault())
             )
         } as ArrayList<BlackNumber>
-        setBlackNumberList(filteredBlackNumberList)
+        if (!checkDataListEmptiness(filteredBlackNumberList)) {
+            viewModel.getHashMapFromBlackNumberList(filteredBlackNumberList)
+        }
     }
-
 }

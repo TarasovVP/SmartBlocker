@@ -1,19 +1,17 @@
 package com.example.blacklister.ui.contactlist
 
+import android.util.Log
 import androidx.navigation.fragment.findNavController
-import com.example.blacklister.databinding.ContactListFragmentBinding
-import com.example.blacklister.extensions.hashMapFromList
+import com.example.blacklister.databinding.FragmentContactListBinding
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
-import com.example.blacklister.utils.HeaderDataItem
-import com.example.blacklister.utils.HeaderDataItem.Companion.HEADER_TYPE
 import java.util.*
 
 class ContactListFragment :
-    BaseListFragment<ContactListFragmentBinding, ContactListViewModel, Contact>() {
+    BaseListFragment<FragmentContactListBinding, ContactListViewModel, Contact>() {
 
-    override fun getViewBinding() = ContactListFragmentBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentContactListBinding.inflate(layoutInflater)
 
     override val viewModelClass = ContactListViewModel::class.java
 
@@ -35,30 +33,27 @@ class ContactListFragment :
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
         searchableEditText = binding?.contactListSearch
+        emptyListText = binding?.contactListEmpty
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            contactLiveData?.observe(viewLifecycleOwner, { contactList ->
+            contactLiveData.observe(viewLifecycleOwner, { contactList ->
                 this@ContactListFragment.contactList = contactList
-                setContactList(contactList)
+                if (!checkDataListEmptiness(contactList)) {
+                    getHashMapFromContactList(contactList)
+                }
+                Log.e("dataTAG", "ContactListFragment observeLiveData setDataList")
+            })
+            contactHashMapLiveData.observe(viewLifecycleOwner, { contactHashMap ->
+                contactHashMap?.let { setDataList(it) }
+                Log.e("dataTAG", "ContactListFragment observeLiveData contactHashMapLiveData contactHashMap.size ${contactHashMap?.size}")
             })
         }
     }
 
-    private fun setContactList(contactList: List<Contact>) {
-        val contactHashMap = contactList.hashMapFromList()
-        adapter?.clearData()
-        for (contactEntry in contactHashMap) {
-            dataLoaded(
-                contactEntry.value,
-                HeaderDataItem(headerType = HEADER_TYPE, header = contactEntry.key)
-            )
-        }
-        adapter?.notifyDataSetChanged()
-    }
-
     override fun getDataList() {
+        Log.e("dataTAG", "ContactListFragment getDataList")
         viewModel.getContactList()
     }
 
@@ -72,6 +67,8 @@ class ContactListFragment :
                     .lowercase(Locale.getDefault())
             ) == true
         } as ArrayList<Contact>
-        setContactList(filteredContactList)
+        if (!checkDataListEmptiness(filteredContactList)) {
+            viewModel.getHashMapFromContactList(filteredContactList)
+        }
     }
 }

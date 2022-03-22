@@ -1,12 +1,16 @@
 package com.example.blacklister.provider
 
 import com.example.blacklister.BlackListerApp
+import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.BlackNumber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 interface BlackNumberRepository {
     suspend fun allBlackNumbers(): List<BlackNumber>?
     suspend fun insertBlackNumber(blackNumber: BlackNumber)
     suspend fun deleteBlackNumber(blackNumber: BlackNumber)
+    suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>>
 }
 
 object BlackNumberRepositoryImpl : BlackNumberRepository {
@@ -25,4 +29,8 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
         dao?.delete(blackNumber)
     }
 
+    override suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>> = withContext(
+        Dispatchers.Default) {
+        blackNumberList.hashMapFromList()
+    }
 }

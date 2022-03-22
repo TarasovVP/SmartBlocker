@@ -1,14 +1,17 @@
 package com.example.blacklister.provider
 
-import androidx.lifecycle.LiveData
 import com.example.blacklister.BlackListerApp
+import com.example.blacklister.extensions.hashMapFromList
 import com.example.blacklister.model.CallLog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 interface CallLogRepository {
     suspend fun insertCallLogs(callLogList: List<CallLog>)
-    fun subscribeToCallLogs(): LiveData<List<CallLog>>?
+    suspend fun getAllCallLogs(): List<CallLog>?
     suspend fun updateCallLog(callLog: CallLog)
     suspend fun deleteAllCallLogs()
+    suspend fun getHashMapFromCallLogList(callLogList: List<CallLog>): HashMap<String, List<CallLog>>
 }
 
 object CallLogRepositoryImpl : CallLogRepository {
@@ -19,8 +22,8 @@ object CallLogRepositoryImpl : CallLogRepository {
         dao?.insertAllCallLogs(callLogList)
     }
 
-    override fun subscribeToCallLogs(): LiveData<List<CallLog>>? {
-        return dao?.getAllCallLogs()
+    override suspend fun getAllCallLogs(): List<CallLog>? {
+        return dao?.allCallLogs()
     }
 
     override suspend fun updateCallLog(callLog: CallLog) {
@@ -31,8 +34,9 @@ object CallLogRepositoryImpl : CallLogRepository {
         dao?.deleteAllCallLogs()
     }
 
-    fun getAllCallLogs(): List<CallLog>? {
-        return dao?.allCallLogs()
+    override suspend fun getHashMapFromCallLogList(callLogList: List<CallLog>): HashMap<String, List<CallLog>> = withContext(
+        Dispatchers.Default) {
+        callLogList.hashMapFromList()
     }
 
 }

@@ -11,6 +11,7 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -36,6 +37,9 @@ import com.example.blacklister.constants.Constants.ZERO
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.MainActivity
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -291,8 +295,9 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
     return builder
 }
 
-fun <T> List<T>.hashMapFromList(): LinkedHashMap<String, List<T>> {
-    val hashMapFromList = LinkedHashMap<String, List<T>>()
+fun <T> List<T>.hashMapFromList(): HashMap<String, List<T>> {
+    Log.e("dataTAG", "Extensions hashMapFromList this.size ${this.size}")
+    val hashMapFromList = HashMap<String, List<T>>()
     val keyList = ArrayList<String>(this.map {
         when (it) {
             is BlackNumber -> {
@@ -309,8 +314,9 @@ fun <T> List<T>.hashMapFromList(): LinkedHashMap<String, List<T>> {
             }
         }
     }.toList().distinct())
+    Log.e("dataTAG", "Extensions hashMapFromList keyList.size ${keyList.size}")
     for (key in keyList) {
-        hashMapFromList[key] = this.filter {
+        val valueList = this.filter {
             key == when (it) {
                 is BlackNumber -> {
                     it.blackNumber.substring(0, 1)
@@ -324,6 +330,8 @@ fun <T> List<T>.hashMapFromList(): LinkedHashMap<String, List<T>> {
                 else -> it
             }
         }
+        hashMapFromList[key] = valueList
     }
+    Log.e("dataTAG", "Extensions hashMapFromList hashMapFromList")
     return hashMapFromList
 }

@@ -1,6 +1,5 @@
 package com.example.blacklister.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.blacklister.model.CallLog
 
@@ -14,9 +13,6 @@ interface CallLogDao {
 
     @Insert
     fun insertCallLog(callLogs: CallLog?)
-
-    @Query("SELECT * FROM callLog")
-    fun getAllCallLogs(): LiveData<List<CallLog>>
 
     @Query("SELECT * FROM callLog")
     fun allCallLogs(): List<CallLog>
