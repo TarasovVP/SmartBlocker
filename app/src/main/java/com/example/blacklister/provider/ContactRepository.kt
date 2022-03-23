@@ -1,7 +1,7 @@
 package com.example.blacklister.provider
 
 import com.example.blacklister.BlackListerApp
-import com.example.blacklister.extensions.hashMapFromList
+import com.example.blacklister.extensions.toHashMapFromList
 import com.example.blacklister.model.Contact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,6 +31,6 @@ object ContactRepositoryImpl : ContactRepository {
 
     override suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>> = withContext(
         Dispatchers.Default) {
-        contactList.hashMapFromList()
+        contactList.toHashMapFromList()
     }
 }

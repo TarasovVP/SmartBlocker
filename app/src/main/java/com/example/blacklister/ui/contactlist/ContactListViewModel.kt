@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.blacklister.extensions.contactList
-import com.example.blacklister.extensions.formattedPhoneNumber
+import com.example.blacklister.extensions.toFormattedPhoneNumber
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
 import com.example.blacklister.provider.BlackNumberRepositoryImpl
@@ -27,7 +27,7 @@ class ContactListViewModel(application: Application) : AndroidViewModel(applicat
             val contactList = getApplication<Application>().contactList()
             contactList.forEach { contact ->
                 contact.isBlackList =
-                    blackNumberList?.contains(contact.phone?.formattedPhoneNumber()?.let {
+                    blackNumberList?.contains(contact.phone?.toFormattedPhoneNumber()?.let {
                         BlackNumber(
                             it
                         )
@@ -40,7 +40,6 @@ class ContactListViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getHashMapFromContactList(contactList: List<Contact>) {
         viewModelScope.launch {
-            Log.e("dataTAG", "ContactListViewModel getHashMapFromContactList")
             contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(contactList))
         }
     }

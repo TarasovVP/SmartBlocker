@@ -24,6 +24,7 @@ import com.example.blacklister.R
 import com.example.blacklister.constants.Constants
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
 import com.example.blacklister.constants.Constants.DATE
+import com.example.blacklister.constants.Constants.DATE_FORMAT
 import com.example.blacklister.constants.Constants.DESC
 import com.example.blacklister.constants.Constants.EIGHT_ZERO
 import com.example.blacklister.constants.Constants.END_CALL
@@ -37,9 +38,6 @@ import com.example.blacklister.constants.Constants.ZERO
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.MainActivity
-import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -87,7 +85,7 @@ fun Context.contactList(): ArrayList<Contact> {
                                     id = id,
                                     name = name,
                                     photoUrl = photoUrl,
-                                    phone = data.formattedPhoneNumber()
+                                    phone = data.toFormattedPhoneNumber()
                                 )
                         }
                     }
@@ -122,12 +120,20 @@ fun Context.callLogList(): List<com.example.blacklister.model.CallLog> {
             cursor.getString(2)
         val time: String? =
             cursor.getString(3)
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = time?.toMillisecondsFromString() ?: 0
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         time?.let {
             com.example.blacklister.model.CallLog(
                 name = name,
                 phone = phone,
                 type = type,
-                time = it
+                time = it,
+                date = calendar
             )
         }?.let { callLog ->
             callLogList.add(callLog)
@@ -161,7 +167,7 @@ fun Context.deleteLastMissedCall(phone: String) {
         val time: String? =
             cursor.getString(3)
         val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
-        if (phone == phoneNumber.formattedPhoneNumber()) {
+        if (phone == phoneNumber.toFormattedPhoneNumber()) {
             this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
             BlackListerApp.instance?.database?.callLogDao()?.insertCallLog(time?.let {
                 com.example.blacklister.model.CallLog(
@@ -214,7 +220,7 @@ fun Context.breakCallPieAndHigher() {
     }
 }
 
-fun String.formattedPhoneNumber(): String {
+fun String.toFormattedPhoneNumber(): String {
     var phone = Regex("[^0-9]").replace(this, "")
     if (phone.isEmpty() || phone.length < 10) return ""
     phone = when {
@@ -234,13 +240,13 @@ fun String.formattedPhoneNumber(): String {
     return String.format("%s%s", PHONE_NUMBER_CODE, phone)
 }
 
-fun String.dateFromMilliseconds(dateFormat: String): String {
-    val millis = this.stringToTimeMillis()
+fun String.toDateFromMilliseconds(dateFormat: String): String {
+    val millis = this.toMillisecondsFromString()
     val dateFormatter = SimpleDateFormat(dateFormat, Locale.getDefault())
     return if (millis <= 0) "" else dateFormatter.format(Date(millis))
 }
 
-fun String.stringToTimeMillis(): Long {
+fun String.toMillisecondsFromString(): Long {
     return try {
         this.toLong()
     } catch (e: Exception) {
@@ -295,10 +301,9 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
     return builder
 }
 
-fun <T> List<T>.hashMapFromList(): HashMap<String, List<T>> {
-    Log.e("dataTAG", "Extensions hashMapFromList this.size ${this.size}")
+fun <T> List<T>.toHashMapFromList(): HashMap<String, List<T>> {
     val hashMapFromList = HashMap<String, List<T>>()
-    val keyList = ArrayList<String>(this.map {
+    val keyList = ArrayList<Any>(this.map {
         when (it) {
             is BlackNumber -> {
                 it.blackNumber.substring(0, 1)
@@ -307,14 +312,13 @@ fun <T> List<T>.hashMapFromList(): HashMap<String, List<T>> {
                 it.name?.substring(0, 1)
             }
             is com.example.blacklister.model.CallLog -> {
-                it.dateFromTime()
+                it.date
             }
             else -> {
                 return@map null
             }
         }
     }.toList().distinct())
-    Log.e("dataTAG", "Extensions hashMapFromList keyList.size ${keyList.size}")
     for (key in keyList) {
         val valueList = this.filter {
             key == when (it) {
@@ -325,13 +329,18 @@ fun <T> List<T>.hashMapFromList(): HashMap<String, List<T>> {
                     it.name?.substring(0, 1)
                 }
                 is com.example.blacklister.model.CallLog -> {
-                    it.dateFromTime()
+                    it.date
                 }
                 else -> it
             }
         }
-        hashMapFromList[key] = valueList
+        if (key is Calendar) {
+            val callLog = valueList[0] as com.example.blacklister.model.CallLog
+            hashMapFromList[callLog.dateFromTime().toString()] = valueList
+        } else if(key is String){
+            hashMapFromList[key] = valueList
+        }
+
     }
-    Log.e("dataTAG", "Extensions hashMapFromList hashMapFromList")
     return hashMapFromList
 }

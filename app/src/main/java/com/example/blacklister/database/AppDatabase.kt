@@ -12,7 +12,7 @@ import com.example.blacklister.model.Contact
     version = 1,
     exportSchema = false
 )
-@TypeConverters(StringTypeConverters::class)
+@TypeConverters(StringTypeConverters::class, CalendarConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactDao
     abstract fun blackNumberDao(): BlackNumberDao

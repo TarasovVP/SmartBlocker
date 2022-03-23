@@ -61,7 +61,6 @@ class BlackNumberListFragment :
             })
             blackNumberHashMapLiveData.observe(viewLifecycleOwner, { blackNumberHashMap ->
                 blackNumberHashMap?.let { setDataList(it) }
-                Log.e("dataTAG", "BlackNumberListFragment observeLiveData callLogHashMapLiveData blackNumberHashMap.size ${blackNumberHashMap?.size}")
             })
         }
     }

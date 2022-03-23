@@ -43,17 +43,14 @@ class ContactListFragment :
                 if (!checkDataListEmptiness(contactList)) {
                     getHashMapFromContactList(contactList)
                 }
-                Log.e("dataTAG", "ContactListFragment observeLiveData setDataList")
             })
             contactHashMapLiveData.observe(viewLifecycleOwner, { contactHashMap ->
                 contactHashMap?.let { setDataList(it) }
-                Log.e("dataTAG", "ContactListFragment observeLiveData contactHashMapLiveData contactHashMap.size ${contactHashMap?.size}")
             })
         }
     }
 
     override fun getDataList() {
-        Log.e("dataTAG", "ContactListFragment getDataList")
         viewModel.getContactList()
     }
 

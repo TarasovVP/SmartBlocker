@@ -3,7 +3,7 @@ package com.example.blacklister.ui.callloglist
 import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
-import com.example.blacklister.extensions.formattedPhoneNumber
+import com.example.blacklister.extensions.toFormattedPhoneNumber
 import com.example.blacklister.model.CallLog
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
@@ -27,7 +27,6 @@ class CallLogListFragment :
     }
 
     override fun getDataList() {
-        Log.e("dataTAG", "CallLogListFragment getDataList")
         swipeRefresh?.isRefreshing = true
         viewModel.getCallLogList()
     }
@@ -40,11 +39,9 @@ class CallLogListFragment :
                 if (!checkDataListEmptiness(callLogList)) {
                     getHashMapFromCallLogList(callLogList)
                 }
-                Log.e("dataTAG", "CallLogListFragment observeLiveData setDataList before")
             })
             callLogHashMapLiveData.observe(viewLifecycleOwner, { callLogHashMap ->
                 callLogHashMap?.let { setDataList(it) }
-                Log.e("dataTAG", "CallLogListFragment observeLiveData callLogHashMapLiveData callLogHashMap.size ${callLogHashMap?.size}")
             })
         }
     }
@@ -71,7 +68,7 @@ class CallLogListFragment :
                     CallLogListFragmentDirections.startContactDetail(
                         contact = Contact(
                             name = callLog.name,
-                            phone = callLog.phone?.formattedPhoneNumber(),
+                            phone = callLog.phone?.toFormattedPhoneNumber(),
                             isBlackList = callLog.isBlackList
                         )
                     )

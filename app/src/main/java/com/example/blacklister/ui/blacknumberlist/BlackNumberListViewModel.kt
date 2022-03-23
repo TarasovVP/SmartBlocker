@@ -31,7 +31,6 @@ class BlackNumberListViewModel : ViewModel() {
 
     fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>) {
         viewModelScope.launch {
-            Log.e("dataTAG", "CallLogListViewModel getHashMapFromCallLogList")
             blackNumberHashMapLiveData.postValue(blackNumberRepository.getHashMapFromBlackNumberList(blackNumberList))
         }
     }

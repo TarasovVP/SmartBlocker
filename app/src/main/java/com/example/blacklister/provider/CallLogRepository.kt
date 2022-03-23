@@ -1,7 +1,7 @@
 package com.example.blacklister.provider
 
 import com.example.blacklister.BlackListerApp
-import com.example.blacklister.extensions.hashMapFromList
+import com.example.blacklister.extensions.toHashMapFromList
 import com.example.blacklister.model.CallLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,7 +36,7 @@ object CallLogRepositoryImpl : CallLogRepository {
 
     override suspend fun getHashMapFromCallLogList(callLogList: List<CallLog>): HashMap<String, List<CallLog>> = withContext(
         Dispatchers.Default) {
-        callLogList.hashMapFromList()
+        callLogList.toHashMapFromList()
     }
 
 }
