@@ -29,8 +29,10 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
         dao?.delete(blackNumber)
     }
 
-    override suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>> = withContext(
-        Dispatchers.Default) {
-        blackNumberList.toHashMapFromList()
-    }
+    override suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            blackNumberList.toHashMapFromList()
+        }
 }

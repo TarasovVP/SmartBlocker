@@ -1,6 +1,5 @@
 package com.example.blacklister.ui.blacknumberlist
 
-import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.constants.Constants.BLACK_NUMBER
 import com.example.blacklister.databinding.FragmentBlackNumberListBinding

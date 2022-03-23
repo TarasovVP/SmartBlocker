@@ -11,10 +11,12 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,7 +26,6 @@ import com.example.blacklister.R
 import com.example.blacklister.constants.Constants
 import com.example.blacklister.constants.Constants.CALL_LOG_CALL
 import com.example.blacklister.constants.Constants.DATE
-import com.example.blacklister.constants.Constants.DATE_FORMAT
 import com.example.blacklister.constants.Constants.DESC
 import com.example.blacklister.constants.Constants.EIGHT_ZERO
 import com.example.blacklister.constants.Constants.END_CALL
@@ -113,33 +114,31 @@ fun Context.callLogList(): List<com.example.blacklister.model.CallLog> {
         null,
         null
     )
-    while (cursor != null && cursor.moveToNext()) {
-        val name: String? = cursor.getString(0)
-        val phone: String = cursor.getString(1)
-        val type: String? =
-            cursor.getString(2)
-        val time: String? =
-            cursor.getString(3)
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = time?.toMillisecondsFromString() ?: 0
-        calendar.add(Calendar.MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        time?.let {
-            com.example.blacklister.model.CallLog(
-                name = name,
-                phone = phone,
-                type = type,
-                time = it,
-                date = calendar
-            )
-        }?.let { callLog ->
-            callLogList.add(callLog)
+    cursor?.use { callLogCursor ->
+        while (callLogCursor.moveToNext()) {
+            val time: String? =
+                callLogCursor.getString(3)
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = time?.toMillisecondsFromString() ?: 0
+            calendar.add(Calendar.MONTH, 1)
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+            time?.let {
+                com.example.blacklister.model.CallLog(
+                    name = callLogCursor.getString(0),
+                    phone = callLogCursor.getString(1),
+                    type = callLogCursor.getString(2),
+                    time = it,
+                    date = calendar
+                )
+            }?.let { callLog ->
+                callLogList.add(callLog)
+            }
         }
     }
-    cursor?.close()
+
     return callLogList.sortedWith(compareBy { it.time })
 }
 
@@ -158,30 +157,27 @@ fun Context.deleteLastMissedCall(phone: String) {
         null,
         "${CallLog.Calls.DATE} $DESC"
     )
-
-    while (cursor?.moveToNext() == true) {
-        val phoneNumber: String = cursor.getString(1)
-        val name: String? = cursor.getString(0)
-        val type: String? =
-            cursor.getString(2)
-        val time: String? =
-            cursor.getString(3)
-        val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
-        if (phone == phoneNumber.toFormattedPhoneNumber()) {
-            this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
-            BlackListerApp.instance?.database?.callLogDao()?.insertCallLog(time?.let {
-                com.example.blacklister.model.CallLog(
-                    name = name,
-                    type = type,
-                    phone = phoneNumber,
-                    time = it,
-                    isBlackList = true
-                )
-            })
-            break
+    cursor?.use {
+        while (cursor.moveToNext()) {
+            val phoneNumber: String = cursor.getString(1)
+            val time: String? =
+                cursor.getString(3)
+            val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
+            if (phone == phoneNumber.toFormattedPhoneNumber()) {
+                this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
+                BlackListerApp.instance?.database?.callLogDao()?.insertCallLog(time?.let {
+                    com.example.blacklister.model.CallLog(
+                        name = cursor.getString(0),
+                        type = cursor.getString(2),
+                        phone = phoneNumber,
+                        time = it,
+                        isBlackList = true
+                    )
+                })
+                break
+            }
         }
     }
-    cursor?.close()
 }
 
 fun ImageView.loadCircleImage(photoUrl: String?) {
@@ -337,10 +333,30 @@ fun <T> List<T>.toHashMapFromList(): HashMap<String, List<T>> {
         if (key is Calendar) {
             val callLog = valueList[0] as com.example.blacklister.model.CallLog
             hashMapFromList[callLog.dateFromTime().toString()] = valueList
-        } else if(key is String){
+        } else if (key is String) {
             hashMapFromList[key] = valueList
         }
 
     }
     return hashMapFromList
+}
+
+fun <T> LiveData<T>.safeObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
+    this.observe(owner, {
+        it?.let(observer)
+    })
+}
+
+fun <T> MutableLiveData<T>.safeSingleObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
+    safeObserve(owner, observer)
+    value = null
+}
+
+fun <T> MutableLiveData<T>.singleObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
+    this.observe(owner, {
+        it?.let(observer)
+        if (it != null) {
+            value = null
+        }
+    })
 }

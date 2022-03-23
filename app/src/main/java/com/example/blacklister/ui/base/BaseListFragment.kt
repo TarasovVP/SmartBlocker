@@ -18,6 +18,7 @@ import com.example.blacklister.R
 import com.example.blacklister.utils.HeaderDataItem
 import com.example.blacklister.utils.PermissionUtil.checkPermissions
 import com.example.blacklister.utils.PermissionUtil.permissionsArray
+import com.google.gson.Gson
 
 abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter.MainData> :
     BaseFragment<VB, T>() {
@@ -53,6 +54,10 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
         swipeRefresh?.setOnRefreshListener {
             getDataList()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
         searchableEditText?.doAfterTextChanged {
             filterDataList()
         }
@@ -79,21 +84,21 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
     }
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {
-         for (dataList in dataListHashMap) {
-             adapter?.setHeaderAndData(
-                 dataList.value,
-                 HeaderDataItem(
-                     headerType = HeaderDataItem.HEADER_TYPE,
-                     header = dataList.key
-                 )
-             )
-         }
-         Log.e(
-             "dataTAG",
-             "BaseListFragment setDataList  for (blackNumberEntry in blackNumberHashMap)"
-         )
-         adapter?.notifyDataSetChanged()
-         swipeRefresh?.isRefreshing = false
+        for (dataList in dataListHashMap) {
+            adapter?.setHeaderAndData(
+                dataList.value,
+                HeaderDataItem(
+                    headerType = HeaderDataItem.HEADER_TYPE,
+                    header = dataList.key
+                )
+            )
+        }
+        Log.e(
+            "dataTAG",
+            "BaseListFragment setDataList  for (blackNumberEntry in blackNumberHashMap)"
+        )
+        adapter?.notifyDataSetChanged()
+        swipeRefresh?.isRefreshing = false
     }
 
     protected open fun checkDataEmptiness(isEmpty: Boolean) {

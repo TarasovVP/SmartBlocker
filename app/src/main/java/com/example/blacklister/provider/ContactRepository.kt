@@ -29,8 +29,10 @@ object ContactRepositoryImpl : ContactRepository {
         dao?.updateContact(contact)
     }
 
-    override suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>> = withContext(
-        Dispatchers.Default) {
-        contactList.toHashMapFromList()
-    }
+    override suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            contactList.toHashMapFromList()
+        }
 }

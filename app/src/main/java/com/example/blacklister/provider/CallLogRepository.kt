@@ -34,9 +34,11 @@ object CallLogRepositoryImpl : CallLogRepository {
         dao?.deleteAllCallLogs()
     }
 
-    override suspend fun getHashMapFromCallLogList(callLogList: List<CallLog>): HashMap<String, List<CallLog>> = withContext(
-        Dispatchers.Default) {
-        callLogList.toHashMapFromList()
-    }
+    override suspend fun getHashMapFromCallLogList(callLogList: List<CallLog>): HashMap<String, List<CallLog>> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            callLogList.toHashMapFromList()
+        }
 
 }

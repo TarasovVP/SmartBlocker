@@ -1,11 +1,9 @@
 package com.example.blacklister.ui.blacknumberlist
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blacklister.model.BlackNumber
-import com.example.blacklister.model.CallLog
 import com.example.blacklister.provider.BlackNumberRepositoryImpl
 import kotlinx.coroutines.launch
 
@@ -31,7 +29,11 @@ class BlackNumberListViewModel : ViewModel() {
 
     fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>) {
         viewModelScope.launch {
-            blackNumberHashMapLiveData.postValue(blackNumberRepository.getHashMapFromBlackNumberList(blackNumberList))
+            blackNumberHashMapLiveData.postValue(
+                blackNumberRepository.getHashMapFromBlackNumberList(
+                    blackNumberList
+                )
+            )
         }
     }
 }

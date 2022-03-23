@@ -1,6 +1,5 @@
 package com.example.blacklister.ui.callloglist
 
-import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
 import com.example.blacklister.extensions.toFormattedPhoneNumber

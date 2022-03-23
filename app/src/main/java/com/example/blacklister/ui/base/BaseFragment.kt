@@ -28,31 +28,12 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
         ViewModelProvider(this)[viewModelClass]
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (context as MainActivity).apply {
-            if (findNavController().currentDestination?.id != R.id.infoDialog) {
-                bottomNavigationView?.isVisible =
-                    navigationScreens.contains(findNavController().currentDestination?.id)
-                toolbar?.isVisible =
-                    navigationScreens.contains(findNavController().currentDestination?.id)
-            }
-            toolbar?.navigationIcon = ContextCompat.getDrawable(
-                context,
-                if (findNavController().currentDestination?.id == R.id.callLogListFragment) R.drawable.ic_arrow_transparent else R.drawable.ic_arrow_back
-            )
-            toolbar?.setNavigationOnClickListener {
-                if (findNavController().currentDestination?.id == R.id.callLogListFragment) return@setNavigationOnClickListener
-                findNavController().popBackStack()
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        checkTopBottomBarVisibility()
         binding = getViewBinding()
         return binding?.root
     }
@@ -60,6 +41,25 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    fun checkTopBottomBarVisibility() {
+        (activity as MainActivity).apply {
+            if (findNavController().currentDestination?.id != R.id.infoDialog) {
+                bottomNavigationView?.isVisible =
+                    navigationScreens.contains(findNavController().currentDestination?.id)
+                toolbar?.isVisible =
+                    navigationScreens.contains(findNavController().currentDestination?.id)
+            }
+            toolbar?.navigationIcon = ContextCompat.getDrawable(
+                this,
+                if (findNavController().currentDestination?.id == R.id.callLogListFragment) R.drawable.ic_arrow_transparent else R.drawable.ic_arrow_back
+            )
+            toolbar?.setNavigationOnClickListener {
+                if (findNavController().currentDestination?.id == R.id.callLogListFragment) return@setNavigationOnClickListener
+                findNavController().popBackStack()
+            }
+        }
     }
 
 }

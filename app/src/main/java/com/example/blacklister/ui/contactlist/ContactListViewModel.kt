@@ -11,6 +11,7 @@ import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
 import com.example.blacklister.provider.BlackNumberRepositoryImpl
 import com.example.blacklister.provider.ContactRepositoryImpl
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 class ContactListViewModel(application: Application) : AndroidViewModel(application) {
@@ -34,7 +35,7 @@ class ContactListViewModel(application: Application) : AndroidViewModel(applicat
                     }) == true
             }
             contactRepository.insertContacts(contactList)
-                contactLiveData.postValue(contactRepository.getAllContacts())
+            contactLiveData.postValue(contactRepository.getAllContacts())
         }
     }
 

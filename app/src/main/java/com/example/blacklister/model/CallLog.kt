@@ -1,7 +1,10 @@
 package com.example.blacklister.model
 
 import android.os.Parcelable
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants.DATE_FORMAT
 import com.example.blacklister.constants.Constants.DATE_TIME_FORMAT
