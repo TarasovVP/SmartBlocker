@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants.DATE_FORMAT
-import com.example.blacklister.constants.Constants.DATE_TIME_FORMAT
+import com.example.blacklister.constants.Constants.TIME_FORMAT
 import com.example.blacklister.constants.Constants.MISSED_CALL
 import com.example.blacklister.constants.Constants.OUTCOMING_CALL
 import com.example.blacklister.constants.Constants.REJECTED_CALL
@@ -43,6 +43,6 @@ data class CallLog(
     }
 
     fun dateTimeFromTime(): String? {
-        return time?.toDateFromMilliseconds(DATE_TIME_FORMAT)
+        return time?.toDateFromMilliseconds(TIME_FORMAT)
     }
 }

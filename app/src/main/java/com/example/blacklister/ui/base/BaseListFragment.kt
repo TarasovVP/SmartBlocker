@@ -46,19 +46,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).apply {
-            toolbar?.menu?.clear()
-            if(navigationScreens.contains(findNavController().currentDestination?.id) && findNavController().currentDestination?.id != R.id.settingsFragment) {
-                toolbar?.inflateMenu(R.menu.toolbar_search)
-                toolbar?.setOnMenuItemClickListener {
-                    this@BaseListFragment.searchableEditText?.isVisible = this@BaseListFragment.searchableEditText?.isVisible != true
-                    it.icon = ContextCompat.getDrawable(this, if (this@BaseListFragment.searchableEditText?.isVisible == true) R.drawable.ic_search_off else R.drawable.ic_search)
-                    return@setOnMenuItemClickListener true
-                }
-            } else {
-                toolbar?.menu?.clear()
-            }
-        }
+        checkToolbarSearchVisibility()
         observeLiveData()
         initView()
         recyclerView?.initRecyclerView()
@@ -80,6 +68,26 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
         }
     }
 
+    private fun checkToolbarSearchVisibility() {
+        (activity as MainActivity).apply {
+            toolbar?.menu?.clear()
+            if(navigationScreens.contains(findNavController().currentDestination?.id) && findNavController().currentDestination?.id != R.id.settingsFragment) {
+                toolbar?.inflateMenu(R.menu.toolbar_search)
+                toolbar?.setOnMenuItemClickListener {
+                    this@BaseListFragment.searchableEditText?.isVisible = this@BaseListFragment.searchableEditText?.isVisible != true
+                    it.icon = ContextCompat.getDrawable(this, if (this@BaseListFragment.searchableEditText?.isVisible == true) R.drawable.ic_search_off else R.drawable.ic_search)
+                    if (this@BaseListFragment.searchableEditText?.isVisible != true) {
+                        searchableEditText?.text?.clear()
+                        filterDataList()
+                    }
+                    return@setOnMenuItemClickListener true
+                }
+            } else {
+                toolbar?.menu?.clear()
+            }
+        }
+    }
+
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false) == true) {
@@ -95,12 +103,16 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
 
     protected open fun checkDataListEmptiness(newData: List<D>): Boolean {
         emptyListText?.isVisible = newData.isNullOrEmpty()
-        adapter?.clearData()
+        if (newData.isNullOrEmpty()) {
+            adapter?.clearData()
+            adapter?.notifyDataSetChanged()
+        }
         swipeRefresh?.isRefreshing = false
         return newData.isEmpty()
     }
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {
+        adapter?.clearData()
         for (dataList in dataListHashMap) {
             adapter?.setHeaderAndData(
                 dataList.value,
@@ -116,12 +128,5 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
         )
         adapter?.notifyDataSetChanged()
         swipeRefresh?.isRefreshing = false
-    }
-
-    protected open fun checkDataEmptiness(isEmpty: Boolean) {
-        emptyListText?.isVisible = !isEmpty
-        adapter?.apply {
-            clearData()
-        }
     }
 }
