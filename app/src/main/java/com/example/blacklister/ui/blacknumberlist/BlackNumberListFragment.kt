@@ -3,6 +3,8 @@ package com.example.blacklister.ui.blacknumberlist
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.constants.Constants.BLACK_NUMBER
 import com.example.blacklister.databinding.FragmentBlackNumberListBinding
+import com.example.blacklister.extensions.safeObserve
+import com.example.blacklister.extensions.safeSingleObserve
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
@@ -52,13 +54,13 @@ class BlackNumberListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            blackNumberList.observe(viewLifecycleOwner, { blackNumberList ->
+            blackNumberList.safeObserve(viewLifecycleOwner, { blackNumberList ->
                 this@BlackNumberListFragment.blackNumberList = blackNumberList
                 if (!checkDataListEmptiness(blackNumberList)) {
                     getHashMapFromBlackNumberList(blackNumberList)
                 }
             })
-            blackNumberHashMapLiveData.observe(viewLifecycleOwner, { blackNumberHashMap ->
+            blackNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumberHashMap ->
                 blackNumberHashMap?.let { setDataList(it) }
             })
         }

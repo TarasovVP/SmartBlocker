@@ -2,6 +2,8 @@ package com.example.blacklister.ui.callloglist
 
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentCallLogListBinding
+import com.example.blacklister.extensions.safeObserve
+import com.example.blacklister.extensions.safeSingleObserve
 import com.example.blacklister.extensions.toFormattedPhoneNumber
 import com.example.blacklister.model.CallLog
 import com.example.blacklister.model.Contact
@@ -33,13 +35,13 @@ class CallLogListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            callLogLiveData.observe(viewLifecycleOwner, { callLogList ->
+            callLogLiveData.safeObserve(viewLifecycleOwner, { callLogList ->
                 this@CallLogListFragment.callLogList = callLogList
                 if (!checkDataListEmptiness(callLogList)) {
                     getHashMapFromCallLogList(callLogList)
                 }
             })
-            callLogHashMapLiveData.observe(viewLifecycleOwner, { callLogHashMap ->
+            callLogHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { callLogHashMap ->
                 callLogHashMap?.let { setDataList(it) }
             })
         }

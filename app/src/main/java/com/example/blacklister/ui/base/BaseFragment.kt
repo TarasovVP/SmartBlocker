@@ -1,7 +1,7 @@
 package com.example.blacklister.ui.base
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +43,7 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
         binding = null
     }
 
-    fun checkTopBottomBarVisibility() {
+    private fun checkTopBottomBarVisibility() {
         (activity as MainActivity).apply {
             if (findNavController().currentDestination?.id != R.id.infoDialog) {
                 bottomNavigationView?.isVisible =

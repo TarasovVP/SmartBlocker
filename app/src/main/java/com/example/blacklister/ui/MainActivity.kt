@@ -3,7 +3,11 @@ package com.example.blacklister.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -54,7 +58,6 @@ class MainActivity : AppCompatActivity() {
 
             toolbar = findViewById(R.id.toolbar)
             toolbar?.setupWithNavController(this)
-
             this.currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(Constants.BLACK_NUMBER)
                 ?.observe(
                     this@MainActivity

@@ -25,6 +25,7 @@
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         style="@style/SearchableEdittext"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/contact_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/contact_list_right_gd"
         app:layout_constraintTop_toTopOf="parent"
