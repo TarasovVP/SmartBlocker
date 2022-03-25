@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants.DATE_FORMAT
-import com.example.blacklister.constants.Constants.TIME_FORMAT
 import com.example.blacklister.constants.Constants.MISSED_CALL
 import com.example.blacklister.constants.Constants.OUTCOMING_CALL
 import com.example.blacklister.constants.Constants.REJECTED_CALL
+import com.example.blacklister.constants.Constants.TIME_FORMAT
 import com.example.blacklister.database.CalendarConverter
 import com.example.blacklister.extensions.toDateFromMilliseconds
 import com.example.blacklister.ui.base.BaseAdapter
@@ -27,7 +27,8 @@ data class CallLog(
     var time: String? = "",
     @TypeConverters(CalendarConverter::class)
     var date: Calendar? = null,
-    var isBlackList: Boolean = false
+    var isBlackList: Boolean = false,
+    var photoUrl: String? = "",
 ) : Parcelable, BaseAdapter.MainData {
     fun callLogIcon(): Int {
         return when (type) {

@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -37,13 +34,16 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Blacklister)
         setContentView(R.layout.activity_main)
         startService()
-
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
 
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
+            Log.e(
+                "loginViewModelTAG",
+                "MainActivity onCreate SharedPreferencesUtil.isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen}"
+            )
             navGraph.setStartDestination(
                 if (SharedPreferencesUtil.isOnBoardingSeen) {
                     R.id.loginFragment

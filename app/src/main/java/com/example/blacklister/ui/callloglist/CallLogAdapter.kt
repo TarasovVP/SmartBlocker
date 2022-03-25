@@ -7,9 +7,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blacklister.databinding.ItemCallLogBinding
 import com.example.blacklister.databinding.ItemHeaderBinding
+import com.example.blacklister.extensions.loadCircleImage
 import com.example.blacklister.model.CallLog
+import com.example.blacklister.model.HeaderDataItem
 import com.example.blacklister.ui.base.BaseAdapter
-import com.example.blacklister.utils.HeaderDataItem
 import com.example.blacklister.utils.setSafeOnClickListener
 
 class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
@@ -52,6 +53,7 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
             binding?.itemCallLogTime?.text = callLog.dateTimeFromTime()
             binding?.itemCallLogBlackNumberIcon?.isVisible = callLog.isBlackList
             binding?.itemCallLogTypeIcon?.setImageResource(callLog.callLogIcon())
+            binding?.itemCallLogAvatar?.loadCircleImage(callLog.photoUrl)
             binding?.root?.setSafeOnClickListener {
                 callLog.let { clickedContact -> callLogClick.invoke(clickedContact) }
             }

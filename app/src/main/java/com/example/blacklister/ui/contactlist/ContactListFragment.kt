@@ -1,14 +1,11 @@
 package com.example.blacklister.ui.contactlist
 
-import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.databinding.FragmentContactListBinding
-import com.example.blacklister.extensions.safeObserve
 import com.example.blacklister.extensions.safeSingleObserve
 import com.example.blacklister.model.Contact
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
-import com.google.gson.Gson
 import java.util.*
 
 class ContactListFragment :
@@ -48,7 +45,7 @@ class ContactListFragment :
                 }
             })
             contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { contactHashMap ->
-               contactHashMap?.let { setDataList(it) }
+                contactHashMap?.let { setDataList(it) }
             })
         }
     }

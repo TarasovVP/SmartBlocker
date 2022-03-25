@@ -3,7 +3,7 @@ package com.example.blacklister.ui.base
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blacklister.databinding.ItemHeaderBinding
-import com.example.blacklister.utils.HeaderDataItem
+import com.example.blacklister.model.HeaderDataItem
 
 abstract class BaseAdapter<D : BaseAdapter.MainData> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

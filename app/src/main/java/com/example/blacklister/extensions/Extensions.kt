@@ -42,6 +42,7 @@ import com.example.blacklister.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 
 
 fun Context.contactList(): ArrayList<Contact> {
@@ -297,8 +298,8 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
     return builder
 }
 
-fun <T> List<T>.toHashMapFromList(): HashMap<String, List<T>> {
-    val hashMapFromList = HashMap<String, List<T>>()
+fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
+    val hashMapFromList = LinkedHashMap<String, List<T>>()
     val keyList = ArrayList<Any>(this.map {
         when (it) {
             is BlackNumber -> {

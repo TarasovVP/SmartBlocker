@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.blacklister.databinding.ItemBlackNumberBinding
 import com.example.blacklister.databinding.ItemHeaderBinding
 import com.example.blacklister.model.BlackNumber
+import com.example.blacklister.model.HeaderDataItem
 import com.example.blacklister.ui.base.BaseAdapter
-import com.example.blacklister.utils.HeaderDataItem
 import com.example.blacklister.utils.setSafeOnClickListener
 
 class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :

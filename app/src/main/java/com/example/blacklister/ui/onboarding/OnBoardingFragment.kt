@@ -1,6 +1,7 @@
 package com.example.blacklister.ui.onboarding
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,6 +45,10 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e(
+            "loginViewModelTAG",
+            "OnBoardingFragment onViewCreated"
+        )
         binding?.onBoardingButton?.setSafeOnClickListener {
             if (currentPosition == ACCEPT_PERMISSIONS_SCREEN) {
                 checkPermissions()

@@ -9,8 +9,8 @@ import com.example.blacklister.databinding.ItemContactBinding
 import com.example.blacklister.databinding.ItemHeaderBinding
 import com.example.blacklister.extensions.loadCircleImage
 import com.example.blacklister.model.Contact
+import com.example.blacklister.model.HeaderDataItem
 import com.example.blacklister.ui.base.BaseAdapter
-import com.example.blacklister.utils.HeaderDataItem
 import com.example.blacklister.utils.setSafeOnClickListener
 
 class ContactAdapter(private val contactClick: (Contact) -> Unit) :

@@ -1,41 +1,26 @@
 package com.example.blacklister.ui.contactlist
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.blacklister.extensions.contactList
-import com.example.blacklister.extensions.toFormattedPhoneNumber
-import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.model.Contact
-import com.example.blacklister.provider.BlackNumberRepositoryImpl
 import com.example.blacklister.provider.ContactRepositoryImpl
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 class ContactListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val contactRepository = ContactRepositoryImpl
-    private val blackNumberRepository = BlackNumberRepositoryImpl
 
     val contactLiveData = MutableLiveData<List<Contact>>()
     val contactHashMapLiveData = MutableLiveData<HashMap<String, List<Contact>>?>()
 
     fun getContactList() {
         viewModelScope.launch {
-            val blackNumberList = blackNumberRepository.allBlackNumbers()
-            val contactList = getApplication<Application>().contactList()
-            contactList.forEach { contact ->
-                contact.isBlackList =
-                    blackNumberList?.contains(contact.phone?.toFormattedPhoneNumber()?.let {
-                        BlackNumber(
-                            it
-                        )
-                    }) == true
+            val contactList = contactRepository.getAllContacts()
+            contactList?.apply {
+                contactLiveData.postValue(this)
             }
-            contactRepository.insertContacts(contactList)
-            contactLiveData.postValue(contactRepository.getAllContacts())
         }
     }
 
