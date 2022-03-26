@@ -140,7 +140,9 @@ fun Context.callLogList(): List<com.example.blacklister.model.CallLog> {
         }
     }
 
-    return callLogList.sortedWith(compareBy { it.time })
+    return callLogList.sortedByDescending {
+        it.time?.toMillisecondsFromString()
+    }
 }
 
 fun Context.deleteLastMissedCall(phone: String) {

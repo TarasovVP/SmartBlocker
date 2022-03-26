@@ -25,4 +25,5 @@ object Constants {
     const val DATE = "DATE="
     const val TYPE = "TYPE="
     const val ACCEPT_PERMISSIONS_SCREEN = 2
+    const val CALL_RECEIVE = "callReceive"
 }
