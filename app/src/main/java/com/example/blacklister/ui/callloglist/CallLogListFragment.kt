@@ -1,7 +1,9 @@
 package com.example.blacklister.ui.callloglist
 
 import android.content.IntentFilter
+import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.constants.Constants.CALL_RECEIVE
 import com.example.blacklister.databinding.FragmentCallLogListBinding
@@ -10,6 +12,7 @@ import com.example.blacklister.extensions.safeSingleObserve
 import com.example.blacklister.extensions.toFormattedPhoneNumber
 import com.example.blacklister.model.CallLog
 import com.example.blacklister.model.Contact
+import com.example.blacklister.ui.MainActivity
 import com.example.blacklister.ui.base.BaseAdapter
 import com.example.blacklister.ui.base.BaseListFragment
 import com.example.blacklister.utils.CallHandleReceiver
@@ -30,7 +33,13 @@ class CallLogListFragment :
         Log.e("callReceiveTAG", "CallLogListFragment onStart")
         callHandleReceiver = CallHandleReceiver {
             Log.e("callReceiveTAG", "CallLogListFragment CallHandleReceiver string $it")
-            viewModel.getCallLogList()
+            (activity as MainActivity).apply {
+                getAllData()
+                mainViewModel.successLiveData.safeSingleObserve(this, { success ->
+                    Log.e("callReceiveTAG", "CallLogListFragment successLiveData.safeSingleObserve success $success")
+                    viewModel.getCallLogList()
+                })
+            }
         }
         context?.registerReceiver(callHandleReceiver, IntentFilter(CALL_RECEIVE))
     }

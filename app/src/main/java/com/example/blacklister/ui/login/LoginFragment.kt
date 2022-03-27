@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.example.blacklister.R
 import com.example.blacklister.databinding.FragmentLoginBinding
-import com.example.blacklister.extensions.safeSingleObserve
+import com.example.blacklister.ui.MainActivity
 import com.example.blacklister.ui.base.BaseFragment
 import com.example.blacklister.utils.PermissionUtil
 import com.example.blacklister.utils.PermissionUtil.checkPermissions
@@ -22,28 +22,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e(
-            "loginViewModelTAG",
-            "LoginFragment onViewCreated"
-        )
         if (context?.checkPermissions() == true) {
-            viewModel.getCallLogList()
+            (activity as MainActivity).getAllData()
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }
         binding?.loginNext?.setSafeOnClickListener {
             findNavController().navigate(R.id.startCallLogList)
-        }
-    }
-
-    override fun observeLiveData() {
-        with(viewModel) {
-            successLiveData.safeSingleObserve(viewLifecycleOwner, {
-                Log.e(
-                    "loginViewModelTAG",
-                    "LoginFragment callLogLiveData.safeSingleObserve success $it"
-                )
-            })
         }
     }
 
@@ -56,7 +41,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                viewModel.getCallLogList()
+                (activity as MainActivity).getAllData()
             }
         }
+
+    override fun observeLiveData() {
+
+    }
 }

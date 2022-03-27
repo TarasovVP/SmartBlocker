@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -11,6 +12,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.blacklister.MainNavigationDirections
 import com.example.blacklister.R
 import com.example.blacklister.constants.Constants
+import com.example.blacklister.extensions.safeObserve
+import com.example.blacklister.extensions.safeSingleObserve
 import com.example.blacklister.local.SharedPreferencesUtil
 import com.example.blacklister.model.BlackNumber
 import com.example.blacklister.utils.ForegroundCallService
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private var navController: NavController? = null
     var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
+    val mainViewModel: MainViewModel by viewModels()
     var navigationScreens = arrayListOf(
         R.id.callLogListFragment,
         R.id.contactListFragment,
@@ -78,6 +82,18 @@ class MainActivity : AppCompatActivity() {
 
     fun stopService() {
         stopService(callIntent)
+    }
+
+    fun getAllData() {
+        with(mainViewModel) {
+            successLiveData.safeSingleObserve(this@MainActivity, {
+                Log.e(
+                    "mainViewModelTAG",
+                    "MainActivity success $it"
+                )
+            })
+        }
+        mainViewModel.getAllData()
     }
 
     override fun onBackPressed() {
