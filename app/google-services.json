@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "576475361826",
+    "project_id": "blacklister-b6048",
+    "storage_bucket": "blacklister-b6048.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576475361826:android:7b59d0c56aff7b94c2107b",
+        "android_client_info": {
+          "package_name": "com.tarasovvp.blacklister"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9ZPw6m5qwsoY4kONsJmPOZpESeVhl_m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
