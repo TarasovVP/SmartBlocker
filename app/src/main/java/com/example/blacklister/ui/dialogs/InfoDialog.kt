@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.blacklister.R
+import com.example.blacklister.constants.Constants.APP_EXIT
 import com.example.blacklister.constants.Constants.BLACK_NUMBER
 import com.example.blacklister.databinding.DialogInfoBinding
 import com.example.blacklister.utils.setSafeOnClickListener
@@ -38,7 +39,7 @@ class InfoDialog : DialogFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = DialogInfoBinding.inflate(inflater)
         initUI()
@@ -47,14 +48,16 @@ class InfoDialog : DialogFragment() {
 
     private fun initUI() {
         binding.dialogInfoTitle.text =
-            String.format(getString(R.string.delete), args.blackNumber?.blackNumber)
+            if (args.blackNumber == null) getString(R.string.exit_application) else String.format(
+                getString(R.string.delete),
+                args.blackNumber?.blackNumber)
         binding.dialogInfoCancel.setSafeOnClickListener {
             dismiss()
         }
         binding.dialogInfoConfirm.setSafeOnClickListener {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                BLACK_NUMBER,
-                args.blackNumber
+                if (args.blackNumber == null) APP_EXIT else BLACK_NUMBER,
+                if (args.blackNumber == null) true else args.blackNumber
             )
             dismiss()
         }

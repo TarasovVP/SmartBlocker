@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.example.blacklister.R
+import com.example.blacklister.constants.Constants.APP_EXIT
 import com.example.blacklister.ui.MainActivity
 
 abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
@@ -30,11 +31,23 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         checkTopBottomBarVisibility()
         binding = getViewBinding()
+        getCurrentBackStackEntry()
         return binding?.root
+    }
+
+    private fun getCurrentBackStackEntry() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(APP_EXIT)
+            ?.observe(
+                viewLifecycleOwner
+            ) { exitApp ->
+                if (exitApp) {
+                    activity?.finish()
+                }
+            }
     }
 
     override fun onDestroyView() {

@@ -4,11 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/main_bg">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/dialog_info_left_guideline"
@@ -31,6 +33,7 @@
             android:layout_marginTop="@dimen/margin_15"
             android:textSize="@dimen/text_size_14"
             android:gravity="center"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/dialog_info_cancel"
             app:layout_constraintEnd_toStartOf="@+id/dialog_info_right_guideline"
             app:layout_constraintStart_toEndOf="@+id/dialog_info_left_guideline"
@@ -40,11 +43,10 @@
             android:id="@+id/dialog_info_cancel"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
+            android:theme="@style/StrokeButton"
             android:layout_marginTop="@dimen/margin_10"
-            android:alpha="0.7"
-            android:paddingVertical="@dimen/padding_15"
             android:text="@string/cancel"
-            android:textSize="@dimen/text_size_14"
+            android:layout_marginEnd="@dimen/margin_10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dialog_info_confirm"
             app:layout_constraintStart_toEndOf="@+id/dialog_info_left_guideline"
@@ -55,7 +57,8 @@
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
             android:text="@string/ok"
-            android:textSize="@dimen/text_size_14"
+            android:theme="@style/StrokeButton"
+            android:layout_marginStart="@dimen/margin_10"
             app:layout_constraintBottom_toBottomOf="@+id/dialog_info_cancel"
             app:layout_constraintEnd_toStartOf="@+id/dialog_info_right_guideline"
             app:layout_constraintStart_toEndOf="@+id/dialog_info_cancel"

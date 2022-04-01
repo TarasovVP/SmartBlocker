@@ -11,11 +11,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.blacklister.MainNavigationDirections
 import com.example.blacklister.R
-import com.example.blacklister.constants.Constants
-import com.example.blacklister.extensions.safeObserve
 import com.example.blacklister.extensions.safeSingleObserve
 import com.example.blacklister.local.SharedPreferencesUtil
-import com.example.blacklister.model.BlackNumber
+import com.example.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.example.blacklister.utils.ForegroundCallService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -44,10 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
-            Log.e(
-                "loginViewModelTAG",
-                "MainActivity onCreate SharedPreferencesUtil.isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen}"
-            )
             navGraph.setStartDestination(
                 if (SharedPreferencesUtil.isOnBoardingSeen) {
                     R.id.loginFragment
@@ -62,12 +56,6 @@ class MainActivity : AppCompatActivity() {
 
             toolbar = findViewById(R.id.toolbar)
             toolbar?.setupWithNavController(this)
-            this.currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(Constants.BLACK_NUMBER)
-                ?.observe(
-                    this@MainActivity
-                ) { _ ->
-                    finish()
-                }
         }
     }
 
@@ -97,14 +85,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (navController?.currentDestination?.id == R.id.onBoardingFragment || navController?.currentDestination?.id == R.id.loginFragment || navController?.currentDestination?.id == R.id.callLogListFragment) {
-            navController?.navigate(
-                MainNavigationDirections.startInfoDialog(
-                    blackNumber = BlackNumber("sdfdsfsdf")
-                )
-            )
+        if (navController?.isBackPressedScreen() == true) {
+            navController?.navigate(MainNavigationDirections.startInfoDialog())
         } else {
-            super.onBackPressed()
+            navController?.popBackStack()
         }
     }
 }

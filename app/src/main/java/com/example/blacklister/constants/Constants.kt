@@ -26,4 +26,5 @@ object Constants {
     const val TYPE = "TYPE="
     const val ACCEPT_PERMISSIONS_SCREEN = 2
     const val CALL_RECEIVE = "callReceive"
+    const val APP_EXIT = "appExit"
 }

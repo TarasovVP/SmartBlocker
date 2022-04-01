@@ -22,4 +22,5 @@
     <string name="blacklister_is_on">Защита нежелательных звонков включена</string>
     <string name="search">Поиск</string>
     <string name="list_empty">Список пуст</string>
+    <string name="exit_application">Вы желаете выйти из приложения?</string>
 </resources>
