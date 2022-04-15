@@ -26,7 +26,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }
-        binding?.loginNext?.setSafeOnClickListener {
+        binding?.continueWithoutAccButton?.setSafeOnClickListener {
             findNavController().navigate(R.id.startCallLogList)
         }
     }
