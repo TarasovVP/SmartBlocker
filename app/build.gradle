@@ -63,6 +63,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
     implementation 'com.google.firebase:firebase-config:21.0.2'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'
 
     //navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'

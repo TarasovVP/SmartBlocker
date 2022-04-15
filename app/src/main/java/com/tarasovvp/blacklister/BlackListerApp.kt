@@ -8,10 +8,14 @@ import com.tarasovvp.blacklister.database.AppDatabase
 import com.tarasovvp.blacklister.extensions.createNotificationChannel
 import com.tarasovvp.blacklister.local.Settings
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class BlackListerApp : Application() {
 
     var database: AppDatabase? = null
+    var auth: FirebaseAuth? = null
     private val interstitialAd: InterstitialAd? = null
 
     override fun onCreate() {
@@ -21,6 +25,7 @@ class BlackListerApp : Application() {
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
+        auth = Firebase.auth
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)
         Settings.loadSettingsHelper(this, this.packageName)
