@@ -171,33 +171,36 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.66" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/first_name"
+    <EditText
+        android:id="@+id/email"
+        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:hint="First name"
+        android:hint="Email"
         android:inputType="textCapWords"
         app:layout_constraintBottom_toBottomOf="@id/bot_first_name_gl"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
         app:layout_constraintTop_toTopOf="@id/top_first_name_gl" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/last_name"
+    <EditText
+        android:id="@+id/password"
+        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:hint="Last name"
+        android:hint="Password"
         android:inputType="textCapWords"
         app:layout_constraintBottom_toBottomOf="@id/bot_last_name_gl"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
         app:layout_constraintTop_toTopOf="@id/top_last_name_gl" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/email"
+    <EditText
+        android:id="@+id/repeat_password"
+        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:hint="Email"
+        android:hint="Repeat password"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="@id/bot_email_gl"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
@@ -229,7 +232,6 @@
         app:layout_constraintTop_toTopOf="@id/top_password_gl">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Password"

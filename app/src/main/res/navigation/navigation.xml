@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.tarasovvp.blacklister.ui.onboarding.OnBoardingFragment" >
+        android:name="com.tarasovvp.blacklister.ui.onboarding.OnBoardingFragment">
         <action
             android:id="@+id/startLoginScreen"
             app:destination="@id/loginFragment"
@@ -16,17 +16,20 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tarasovvp.blacklister.ui.login.LoginFragment" >
+        android:name="com.tarasovvp.blacklister.ui.login.LoginFragment">
         <action
             android:id="@+id/startCallLogList"
             app:destination="@id/callLogListFragment"
             app:popUpTo="@+id/mainNavigation"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/startSignUpFragment"
+            app:destination="@id/signUpFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/registryFragment"
-        android:name="com.tarasovvp.blacklister.ui.registry.RegistryFragment" />
+        android:id="@+id/signUpFragment"
+        android:name="com.tarasovvp.blacklister.ui.signup.SignUpFragment" />
 
     <fragment
         android:id="@+id/callLogListFragment"
@@ -34,7 +37,7 @@
         android:label="@string/log_list">
         <action
             android:id="@+id/startContactDetail"
-            app:destination="@id/contactDetailFragment"/>
+            app:destination="@id/contactDetailFragment" />
     </fragment>
 
     <fragment
@@ -43,17 +46,17 @@
         android:label="@string/contact_list">
         <action
             android:id="@+id/startContactDetail"
-            app:destination="@id/contactDetailFragment"/>
+            app:destination="@id/contactDetailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/contactDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.contactdetail.ContactDetailFragment" >
+        android:name="com.tarasovvp.blacklister.ui.contactdetail.ContactDetailFragment">
         <argument
             android:name="contact"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.Contact"
-            app:nullable="true"/>
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -62,25 +65,25 @@
         android:label="@string/number_list">
         <action
             android:id="@+id/startInfoDialog"
-            app:destination="@id/infoDialog"/>
+            app:destination="@id/infoDialog" />
     </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.tarasovvp.blacklister.ui.settings.SettingsFragment"
-        android:label="@string/settings"/>
+        android:label="@string/settings" />
 
     <dialog
         android:id="@+id/infoDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.InfoDialog" >
+        android:name="com.tarasovvp.blacklister.ui.dialogs.InfoDialog">
         <argument
             android:name="blackNumber"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.BlackNumber"
-            app:nullable="true"/>
+            app:nullable="true" />
     </dialog>
 
     <action
         android:id="@+id/startInfoDialog"
-        app:destination="@id/infoDialog"/>
+        app:destination="@id/infoDialog" />
 </navigation>

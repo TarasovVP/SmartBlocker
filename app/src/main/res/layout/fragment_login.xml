@@ -150,8 +150,9 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.46" />
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <EditText
         android:id="@+id/email"
+        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:hint="Email"
@@ -177,8 +178,9 @@
         app:layout_constraintGuide_percent="0.57" />
 
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <EditText
         android:id="@+id/password"
+        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:hint="Password"

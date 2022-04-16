@@ -1,10 +1,12 @@
 package com.tarasovvp.blacklister.ui.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -26,8 +28,27 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }
+        binding?.continueButton?.setSafeOnClickListener {
+            signInWithEmailAndPassword(binding?.email?.text.toString(), binding?.password?.text.toString())
+        }
         binding?.continueWithoutAccButton?.setSafeOnClickListener {
             findNavController().navigate(R.id.startCallLogList)
+        }
+        binding?.register?.setSafeOnClickListener {
+            findNavController().navigate(R.id.startSignUpFragment)
+        }
+    }
+
+    private fun signInWithEmailAndPassword(email: String, password: String) {
+        activity?.let {
+            BlackListerApp.instance?.auth?.signInWithEmailAndPassword(email, password)?.addOnCompleteListener(
+                it) { task ->
+                if (task.isSuccessful) {
+                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful}")
+                } else {
+                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
+                }
+            }
         }
     }
 
