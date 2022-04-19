@@ -3,6 +3,8 @@ package com.tarasovvp.blacklister.ui.signup
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.databinding.FragmentSignUpBinding
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -30,8 +32,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             BlackListerApp.instance?.auth?.createUserWithEmailAndPassword(email, password)?.addOnCompleteListener(
                 it) { task ->
                 if (task.isSuccessful) {
+                    findNavController().popBackStack()
+                    Toast.makeText(context, "Success. Please log in", Toast.LENGTH_LONG).show()
                     Log.e("signUserTAG", "SignUpFragment createUserWithEmailAndPassword task.isSuccessful ${task.isSuccessful}")
                 } else {
+                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
                     Log.e("signUserTAG", "SignUpFragment createUserWithEmailAndPassword task.exception ${task.exception}")
                 }
             }

@@ -44,8 +44,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             BlackListerApp.instance?.auth?.signInWithEmailAndPassword(email, password)?.addOnCompleteListener(
                 it) { task ->
                 if (task.isSuccessful) {
+                    findNavController().navigate(R.id.callLogListFragment)
                     Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful}")
                 } else {
+                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
                     Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
                 }
             }
