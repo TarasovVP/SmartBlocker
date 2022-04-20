@@ -18,11 +18,21 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
+        android:id="@+id/settings_delete_acc_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_acc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_back_ground_cb"/>
+
+    <Button
         android:id="@+id/settings_sign_out_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_out"
+        android:layout_marginVertical="@dimen/margin_25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_back_ground_cb"/>
+        app:layout_constraintTop_toBottomOf="@+id/settings_delete_acc_btn"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

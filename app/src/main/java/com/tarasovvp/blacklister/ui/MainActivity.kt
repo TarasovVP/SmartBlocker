@@ -16,6 +16,7 @@ import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.blacklister.utils.ForegroundCallService
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tarasovvp.blacklister.BlackListerApp
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,10 +44,12 @@ class MainActivity : AppCompatActivity() {
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
-                if (SharedPreferencesUtil.isOnBoardingSeen) {
-                    R.id.loginFragment
-                } else {
+                if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.auth?.currentUser != null) {
+                    R.id.callLogListFragment
+                } else if (!SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.auth?.currentUser != null){
                     R.id.onBoardingFragment
+                } else {
+                    R.id.loginFragment
                 }
             )
             this.graph = navGraph

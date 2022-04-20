@@ -28,6 +28,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }
+        Log.e("signUserTAG", "LoginFragment onViewCreated currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
+        setOnButtonsClick()
+    }
+
+    private fun setOnButtonsClick() {
         binding?.continueButton?.setSafeOnClickListener {
             signInWithEmailAndPassword(binding?.email?.text.toString(), binding?.password?.text.toString())
         }
@@ -37,6 +42,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         binding?.register?.setSafeOnClickListener {
             findNavController().navigate(R.id.startSignUpFragment)
         }
+        binding?.buttonForgotPassword?.setSafeOnClickListener {
+            sendPasswordResetEmail(binding?.email?.text.toString())
+        }
     }
 
     private fun signInWithEmailAndPassword(email: String, password: String) {
@@ -45,7 +53,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 it) { task ->
                 if (task.isSuccessful) {
                     findNavController().navigate(R.id.callLogListFragment)
-                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful}")
+                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
+                } else {
+                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
+                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
+                }
+            }
+        }
+    }
+
+    private fun sendPasswordResetEmail(email: String) {
+        activity?.let {
+            BlackListerApp.instance?.auth?.sendPasswordResetEmail(email)?.addOnCompleteListener(
+                it) { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(context, "Check your email", Toast.LENGTH_LONG).show()
+                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
                 } else {
                     Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
                     Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")

@@ -26,4 +26,5 @@
     <string name="list_empty">Список пуст</string>
     <string name="exit_application">Вы желаете выйти из приложения?</string>
     <string name="sign_out">Выход</string>
+    <string name="delete_acc">Удалить аккаунт</string>
 </resources>

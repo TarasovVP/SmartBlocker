@@ -2,7 +2,10 @@ package com.tarasovvp.blacklister.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.databinding.FragmentSettingsBinding
 import com.tarasovvp.blacklister.extensions.isServiceRunning
@@ -35,6 +38,20 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
             (activity as MainActivity).apply {
                 finish()
                 startActivity(Intent(this, MainActivity::class.java))
+            }
+        }
+        binding?.settingsDeleteAccBtn?.setSafeOnClickListener {
+            FirebaseAuth.getInstance().currentUser?.delete()?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.e("signUserTAG", "SettingsFragment currentUser?.delete() task.isSuccessful ${task.isSuccessful}")
+                    (activity as MainActivity).apply {
+                        finish()
+                        startActivity(Intent(this, MainActivity::class.java))
+                    }
+                } else {
+                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
+                    Log.e("signUserTAG", "SettingsFragment currentUser?.delete() task.exception ${task.exception}")
+                }
             }
         }
     }
