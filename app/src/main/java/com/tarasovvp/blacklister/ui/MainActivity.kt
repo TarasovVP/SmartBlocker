@@ -44,12 +44,10 @@ class MainActivity : AppCompatActivity() {
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
-                if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.auth?.currentUser != null) {
-                    R.id.callLogListFragment
-                } else if (!SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.auth?.currentUser != null){
-                    R.id.onBoardingFragment
-                } else {
-                    R.id.loginFragment
+                when {
+                    !SharedPreferencesUtil.isOnBoardingSeen -> R.id.onBoardingFragment
+                    BlackListerApp.instance?.auth?.currentUser != null -> R.id.callLogListFragment
+                    else -> R.id.loginFragment
                 }
             )
             this.graph = navGraph

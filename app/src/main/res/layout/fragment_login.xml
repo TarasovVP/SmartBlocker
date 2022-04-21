@@ -102,45 +102,15 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_login_with_email_text_gl" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/facebook_auth"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/bot_socials_gl"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_facebook_gl"
-        app:layout_constraintTop_toTopOf="@id/top_socials_gl">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Facebook" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
+    <Button
         android:id="@+id/google_auth"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
+        android:text="Google"
         app:layout_constraintBottom_toBottomOf="@id/bot_socials_gl"
-        app:layout_constraintLeft_toLeftOf="@id/left_google_gl"
+        app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_socials_gl">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Google" />
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="@id/top_socials_gl" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bot_email_gl"
