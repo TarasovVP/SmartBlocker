@@ -1,20 +1,20 @@
-package com.tarasovvp.blacklister.ui.callloglist
+package com.tarasovvp.blacklister.ui.main.contactlist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.tarasovvp.blacklister.databinding.ItemCallLogBinding
+import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.loadCircleImage
-import com.tarasovvp.blacklister.model.CallLog
+import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
-    BaseAdapter<CallLog>() {
+class ContactAdapter(private val contactClick: (Contact) -> Unit) :
+    BaseAdapter<Contact>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,7 +26,7 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
             )
         } else {
             ViewHolder(
-                ItemCallLogBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
             )
         }
     }
@@ -36,7 +36,7 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
         position: Int
     ) {
         super.onBindViewHolder(holder, position)
-        if (holder is CallLogAdapter.ViewHolder) {
+        if (holder is ContactAdapter.ViewHolder) {
             holder.bindData(
                 position
             )
@@ -45,17 +45,17 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
 
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var binding: ItemCallLogBinding? = ItemCallLogBinding.bind(itemView)
+
+        var binding: ItemContactBinding? = ItemContactBinding.bind(itemView)
+
         fun bindData(position: Int) {
-            val callLog = getDataInPosition(position)
-            binding?.itemCallLogName?.text = callLog.name
-            binding?.itemCallLogNumber?.text = callLog.phone
-            binding?.itemCallLogTime?.text = callLog.dateTimeFromTime()
-            binding?.itemCallLogBlackNumberIcon?.isVisible = callLog.isBlackList
-            binding?.itemCallLogTypeIcon?.setImageResource(callLog.callLogIcon())
-            binding?.itemCallLogAvatar?.loadCircleImage(callLog.photoUrl)
+            val contact = getDataInPosition(position)
+            binding?.itemContactName?.text = contact.name
+            binding?.itemContactNumber?.text = contact.phone
+            binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
+            binding?.itemContactBlackListIcon?.isVisible = contact.isBlackList == true
             binding?.root?.setSafeOnClickListener {
-                callLog.let { clickedContact -> callLogClick.invoke(clickedContact) }
+                contact.let { clickedContact -> contactClick.invoke(clickedContact) }
             }
         }
     }

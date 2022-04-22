@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.settings
+package com.tarasovvp.blacklister.ui.main.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,6 @@ import com.tarasovvp.blacklister.extensions.isServiceRunning
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.ForegroundCallService
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>() {
 

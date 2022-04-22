@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.callloglist.CallLogListFragment">
+    tools:context=".ui.main.callloglist.CallLogListFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/call_log_list_left_gd"

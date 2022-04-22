@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.onboarding
+package com.tarasovvp.blacklister.ui.start.onboarding
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

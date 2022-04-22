@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.callloglist
+package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.content.IntentFilter
 import android.util.Log
@@ -28,6 +28,9 @@ class CallLogListFragment :
 
     override fun onStart() {
         super.onStart()
+        (activity as MainActivity).apply {
+            startService()
+        }
         Log.e("callReceiveTAG", "CallLogListFragment onStart")
         callHandleReceiver = CallHandleReceiver {
             Log.e("callReceiveTAG", "CallLogListFragment CallHandleReceiver string $it")

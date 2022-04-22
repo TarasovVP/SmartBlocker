@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.contactlist
+package com.tarasovvp.blacklister.ui.main.contactlist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

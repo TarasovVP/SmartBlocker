@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Blacklister)
         setContentView(R.layout.activity_main)
-        startService()
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController

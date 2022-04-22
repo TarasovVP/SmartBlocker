@@ -1,18 +1,20 @@
-package com.tarasovvp.blacklister.ui.blacknumberlist
+package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.tarasovvp.blacklister.databinding.ItemBlackNumberBinding
+import com.tarasovvp.blacklister.databinding.ItemCallLogBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
-import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.extensions.loadCircleImage
+import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
-    BaseAdapter<BlackNumber>() {
+class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
+    BaseAdapter<CallLog>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -24,11 +26,7 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
             )
         } else {
             ViewHolder(
-                ItemBlackNumberBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                ).root
+                ItemCallLogBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
             )
         }
     }
@@ -38,7 +36,7 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
         position: Int
     ) {
         super.onBindViewHolder(holder, position)
-        if (holder is BlackNumberAdapter.ViewHolder) {
+        if (holder is CallLogAdapter.ViewHolder) {
             holder.bindData(
                 position
             )
@@ -47,14 +45,17 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
 
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-
-        var binding: ItemBlackNumberBinding? = ItemBlackNumberBinding.bind(itemView)
-
+        var binding: ItemCallLogBinding? = ItemCallLogBinding.bind(itemView)
         fun bindData(position: Int) {
-            val blackNumber = getDataInPosition(position)
-            binding?.itemBlackListNumber?.text = blackNumber.blackNumber
+            val callLog = getDataInPosition(position)
+            binding?.itemCallLogName?.text = callLog.name
+            binding?.itemCallLogNumber?.text = callLog.phone
+            binding?.itemCallLogTime?.text = callLog.dateTimeFromTime()
+            binding?.itemCallLogBlackNumberIcon?.isVisible = callLog.isBlackList
+            binding?.itemCallLogTypeIcon?.setImageResource(callLog.callLogIcon())
+            binding?.itemCallLogAvatar?.loadCircleImage(callLog.photoUrl)
             binding?.root?.setSafeOnClickListener {
-                blackNumber.let { clickedContact -> blackNumberClick.invoke(clickedContact) }
+                callLog.let { clickedContact -> callLogClick.invoke(clickedContact) }
             }
         }
     }

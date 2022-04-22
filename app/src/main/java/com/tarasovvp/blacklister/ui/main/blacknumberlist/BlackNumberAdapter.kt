@@ -1,20 +1,17 @@
-package com.tarasovvp.blacklister.ui.contactlist
+package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.tarasovvp.blacklister.databinding.ItemContactBinding
+import com.tarasovvp.blacklister.databinding.ItemBlackNumberBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
-import com.tarasovvp.blacklister.extensions.loadCircleImage
-import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class ContactAdapter(private val contactClick: (Contact) -> Unit) :
-    BaseAdapter<Contact>() {
+class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
+    BaseAdapter<BlackNumber>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,7 +23,11 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) :
             )
         } else {
             ViewHolder(
-                ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                ItemBlackNumberBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ).root
             )
         }
     }
@@ -36,7 +37,7 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) :
         position: Int
     ) {
         super.onBindViewHolder(holder, position)
-        if (holder is ContactAdapter.ViewHolder) {
+        if (holder is BlackNumberAdapter.ViewHolder) {
             holder.bindData(
                 position
             )
@@ -46,16 +47,13 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) :
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        var binding: ItemContactBinding? = ItemContactBinding.bind(itemView)
+        var binding: ItemBlackNumberBinding? = ItemBlackNumberBinding.bind(itemView)
 
         fun bindData(position: Int) {
-            val contact = getDataInPosition(position)
-            binding?.itemContactName?.text = contact.name
-            binding?.itemContactNumber?.text = contact.phone
-            binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
-            binding?.itemContactBlackListIcon?.isVisible = contact.isBlackList == true
+            val blackNumber = getDataInPosition(position)
+            binding?.itemBlackListNumber?.text = blackNumber.blackNumber
             binding?.root?.setSafeOnClickListener {
-                contact.let { clickedContact -> contactClick.invoke(clickedContact) }
+                blackNumber.let { clickedContact -> blackNumberClick.invoke(clickedContact) }
             }
         }
     }

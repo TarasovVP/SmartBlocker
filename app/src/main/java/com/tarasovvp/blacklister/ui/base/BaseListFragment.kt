@@ -45,7 +45,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkToolbarSearchVisibility()
-        observeLiveData()
         initView()
         recyclerView?.initRecyclerView()
         if (context?.checkPermissions() == true) {

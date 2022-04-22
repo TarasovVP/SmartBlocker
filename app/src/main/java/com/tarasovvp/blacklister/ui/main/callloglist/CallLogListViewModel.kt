@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.callloglist
+package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

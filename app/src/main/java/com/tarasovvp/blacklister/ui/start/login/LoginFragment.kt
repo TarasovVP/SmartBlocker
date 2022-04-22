@@ -1,7 +1,5 @@
-package com.tarasovvp.blacklister.ui.login
+package com.tarasovvp.blacklister.ui.start.login
 
-import android.R.attr
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,16 +10,16 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.PermissionUtil
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.GoogleAuthProvider
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
@@ -39,7 +37,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }
-        Log.e("signUserTAG", "LoginFragment onViewCreated currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
+        Log.e("signUserTAG",
+            "LoginFragment onViewCreated currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
         setOnButtonsClick()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com")
@@ -51,7 +50,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private fun setOnButtonsClick() {
         binding?.continueButton?.setSafeOnClickListener {
-            signInWithEmailAndPassword(binding?.email?.text.toString(), binding?.password?.text.toString())
+            signInWithEmailAndPassword(binding?.email?.text.toString(),
+                binding?.password?.text.toString())
         }
         binding?.continueWithoutAccButton?.setSafeOnClickListener {
             findNavController().navigate(R.id.startCallLogList)
@@ -69,16 +69,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private fun signInWithEmailAndPassword(email: String, password: String) {
         activity?.let {
-            BlackListerApp.instance?.auth?.signInWithEmailAndPassword(email, password)?.addOnCompleteListener(
-                it) { task ->
-                if (task.isSuccessful) {
-                    findNavController().navigate(R.id.callLogListFragment)
-                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
-                } else {
-                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
-                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
+            BlackListerApp.instance?.auth?.signInWithEmailAndPassword(email, password)
+                ?.addOnCompleteListener(
+                    it) { task ->
+                    if (task.isSuccessful) {
+                        findNavController().navigate(R.id.callLogListFragment)
+                        Log.e("signUserTAG",
+                            "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
+                    } else {
+                        Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG)
+                            .show()
+                        Log.e("signUserTAG",
+                            "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
+                    }
                 }
-            }
         }
     }
 
@@ -88,10 +92,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 it) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(context, "Check your email", Toast.LENGTH_LONG).show()
-                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
+                    Log.e("signUserTAG",
+                        "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
                 } else {
-                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
-                    Log.e("signUserTAG", "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
+                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG)
+                        .show()
+                    Log.e("signUserTAG",
+                        "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
                 }
             }
         }
@@ -112,13 +119,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private val googleSignInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            Log.e("signUserTAG", "LoginFragment googleSignInLauncher result.resultCode ${result.resultCode}")
+            Log.e("signUserTAG",
+                "LoginFragment googleSignInLauncher result.resultCode ${result.resultCode}")
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!)
+                viewModel.firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                Log.e("signUserTAG", "LoginFragment googleSignInLauncher ApiException ${e.localizedMessage}")
+                Log.e("signUserTAG",
+                    "LoginFragment googleSignInLauncher ApiException ${e.localizedMessage}")
                 Toast.makeText(
                     context,
                     e.localizedMessage,
@@ -127,18 +136,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             }
         }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        BlackListerApp.instance?.auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    Log.e("signUserTAG", "LoginFragment firebaseAuthWithGoogle task.isSuccessful ${task.isSuccessful}")
-                } else {
-                    Log.e("signUserTAG", "LoginFragment firebaseAuthWithGoogle task.exception ${task.exception}")
-                }
-            }
+    override fun observeLiveData() {
+        with(viewModel) {
+            successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
+                Log.e("signUserTAG", "LoginFragment observeLiveData successSignInLiveData")
+            })
+            exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
+                Log.e("signUserTAG",
+                    "LoginFragment observeLiveData exceptionLiveData exception $exception")
+            })
+        }
     }
-
-
-    override fun observeLiveData() = Unit
 }

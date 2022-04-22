@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.contactlist
+package com.tarasovvp.blacklister.ui.main.contactlist
 
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding

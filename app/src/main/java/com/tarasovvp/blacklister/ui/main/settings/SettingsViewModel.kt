@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.settings
+package com.tarasovvp.blacklister.ui.main.settings
 
 import androidx.lifecycle.ViewModel
 

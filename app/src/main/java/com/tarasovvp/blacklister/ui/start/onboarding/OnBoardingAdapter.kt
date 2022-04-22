@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.onboarding
+package com.tarasovvp.blacklister.ui.start.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

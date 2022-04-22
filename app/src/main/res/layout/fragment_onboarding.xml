@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.onboarding.OnBoardingFragment">
+    tools:context=".ui.start.onboarding.OnBoardingFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/on_boarding_left_gd"

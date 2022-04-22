@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.blacknumberlist
+package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER

@@ -141,41 +141,54 @@
         app:layout_constraintGuide_percent="0.66" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/name"
         style="@style/SearchableEdittext"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:hint="Email"
-        android:inputType="textCapWords"
-        app:layout_constraintBottom_toBottomOf="@id/bot_first_name_gl"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:inputType="text"
+        android:layout_marginVertical="@dimen/margin_15"
+        app:layout_constraintBottom_toTopOf="@id/email"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
         app:layout_constraintTop_toTopOf="@id/top_first_name_gl" />
 
     <EditText
+        android:id="@+id/email"
+        style="@style/SearchableEdittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintLeft_toLeftOf="@id/left_gl"
+        app:layout_constraintRight_toRightOf="@id/right_gl"
+        app:layout_constraintBottom_toTopOf="@id/password" />
+
+    <EditText
         android:id="@+id/password"
         style="@style/SearchableEdittext"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@id/bot_last_name_gl"
+        android:layout_marginVertical="@dimen/margin_15"
+        app:layout_constraintBottom_toTopOf="@id/repeat_password"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_last_name_gl" />
+        app:layout_constraintTop_toBottomOf="@id/email" />
 
     <EditText
         android:id="@+id/repeat_password"
         style="@style/SearchableEdittext"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:hint="Repeat password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@id/bot_email_gl"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_email_gl" />
-
+        app:layout_constraintTop_toBottomOf="@id/password"
+        app:layout_constraintBottom_toTopOf="@+id/top_password_gl"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_password_gl"

@@ -36,6 +36,7 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
         checkTopBottomBarVisibility()
         binding = getViewBinding()
         getCurrentBackStackEntry()
+        observeLiveData()
         return binding?.root
     }
 
