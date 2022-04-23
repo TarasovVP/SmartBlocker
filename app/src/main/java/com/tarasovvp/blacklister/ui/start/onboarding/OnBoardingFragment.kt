@@ -16,6 +16,7 @@ import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
 import com.google.android.material.tabs.TabLayoutMediator
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>() {
 

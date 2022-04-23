@@ -9,6 +9,7 @@ import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
     BaseAdapter<BlackNumber>() {

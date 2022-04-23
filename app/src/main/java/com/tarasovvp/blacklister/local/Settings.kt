@@ -21,14 +21,14 @@ object Settings {
     @JvmStatic
     fun saveString(key: String?, value: String?) {
         val editor =
-            sharedPreferences!!.edit()
-        editor.putString(key, value)
-        editor.apply()
+            sharedPreferences?.edit()
+        editor?.putString(key, value)
+        editor?.apply()
     }
 
     @JvmStatic
     fun loadString(key: String?): String? {
-        return sharedPreferences!!.getString(
+        return sharedPreferences?.getString(
             key,
             null
         )
@@ -36,65 +36,65 @@ object Settings {
 
     @JvmStatic
     fun loadInt(key: String?): Int {
-        return sharedPreferences!!.getInt(
+        return sharedPreferences?.getInt(
             key,
             0
-        )
+        ) ?: 0
     }
 
     @JvmStatic
     fun saveInt(key: String?, value: Int?) {
         val editor =
-            sharedPreferences!!.edit()
-        editor.putInt(key, value!!)
-        editor.apply()
+            sharedPreferences?.edit()
+        value?.let { editor?.putInt(key, it) }
+        editor?.apply()
     }
 
     @JvmStatic
     fun loadLong(key: String?): Long {
-        return sharedPreferences!!.getLong(
+        return sharedPreferences?.getLong(
             key,
             0
-        )
+        ) ?: 0
     }
 
     @JvmStatic
     fun saveLong(key: String?, value: Long?) {
         val editor =
-            sharedPreferences!!.edit()
-        editor.putLong(key, value!!)
-        editor.apply()
+            sharedPreferences?.edit()
+        value?.let { editor?.putLong(key, it) }
+        editor?.apply()
     }
 
     @JvmStatic
     fun loadFloat(key: String?): Float {
-        return sharedPreferences!!.getFloat(
+        return sharedPreferences?.getFloat(
             key,
             0f
-        )
+        ) ?: 0f
     }
 
     @JvmStatic
     fun saveFloat(key: String?, value: Float?) {
         val editor =
-            sharedPreferences!!.edit()
-        editor.putFloat(key, value!!)
-        editor.apply()
+            sharedPreferences?.edit()
+        value?.let { editor?.putFloat(key, it) }
+        editor?.apply()
     }
 
     @JvmStatic
     fun saveBoolean(key: String?, value: Boolean) {
         val editor =
-            sharedPreferences!!.edit()
-        editor.putBoolean(key, value)
-        editor.apply()
+            sharedPreferences?.edit()
+        editor?.putBoolean(key, value)
+        editor?.apply()
     }
 
     @JvmStatic
     fun loadBoolean(key: String?): Boolean {
-        return sharedPreferences!!.getBoolean(
+        return sharedPreferences?.getBoolean(
             key,
             false
-        )
+        ) ?: false
     }
 }

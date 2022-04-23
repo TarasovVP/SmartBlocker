@@ -29,11 +29,9 @@ class InfoDialog : DialogFragment() {
         val dialog = dialog
         if (dialog != null && dialog.window != null) {
             val width = Resources.getSystem().displayMetrics.widthPixels
-            dialog.window!!
-                .setLayout((width * 0.85).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
-            dialog.window!!.setGravity(Gravity.CENTER)
-            dialog.window!!
-                .setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window?.setLayout((width * 0.85).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+            dialog.window?.setGravity(Gravity.CENTER)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.setCancelable(true)
         }
     }

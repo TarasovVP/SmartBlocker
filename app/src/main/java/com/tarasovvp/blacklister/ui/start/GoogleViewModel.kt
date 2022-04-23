@@ -9,7 +9,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.blacklister.BlackListerApp
 import kotlinx.coroutines.launch
 
-open class GoogleLoginViewModel(application: Application) : AndroidViewModel(application) {
+open class GoogleViewModel(application: Application) : AndroidViewModel(application) {
 
     val successSignInLiveData = MutableLiveData<Boolean>()
     val exceptionLiveData = MutableLiveData<String>()
