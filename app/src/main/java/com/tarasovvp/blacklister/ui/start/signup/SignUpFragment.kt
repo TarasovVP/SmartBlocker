@@ -28,36 +28,7 @@ class SignUpFragment : GoogleFragment<FragmentSignUpBinding, SignUpViewModel>() 
             googleSignInLauncher.launch(googleSignInClient?.signInIntent)
         }
         binding?.continueButton?.setSafeOnClickListener {
-            createUserWithEmailAndPassword(binding?.email?.text.toString(), binding?.password?.text.toString(), binding?.name?.text.toString())
-        }
-    }
-
-    private fun createUserWithEmailAndPassword(email: String, password: String, name: String) {
-        activity?.let {
-            BlackListerApp.instance?.auth?.createUserWithEmailAndPassword(email, password)?.addOnCompleteListener(
-                it) { createUserTask ->
-                if (createUserTask.isSuccessful) {
-                    findNavController().popBackStack()
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(name).build()
-
-                    createUserTask.result.user?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener { updateUserTask ->
-                            if (updateUserTask.isSuccessful) {
-                                Log.e("signUserTAG",
-                                    "SignUpFragment createUserWithEmailAndPassword BlackListerApp.instance?.auth?.currentUser ${
-                                        Gson().toJson(BlackListerApp.instance?.auth?.currentUser?.displayName)
-                                    }")
-                            }
-                        }
-
-                    Toast.makeText(context, "Success. Please log in", Toast.LENGTH_LONG).show()
-                    Log.e("signUserTAG", "SignUpFragment createUserWithEmailAndPassword createUserTask.isSuccessful ${createUserTask.isSuccessful}")
-                } else {
-                    Toast.makeText(context, createUserTask.exception?.localizedMessage, Toast.LENGTH_LONG).show()
-                    Log.e("signUserTAG", "SignUpFragment createUserWithEmailAndPassword createUserTask.exception ${createUserTask.exception}")
-                }
-            }
+            viewModel.createUserWithEmailAndPassword(binding?.email?.text.toString(), binding?.password?.text.toString(), binding?.name?.text.toString())
         }
     }
 
@@ -68,9 +39,12 @@ class SignUpFragment : GoogleFragment<FragmentSignUpBinding, SignUpViewModel>() 
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
+                Toast.makeText(context, "Success. Please log in", Toast.LENGTH_LONG).show()
+                findNavController().popBackStack()
                 Log.e("signUserTAG", "SignUpFragment observeLiveData successSignInLiveData")
             })
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
+                Toast.makeText(context, exception, Toast.LENGTH_LONG).show()
                 Log.e("signUserTAG",
                     "SignUpFragment observeLiveData exceptionLiveData exception $exception")
             })

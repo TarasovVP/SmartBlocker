@@ -17,11 +17,11 @@ import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 
-class LoginFragment : GoogleFragment<FragmentLoginBinding, ViewModel>() {
+class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
 
-    override val viewModelClass = ViewModel::class.java
+    override val viewModelClass = LoginViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,7 +38,7 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, ViewModel>() {
 
     private fun setOnButtonsClick() {
         binding?.continueButton?.setSafeOnClickListener {
-            signInWithEmailAndPassword(binding?.email?.text.toString(),
+            viewModel.signInWithEmailAndPassword(binding?.email?.text.toString(),
                 binding?.password?.text.toString())
         }
         binding?.continueWithoutAccButton?.setSafeOnClickListener {
@@ -48,47 +48,10 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, ViewModel>() {
             findNavController().navigate(R.id.startSignUpFragment)
         }
         binding?.buttonForgotPassword?.setSafeOnClickListener {
-            sendPasswordResetEmail(binding?.email?.text.toString())
+            viewModel.sendPasswordResetEmail(binding?.email?.text.toString())
         }
         binding?.googleAuth?.setSafeOnClickListener {
             googleSignInLauncher.launch(googleSignInClient?.signInIntent)
-        }
-    }
-
-    private fun signInWithEmailAndPassword(email: String, password: String) {
-        activity?.let {
-            BlackListerApp.instance?.auth?.signInWithEmailAndPassword(email, password)
-                ?.addOnCompleteListener(
-                    it) { task ->
-                    if (task.isSuccessful) {
-                        findNavController().navigate(R.id.callLogListFragment)
-                        Log.e("signUserTAG",
-                            "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
-                    } else {
-                        Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG)
-                            .show()
-                        Log.e("signUserTAG",
-                            "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
-                    }
-                }
-        }
-    }
-
-    private fun sendPasswordResetEmail(email: String) {
-        activity?.let {
-            BlackListerApp.instance?.auth?.sendPasswordResetEmail(email)?.addOnCompleteListener(
-                it) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(context, "Check your email", Toast.LENGTH_LONG).show()
-                    Log.e("signUserTAG",
-                        "LoginFragment signInWithEmailAndPassword task.isSuccessful ${task.isSuccessful} currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
-                } else {
-                    Toast.makeText(context, task.exception?.localizedMessage, Toast.LENGTH_LONG)
-                        .show()
-                    Log.e("signUserTAG",
-                        "LoginFragment signInWithEmailAndPassword task.exception ${task.exception}")
-                }
-            }
         }
     }
 
@@ -113,8 +76,10 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, ViewModel>() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
                 Log.e("signUserTAG", "LoginFragment observeLiveData successSignInLiveData")
+                findNavController().navigate(R.id.callLogListFragment)
             })
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
+                Toast.makeText(context, exception, Toast.LENGTH_LONG).show()
                 Log.e("signUserTAG",
                     "LoginFragment observeLiveData exceptionLiveData exception $exception")
             })

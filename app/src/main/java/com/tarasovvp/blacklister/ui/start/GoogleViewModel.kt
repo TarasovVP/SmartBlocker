@@ -24,9 +24,9 @@ open class GoogleViewModel(application: Application) : AndroidViewModel(applicat
                             "LoginViewModel firebaseAuthWithGoogle task.isSuccessful ${task.isSuccessful}")
                         successSignInLiveData.postValue(task.isSuccessful)
                     } else {
-                        exceptionLiveData.postValue(task.exception.toString())
+                        exceptionLiveData.postValue(task.exception?.localizedMessage)
                         Log.e("signUserTAG",
-                            "LoginViewModel firebaseAuthWithGoogle task.exception ${task.exception}")
+                            "LoginViewModel firebaseAuthWithGoogle task.exception ${task.exception?.localizedMessage}")
                     }
                 }
         }
