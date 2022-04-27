@@ -4,25 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 
-abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
+abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
 
     protected open var binding: VB? = null
     abstract fun getViewBinding(): VB
 
     abstract val viewModelClass: Class<T>
-
-    abstract fun observeLiveData()
 
     protected open val viewModel: T by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this)[viewModelClass]
@@ -40,6 +39,14 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
         return binding?.root
     }
 
+    open fun observeLiveData() {
+        with(viewModel) {
+            exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
+                showMessage(exception)
+            })
+        }
+    }
+
     private fun getCurrentBackStackEntry() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(APP_EXIT)
             ?.observe(
@@ -54,6 +61,10 @@ abstract class BaseFragment<VB : ViewBinding, T : ViewModel> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    fun showMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     private fun checkTopBottomBarVisibility() {

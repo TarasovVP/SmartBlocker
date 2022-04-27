@@ -33,11 +33,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false) == true) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.give_all_permissions),
-                    Toast.LENGTH_LONG
-                ).show()
+                showMessage(getString(R.string.give_all_permissions))
             } else {
                 startLoginScreen()
             }
@@ -45,10 +41,6 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e(
-            "loginViewModelTAG",
-            "OnBoardingFragment onViewCreated"
-        )
         binding?.onBoardingButton?.setSafeOnClickListener {
             if (currentPosition == ACCEPT_PERMISSIONS_SCREEN) {
                 checkPermissions()

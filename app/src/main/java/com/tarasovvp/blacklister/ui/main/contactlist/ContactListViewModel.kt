@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.provider.ContactRepositoryImpl
+import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
-class ContactListViewModel(application: Application) : AndroidViewModel(application) {
+class ContactListViewModel(application: Application) : BaseViewModel(application) {
 
     private val contactRepository = ContactRepositoryImpl
 

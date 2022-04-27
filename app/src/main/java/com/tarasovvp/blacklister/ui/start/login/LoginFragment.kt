@@ -1,12 +1,9 @@
 package com.tarasovvp.blacklister.ui.start.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -30,10 +27,7 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }
-        Log.e("signUserTAG",
-            "LoginFragment onViewCreated currentUser.email ${BlackListerApp.instance?.auth?.currentUser?.email}")
         setOnButtonsClick()
-
     }
 
     private fun setOnButtonsClick() {
@@ -58,30 +52,19 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false) == true) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.give_all_permissions),
-                    Toast.LENGTH_LONG
-                ).show()
+                showMessage(getString(R.string.give_all_permissions))
             } else {
                 (activity as MainActivity).getAllData()
             }
         }
 
-    override fun firebaseAuthWithGoogle(idToken: String) {
-        viewModel.firebaseAuthWithGoogle(idToken)
-    }
-
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
-                Log.e("signUserTAG", "LoginFragment observeLiveData successSignInLiveData")
                 findNavController().navigate(R.id.callLogListFragment)
             })
-            exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
-                Toast.makeText(context, exception, Toast.LENGTH_LONG).show()
-                Log.e("signUserTAG",
-                    "LoginFragment observeLiveData exceptionLiveData exception $exception")
+            successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner, {
+                showMessage(getString(R.string.password_reset_text))
             })
         }
     }

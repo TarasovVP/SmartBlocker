@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.provider.CallLogRepositoryImpl
+import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
-class CallLogListViewModel(application: Application) : AndroidViewModel(application) {
+class CallLogListViewModel(application: Application) : BaseViewModel(application) {
 
     private val callLogRepository = CallLogRepositoryImpl
 
@@ -18,9 +19,6 @@ class CallLogListViewModel(application: Application) : AndroidViewModel(applicat
     fun getCallLogList() {
         viewModelScope.launch {
             val allCallLogs = callLogRepository.getAllCallLogs()
-            /*allCallLogs?.sortedByDescending {
-                it.time?.toMillisecondsFromString()
-            }*/
             allCallLogs?.apply {
                 callLogLiveData.postValue(this)
             }

@@ -1,13 +1,14 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
+import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
-class BlackNumberListViewModel : ViewModel() {
+class BlackNumberListViewModel(application: Application) : BaseViewModel(application) {
 
     val blackNumberList = MutableLiveData<List<BlackNumber>>()
 

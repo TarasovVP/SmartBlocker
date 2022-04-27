@@ -2,9 +2,7 @@ package com.tarasovvp.blacklister.ui.main.settings
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentSettingsBinding
@@ -34,14 +32,15 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
                 }
             }
         }
-        binding?.settingsNameTv?.text = String.format(getString(R.string.welcome), BlackListerApp.instance?.auth?.currentUser?.displayName)
+        binding?.settingsNameTv?.text = String.format(getString(R.string.welcome),
+            BlackListerApp.instance?.auth?.currentUser?.displayName)
         binding?.settingsSignOutBtn?.setSafeOnClickListener {
             viewModel.signOut()
         }
         binding?.settingsDeleteAccBtn?.setSafeOnClickListener {
             viewModel.deleteUser()
         }
-        binding?.settingsDeleteAccBtn?.setSafeOnClickListener {
+        binding?.settingsReNameBtn?.setSafeOnClickListener {
             viewModel.renameUser(binding?.settingsChangeNameInput?.text.toString())
         }
     }
@@ -49,19 +48,19 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner, {
-                Log.e("signUserTAG", "SettingsFragment observeLiveData successLiveData $it")
+                showMessage(getString(R.string.operation_succeeded))
                 (activity as MainActivity).apply {
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             })
             successRenameUserLiveData.safeSingleObserve(viewLifecycleOwner, { name ->
+                showMessage(String.format(getString(R.string.rename_succeed), name))
                 binding?.settingsNameTv?.text = String.format(getString(R.string.welcome), name)
+                binding?.settingsChangeNameInput?.text?.clear()
             })
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
-                Log.e("signUserTAG",
-                    "SettingsFragment observeLiveData exceptionLiveData exception $exception")
-                Toast.makeText(context, exception, Toast.LENGTH_LONG).show()
+                showMessage(exception)
             })
         }
     }

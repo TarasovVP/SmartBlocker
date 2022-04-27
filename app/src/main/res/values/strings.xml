@@ -28,4 +28,8 @@
     <string name="sign_out">Выход</string>
     <string name="delete_acc">Удалить аккаунт</string>
     <string name="welcome">Добро пожаловать, %s!</string>
+    <string name="operation_succeeded">Операция выполнена успешно</string>
+    <string name="rename_succeed">Имя %s успешно установлено</string>
+    <string name="password_reset_text">На почту выслано подтверждение. Проверьте входящие.</string>
+    <string name="success_sign_up">Регистрация выполнена успешно! Совершите вход.</string>
 </resources>

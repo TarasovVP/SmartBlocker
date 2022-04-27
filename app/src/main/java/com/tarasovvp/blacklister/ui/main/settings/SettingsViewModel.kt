@@ -1,23 +1,19 @@
 package com.tarasovvp.blacklister.ui.main.settings
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.tarasovvp.blacklister.BlackListerApp
-import kotlinx.coroutines.launch
+import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(application: Application)  : BaseViewModel(application) {
     val successLiveData = MutableLiveData<Boolean>()
     val successRenameUserLiveData = MutableLiveData<String>()
-    val exceptionLiveData = MutableLiveData<String>()
 
     fun signOut() {
-        viewModelScope.launch {
-            BlackListerApp.instance?.auth?.signOut()
-            successLiveData.postValue(true)
-        }
+        BlackListerApp.instance?.auth?.signOut()
+        successLiveData.postValue(true)
     }
 
     fun deleteUser() {

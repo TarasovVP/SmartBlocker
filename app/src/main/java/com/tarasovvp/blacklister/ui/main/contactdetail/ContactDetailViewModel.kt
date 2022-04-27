@@ -7,9 +7,10 @@ import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
 import com.tarasovvp.blacklister.provider.ContactRepositoryImpl
+import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
-class ContactDetailViewModel(application: Application) : AndroidViewModel(application) {
+class ContactDetailViewModel(application: Application) : BaseViewModel(application) {
 
     private val contactRepository = ContactRepositoryImpl
     private val blackNumberRepository = BlackNumberRepositoryImpl

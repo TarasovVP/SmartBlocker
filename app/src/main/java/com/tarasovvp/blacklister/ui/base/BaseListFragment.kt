@@ -22,7 +22,7 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
 
-abstract class BaseListFragment<VB : ViewBinding, T : ViewModel, D : BaseAdapter.MainData> :
+abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAdapter.MainData> :
     BaseFragment<VB, T>() {
 
     val adapter: BaseAdapter<D>? by lazy { createAdapter() }
