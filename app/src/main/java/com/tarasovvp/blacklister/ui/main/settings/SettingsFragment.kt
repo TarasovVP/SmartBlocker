@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.main.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R

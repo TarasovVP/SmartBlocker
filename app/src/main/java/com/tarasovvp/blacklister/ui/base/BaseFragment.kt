@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
     abstract fun getViewBinding(): VB
 
     abstract val viewModelClass: Class<T>
+    abstract fun observeLiveData()
 
     protected open val viewModel: T by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this)[viewModelClass]
@@ -37,14 +39,16 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
         checkTopBottomBarVisibility()
         binding = getViewBinding()
         getCurrentBackStackEntry()
+        observeExceptionLiveData()
         observeLiveData()
         return binding?.root
     }
 
-    open fun observeLiveData() {
+    open fun observeExceptionLiveData() {
         with(viewModel) {
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
                 showMessage(exception, true)
+                Log.e("exceptionTAG", "BaseFragment exceptionLiveData exception $exception")
             })
         }
     }
@@ -67,7 +71,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
 
     fun showMessage(message: String, isError: Boolean) {
         (activity as MainActivity).apply {
-            context?.let { ContextCompat.getColor(it, if (isError) R.color.black else android.R.color.holo_red_light) }
+            context?.let { ContextCompat.getColor(it, if (isError) android.R.color.holo_red_light else R.color.black) }
                 ?.let { color -> Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).withColor(color).show() }
         }
     }
