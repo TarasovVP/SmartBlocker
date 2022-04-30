@@ -48,19 +48,16 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner, {
-                showMessage(getString(R.string.operation_succeeded))
+                showMessage(getString(R.string.operation_succeeded), false)
                 (activity as MainActivity).apply {
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             })
             successRenameUserLiveData.safeSingleObserve(viewLifecycleOwner, { name ->
-                showMessage(String.format(getString(R.string.rename_succeed), name))
+                showMessage(String.format(getString(R.string.rename_succeed), name), false)
                 binding?.settingsNameTv?.text = String.format(getString(R.string.welcome), name)
                 binding?.settingsChangeNameInput?.text?.clear()
-            })
-            exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
-                showMessage(exception)
             })
         }
     }

@@ -11,9 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.withColor
 import com.tarasovvp.blacklister.ui.MainActivity
 
 abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
@@ -42,7 +44,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
     open fun observeLiveData() {
         with(viewModel) {
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
-                showMessage(exception)
+                showMessage(exception, true)
             })
         }
     }
@@ -63,8 +65,11 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
         binding = null
     }
 
-    fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    fun showMessage(message: String, isError: Boolean) {
+        (activity as MainActivity).apply {
+            context?.let { ContextCompat.getColor(it, if (isError) R.color.black else android.R.color.holo_red_light) }
+                ?.let { color -> Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).withColor(color).show() }
+        }
     }
 
     private fun checkTopBottomBarVisibility() {

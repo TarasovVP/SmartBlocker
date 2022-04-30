@@ -12,6 +12,7 @@ import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.widget.ImageView
+import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -21,6 +22,7 @@ import com.android.internal.telephony.ITelephony
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
@@ -362,4 +364,9 @@ fun <T> MutableLiveData<T>.singleObserve(owner: LifecycleOwner, observer: (t: T)
             value = null
         }
     })
+}
+
+fun Snackbar.withColor(@ColorInt colorInt: Int): Snackbar {
+    this.view.setBackgroundColor(colorInt)
+    return this
 }

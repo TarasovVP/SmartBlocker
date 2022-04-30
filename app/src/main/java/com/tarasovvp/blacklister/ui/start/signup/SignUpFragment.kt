@@ -30,7 +30,7 @@ class SignUpFragment : GoogleFragment<FragmentSignUpBinding, SignUpViewModel>() 
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
-                showMessage(getString(R.string.success_sign_up))
+                showMessage(getString(R.string.success_sign_up), false)
                 findNavController().popBackStack()
             })
         }

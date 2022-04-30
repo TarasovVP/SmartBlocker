@@ -31,7 +31,7 @@ abstract class GoogleFragment<VB : ViewBinding, T : GoogleViewModel> :
                 val account = task.getResult(ApiException::class.java)
                 account.idToken?.let { viewModel.firebaseAuthWithGoogle(it) }
             } catch (e: ApiException) {
-                showMessage(e.localizedMessage?.toString().toString())
+                showMessage(e.localizedMessage?.toString().toString(), false)
             }
         }
 

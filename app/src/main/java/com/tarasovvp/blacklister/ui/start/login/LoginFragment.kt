@@ -52,7 +52,7 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false) == true) {
-                showMessage(getString(R.string.give_all_permissions))
+                showMessage(getString(R.string.give_all_permissions), false)
             } else {
                 (activity as MainActivity).getAllData()
             }
@@ -64,7 +64,7 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(R.id.callLogListFragment)
             })
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner, {
-                showMessage(getString(R.string.password_reset_text))
+                showMessage(getString(R.string.password_reset_text), false)
             })
         }
     }

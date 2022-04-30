@@ -33,7 +33,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false) == true) {
-                showMessage(getString(R.string.give_all_permissions))
+                showMessage(getString(R.string.give_all_permissions), false)
             } else {
                 startLoginScreen()
             }
