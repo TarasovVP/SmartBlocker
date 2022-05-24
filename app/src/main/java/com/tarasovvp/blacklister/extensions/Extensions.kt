@@ -357,16 +357,9 @@ fun <T> MutableLiveData<T>.safeSingleObserve(owner: LifecycleOwner, observer: (t
     value = null
 }
 
-fun <T> MutableLiveData<T>.singleObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
-    this.observe(owner, {
-        it?.let(observer)
-        if (it != null) {
-            value = null
-        }
-    })
-}
-
 fun Snackbar.withColor(@ColorInt colorInt: Int): Snackbar {
     this.view.setBackgroundColor(colorInt)
     return this
 }
+
+fun Any?.isNotNull() = this != null

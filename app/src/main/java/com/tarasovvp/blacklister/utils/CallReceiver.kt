@@ -12,6 +12,7 @@ import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.extensions.breakCallNougatAndLower
 import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
 import com.tarasovvp.blacklister.extensions.deleteLastMissedCall
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -26,12 +27,12 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) ?: ""
         val blackNumber = BlackListerApp.instance?.database?.blackNumberDao()?.getBlackNumber(phone)
-        if (blackNumber != null && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
-                phoneListener.invoke("phone ${blackNumber.blackNumber}")
+        if (blackNumber.isNotNull() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+                phoneListener.invoke("phone ${blackNumber?.blackNumber}")
                 breakCall(context)
         } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                 Executors.newSingleThreadScheduledExecutor().schedule({
-                    if (blackNumber != null) {
+                    if (blackNumber.isNotNull()) {
                         context.deleteLastMissedCall(phone)
                     }
                     if (phone.isNotEmpty()) {

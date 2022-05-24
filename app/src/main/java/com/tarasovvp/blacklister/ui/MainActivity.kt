@@ -17,6 +17,7 @@ import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.blacklister.utils.ForegroundCallService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.extensions.isNotNull
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             navGraph.setStartDestination(
                 when {
                     !SharedPreferencesUtil.isOnBoardingSeen -> R.id.onBoardingFragment
-                    BlackListerApp.instance?.auth?.currentUser != null -> R.id.callLogListFragment
+                    BlackListerApp.instance?.auth?.currentUser.isNotNull() -> R.id.callLogListFragment
                     else -> R.id.loginFragment
                 }
             )

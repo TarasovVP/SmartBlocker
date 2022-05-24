@@ -16,6 +16,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.databinding.DialogInfoBinding
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class InfoDialog : DialogFragment() {
@@ -27,12 +28,12 @@ class InfoDialog : DialogFragment() {
     override fun onStart() {
         super.onStart()
         val dialog = dialog
-        if (dialog != null && dialog.window != null) {
+        if (dialog.isNotNull() && dialog?.window.isNotNull()) {
             val width = Resources.getSystem().displayMetrics.widthPixels
-            dialog.window?.setLayout((width * 0.85).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
-            dialog.window?.setGravity(Gravity.CENTER)
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.setCancelable(true)
+            dialog?.window?.setLayout((width * 0.85).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+            dialog?.window?.setGravity(Gravity.CENTER)
+            dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog?.setCancelable(true)
         }
     }
 
