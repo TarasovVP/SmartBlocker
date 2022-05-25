@@ -8,6 +8,7 @@ import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
 class BlackNumberListFragment :
@@ -46,6 +47,9 @@ class BlackNumberListFragment :
                     viewModel.deleteBlackNumber(it)
                 }
             }
+        binding?.blackNumberListFabNew?.setSafeOnClickListener {
+            findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment())
+        }
     }
 
     override fun getDataList() {

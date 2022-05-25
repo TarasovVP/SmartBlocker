@@ -66,6 +66,9 @@
         <action
             android:id="@+id/startInfoDialog"
             app:destination="@id/infoDialog" />
+        <action
+            android:id="@+id/startBlackNumberAddFragment"
+            app:destination="@id/blackNumberAddFragment" />
     </fragment>
 
     <fragment
@@ -86,4 +89,9 @@
     <action
         android:id="@+id/startInfoDialog"
         app:destination="@id/infoDialog" />
+
+    <fragment
+        android:id="@+id/blackNumberAddFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.blacknumberladd.BlackNumberAddFragment"
+        android:label="@string/addBlackNumber" />
 </navigation>

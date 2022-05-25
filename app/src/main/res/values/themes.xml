@@ -17,6 +17,7 @@
         <item name="android:editTextStyle">@style/SearchableEdittext</item>
         <!-- Customize your theme here. -->
         <item name="materialButtonStyle">@style/StrokeButton</item>
+        <item name="checkboxStyle">@style/CheckBox</item>
     </style>
 
     <style name="Theme.Blacklister.Launcher">
@@ -47,5 +48,12 @@
         <item name="android:singleLine">true</item>
         <item name="android:paddingStart">@dimen/padding_15</item>
         <item name="android:paddingEnd">@dimen/padding_15</item>
+    </style>
+
+    <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@color/white</item>>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:buttonTint">@color/white</item>
     </style>
 </resources>
