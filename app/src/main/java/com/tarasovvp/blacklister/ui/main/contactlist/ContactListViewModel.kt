@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contactlist
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.Contact
@@ -18,16 +17,24 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
 
     fun getContactList() {
         viewModelScope.launch {
-            val contactList = contactRepository.getAllContacts()
-            contactList?.apply {
-                contactLiveData.postValue(this)
+            try {
+                val contactList = contactRepository.getAllContacts()
+                contactList?.apply {
+                    contactLiveData.postValue(this)
+                }
+            } catch (e: Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
             }
         }
     }
 
     fun getHashMapFromContactList(contactList: List<Contact>) {
         viewModelScope.launch {
-            contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(contactList))
+            try {
+                contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(contactList))
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
         }
     }
 }

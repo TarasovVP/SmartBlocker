@@ -8,4 +8,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity
 @Parcelize
-data class BlackNumber(@PrimaryKey val blackNumber: String) : Parcelable, BaseAdapter.MainData
+data class BlackNumber(
+    @PrimaryKey val blackNumber: String = "",
+    val isStart: Boolean = false,
+    val isContain: Boolean = false,
+    val isEnd: Boolean = false,
+) : Parcelable, BaseAdapter.MainData

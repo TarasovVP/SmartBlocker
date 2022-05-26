@@ -17,18 +17,26 @@ class ContactDetailViewModel(application: Application) : BaseViewModel(applicati
 
     fun updateContact(contact: Contact) {
         viewModelScope.launch {
-            contactRepository.updateContact(contact)
-            contact.phone?.let { phone -> BlackNumber(blackNumber = phone) }
-                ?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
+            try {
+                contactRepository.updateContact(contact)
+                contact.phone?.let { phone -> BlackNumber(blackNumber = phone) }
+                    ?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
         }
     }
 
     private fun updateBlackNumber(isBlackList: Boolean, blackNumber: BlackNumber) {
         viewModelScope.launch {
-            if (isBlackList) {
-                blackNumberRepository.insertBlackNumber(blackNumber)
-            } else {
-                blackNumberRepository.deleteBlackNumber(blackNumber)
+            try {
+                if (isBlackList) {
+                    blackNumberRepository.insertBlackNumber(blackNumber)
+                } else {
+                    blackNumberRepository.deleteBlackNumber(blackNumber)
+                }
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberladd
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
@@ -11,12 +12,15 @@ class BlackNumberAddViewModel(application: Application) : BaseViewModel(applicat
 
     private val blackNumberRepository = BlackNumberRepositoryImpl
 
-    private fun updateBlackNumber(isBlackList: Boolean, blackNumber: BlackNumber) {
+    val blackNumberLiveData = MutableLiveData<BlackNumber>()
+
+    fun insertBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
-            if (isBlackList) {
+            try {
                 blackNumberRepository.insertBlackNumber(blackNumber)
-            } else {
-                blackNumberRepository.deleteBlackNumber(blackNumber)
+                blackNumberLiveData.postValue(blackNumberRepository.getBlackNumber(blackNumber.blackNumber))
+            } catch (e: Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
             }
         }
     }

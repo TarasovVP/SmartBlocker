@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 
 interface BlackNumberRepository {
     suspend fun allBlackNumbers(): List<BlackNumber>?
+    suspend fun getBlackNumber(blackNumber: String): BlackNumber?
     suspend fun insertBlackNumber(blackNumber: BlackNumber)
     suspend fun deleteBlackNumber(blackNumber: BlackNumber)
     suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>>
@@ -19,6 +20,10 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
 
     override suspend fun allBlackNumbers(): List<BlackNumber>? {
         return dao?.getAllBlackNumbers()
+    }
+
+    override suspend fun getBlackNumber(blackNumber: String): BlackNumber? {
+        return dao?.getBlackNumber(blackNumber)
     }
 
     override suspend fun insertBlackNumber(blackNumber: BlackNumber) {

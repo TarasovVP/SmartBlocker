@@ -6,14 +6,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
+import java.lang.Exception
 
 class SettingsViewModel(application: Application)  : BaseViewModel(application) {
     val successLiveData = MutableLiveData<Boolean>()
     val successRenameUserLiveData = MutableLiveData<String>()
 
     fun signOut() {
-        BlackListerApp.instance?.auth?.signOut()
-        successLiveData.postValue(true)
+        try {
+            BlackListerApp.instance?.auth?.signOut()
+            successLiveData.postValue(true)
+        } catch (e: Exception) {
+            exceptionLiveData.postValue(e.localizedMessage)
+        }
     }
 
     fun deleteUser() {

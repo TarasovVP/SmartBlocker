@@ -18,16 +18,24 @@ class CallLogListViewModel(application: Application) : BaseViewModel(application
 
     fun getCallLogList() {
         viewModelScope.launch {
-            val allCallLogs = callLogRepository.getAllCallLogs()
-            allCallLogs?.apply {
-                callLogLiveData.postValue(this)
+            try {
+                val allCallLogs = callLogRepository.getAllCallLogs()
+                allCallLogs?.apply {
+                    callLogLiveData.postValue(this)
+                }
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
             }
         }
     }
 
     fun getHashMapFromCallLogList(callLogList: List<CallLog>) {
         viewModelScope.launch {
-            callLogHashMapLiveData.postValue(callLogRepository.getHashMapFromCallLogList(callLogList))
+            try {
+                callLogHashMapLiveData.postValue(callLogRepository.getHashMapFromCallLogList(callLogList))
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
         }
     }
 }

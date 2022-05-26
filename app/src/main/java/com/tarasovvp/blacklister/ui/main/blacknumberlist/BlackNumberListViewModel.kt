@@ -17,24 +17,34 @@ class BlackNumberListViewModel(application: Application) : BaseViewModel(applica
 
     fun getBlackNumberList() {
         viewModelScope.launch {
-            blackNumberList.postValue(blackNumberRepository.allBlackNumbers())
+            try {
+                blackNumberList.postValue(blackNumberRepository.allBlackNumbers())
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
         }
     }
 
     fun deleteBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
-            blackNumberRepository.deleteBlackNumber(blackNumber)
-            blackNumberList.postValue(blackNumberRepository.allBlackNumbers())
+            try {
+                blackNumberRepository.deleteBlackNumber(blackNumber)
+                blackNumberList.postValue(blackNumberRepository.allBlackNumbers())
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
         }
     }
 
     fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>) {
         viewModelScope.launch {
-            blackNumberHashMapLiveData.postValue(
-                blackNumberRepository.getHashMapFromBlackNumberList(
-                    blackNumberList
+            try {
+                blackNumberHashMapLiveData.postValue(
+                    blackNumberRepository.getHashMapFromBlackNumberList(blackNumberList)
                 )
-            )
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
         }
     }
 }
