@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.main.blacknumberlist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemBlackNumberBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
@@ -53,6 +54,9 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
         fun bindData(position: Int) {
             val blackNumber = getDataInPosition(position)
             binding?.itemBlackListNumber?.text = blackNumber.blackNumber
+            binding?.itemBlackListStart?.isVisible = blackNumber.isStart
+            binding?.itemBlackListContain?.isVisible = blackNumber.isContain
+            binding?.itemBlackListEnd?.isVisible = blackNumber.isEnd
             binding?.root?.setSafeOnClickListener {
                 blackNumber.let { clickedContact -> blackNumberClick.invoke(clickedContact) }
             }

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.extensions.breakCallNougatAndLower
@@ -26,8 +27,11 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         Log.e("callReceiveTAG", "CallReceiver onReceive")
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) ?: ""
-        val blackNumber = BlackListerApp.instance?.database?.blackNumberDao()?.getBlackNumber(phone)
-        if (blackNumber.isNotNull() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+        val blackNumberList = BlackListerApp.instance?.database?.blackNumberDao()?.getBlackNumberList(phone)
+        blackNumberList?.forEach { blackNumber ->
+            Log.e("blackNumberTAG", "CallReceiver  blackNumberList?.forEach blackNumber ${Gson().toJson(blackNumber)} phone $phone")
+        }
+        /*if (blackNumber.isNotNull() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
                 phoneListener.invoke("phone ${blackNumber?.blackNumber}")
                 breakCall(context)
         } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
@@ -40,7 +44,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
                         Log.e("callReceiveTAG", "CallReceiver sendBroadcast(Intent(CALL_RECEIVE))")
                     }
                 }, 1, TimeUnit.SECONDS)
-        }
+        }*/
     }
 
     private fun breakCall(context: Context) {

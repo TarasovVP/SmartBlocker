@@ -25,18 +25,39 @@
         android:gravity="top"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_black_list_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_black_list_start"
         app:layout_constraintStart_toEndOf="@+id/item_black_list_avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/item_black_list_icon"
+        android:id="@+id/item_black_list_start"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:visibility="gone"
         android:layout_marginEnd="@dimen/margin_15"
-        android:src="@drawable/ic_stop"
-        app:layout_constraintStart_toEndOf="@+id/item_black_list_number"
+        android:src="@drawable/ic_start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_black_list_contain"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_black_list_contain"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/margin_15"
+        android:src="@drawable/ic_contain"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_black_list_end"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_black_list_end"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/margin_15"
+        android:src="@drawable/ic_end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
