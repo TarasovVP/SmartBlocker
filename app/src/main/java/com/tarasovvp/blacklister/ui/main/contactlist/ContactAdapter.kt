@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.HeaderDataItem
@@ -53,7 +54,7 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) :
             binding?.itemContactName?.text = contact.name
             binding?.itemContactNumber?.text = contact.phone
             binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
-            binding?.itemContactBlackListIcon?.isVisible = contact.isBlackList == true
+            binding?.itemContactBlackListIcon?.isVisible = contact.isBlackList.isTrue()
             binding?.root?.setSafeOnClickListener {
                 contact.let { clickedContact -> contactClick.invoke(clickedContact) }
             }

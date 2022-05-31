@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
@@ -47,7 +48,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
         checkToolbarSearchVisibility()
         initView()
         recyclerView?.initRecyclerView()
-        if (context?.checkPermissions() == true) {
+        if (context?.checkPermissions().isTrue()) {
             swipeRefresh?.isRefreshing = true
             getDataList()
         } else {
@@ -75,7 +76,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                         this@BaseListFragment.searchableEditText?.isVisible != true
                     it.icon = ContextCompat.getDrawable(
                         this,
-                        if (this@BaseListFragment.searchableEditText?.isVisible == true) R.drawable.ic_search_off else R.drawable.ic_search
+                        if (this@BaseListFragment.searchableEditText?.isVisible.isTrue()) R.drawable.ic_search_off else R.drawable.ic_search
                     )
                     if (this@BaseListFragment.searchableEditText?.isVisible != true) {
                         searchableEditText?.text?.clear()
@@ -91,7 +92,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
-            if (isGranted?.values?.contains(false) == true) {
+            if (isGranted?.values?.contains(false).isTrue()) {
                 Toast.makeText(
                     context,
                     getString(R.string.give_all_permissions),

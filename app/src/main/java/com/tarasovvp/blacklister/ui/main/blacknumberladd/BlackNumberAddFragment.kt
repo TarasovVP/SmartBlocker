@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberAddBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -20,13 +21,13 @@ class BlackNumberAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.blackNumberAddSearch?.doAfterTextChanged {
-            binding?.blackNumberAddSubmit?.isEnabled = it?.isNotEmpty() == true
+            binding?.blackNumberAddSubmit?.isEnabled = it?.isNotEmpty().isTrue()
         }
         binding?.blackNumberAddSubmit?.setSafeOnClickListener {
             viewModel.insertBlackNumber(BlackNumber(blackNumber = binding?.blackNumberAddSearch?.text.toString(),
-                isStart = binding?.blackNumberAddStart?.isChecked == true,
-                isContain = binding?.blackNumberAddContain?.isChecked == true,
-                isEnd = binding?.blackNumberAddEnd?.isChecked == true))
+                isStart = binding?.blackNumberAddStart?.isChecked.isTrue(),
+                isContain = binding?.blackNumberAddContain?.isChecked.isTrue(),
+                isEnd = binding?.blackNumberAddEnd?.isChecked.isTrue()))
         }
     }
 

@@ -16,6 +16,7 @@ import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
 import com.google.android.material.tabs.TabLayoutMediator
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>() {
@@ -32,7 +33,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
-            if (isGranted?.values?.contains(false) == true) {
+            if (isGranted?.values?.contains(false).isTrue()) {
                 showMessage(getString(R.string.give_all_permissions), false)
             } else {
                 startLoginScreen()

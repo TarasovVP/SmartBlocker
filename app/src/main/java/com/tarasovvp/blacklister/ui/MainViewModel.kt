@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.contactList
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toFormattedPhoneNumber
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
@@ -34,7 +35,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 contactList.forEach { callLog ->
                     callLog.isBlackList = blackNumberList?.contains(
                         callLog.phone?.toFormattedPhoneNumber()
-                            ?.let { phone -> BlackNumber(phone) }) == true
+                            ?.let { phone -> BlackNumber(phone) }).isTrue()
                 }
                 contactRepository.insertContacts(contactList)
                 Log.e(
@@ -45,7 +46,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 callLogList.forEach { callLog ->
                     callLog.isBlackList = blackNumberList?.contains(
                         callLog.phone?.toFormattedPhoneNumber()
-                            ?.let { phone -> BlackNumber(phone) }) == true
+                            ?.let { phone -> BlackNumber(phone) }).isTrue()
                     val index = contactList.indexOfFirst { it.phone == callLog.phone }
                     if (index >= 0) {
                         val contact =

@@ -18,6 +18,7 @@ import com.tarasovvp.blacklister.utils.ForegroundCallService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.isNotNull
+import com.tarasovvp.blacklister.extensions.isTrue
 
 class MainActivity : AppCompatActivity() {
 
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (navController?.isBackPressedScreen() == true) {
+        if (navController?.isBackPressedScreen().isTrue()) {
             navController?.navigate(MainNavigationDirections.startInfoDialog())
         } else {
             navController?.popBackStack()

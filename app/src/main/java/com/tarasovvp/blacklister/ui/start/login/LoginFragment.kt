@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.start.GoogleFragment
@@ -22,7 +23,7 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (context?.checkPermissions() == true) {
+        if (context?.checkPermissions().isTrue()) {
             (activity as MainActivity).getAllData()
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
@@ -51,7 +52,7 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
-            if (isGranted?.values?.contains(false) == true) {
+            if (isGranted?.values?.contains(false).isTrue()) {
                 showMessage(getString(R.string.give_all_permissions), false)
             } else {
                 (activity as MainActivity).getAllData()

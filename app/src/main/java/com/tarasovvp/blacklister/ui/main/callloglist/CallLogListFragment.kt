@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.databinding.FragmentCallLogListBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.toFormattedPhoneNumber
@@ -83,10 +84,10 @@ class CallLogListFragment :
             callLog.name?.lowercase(Locale.getDefault())?.contains(
                 searchableEditText?.text.toString()
                     .lowercase(Locale.getDefault())
-            ) == true || callLog.phone?.lowercase(Locale.getDefault())?.contains(
+            ).isTrue() || callLog.phone?.lowercase(Locale.getDefault())?.contains(
                 searchableEditText?.text.toString()
                     .lowercase(Locale.getDefault())
-            ) == true
+            ).isTrue()
         } as ArrayList<CallLog>
         if (!checkDataListEmptiness(filteredCallLogList)) {
             viewModel.getHashMapFromCallLogList(filteredCallLogList)
