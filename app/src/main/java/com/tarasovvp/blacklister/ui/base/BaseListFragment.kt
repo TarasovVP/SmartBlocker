@@ -115,19 +115,18 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {
         adapter?.clearData()
-        for (dataList in dataListHashMap) {
+        dataListHashMap.forEach { dataEntry ->
             adapter?.setHeaderAndData(
-                dataList.value,
+                dataEntry.value,
                 HeaderDataItem(
                     headerType = HeaderDataItem.HEADER_TYPE,
-                    header = dataList.key
+                    header = dataEntry.key
                 )
             )
+            Log.e(
+                "dataTAG",
+                "BaseListFragment  dataListHashMap.forEach dataEntry.key ${dataEntry.key} dataEntry.value.size ${dataEntry.value.size}")
         }
-        Log.e(
-            "dataTAG",
-            "BaseListFragment setDataList  for (blackNumberEntry in blackNumberHashMap)"
-        )
         adapter?.notifyDataSetChanged()
         swipeRefresh?.isRefreshing = false
     }

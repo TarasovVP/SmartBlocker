@@ -4,21 +4,25 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.MainNavigationDirections
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.extensions.isNotNull
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.blacklister.utils.ForegroundCallService
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tarasovvp.blacklister.BlackListerApp
-import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.utils.PermissionUtil
+import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +37,16 @@ class MainActivity : AppCompatActivity() {
         R.id.blackNumberListFragment,
         R.id.settingsFragment
     )
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
+            if (isGranted?.values?.contains(false).isTrue()) {
+                Toast.makeText(this, getString(R.string.give_all_permissions), Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                getAllData()
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +73,9 @@ class MainActivity : AppCompatActivity() {
             toolbar = findViewById(R.id.toolbar)
             toolbar?.setupWithNavController(this)
         }
+        if (BlackListerApp.instance?.auth?.currentUser.isNotNull()) {
+            getAllData()
+        }
     }
 
     fun startService() {
@@ -82,8 +99,12 @@ class MainActivity : AppCompatActivity() {
                     "MainActivity success $it"
                 )
             })
+            if (checkPermissions().isTrue()) {
+                getAllData()
+            } else {
+                requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
+            }
         }
-        mainViewModel.getAllData()
     }
 
     override fun onBackPressed() {

@@ -2,16 +2,12 @@ package com.tarasovvp.blacklister.ui.start.login
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
-import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.start.GoogleFragment
-import com.tarasovvp.blacklister.utils.PermissionUtil
-import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 
@@ -23,18 +19,17 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (context?.checkPermissions().isTrue()) {
-            (activity as MainActivity).getAllData()
-        } else {
-            requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
-        }
         setOnButtonsClick()
     }
 
     private fun setOnButtonsClick() {
         binding?.continueButton?.setSafeOnClickListener {
-            viewModel.signInWithEmailAndPassword(binding?.email?.text.toString(),
-                binding?.password?.text.toString())
+            if (binding?.email?.text.isNullOrEmpty() || binding?.password?.text.isNullOrEmpty()) {
+                showMessage(getString(R.string.enter_login_password), true)
+            } else {
+                viewModel.signInWithEmailAndPassword(binding?.email?.text.toString(),
+                    binding?.password?.text.toString())
+            }
         }
         binding?.continueWithoutAccButton?.setSafeOnClickListener {
             findNavController().navigate(R.id.startCallLogList)
@@ -50,18 +45,12 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
         }
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
-            if (isGranted?.values?.contains(false).isTrue()) {
-                showMessage(getString(R.string.give_all_permissions), false)
-            } else {
-                (activity as MainActivity).getAllData()
-            }
-        }
-
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
+                (activity as MainActivity).apply {
+                    getAllData()
+                }
                 findNavController().navigate(R.id.callLogListFragment)
             })
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner, {

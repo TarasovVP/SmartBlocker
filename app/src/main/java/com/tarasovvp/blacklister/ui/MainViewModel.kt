@@ -5,12 +5,15 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toFormattedPhoneNumber
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
+import com.tarasovvp.blacklister.provider.BlockedCallRepositoryImpl
 import com.tarasovvp.blacklister.provider.CallLogRepositoryImpl
 import com.tarasovvp.blacklister.provider.ContactRepositoryImpl
 import kotlinx.coroutines.launch
@@ -19,6 +22,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val callLogRepository = CallLogRepositoryImpl
     private val blackNumberRepository = BlackNumberRepositoryImpl
     private val contactRepository = ContactRepositoryImpl
+    private val blockedCallRepository = BlockedCallRepositoryImpl
 
     val successLiveData = MutableLiveData<Boolean>()
 
@@ -43,6 +47,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     "MainViewModel getCallLogList  contactRepository.insertContacts contactList?.size ${contactList.size}"
                 )
                 val callLogList = getApplication<Application>().callLogList()
+                val blockedCallList = blockedCallRepository.allBlockedCalls()
+                blockedCallList?.forEach { blockedCall ->
+                    callLogList.add(CallLog(name = blockedCall.name, phone = blockedCall.phone, type = blockedCall.type, time = blockedCall.time, isBlackList = blockedCall.isBlackList))
+                    Log.e(
+                        "mainViewModelTAG",
+                        "MainViewModel  blockedCallList?.forEach Gson().toJson(blockedCall) ${Gson().toJson(blockedCall)}"
+                    )
+                }
                 callLogList.forEach { callLog ->
                     callLog.isBlackList = blackNumberList?.contains(
                         callLog.phone?.toFormattedPhoneNumber()

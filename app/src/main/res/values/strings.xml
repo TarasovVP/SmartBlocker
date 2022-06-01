@@ -34,4 +34,5 @@
     <string name="success_sign_up">Регистрация выполнена успешно! Совершите вход.</string>
     <string name="addBlackNumber">Добавление номера</string>
     <string name="add">Добавить</string>
+    <string name="enter_login_password">Введите логин и пароль</string>
 </resources>

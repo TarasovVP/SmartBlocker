@@ -92,6 +92,6 @@
 
     <fragment
         android:id="@+id/blackNumberAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.blacknumberladd.BlackNumberAddFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.blacknumberadd.BlackNumberAddFragment"
         android:label="@string/addBlackNumber" />
 </navigation>

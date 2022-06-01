@@ -23,28 +23,24 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
     override fun onReceive(context: Context, intent: Intent) {
 
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
-        Log.e("callReceiveTAG", "CallReceiver onReceive")
+        Log.e("callReceiveTAG", "CallReceiver onReceive intent.extras ${intent.extras}")
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
-        val blackNumberList =
-            BlackListerApp.instance?.database?.blackNumberDao()?.getBlackNumberList(phone)
-        if (blackNumberList?.isNullOrEmpty()?.not()
-                .isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
-        ) {
+        val blackNumberList = BlackListerApp.instance?.database?.blackNumberDao()?.getBlackNumberList(phone)
+        if (blackNumberList?.isNullOrEmpty()?.not().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
             phoneListener.invoke("phone $phone")
             breakCall(context)
             Log.e("callReceiveTAG",
                 "CallReceiver blackNumberList?.isNullOrEmpty()?.not().isTrue() phone $phone")
-        } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
+        } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE && phone.isNotEmpty()) {
             Executors.newSingleThreadScheduledExecutor().schedule({
                 if (blackNumberList?.isNullOrEmpty()?.not().isTrue()) {
-                    context.deleteLastMissedCall(phone)
-                }
-                if (phone.isNotEmpty()) {
-                    context.sendBroadcast(Intent(CALL_RECEIVE))
+                    val isDeleteSuccess = context.deleteLastMissedCall(phone)
                     Log.e("callReceiveTAG",
-                        "CallReceiver sendBroadcast(Intent(CALL_RECEIVE)) phone $phone")
+                        "CallReceiver (blackNumberList?.isNullOrEmpty()?.not().isTrue() isDeleteSuccess $isDeleteSuccess")
                 }
+                context.sendBroadcast(Intent(CALL_RECEIVE))
+                Log.e("callReceiveTAG", "CallReceiver sendBroadcast(Intent(CALL_RECEIVE)) phone $phone")
             }, 1, TimeUnit.SECONDS)
         }
     }

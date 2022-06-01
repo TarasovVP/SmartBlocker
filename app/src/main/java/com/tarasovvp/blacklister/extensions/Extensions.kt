@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_LOG_CALL
 import com.tarasovvp.blacklister.constants.Constants.DATE
 import com.tarasovvp.blacklister.constants.Constants.DESC
@@ -39,6 +40,7 @@ import com.tarasovvp.blacklister.constants.Constants.THREE_EIGHT_ZERO
 import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import java.text.SimpleDateFormat
@@ -101,7 +103,7 @@ fun Context.contactList(): ArrayList<Contact> {
     return ArrayList(contacts.toList())
 }
 
-fun Context.callLogList(): List<com.tarasovvp.blacklister.model.CallLog> {
+fun Context.callLogList(): ArrayList<com.tarasovvp.blacklister.model.CallLog> {
     val projection = arrayOf(
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
@@ -121,33 +123,25 @@ fun Context.callLogList(): List<com.tarasovvp.blacklister.model.CallLog> {
         while (callLogCursor.moveToNext()) {
             val time: String? =
                 callLogCursor.getString(3)
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = time?.toMillisecondsFromString() ?: 0
-            calendar.add(Calendar.MONTH, 1)
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
             time?.let {
                 com.tarasovvp.blacklister.model.CallLog(
                     name = callLogCursor.getString(0),
                     phone = callLogCursor.getString(1),
                     type = callLogCursor.getString(2),
-                    time = it,
-                    date = calendar
+                    time = it
                 )
             }?.let { callLog ->
                 callLogList.add(callLog)
             }
         }
     }
-
-    return callLogList.sortedByDescending {
+    callLogList.sortByDescending {
         it.time?.toMillisecondsFromString()
     }
+    return callLogList
 }
 
-fun Context.deleteLastMissedCall(phone: String) {
+fun Context.deleteLastMissedCall(phone: String): Boolean {
     val projection = arrayOf(
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
@@ -169,20 +163,24 @@ fun Context.deleteLastMissedCall(phone: String) {
                 cursor.getString(3)
             val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
             if (phone == phoneNumber.toFormattedPhoneNumber()) {
-                this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
-                BlackListerApp.instance?.database?.callLogDao()?.insertCallLog(time?.let {
-                    com.tarasovvp.blacklister.model.CallLog(
-                        name = cursor.getString(0),
-                        type = cursor.getString(2),
-                        phone = phoneNumber,
-                        time = it,
-                        isBlackList = true
-                    )
-                })
-                break
+                try {
+                    BlackListerApp.instance?.database?.blockedCallDao()?.insertBlockedCall(time?.let {
+                        BlockedCall(
+                            name = cursor.getString(0),
+                            phone = phoneNumber,
+                            time = it
+                        )
+                    })
+                    this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                    return false
+                }
+                return true
             }
         }
     }
+    return false
 }
 
 fun ImageView.loadCircleImage(photoUrl: String?) {
@@ -313,7 +311,7 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
                 it.name?.substring(0, 1)
             }
             is com.tarasovvp.blacklister.model.CallLog -> {
-                it.date
+                it.calendarFromTime()
             }
             else -> {
                 return@map null
@@ -330,7 +328,7 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
                     it.name?.substring(0, 1)
                 }
                 is com.tarasovvp.blacklister.model.CallLog -> {
-                    it.date
+                    it.calendarFromTime()
                 }
                 else -> it
             }

@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.blacknumberladd
+package com.tarasovvp.blacklister.ui.main.blacknumberadd
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData

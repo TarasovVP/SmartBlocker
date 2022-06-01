@@ -69,6 +69,7 @@ class CallLogListFragment :
         with(viewModel) {
             callLogLiveData.safeObserve(viewLifecycleOwner, { callLogList ->
                 this@CallLogListFragment.callLogList = callLogList
+                Log.e("callReceiveTAG", "CallLogListFragment callLogLiveData.safeObserve callLogList.size ${callLogList.size} checkDataListEmptiness(callLogList) ${checkDataListEmptiness(callLogList)}")
                 if (!checkDataListEmptiness(callLogList)) {
                     getHashMapFromCallLogList(callLogList)
                 }
