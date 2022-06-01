@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui.main.callloglist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemCallLogBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
@@ -18,7 +17,7 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): RecyclerView.ViewHolder {
         return if (viewType == HeaderDataItem.HEADER_TYPE) {
             HeaderViewHolder(
@@ -33,7 +32,7 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int
+        position: Int,
     ) {
         super.onBindViewHolder(holder, position)
         if (holder is CallLogAdapter.ViewHolder) {
@@ -51,7 +50,6 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
             binding?.itemCallLogName?.text = callLog.name
             binding?.itemCallLogNumber?.text = callLog.phone
             binding?.itemCallLogTime?.text = callLog.dateTimeFromTime()
-            binding?.itemCallLogBlackNumberIcon?.isVisible = callLog.isBlackList
             binding?.itemCallLogTypeIcon?.setImageResource(callLog.callLogIcon())
             binding?.itemCallLogAvatar?.loadCircleImage(callLog.photoUrl)
             binding?.root?.setSafeOnClickListener {

@@ -14,5 +14,4 @@ data class BlockedCall(
     var phone: String? = "",
     var time: String? = "",
     var type: String? = BLOCKED_CALL,
-    var isBlackList: Boolean = true,
 ) : Parcelable

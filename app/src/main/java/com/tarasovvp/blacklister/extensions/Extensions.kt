@@ -26,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
-import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_LOG_CALL
 import com.tarasovvp.blacklister.constants.Constants.DATE
 import com.tarasovvp.blacklister.constants.Constants.DESC
@@ -164,13 +163,14 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
             val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
             if (phone == phoneNumber.toFormattedPhoneNumber()) {
                 try {
-                    BlackListerApp.instance?.database?.blockedCallDao()?.insertBlockedCall(time?.let {
-                        BlockedCall(
-                            name = cursor.getString(0),
-                            phone = phoneNumber,
-                            time = it
-                        )
-                    })
+                    BlackListerApp.instance?.database?.blockedCallDao()
+                        ?.insertBlockedCall(time?.let {
+                            BlockedCall(
+                                name = cursor.getString(0),
+                                phone = phoneNumber,
+                                time = it
+                            )
+                        })
                     this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()

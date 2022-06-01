@@ -25,7 +25,7 @@
         android:gravity="top"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/item_call_log_number"
-        app:layout_constraintEnd_toStartOf="@+id/item_call_log_black_number_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_call_log_type_icon"
         app:layout_constraintStart_toEndOf="@+id/item_call_log_avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +36,7 @@
         android:layout_marginHorizontal="@dimen/margin_15"
         android:paddingVertical="@dimen/padding_5"
         app:layout_constraintBottom_toTopOf="@+id/item_call_log_time"
-        app:layout_constraintEnd_toStartOf="@+id/item_call_log_black_number_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_call_log_type_icon"
         app:layout_constraintStart_toEndOf="@+id/item_call_log_avatar"
         app:layout_constraintTop_toBottomOf="@+id/item_call_log_name" />
 
@@ -47,29 +47,16 @@
         android:layout_marginHorizontal="@dimen/margin_15"
         android:paddingVertical="@dimen/padding_5"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_call_log_black_number_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_call_log_type_icon"
         app:layout_constraintStart_toEndOf="@+id/item_call_log_avatar"
         app:layout_constraintTop_toBottomOf="@+id/item_call_log_number" />
-
-    <ImageView
-        android:id="@+id/item_call_log_black_number_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="@dimen/margin_15"
-        android:src="@drawable/ic_stop"
-        android:layout_marginHorizontal="@dimen/margin_10"
-        android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/item_call_log_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_call_log_type_icon"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/item_call_log_type_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="@dimen/margin_15"
-        app:layout_constraintStart_toEndOf="@+id/item_call_log_black_number_icon"
+        app:layout_constraintStart_toEndOf="@+id/item_call_log_time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

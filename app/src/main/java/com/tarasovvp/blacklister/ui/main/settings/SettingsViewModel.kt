@@ -6,9 +6,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
-import java.lang.Exception
 
-class SettingsViewModel(application: Application)  : BaseViewModel(application) {
+class SettingsViewModel(application: Application) : BaseViewModel(application) {
     val successLiveData = MutableLiveData<Boolean>()
     val successRenameUserLiveData = MutableLiveData<String>()
 

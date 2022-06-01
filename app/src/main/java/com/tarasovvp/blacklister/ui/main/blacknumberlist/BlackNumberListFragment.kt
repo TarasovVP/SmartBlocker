@@ -70,7 +70,7 @@ class BlackNumberListFragment :
         }
     }
 
-    override fun filterDataList() {
+    override fun searchDataList() {
         val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
             blackNumber.blackNumber.lowercase(Locale.getDefault()).contains(
                 searchableEditText?.text.toString()

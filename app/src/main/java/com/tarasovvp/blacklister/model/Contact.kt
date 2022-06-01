@@ -14,5 +14,5 @@ data class Contact(
     var photoUrl: String? = "",
     var phone: String? = "",
     var isPhoneClient: Boolean = false,
-    var isBlackList: Boolean = false
+    var isBlackList: Boolean = false,
 ) : Parcelable, BaseAdapter.MainData

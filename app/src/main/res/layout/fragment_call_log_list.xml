@@ -29,8 +29,19 @@
         app:layout_constraintStart_toEndOf="@+id/call_log_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/call_log_list_right_gd"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/call_log_list_refresh"
+        app:layout_constraintBottom_toTopOf="@+id/call_log_list_check"
         tools:ignore="Autofill,LabelFor" />
+
+    <CheckBox
+        android:id="@+id/call_log_list_check"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="wrap_content"
+        android:text="@string/only_blocked"
+        android:layout_marginVertical="@dimen/margin_5"
+        app:layout_constraintEnd_toStartOf="@+id/call_log_list_right_gd"
+        app:layout_constraintStart_toEndOf="@+id/call_log_list_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/call_log_list_search"
+        app:layout_constraintBottom_toTopOf="@+id/call_log_list_refresh"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/call_log_list_refresh"
@@ -38,7 +49,7 @@
         android:layout_height="@dimen/size_0"
         app:layout_constraintStart_toEndOf="@+id/call_log_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/call_log_list_right_gd"
-        app:layout_constraintTop_toBottomOf="@+id/call_log_list_search"
+        app:layout_constraintTop_toBottomOf="@+id/call_log_list_check"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView

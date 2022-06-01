@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.DATE_FORMAT
@@ -12,7 +11,6 @@ import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
 import com.tarasovvp.blacklister.constants.Constants.OUTCOMING_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.constants.Constants.TIME_FORMAT
-import com.tarasovvp.blacklister.database.CalendarConverter
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
 import com.tarasovvp.blacklister.extensions.toMillisecondsFromString
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -27,7 +25,6 @@ data class CallLog(
     var phone: String? = "",
     var type: String? = "",
     var time: String? = "",
-    var isBlackList: Boolean = false,
     var photoUrl: String? = "",
 ) : Parcelable, BaseAdapter.MainData {
     fun callLogIcon(): Int {

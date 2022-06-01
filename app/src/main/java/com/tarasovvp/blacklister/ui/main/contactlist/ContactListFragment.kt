@@ -35,6 +35,9 @@ class ContactListFragment :
         recyclerView = binding?.contactListRecyclerView
         searchableEditText = binding?.contactListSearch
         emptyListText = binding?.contactListEmpty
+        binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
+            searchDataList()
+        }
     }
 
     override fun observeLiveData() {
@@ -55,18 +58,21 @@ class ContactListFragment :
         viewModel.getContactList()
     }
 
-    override fun filterDataList() {
-        val filteredContactList = contactList?.filter { callLog ->
-            callLog.name?.lowercase(Locale.getDefault())?.contains(
+    override fun searchDataList() {
+        val filteredContactList = contactList?.filter { contact ->
+            (contact.name?.lowercase(Locale.getDefault())?.contains(
                 searchableEditText?.text.toString()
                     .lowercase(Locale.getDefault())
-            ).isTrue() || callLog.phone?.lowercase(Locale.getDefault())?.contains(
+            ).isTrue() || contact.phone?.lowercase(Locale.getDefault())?.contains(
                 searchableEditText?.text.toString()
                     .lowercase(Locale.getDefault())
-            ).isTrue()
-        } as ArrayList<Contact>
-        if (!checkDataListEmptiness(filteredContactList)) {
-            viewModel.getHashMapFromContactList(filteredContactList)
+            )
+                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackList else true)
+        } as? ArrayList<Contact>
+        filteredContactList?.apply {
+            if (!checkDataListEmptiness(this)) {
+                viewModel.getHashMapFromContactList(this)
+            }
         }
     }
 }

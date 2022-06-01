@@ -15,7 +15,7 @@ class SingleOnBoardingFragment(private val onBoarding: OnBoarding) : Fragment() 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentSingleOnboardingBinding.inflate(inflater)
         binding?.singleOnBoardingTitle?.text = getString(onBoarding.title)

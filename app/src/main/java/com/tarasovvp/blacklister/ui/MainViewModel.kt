@@ -49,16 +49,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val callLogList = getApplication<Application>().callLogList()
                 val blockedCallList = blockedCallRepository.allBlockedCalls()
                 blockedCallList?.forEach { blockedCall ->
-                    callLogList.add(CallLog(name = blockedCall.name, phone = blockedCall.phone, type = blockedCall.type, time = blockedCall.time, isBlackList = blockedCall.isBlackList))
+                    callLogList.add(CallLog(name = blockedCall.name,
+                        phone = blockedCall.phone,
+                        type = blockedCall.type,
+                        time = blockedCall.time))
                     Log.e(
                         "mainViewModelTAG",
-                        "MainViewModel  blockedCallList?.forEach Gson().toJson(blockedCall) ${Gson().toJson(blockedCall)}"
+                        "MainViewModel  blockedCallList?.forEach Gson().toJson(blockedCall) ${
+                            Gson().toJson(blockedCall)
+                        }"
                     )
                 }
                 callLogList.forEach { callLog ->
-                    callLog.isBlackList = blackNumberList?.contains(
-                        callLog.phone?.toFormattedPhoneNumber()
-                            ?.let { phone -> BlackNumber(phone) }).isTrue()
                     val index = contactList.indexOfFirst { it.phone == callLog.phone }
                     if (index >= 0) {
                         val contact =

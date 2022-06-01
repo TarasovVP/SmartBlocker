@@ -17,7 +17,7 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): RecyclerView.ViewHolder {
         return if (viewType == HeaderDataItem.HEADER_TYPE) {
             HeaderViewHolder(
@@ -36,7 +36,7 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int
+        position: Int,
     ) {
         super.onBindViewHolder(holder, position)
         if (holder is BlackNumberAdapter.ViewHolder) {

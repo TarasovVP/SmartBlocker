@@ -1,22 +1,20 @@
 package com.tarasovvp.blacklister.ui.start.onboarding
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.ACCEPT_PERMISSIONS_SCREEN
 import com.tarasovvp.blacklister.databinding.FragmentOnboardingBinding
 import com.tarasovvp.blacklister.enum.OnBoarding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
-import com.google.android.material.tabs.TabLayoutMediator
-import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>() {

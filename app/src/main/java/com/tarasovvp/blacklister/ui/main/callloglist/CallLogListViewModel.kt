@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.CallLog
@@ -33,8 +32,12 @@ class CallLogListViewModel(application: Application) : BaseViewModel(application
     fun getHashMapFromCallLogList(callLogList: List<CallLog>) {
         viewModelScope.launch {
             try {
-                val hashMapList = callLogRepository.getHashMapFromCallLogList(callLogList)
-                    Log.e("callReceiveTAG", "CallLogListViewModel hashMapList ${hashMapList.size} hashMapList.entries.size ${hashMapList["31.05.2022"]?.size} callLogList.size ${callLogList.size}")
+                val hashMapList =
+                    callLogRepository.getHashMapFromCallLogList(callLogList.sortedByDescending {
+                        it.time
+                    })
+                Log.e("callReceiveTAG",
+                    "CallLogListViewModel hashMapList ${hashMapList.size} hashMapList.entries.size ${hashMapList[hashMapList.keys.first()]?.size} callLogList.size ${callLogList.size}")
                 callLogHashMapLiveData.postValue(hashMapList)
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)

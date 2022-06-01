@@ -11,7 +11,7 @@ class LoginViewModel(application: Application) : GoogleViewModel(application) {
 
     fun sendPasswordResetEmail(email: String) {
         BlackListerApp.instance?.auth?.sendPasswordResetEmail(email)
-            ?.addOnCompleteListener() { task ->
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     successPasswordResetLiveData.postValue(true)
                 } else {

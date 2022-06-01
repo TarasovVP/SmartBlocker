@@ -10,7 +10,7 @@ class SignUpViewModel(application: Application) : GoogleViewModel(application) {
 
     fun createUserWithEmailAndPassword(email: String, password: String, name: String) {
         BlackListerApp.instance?.auth?.createUserWithEmailAndPassword(email, password)
-            ?.addOnCompleteListener() { createUserTask ->
+            ?.addOnCompleteListener { createUserTask ->
                 if (createUserTask.isSuccessful) {
                     updateUser(createUserTask.result?.user, name)
                 } else {

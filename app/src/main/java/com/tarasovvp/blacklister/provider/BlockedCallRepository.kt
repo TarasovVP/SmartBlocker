@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.provider
 
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.model.BlockedCall
-import com.tarasovvp.blacklister.model.CallLog
 
 interface BlockedCallRepository {
     suspend fun insertBlockedCall(blockedCall: BlockedCall)

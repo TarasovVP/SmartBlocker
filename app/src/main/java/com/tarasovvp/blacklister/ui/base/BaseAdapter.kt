@@ -18,7 +18,7 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int
+        position: Int,
     ) {
         if (holder is BaseAdapter<*>.HeaderViewHolder) {
             holder.bindData(

@@ -31,7 +31,8 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
     fun getHashMapFromContactList(contactList: List<Contact>) {
         viewModelScope.launch {
             try {
-                contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(contactList))
+                contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(
+                    contactList))
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }

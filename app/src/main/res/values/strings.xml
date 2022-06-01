@@ -35,4 +35,5 @@
     <string name="addBlackNumber">Добавление номера</string>
     <string name="add">Добавить</string>
     <string name="enter_login_password">Введите логин и пароль</string>
+    <string name="only_blocked">Только заблокированные</string>
 </resources>

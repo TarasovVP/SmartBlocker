@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contactdetail
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact

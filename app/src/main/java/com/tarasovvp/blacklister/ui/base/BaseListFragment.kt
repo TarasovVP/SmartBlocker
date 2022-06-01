@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +35,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun initView()
     abstract fun getDataList()
-    abstract fun filterDataList()
+    abstract fun searchDataList()
 
     protected fun RecyclerView.initRecyclerView() {
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -62,7 +61,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     override fun onResume() {
         super.onResume()
         searchableEditText?.doAfterTextChanged {
-            filterDataList()
+            searchDataList()
         }
     }
 
@@ -80,7 +79,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                     )
                     if (this@BaseListFragment.searchableEditText?.isVisible != true) {
                         searchableEditText?.text?.clear()
-                        filterDataList()
+                        searchDataList()
                     }
                     return@setOnMenuItemClickListener true
                 }
