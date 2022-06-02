@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_15"
+    android:layout_marginTop="@dimen/margin_5"
     android:layout_marginHorizontal="@dimen/margin_20">
 
     <ImageView
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_15"
         android:paddingVertical="@dimen/padding_5"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/item_call_log_divider"
         app:layout_constraintEnd_toStartOf="@+id/item_call_log_type_icon"
         app:layout_constraintStart_toEndOf="@+id/item_call_log_avatar"
         app:layout_constraintTop_toBottomOf="@+id/item_call_log_number" />
@@ -60,5 +60,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/item_call_log_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey"
+        android:layout_marginTop="@dimen/margin_5"
+        app:layout_constraintTop_toBottomOf="@+id/item_call_log_time"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

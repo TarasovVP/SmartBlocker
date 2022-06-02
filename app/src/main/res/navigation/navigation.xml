@@ -93,5 +93,11 @@
     <fragment
         android:id="@+id/blackNumberAddFragment"
         android:name="com.tarasovvp.blacklister.ui.main.blacknumberadd.BlackNumberAddFragment"
-        android:label="@string/addBlackNumber" />
+        android:label="@string/addBlackNumber" >
+        <argument
+            android:name="blackNumber"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.BlackNumber"
+            app:nullable="true" />
+    </fragment>
 </navigation>

@@ -12,7 +12,7 @@ import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
+class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?, View) -> Unit) :
     BaseAdapter<BlackNumber>() {
 
     override fun onCreateViewHolder(
@@ -58,7 +58,9 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber) -> Unit) :
             binding?.itemBlackListContain?.isVisible = blackNumber.isContain
             binding?.itemBlackListEnd?.isVisible = blackNumber.isEnd
             binding?.root?.setSafeOnClickListener {
-                blackNumber.let { clickedContact -> blackNumberClick.invoke(clickedContact) }
+                binding?.itemBlackListMenu?.apply {
+                    blackNumberClick.invoke(blackNumber, this)
+                }
             }
         }
     }

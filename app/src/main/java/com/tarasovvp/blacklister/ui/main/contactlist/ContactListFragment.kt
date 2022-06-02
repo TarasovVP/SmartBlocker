@@ -40,6 +40,11 @@ class ContactListFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding?.contactListCheck?.isChecked = false
+    }
+
     override fun observeLiveData() {
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner, { contactList ->

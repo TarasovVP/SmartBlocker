@@ -54,6 +54,11 @@ class CallLogListFragment :
         context?.unregisterReceiver(callHandleReceiver)
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding?.callLogListCheck?.isChecked = false
+    }
+
     override fun initView() {
         swipeRefresh = binding?.callLogListRefresh
         recyclerView = binding?.callLogListRecyclerView

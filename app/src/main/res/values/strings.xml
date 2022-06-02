@@ -14,7 +14,8 @@
     <string name="next">Дальше</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    <string name="delete">Delete %s?</string>
+    <string name="delete">Удалить %s?</string>
+    <string name="delete_menu">Удалить</string>
     <string name="give_all_permissions">Для продолжения необходимо предоставить все разрешения</string>
     <string name="bg_work_on">Работа в фоновом режиме</string>
     <string name="avoid_call">"BlackLister избавит Вас от навязчивых звонков "</string>
@@ -36,4 +37,5 @@
     <string name="add">Добавить</string>
     <string name="enter_login_password">Введите логин и пароль</string>
     <string name="only_blocked">Только заблокированные</string>
+    <string name="edit">Редактировать</string>
 </resources>

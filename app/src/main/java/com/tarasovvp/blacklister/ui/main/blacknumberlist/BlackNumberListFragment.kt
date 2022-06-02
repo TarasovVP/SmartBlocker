@@ -1,6 +1,10 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
+import android.content.Context
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
@@ -22,12 +26,25 @@ class BlackNumberListFragment :
 
     override fun createAdapter(): BaseAdapter<BlackNumber>? {
         return context?.let {
-            BlackNumberAdapter { blackNumber ->
-                findNavController().navigate(
-                    BlackNumberListFragmentDirections.startInfoDialog(
-                        blackNumber = blackNumber
-                    )
-                )
+            BlackNumberAdapter { blackNumber, view ->
+                context?.apply {
+                    val wrapper = ContextThemeWrapper(this, R.style.PopupMenu)
+                    val pop = PopupMenu(wrapper, view)
+                    pop.inflate(R.menu.black_number_menu)
+                    pop.setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.delete -> {
+                                findNavController().navigate(BlackNumberListFragmentDirections.startInfoDialog(
+                                    blackNumber = blackNumber))
+                            }
+                            R.id.edit -> {
+                                findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment(blackNumber))
+                            }
+                        }
+                        true
+                    }
+                    pop.show()
+                }
             }
         }
     }
