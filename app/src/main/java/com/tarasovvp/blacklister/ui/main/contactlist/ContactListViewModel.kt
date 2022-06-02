@@ -3,7 +3,9 @@ package com.tarasovvp.blacklister.ui.main.contactlist
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
 import com.tarasovvp.blacklister.provider.ContactRepositoryImpl
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
@@ -11,6 +13,7 @@ import kotlinx.coroutines.launch
 class ContactListViewModel(application: Application) : BaseViewModel(application) {
 
     private val contactRepository = ContactRepositoryImpl
+    private val blackNumberRepository = BlackNumberRepositoryImpl
 
     val contactLiveData = MutableLiveData<List<Contact>>()
     val contactHashMapLiveData = MutableLiveData<HashMap<String, List<Contact>>?>()
@@ -33,6 +36,33 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
             try {
                 contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(
                     contactList))
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
+
+    fun updateContact(contact: Contact) {
+        viewModelScope.launch {
+            try {
+                contactRepository.updateContact(contact)
+                contact.phone?.let { phone -> BlackNumber(blackNumber = phone) }
+                    ?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
+                getContactList()
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
+
+    private fun updateBlackNumber(isBlackList: Boolean, blackNumber: BlackNumber) {
+        viewModelScope.launch {
+            try {
+                if (isBlackList) {
+                    blackNumberRepository.insertBlackNumber(blackNumber)
+                } else {
+                    blackNumberRepository.deleteBlackNumber(blackNumber)
+                }
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }

@@ -84,6 +84,11 @@
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.BlackNumber"
             app:nullable="true" />
+        <argument
+            android:name="contact"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Contact"
+            app:nullable="true" />
     </dialog>
 
     <action

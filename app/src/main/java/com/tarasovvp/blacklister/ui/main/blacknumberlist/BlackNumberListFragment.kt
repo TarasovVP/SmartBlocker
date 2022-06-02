@@ -1,6 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
-import android.content.Context
+import android.view.MenuItem
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
@@ -9,6 +9,7 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -25,26 +26,22 @@ class BlackNumberListFragment :
     private var blackNumberList: List<BlackNumber>? = null
 
     override fun createAdapter(): BaseAdapter<BlackNumber>? {
-        return context?.let {
+        return context?.let { context ->
             BlackNumberAdapter { blackNumber, view ->
-                context?.apply {
-                    val wrapper = ContextThemeWrapper(this, R.style.PopupMenu)
-                    val pop = PopupMenu(wrapper, view)
-                    pop.inflate(R.menu.black_number_menu)
-                    pop.setOnMenuItemClickListener { item ->
-                        when (item.itemId) {
-                            R.id.delete -> {
-                                findNavController().navigate(BlackNumberListFragmentDirections.startInfoDialog(
-                                    blackNumber = blackNumber))
-                            }
-                            R.id.edit -> {
-                                findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment(blackNumber))
-                            }
+                val listener = PopupMenu.OnMenuItemClickListener { item ->
+                    when (item?.itemId) {
+                        R.id.delete -> {
+                            findNavController().navigate(BlackNumberListFragmentDirections.startInfoDialog(
+                                blackNumber = blackNumber))
                         }
-                        true
+                        R.id.edit -> {
+                            findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment(
+                                blackNumber))
+                        }
                     }
-                    pop.show()
+                    true
                 }
+                context.showPopUpMenu(R.menu.black_number_menu, view, listener)
             }
         }
     }

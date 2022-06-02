@@ -15,8 +15,10 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.CONTACT
 import com.tarasovvp.blacklister.databinding.DialogInfoBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class InfoDialog : DialogFragment() {
@@ -48,16 +50,24 @@ class InfoDialog : DialogFragment() {
 
     private fun initUI() {
         binding.dialogInfoTitle.text =
-            if (args.blackNumber == null) getString(R.string.exit_application) else String.format(
-                getString(R.string.delete),
-                args.blackNumber?.blackNumber)
+            when {
+                args.blackNumber.isNotNull() -> String.format(getString(R.string.delete),
+                    args.blackNumber?.blackNumber)
+                args.contact.isNotNull() -> String.format(
+                    if (args.contact?.isBlackList.isTrue()) getString(R.string.delete_contact_from_black_list) else getString(
+                        R.string.add_contact_to_black_list),
+                    args.contact?.name)
+                else -> getString(R.string.exit_application)
+            }
         binding.dialogInfoCancel.setSafeOnClickListener {
             dismiss()
         }
         binding.dialogInfoConfirm.setSafeOnClickListener {
+            if (args.contact.isNotNull()) args.contact?.isBlackList =
+                !args.contact?.isBlackList.isTrue()
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                if (args.blackNumber == null) APP_EXIT else BLACK_NUMBER,
-                if (args.blackNumber == null) true else args.blackNumber
+                if (args.blackNumber.isNotNull()) BLACK_NUMBER else if (args.contact.isNotNull()) CONTACT else APP_EXIT,
+                if (args.blackNumber.isNotNull()) args.blackNumber else if (args.contact.isNotNull()) args.contact else true
             )
             dismiss()
         }

@@ -10,7 +10,6 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.ui.main.contactdetail.ContactDetailFragmentArgs
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class BlackNumberAddFragment :

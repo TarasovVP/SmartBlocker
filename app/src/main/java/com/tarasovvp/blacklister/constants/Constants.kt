@@ -1,5 +1,7 @@
 package com.tarasovvp.blacklister.constants
 
+import com.tarasovvp.blacklister.model.Contact
+
 object Constants {
 
     const val PHONE_NUMBER_CODE = "+380"
@@ -7,6 +9,7 @@ object Constants {
     const val EIGHT_ZERO = "80"
     const val ZERO = "0"
     const val BLACK_NUMBER = "blackNumber"
+    const val CONTACT = "contact"
     const val CALL_LOG_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"
     const val END_CALL = "endCall"

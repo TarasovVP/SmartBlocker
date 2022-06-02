@@ -11,8 +11,11 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorInt
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -363,3 +366,11 @@ fun Snackbar.withColor(@ColorInt colorInt: Int): Snackbar {
 fun Any?.isNotNull() = this != null
 
 fun Boolean?.isTrue() = this == true
+
+fun Context.showPopUpMenu(menu: Int, view: View, listener: PopupMenu.OnMenuItemClickListener) {
+    val wrapper = ContextThemeWrapper(this, R.style.PopupMenu)
+    val pop = PopupMenu(wrapper, view)
+    pop.inflate(menu)
+    pop.setOnMenuItemClickListener(listener)
+    pop.show()
+}

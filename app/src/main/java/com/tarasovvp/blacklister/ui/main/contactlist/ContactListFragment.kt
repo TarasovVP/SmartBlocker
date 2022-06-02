@@ -1,12 +1,17 @@
 package com.tarasovvp.blacklister.ui.main.contactlist
 
+import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.blacknumberlist.BlackNumberListFragmentDirections
 import java.util.*
 
 class ContactListFragment :
@@ -20,12 +25,17 @@ class ContactListFragment :
 
     override fun createAdapter(): BaseAdapter<Contact>? {
         return context?.let {
-            ContactAdapter { contact ->
-                findNavController().navigate(
-                    ContactListFragmentDirections.startContactDetail(
-                        contact = contact
-                    )
-                )
+            ContactAdapter { contact, view ->
+                val listener = PopupMenu.OnMenuItemClickListener { item ->
+                    when (item?.itemId) {
+                        R.id.change -> {
+                            findNavController().navigate(BlackNumberListFragmentDirections.startInfoDialog(
+                                contact = contact))
+                        }
+                    }
+                    true
+                }
+                it.showPopUpMenu(R.menu.contact_menu, view, listener)
             }
         }
     }
@@ -35,6 +45,16 @@ class ContactListFragment :
         recyclerView = binding?.contactListRecyclerView
         searchableEditText = binding?.contactListSearch
         emptyListText = binding?.contactListEmpty
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Contact>(
+            Constants.CONTACT
+        )
+            ?.observe(
+                viewLifecycleOwner
+            ) { blackNumber ->
+                blackNumber?.let {
+                    viewModel.updateContact(it)
+                }
+            }
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
         }

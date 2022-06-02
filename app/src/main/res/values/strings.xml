@@ -38,4 +38,7 @@
     <string name="enter_login_password">Введите логин и пароль</string>
     <string name="only_blocked">Только заблокированные</string>
     <string name="edit">Редактировать</string>
+    <string name="change">Изменить</string>
+    <string name="delete_contact_from_black_list">Удалить %s из черного списка?</string>
+    <string name="add_contact_to_black_list">Добавить %s в черный список?</string>
 </resources>
