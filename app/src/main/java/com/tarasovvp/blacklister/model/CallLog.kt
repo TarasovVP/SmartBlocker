@@ -25,6 +25,7 @@ data class CallLog(
     var phone: String? = "",
     var type: String? = "",
     var time: String? = "",
+    var isBlackList: Boolean = false,
     var photoUrl: String? = "",
 ) : Parcelable, BaseAdapter.MainData {
     fun callLogIcon(): Int {

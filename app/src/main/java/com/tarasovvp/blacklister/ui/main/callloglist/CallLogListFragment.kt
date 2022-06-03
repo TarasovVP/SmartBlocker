@@ -2,16 +2,17 @@ package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.content.IntentFilter
 import android.util.Log
+import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.ADD_BLACK_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.databinding.FragmentCallLogListBinding
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.safeObserve
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.toFormattedPhoneNumber
+import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
-import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -28,6 +29,28 @@ class CallLogListFragment :
     private var callLogList: List<CallLog>? = null
     private var callHandleReceiver: CallHandleReceiver? = null
 
+    override fun createAdapter(): BaseAdapter<CallLog>? {
+        return context?.let {
+            CallLogAdapter { callLog, view ->
+                val listener = PopupMenu.OnMenuItemClickListener { item ->
+                    when (item?.itemId) {
+                        R.id.change -> {
+                            if (callLog.isBlackList) {
+                                findNavController().navigate(CallLogListFragmentDirections.startInfoDialog(
+                                    blackNumber = BlackNumber(blackNumber = callLog.phone.toString())))
+                            } else {
+                                findNavController().navigate(CallLogListFragmentDirections.startBlackNumberAddFragment(
+                                    BlackNumber(blackNumber = callLog.phone.toString())))
+                            }
+                        }
+                    }
+                    true
+                }
+                it.showPopUpMenu(R.menu.contact_menu, view, listener)
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         (activity as MainActivity).apply {
@@ -36,14 +59,7 @@ class CallLogListFragment :
         Log.e("callReceiveTAG", "CallLogListFragment onStart")
         callHandleReceiver = CallHandleReceiver {
             Log.e("callReceiveTAG", "CallLogListFragment CallHandleReceiver string $it")
-            (activity as MainActivity).apply {
-                getAllData()
-                mainViewModel.successLiveData.safeSingleObserve(this, { success ->
-                    Log.e("callReceiveTAG",
-                        "CallLogListFragment successLiveData.safeSingleObserve success $success")
-                    viewModel.getCallLogList()
-                })
-            }
+            getAllData()
         }
         context?.registerReceiver(callHandleReceiver, IntentFilter(CALL_RECEIVE))
     }
@@ -64,8 +80,31 @@ class CallLogListFragment :
         recyclerView = binding?.callLogListRecyclerView
         searchableEditText = binding?.callLogListSearch
         emptyListText = binding?.callLogListEmpty
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
+            BLACK_NUMBER)?.observe(viewLifecycleOwner) { blackNumber ->
+            blackNumber?.let {
+                viewModel.deleteBlackNumber(it)
+            }
+        }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            ADD_BLACK_NUMBER)?.observe(viewLifecycleOwner) {
+            Log.e("callReceiveTAG",
+                "CallLogListFragment getLiveData ADD_BLACK_NUMBER $it")
+            getAllData()
+        }
         binding?.callLogListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
+        }
+    }
+
+    private fun getAllData() {
+        (activity as MainActivity).apply {
+            getAllData()
+            mainViewModel.successLiveData.safeSingleObserve(this, { success ->
+                Log.e("callReceiveTAG",
+                    "CallLogListFragment successLiveData.safeSingleObserve success $success")
+                viewModel.getCallLogList()
+            })
         }
     }
 
@@ -73,7 +112,6 @@ class CallLogListFragment :
         swipeRefresh?.isRefreshing = true
         viewModel.getCallLogList()
     }
-
 
     override fun observeLiveData() {
         with(viewModel) {
@@ -89,6 +127,9 @@ class CallLogListFragment :
             })
             callLogHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { callLogHashMap ->
                 callLogHashMap?.let { setDataList(it) }
+            })
+            deleteSuccessLiveData.safeSingleObserve(viewLifecycleOwner, {
+                getAllData()
             })
         }
     }
@@ -107,21 +148,6 @@ class CallLogListFragment :
         filteredCallLogList?.apply {
             if (!checkDataListEmptiness(this)) {
                 viewModel.getHashMapFromCallLogList(this)
-            }
-        }
-    }
-
-    override fun createAdapter(): BaseAdapter<CallLog>? {
-        return context?.let {
-            CallLogAdapter { callLog ->
-                findNavController().navigate(
-                    CallLogListFragmentDirections.startContactDetail(
-                        contact = Contact(
-                            name = callLog.name,
-                            phone = callLog.phone?.toFormattedPhoneNumber()
-                        )
-                    )
-                )
             }
         }
     }

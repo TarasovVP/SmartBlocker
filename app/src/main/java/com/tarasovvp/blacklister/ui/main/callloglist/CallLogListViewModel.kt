@@ -4,7 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
+import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
 import com.tarasovvp.blacklister.provider.CallLogRepositoryImpl
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
@@ -12,9 +14,11 @@ import kotlinx.coroutines.launch
 class CallLogListViewModel(application: Application) : BaseViewModel(application) {
 
     private val callLogRepository = CallLogRepositoryImpl
+    private val blackNumberRepository = BlackNumberRepositoryImpl
 
     val callLogLiveData = MutableLiveData<List<CallLog>>()
     val callLogHashMapLiveData = MutableLiveData<HashMap<String, List<CallLog>>?>()
+    val deleteSuccessLiveData = MutableLiveData<Boolean>()
 
     fun getCallLogList() {
         viewModelScope.launch {
@@ -39,6 +43,17 @@ class CallLogListViewModel(application: Application) : BaseViewModel(application
                 Log.e("callReceiveTAG",
                     "CallLogListViewModel hashMapList ${hashMapList.size} hashMapList.entries.size ${hashMapList[hashMapList.keys.first()]?.size} callLogList.size ${callLogList.size}")
                 callLogHashMapLiveData.postValue(hashMapList)
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
+
+    fun deleteBlackNumber(blackNumber: BlackNumber) {
+        viewModelScope.launch {
+            try {
+                blackNumberRepository.deleteBlackNumber(blackNumber)
+                deleteSuccessLiveData.postValue(true)
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }

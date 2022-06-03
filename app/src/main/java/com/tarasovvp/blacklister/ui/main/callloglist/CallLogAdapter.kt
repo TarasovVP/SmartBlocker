@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.main.callloglist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemCallLogBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
@@ -12,7 +13,7 @@ import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
+class CallLogAdapter(private val callLogClick: (CallLog, View) -> Unit) :
     BaseAdapter<CallLog>() {
 
     override fun onCreateViewHolder(
@@ -47,13 +48,16 @@ class CallLogAdapter(private val callLogClick: (CallLog) -> Unit) :
         var binding: ItemCallLogBinding? = ItemCallLogBinding.bind(itemView)
         fun bindData(position: Int) {
             val callLog = getDataInPosition(position)
+            binding?.itemCallLogBlocked?.isVisible = callLog.isBlackList
             binding?.itemCallLogName?.text = callLog.name
             binding?.itemCallLogNumber?.text = callLog.phone
             binding?.itemCallLogTime?.text = callLog.dateTimeFromTime()
             binding?.itemCallLogTypeIcon?.setImageResource(callLog.callLogIcon())
             binding?.itemCallLogAvatar?.loadCircleImage(callLog.photoUrl)
             binding?.root?.setSafeOnClickListener {
-                callLog.let { clickedContact -> callLogClick.invoke(clickedContact) }
+                binding?.itemCallLogMenu?.apply {
+                    callLogClick.invoke(callLog, this)
+                }
             }
         }
     }

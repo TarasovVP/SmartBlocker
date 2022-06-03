@@ -36,6 +36,9 @@
         android:name="com.tarasovvp.blacklister.ui.main.callloglist.CallLogListFragment"
         android:label="@string/log_list">
         <action
+            android:id="@+id/startBlackNumberAddFragment"
+            app:destination="@id/blackNumberAddFragment" />
+        <action
             android:id="@+id/startContactDetail"
             app:destination="@id/contactDetailFragment" />
     </fragment>

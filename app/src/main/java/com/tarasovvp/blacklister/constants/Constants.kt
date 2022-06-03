@@ -31,4 +31,5 @@ object Constants {
     const val ACCEPT_PERMISSIONS_SCREEN = 2
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
+    const val ADD_BLACK_NUMBER = "addBlackNumber"
 }

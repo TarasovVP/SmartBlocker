@@ -61,6 +61,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 }
                 callLogList.forEach { callLog ->
+                    callLog.isBlackList = blackNumberList?.contains(
+                        callLog.phone?.toFormattedPhoneNumber()
+                            ?.let { phone -> BlackNumber(phone) }) == true
                     val index = contactList.indexOfFirst { it.phone == callLog.phone }
                     if (index >= 0) {
                         val contact =

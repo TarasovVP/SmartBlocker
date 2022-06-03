@@ -16,6 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/item_call_log_blocked"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_block"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/item_call_log_avatar"
+        app:layout_constraintEnd_toEndOf="@+id/item_call_log_avatar" />
+
     <TextView
         android:id="@+id/item_call_log_name"
         android:layout_width="@dimen/size_0"
@@ -58,8 +67,17 @@
         android:layout_marginEnd="@dimen/margin_15"
         app:layout_constraintStart_toEndOf="@+id/item_call_log_time"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_call_log_menu"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_call_log_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pop_menu"
+        app:layout_constraintBottom_toBottomOf="@+id/item_call_log_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_call_log_avatar"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <View
         android:id="@+id/item_call_log_divider"

@@ -56,7 +56,9 @@ class ContactAdapter(private val contactClick: (Contact, View) -> Unit) :
             binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
             binding?.itemContactBlackListIcon?.isVisible = contact.isBlackList.isTrue()
             binding?.root?.setSafeOnClickListener { view ->
-                contact.let { clickedContact -> contactClick.invoke(clickedContact, view) }
+                binding?.itemContactMenu?.apply {
+                    contactClick.invoke(contact, this)
+                }
             }
         }
     }
