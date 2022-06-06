@@ -52,7 +52,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
 
     private fun getCurrentBackStackEntry() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(APP_EXIT)
-            ?.observe(
+            ?.safeSingleObserve(
                 viewLifecycleOwner
             ) { exitApp ->
                 if (exitApp) {

@@ -4,6 +4,7 @@ import android.content.IntentFilter
 import android.util.Log
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.ADD_BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
@@ -81,16 +82,16 @@ class CallLogListFragment :
         searchableEditText = binding?.callLogListSearch
         emptyListText = binding?.callLogListEmpty
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
-            BLACK_NUMBER)?.observe(viewLifecycleOwner) { blackNumber ->
-            blackNumber?.let {
-                viewModel.deleteBlackNumber(it)
-            }
+            BLACK_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
+            viewModel.deleteBlackNumber(blackNumber)
+            Log.e("callReceiveTAG",
+                "CallLogListFragment  viewModel.deleteBlackNumber blackNumber ${Gson().toJson(blackNumber)}")
         }
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
-            ADD_BLACK_NUMBER)?.observe(viewLifecycleOwner) {
+            ADD_BLACK_NUMBER)?.safeSingleObserve(viewLifecycleOwner) {
             Log.e("callReceiveTAG",
                 "CallLogListFragment getLiveData ADD_BLACK_NUMBER $it")
-            getAllData()
+            viewModel.getCallLogList()
         }
         binding?.callLogListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
@@ -110,7 +111,7 @@ class CallLogListFragment :
 
     override fun getDataList() {
         swipeRefresh?.isRefreshing = true
-        viewModel.getCallLogList()
+        getAllData()
     }
 
     override fun observeLiveData() {

@@ -36,7 +36,7 @@
         android:id="@+id/contact_list_check"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
-        android:text="@string/only_blocked"
+        android:text="@string/only_black_list"
         android:layout_marginVertical="@dimen/margin_5"
         app:layout_constraintEnd_toStartOf="@+id/contact_list_right_gd"
         app:layout_constraintStart_toEndOf="@+id/contact_list_left_gd"

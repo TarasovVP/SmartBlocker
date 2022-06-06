@@ -54,12 +54,10 @@ class BlackNumberListFragment :
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER
         )
-            ?.observe(
+            ?.safeSingleObserve(
                 viewLifecycleOwner
             ) { blackNumber ->
-                blackNumber?.let {
-                    viewModel.deleteBlackNumber(it)
-                }
+                viewModel.deleteBlackNumber(blackNumber)
             }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment())

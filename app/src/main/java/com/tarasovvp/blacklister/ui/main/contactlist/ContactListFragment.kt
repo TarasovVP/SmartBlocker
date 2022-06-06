@@ -48,12 +48,10 @@ class ContactListFragment :
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Contact>(
             Constants.CONTACT
         )
-            ?.observe(
+            ?.safeSingleObserve(
                 viewLifecycleOwner
             ) { blackNumber ->
-                blackNumber?.let {
-                    viewModel.updateContact(it)
-                }
+                viewModel.updateContact(blackNumber)
             }
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()

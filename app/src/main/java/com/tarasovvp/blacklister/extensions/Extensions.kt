@@ -367,6 +367,8 @@ fun Any?.isNotNull() = this != null
 
 fun Boolean?.isTrue() = this == true
 
+fun Int?.orZero() = this ?: 0
+
 fun Context.showPopUpMenu(menu: Int, view: View, listener: PopupMenu.OnMenuItemClickListener) {
     val wrapper = ContextThemeWrapper(this, R.style.PopupMenu)
     val pop = PopupMenu(wrapper, view)

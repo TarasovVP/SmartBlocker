@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.tarasovvp.blacklister.extensions.orZero
 
 object Settings {
 
@@ -39,7 +40,7 @@ object Settings {
         return sharedPreferences?.getInt(
             key,
             0
-        ) ?: 0
+        ).orZero()
     }
 
     @JvmStatic

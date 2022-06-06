@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.ADD_BLACK_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberAddBinding
@@ -56,6 +57,7 @@ class BlackNumberAddFragment :
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                 ADD_BLACK_NUMBER, true
             )
+            Log.e("blackNumberTAG", "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${Gson().toJson(it)}")
             findNavController().popBackStack()
         })
     }
