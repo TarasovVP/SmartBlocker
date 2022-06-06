@@ -54,7 +54,7 @@ class ContactAdapter(private val contactClick: (Contact, View) -> Unit) :
             binding?.itemContactName?.text = contact.name
             binding?.itemContactNumber?.text = contact.phone
             binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
-            binding?.itemContactMenu?.isVisible = contact.isBlackList.isTrue()
+            binding?.itemCallLogBlocked?.isVisible = contact.isBlackList.isTrue()
             binding?.root?.setSafeOnClickListener { view ->
                 binding?.itemContactMenu?.apply {
                     contactClick.invoke(contact, this)

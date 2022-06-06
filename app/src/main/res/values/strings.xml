@@ -42,4 +42,7 @@
     <string name="delete_contact_from_black_list">Удалить %s из черного списка?</string>
     <string name="add_contact_to_black_list">Добавить %s в черный список?</string>
     <string name="only_black_list">Только из черного спикса</string>
+    <string name="details">Детали</string>
+    <string name="delete_black_list">Удалить из черного списка</string>
+    <string name="add_black_list">Добавить в черный список</string>
 </resources>

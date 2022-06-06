@@ -35,7 +35,9 @@ class MainActivity : AppCompatActivity() {
         R.id.callLogListFragment,
         R.id.contactListFragment,
         R.id.blackNumberListFragment,
-        R.id.settingsFragment
+        R.id.settingsFragment,
+        R.id.blackNumberAddFragment,
+        R.id.numberDetailFragment
     )
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->

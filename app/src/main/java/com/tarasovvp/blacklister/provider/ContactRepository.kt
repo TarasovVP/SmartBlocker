@@ -11,7 +11,7 @@ interface ContactRepository {
     fun getAllContacts(): List<Contact>?
     fun updateContact(contact: Contact)
     suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>>
-    fun getContactByPhone(phone: String): Contact?
+    fun getContactByNumber(phone: String): Contact?
 }
 
 object ContactRepositoryImpl : ContactRepository {
@@ -26,7 +26,7 @@ object ContactRepositoryImpl : ContactRepository {
         return dao?.getAllContacts()
     }
 
-    override fun getContactByPhone(phone: String): Contact? {
+    override fun getContactByNumber(phone: String): Contact? {
         return dao?.getContactByPhone(phone)
     }
 

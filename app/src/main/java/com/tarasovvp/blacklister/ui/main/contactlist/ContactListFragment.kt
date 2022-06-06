@@ -11,7 +11,6 @@ import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.blacknumberlist.BlackNumberListFragmentDirections
 import java.util.*
 
 class ContactListFragment :
@@ -29,13 +28,19 @@ class ContactListFragment :
                 val listener = PopupMenu.OnMenuItemClickListener { item ->
                     when (item?.itemId) {
                         R.id.change -> {
-                            findNavController().navigate(BlackNumberListFragmentDirections.startInfoDialog(
+                            findNavController().navigate(ContactListFragmentDirections.startInfoDialog(
                                 contact = contact))
+                        }
+                        R.id.details -> {
+                            findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(
+                                number = contact.phone))
                         }
                     }
                     true
                 }
-                it.showPopUpMenu(R.menu.contact_menu, view, listener)
+                it.showPopUpMenu(if (contact.isBlackList) R.menu.number_delete_menu else R.menu.number_add_menu,
+                    view,
+                    listener)
             }
         }
     }
@@ -45,12 +50,8 @@ class ContactListFragment :
         recyclerView = binding?.contactListRecyclerView
         searchableEditText = binding?.contactListSearch
         emptyListText = binding?.contactListEmpty
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Contact>(
-            Constants.CONTACT
-        )
-            ?.safeSingleObserve(
-                viewLifecycleOwner
-            ) { blackNumber ->
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Contact>(Constants.CONTACT)
+            ?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
                 viewModel.updateContact(blackNumber)
             }
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->

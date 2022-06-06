@@ -39,8 +39,8 @@
             android:id="@+id/startBlackNumberAddFragment"
             app:destination="@id/blackNumberAddFragment" />
         <action
-            android:id="@+id/startContactDetail"
-            app:destination="@id/contactDetailFragment" />
+            android:id="@+id/startNumberDetailFragment"
+            app:destination="@id/numberDetailFragment" />
     </fragment>
 
     <fragment
@@ -48,17 +48,18 @@
         android:name="com.tarasovvp.blacklister.ui.main.contactlist.ContactListFragment"
         android:label="@string/contact_list">
         <action
-            android:id="@+id/startContactDetail"
-            app:destination="@id/contactDetailFragment" />
+            android:id="@+id/startNumberDetailFragment"
+            app:destination="@id/numberDetailFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/contactDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.contactdetail.ContactDetailFragment">
+        android:id="@+id/numberDetailFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.numberdetail.NumberDetailFragment"
+        android:label="@string/details">
         <argument
-            android:name="contact"
+            android:name="number"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Contact"
+            app:argType="string"
             app:nullable="true" />
     </fragment>
 

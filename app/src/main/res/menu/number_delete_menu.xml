@@ -2,5 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/change"
-        android:title="@string/change" />
+        android:title="@string/delete_black_list" />
+    <item
+        android:id="@+id/details"
+        android:title="@string/details" />
 </menu>

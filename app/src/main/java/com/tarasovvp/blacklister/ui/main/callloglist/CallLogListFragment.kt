@@ -6,7 +6,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.ADD_BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
@@ -17,6 +16,7 @@ import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.contactlist.ContactListFragmentDirections
 import com.tarasovvp.blacklister.utils.CallHandleReceiver
 import java.util.*
 
@@ -44,10 +44,14 @@ class CallLogListFragment :
                                     BlackNumber(blackNumber = callLog.phone.toString())))
                             }
                         }
+                        R.id.details -> {
+                            findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(
+                                number = callLog.phone))
+                        }
                     }
                     true
                 }
-                it.showPopUpMenu(R.menu.contact_menu, view, listener)
+                it.showPopUpMenu(if (callLog.isBlackList) R.menu.number_delete_menu else R.menu.number_add_menu, view, listener)
             }
         }
     }
@@ -86,12 +90,6 @@ class CallLogListFragment :
             viewModel.deleteBlackNumber(blackNumber)
             Log.e("callReceiveTAG",
                 "CallLogListFragment  viewModel.deleteBlackNumber blackNumber ${Gson().toJson(blackNumber)}")
-        }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
-            ADD_BLACK_NUMBER)?.safeSingleObserve(viewLifecycleOwner) {
-            Log.e("callReceiveTAG",
-                "CallLogListFragment getLiveData ADD_BLACK_NUMBER $it")
-            viewModel.getCallLogList()
         }
         binding?.callLogListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()

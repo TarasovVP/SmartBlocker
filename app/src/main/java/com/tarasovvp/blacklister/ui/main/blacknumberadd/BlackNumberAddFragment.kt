@@ -7,14 +7,10 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
-import com.tarasovvp.blacklister.constants.Constants
-import com.tarasovvp.blacklister.constants.Constants.ADD_BLACK_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberAddBinding
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -54,10 +50,10 @@ class BlackNumberAddFragment :
     override fun observeLiveData() {
         viewModel.blackNumberLiveData.safeSingleObserve(viewLifecycleOwner, {
             showMessage("Number ${it.blackNumber} is added", false)
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                ADD_BLACK_NUMBER, true
-            )
-            Log.e("blackNumberTAG", "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${Gson().toJson(it)}")
+            Log.e("blackNumberTAG",
+                "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
+                    Gson().toJson(it)
+                }")
             findNavController().popBackStack()
         })
     }
