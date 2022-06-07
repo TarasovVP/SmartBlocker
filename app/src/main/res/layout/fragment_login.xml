@@ -121,7 +121,6 @@
 
     <EditText
         android:id="@+id/email"
-        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:hint="Email"
@@ -149,7 +148,6 @@
 
     <EditText
         android:id="@+id/password"
-        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:hint="Password"

@@ -48,7 +48,6 @@ class ContactListFragment :
     override fun initView() {
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
-        searchableEditText = binding?.contactListSearch
         emptyListText = binding?.contactListEmpty
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Contact>(Constants.CONTACT)
             ?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
@@ -85,11 +84,9 @@ class ContactListFragment :
     override fun searchDataList() {
         val filteredContactList = contactList?.filter { contact ->
             (contact.name?.lowercase(Locale.getDefault())?.contains(
-                searchableEditText?.text.toString()
-                    .lowercase(Locale.getDefault())
+                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ).isTrue() || contact.phone?.lowercase(Locale.getDefault())?.contains(
-                searchableEditText?.text.toString()
-                    .lowercase(Locale.getDefault())
+                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
                 .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackList else true)
         } as? ArrayList<Contact>

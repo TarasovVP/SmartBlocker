@@ -1,8 +1,5 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
-import android.content.Context
-import android.view.MenuItem
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
@@ -50,7 +47,6 @@ class BlackNumberListFragment :
     override fun initView() {
         swipeRefresh = binding?.blackNumberListRefresh
         recyclerView = binding?.blackNumberListRecyclerView
-        searchableEditText = binding?.blackNumberListSearch
         emptyListText = binding?.blackNumberListEmpty
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER
@@ -86,8 +82,7 @@ class BlackNumberListFragment :
     override fun searchDataList() {
         val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
             blackNumber.blackNumber.lowercase(Locale.getDefault()).contains(
-                searchableEditText?.text.toString()
-                    .lowercase(Locale.getDefault())
+                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
         } as ArrayList<BlackNumber>
         if (!checkDataListEmptiness(filteredBlackNumberList)) {

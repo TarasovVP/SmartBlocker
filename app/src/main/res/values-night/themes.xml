@@ -14,7 +14,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:windowBackground">@drawable/main_bg</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:editTextStyle">@style/SearchableEdittext</item>
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/grey</item>
         <item name="colorControlNormal">@color/white</item>
         <!-- Customize your theme here. -->
         <item name="materialButtonStyle">@style/StrokeButton</item>
@@ -36,19 +37,6 @@
         <item name="strokeWidth">@dimen/margin_2</item>
         <item name="strokeColor">@color/white</item>
         <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="SearchableEdittext">
-        <item name="android:textColorHint">#80FFFFFF</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="android:inputType">text</item>
-        <item name="android:layout_marginBottom">@dimen/margin_5</item>
-        <item name="android:hint">@string/search</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:paddingStart">@dimen/padding_15</item>
-        <item name="android:paddingEnd">@dimen/padding_15</item>
     </style>
 
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">

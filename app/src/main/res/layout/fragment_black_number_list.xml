@@ -20,17 +20,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96"/>
 
-    <EditText
+    <Spinner
         android:id="@+id/black_number_list_search"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
-        style="@style/SearchableEdittext"
-        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/black_number_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/black_number_list_right_gd"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/black_number_list_refresh"
-        tools:ignore="Autofill,LabelFor,TextFields" />
+        app:layout_constraintBottom_toTopOf="@+id/black_number_list_refresh" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/black_number_list_refresh"

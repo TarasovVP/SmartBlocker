@@ -3,13 +3,11 @@ package com.tarasovvp.blacklister.ui.base
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,8 +26,8 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
 
     var swipeRefresh: SwipeRefreshLayout? = null
     var recyclerView: RecyclerView? = null
-    var searchableEditText: EditText? = null
     var emptyListText: TextView? = null
+    protected var searchQuery: String? = ""
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun initView()
@@ -60,22 +58,19 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).apply {
-            toolbar?.setOnMenuItemClickListener {
-                this@BaseListFragment.searchableEditText?.isVisible =
-                    this@BaseListFragment.searchableEditText?.isVisible != true
-                it.icon = ContextCompat.getDrawable(
-                    this,
-                    if (this@BaseListFragment.searchableEditText?.isVisible.isTrue()) R.drawable.ic_search_off else R.drawable.ic_search
-                )
-                if (this@BaseListFragment.searchableEditText?.isVisible != true) {
-                    searchableEditText?.text?.clear()
-                    searchDataList()
+            val searchView = toolbar?.menu?.findItem(R.id.search_menu_item)?.actionView as? SearchView
+            searchView?.queryHint = getString(R.string.enter_phone_number)
+            searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
                 }
-                return@setOnMenuItemClickListener true
-            }
-        }
-        searchableEditText?.doAfterTextChanged {
-            searchDataList()
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    searchQuery = query
+                    searchDataList()
+                    return true
+                }
+            })
         }
     }
 

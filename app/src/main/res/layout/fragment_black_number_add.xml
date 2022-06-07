@@ -21,11 +21,11 @@
 
     <EditText
         android:id="@+id/black_number_add_search"
-        style="@style/SearchableEdittext"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
-        android:hint="Введите номер"
+        android:inputType="numberDecimal"
+        android:hint="@string/enter_number"
         app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
         app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
         app:layout_constraintTop_toTopOf="parent"

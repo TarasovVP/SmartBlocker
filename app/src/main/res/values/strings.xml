@@ -45,4 +45,6 @@
     <string name="details">Детали</string>
     <string name="delete_black_list">Удалить из черного списка</string>
     <string name="add_black_list">Добавить в черный список</string>
+    <string name="enter_phone_number">Введите номер телефона</string>
+    <string name="enter_number">Введите номер</string>
 </resources>

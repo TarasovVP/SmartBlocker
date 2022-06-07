@@ -142,7 +142,6 @@
 
     <EditText
         android:id="@+id/name"
-        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Name"
@@ -155,7 +154,6 @@
 
     <EditText
         android:id="@+id/email"
-        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Email"
@@ -167,7 +165,6 @@
 
     <EditText
         android:id="@+id/password"
-        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Password"
@@ -180,7 +177,6 @@
 
     <EditText
         android:id="@+id/repeat_password"
-        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Repeat password"

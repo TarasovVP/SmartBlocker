@@ -51,7 +51,9 @@ class CallLogListFragment :
                     }
                     true
                 }
-                it.showPopUpMenu(if (callLog.isBlackList) R.menu.number_delete_menu else R.menu.number_add_menu, view, listener)
+                it.showPopUpMenu(if (callLog.isBlackList) R.menu.number_delete_menu else R.menu.number_add_menu,
+                    view,
+                    listener)
             }
         }
     }
@@ -83,13 +85,14 @@ class CallLogListFragment :
     override fun initView() {
         swipeRefresh = binding?.callLogListRefresh
         recyclerView = binding?.callLogListRecyclerView
-        searchableEditText = binding?.callLogListSearch
         emptyListText = binding?.callLogListEmpty
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
             viewModel.deleteBlackNumber(blackNumber)
             Log.e("callReceiveTAG",
-                "CallLogListFragment  viewModel.deleteBlackNumber blackNumber ${Gson().toJson(blackNumber)}")
+                "CallLogListFragment  viewModel.deleteBlackNumber blackNumber ${
+                    Gson().toJson(blackNumber)
+                }")
         }
         binding?.callLogListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
@@ -136,11 +139,9 @@ class CallLogListFragment :
     override fun searchDataList() {
         val filteredCallLogList = callLogList?.filter { callLog ->
             (callLog.name?.lowercase(Locale.getDefault())?.contains(
-                searchableEditText?.text.toString()
-                    .lowercase(Locale.getDefault())
+                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ).isTrue() || callLog.phone?.lowercase(Locale.getDefault())?.contains(
-                searchableEditText?.text.toString()
-                    .lowercase(Locale.getDefault())
+                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
                 .isTrue()) && if (binding?.callLogListCheck?.isChecked.isTrue()) callLog.type == BLOCKED_CALL else true
         } as? ArrayList<CallLog>

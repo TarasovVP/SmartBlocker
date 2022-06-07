@@ -46,7 +46,6 @@
 
     <EditText
         android:id="@+id/settings_change_name_input"
-        style="@style/SearchableEdittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Введите ваше имя"
