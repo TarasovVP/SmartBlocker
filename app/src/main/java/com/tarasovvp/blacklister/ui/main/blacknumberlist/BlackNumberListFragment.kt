@@ -1,18 +1,18 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
+import android.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
-import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.utils.MultipleChoiceSpinner
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
@@ -24,6 +24,7 @@ class BlackNumberListFragment :
     override val viewModelClass = BlackNumberListViewModel::class.java
 
     private var blackNumberList: List<BlackNumber>? = null
+    private var selected: BooleanArray = booleanArrayOf(false, false, false)
 
     override fun createAdapter(): BaseAdapter<BlackNumber>? {
         return context?.let { context ->
@@ -50,15 +51,6 @@ class BlackNumberListFragment :
         swipeRefresh = binding?.blackNumberListRefresh
         recyclerView = binding?.blackNumberListRecyclerView
         emptyListText = binding?.blackNumberListEmpty
-        binding?.blackNumberListSearch?.setItems(listOf(getString(R.string.black_number_contain),
-            getString(R.string.black_number_start),
-            getString(R.string.black_number_end)), getString(
-            R.string.black_number_no_filter), object : MultipleChoiceSpinner.MultiSpinnerListener {
-            override fun onItemsSelected(selected: BooleanArray) {
-                searchDataList()
-            }
-
-        })
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER
         )
@@ -70,6 +62,31 @@ class BlackNumberListFragment :
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment())
         }
+        binding?.blackNumberListFilter?.setSafeOnClickListener {
+            filterDataList()
+        }
+    }
+
+    private fun filterDataList(): Boolean {
+        val items = arrayOf(getString(R.string.black_number_contain),
+            getString(R.string.black_number_start),
+            getString(R.string.black_number_end))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AlertDialogCustom))
+        builder.setMultiChoiceItems(items, selected
+        ) { _, position, isChecked -> selected[position] = isChecked }
+        builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
+        builder.setPositiveButton(R.string.ok) { _, _ ->
+            val itemsTitleList = arrayListOf<String>()
+            items.forEachIndexed { index, title ->
+                if (selected[index]) {
+                    itemsTitleList.add(title)
+                }
+            }
+            binding?.blackNumberListFilter?.text = if (itemsTitleList.isEmpty()) getString(R.string.black_number_no_filter) else itemsTitleList.joinToString(", ")
+            searchDataList()
+        }
+        builder.show()
+        return true
     }
 
     override fun getDataList() {
@@ -94,15 +111,9 @@ class BlackNumberListFragment :
         val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
             blackNumber.blackNumber.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (if (binding?.blackNumberListSearch?.selected?.get(0)
-                    .isTrue()
-            ) blackNumber.isContain else true)
-                    && (if (binding?.blackNumberListSearch?.selected?.get(1)
-                    .isTrue()
-            ) blackNumber.isStart else true)
-                    && if (binding?.blackNumberListSearch?.selected?.get(2)
-                    .isTrue()
-            ) blackNumber.isEnd else true
+            ) && (if (selected[0]) blackNumber.isContain else true)
+                    && (if (selected[1]) blackNumber.isStart else true)
+                    && if (selected[2]) blackNumber.isEnd else true
         } as ArrayList<BlackNumber>
         if (!checkDataListEmptiness(filteredBlackNumberList)) {
             viewModel.getHashMapFromBlackNumberList(filteredBlackNumberList)

@@ -20,10 +20,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96"/>
 
-    <com.tarasovvp.blacklister.utils.MultipleChoiceSpinner
-        android:id="@+id/black_number_list_search"
+    <TextView
+        android:id="@+id/black_number_list_filter"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/padding_10"
+        android:text="@string/black_number_no_filter"
+        app:drawableStartCompat="@drawable/ic_filter"
+        android:drawablePadding="@dimen/padding_10"
         app:layout_constraintStart_toEndOf="@+id/black_number_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/black_number_list_right_gd"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +39,7 @@
         android:layout_height="@dimen/size_0"
         app:layout_constraintStart_toEndOf="@+id/black_number_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/black_number_list_right_gd"
-        app:layout_constraintTop_toBottomOf="@+id/black_number_list_search"
+        app:layout_constraintTop_toBottomOf="@+id/black_number_list_filter"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
