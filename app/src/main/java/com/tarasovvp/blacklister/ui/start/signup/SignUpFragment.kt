@@ -17,6 +17,7 @@ class SignUpFragment : GoogleFragment<FragmentSignUpBinding, SignUpViewModel>() 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.actionBar?.hide()
         binding?.googleAuth?.setSafeOnClickListener {
             googleSignInLauncher.launch(googleSignInClient?.signInIntent)
         }

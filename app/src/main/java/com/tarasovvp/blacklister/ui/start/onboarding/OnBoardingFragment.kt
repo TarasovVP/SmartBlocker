@@ -40,6 +40,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.actionBar?.hide()
         binding?.onBoardingButton?.setSafeOnClickListener {
             if (currentPosition == ACCEPT_PERMISSIONS_SCREEN) {
                 checkPermissions()

@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -44,8 +43,8 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkToolbarSearchVisibility()
         initView()
+        (activity as MainActivity).toolbar?.navigationIcon = null
         recyclerView?.initRecyclerView()
         if (context?.checkPermissions().isTrue()) {
             swipeRefresh?.isRefreshing = true
@@ -60,32 +59,23 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
 
     override fun onResume() {
         super.onResume()
+        (activity as MainActivity).apply {
+            toolbar?.setOnMenuItemClickListener {
+                this@BaseListFragment.searchableEditText?.isVisible =
+                    this@BaseListFragment.searchableEditText?.isVisible != true
+                it.icon = ContextCompat.getDrawable(
+                    this,
+                    if (this@BaseListFragment.searchableEditText?.isVisible.isTrue()) R.drawable.ic_search_off else R.drawable.ic_search
+                )
+                if (this@BaseListFragment.searchableEditText?.isVisible != true) {
+                    searchableEditText?.text?.clear()
+                    searchDataList()
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }
         searchableEditText?.doAfterTextChanged {
             searchDataList()
-        }
-    }
-
-    private fun checkToolbarSearchVisibility() {
-        (activity as MainActivity).apply {
-            toolbar?.menu?.clear()
-            if (navigationScreens.contains(findNavController().currentDestination?.id) && findNavController().currentDestination?.id != R.id.settingsFragment) {
-                toolbar?.inflateMenu(R.menu.toolbar_search)
-                toolbar?.setOnMenuItemClickListener {
-                    this@BaseListFragment.searchableEditText?.isVisible =
-                        this@BaseListFragment.searchableEditText?.isVisible != true
-                    it.icon = ContextCompat.getDrawable(
-                        this,
-                        if (this@BaseListFragment.searchableEditText?.isVisible.isTrue()) R.drawable.ic_search_off else R.drawable.ic_search
-                    )
-                    if (this@BaseListFragment.searchableEditText?.isVisible != true) {
-                        searchableEditText?.text?.clear()
-                        searchDataList()
-                    }
-                    return@setOnMenuItemClickListener true
-                }
-            } else {
-                toolbar?.menu?.clear()
-            }
         }
     }
 

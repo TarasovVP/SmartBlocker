@@ -34,8 +34,9 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        checkTopBottomBarVisibility()
         binding = getViewBinding()
+        checkTopBottomBarVisibility()
+        checkToolbarSearchVisibility()
         getCurrentBackStackEntry()
         observeExceptionLiveData()
         observeLiveData()
@@ -85,18 +86,16 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
             if (findNavController().currentDestination?.id != R.id.infoDialog) {
                 bottomNavigationView?.isVisible =
                     navigationScreens.contains(findNavController().currentDestination?.id)
-                toolbar?.isVisible =
-                    navigationScreens.contains(findNavController().currentDestination?.id)
-            }
-            toolbar?.navigationIcon = ContextCompat.getDrawable(
-                this,
-                if (findNavController().currentDestination?.id == R.id.callLogListFragment) R.drawable.ic_arrow_transparent else R.drawable.ic_arrow_back
-            )
-            toolbar?.setNavigationOnClickListener {
-                if (findNavController().currentDestination?.id == R.id.callLogListFragment) return@setNavigationOnClickListener
-                findNavController().popBackStack()
             }
         }
     }
 
+    private fun checkToolbarSearchVisibility() {
+        (activity as MainActivity).apply {
+            toolbar?.menu?.clear()
+            if (navigationScreens.contains(findNavController().currentDestination?.id) && findNavController().currentDestination?.id != R.id.settingsFragment) {
+                toolbar?.inflateMenu(R.menu.toolbar_search)
+            }
+        }
+    }
 }
