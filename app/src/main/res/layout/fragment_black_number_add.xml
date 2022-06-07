@@ -36,7 +36,7 @@
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
-        android:text="Содержит"
+        android:text="@string/black_number_contain"
         app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
         app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
         app:layout_constraintTop_toBottomOf="@+id/black_number_add_search" />
@@ -46,7 +46,7 @@
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
-        android:text="Начинается"
+        android:text="@string/black_number_start"
         app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
         app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
         app:layout_constraintTop_toBottomOf="@+id/black_number_add_contain" />
@@ -56,7 +56,7 @@
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
-        android:text="Заканчивается"
+        android:text="@string/black_number_end"
         app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
         app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
         app:layout_constraintTop_toBottomOf="@+id/black_number_add_start" />

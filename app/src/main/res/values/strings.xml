@@ -47,4 +47,8 @@
     <string name="add_black_list">Добавить в черный список</string>
     <string name="enter_phone_number">Введите номер телефона</string>
     <string name="enter_number">Введите номер</string>
+    <string name="black_number_contain">Содержит</string>
+    <string name="black_number_start">Начинается</string>
+    <string name="black_number_end">Заканчивается</string>
+    <string name="black_number_no_filter">Без фильтра</string>
 </resources>

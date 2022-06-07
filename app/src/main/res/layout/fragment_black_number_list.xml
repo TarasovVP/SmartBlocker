@@ -20,7 +20,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96"/>
 
-    <Spinner
+    <com.tarasovvp.blacklister.utils.MultipleChoiceSpinner
         android:id="@+id/black_number_list_search"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
