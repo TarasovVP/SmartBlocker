@@ -3,11 +3,17 @@ package com.tarasovvp.blacklister.ui.main.settings
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.APP_LANG_EN
+import com.tarasovvp.blacklister.constants.Constants.APP_LANG_RU
+import com.tarasovvp.blacklister.constants.Constants.APP_LANG_UA
 import com.tarasovvp.blacklister.databinding.FragmentSettingsBinding
 import com.tarasovvp.blacklister.extensions.isServiceRunning
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.setAppLocale
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.ForegroundCallService
@@ -42,6 +48,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         }
         binding?.settingsReNameBtn?.setSafeOnClickListener {
             viewModel.renameUser(binding?.settingsChangeNameInput?.text.toString())
+        }
+        binding?.settingsLanguagesRg?.setOnCheckedChangeListener { radioGroup, i ->
+            val appLang = when(i) {
+                R.id.settings_languages_rb_ua -> APP_LANG_UA
+                R.id.settings_languages_rb_en -> APP_LANG_EN
+                else -> APP_LANG_RU
+            }
+            SharedPreferencesUtil.appLang = appLang
+            (activity as MainActivity).apply {
+                setAppLocale(appLang)
+            }
+
         }
     }
 

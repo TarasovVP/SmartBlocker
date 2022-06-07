@@ -24,7 +24,7 @@ class BlackNumberListFragment :
     override val viewModelClass = BlackNumberListViewModel::class.java
 
     private var blackNumberList: List<BlackNumber>? = null
-    private var selected: BooleanArray = booleanArrayOf(false, false, false)
+    private var selectedFilterItems: BooleanArray = booleanArrayOf(false, false, false)
 
     override fun createAdapter(): BaseAdapter<BlackNumber>? {
         return context?.let { context ->
@@ -68,17 +68,17 @@ class BlackNumberListFragment :
     }
 
     private fun filterDataList(): Boolean {
-        val items = arrayOf(getString(R.string.black_number_contain),
+        val filterItems = arrayOf(getString(R.string.black_number_contain),
             getString(R.string.black_number_start),
             getString(R.string.black_number_end))
-        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AlertDialogCustom))
-        builder.setMultiChoiceItems(items, selected
-        ) { _, position, isChecked -> selected[position] = isChecked }
+        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
+        builder.setMultiChoiceItems(filterItems, selectedFilterItems
+        ) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
         builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
         builder.setPositiveButton(R.string.ok) { _, _ ->
             val itemsTitleList = arrayListOf<String>()
-            items.forEachIndexed { index, title ->
-                if (selected[index]) {
+            filterItems.forEachIndexed { index, title ->
+                if (selectedFilterItems[index]) {
                     itemsTitleList.add(title)
                 }
             }
@@ -111,9 +111,9 @@ class BlackNumberListFragment :
         val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
             blackNumber.blackNumber.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (if (selected[0]) blackNumber.isContain else true)
-                    && (if (selected[1]) blackNumber.isStart else true)
-                    && if (selected[2]) blackNumber.isEnd else true
+            ) && (if (selectedFilterItems[0]) blackNumber.isContain else true)
+                    && (if (selectedFilterItems[1]) blackNumber.isStart else true)
+                    && if (selectedFilterItems[2]) blackNumber.isEnd else true
         } as ArrayList<BlackNumber>
         if (!checkDataListEmptiness(filteredBlackNumberList)) {
             viewModel.getHashMapFromBlackNumberList(filteredBlackNumberList)

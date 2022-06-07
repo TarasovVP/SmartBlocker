@@ -51,7 +51,7 @@
         <item name="android:itemBackground">@color/main_bg</item>
     </style>
 
-    <style name="AlertDialogCustom" parent="Theme.MaterialComponents.Dialog.Alert">
+    <style name="MultiChoiceAlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="colorAccent">@color/blue</item>
         <item name="android:textColorPrimary">#FFFFFF</item>
         <item name="android:background">@color/main_bg</item>

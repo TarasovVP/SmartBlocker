@@ -376,3 +376,12 @@ fun Context.showPopUpMenu(menu: Int, view: View, listener: PopupMenu.OnMenuItemC
     pop.setOnMenuItemClickListener(listener)
     pop.show()
 }
+
+fun Context.setAppLocale(language: String): Context {
+    val locale = Locale(language)
+    Locale.setDefault(locale)
+    val config = resources.configuration
+    config.setLocale(locale)
+    config.setLayoutDirection(locale)
+    return createConfigurationContext(config)
+}

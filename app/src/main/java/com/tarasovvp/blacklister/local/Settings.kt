@@ -7,6 +7,7 @@ import com.tarasovvp.blacklister.extensions.orZero
 object Settings {
 
     const val ON_BOARDING_SEEN = "onBoardingSeen"
+    const val APP_LANG = "appLang"
 
     private var sharedPreferences: SharedPreferences? = null
 
