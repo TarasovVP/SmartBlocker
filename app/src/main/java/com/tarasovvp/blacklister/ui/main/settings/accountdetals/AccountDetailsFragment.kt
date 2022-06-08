@@ -30,6 +30,13 @@ class AccountDetailsFragment :
         binding?.accountDetailsNewNameBtn?.setSafeOnClickListener {
             viewModel.renameUser(binding?.accountDetailsNewNameInput?.text.toString())
         }
+        binding?.accountDetailsNewPasswordBtn?.setSafeOnClickListener {
+            if (binding?.accountDetailsNewPasswordCreate?.text.toString() == binding?.accountDetailsNewPasswordConfirm?.text.toString()) {
+                viewModel.changePassword(binding?.accountDetailsNewPasswordConfirm?.text.toString())
+            } else {
+                showMessage(getString(R.string.passwords_different), true)
+            }
+        }
     }
 
     override fun observeLiveData() {
@@ -46,6 +53,11 @@ class AccountDetailsFragment :
                 binding?.accountDetailsMainTitle?.text =
                     String.format(getString(R.string.welcome), name)
                 binding?.accountDetailsNewNameInput?.text?.clear()
+            })
+            successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner, { name ->
+                showMessage(String.format(getString(R.string.change_password_succeed)), false)
+                binding?.accountDetailsNewPasswordCreate?.text?.clear()
+                binding?.accountDetailsNewPasswordConfirm?.text?.clear()
             })
         }
     }

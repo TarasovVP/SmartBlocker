@@ -33,24 +33,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_title" />
 
+    <Button
+        android:id="@+id/account_details_new_name_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_25"
+        android:text="@string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_input" />
+
     <TextView
         android:id="@+id/account_details_new_password_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
         android:text="@string/change_password"
-        app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_input" />
-
-    <EditText
-        android:id="@+id/account_details_new_password_current"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_15"
-        android:hint="@string/enter_current_password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_title" />
+        app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_btn" />
 
     <EditText
         android:id="@+id/account_details_new_password_create"
@@ -61,7 +60,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_current" />
+        app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_title" />
 
     <EditText
         android:id="@+id/account_details_new_password_confirm"
@@ -75,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_create" />
 
     <Button
-        android:id="@+id/account_details_new_name_btn"
+        android:id="@+id/account_details_new_password_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
@@ -93,6 +92,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

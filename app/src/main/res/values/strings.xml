@@ -68,4 +68,6 @@
     <string name="day">Светлая тема</string>
     <string name="night">Темная тема</string>
     <string name="auto">Автоматически следовать настройкам режима вашего устройства</string>
+    <string name="change_password_succeed">Пароль успешно изменен</string>
+    <string name="passwords_different">Пароли не совпадают</string>
 </resources>
