@@ -76,22 +76,29 @@
             android:id="@+id/settings_languages_rb_ru"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:tag="ru"
-            android:text="Русский" />
+            android:text="@string/russian" />
 
         <RadioButton
             android:id="@+id/settings_languages_rb_ua"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:tag="ua"
-            android:text="Украинский" />
+            android:text="@string/ukrainian" />
 
         <RadioButton
             android:id="@+id/settings_languages_rb_en"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:tag="en"
-            android:text="Английский" />
+            android:text="@string/english" />
     </RadioGroup>
+
+    <Button
+        android:id="@+id/settings_languages_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_25"
+        android:text="@string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_languages_rg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

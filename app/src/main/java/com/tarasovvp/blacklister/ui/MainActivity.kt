@@ -1,5 +1,7 @@
 package com.tarasovvp.blacklister.ui
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +20,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.setAppLocale
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.blacklister.utils.ForegroundCallService
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
-
+        Log.e("localeTAG", "MainActivity onCreate")
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
@@ -76,6 +79,11 @@ class MainActivity : AppCompatActivity() {
         if (BlackListerApp.instance?.auth?.currentUser.isNotNull()) {
             getAllData()
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        Log.e("localeTAG", "MainActivity attachBaseContext")
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang)))
     }
 
     fun startService() {

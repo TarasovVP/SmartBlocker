@@ -51,4 +51,7 @@
     <string name="black_number_start">Начинается</string>
     <string name="black_number_end">Заканчивается</string>
     <string name="black_number_no_filter">Без фильтра</string>
+    <string name="russian">Русский</string>
+    <string name="ukrainian">Украинский</string>
+    <string name="english">Английский</string>
 </resources>
