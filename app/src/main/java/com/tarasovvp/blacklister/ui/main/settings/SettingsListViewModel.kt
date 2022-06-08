@@ -7,7 +7,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
-class SettingsViewModel(application: Application) : BaseViewModel(application) {
+class SettingsListViewModel(application: Application) : BaseViewModel(application) {
     val successLiveData = MutableLiveData<Boolean>()
     val successRenameUserLiveData = MutableLiveData<String>()
 

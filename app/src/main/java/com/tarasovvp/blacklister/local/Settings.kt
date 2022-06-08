@@ -8,6 +8,7 @@ object Settings {
 
     const val ON_BOARDING_SEEN = "onBoardingSeen"
     const val APP_LANG = "appLang"
+    const val APP_THEME = "appTheme"
 
     private var sharedPreferences: SharedPreferences? = null
 
@@ -37,10 +38,10 @@ object Settings {
     }
 
     @JvmStatic
-    fun loadInt(key: String?): Int {
+    fun loadInt(key: String?, defaultInt: Int): Int {
         return sharedPreferences?.getInt(
             key,
-            0
+            defaultInt
         ).orZero()
     }
 

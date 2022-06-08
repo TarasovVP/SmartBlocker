@@ -12,22 +12,16 @@ import com.tarasovvp.blacklister.databinding.FragmentOnboardingBinding
 import com.tarasovvp.blacklister.enum.OnBoarding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.ui.base.BaseFragment
+import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>() {
+class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
 
     override fun getViewBinding() = FragmentOnboardingBinding.inflate(layoutInflater)
 
-    override val viewModelClass = OnBoardingViewModel::class.java
-
     private var currentPosition = 0
-
-    override fun observeLiveData() {
-
-    }
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->

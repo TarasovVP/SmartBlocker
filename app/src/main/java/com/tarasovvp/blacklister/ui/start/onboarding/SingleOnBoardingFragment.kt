@@ -1,25 +1,19 @@
 package com.tarasovvp.blacklister.ui.start.onboarding
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.tarasovvp.blacklister.databinding.FragmentSingleOnboardingBinding
 import com.tarasovvp.blacklister.enum.OnBoarding
+import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 
-class SingleOnBoardingFragment(private val onBoarding: OnBoarding) : Fragment() {
+class SingleOnBoardingFragment(private val onBoarding: OnBoarding) :
+    BaseBindingFragment<FragmentSingleOnboardingBinding>() {
 
-    private var binding: FragmentSingleOnboardingBinding? = null
+    override fun getViewBinding() = FragmentSingleOnboardingBinding.inflate(layoutInflater)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding = FragmentSingleOnboardingBinding.inflate(inflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding?.singleOnBoardingTitle?.text = getString(onBoarding.title)
         binding?.singleOnBoardingIcon?.setImageResource(onBoarding.icon)
-        return binding?.root
     }
 }

@@ -18,13 +18,19 @@
         <entry key="app/src/main/res/drawable/main_bg.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/on_boarding_button_bg.xml" value="0.215625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.190625" />
+        <entry key="app/src/main/res/layout/block_settings.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/contact_list_fragment.xml" value="0.2318840579710145" />
         <entry key="app/src/main/res/layout/dialog_info.xml" value="0.30117753623188404" />
+        <entry key="app/src/main/res/layout/fragment_account_details.xml" value="0.2269021739130435" />
+        <entry key="app/src/main/res/layout/fragment_app_language.xml" value="0.2269021739130435" />
+        <entry key="app/src/main/res/layout/fragment_app_theme.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_black_number_add.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_black_number_list.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_black_number_new.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_black_numebr_list.xml" value="0.291213768115942" />
+        <entry key="app/src/main/res/layout/fragment_block_settings.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_call_log_list.xml" value="0.19010416666666666" />
+        <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.291213768115942" />
         <entry key="app/src/main/res/layout/fragment_log_list.xml" value="0.11145833333333334" />
@@ -35,6 +41,7 @@
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.4787234042553192" />
         <entry key="app/src/main/res/layout/fragment_registry.xml" value="0.307518115942029" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.625" />
+        <entry key="app/src/main/res/layout/fragment_settings_list.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/fragment_single_onboarding.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/layout/item_black_number.xml" value="0.2125" />

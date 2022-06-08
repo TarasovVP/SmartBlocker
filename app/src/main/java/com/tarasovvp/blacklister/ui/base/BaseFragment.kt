@@ -1,26 +1,17 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.withColor
 import com.tarasovvp.blacklister.ui.MainActivity
 
-abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
-
-    protected open var binding: VB? = null
-    abstract fun getViewBinding(): VB
+abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFragment<VB>() {
 
     abstract val viewModelClass: Class<T>
     abstract fun observeLiveData()
@@ -29,18 +20,13 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
         ViewModelProvider(this)[viewModelClass]
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        binding = getViewBinding()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         checkTopBottomBarVisibility()
         checkToolbarSearchVisibility()
         getCurrentBackStackEntry()
         observeExceptionLiveData()
         observeLiveData()
-        return binding?.root
     }
 
     open fun observeExceptionLiveData() {
@@ -62,25 +48,6 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
             }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
-
-    fun showMessage(message: String, isError: Boolean) {
-        (activity as MainActivity).apply {
-            context?.let {
-                ContextCompat.getColor(it,
-                    if (isError) android.R.color.holo_red_light else R.color.black)
-            }
-                ?.let { color ->
-                    Snackbar.make(findViewById(android.R.id.content),
-                        message,
-                        Snackbar.LENGTH_LONG).withColor(color).show()
-                }
-        }
-    }
-
     private fun checkTopBottomBarVisibility() {
         (activity as MainActivity).apply {
             if (findNavController().currentDestination?.id != R.id.infoDialog) {
@@ -93,7 +60,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : Fragment() {
     private fun checkToolbarSearchVisibility() {
         (activity as MainActivity).apply {
             toolbar?.menu?.clear()
-            if (navigationScreens.contains(findNavController().currentDestination?.id) && findNavController().currentDestination?.id != R.id.settingsFragment) {
+            if (navigationScreens.contains(findNavController().currentDestination?.id) && findNavController().currentDestination?.id != R.id.settingsListFragment) {
                 toolbar?.inflateMenu(R.menu.toolbar_search)
             }
         }

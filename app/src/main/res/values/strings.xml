@@ -54,4 +54,18 @@
     <string name="russian">Русский</string>
     <string name="ukrainian">Украинский</string>
     <string name="english">Английский</string>
+    <string name="block_settings">Block settings</string>
+    <string name="personal_details">Personal details</string>
+    <string name="app_language">App language</string>
+    <string name="app_theme">App theme</string>
+    <string name="enter_new_name">Введите новое имя</string>
+    <string name="enter_current_password">Введите текущий пароль</string>
+    <string name="enter_new_password">Введите новый пароль</string>
+    <string name="confirm_new_password">Подтвердите новый пароль</string>
+    <string name="change_name">Сменить имя</string>
+    <string name="change_password">Сменить пароль</string>
+    <string name="switch_on_notification">Включить уведомления</string>
+    <string name="day">Светлая тема</string>
+    <string name="night">Темная тема</string>
+    <string name="auto">Автоматически следовать настройкам режима вашего устройства</string>
 </resources>

@@ -76,9 +76,38 @@
     </fragment>
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.settings.SettingsFragment"
-        android:label="@string/settings" />
+        android:id="@+id/settingsListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.settings.SettingsListFragment"
+        android:label="@string/settings" >
+        <action
+            android:id="@+id/startBlockSettingsFragment"
+            app:destination="@id/blockSettingsFragment" />
+        <action
+            android:id="@+id/startAccountDetailsFragment"
+            app:destination="@id/accountDetailsFragment" />
+        <action
+            android:id="@+id/startAppLanguageFragment"
+            app:destination="@id/appLanguageFragment" />
+        <action
+            android:id="@+id/startAppThemeFragment"
+            app:destination="@id/appThemeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/blockSettingsFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.settings.blocksettings.BlockSettingsFragment" />
+
+    <fragment
+        android:id="@+id/accountDetailsFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.settings.accountdetals.AccountDetailsFragment" />
+
+    <fragment
+        android:id="@+id/appLanguageFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.settings.applanguage.AppLanguageFragment" />
+
+    <fragment
+        android:id="@+id/appThemeFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.settings.apptheme.AppThemeFragment" />
 
     <dialog
         android:id="@+id/infoDialog"
