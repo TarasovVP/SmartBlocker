@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
@@ -96,6 +98,13 @@ class BlackNumberListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             blackNumberList.safeObserve(viewLifecycleOwner, { blackNumberList ->
+                //TODO remove
+                FirebaseAuth.getInstance().currentUser?.uid?.let {
+                    val database = FirebaseDatabase.getInstance("https://blacklister-b6048-default-rtdb.europe-west1.firebasedatabase.app")
+                    val myRef = database.getReference(it)
+                    myRef.setValue(blackNumberList)
+                }
+
                 this@BlackNumberListFragment.blackNumberList = blackNumberList
                 if (!checkDataListEmptiness(blackNumberList)) {
                     getHashMapFromBlackNumberList(blackNumberList)

@@ -77,7 +77,7 @@
 
     <fragment
         android:id="@+id/settingsListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.settings.SettingsListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.settings.settingslist.SettingsListFragment"
         android:label="@string/settings" >
         <action
             android:id="@+id/startBlockSettingsFragment"
