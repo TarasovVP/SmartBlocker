@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Contact
@@ -33,7 +34,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
         with(viewModel) {
             numberDetailLiveData.safeSingleObserve(viewLifecycleOwner, { contact ->
                 setContactInfo(contact)
-                if (BlackListerApp.instance?.auth?.currentUser.isNotNull()) {
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                     getNumberInfo(contact.phone.toString())
                 } else {
                     binding?.includeNoAccount?.root?.isVisible = true

@@ -10,6 +10,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.tarasovvp.blacklister.database.AppDatabase
 import com.tarasovvp.blacklister.extensions.createNotificationChannel
+import com.tarasovvp.blacklister.extensions.isNotNull
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.Settings
 
 class BlackListerApp : Application() {
@@ -31,6 +33,8 @@ class BlackListerApp : Application() {
         Settings.loadSettingsHelper(this, this.packageName)
         createNotificationChannel()
     }
+
+    fun isLoggedInUser() = auth?.currentUser.isNotNull().isTrue()
 
     companion object {
         var instance: BlackListerApp? = null

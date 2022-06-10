@@ -1,22 +1,27 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
 import android.app.AlertDialog
+import android.util.Log
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.REALTIME_DATABASE
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
+import kotlin.collections.ArrayList
 
 class BlackNumberListFragment :
     BaseListFragment<FragmentBlackNumberListBinding, BlackNumberListViewModel, BlackNumber>() {
@@ -100,11 +105,20 @@ class BlackNumberListFragment :
             blackNumberList.safeObserve(viewLifecycleOwner, { blackNumberList ->
                 //TODO remove
                 FirebaseAuth.getInstance().currentUser?.uid?.let {
-                    val database = FirebaseDatabase.getInstance("https://blacklister-b6048-default-rtdb.europe-west1.firebasedatabase.app")
+                    val database = FirebaseDatabase.getInstance(REALTIME_DATABASE)
                     val myRef = database.getReference(it)
                     myRef.setValue(blackNumberList)
+                    database.reference.child(it).get().addOnSuccessListener { snapshot ->
+                        snapshot.children.forEach { dataSnapshot ->
+                            val blackNumber = dataSnapshot as? BlackNumber?
+                            Log.e("firebaseTAG", "Got dataSnapshot $snapshot blackNumber ${Gson().toJson(blackNumber)}")
+                        }
+                        val blackNumberListValue = snapshot.value as? ArrayList<BlackNumber>?
+                        Log.e("firebaseTAG", "Got value ${snapshot.value} blackNumberListValue ${Gson().toJson(blackNumberListValue)}")
+                    }.addOnFailureListener{
+                        Log.e("firebaseTAG", "Error getting data", it)
+                    }
                 }
-
                 this@BlackNumberListFragment.blackNumberList = blackNumberList
                 if (!checkDataListEmptiness(blackNumberList)) {
                     getHashMapFromBlackNumberList(blackNumberList)

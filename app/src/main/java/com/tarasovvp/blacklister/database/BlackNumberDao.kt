@@ -6,7 +6,7 @@ import com.tarasovvp.blacklister.model.BlackNumber
 @Dao
 interface BlackNumberDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllBlackNumbers(blackNumbers: List<BlackNumber>?)
+    fun insertAllBlackNumbers(blackNumbers: List<BlackNumber>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBlackNumber(blackNumbers: BlackNumber)
@@ -24,5 +24,5 @@ interface BlackNumberDao {
     fun delete(blackNumber: BlackNumber)
 
     @Query("DELETE FROM blackNumber")
-    fun deleteAllContacts()
+    fun deleteAllBlackNumbers()
 }

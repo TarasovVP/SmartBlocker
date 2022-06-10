@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -29,6 +30,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun getAllData() {
         viewModelScope.launch {
             try {
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+                    blackNumberRepository.insertAllBlackNumbers()
+                }
                 Log.e("mainViewModelTAG", "MainViewModel getCallLogList viewModelScope.launch")
                 val blackNumberList = blackNumberRepository.allBlackNumbers()
                 Log.e(

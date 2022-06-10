@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             navGraph.setStartDestination(
                 when {
                     !SharedPreferencesUtil.isOnBoardingSeen -> R.id.onBoardingFragment
-                    BlackListerApp.instance?.auth?.currentUser.isNotNull() -> R.id.callLogListFragment
+                    BlackListerApp.instance?.isLoggedInUser().isTrue() -> R.id.callLogListFragment
                     else -> R.id.loginFragment
                 }
             )
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             toolbar = findViewById(R.id.toolbar)
             toolbar?.setupWithNavController(this)
         }
-        if (BlackListerApp.instance?.auth?.currentUser.isNotNull()) {
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             getAllData()
         }
     }
