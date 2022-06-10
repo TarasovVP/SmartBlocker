@@ -5,6 +5,7 @@ import com.tarasovvp.blacklister.constants.Constants.APP_LANG_RU
 import com.tarasovvp.blacklister.local.Settings.APP_LANG
 import com.tarasovvp.blacklister.local.Settings.APP_THEME
 import com.tarasovvp.blacklister.local.Settings.ON_BOARDING_SEEN
+import com.tarasovvp.blacklister.local.Settings.clearSharedPreferences
 import com.tarasovvp.blacklister.local.Settings.loadBoolean
 import com.tarasovvp.blacklister.local.Settings.loadInt
 import com.tarasovvp.blacklister.local.Settings.loadString
@@ -40,4 +41,8 @@ object SharedPreferencesUtil {
                 appLang
             )
         }
+
+    fun clearAll() {
+        clearSharedPreferences()
+    }
 }

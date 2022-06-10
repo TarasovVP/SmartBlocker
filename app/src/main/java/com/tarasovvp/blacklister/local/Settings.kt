@@ -12,7 +12,6 @@ object Settings {
 
     private var sharedPreferences: SharedPreferences? = null
 
-    @JvmStatic
     fun loadSettingsHelper(context: Context, name: String) {
         sharedPreferences =
             context.getSharedPreferences(
@@ -21,7 +20,6 @@ object Settings {
             )
     }
 
-    @JvmStatic
     fun saveString(key: String?, value: String?) {
         val editor =
             sharedPreferences?.edit()
@@ -29,7 +27,6 @@ object Settings {
         editor?.apply()
     }
 
-    @JvmStatic
     fun loadString(key: String?): String? {
         return sharedPreferences?.getString(
             key,
@@ -37,7 +34,6 @@ object Settings {
         )
     }
 
-    @JvmStatic
     fun loadInt(key: String?, defaultInt: Int): Int {
         return sharedPreferences?.getInt(
             key,
@@ -45,7 +41,6 @@ object Settings {
         ).orZero()
     }
 
-    @JvmStatic
     fun saveInt(key: String?, value: Int?) {
         val editor =
             sharedPreferences?.edit()
@@ -53,39 +48,6 @@ object Settings {
         editor?.apply()
     }
 
-    @JvmStatic
-    fun loadLong(key: String?): Long {
-        return sharedPreferences?.getLong(
-            key,
-            0
-        ) ?: 0
-    }
-
-    @JvmStatic
-    fun saveLong(key: String?, value: Long?) {
-        val editor =
-            sharedPreferences?.edit()
-        value?.let { editor?.putLong(key, it) }
-        editor?.apply()
-    }
-
-    @JvmStatic
-    fun loadFloat(key: String?): Float {
-        return sharedPreferences?.getFloat(
-            key,
-            0f
-        ) ?: 0f
-    }
-
-    @JvmStatic
-    fun saveFloat(key: String?, value: Float?) {
-        val editor =
-            sharedPreferences?.edit()
-        value?.let { editor?.putFloat(key, it) }
-        editor?.apply()
-    }
-
-    @JvmStatic
     fun saveBoolean(key: String?, value: Boolean) {
         val editor =
             sharedPreferences?.edit()
@@ -93,11 +55,18 @@ object Settings {
         editor?.apply()
     }
 
-    @JvmStatic
     fun loadBoolean(key: String?): Boolean {
         return sharedPreferences?.getBoolean(
             key,
             false
         ) ?: false
+    }
+
+    fun removeSinglePreference(name: String) {
+        sharedPreferences?.edit()?.remove(name)?.apply()
+    }
+
+    fun clearSharedPreferences() {
+        sharedPreferences?.edit()?.clear()?.apply()
     }
 }

@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentSettingsListBinding
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -40,6 +42,8 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner, {
+                SharedPreferencesUtil.clearAll()
+                BlackListerApp.instance?.database?.clearAllTables()
                 showMessage(getString(R.string.operation_succeeded), false)
                 (activity as MainActivity).apply {
                     finish()

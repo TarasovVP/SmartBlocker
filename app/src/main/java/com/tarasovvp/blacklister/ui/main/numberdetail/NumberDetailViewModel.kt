@@ -3,7 +3,9 @@ package com.tarasovvp.blacklister.ui.main.numberdetail
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants.BASE_URL
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.model.Categories
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.NumberInfo
@@ -29,14 +31,13 @@ class NumberDetailViewModel(application: Application) : BaseViewModel(applicatio
                 val contact = contactRepository.getContactByNumber(number) ?: Contact(name = number,
                     phone = number)
                 numberDetailLiveData.postValue(contact)
-                getNumberInfo(number)
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }
         }
     }
 
-    private fun getNumberInfo(number: String) {
+    fun getNumberInfo(number: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val doc: Document = Jsoup.connect(BASE_URL.plus(number)).get()

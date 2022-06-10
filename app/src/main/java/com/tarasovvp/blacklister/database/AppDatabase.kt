@@ -13,7 +13,6 @@ import com.tarasovvp.blacklister.model.Contact
     version = 1,
     exportSchema = false
 )
-@TypeConverters(StringTypeConverters::class, CalendarConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactDao
     abstract fun blackNumberDao(): BlackNumberDao

@@ -54,10 +54,10 @@
     <string name="russian">Русский</string>
     <string name="ukrainian">Украинский</string>
     <string name="english">Английский</string>
-    <string name="block_settings">Block settings</string>
-    <string name="personal_details">Personal details</string>
-    <string name="app_language">App language</string>
-    <string name="app_theme">App theme</string>
+    <string name="block_settings">Настройки блокировки</string>
+    <string name="personal_details">Детали аккаунта</string>
+    <string name="app_language">Язык приложения</string>
+    <string name="app_theme">Тема приложения</string>
     <string name="enter_new_name">Введите новое имя</string>
     <string name="enter_current_password">Введите текущий пароль</string>
     <string name="enter_new_password">Введите новый пароль</string>
@@ -70,4 +70,5 @@
     <string name="auto">Автоматически следовать настройкам режима вашего устройства</string>
     <string name="change_password_succeed">Пароль успешно изменен</string>
     <string name="passwords_different">Пароли не совпадают</string>
+    <string name="enter_as_login_user">Вы вошли незарегистрированным пользователем. Для того, чтобы получить полный доступ войдите как зарегистрированный пользователь.</string>
 </resources>

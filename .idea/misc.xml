@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_settings_list.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/fragment_single_onboarding.xml" value="0.19947916666666668" />
+        <entry key="app/src/main/res/layout/include_no_account.xml" value="0.26403985507246375" />
         <entry key="app/src/main/res/layout/item_black_number.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/item_call_log.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.2807971014492754" />

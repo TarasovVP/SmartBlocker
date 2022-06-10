@@ -3,9 +3,12 @@ package com.tarasovvp.blacklister.ui.main.settings.accountdetals
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -36,6 +39,11 @@ class AccountDetailsFragment :
             } else {
                 showMessage(getString(R.string.passwords_different), true)
             }
+        }
+
+        binding?.includeNoAccount?.root?.isVisible = BlackListerApp.instance?.auth?.currentUser.isNotNull().not()
+        binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
+            findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
         }
     }
 
