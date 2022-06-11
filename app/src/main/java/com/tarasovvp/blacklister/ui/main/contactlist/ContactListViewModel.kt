@@ -59,9 +59,13 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
         viewModelScope.launch {
             try {
                 if (isBlackList) {
-                    blackNumberRepository.insertBlackNumber(blackNumber)
+                    blackNumberRepository.insertBlackNumber(blackNumber) {
+
+                    }
                 } else {
-                    blackNumberRepository.deleteBlackNumber(blackNumber)
+                    blackNumberRepository.deleteBlackNumber(blackNumber) {
+
+                    }
                 }
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)

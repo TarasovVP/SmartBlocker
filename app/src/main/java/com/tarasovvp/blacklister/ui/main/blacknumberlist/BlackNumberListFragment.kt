@@ -103,22 +103,6 @@ class BlackNumberListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             blackNumberList.safeObserve(viewLifecycleOwner, { blackNumberList ->
-                //TODO remove
-                FirebaseAuth.getInstance().currentUser?.uid?.let {
-                    val database = FirebaseDatabase.getInstance(REALTIME_DATABASE)
-                    val myRef = database.getReference(it)
-                    myRef.setValue(blackNumberList)
-                    database.reference.child(it).get().addOnSuccessListener { snapshot ->
-                        snapshot.children.forEach { dataSnapshot ->
-                            val blackNumber = dataSnapshot as? BlackNumber?
-                            Log.e("firebaseTAG", "Got dataSnapshot $snapshot blackNumber ${Gson().toJson(blackNumber)}")
-                        }
-                        val blackNumberListValue = snapshot.value as? ArrayList<BlackNumber>?
-                        Log.e("firebaseTAG", "Got value ${snapshot.value} blackNumberListValue ${Gson().toJson(blackNumberListValue)}")
-                    }.addOnFailureListener{
-                        Log.e("firebaseTAG", "Error getting data", it)
-                    }
-                }
                 this@BlackNumberListFragment.blackNumberList = blackNumberList
                 if (!checkDataListEmptiness(blackNumberList)) {
                     getHashMapFromBlackNumberList(blackNumberList)

@@ -52,8 +52,9 @@ class CallLogListViewModel(application: Application) : BaseViewModel(application
     fun deleteBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
             try {
-                blackNumberRepository.deleteBlackNumber(blackNumber)
-                deleteSuccessLiveData.postValue(true)
+                blackNumberRepository.deleteBlackNumber(blackNumber) {
+                    deleteSuccessLiveData.postValue(true)
+                }
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }

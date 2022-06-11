@@ -47,6 +47,9 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
             numberInfoLiveData.safeSingleObserve(viewLifecycleOwner, { numberInfo ->
                 setNumberInfo(numberInfo)
             })
+            blackNumberAmountLiveData.safeSingleObserve(viewLifecycleOwner, {
+                binding?.numberDetailRatingsTitle?.text = String.format("%s %s", "Количество пользователей, которые заблокировали этот номер - ", it)
+            })
         }
     }
 

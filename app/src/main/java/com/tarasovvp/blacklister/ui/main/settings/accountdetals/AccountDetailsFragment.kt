@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -42,7 +41,8 @@ class AccountDetailsFragment :
             }
         }
 
-        binding?.includeNoAccount?.root?.isVisible = BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+        binding?.includeNoAccount?.root?.isVisible =
+            BlackListerApp.instance?.isLoggedInUser().isTrue().not()
         binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
             findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
         }

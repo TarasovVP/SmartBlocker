@@ -28,8 +28,9 @@ class BlackNumberListViewModel(application: Application) : BaseViewModel(applica
     fun deleteBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
             try {
-                blackNumberRepository.deleteBlackNumber(blackNumber)
-                blackNumberList.postValue(blackNumberRepository.allBlackNumbers())
+                blackNumberRepository.deleteBlackNumber(blackNumber) {
+                    getBlackNumberList()
+                }
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }

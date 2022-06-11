@@ -6,7 +6,7 @@ import com.tarasovvp.blacklister.model.BlackNumber
 @Dao
 interface BlackNumberDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllBlackNumbers(blackNumbers: List<BlackNumber>)
+    fun insertAllBlackNumbers(blackNumbers: ArrayList<BlackNumber>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBlackNumber(blackNumbers: BlackNumber)

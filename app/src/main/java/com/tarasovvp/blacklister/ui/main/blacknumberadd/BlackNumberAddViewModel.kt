@@ -17,8 +17,9 @@ class BlackNumberAddViewModel(application: Application) : BaseViewModel(applicat
     fun insertBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
             try {
-                blackNumberRepository.insertBlackNumber(blackNumber)
-                blackNumberLiveData.postValue(blackNumberRepository.getBlackNumber(blackNumber.blackNumber))
+                blackNumberRepository.insertBlackNumber(blackNumber) {
+                    blackNumberLiveData.postValue(blackNumber)
+                }
             } catch (e: Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }

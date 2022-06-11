@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.constants
 object Constants {
 
     const val REALTIME_DATABASE = "https://blacklister-b6048-default-rtdb.europe-west1.firebasedatabase.app"
+    const val USERS = "users"
     const val PHONE_NUMBER_CODE = "+380"
     const val THREE_EIGHT_ZERO = "380"
     const val EIGHT_ZERO = "80"
