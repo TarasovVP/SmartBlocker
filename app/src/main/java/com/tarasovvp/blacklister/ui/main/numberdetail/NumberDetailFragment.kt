@@ -44,9 +44,6 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                     }
                 }
             })
-            numberInfoLiveData.safeSingleObserve(viewLifecycleOwner, { numberInfo ->
-                setNumberInfo(numberInfo)
-            })
             blackNumberAmountLiveData.safeSingleObserve(viewLifecycleOwner, {
                 binding?.numberDetailRatingsTitle?.text = String.format("%s %s", "Количество пользователей, которые заблокировали этот номер - ", it)
             })
@@ -58,20 +55,4 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
         binding?.numberDetailPhone?.text = contact.phone
         binding?.numberDetailAvatar?.loadCircleImage(contact.photoUrl)
     }
-
-    private fun setNumberInfo(numberInfo: NumberInfo) {
-        binding?.numberDetailRatingsTitle?.text = numberInfo.ratings.ratingsTitle
-        numberInfo.ratings.ratingsList.forEach { ratingsTitle ->
-            val ratingsTextView = TextView(context)
-            ratingsTextView.text = ratingsTitle
-            binding?.numberDetailRatingsList?.addView(ratingsTextView)
-        }
-        binding?.numberDetailCategoriesTitle?.text = numberInfo.categories.categoriesTitle
-        numberInfo.categories.categoriesList.forEach { categoriesTitle ->
-            val categoriesTextView = TextView(context)
-            categoriesTextView.text = categoriesTitle
-            binding?.numberDetailCategoriesList?.addView(categoriesTextView)
-        }
-    }
-
 }

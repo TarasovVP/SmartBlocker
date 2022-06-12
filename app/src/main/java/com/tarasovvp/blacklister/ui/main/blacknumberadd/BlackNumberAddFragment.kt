@@ -1,13 +1,17 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberadd
 
+import android.R
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberAddBinding
+import com.tarasovvp.blacklister.enum.BlackNumberCategory
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
@@ -27,6 +31,23 @@ class BlackNumberAddFragment :
         super.onViewCreated(view, savedInstanceState)
         args.blackNumber?.apply {
             initViewsWithData(this)
+        }
+        val categoryList = BlackNumberCategory.values().map {
+            getString(it.title)
+        }
+        val adapter = ArrayAdapter(requireContext(),
+            R.layout.simple_spinner_item, categoryList)
+        binding?.blackNumberAddCategory?.adapter = adapter
+
+        binding?.blackNumberAddCategory?.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>,
+                                        view: View, position: Int, id: Long) {
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
         }
         binding?.blackNumberAddSearch?.doAfterTextChanged {
             binding?.blackNumberAddSubmit?.isEnabled = it?.isNotEmpty().isTrue()

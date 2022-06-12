@@ -18,7 +18,6 @@ class NumberDetailViewModel(application: Application) : BaseViewModel(applicatio
     private val blackNumberRepository = BlackNumberRepositoryImpl
 
     val numberDetailLiveData = MutableLiveData<Contact>()
-    val numberInfoLiveData = MutableLiveData<NumberInfo>()
     val blackNumberAmountLiveData = MutableLiveData<String>()
 
     fun getContact(number: String) {
