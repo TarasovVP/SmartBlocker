@@ -81,6 +81,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/whiteNumberListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.whitelist.WhiteNumberListFragment"
+        android:label="@string/number_list">
+        <action
+            android:id="@+id/startInfoDialog"
+            app:destination="@id/infoDialog" />
+        <action
+            android:id="@+id/startBlackNumberAddFragment"
+            app:destination="@id/blackNumberAddFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/settingsListFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.settingslist.SettingsListFragment"
         android:label="@string/settings" >

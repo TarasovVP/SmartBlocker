@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
+import com.tarasovvp.blacklister.provider.WhiteNumberRepositoryImpl
 import com.tarasovvp.blacklister.provider.CallLogRepositoryImpl
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch

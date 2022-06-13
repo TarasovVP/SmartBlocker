@@ -16,6 +16,11 @@
         android:icon="@drawable/ic_number_list"
         android:contentDescription="@string/number_list"/>
     <item
+        android:id="@+id/whiteNumberListFragment"
+        android:title="@string/number_list"
+        android:icon="@drawable/ic_number_list"
+        android:contentDescription="@string/number_list"/>
+    <item
         android:id="@+id/settingsListFragment"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings"

@@ -13,10 +13,7 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toFormattedPhoneNumber
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
-import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
-import com.tarasovvp.blacklister.provider.BlockedCallRepositoryImpl
-import com.tarasovvp.blacklister.provider.CallLogRepositoryImpl
-import com.tarasovvp.blacklister.provider.ContactRepositoryImpl
+import com.tarasovvp.blacklister.provider.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
