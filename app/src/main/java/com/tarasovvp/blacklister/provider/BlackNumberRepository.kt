@@ -11,6 +11,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.gson.Gson
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.BlackNumber
@@ -20,7 +21,7 @@ import kotlinx.coroutines.withContext
 
 interface BlackNumberRepository {
     suspend fun insertAllBlackNumbers()
-    suspend fun blackNumbersRemoteCount(blackNumber: String, result: (Long) -> Unit)
+    suspend fun blackNumbersRemoteCount(blackNumber: String, result: (ArrayList<BlackNumber?>) -> Unit)
     suspend fun allBlackNumbers(): List<BlackNumber>?
     suspend fun getBlackNumber(blackNumber: String): BlackNumber?
     suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit)
@@ -56,11 +57,31 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
         return dao?.getAllBlackNumbers()
     }
 
-    override suspend fun blackNumbersRemoteCount(blackNumber: String, result: (Long) -> Unit) {
-        val test = database.child(USERS).orderByChild(blackNumber).addListenerForSingleValueEvent(object : ValueEventListener {
+    override suspend fun blackNumbersRemoteCount(blackNumber: String, result: (ArrayList<BlackNumber?>) -> Unit) {
+        val test = database.child(USERS).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                result.invoke(snapshot.childrenCount)
-                Log.e("firebase", "blackNumbersRemoteCount childrenCount ${Gson().toJson(snapshot.childrenCount)}")
+                val blackNumberList = arrayListOf<BlackNumber?>()
+                val blackNumberObject = snapshot.getValue<HashMap<String, HashMap<String, BlackNumber>>>()
+                blackNumberObject?.values?.forEach {
+                    it.values.forEach { number ->
+                        if (number.blackNumber == blackNumber) {
+                            blackNumberList.add(number)
+                        }
+                    }
+                }
+                result.invoke(blackNumberList)
+                Log.e("firebase", "blackNumbersRemoteCount children blackNumberObject values ${Gson().toJson(blackNumberObject?.values)}    blackNumberList ${Gson().toJson(blackNumberList)}")
+                /*snapshot.children.forEach { dataSnapshot ->
+                    val blackNumberObject = dataSnapshot.children
+                    blackNumberObject.forEach { bNumberObject ->
+                        val obj = bNumberObject.getValue<BlackNumber>()
+                        Log.e("firebase", "blackNumbersRemoteCount obj ${Gson().toJson(obj)}   }")
+                    }
+                    Log.e("firebase", "blackNumbersRemoteCount children blackNumberObject ${Gson().toJson(blackNumberObject)}   }")
+                }*/
+
+                //blackNumberList?.let { result.invoke(blackNumberList.values as List<BlackNumber>) }
+                Log.e("firebase", "blackNumbersRemoteCount blackNumberList ${Gson().toJson(blackNumberList)} }")
             }
 
             override fun onCancelled(error: DatabaseError) {

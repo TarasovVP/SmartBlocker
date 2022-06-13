@@ -3,8 +3,8 @@ package com.tarasovvp.blacklister.ui.main.numberdetail
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.NumberInfo
 import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
 import com.tarasovvp.blacklister.provider.ContactRepositoryImpl
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
@@ -18,7 +18,7 @@ class NumberDetailViewModel(application: Application) : BaseViewModel(applicatio
     private val blackNumberRepository = BlackNumberRepositoryImpl
 
     val numberDetailLiveData = MutableLiveData<Contact>()
-    val blackNumberAmountLiveData = MutableLiveData<String>()
+    val blackNumberAmountLiveData = MutableLiveData<ArrayList<BlackNumber?>>()
 
     fun getContact(number: String) {
         viewModelScope.launch {
@@ -35,7 +35,7 @@ class NumberDetailViewModel(application: Application) : BaseViewModel(applicatio
     fun getNumberInfo(number: String) {
         viewModelScope.launch(Dispatchers.IO) {
             blackNumberRepository.blackNumbersRemoteCount(number) {
-                blackNumberAmountLiveData.postValue(it.toString())
+                blackNumberAmountLiveData.postValue(it)
             }
         }
     }

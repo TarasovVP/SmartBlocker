@@ -28,6 +28,15 @@
         app:layout_constraintStart_toEndOf="@+id/number_detail_left_gd"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/number_detail_blocked"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_block"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/number_detail_avatar"
+        app:layout_constraintEnd_toEndOf="@+id/number_detail_avatar" />
+
     <TextView
         android:id="@+id/number_detail_name"
         android:layout_width="wrap_content"

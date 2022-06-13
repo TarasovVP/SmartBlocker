@@ -14,5 +14,5 @@ data class BlackNumber(
     val isStart: Boolean = false,
     val isContain: Boolean = false,
     val isEnd: Boolean = false,
-    val category: Int = BlackNumberCategory.OTHER.id,
+    val category: Int = BlackNumberCategory.NO_BLACK_NUMBER.id,
 ) : Parcelable, BaseAdapter.MainData
