@@ -1,9 +1,8 @@
-package com.tarasovvp.blacklister.ui.main.whitelist
+package com.tarasovvp.blacklister.ui.main.whitenumberlist
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.provider.WhiteNumberRepositoryImpl
 import com.tarasovvp.blacklister.ui.base.BaseViewModel

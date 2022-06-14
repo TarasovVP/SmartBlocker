@@ -40,7 +40,7 @@ class CallLogListFragment :
                                 findNavController().navigate(CallLogListFragmentDirections.startInfoDialog(
                                     blackNumber = BlackNumber(blackNumber = callLog.phone.toString())))
                             } else {
-                                findNavController().navigate(CallLogListFragmentDirections.startBlackNumberAddFragment(
+                                findNavController().navigate(CallLogListFragmentDirections.startNumberAddFragment(
                                     BlackNumber(blackNumber = callLog.phone.toString())))
                             }
                         }

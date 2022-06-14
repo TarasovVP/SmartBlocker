@@ -36,8 +36,8 @@
         android:name="com.tarasovvp.blacklister.ui.main.callloglist.CallLogListFragment"
         android:label="@string/log_list">
         <action
-            android:id="@+id/startBlackNumberAddFragment"
-            app:destination="@id/blackNumberAddFragment" />
+            android:id="@+id/startNumberAddFragment"
+            app:destination="@id/numberAddFragment" />
         <action
             android:id="@+id/startNumberDetailFragment"
             app:destination="@id/numberDetailFragment" />
@@ -71,25 +71,25 @@
     <fragment
         android:id="@+id/blackNumberListFragment"
         android:name="com.tarasovvp.blacklister.ui.main.blacknumberlist.BlackNumberListFragment"
-        android:label="@string/number_list">
+        android:label="@string/black_list">
         <action
             android:id="@+id/startInfoDialog"
             app:destination="@id/infoDialog" />
         <action
-            android:id="@+id/startBlackNumberAddFragment"
-            app:destination="@id/blackNumberAddFragment" />
+            android:id="@+id/startNumberAddFragment"
+            app:destination="@id/numberAddFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/whiteNumberListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.whitelist.WhiteNumberListFragment"
-        android:label="@string/number_list">
+        android:name="com.tarasovvp.blacklister.ui.main.whitenumberlist.WhiteNumberListFragment"
+        android:label="@string/white_list">
         <action
             android:id="@+id/startInfoDialog"
             app:destination="@id/infoDialog" />
         <action
-            android:id="@+id/startBlackNumberAddFragment"
-            app:destination="@id/blackNumberAddFragment" />
+            android:id="@+id/startNumberAddFragment"
+            app:destination="@id/numberAddFragment" />
     </fragment>
 
     <fragment
@@ -145,6 +145,11 @@
             app:argType="com.tarasovvp.blacklister.model.BlackNumber"
             app:nullable="true" />
         <argument
+            android:name="whiteNumber"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.WhiteNumber"
+            app:nullable="true" />
+        <argument
             android:name="contact"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.Contact"
@@ -156,13 +161,18 @@
         app:destination="@id/infoDialog" />
 
     <fragment
-        android:id="@+id/blackNumberAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.blacknumberadd.BlackNumberAddFragment"
+        android:id="@+id/numberAddFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragment"
         android:label="@string/addBlackNumber" >
         <argument
             android:name="blackNumber"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.BlackNumber"
+            app:nullable="true" />
+        <argument
+            android:name="whiteNumber"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.WhiteNumber"
             app:nullable="true" />
     </fragment>
 </navigation>

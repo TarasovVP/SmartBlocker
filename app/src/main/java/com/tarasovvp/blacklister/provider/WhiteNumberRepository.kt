@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.USERS
+import com.tarasovvp.blacklister.constants.Constants.WHITE_NUMBER
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.WhiteNumber
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +38,7 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
 
     override suspend fun insertAllWhiteNumbers() {
         dao?.deleteAllWhiteNumbers()
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).get()
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(WHITE_NUMBER).get()
             .addOnSuccessListener { snapshot ->
                 val whiteNumberList = arrayListOf<WhiteNumber>()
                 snapshot.children.forEach {
@@ -46,9 +47,9 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
                     }
                 }
                 Log.e("firebase",
-                    "Got value ${snapshot.value} blackNumberList ${Gson().toJson(whiteNumberList)}")
+                    "Got value ${snapshot.value} whiteNumberList ${Gson().toJson(whiteNumberList)}")
                 whiteNumberList.apply {
-                    Log.e("firebase", "insertAllBlackNumbers this ${Gson().toJson(this)}")
+                    Log.e("firebase", "insertAllWhiteNumbers this ${Gson().toJson(this)}")
                     dao?.insertAllWhiteNumbers(this)
                 }
             }.addOnFailureListener {
@@ -67,21 +68,21 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
         val test =
             database.child(USERS).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val blackNumberList = arrayListOf<WhiteNumber?>()
+                    val whiteNumberList = arrayListOf<WhiteNumber?>()
                     val blackNumberObject =
                         snapshot.getValue<HashMap<String, HashMap<String, WhiteNumber>>>()
                     blackNumberObject?.values?.forEach {
                         it.values.forEach { number ->
                             if (number.whiteNumber == whiteNumber) {
-                                blackNumberList.add(number)
+                                whiteNumberList.add(number)
                             }
                         }
                     }
-                    result.invoke(blackNumberList)
+                    result.invoke(whiteNumberList)
                     Log.e("firebase",
                         "blackNumbersRemoteCount children blackNumberObject values ${
                             Gson().toJson(blackNumberObject?.values)
-                        }    blackNumberList ${Gson().toJson(blackNumberList)}")
+                        }    blackNumberList ${Gson().toJson(whiteNumberList)}")
                     /*snapshot.children.forEach { dataSnapshot ->
                         val blackNumberObject = dataSnapshot.children
                         blackNumberObject.forEach { bNumberObject ->
@@ -93,14 +94,14 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
 
                     //blackNumberList?.let { result.invoke(blackNumberList.values as List<BlackNumber>) }
                     Log.e("firebase",
-                        "blackNumbersRemoteCount blackNumberList ${Gson().toJson(blackNumberList)} }")
+                        "whiteNumbersRemoteCount whiteNumberList ${Gson().toJson(whiteNumberList)} }")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e("firebase", "blackNumbersRemoteCount error ${Gson().toJson(error)}")
+                    Log.e("firebase", "whiteNumbersRemoteCount error ${Gson().toJson(error)}")
                 }
             })
-        Log.e("firebase", "blackNumbersRemoteCount test ${Gson().toJson(test)}")
+        Log.e("firebase", "whiteNumbersRemoteCount test ${Gson().toJson(test)}")
     }
 
     override suspend fun getWhiteNumber(whiteNumber: String): WhiteNumber? {
@@ -108,7 +109,7 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
     }
 
     override suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(WHITE_NUMBER)
             .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
                 dao?.insertWhiteNumber(whiteNumber)
                 result.invoke()
@@ -116,7 +117,7 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
     }
 
     override suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(WHITE_NUMBER)
             .child(whiteNumber.whiteNumber).removeValue().addOnCompleteListener {
                 dao?.delete(whiteNumber)
                 result.invoke()

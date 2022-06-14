@@ -1,11 +1,11 @@
-package com.tarasovvp.blacklister.ui.main.whitelist
+package com.tarasovvp.blacklister.ui.main.whitenumberlist
 
 import android.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -33,12 +33,10 @@ class WhiteNumberListFragment :
                 val listener = PopupMenu.OnMenuItemClickListener { item ->
                     when (item?.itemId) {
                         R.id.delete -> {
-                            findNavController().navigate(WhiteNumberListFragmentDirections.startInfoDialog(
-                               ))
+                            findNavController().navigate(WhiteNumberListFragmentDirections.startInfoDialog(whiteNumber = whiteNumber))
                         }
                         R.id.edit -> {
-                            findNavController().navigate(WhiteNumberListFragmentDirections.startBlackNumberAddFragment(
-                                ))
+                            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(whiteNumber = whiteNumber))
                         }
                     }
                     true
@@ -53,7 +51,7 @@ class WhiteNumberListFragment :
         recyclerView = binding?.blackNumberListRecyclerView
         emptyListText = binding?.blackNumberListEmpty
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WhiteNumber>(
-            BLACK_NUMBER
+            DELETE_NUMBER
         )
             ?.safeSingleObserve(
                 viewLifecycleOwner
@@ -61,7 +59,7 @@ class WhiteNumberListFragment :
                 viewModel.deleteWhiteNumber(whiteNumber)
             }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(WhiteNumberListFragmentDirections.startBlackNumberAddFragment())
+            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(whiteNumber = WhiteNumber()))
         }
         binding?.blackNumberListFilter?.setSafeOnClickListener {
             filterDataList()

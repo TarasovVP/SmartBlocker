@@ -12,13 +12,13 @@
         android:contentDescription="@string/contact_list"/>
     <item
         android:id="@+id/blackNumberListFragment"
-        android:title="@string/number_list"
-        android:icon="@drawable/ic_number_list"
+        android:title="@string/black_list"
+        android:icon="@drawable/ic_black_number"
         android:contentDescription="@string/number_list"/>
     <item
         android:id="@+id/whiteNumberListFragment"
-        android:title="@string/number_list"
-        android:icon="@drawable/ic_number_list"
+        android:title="@string/white_list"
+        android:icon="@drawable/ic_white_number"
         android:contentDescription="@string/number_list"/>
     <item
         android:id="@+id/settingsListFragment"

@@ -6,84 +6,85 @@
     android:layout_height="match_parent" >
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/black_number_add_left_gd"
+        android:id="@+id/number_add_left_gd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.04" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/black_number_add_right_gd"
+        android:id="@+id/number_add_right_gd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96" />
 
     <EditText
-        android:id="@+id/black_number_add_search"
+        android:id="@+id/number_add_search"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
         android:inputType="numberDecimal"
         android:hint="@string/enter_number"
-        app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
-        app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
+        app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
+        app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="Autofill,LabelFor,TextFields" />
 
     <CheckBox
-        android:id="@+id/black_number_add_contain"
+        android:id="@+id/number_add_contain"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
         android:text="@string/black_number_contain"
-        app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
-        app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
-        app:layout_constraintTop_toBottomOf="@+id/black_number_add_search" />
+        app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
+        app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/number_add_search" />
 
     <CheckBox
-        android:id="@+id/black_number_add_start"
+        android:id="@+id/number_add_start"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
         android:text="@string/black_number_start"
-        app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
-        app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
-        app:layout_constraintTop_toBottomOf="@+id/black_number_add_contain" />
+        app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
+        app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/number_add_contain" />
 
     <CheckBox
-        android:id="@+id/black_number_add_end"
+        android:id="@+id/number_add_end"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
         android:text="@string/black_number_end"
-        app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
-        app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
-        app:layout_constraintTop_toBottomOf="@+id/black_number_add_start" />
+        app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
+        app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/number_add_start" />
 
     <Spinner
-        android:id="@+id/black_number_add_category"
+        android:id="@+id/number_add_category"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
         android:backgroundTint="@color/white"
         android:dropDownSelector="@color/blue"
         android:popupBackground="@color/main_bg"
-        app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
-        app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
-        app:layout_constraintTop_toBottomOf="@+id/black_number_add_end"/>
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
+        app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/number_add_end"/>
 
     <Button
-        android:id="@+id/black_number_add_submit"
+        android:id="@+id/number_add_submit"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_25"
         android:text="@string/add"
         android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/black_number_add_right_gd"
-        app:layout_constraintStart_toEndOf="@+id/black_number_add_left_gd"
-        app:layout_constraintTop_toBottomOf="@+id/black_number_add_category"
+        app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
+        app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/number_add_category"
         app:layout_constraintVertical_bias="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

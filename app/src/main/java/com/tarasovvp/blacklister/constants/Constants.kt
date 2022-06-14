@@ -9,6 +9,8 @@ object Constants {
     const val EIGHT_ZERO = "80"
     const val ZERO = "0"
     const val BLACK_NUMBER = "blackNumber"
+    const val WHITE_NUMBER = "whiteNumber"
+    const val DELETE_NUMBER = "addNumber"
     const val CONTACT = "contact"
     const val CALL_LOG_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"

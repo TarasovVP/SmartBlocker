@@ -10,7 +10,7 @@
         android:id="@+id/item_black_list_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_stop"
+        android:src="@drawable/ic_black_number"
         app:layout_constraintBottom_toTopOf="@+id/item_black_list_divider"
         app:layout_constraintEnd_toStartOf="@+id/item_black_list_number"
         app:layout_constraintStart_toStartOf="parent"

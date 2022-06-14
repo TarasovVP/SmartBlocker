@@ -3,10 +3,6 @@ package com.tarasovvp.blacklister.enum
 import com.tarasovvp.blacklister.R
 
 enum class BlackNumberCategory(val id: Int, val title: Int) {
-    NO_BLACK_NUMBER(
-        - 1,
-        R.string.other
-    ),
     OTHER(
         0,
         R.string.other

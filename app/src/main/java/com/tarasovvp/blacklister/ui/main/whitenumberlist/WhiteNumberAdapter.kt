@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.whitelist
+package com.tarasovvp.blacklister.ui.main.whitenumberlist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemBlackNumberBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
-import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter

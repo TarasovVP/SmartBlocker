@@ -9,7 +9,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.REALTIME_DATABASE
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
@@ -43,8 +45,8 @@ class BlackNumberListFragment :
                                 blackNumber = blackNumber))
                         }
                         R.id.edit -> {
-                            findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment(
-                                blackNumber))
+                            findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(
+                                blackNumber = blackNumber))
                         }
                     }
                     true
@@ -59,7 +61,7 @@ class BlackNumberListFragment :
         recyclerView = binding?.blackNumberListRecyclerView
         emptyListText = binding?.blackNumberListEmpty
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
-            BLACK_NUMBER
+            DELETE_NUMBER
         )
             ?.safeSingleObserve(
                 viewLifecycleOwner
@@ -67,7 +69,7 @@ class BlackNumberListFragment :
                 viewModel.deleteBlackNumber(blackNumber)
             }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(BlackNumberListFragmentDirections.startBlackNumberAddFragment())
+            findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(blackNumber = BlackNumber()))
         }
         binding?.blackNumberListFilter?.setSafeOnClickListener {
             filterDataList()

@@ -36,7 +36,7 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
 
     override suspend fun insertAllBlackNumbers() {
         dao?.deleteAllBlackNumbers()
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).get().addOnSuccessListener { snapshot ->
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(BLACK_NUMBER).get().addOnSuccessListener { snapshot ->
             val blackNumberList = arrayListOf<BlackNumber>()
             snapshot.children.forEach {
                 it.getValue<BlackNumber>()?.let { blackNumber ->
@@ -96,14 +96,14 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
     }
 
     override suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(blackNumber.blackNumber).setValue(blackNumber).addOnCompleteListener {
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(BLACK_NUMBER).child(blackNumber.blackNumber).setValue(blackNumber).addOnCompleteListener {
             dao?.insertBlackNumber(blackNumber)
             result.invoke()
         }
     }
 
     override suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(blackNumber.blackNumber).removeValue().addOnCompleteListener {
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(BLACK_NUMBER).child(blackNumber.blackNumber).removeValue().addOnCompleteListener {
             dao?.delete(blackNumber)
             result.invoke()
         }

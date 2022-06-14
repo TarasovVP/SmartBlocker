@@ -13,6 +13,5 @@ data class WhiteNumber(
     @PrimaryKey val whiteNumber: String = "",
     val isStart: Boolean = false,
     val isContain: Boolean = false,
-    val isEnd: Boolean = false,
-    val category: Int = BlackNumberCategory.NO_BLACK_NUMBER.id,
+    val isEnd: Boolean = false
 ) : Parcelable, BaseAdapter.MainData

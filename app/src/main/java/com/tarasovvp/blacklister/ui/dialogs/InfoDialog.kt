@@ -13,8 +13,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
-import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.CONTACT
 import com.tarasovvp.blacklister.databinding.DialogInfoBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
@@ -66,7 +66,7 @@ class InfoDialog : DialogFragment() {
             if (args.contact.isNotNull()) args.contact?.isBlackList =
                 !args.contact?.isBlackList.isTrue()
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                if (args.blackNumber.isNotNull()) BLACK_NUMBER else if (args.contact.isNotNull()) CONTACT else APP_EXIT,
+                if (args.blackNumber.isNotNull()) DELETE_NUMBER else if (args.contact.isNotNull()) CONTACT else APP_EXIT,
                 if (args.blackNumber.isNotNull()) args.blackNumber else if (args.contact.isNotNull()) args.contact else true
             )
             dismiss()

@@ -13,12 +13,14 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toFormattedPhoneNumber
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
+import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.provider.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val callLogRepository = CallLogRepositoryImpl
     private val blackNumberRepository = BlackNumberRepositoryImpl
+    private val whiteNumberRepository = WhiteNumberRepositoryImpl
     private val contactRepository = ContactRepositoryImpl
     private val blockedCallRepository = BlockedCallRepositoryImpl
 
@@ -29,9 +31,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                     blackNumberRepository.insertAllBlackNumbers()
+                    whiteNumberRepository.insertAllWhiteNumbers()
                 }
                 Log.e("mainViewModelTAG", "MainViewModel getCallLogList viewModelScope.launch")
                 val blackNumberList = blackNumberRepository.allBlackNumbers()
+                Log.e(
+                    "mainViewModelTAG",
+                    "MainViewModel getCallLogList blackNumberRepository.allBlackNumbers blackNumberList?.size ${blackNumberList?.size}"
+                )
+                val whiteNumberList = whiteNumberRepository.allWhiteNumbers()
                 Log.e(
                     "mainViewModelTAG",
                     "MainViewModel getCallLogList blackNumberRepository.allBlackNumbers blackNumberList?.size ${blackNumberList?.size}"
@@ -41,6 +49,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     callLog.isBlackList = blackNumberList?.contains(
                         callLog.phone?.toFormattedPhoneNumber()
                             ?.let { phone -> BlackNumber(blackNumber = phone) }).isTrue()
+                    callLog.isWhiteList = whiteNumberList?.contains(
+                        callLog.phone?.toFormattedPhoneNumber()
+                            ?.let { phone -> WhiteNumber(whiteNumber = phone) }).isTrue()
                 }
                 contactRepository.insertContacts(contactList)
                 Log.e(
