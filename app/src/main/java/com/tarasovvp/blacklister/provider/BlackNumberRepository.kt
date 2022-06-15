@@ -62,11 +62,13 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
         val test = database.child(USERS).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val blackNumberList = arrayListOf<BlackNumber?>()
-                val blackNumberObject = snapshot.getValue<HashMap<String, HashMap<String, BlackNumber>>>()
+                val blackNumberObject = snapshot.getValue<HashMap<String, HashMap<String, HashMap<String, BlackNumber>>>>()
                 blackNumberObject?.values?.forEach {
-                    it.values.forEach { number ->
-                        if (number.blackNumber == blackNumber) {
-                            blackNumberList.add(number)
+                    it.values.forEach { numberType ->
+                        numberType.values.forEach { number ->
+                            if (number.blackNumber == blackNumber) {
+                                blackNumberList.add(number)
+                            }
                         }
                     }
                 }

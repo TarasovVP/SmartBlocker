@@ -26,5 +26,17 @@ enum class BlackNumberCategory(val id: Int, val title: Int) {
     FRAUD(
         4,
         R.string.fraud
-    )
+    );
+
+    companion object {
+        @JvmStatic
+        fun findBlackNumberCategoryById(id: Int): BlackNumberCategory? {
+            for (blackNumberCategory in values()) {
+                if (blackNumberCategory.id == id) {
+                    return blackNumberCategory
+                }
+            }
+            return null
+        }
+    }
 }

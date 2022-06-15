@@ -44,5 +44,6 @@ object SharedPreferencesUtil {
 
     fun clearAll() {
         clearSharedPreferences()
+        isOnBoardingSeen = true
     }
 }

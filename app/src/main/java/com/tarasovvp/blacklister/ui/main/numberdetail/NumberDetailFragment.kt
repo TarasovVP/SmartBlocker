@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui.main.numberdetail
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,12 +10,9 @@ import com.google.gson.Gson
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
-import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.loadCircleImage
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.enum.BlackNumberCategory
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.NumberInfo
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import kotlinx.android.synthetic.main.fragment_number_detail.*
@@ -46,27 +42,31 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                     binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
                         findNavController().navigate(NumberDetailFragmentDirections.startLoginFragment())
                     }
-                    binding?.numberDetailType?.setImageResource(when {
-                        contact.isBlackList -> R.drawable.ic_block
-                        contact.isWhiteList -> R.drawable.ic_accepted
-                        else -> 0
-                    })
                 }
             })
             blackNumberAmountLiveData.safeSingleObserve(viewLifecycleOwner, {
                 Log.e("detailTAG", "NumberDetailFragment blackNumberList ${Gson().toJson(it)}")
-                binding?.numberDetailRatingsTitle?.text = String.format("%s %s", "Количество пользователей, которые заблокировали этот номер - ", it.size)
-                binding?.numberDetailCategoriesTitle?.text = String.format("%s %s", "В таких категориях:", it.map { blackNumber ->
-                    blackNumber?.category?.let { it1 ->
-
-                } }.joinToString(", "))
+                binding?.numberDetailRatingsTitle?.text = String.format("%s %s",
+                    "Количество пользователей, которые заблокировали этот номер - ",
+                    it.size)
+                val categoriesList = it.map { blackNumber ->
+                    blackNumber?.category?.let { id ->
+                        getString(BlackNumberCategory.findBlackNumberCategoryById(id)?.title.orZero())
+                    }
+                }.joinToString(", ")
+                if (categoriesList.isNotEmpty()) binding?.numberDetailCategoriesTitle?.text = String.format("%s %s", "В таких категориях:", categoriesList)
             })
         }
     }
 
-    private fun setContactInfo(contact: Contact) {
-        binding?.numberDetailName?.text = contact.name
-        binding?.numberDetailPhone?.text = contact.phone
-        binding?.numberDetailAvatar?.loadCircleImage(contact.photoUrl)
+        private fun setContactInfo(contact: Contact) {
+            binding?.numberDetailName?.text = contact.name
+            binding?.numberDetailPhone?.text = contact.phone
+            binding?.numberDetailAvatar?.loadCircleImage(contact.photoUrl)
+            binding?.numberDetailType?.setImageResource(when {
+                contact.isBlackList -> R.drawable.ic_block
+                contact.isWhiteList -> R.drawable.ic_accepted
+                else -> 0
+            })
+        }
     }
-}

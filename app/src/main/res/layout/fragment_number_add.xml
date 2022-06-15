@@ -80,6 +80,7 @@
         android:layout_marginTop="@dimen/margin_25"
         android:backgroundTint="@color/white"
         android:dropDownSelector="@color/blue"
+        android:popupBackground="@color/main_bg"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
         app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
