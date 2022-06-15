@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -40,12 +41,16 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                 if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                     getNumberInfo(contact.phone.toString())
                 } else {
-                    binding?.numberDetailBlocked?.isVisible = contact.isBlackList
-                        binding?.includeNoAccount?.root?.isVisible = true
+                    binding?.includeNoAccount?.root?.isVisible = true
                     binding?.includeNoAccount?.noAccountIcon?.isVisible = false
                     binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
                         findNavController().navigate(NumberDetailFragmentDirections.startLoginFragment())
                     }
+                    binding?.numberDetailType?.setImageResource(when {
+                        contact.isBlackList -> R.drawable.ic_block
+                        contact.isWhiteList -> R.drawable.ic_accepted
+                        else -> 0
+                    })
                 }
             })
             blackNumberAmountLiveData.safeSingleObserve(viewLifecycleOwner, {

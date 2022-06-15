@@ -13,11 +13,16 @@ import com.tarasovvp.blacklister.extensions.breakCallNougatAndLower
 import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
 import com.tarasovvp.blacklister.extensions.deleteLastMissedCall
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
+import com.tarasovvp.blacklister.provider.WhiteNumberRepositoryImpl
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 open class CallReceiver(private val phoneListener: (String) -> Unit) : BroadcastReceiver() {
+
+    private val blackNumberRepository = BlackNumberRepositoryImpl
+    private val whiteNumberRepository = WhiteNumberRepositoryImpl
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
@@ -26,11 +31,9 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         Log.e("callReceiveTAG", "CallReceiver onReceive intent.extras ${intent.extras}")
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
-        val blackNumberList =
-            BlackListerApp.instance?.database?.blackNumberDao()?.getBlackNumberList(phone)
-        if (blackNumberList?.isNullOrEmpty()?.not()
-                .isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
-        ) {
+        val blackNumberList = blackNumberRepository.getBlackNumberList(phone)
+        val whiteNumberList = whiteNumberRepository.getWhiteNumberList(phone)
+        if (blackNumberList?.isNullOrEmpty()?.not().isTrue() && whiteNumberList?.isNullOrEmpty().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
             phoneListener.invoke("phone $phone")
             breakCall(context)
             Log.e("callReceiveTAG",

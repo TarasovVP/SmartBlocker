@@ -6,14 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.toFormattedPhoneNumber
-import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
-import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.provider.*
 import kotlinx.coroutines.launch
 
@@ -24,40 +20,53 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val contactRepository = ContactRepositoryImpl
     private val blockedCallRepository = BlockedCallRepositoryImpl
 
-    val successLiveData = MutableLiveData<Boolean>()
+    val successBlackNumberLiveData = MutableLiveData<Boolean>()
+    val successWhiteNumberLiveData = MutableLiveData<Boolean>()
+    val successAllDataLiveData = MutableLiveData<Boolean>()
+    val errorLiveData = MutableLiveData<String>()
+
+    fun insertAllBlackNumbers() {
+        viewModelScope.launch {
+            try {
+                blackNumberRepository.insertAllBlackNumbers {
+                    successBlackNumberLiveData.postValue(true)
+                }
+            } catch (e: Exception) {
+                errorLiveData.postValue(e.localizedMessage)
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun insertAllWhiteNumbers() {
+        viewModelScope.launch {
+            try {
+                blackNumberRepository.insertAllBlackNumbers {
+                    successWhiteNumberLiveData.postValue(true)
+                }
+            } catch (e: java.lang.Exception) {
+                errorLiveData.postValue(e.localizedMessage)
+                e.printStackTrace()
+            }
+        }
+    }
 
     fun getAllData() {
         viewModelScope.launch {
             try {
-                if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-                    blackNumberRepository.insertAllBlackNumbers()
-                    whiteNumberRepository.insertAllWhiteNumbers()
-                }
-                Log.e("mainViewModelTAG", "MainViewModel getCallLogList viewModelScope.launch")
-                val blackNumberList = blackNumberRepository.allBlackNumbers()
-                Log.e(
-                    "mainViewModelTAG",
-                    "MainViewModel getCallLogList blackNumberRepository.allBlackNumbers blackNumberList?.size ${blackNumberList?.size}"
-                )
-                val whiteNumberList = whiteNumberRepository.allWhiteNumbers()
-                Log.e(
-                    "mainViewModelTAG",
-                    "MainViewModel getCallLogList blackNumberRepository.allWhiteNumbers whiteNumberList?.size ${whiteNumberList?.size}"
-                )
                 val contactList = getApplication<Application>().contactList()
-                contactList.forEach { callLog ->
-                    callLog.isBlackList = blackNumberList?.contains(
-                        callLog.phone?.toFormattedPhoneNumber()
-                            ?.let { phone -> BlackNumber(blackNumber = phone) }).isTrue()
-                    callLog.isWhiteList = whiteNumberList?.contains(
-                        callLog.phone?.toFormattedPhoneNumber()
-                            ?.let { phone -> WhiteNumber(whiteNumber = phone) }).isTrue()
+                contactList.forEach { contact ->
+                    contact.isBlackList =
+                        blackNumberRepository.getBlackNumberList(contact.phone.orEmpty())
+                            ?.isNullOrEmpty().isTrue().not()
+                    contact.isWhiteList =
+                        whiteNumberRepository.getWhiteNumberList(contact.phone.orEmpty())
+                            ?.isNullOrEmpty().isTrue().not()
                 }
                 contactRepository.insertContacts(contactList)
-                Log.e(
-                    "mainViewModelTAG",
-                    "MainViewModel getCallLogList  contactRepository.insertContacts contactList?.size ${contactList.size}"
-                )
+                Log.e("mainViewModelTAG",
+                    "MainViewModel getAllData contactList ${Gson().toJson(contactList)}")
+
                 val callLogList = getApplication<Application>().callLogList()
                 val blockedCallList = blockedCallRepository.allBlockedCalls()
                 blockedCallList?.forEach { blockedCall ->
@@ -65,17 +74,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         phone = blockedCall.phone,
                         type = blockedCall.type,
                         time = blockedCall.time))
-                    Log.e(
-                        "mainViewModelTAG",
-                        "MainViewModel  blockedCallList?.forEach Gson().toJson(blockedCall) ${
-                            Gson().toJson(blockedCall)
-                        }"
-                    )
                 }
                 callLogList.forEach { callLog ->
-                    callLog.isBlackList = blackNumberList?.contains(
-                        callLog.phone?.toFormattedPhoneNumber()
-                            ?.let { phone -> BlackNumber(blackNumber = phone) }) == true
+                    callLog.isBlackList =
+                        blackNumberRepository.getBlackNumberList(callLog.phone.orEmpty())
+                            ?.isNullOrEmpty().isTrue().not()
+                    callLog.isWhiteList =
+                        whiteNumberRepository.getWhiteNumberList(callLog.phone.orEmpty())
+                            ?.isNullOrEmpty().isTrue().not()
                     val index = contactList.indexOfFirst { it.phone == callLog.phone }
                     if (index >= 0) {
                         val contact =
@@ -84,13 +90,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
                 callLogRepository.insertCallLogs(callLogList)
-                Log.e(
-                    "mainViewModelTAG",
-                    "MainViewModel getCallLogList callLogRepository.insertCallLogs callLogList?.size ${callLogList.size}"
-                )
-                successLiveData.postValue(true)
+                Log.e("mainViewModelTAG",
+                    "MainViewModel getAllData callLogList ${Gson().toJson(callLogList)}")
+
+                successAllDataLiveData.postValue(true)
             } catch (e: Exception) {
-                successLiveData.postValue(false)
+                errorLiveData.postValue(e.localizedMessage)
                 e.printStackTrace()
             }
         }

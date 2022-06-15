@@ -6,15 +6,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.blacklister.BlackListerApp
@@ -103,14 +100,30 @@ class MainActivity : AppCompatActivity() {
 
     fun getAllData() {
         with(mainViewModel) {
-            successLiveData.safeSingleObserve(this@MainActivity, {
+            successBlackNumberLiveData.safeSingleObserve(this@MainActivity, {
+                insertAllWhiteNumbers()
+            })
+            successWhiteNumberLiveData.safeSingleObserve(this@MainActivity, {
+                getAllData()
+            })
+            successAllDataLiveData.safeSingleObserve(this@MainActivity, {
                 Log.e(
                     "mainViewModelTAG",
                     "MainActivity success $it"
                 )
             })
+            errorLiveData.safeSingleObserve(this@MainActivity, { error ->
+                Log.e(
+                    "mainViewModelTAG",
+                    "MainActivity errorLiveData error $error"
+                )
+            })
             if (checkPermissions().isTrue()) {
-                getAllData()
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+                    insertAllBlackNumbers()
+                } else {
+                    getAllData()
+                }
             } else {
                 requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
             }

@@ -102,7 +102,7 @@ class CallLogListFragment :
     private fun getAllData() {
         (activity as MainActivity).apply {
             getAllData()
-            mainViewModel.successLiveData.safeSingleObserve(this, { success ->
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
                 Log.e("callReceiveTAG",
                     "CallLogListFragment successLiveData.safeSingleObserve success $success")
                 viewModel.getCallLogList()

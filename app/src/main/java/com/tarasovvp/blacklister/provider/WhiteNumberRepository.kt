@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 interface WhiteNumberRepository {
-    suspend fun insertAllWhiteNumbers()
+    suspend fun insertAllWhiteNumbers(result: () -> Unit)
     suspend fun whiteNumbersRemoteCount(
         whiteNumber: String,
         result: (ArrayList<WhiteNumber?>) -> Unit,
@@ -29,6 +29,7 @@ interface WhiteNumberRepository {
     suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit)
     suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit)
     suspend fun getHashMapFromWhiteNumberList(whiteNumberList: List<WhiteNumber>): HashMap<String, List<WhiteNumber>>
+    fun getWhiteNumberList(whiteNumber: String): List<WhiteNumber>?
 }
 
 object WhiteNumberRepositoryImpl : WhiteNumberRepository {
@@ -36,9 +37,10 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
     private val dao = BlackListerApp.instance?.database?.whiteNumberDao()
     val database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
 
-    override suspend fun insertAllWhiteNumbers() {
+    override suspend fun insertAllWhiteNumbers(result: () -> Unit) {
         dao?.deleteAllWhiteNumbers()
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(WHITE_NUMBER).get()
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+            .child(WHITE_NUMBER).get()
             .addOnSuccessListener { snapshot ->
                 val whiteNumberList = arrayListOf<WhiteNumber>()
                 snapshot.children.forEach {
@@ -52,6 +54,7 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
                     Log.e("firebase", "insertAllWhiteNumbers this ${Gson().toJson(this)}")
                     dao?.insertAllWhiteNumbers(this)
                 }
+                result.invoke()
             }.addOnFailureListener {
                 Log.e("firebase", "Error getting data", it)
             }
@@ -109,7 +112,8 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
     }
 
     override suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(WHITE_NUMBER)
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+            .child(WHITE_NUMBER)
             .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
                 dao?.insertWhiteNumber(whiteNumber)
                 result.invoke()
@@ -117,7 +121,8 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
     }
 
     override suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(WHITE_NUMBER)
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+            .child(WHITE_NUMBER)
             .child(whiteNumber.whiteNumber).removeValue().addOnCompleteListener {
                 dao?.delete(whiteNumber)
                 result.invoke()
@@ -130,4 +135,8 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
         ) {
             whiteNumberList.toHashMapFromList()
         }
+
+    override fun getWhiteNumberList(whiteNumber: String): List<WhiteNumber>? {
+        return dao?.getWhiteNumberList(whiteNumber)
+    }
 }

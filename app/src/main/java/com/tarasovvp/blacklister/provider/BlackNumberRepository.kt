@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.provider
 
 import android.util.Log
-import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,18 +14,19 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.model.CallLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.concurrent.CompletableFuture
 
 interface BlackNumberRepository {
-    suspend fun insertAllBlackNumbers()
+    suspend fun insertAllBlackNumbers(result: () -> Unit)
     suspend fun blackNumbersRemoteCount(blackNumber: String, result: (ArrayList<BlackNumber?>) -> Unit)
     suspend fun allBlackNumbers(): List<BlackNumber>?
     suspend fun getBlackNumber(blackNumber: String): BlackNumber?
     suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit)
     suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit)
     suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>>
+    fun getBlackNumberList(blackNumber: String): List<BlackNumber>?
 }
 
 object BlackNumberRepositoryImpl : BlackNumberRepository {
@@ -34,7 +34,7 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
     private val dao = BlackListerApp.instance?.database?.blackNumberDao()
     val database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
 
-    override suspend fun insertAllBlackNumbers() {
+    override suspend fun insertAllBlackNumbers(result: () -> Unit) {
         dao?.deleteAllBlackNumbers()
         database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(BLACK_NUMBER).get().addOnSuccessListener { snapshot ->
             val blackNumberList = arrayListOf<BlackNumber>()
@@ -48,6 +48,7 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
                 Log.e("firebase", "insertAllBlackNumbers this ${Gson().toJson(this)}")
                 dao?.insertAllBlackNumbers(this)
             }
+            result.invoke()
         }.addOnFailureListener{
             Log.e("firebase", "Error getting data", it)
         }
@@ -115,4 +116,9 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
         ) {
             blackNumberList.toHashMapFromList()
         }
+
+    override fun getBlackNumberList(blackNumber: String): List<BlackNumber>? {
+        return dao?.getBlackNumberList(blackNumber)
+    }
+
 }

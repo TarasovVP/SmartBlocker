@@ -17,11 +17,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/item_call_log_blocked"
+        android:id="@+id/item_call_log_type"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/ic_block"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/item_call_log_avatar"
         app:layout_constraintEnd_toEndOf="@+id/item_call_log_avatar" />
 

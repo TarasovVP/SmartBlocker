@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemCallLogBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.loadCircleImage
@@ -48,7 +49,11 @@ class CallLogAdapter(private val callLogClick: (CallLog, View) -> Unit) :
         var binding: ItemCallLogBinding? = ItemCallLogBinding.bind(itemView)
         fun bindData(position: Int) {
             val callLog = getDataInPosition(position)
-            binding?.itemCallLogBlocked?.isVisible = callLog.isBlackList
+            binding?.itemCallLogType?.setImageResource(when {
+                callLog.isBlackList -> R.drawable.ic_block
+                callLog.isWhiteList -> R.drawable.ic_accepted
+                else -> 0
+            })
             binding?.itemCallLogName?.text = callLog.name
             binding?.itemCallLogNumber?.text = callLog.phone
             binding?.itemCallLogTime?.text = callLog.dateTimeFromTime()
