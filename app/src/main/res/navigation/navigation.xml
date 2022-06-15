@@ -92,6 +92,10 @@
             app:destination="@id/numberAddFragment" />
     </fragment>
 
+    <action
+        android:id="@+id/startSettingsListFragment"
+        app:destination="@id/settingsListFragment" />
+
     <fragment
         android:id="@+id/settingsListFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.settingslist.SettingsListFragment"

@@ -6,18 +6,20 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.MainNavigationDirections
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.setAppLocale
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         R.id.callLogListFragment,
         R.id.contactListFragment,
         R.id.blackNumberListFragment,
-        R.id.settingsListFragment
+        R.id.whiteNumberListFragment
     )
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->

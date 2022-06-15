@@ -2,12 +2,14 @@ package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -71,6 +73,10 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                     return true
                 }
             })
+            toolbar?.menu?.findItem(R.id.settings_menu_item)?.setOnMenuItemClickListener {
+                findNavController().navigate(R.id.startSettingsListFragment)
+                return@setOnMenuItemClickListener true
+            }
         }
     }
 

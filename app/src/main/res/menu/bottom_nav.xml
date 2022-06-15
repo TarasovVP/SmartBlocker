@@ -20,9 +20,4 @@
         android:title="@string/white_list"
         android:icon="@drawable/ic_white_number"
         android:contentDescription="@string/number_list"/>
-    <item
-        android:id="@+id/settingsListFragment"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_settings"
-        android:contentDescription="@string/settings"/>
 </menu>

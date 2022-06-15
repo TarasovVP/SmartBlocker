@@ -60,7 +60,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
     private fun checkToolbarSearchVisibility() {
         (activity as MainActivity).apply {
             toolbar?.menu?.clear()
-            if (navigationScreens.contains(findNavController().currentDestination?.id) && findNavController().currentDestination?.id != R.id.settingsListFragment) {
+            if (navigationScreens.contains(findNavController().currentDestination?.id)) {
                 toolbar?.inflateMenu(R.menu.toolbar_search)
             }
         }
