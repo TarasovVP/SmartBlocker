@@ -5,8 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.tarasovvp.blacklister.databinding.ItemBlackNumberBinding
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.databinding.ItemNumberBinding
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -25,7 +26,7 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?, View) -> U
             )
         } else {
             ViewHolder(
-                ItemBlackNumberBinding.inflate(
+                ItemNumberBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -49,16 +50,17 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?, View) -> U
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        var binding: ItemBlackNumberBinding? = ItemBlackNumberBinding.bind(itemView)
+        var binding: ItemNumberBinding? = ItemNumberBinding.bind(itemView)
 
         fun bindData(position: Int) {
             val blackNumber = getDataInPosition(position)
-            binding?.itemBlackListNumber?.text = blackNumber.blackNumber
-            binding?.itemBlackListStart?.isVisible = blackNumber.isStart
-            binding?.itemBlackListContain?.isVisible = blackNumber.isContain
-            binding?.itemBlackListEnd?.isVisible = blackNumber.isEnd
+            binding?.itemNumberValue?.text = blackNumber.blackNumber
+            binding?.itemNumberStart?.isVisible = blackNumber.isStart
+            binding?.itemNumberContain?.isVisible = blackNumber.isContain
+            binding?.itemNumberEnd?.isVisible = blackNumber.isEnd
+            binding?.itemNumberAvatar?.setImageResource(R.drawable.ic_black_number)
             binding?.root?.setSafeOnClickListener {
-                binding?.itemBlackListMenu?.apply {
+                binding?.itemNumberMenu?.apply {
                     blackNumberClick.invoke(blackNumber, this)
                 }
             }

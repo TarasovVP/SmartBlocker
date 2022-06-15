@@ -44,6 +44,7 @@ import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -310,6 +311,9 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
             is BlackNumber -> {
                 it.blackNumber.substring(0, 1)
             }
+            is WhiteNumber -> {
+                it.whiteNumber.substring(0, 1)
+            }
             is Contact -> {
                 it.name?.substring(0, 1)
             }
@@ -326,6 +330,9 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
             key == when (it) {
                 is BlackNumber -> {
                     it.blackNumber.substring(0, 1)
+                }
+                is WhiteNumber -> {
+                    it.whiteNumber.substring(0, 1)
                 }
                 is Contact -> {
                     it.name?.substring(0, 1)

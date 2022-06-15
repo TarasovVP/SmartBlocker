@@ -3,13 +3,13 @@ package com.tarasovvp.blacklister.ui.main.numberadd
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
 import com.tarasovvp.blacklister.enum.BlackNumberCategory
 import com.tarasovvp.blacklister.extensions.isNotNull
@@ -33,9 +33,9 @@ class NumberAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args.blackNumber?.apply {
-            initViewsWithData(this)
             initNumberAddCategory()
         }
+        initViewsWithData()
         binding?.numberAddSearch?.doAfterTextChanged {
             binding?.numberAddSubmit?.isEnabled = it?.isNotEmpty().isTrue()
         }
@@ -55,12 +55,19 @@ class NumberAddFragment :
         }
     }
 
-    private fun initViewsWithData(blackNumber: BlackNumber) {
-        binding?.numberAddSearch?.setText(blackNumber.blackNumber)
-        binding?.numberAddStart?.isChecked = blackNumber.isStart.isTrue()
-        binding?.numberAddContain?.isChecked = blackNumber.isContain.isTrue()
-        binding?.numberAddEnd?.isChecked = blackNumber.isEnd.isTrue()
-        binding?.numberAddSubmit?.isEnabled = blackNumber.blackNumber.isNotEmpty()
+    private fun initViewsWithData() {
+        binding?.numberAddTitle?.text = "Для ${if (args.blackNumber?.blackNumber.isNullOrEmpty().not() || args.whiteNumber?.whiteNumber.isNullOrEmpty().not()) "редактирования номера" else "добавления номера в ${if (args.blackNumber.isNotNull()) "черный" else "белый"} список"} заполните поле ввода и нажмите кнопку"
+        binding?.numberAddTitle?.setCompoundDrawablesRelativeWithIntrinsicBounds(0, if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number, 0, 0)
+        binding?.numberAddSearch?.setText(if (args.blackNumber.isNotNull()) args.blackNumber?.blackNumber.orEmpty() else args.whiteNumber?.whiteNumber.orEmpty())
+        binding?.numberAddStart?.isChecked =
+            if (args.blackNumber.isNotNull()) args.blackNumber?.isStart.isTrue() else args.whiteNumber?.isStart.isTrue()
+        binding?.numberAddContain?.isChecked =
+            if (args.blackNumber.isNotNull()) args.blackNumber?.isContain.isTrue() else args.whiteNumber?.isContain.isTrue()
+        binding?.numberAddEnd?.isChecked =
+            if (args.blackNumber.isNotNull()) args.blackNumber?.isEnd.isTrue() else args.whiteNumber?.isEnd.isTrue()
+        binding?.numberAddSubmit?.isEnabled =
+            if (args.blackNumber.isNotNull()) args.blackNumber?.blackNumber.isNullOrEmpty().isTrue()
+                .not() else args.whiteNumber?.whiteNumber.isNullOrEmpty().isTrue().not()
     }
 
     private fun initNumberAddCategory() {
@@ -71,24 +78,20 @@ class NumberAddFragment :
         val adapter = ArrayAdapter(requireContext(),
             android.R.layout.simple_spinner_item, categoryList)
         binding?.numberAddCategory?.adapter = adapter
-
-        binding?.numberAddCategory?.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View, position: Int, id: Long,
-            ) {
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
-        }
+        binding?.numberAddCategory?.setSelection(args.blackNumber?.category.orZero())
     }
 
     override fun observeLiveData() {
         viewModel.blackNumberLiveData.safeSingleObserve(viewLifecycleOwner, {
             showMessage("Number ${it.blackNumber} is added", false)
+            Log.e("blackNumberTAG",
+                "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
+                    Gson().toJson(it)
+                }")
+            findNavController().popBackStack()
+        })
+        viewModel.whiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, {
+            showMessage("Number ${it.whiteNumber} is added", false)
             Log.e("blackNumberTAG",
                 "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
                     Gson().toJson(it)

@@ -94,14 +94,14 @@ class WhiteNumberListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            whiteNumberList.safeObserve(viewLifecycleOwner, { blackNumberList ->
-                this@WhiteNumberListFragment.whiteNumberList = blackNumberList
-                if (!checkDataListEmptiness(blackNumberList)) {
-                    getHashMapFromWhiteNumberList(blackNumberList)
+            whiteNumberList.safeObserve(viewLifecycleOwner, { whiteNumberList ->
+                this@WhiteNumberListFragment.whiteNumberList = whiteNumberList
+                if (!checkDataListEmptiness(whiteNumberList)) {
+                    getHashMapFromWhiteNumberList(whiteNumberList)
                 }
             })
-            whiteNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumberHashMap ->
-                blackNumberHashMap?.let { setDataList(it) }
+            whiteNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumberList ->
+                whiteNumberList?.let { setDataList(it) }
             })
         }
     }

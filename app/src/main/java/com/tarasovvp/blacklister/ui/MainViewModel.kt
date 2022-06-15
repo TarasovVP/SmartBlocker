@@ -42,7 +42,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val whiteNumberList = whiteNumberRepository.allWhiteNumbers()
                 Log.e(
                     "mainViewModelTAG",
-                    "MainViewModel getCallLogList blackNumberRepository.allBlackNumbers blackNumberList?.size ${blackNumberList?.size}"
+                    "MainViewModel getCallLogList blackNumberRepository.allWhiteNumbers whiteNumberList?.size ${whiteNumberList?.size}"
                 )
                 val contactList = getApplication<Application>().contactList()
                 contactList.forEach { callLog ->
