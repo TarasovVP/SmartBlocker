@@ -12,6 +12,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.USERS
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.BlackNumber
 import kotlinx.coroutines.Dispatchers
@@ -41,22 +42,22 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
         dao?.deleteAllBlackNumbers()
         database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
             .child(BLACK_NUMBER).get().addOnSuccessListener { snapshot ->
-            val blackNumberList = arrayListOf<BlackNumber>()
-            snapshot.children.forEach {
-                it.getValue<BlackNumber>()?.let { blackNumber ->
-                    blackNumberList.add(blackNumber)
+                val blackNumberList = arrayListOf<BlackNumber>()
+                snapshot.children.forEach {
+                    it.getValue<BlackNumber>()?.let { blackNumber ->
+                        blackNumberList.add(blackNumber)
+                    }
                 }
+                Log.e("firebase",
+                    "Got value ${snapshot.value} blackNumberList ${Gson().toJson(blackNumberList)}")
+                blackNumberList.apply {
+                    Log.e("firebase", "insertAllBlackNumbers this ${Gson().toJson(this)}")
+                    dao?.insertAllBlackNumbers(this)
+                }
+                result.invoke()
+            }.addOnFailureListener {
+                Log.e("firebase", "Error getting data", it)
             }
-            Log.e("firebase",
-                "Got value ${snapshot.value} blackNumberList ${Gson().toJson(blackNumberList)}")
-            blackNumberList.apply {
-                Log.e("firebase", "insertAllBlackNumbers this ${Gson().toJson(this)}")
-                dao?.insertAllBlackNumbers(this)
-            }
-            result.invoke()
-        }.addOnFailureListener {
-            Log.e("firebase", "Error getting data", it)
-        }
     }
 
     override suspend fun allBlackNumbers(): List<BlackNumber>? {
@@ -87,16 +88,6 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
                         "blackNumbersRemoteCount children blackNumberObject values ${
                             Gson().toJson(blackNumberObject?.values)
                         }    blackNumberList ${Gson().toJson(blackNumberList)}")
-                    /*snapshot.children.forEach { dataSnapshot ->
-                        val blackNumberObject = dataSnapshot.children
-                        blackNumberObject.forEach { bNumberObject ->
-                            val obj = bNumberObject.getValue<BlackNumber>()
-                            Log.e("firebase", "blackNumbersRemoteCount obj ${Gson().toJson(obj)}   }")
-                        }
-                        Log.e("firebase", "blackNumbersRemoteCount children blackNumberObject ${Gson().toJson(blackNumberObject)}   }")
-                    }*/
-
-                    //blackNumberList?.let { result.invoke(blackNumberList.values as List<BlackNumber>) }
                     Log.e("firebase",
                         "blackNumbersRemoteCount blackNumberList ${Gson().toJson(blackNumberList)} }")
                 }
@@ -113,21 +104,31 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
     }
 
     override suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
-            .child(BLACK_NUMBER).child(blackNumber.blackNumber).setValue(blackNumber)
-            .addOnCompleteListener {
-                dao?.insertBlackNumber(blackNumber)
-                result.invoke()
-            }
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+                .child(BLACK_NUMBER).child(blackNumber.blackNumber).setValue(blackNumber)
+                .addOnCompleteListener {
+                    dao?.insertBlackNumber(blackNumber)
+                    result.invoke()
+                }
+        } else {
+            dao?.insertBlackNumber(blackNumber)
+            result.invoke()
+        }
     }
 
     override suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
-            .child(BLACK_NUMBER).child(blackNumber.blackNumber).removeValue()
-            .addOnCompleteListener {
-                dao?.delete(blackNumber)
-                result.invoke()
-            }
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+                .child(BLACK_NUMBER).child(blackNumber.blackNumber).removeValue()
+                .addOnCompleteListener {
+                    dao?.delete(blackNumber)
+                    result.invoke()
+                }
+        } else {
+            dao?.delete(blackNumber)
+            result.invoke()
+        }
     }
 
     override suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>> =

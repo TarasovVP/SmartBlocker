@@ -12,6 +12,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.constants.Constants.WHITE_NUMBER
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.WhiteNumber
 import kotlinx.coroutines.Dispatchers
@@ -88,16 +89,6 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
                         "blackNumbersRemoteCount children blackNumberObject values ${
                             Gson().toJson(blackNumberObject?.values)
                         }    blackNumberList ${Gson().toJson(whiteNumberList)}")
-                    /*snapshot.children.forEach { dataSnapshot ->
-                        val blackNumberObject = dataSnapshot.children
-                        blackNumberObject.forEach { bNumberObject ->
-                            val obj = bNumberObject.getValue<BlackNumber>()
-                            Log.e("firebase", "blackNumbersRemoteCount obj ${Gson().toJson(obj)}   }")
-                        }
-                        Log.e("firebase", "blackNumbersRemoteCount children blackNumberObject ${Gson().toJson(blackNumberObject)}   }")
-                    }*/
-
-                    //blackNumberList?.let { result.invoke(blackNumberList.values as List<BlackNumber>) }
                     Log.e("firebase",
                         "whiteNumbersRemoteCount whiteNumberList ${Gson().toJson(whiteNumberList)} }")
                 }
@@ -114,22 +105,33 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
     }
 
     override suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
-            .child(WHITE_NUMBER)
-            .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
-                dao?.insertWhiteNumber(whiteNumber)
-                Log.e("insertTAG", "WhiteNumberRepositoryImpl insertWhiteNumber getAllWhiteNumbers ${Gson().toJson(dao?.getAllWhiteNumbers())}")
-                result.invoke()
-            }
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+                .child(WHITE_NUMBER)
+                .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
+                    dao?.insertWhiteNumber(whiteNumber)
+                    Log.e("insertTAG", "WhiteNumberRepositoryImpl insertWhiteNumber isLoggedInUser() getAllWhiteNumbers ${Gson().toJson(dao?.getAllWhiteNumbers())}")
+                    result.invoke()
+                }
+        } else {
+            dao?.insertWhiteNumber(whiteNumber)
+            Log.e("insertTAG", "WhiteNumberRepositoryImpl insertWhiteNumber notLoggedUser getAllWhiteNumbers ${Gson().toJson(dao?.getAllWhiteNumbers())}")
+            result.invoke()
+        }
     }
 
     override suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
-            .child(WHITE_NUMBER)
-            .child(whiteNumber.whiteNumber).removeValue().addOnCompleteListener {
-                dao?.delete(whiteNumber)
-                result.invoke()
-            }
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+                .child(WHITE_NUMBER)
+                .child(whiteNumber.whiteNumber).removeValue().addOnCompleteListener {
+                    dao?.delete(whiteNumber)
+                    result.invoke()
+                }
+        } else {
+            dao?.delete(whiteNumber)
+            result.invoke()
+        }
     }
 
     override suspend fun getHashMapFromWhiteNumberList(whiteNumberList: List<WhiteNumber>): HashMap<String, List<WhiteNumber>> =
