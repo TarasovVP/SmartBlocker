@@ -115,9 +115,9 @@ class BlackNumberListFragment :
         val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
             blackNumber.blackNumber.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (if (selectedFilterItems[0]) blackNumber.isContain else true)
-                    && (if (selectedFilterItems[1]) blackNumber.isStart else true)
-                    && if (selectedFilterItems[2]) blackNumber.isEnd else true
+            ) && (if (selectedFilterItems[0]) blackNumber.contain else true)
+                    && (if (selectedFilterItems[1]) blackNumber.start else true)
+                    && if (selectedFilterItems[2]) blackNumber.end else true
         } as ArrayList<BlackNumber>
         if (!checkDataListEmptiness(filteredBlackNumberList)) {
             viewModel.getHashMapFromBlackNumberList(filteredBlackNumberList)

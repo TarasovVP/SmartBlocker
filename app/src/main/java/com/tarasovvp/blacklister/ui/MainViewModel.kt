@@ -41,7 +41,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun insertAllWhiteNumbers() {
         viewModelScope.launch {
             try {
-                blackNumberRepository.insertAllBlackNumbers {
+                whiteNumberRepository.insertAllWhiteNumbers {
                     successWhiteNumberLiveData.postValue(true)
                 }
             } catch (e: java.lang.Exception) {

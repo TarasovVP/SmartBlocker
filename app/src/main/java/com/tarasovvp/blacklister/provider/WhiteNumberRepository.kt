@@ -46,6 +46,8 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
                 snapshot.children.forEach {
                     it.getValue<WhiteNumber>()?.let { whiteNumber ->
                         whiteNumberList.add(whiteNumber)
+                        Log.e("firebase",
+                            "WhiteNumberRepository it.getValue<WhiteNumber> whiteNumber ${Gson().toJson(whiteNumber)} value ${Gson().toJson(snapshot.value)}")
                     }
                 }
                 Log.e("firebase",
@@ -116,6 +118,7 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
             .child(WHITE_NUMBER)
             .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
                 dao?.insertWhiteNumber(whiteNumber)
+                Log.e("insertTAG", "WhiteNumberRepositoryImpl insertWhiteNumber getAllWhiteNumbers ${Gson().toJson(dao?.getAllWhiteNumbers())}")
                 result.invoke()
             }
     }

@@ -115,9 +115,9 @@ class WhiteNumberListFragment :
         val filteredWhiteNumberList = whiteNumberList?.filter { whiteNumber ->
             whiteNumber.whiteNumber.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (if (selectedFilterItems[0]) whiteNumber.isContain else true)
-                    && (if (selectedFilterItems[1]) whiteNumber.isStart else true)
-                    && if (selectedFilterItems[2]) whiteNumber.isEnd else true
+            ) && (if (selectedFilterItems[0]) whiteNumber.contain else true)
+                    && (if (selectedFilterItems[1]) whiteNumber.start else true)
+                    && if (selectedFilterItems[2]) whiteNumber.end else true
         } as ArrayList<WhiteNumber>
         if (!checkDataListEmptiness(filteredWhiteNumberList)) {
             viewModel.getHashMapFromWhiteNumberList(filteredWhiteNumberList)

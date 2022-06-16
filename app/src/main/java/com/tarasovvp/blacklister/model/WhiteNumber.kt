@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class WhiteNumber(
     @PrimaryKey val whiteNumber: String = "",
-    val isStart: Boolean = false,
-    val isContain: Boolean = false,
-    val isEnd: Boolean = false,
+    val start: Boolean = false,
+    val contain: Boolean = false,
+    val end: Boolean = false,
 ) : Parcelable, BaseAdapter.MainData

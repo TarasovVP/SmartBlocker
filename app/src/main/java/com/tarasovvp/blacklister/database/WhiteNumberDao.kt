@@ -9,7 +9,7 @@ interface WhiteNumberDao {
     fun insertAllWhiteNumbers(whiteNumbers: ArrayList<WhiteNumber>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertWhiteNumber(whiteNumbers: WhiteNumber)
+    fun insertWhiteNumber(whiteNumber: WhiteNumber)
 
     @Query("SELECT * FROM whiteNumber")
     fun getAllWhiteNumbers(): List<WhiteNumber>
@@ -17,7 +17,7 @@ interface WhiteNumberDao {
     @Query("SELECT * FROM whiteNumber WHERE whiteNumber = :whiteNumber")
     fun getWhiteNumber(whiteNumber: String): WhiteNumber?
 
-    @Query("SELECT * FROM whiteNumber WHERE (whiteNumber = :whiteNumber) OR (:whiteNumber LIKE '%' || whiteNumber || '%' AND isContain = 1) OR (:whiteNumber LIKE whiteNumber || '%' AND isStart = 1) OR (:whiteNumber LIKE '%' || whiteNumber AND isEnd = 1)")
+    @Query("SELECT * FROM whiteNumber WHERE (whiteNumber = :whiteNumber) OR (:whiteNumber LIKE '%' || whiteNumber || '%' AND contain = 1) OR (:whiteNumber LIKE whiteNumber || '%' AND start = 1) OR (:whiteNumber LIKE '%' || whiteNumber AND `end` = 1)")
     fun getWhiteNumberList(whiteNumber: String): List<WhiteNumber>
 
     @Delete

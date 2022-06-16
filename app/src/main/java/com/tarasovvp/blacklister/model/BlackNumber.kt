@@ -11,8 +11,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class BlackNumber(
     @PrimaryKey val blackNumber: String = "",
-    val isStart: Boolean = false,
-    val isContain: Boolean = false,
-    val isEnd: Boolean = false,
+    val start: Boolean = false,
+    val contain: Boolean = false,
+    val end: Boolean = false,
     val category: Int = BlackNumberCategory.OTHER.id,
 ) : Parcelable, BaseAdapter.MainData

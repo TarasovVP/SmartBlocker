@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.extensions.breakCallNougatAndLower
 import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
@@ -32,6 +33,8 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         val blackNumberList = blackNumberRepository.getBlackNumberList(phone)
         val whiteNumberList = whiteNumberRepository.getWhiteNumberList(phone)
+        Log.e("callReceiveTAG",
+            "CallReceiver phone $phone blackNumberList ${Gson().toJson(blackNumberList)} whiteNumberList ${Gson().toJson(whiteNumberList)}")
         if (blackNumberList?.isNullOrEmpty()?.not().isTrue() && whiteNumberList?.isNullOrEmpty()
                 .isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
         ) {

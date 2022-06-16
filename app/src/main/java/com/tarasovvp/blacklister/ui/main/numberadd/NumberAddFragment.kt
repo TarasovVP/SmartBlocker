@@ -42,15 +42,15 @@ class NumberAddFragment :
         binding?.numberAddSubmit?.setSafeOnClickListener {
             if (args.blackNumber.isNotNull()) {
                 viewModel.insertBlackNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
-                    isStart = binding?.numberAddStart?.isChecked.isTrue(),
-                    isContain = binding?.numberAddContain?.isChecked.isTrue(),
-                    isEnd = binding?.numberAddEnd?.isChecked.isTrue(),
+                    start = binding?.numberAddStart?.isChecked.isTrue(),
+                    contain = binding?.numberAddContain?.isChecked.isTrue(),
+                    end = binding?.numberAddEnd?.isChecked.isTrue(),
                     category = binding?.numberAddCategory?.selectedItemPosition.orZero()))
             } else {
                 viewModel.insertWhiteNumber(WhiteNumber(whiteNumber = binding?.numberAddSearch?.text.toString(),
-                    isStart = binding?.numberAddStart?.isChecked.isTrue(),
-                    isContain = binding?.numberAddContain?.isChecked.isTrue(),
-                    isEnd = binding?.numberAddEnd?.isChecked.isTrue()))
+                    start = binding?.numberAddStart?.isChecked.isTrue(),
+                    contain = binding?.numberAddContain?.isChecked.isTrue(),
+                    end = binding?.numberAddEnd?.isChecked.isTrue()))
             }
         }
     }
@@ -67,11 +67,11 @@ class NumberAddFragment :
             0)
         binding?.numberAddSearch?.setText(if (args.blackNumber.isNotNull()) args.blackNumber?.blackNumber.orEmpty() else args.whiteNumber?.whiteNumber.orEmpty())
         binding?.numberAddStart?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.isStart.isTrue() else args.whiteNumber?.isStart.isTrue()
+            if (args.blackNumber.isNotNull()) args.blackNumber?.start.isTrue() else args.whiteNumber?.start.isTrue()
         binding?.numberAddContain?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.isContain.isTrue() else args.whiteNumber?.isContain.isTrue()
+            if (args.blackNumber.isNotNull()) args.blackNumber?.contain.isTrue() else args.whiteNumber?.contain.isTrue()
         binding?.numberAddEnd?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.isEnd.isTrue() else args.whiteNumber?.isEnd.isTrue()
+            if (args.blackNumber.isNotNull()) args.blackNumber?.end.isTrue() else args.whiteNumber?.end.isTrue()
         binding?.numberAddSubmit?.isEnabled =
             if (args.blackNumber.isNotNull()) args.blackNumber?.blackNumber.isNullOrEmpty().isTrue()
                 .not() else args.whiteNumber?.whiteNumber.isNullOrEmpty().isTrue().not()

@@ -17,7 +17,7 @@ interface BlackNumberDao {
     @Query("SELECT * FROM blackNumber WHERE blackNumber = :blackNumber")
     fun getBlackNumber(blackNumber: String): BlackNumber?
 
-    @Query("SELECT * FROM blackNumber WHERE (blackNumber = :blackNumber) OR (:blackNumber LIKE '%' || blackNumber || '%' AND isContain = 1) OR (:blackNumber LIKE blackNumber || '%' AND isStart = 1) OR (:blackNumber LIKE '%' || blackNumber AND isEnd = 1)")
+    @Query("SELECT * FROM blackNumber WHERE (blackNumber = :blackNumber) OR (:blackNumber LIKE '%' || blackNumber || '%' AND contain = 1) OR (:blackNumber LIKE blackNumber || '%' AND start = 1) OR (:blackNumber LIKE '%' || blackNumber AND `end` = 1)")
     fun getBlackNumberList(blackNumber: String): List<BlackNumber>
 
     @Delete

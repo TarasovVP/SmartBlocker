@@ -55,9 +55,9 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?, View) -> U
         fun bindData(position: Int) {
             val blackNumber = getDataInPosition(position)
             binding?.itemNumberValue?.text = blackNumber.blackNumber
-            binding?.itemNumberStart?.isVisible = blackNumber.isStart
-            binding?.itemNumberContain?.isVisible = blackNumber.isContain
-            binding?.itemNumberEnd?.isVisible = blackNumber.isEnd
+            binding?.itemNumberStart?.isVisible = blackNumber.start
+            binding?.itemNumberContain?.isVisible = blackNumber.contain
+            binding?.itemNumberEnd?.isVisible = blackNumber.end
             binding?.itemNumberAvatar?.setImageResource(R.drawable.ic_black_number)
             binding?.root?.setSafeOnClickListener {
                 binding?.itemNumberMenu?.apply {
