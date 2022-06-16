@@ -41,13 +41,13 @@ class NumberAddFragment :
         }
         binding?.numberAddSubmit?.setSafeOnClickListener {
             if (args.blackNumber.isNotNull()) {
-                viewModel.insertBlackNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
+                viewModel.checkBlackNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
                     end = binding?.numberAddEnd?.isChecked.isTrue(),
                     category = binding?.numberAddCategory?.selectedItemPosition.orZero()))
             } else {
-                viewModel.insertWhiteNumber(WhiteNumber(whiteNumber = binding?.numberAddSearch?.text.toString(),
+                viewModel.checkWhiteNumber(WhiteNumber(whiteNumber = binding?.numberAddSearch?.text.toString(),
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
                     end = binding?.numberAddEnd?.isChecked.isTrue()))
@@ -89,22 +89,30 @@ class NumberAddFragment :
     }
 
     override fun observeLiveData() {
-        viewModel.blackNumberLiveData.safeSingleObserve(viewLifecycleOwner, {
-            showMessage("Number ${it.blackNumber} is added", false)
-            Log.e("blackNumberTAG",
-                "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
-                    Gson().toJson(it)
-                }")
-            findNavController().popBackStack()
-        })
-        viewModel.whiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, {
-            showMessage("Number ${it.whiteNumber} is added", false)
-            Log.e("blackNumberTAG",
-                "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
-                    Gson().toJson(it)
-                }")
-            findNavController().popBackStack()
-        })
+        with(viewModel) {
+            checkBlackNumberNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
+                viewModel.insertBlackNumber(blackNumber)
+            })
+            checkWhiteNumberNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
+                viewModel.insertWhiteNumber(whiteNumber)
+            })
+            insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
+                showMessage("Number ${blackNumber.blackNumber} is added", false)
+                Log.e("blackNumberTAG",
+                    "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
+                        Gson().toJson(blackNumber)
+                    }")
+                findNavController().popBackStack()
+            })
+            insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
+                showMessage("Number ${whiteNumber.whiteNumber} is added", false)
+                Log.e("blackNumberTAG",
+                    "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
+                        Gson().toJson(whiteNumber)
+                    }")
+                findNavController().popBackStack()
+            })
+        }
     }
 
 }

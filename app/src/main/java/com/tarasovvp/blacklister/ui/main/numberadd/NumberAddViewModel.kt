@@ -15,14 +15,40 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
     private val blackNumberRepository = BlackNumberRepositoryImpl
     private val whiteNumberRepository = WhiteNumberRepositoryImpl
 
-    val blackNumberLiveData = MutableLiveData<BlackNumber>()
-    val whiteNumberLiveData = MutableLiveData<WhiteNumber>()
+    val checkBlackNumberNumberLiveData = MutableLiveData<BlackNumber>()
+    val checkWhiteNumberNumberLiveData = MutableLiveData<WhiteNumber>()
+    val insertBlackNumberLiveData = MutableLiveData<BlackNumber>()
+    val insertWhiteNumberLiveData = MutableLiveData<WhiteNumber>()
+
+    fun checkWhiteNumber(whiteNumber: WhiteNumber) {
+        viewModelScope.launch {
+            try {
+                whiteNumberRepository.checkWhiteNumber(whiteNumber) {
+                    checkWhiteNumberNumberLiveData.postValue(whiteNumber)
+                }
+            } catch (e: Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
+
+    fun checkBlackNumber(blackNumber: BlackNumber) {
+        viewModelScope.launch {
+            try {
+                blackNumberRepository.checkBlackNumber(blackNumber) {
+                    checkBlackNumberNumberLiveData.postValue(blackNumber)
+                }
+            } catch (e: Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
 
     fun insertBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
             try {
                 blackNumberRepository.insertBlackNumber(blackNumber) {
-                    blackNumberLiveData.postValue(blackNumber)
+                    insertBlackNumberLiveData.postValue(blackNumber)
                 }
             } catch (e: Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
@@ -34,7 +60,7 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
         viewModelScope.launch {
             try {
                 whiteNumberRepository.insertWhiteNumber(whiteNumber) {
-                    whiteNumberLiveData.postValue(whiteNumber)
+                    insertWhiteNumberLiveData.postValue(whiteNumber)
                 }
             } catch (e: Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)

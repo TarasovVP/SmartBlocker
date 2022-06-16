@@ -27,6 +27,7 @@ interface WhiteNumberRepository {
 
     suspend fun allWhiteNumbers(): List<WhiteNumber>?
     suspend fun getWhiteNumber(whiteNumber: String): WhiteNumber?
+    suspend fun checkWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit)
     suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit)
     suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit)
     suspend fun getHashMapFromWhiteNumberList(whiteNumberList: List<WhiteNumber>): HashMap<String, List<WhiteNumber>>
@@ -48,7 +49,9 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
                     it.getValue<WhiteNumber>()?.let { whiteNumber ->
                         whiteNumberList.add(whiteNumber)
                         Log.e("firebase",
-                            "WhiteNumberRepository it.getValue<WhiteNumber> whiteNumber ${Gson().toJson(whiteNumber)} value ${Gson().toJson(snapshot.value)}")
+                            "WhiteNumberRepository it.getValue<WhiteNumber> whiteNumber ${
+                                Gson().toJson(whiteNumber)
+                            } value ${Gson().toJson(snapshot.value)}")
                     }
                 }
                 Log.e("firebase",
@@ -104,18 +107,46 @@ object WhiteNumberRepositoryImpl : WhiteNumberRepository {
         return dao?.getWhiteNumber(whiteNumber)
     }
 
+    override suspend fun checkWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+                .child(WHITE_NUMBER)
+                .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
+                    dao?.insertWhiteNumber(whiteNumber)
+                    Log.e("insertTAG",
+                        "WhiteNumberRepositoryImpl checkWhiteNumber isLoggedInUser() getAllWhiteNumbers ${
+                            Gson().toJson(dao?.getAllWhiteNumbers())
+                        }")
+                    result.invoke()
+                }
+        } else {
+            dao?.insertWhiteNumber(whiteNumber)
+            Log.e("insertTAG",
+                "WhiteNumberRepositoryImpl checkWhiteNumber notLoggedUser getAllWhiteNumbers ${
+                    Gson().toJson(dao?.getAllWhiteNumbers())
+                }")
+            result.invoke()
+        }
+    }
+
     override suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
                 .child(WHITE_NUMBER)
                 .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
                     dao?.insertWhiteNumber(whiteNumber)
-                    Log.e("insertTAG", "WhiteNumberRepositoryImpl insertWhiteNumber isLoggedInUser() getAllWhiteNumbers ${Gson().toJson(dao?.getAllWhiteNumbers())}")
+                    Log.e("insertTAG",
+                        "WhiteNumberRepositoryImpl insertWhiteNumber isLoggedInUser() getAllWhiteNumbers ${
+                            Gson().toJson(dao?.getAllWhiteNumbers())
+                        }")
                     result.invoke()
                 }
         } else {
             dao?.insertWhiteNumber(whiteNumber)
-            Log.e("insertTAG", "WhiteNumberRepositoryImpl insertWhiteNumber notLoggedUser getAllWhiteNumbers ${Gson().toJson(dao?.getAllWhiteNumbers())}")
+            Log.e("insertTAG",
+                "WhiteNumberRepositoryImpl insertWhiteNumber notLoggedUser getAllWhiteNumbers ${
+                    Gson().toJson(dao?.getAllWhiteNumbers())
+                }")
             result.invoke()
         }
     }

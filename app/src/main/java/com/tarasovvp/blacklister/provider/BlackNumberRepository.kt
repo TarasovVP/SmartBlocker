@@ -27,6 +27,7 @@ interface BlackNumberRepository {
 
     suspend fun allBlackNumbers(): List<BlackNumber>?
     suspend fun getBlackNumber(blackNumber: String): BlackNumber?
+    suspend fun checkBlackNumber(blackNumber: BlackNumber, result: () -> Unit)
     suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit)
     suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit)
     suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>>
@@ -101,6 +102,20 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
 
     override suspend fun getBlackNumber(blackNumber: String): BlackNumber? {
         return dao?.getBlackNumber(blackNumber)
+    }
+
+    override suspend fun checkBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+                .child(BLACK_NUMBER).child(blackNumber.blackNumber).setValue(blackNumber)
+                .addOnCompleteListener {
+                    dao?.insertBlackNumber(blackNumber)
+                    result.invoke()
+                }
+        } else {
+            dao?.insertBlackNumber(blackNumber)
+            result.invoke()
+        }
     }
 
     override suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
