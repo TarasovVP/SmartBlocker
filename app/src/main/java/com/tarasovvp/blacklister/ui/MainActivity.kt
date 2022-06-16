@@ -77,9 +77,7 @@ class MainActivity : AppCompatActivity() {
             toolbar?.setupWithNavController(this)
         }
         observeLiveData()
-        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-            getAllData()
-        }
+        getAllData()
     }
 
     override fun attachBaseContext(newBase: Context) {
@@ -106,6 +104,10 @@ class MainActivity : AppCompatActivity() {
                 insertAllWhiteNumbers()
             })
             successWhiteNumberLiveData.safeSingleObserve(this@MainActivity, {
+                Log.e(
+                    "mainViewModelTAG",
+                    "MainActivity successWhiteNumberLiveData.safeSingleObserve getAllData()"
+                )
                 getAllData()
             })
             successAllDataLiveData.safeSingleObserve(this@MainActivity, {
@@ -128,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 mainViewModel.insertAllBlackNumbers()
             } else {
-                getAllData()
+                mainViewModel.getAllData()
             }
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())

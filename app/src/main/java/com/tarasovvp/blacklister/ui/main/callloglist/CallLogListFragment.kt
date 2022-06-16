@@ -112,7 +112,7 @@ class CallLogListFragment :
 
     override fun getDataList() {
         swipeRefresh?.isRefreshing = true
-        getAllData()
+        viewModel.getCallLogList()
     }
 
     override fun observeLiveData() {
