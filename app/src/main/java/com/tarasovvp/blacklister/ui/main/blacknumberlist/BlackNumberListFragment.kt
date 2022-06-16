@@ -1,29 +1,20 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
 import android.app.AlertDialog
-import android.util.Log
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
-import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
-import com.tarasovvp.blacklister.constants.Constants.REALTIME_DATABASE
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 class BlackNumberListFragment :
     BaseListFragment<FragmentBlackNumberListBinding, BlackNumberListViewModel, BlackNumber>() {
@@ -69,7 +60,8 @@ class BlackNumberListFragment :
                 viewModel.deleteBlackNumber(blackNumber)
             }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(blackNumber = BlackNumber()))
+            findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(
+                blackNumber = BlackNumber()))
         }
         binding?.blackNumberListFilter?.setSafeOnClickListener {
             filterDataList()
@@ -80,7 +72,8 @@ class BlackNumberListFragment :
         val filterItems = arrayOf(getString(R.string.black_number_contain),
             getString(R.string.black_number_start),
             getString(R.string.black_number_end))
-        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
+        val builder =
+            AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
         builder.setMultiChoiceItems(filterItems, selectedFilterItems
         ) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
         builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
@@ -91,7 +84,9 @@ class BlackNumberListFragment :
                     itemsTitleList.add(title)
                 }
             }
-            binding?.blackNumberListFilter?.text = if (itemsTitleList.isEmpty()) getString(R.string.black_number_no_filter) else itemsTitleList.joinToString(", ")
+            binding?.blackNumberListFilter?.text =
+                if (itemsTitleList.isEmpty()) getString(R.string.black_number_no_filter) else itemsTitleList.joinToString(
+                    ", ")
             searchDataList()
         }
         builder.show()

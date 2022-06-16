@@ -16,11 +16,14 @@ import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.BlackNumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.concurrent.CompletableFuture
 
 interface BlackNumberRepository {
     suspend fun insertAllBlackNumbers(result: () -> Unit)
-    suspend fun blackNumbersRemoteCount(blackNumber: String, result: (ArrayList<BlackNumber?>) -> Unit)
+    suspend fun blackNumbersRemoteCount(
+        blackNumber: String,
+        result: (ArrayList<BlackNumber?>) -> Unit,
+    )
+
     suspend fun allBlackNumbers(): List<BlackNumber>?
     suspend fun getBlackNumber(blackNumber: String): BlackNumber?
     suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit)
@@ -36,20 +39,22 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
 
     override suspend fun insertAllBlackNumbers(result: () -> Unit) {
         dao?.deleteAllBlackNumbers()
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(BLACK_NUMBER).get().addOnSuccessListener { snapshot ->
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+            .child(BLACK_NUMBER).get().addOnSuccessListener { snapshot ->
             val blackNumberList = arrayListOf<BlackNumber>()
             snapshot.children.forEach {
                 it.getValue<BlackNumber>()?.let { blackNumber ->
                     blackNumberList.add(blackNumber)
                 }
             }
-            Log.e("firebase", "Got value ${snapshot.value} blackNumberList ${Gson().toJson(blackNumberList)}")
+            Log.e("firebase",
+                "Got value ${snapshot.value} blackNumberList ${Gson().toJson(blackNumberList)}")
             blackNumberList.apply {
                 Log.e("firebase", "insertAllBlackNumbers this ${Gson().toJson(this)}")
                 dao?.insertAllBlackNumbers(this)
             }
             result.invoke()
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             Log.e("firebase", "Error getting data", it)
         }
     }
@@ -58,39 +63,48 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
         return dao?.getAllBlackNumbers()
     }
 
-    override suspend fun blackNumbersRemoteCount(blackNumber: String, result: (ArrayList<BlackNumber?>) -> Unit) {
-        val test = database.child(USERS).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val blackNumberList = arrayListOf<BlackNumber?>()
-                val blackNumberObject = snapshot.getValue<HashMap<String, HashMap<String, HashMap<String, BlackNumber>>>>()
-                blackNumberObject?.values?.forEach {
-                    it.values.forEach { numberType ->
-                        numberType.values.forEach { number ->
-                            if (number.blackNumber == blackNumber) {
-                                blackNumberList.add(number)
+    override suspend fun blackNumbersRemoteCount(
+        blackNumber: String,
+        result: (ArrayList<BlackNumber?>) -> Unit,
+    ) {
+        val test =
+            database.child(USERS).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val blackNumberList = arrayListOf<BlackNumber?>()
+                    val blackNumberObject =
+                        snapshot.getValue<HashMap<String, HashMap<String, HashMap<String, BlackNumber>>>>()
+                    blackNumberObject?.values?.forEach {
+                        it.values.forEach { numberType ->
+                            numberType.values.forEach { number ->
+                                if (number.blackNumber == blackNumber) {
+                                    blackNumberList.add(number)
+                                }
                             }
                         }
                     }
+                    result.invoke(blackNumberList)
+                    Log.e("firebase",
+                        "blackNumbersRemoteCount children blackNumberObject values ${
+                            Gson().toJson(blackNumberObject?.values)
+                        }    blackNumberList ${Gson().toJson(blackNumberList)}")
+                    /*snapshot.children.forEach { dataSnapshot ->
+                        val blackNumberObject = dataSnapshot.children
+                        blackNumberObject.forEach { bNumberObject ->
+                            val obj = bNumberObject.getValue<BlackNumber>()
+                            Log.e("firebase", "blackNumbersRemoteCount obj ${Gson().toJson(obj)}   }")
+                        }
+                        Log.e("firebase", "blackNumbersRemoteCount children blackNumberObject ${Gson().toJson(blackNumberObject)}   }")
+                    }*/
+
+                    //blackNumberList?.let { result.invoke(blackNumberList.values as List<BlackNumber>) }
+                    Log.e("firebase",
+                        "blackNumbersRemoteCount blackNumberList ${Gson().toJson(blackNumberList)} }")
                 }
-                result.invoke(blackNumberList)
-                Log.e("firebase", "blackNumbersRemoteCount children blackNumberObject values ${Gson().toJson(blackNumberObject?.values)}    blackNumberList ${Gson().toJson(blackNumberList)}")
-                /*snapshot.children.forEach { dataSnapshot ->
-                    val blackNumberObject = dataSnapshot.children
-                    blackNumberObject.forEach { bNumberObject ->
-                        val obj = bNumberObject.getValue<BlackNumber>()
-                        Log.e("firebase", "blackNumbersRemoteCount obj ${Gson().toJson(obj)}   }")
-                    }
-                    Log.e("firebase", "blackNumbersRemoteCount children blackNumberObject ${Gson().toJson(blackNumberObject)}   }")
-                }*/
 
-                //blackNumberList?.let { result.invoke(blackNumberList.values as List<BlackNumber>) }
-                Log.e("firebase", "blackNumbersRemoteCount blackNumberList ${Gson().toJson(blackNumberList)} }")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("firebase", "blackNumbersRemoteCount error ${Gson().toJson(error)}")
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("firebase", "blackNumbersRemoteCount error ${Gson().toJson(error)}")
+                }
+            })
         Log.e("firebase", "blackNumbersRemoteCount test ${Gson().toJson(test)}")
     }
 
@@ -99,17 +113,21 @@ object BlackNumberRepositoryImpl : BlackNumberRepository {
     }
 
     override suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(BLACK_NUMBER).child(blackNumber.blackNumber).setValue(blackNumber).addOnCompleteListener {
-            dao?.insertBlackNumber(blackNumber)
-            result.invoke()
-        }
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+            .child(BLACK_NUMBER).child(blackNumber.blackNumber).setValue(blackNumber)
+            .addOnCompleteListener {
+                dao?.insertBlackNumber(blackNumber)
+                result.invoke()
+            }
     }
 
     override suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty()).child(BLACK_NUMBER).child(blackNumber.blackNumber).removeValue().addOnCompleteListener {
-            dao?.delete(blackNumber)
-            result.invoke()
-        }
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+            .child(BLACK_NUMBER).child(blackNumber.blackNumber).removeValue()
+            .addOnCompleteListener {
+                dao?.delete(blackNumber)
+                result.invoke()
+            }
     }
 
     override suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>> =

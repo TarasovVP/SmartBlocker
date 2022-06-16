@@ -15,7 +15,6 @@ import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 class WhiteNumberListFragment :
     BaseListFragment<FragmentBlackNumberListBinding, WhiteNumberListViewModel, WhiteNumber>() {
@@ -33,10 +32,12 @@ class WhiteNumberListFragment :
                 val listener = PopupMenu.OnMenuItemClickListener { item ->
                     when (item?.itemId) {
                         R.id.delete -> {
-                            findNavController().navigate(WhiteNumberListFragmentDirections.startInfoDialog(whiteNumber = whiteNumber))
+                            findNavController().navigate(WhiteNumberListFragmentDirections.startInfoDialog(
+                                whiteNumber = whiteNumber))
                         }
                         R.id.edit -> {
-                            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(whiteNumber = whiteNumber))
+                            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
+                                whiteNumber = whiteNumber))
                         }
                     }
                     true
@@ -59,7 +60,8 @@ class WhiteNumberListFragment :
                 viewModel.deleteWhiteNumber(whiteNumber)
             }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(whiteNumber = WhiteNumber()))
+            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
+                whiteNumber = WhiteNumber()))
         }
         binding?.blackNumberListFilter?.setSafeOnClickListener {
             filterDataList()
@@ -70,7 +72,8 @@ class WhiteNumberListFragment :
         val filterItems = arrayOf(getString(R.string.black_number_contain),
             getString(R.string.black_number_start),
             getString(R.string.black_number_end))
-        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
+        val builder =
+            AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
         builder.setMultiChoiceItems(filterItems, selectedFilterItems
         ) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
         builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
@@ -81,7 +84,9 @@ class WhiteNumberListFragment :
                     itemsTitleList.add(title)
                 }
             }
-            binding?.blackNumberListFilter?.text = if (itemsTitleList.isEmpty()) getString(R.string.black_number_no_filter) else itemsTitleList.joinToString(", ")
+            binding?.blackNumberListFilter?.text =
+                if (itemsTitleList.isEmpty()) getString(R.string.black_number_no_filter) else itemsTitleList.joinToString(
+                    ", ")
             searchDataList()
         }
         builder.show()

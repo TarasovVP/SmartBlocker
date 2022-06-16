@@ -56,8 +56,15 @@ class NumberAddFragment :
     }
 
     private fun initViewsWithData() {
-        binding?.numberAddTitle?.text = "Для ${if (args.blackNumber?.blackNumber.isNullOrEmpty().not() || args.whiteNumber?.whiteNumber.isNullOrEmpty().not()) "редактирования номера" else "добавления номера в ${if (args.blackNumber.isNotNull()) "черный" else "белый"} список"} заполните поле ввода и нажмите кнопку"
-        binding?.numberAddTitle?.setCompoundDrawablesRelativeWithIntrinsicBounds(0, if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number, 0, 0)
+        binding?.numberAddTitle?.text = "Для ${
+            if (args.blackNumber?.blackNumber.isNullOrEmpty()
+                    .not() || args.whiteNumber?.whiteNumber.isNullOrEmpty().not()
+            ) "редактирования номера" else "добавления номера в ${if (args.blackNumber.isNotNull()) "черный" else "белый"} список"
+        } заполните поле ввода и нажмите кнопку"
+        binding?.numberAddTitle?.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
+            if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number,
+            0,
+            0)
         binding?.numberAddSearch?.setText(if (args.blackNumber.isNotNull()) args.blackNumber?.blackNumber.orEmpty() else args.whiteNumber?.whiteNumber.orEmpty())
         binding?.numberAddStart?.isChecked =
             if (args.blackNumber.isNotNull()) args.blackNumber?.isStart.isTrue() else args.whiteNumber?.isStart.isTrue()

@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
@@ -60,7 +59,8 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).apply {
-            val searchView = toolbar?.menu?.findItem(R.id.search_menu_item)?.actionView as? SearchView
+            val searchView =
+                toolbar?.menu?.findItem(R.id.search_menu_item)?.actionView as? SearchView
             searchView?.queryHint = getString(R.string.enter_phone_number)
             searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {

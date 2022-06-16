@@ -11,11 +11,13 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
 import com.tarasovvp.blacklister.enum.BlackNumberCategory
-import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.loadCircleImage
+import com.tarasovvp.blacklister.extensions.orZero
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
-import kotlinx.android.synthetic.main.fragment_number_detail.*
 
 class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDetailViewModel>() {
 
@@ -54,19 +56,20 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                         getString(BlackNumberCategory.findBlackNumberCategoryById(id)?.title.orZero())
                     }
                 }.joinToString(", ")
-                if (categoriesList.isNotEmpty()) binding?.numberDetailCategoriesTitle?.text = String.format("%s %s", "В таких категориях:", categoriesList)
+                if (categoriesList.isNotEmpty()) binding?.numberDetailCategoriesTitle?.text =
+                    String.format("%s %s", "В таких категориях:", categoriesList)
             })
         }
     }
 
-        private fun setContactInfo(contact: Contact) {
-            binding?.numberDetailName?.text = contact.name
-            binding?.numberDetailPhone?.text = contact.phone
-            binding?.numberDetailAvatar?.loadCircleImage(contact.photoUrl)
-            binding?.numberDetailType?.setImageResource(when {
-                contact.isBlackList -> R.drawable.ic_block
-                contact.isWhiteList -> R.drawable.ic_accepted
-                else -> 0
-            })
-        }
+    private fun setContactInfo(contact: Contact) {
+        binding?.numberDetailName?.text = contact.name
+        binding?.numberDetailPhone?.text = contact.phone
+        binding?.numberDetailAvatar?.loadCircleImage(contact.photoUrl)
+        binding?.numberDetailType?.setImageResource(when {
+            contact.isBlackList -> R.drawable.ic_block
+            contact.isWhiteList -> R.drawable.ic_accepted
+            else -> 0
+        })
     }
+}
