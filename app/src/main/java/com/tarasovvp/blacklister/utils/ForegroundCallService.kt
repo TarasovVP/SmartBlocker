@@ -9,7 +9,6 @@ import com.tarasovvp.blacklister.constants.Constants.FOREGROUND_ID
 import com.tarasovvp.blacklister.constants.Constants.PHONE_STATE
 import com.tarasovvp.blacklister.extensions.notificationBuilder
 
-
 class ForegroundCallService : Service() {
 
     private var callReceiver: CallReceiver? = null

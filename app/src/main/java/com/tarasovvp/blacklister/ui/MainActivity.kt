@@ -21,7 +21,6 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.setAppLocale
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.provider.WhiteNumberRepositoryImpl
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.blacklister.utils.ForegroundCallService
 import com.tarasovvp.blacklister.utils.PermissionUtil

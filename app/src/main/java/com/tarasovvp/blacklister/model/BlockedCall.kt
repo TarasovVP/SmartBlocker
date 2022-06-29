@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = "blockedCall")
+@Entity
 @Parcelize
 data class BlockedCall(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,

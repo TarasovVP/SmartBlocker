@@ -6,15 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
-import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
-import com.tarasovvp.blacklister.provider.CallLogRepositoryImpl
+import com.tarasovvp.blacklister.repository.BlackNumberRepository
+import com.tarasovvp.blacklister.repository.CallLogRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class CallLogListViewModel(application: Application) : BaseViewModel(application) {
 
-    private val callLogRepository = CallLogRepositoryImpl
-    private val blackNumberRepository = BlackNumberRepositoryImpl
+    private val callLogRepository = CallLogRepository
+    private val blackNumberRepository = BlackNumberRepository
 
     val callLogLiveData = MutableLiveData<List<CallLog>>()
     val callLogHashMapLiveData = MutableLiveData<HashMap<String, List<CallLog>>?>()

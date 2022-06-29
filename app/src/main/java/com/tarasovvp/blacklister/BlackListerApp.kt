@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister
 import android.app.Application
 import androidx.room.Room
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -18,7 +17,6 @@ class BlackListerApp : Application() {
 
     var database: AppDatabase? = null
     var auth: FirebaseAuth? = null
-    private val interstitialAd: InterstitialAd? = null
 
     override fun onCreate() {
         super.onCreate()

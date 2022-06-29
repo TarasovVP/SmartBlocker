@@ -1,12 +1,10 @@
 package com.tarasovvp.blacklister.ui.main.numberdetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
@@ -47,7 +45,6 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                 }
             })
             blackNumberAmountLiveData.safeSingleObserve(viewLifecycleOwner, {
-                Log.e("detailTAG", "NumberDetailFragment blackNumberList ${Gson().toJson(it)}")
                 binding?.numberDetailRatingsTitle?.text = String.format("%s %s",
                     "Количество пользователей, которые заблокировали этот номер - ",
                     it.size)

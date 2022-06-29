@@ -39,7 +39,9 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
             findNavController().navigate(R.id.startSignUpFragment)
         }
         binding?.buttonForgotPassword?.setSafeOnClickListener {
-            viewModel.sendPasswordResetEmail(binding?.email?.text.toString())
+            binding?.email?.text?.toString()?.let {
+                if (it.isNotEmpty()) viewModel.sendPasswordResetEmail(it)
+            }
         }
         binding?.googleAuth?.setSafeOnClickListener {
             googleSignInLauncher.launch(googleSignInClient?.signInIntent)

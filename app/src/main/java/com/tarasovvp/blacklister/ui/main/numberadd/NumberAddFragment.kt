@@ -1,14 +1,12 @@
 package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
 import com.tarasovvp.blacklister.enum.BlackNumberCategory
@@ -41,7 +39,7 @@ class NumberAddFragment :
         }
         binding?.numberAddSubmit?.setSafeOnClickListener {
             if (args.blackNumber.isNotNull()) {
-                viewModel.checkBlackNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
+                viewModel.checkWhiteNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
                     end = binding?.numberAddEnd?.isChecked.isTrue(),
@@ -90,26 +88,15 @@ class NumberAddFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            checkBlackNumberNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
-                viewModel.insertBlackNumber(blackNumber)
-            })
             checkWhiteNumberNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
                 viewModel.insertWhiteNumber(whiteNumber)
             })
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
                 showMessage("Number ${blackNumber.blackNumber} is added", false)
-                Log.e("blackNumberTAG",
-                    "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
-                        Gson().toJson(blackNumber)
-                    }")
                 findNavController().popBackStack()
             })
             insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
                 showMessage("Number ${whiteNumber.whiteNumber} is added", false)
-                Log.e("blackNumberTAG",
-                    "BlackNumberAddFragment blackNumberLiveData.safeSingleObserve blackNumber ${
-                        Gson().toJson(whiteNumber)
-                    }")
                 findNavController().popBackStack()
             })
         }

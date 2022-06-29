@@ -1,10 +1,8 @@
 package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.content.IntentFilter
-import android.util.Log
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
@@ -63,9 +61,7 @@ class CallLogListFragment :
         (activity as MainActivity).apply {
             startService()
         }
-        Log.e("callReceiveTAG", "CallLogListFragment onStart")
         callHandleReceiver = CallHandleReceiver {
-            Log.e("callReceiveTAG", "CallLogListFragment CallHandleReceiver string $it")
             getAllData()
         }
         context?.registerReceiver(callHandleReceiver, IntentFilter(CALL_RECEIVE))
@@ -73,7 +69,6 @@ class CallLogListFragment :
 
     override fun onStop() {
         super.onStop()
-        Log.e("callReceiveTAG", "CallLogListFragment onStop")
         context?.unregisterReceiver(callHandleReceiver)
     }
 
@@ -89,10 +84,6 @@ class CallLogListFragment :
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
             BLACK_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
             viewModel.deleteBlackNumber(blackNumber)
-            Log.e("callReceiveTAG",
-                "CallLogListFragment  viewModel.deleteBlackNumber blackNumber ${
-                    Gson().toJson(blackNumber)
-                }")
         }
         binding?.callLogListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
@@ -103,8 +94,6 @@ class CallLogListFragment :
         (activity as MainActivity).apply {
             getAllData()
             mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
-                Log.e("callReceiveTAG",
-                    "CallLogListFragment successLiveData.safeSingleObserve success $success")
                 viewModel.getCallLogList()
             })
         }
@@ -119,10 +108,6 @@ class CallLogListFragment :
         with(viewModel) {
             callLogLiveData.safeObserve(viewLifecycleOwner, { callLogList ->
                 this@CallLogListFragment.callLogList = callLogList
-                Log.e("callReceiveTAG",
-                    "CallLogListFragment callLogLiveData.safeObserve callLogList.size ${callLogList.size} checkDataListEmptiness(callLogList) ${
-                        checkDataListEmptiness(callLogList)
-                    }")
                 if (!checkDataListEmptiness(callLogList)) {
                     getHashMapFromCallLogList(callLogList)
                 }

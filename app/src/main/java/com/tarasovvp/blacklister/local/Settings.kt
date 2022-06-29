@@ -62,10 +62,6 @@ object Settings {
         ) ?: false
     }
 
-    fun removeSinglePreference(name: String) {
-        sharedPreferences?.edit()?.remove(name)?.apply()
-    }
-
     fun clearSharedPreferences() {
         sharedPreferences?.edit()?.clear()?.apply()
     }

@@ -10,15 +10,15 @@ import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.CallLog
-import com.tarasovvp.blacklister.provider.*
+import com.tarasovvp.blacklister.repository.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val callLogRepository = CallLogRepositoryImpl
-    private val blackNumberRepository = BlackNumberRepositoryImpl
-    private val whiteNumberRepository = WhiteNumberRepositoryImpl
-    private val contactRepository = ContactRepositoryImpl
-    private val blockedCallRepository = BlockedCallRepositoryImpl
+    private val callLogRepository = CallLogRepository
+    private val blackNumberRepository = BlackNumberRepository
+    private val whiteNumberRepository = WhiteNumberRepository
+    private val contactRepository = ContactRepository
+    private val blockedCallRepository = BlockedCallRepository
 
     val successBlackNumberLiveData = MutableLiveData<Boolean>()
     val successWhiteNumberLiveData = MutableLiveData<Boolean>()

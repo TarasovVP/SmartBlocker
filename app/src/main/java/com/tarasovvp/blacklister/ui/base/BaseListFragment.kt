@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
@@ -113,9 +112,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                     header = dataEntry.key
                 )
             )
-            Log.e(
-                "dataTAG",
-                "BaseListFragment  dataListHashMap.forEach dataEntry.key ${dataEntry.key} dataEntry.value.size ${dataEntry.value.size}")
         }
         adapter?.notifyDataSetChanged()
         swipeRefresh?.isRefreshing = false

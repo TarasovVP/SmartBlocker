@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
-import com.tarasovvp.blacklister.provider.ContactRepositoryImpl
+import com.tarasovvp.blacklister.repository.BlackNumberRepository
+import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class ContactListViewModel(application: Application) : BaseViewModel(application) {
 
-    private val contactRepository = ContactRepositoryImpl
-    private val blackNumberRepository = BlackNumberRepositoryImpl
+    private val contactRepository = ContactRepository
+    private val blackNumberRepository = BlackNumberRepository
 
     val contactLiveData = MutableLiveData<List<Contact>>()
     val contactHashMapLiveData = MutableLiveData<HashMap<String, List<Contact>>?>()
@@ -60,7 +60,7 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
             try {
                 if (isBlackList) {
                     blackNumberRepository.insertBlackNumber(blackNumber) {
-
+                        //TODO check implementing
                     }
                 } else {
                     blackNumberRepository.deleteBlackNumber(blackNumber) {

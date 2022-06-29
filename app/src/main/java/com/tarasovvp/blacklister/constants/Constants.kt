@@ -16,7 +16,6 @@ object Constants {
     const val CALL_LOG_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"
     const val END_CALL = "endCall"
-    const val INCOMING_CALL = "1"
     const val OUTCOMING_CALL = "2"
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
@@ -34,7 +33,6 @@ object Constants {
     const val ACCEPT_PERMISSIONS_SCREEN = 2
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
-    const val BASE_URL = "https://callfilter.app/"
     const val APP_LANG_RU = "ru"
     const val APP_LANG_UA = "ua"
     const val APP_LANG_EN = "en"

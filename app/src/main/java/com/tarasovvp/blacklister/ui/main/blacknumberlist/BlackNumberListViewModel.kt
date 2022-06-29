@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.provider.BlackNumberRepositoryImpl
+import com.tarasovvp.blacklister.repository.BlackNumberRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -12,7 +12,7 @@ class BlackNumberListViewModel(application: Application) : BaseViewModel(applica
 
     val blackNumberList = MutableLiveData<List<BlackNumber>>()
 
-    private val blackNumberRepository = BlackNumberRepositoryImpl
+    private val blackNumberRepository = BlackNumberRepository
     val blackNumberHashMapLiveData = MutableLiveData<HashMap<String, List<BlackNumber>>?>()
 
     fun getBlackNumberList() {

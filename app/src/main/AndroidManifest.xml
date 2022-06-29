@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tarasovvp.blacklister">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -17,7 +18,8 @@
         android:name="com.tarasovvp.blacklister.BlackListerApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Blacklister.Launcher">
+        android:theme="@style/Theme.Blacklister.Launcher"
+        tools:ignore="AllowBackup">
         <activity
             android:name="com.tarasovvp.blacklister.ui.MainActivity"
             android:exported="true"
