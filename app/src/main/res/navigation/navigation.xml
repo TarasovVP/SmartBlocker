@@ -25,6 +25,9 @@
         <action
             android:id="@+id/startSignUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/startForgotPasswordDialog"
+            app:destination="@id/forgotPasswordDialog" />
     </fragment>
 
     <fragment
@@ -157,6 +160,16 @@
             android:name="contact"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.Contact"
+            app:nullable="true" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/forgotPasswordDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.ForgotPasswordDialog">
+        <argument
+            android:name="email"
+            android:defaultValue=""
+            app:argType="string"
             app:nullable="true" />
     </dialog>
 

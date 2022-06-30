@@ -36,4 +36,5 @@ object Constants {
     const val APP_LANG_RU = "ru"
     const val APP_LANG_UA = "ua"
     const val APP_LANG_EN = "en"
+    const val FORGOT_PASSWORD = "forgotPassword"
 }

@@ -1,15 +1,5 @@
 package com.tarasovvp.blacklister.ui.dialogs
 
-import android.content.res.Resources
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
@@ -19,37 +9,17 @@ import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.DialogInfoBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.ui.base.BaseDialog
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class InfoDialog : DialogFragment() {
+class InfoDialog : BaseDialog<DialogInfoBinding>() {
 
-    private lateinit var binding: DialogInfoBinding
+    override fun getViewBinding() = DialogInfoBinding.inflate(layoutInflater)
 
     private val args: InfoDialogArgs by navArgs()
 
-    override fun onStart() {
-        super.onStart()
-        val dialog = dialog
-        if (dialog.isNotNull() && dialog?.window.isNotNull()) {
-            val width = Resources.getSystem().displayMetrics.widthPixels
-            dialog?.window?.setLayout((width * 0.85).toInt(),
-                LinearLayout.LayoutParams.WRAP_CONTENT)
-            dialog?.window?.setGravity(Gravity.CENTER)
-            dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog?.setCancelable(true)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
-    ): View {
-        binding = DialogInfoBinding.inflate(inflater)
-        initUI()
-        return binding.root
-    }
-
-    private fun initUI() {
-        binding.dialogInfoTitle.text =
+    override fun initUI() {
+        binding?.dialogInfoTitle?.text =
             when {
                 args.blackNumber.isNotNull() -> String.format(getString(R.string.delete),
                     args.blackNumber?.blackNumber)
@@ -59,10 +29,10 @@ class InfoDialog : DialogFragment() {
                     args.contact?.name)
                 else -> getString(R.string.exit_application)
             }
-        binding.dialogInfoCancel.setSafeOnClickListener {
+        binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }
-        binding.dialogInfoConfirm.setSafeOnClickListener {
+        binding?.dialogInfoConfirm?.setSafeOnClickListener {
             if (args.contact.isNotNull()) args.contact?.isBlackList =
                 !args.contact?.isBlackList.isTrue()
             findNavController().previousBackStackEntry?.savedStateHandle?.set(

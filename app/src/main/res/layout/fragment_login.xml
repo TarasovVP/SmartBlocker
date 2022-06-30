@@ -40,7 +40,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Access account"
+        android:text="With google account"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_subtitle_gl" />
@@ -94,14 +94,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.38" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login with email"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_login_with_email_text_gl" />
-
     <Button
         android:id="@+id/google_auth"
         android:layout_width="0dp"
@@ -111,6 +103,14 @@
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
         app:layout_constraintTop_toTopOf="@id/top_socials_gl" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Or login with email"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_login_with_email_text_gl" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bot_email_gl"
@@ -166,6 +166,14 @@
         app:layout_constraintRight_toRightOf="@id/right_gl"
         app:layout_constraintTop_toBottomOf="@id/top_forgot_password_gl" />
 
+    <TextView
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        app:layout_constraintLeft_toLeftOf="@id/left_gl"
+        app:layout_constraintTop_toBottomOf="@id/top_forgot_password_gl"/>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_forgot_password_gl"
         android:layout_width="wrap_content"
@@ -173,45 +181,26 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.6" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/continue_without_acc_button"
+    <Button
+        android:id="@+id/continue_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Continue without account"
-        app:layout_constraintBottom_toTopOf="@id/continue_button"
+        android:text="Continue"
+        app:layout_constraintBottom_toTopOf="@id/continue_without_acc_button"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"
         app:layout_constraintTop_toBottomOf="@id/buttonForgotPassword" />
 
-    <Button
-        android:id="@+id/continue_button"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Continue"
-        app:layout_constraintBottom_toBottomOf="@id/bot_continue_button_gl"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_continue_button_gl" />
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/continue_without_acc_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Continue without account"
+        android:textColor="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/continue_button">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dont have an account" />
-
-        <TextView
-            android:id="@+id/register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Register" />
-    </LinearLayout>
+        app:layout_constraintLeft_toLeftOf="@id/left_gl"
+        app:layout_constraintRight_toRightOf="@id/right_gl"
+        app:layout_constraintTop_toBottomOf="@id/continue_button" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_continue_button_gl"

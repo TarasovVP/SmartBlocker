@@ -2,25 +2,50 @@ package com.tarasovvp.blacklister.ui.start.login
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
-import com.tarasovvp.blacklister.ui.start.GoogleFragment
+import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-
-class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
 
     override val viewModelClass = LoginViewModel::class.java
 
+    private var googleSignInClient: GoogleSignInClient? = null
+
+    override fun onStart() {
+        super.onStart()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         setOnButtonsClick()
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(FORGOT_PASSWORD)?.safeSingleObserve(viewLifecycleOwner) { email ->
+                if (email.isNotEmpty()) {
+                    viewModel.sendPasswordResetEmail(email)
+                } else {
+                    showMessage(getString(R.string.enter_your_email), true)
+                }
+            }
     }
 
     private fun setOnButtonsClick() {
@@ -39,9 +64,7 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
             findNavController().navigate(R.id.startSignUpFragment)
         }
         binding?.buttonForgotPassword?.setSafeOnClickListener {
-            binding?.email?.text?.toString()?.let {
-                if (it.isNotEmpty()) viewModel.sendPasswordResetEmail(it)
-            }
+            findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = binding?.email?.text.toString()))
         }
         binding?.googleAuth?.setSafeOnClickListener {
             googleSignInLauncher.launch(googleSignInClient?.signInIntent)
@@ -61,4 +84,16 @@ class LoginFragment : GoogleFragment<FragmentLoginBinding, LoginViewModel>() {
             })
         }
     }
+
+    private val googleSignInLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                account.idToken?.let { viewModel.firebaseAuthWithGoogle(it) }
+            } catch (e: ApiException) {
+                showMessage(e.localizedMessage?.toString().toString(), false)
+            }
+        }
+
 }
