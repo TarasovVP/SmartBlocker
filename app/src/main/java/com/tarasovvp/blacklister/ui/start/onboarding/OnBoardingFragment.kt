@@ -11,6 +11,7 @@ import com.tarasovvp.blacklister.constants.Constants.ACCEPT_PERMISSIONS_SCREEN
 import com.tarasovvp.blacklister.databinding.FragmentOnboardingBinding
 import com.tarasovvp.blacklister.enum.OnBoarding
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
@@ -40,7 +41,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
                 checkPermissions()
             } else {
                 binding?.onBoardingViewPager?.currentItem =
-                    (binding?.onBoardingViewPager?.currentItem ?: 0) + 1
+                    (binding?.onBoardingViewPager?.currentItem.orZero()) + 1
             }
         }
         initViewPager()
@@ -48,9 +49,10 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
 
     private fun initViewPager() {
         val fragmentList = arrayListOf(
-            SingleOnBoardingFragment(OnBoarding.AVOID_CALL),
-            SingleOnBoardingFragment(OnBoarding.RECEIVE_NOTIFICATIONS),
-            SingleOnBoardingFragment(OnBoarding.ACCEPT_PERMISSIONS)
+            SingleOnBoardingFragment(OnBoarding.INNER_DATA_ACCESS),
+            SingleOnBoardingFragment(OnBoarding.BLACK_WHITE_LIST),
+            SingleOnBoardingFragment(OnBoarding.AUTHORIZED_USER),
+            SingleOnBoardingFragment(OnBoarding.ACCESS_PERMISSIONS)
         )
 
         val adapter = activity?.supportFragmentManager?.let { fragmentManager ->

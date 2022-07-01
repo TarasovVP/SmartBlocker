@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
+import com.tarasovvp.blacklister.constants.Constants.SERVER_CLIENT_ID
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -20,7 +21,6 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
-
     override val viewModelClass = LoginViewModel::class.java
 
     private var googleSignInClient: GoogleSignInClient? = null
@@ -28,7 +28,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun onStart() {
         super.onStart()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com")
+            .requestIdToken(SERVER_CLIENT_ID)
             .requestEmail()
             .build()
 
@@ -58,7 +58,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             }
         }
         binding?.continueWithoutAccButton?.setSafeOnClickListener {
-            findNavController().navigate(R.id.startCallLogList)
+            (activity as MainActivity).apply {
+                getAllData()
+            }
+            findNavController().navigate(R.id.callLogListFragment)
         }
         binding?.register?.setSafeOnClickListener {
             findNavController().navigate(R.id.startSignUpFragment)

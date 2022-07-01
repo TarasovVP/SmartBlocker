@@ -64,8 +64,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                             ?.isNullOrEmpty().isTrue().not()
                 }
                 contactRepository.insertContacts(contactList)
-                Log.e("mainViewModelTAG",
-                    "MainViewModel getAllData contactList ${Gson().toJson(contactList)}")
 
                 val callLogList = getApplication<Application>().callLogList()
                 val blockedCallList = blockedCallRepository.allBlockedCalls()
@@ -90,8 +88,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
                 callLogRepository.insertCallLogs(callLogList)
-                Log.e("mainViewModelTAG",
-                    "MainViewModel getAllData callLogList ${Gson().toJson(callLogList)}")
 
                 successAllDataLiveData.postValue(true)
             } catch (e: Exception) {

@@ -94,11 +94,10 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.38" />
 
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/google_auth"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/bot_socials_gl"
         app:layout_constraintLeft_toLeftOf="@id/left_gl"
         app:layout_constraintRight_toRightOf="@id/right_gl"

@@ -57,13 +57,14 @@ class MainActivity : AppCompatActivity() {
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
-        Log.e("localeTAG", "MainActivity onCreate")
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
                 when {
-                    !SharedPreferencesUtil.isOnBoardingSeen -> R.id.onBoardingFragment
-                    BlackListerApp.instance?.isLoggedInUser().isTrue() -> R.id.callLogListFragment
+                    SharedPreferencesUtil.isOnBoardingSeen.not() -> R.id.onBoardingFragment
+                    BlackListerApp.instance?.isLoggedInUser().isTrue() -> {
+                        R.id.callLogListFragment
+                    }
                     else -> R.id.loginFragment
                 }
             )
@@ -76,11 +77,12 @@ class MainActivity : AppCompatActivity() {
             toolbar?.setupWithNavController(this)
         }
         observeLiveData()
-        getAllData()
+        if (SharedPreferencesUtil.isOnBoardingSeen) {
+            getAllData()
+        }
     }
 
     override fun attachBaseContext(newBase: Context) {
-        Log.e("localeTAG", "MainActivity attachBaseContext")
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang)))
     }
 
@@ -103,23 +105,13 @@ class MainActivity : AppCompatActivity() {
                 insertAllWhiteNumbers()
             })
             successWhiteNumberLiveData.safeSingleObserve(this@MainActivity, {
-                Log.e(
-                    "mainViewModelTAG",
-                    "MainActivity successWhiteNumberLiveData.safeSingleObserve getAllData()"
-                )
                 getAllData()
             })
             successAllDataLiveData.safeSingleObserve(this@MainActivity, {
-                Log.e(
-                    "mainViewModelTAG",
-                    "MainActivity success $it"
-                )
+
             })
             errorLiveData.safeSingleObserve(this@MainActivity, { error ->
-                Log.e(
-                    "mainViewModelTAG",
-                    "MainActivity errorLiveData error $error"
-                )
+
             })
         }
     }

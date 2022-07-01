@@ -4,6 +4,7 @@ object Constants {
 
     const val REALTIME_DATABASE =
         "https://blacklister-b6048-default-rtdb.europe-west1.firebasedatabase.app"
+    const val SERVER_CLIENT_ID = "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com"
     const val USERS = "users"
     const val PHONE_NUMBER_CODE = "+380"
     const val THREE_EIGHT_ZERO = "380"
@@ -30,7 +31,7 @@ object Constants {
     const val NUMBER = "NUMBER="
     const val DATE = "DATE="
     const val TYPE = "TYPE="
-    const val ACCEPT_PERMISSIONS_SCREEN = 2
+    const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
     const val APP_LANG_RU = "ru"

@@ -20,7 +20,7 @@
     <string name="bg_work_on">Работа в фоновом режиме</string>
     <string name="avoid_call">"BlackLister избавит Вас от навязчивых звонков "</string>
     <string name="receive_notifications">BlackLister будет предупреждать о степени опасности входящих звонков</string>
-    <string name="accept_permissions">"Для того чтобы начать приложение должно запросить у вас разрешение. "</string>
+    <string name="access_permissions">"Для того чтобы начать приложение должно запросить у вас разрешение. "</string>
     <string name="accept">Подтвердить</string>
     <string name="blacklister_is_on">Защита нежелательных звонков включена</string>
     <string name="search">Поиск</string>
@@ -81,4 +81,7 @@
     <string name="white_list">Белый список</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="inner_data_access_title">Доступ к данным телефона - списку звонков и контактов для более удобного их модерирования</string>
+    <string name="black_white_list_title">Управление входящими звонками  через черный и белый список</string>
+    <string name="authorized_user_title">Доступ к своим данным через облако для авторизованных пользователей</string>
 </resources>

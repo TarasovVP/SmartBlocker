@@ -20,7 +20,7 @@
     <string name="bg_work_on">Working in the background</string>
     <string name="avoid_call">"BlackLister will save you from intrusive calls"</string>
     <string name="receive_notifications">BlackLister will warn you about the severity of incoming calls</string>
-    <string name="accept_permissions">"The app must ask you for permission to start. "</string>
+    <string name="access_permissions">"The app must ask you for permission to start. "</string>
     <string name="accept">Confirm</string>
     <string name="blacklister_is_on">Unwanted call protection enabled</string>
     <string name="search">Search</string>

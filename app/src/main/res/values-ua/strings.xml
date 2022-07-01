@@ -20,7 +20,7 @@
     <string name="bg_work_on">Робота у фоновому режимі</string>
     <string name="avoid_call">"BlackLister позбавить Вас нав'язливих дзвінків"</string>
     <string name="receive_notifications">BlackLister попереджатиме про ступінь небезпеки вхідних дзвінків</string>
-    <string name="accept_permissions">"Для того, щоб почати програму має запросити у вас дозвіл."</string>
+    <string name="access_permissions">"Для того, щоб почати програму має запросити у вас дозвіл."</string>
     <string name="accept">Підтвердити</string>
     <string name="blacklister_is_on">Захист небажаних дзвінків увімкнено</string>
     <string name="search">Пошук</string>

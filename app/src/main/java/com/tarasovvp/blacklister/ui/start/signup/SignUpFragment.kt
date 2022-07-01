@@ -12,16 +12,13 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
     override fun getViewBinding() = FragmentSignUpBinding.inflate(layoutInflater)
-
     override val viewModelClass = SignUpViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         binding?.continueButton?.setSafeOnClickListener {
-            viewModel.createUserWithEmailAndPassword(binding?.email?.text.toString(),
-                binding?.password?.text.toString(),
-                binding?.name?.text.toString())
+            viewModel.createUserWithEmailAndPassword(binding?.email?.text.toString(), binding?.password?.text.toString(), binding?.name?.text.toString())
         }
     }
 
