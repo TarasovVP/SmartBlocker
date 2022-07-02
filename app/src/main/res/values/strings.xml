@@ -84,4 +84,6 @@
     <string name="inner_data_access_title">Доступ к данным телефона - списку звонков и контактов для более удобного их модерирования</string>
     <string name="black_white_list_title">Управление входящими звонками  через черный и белый список</string>
     <string name="authorized_user_title">Доступ к своим данным через облако для авторизованных пользователей</string>
+    <string name="log_out">Вы хотите выйти из своего аккаунта?</string>
+    <string name="delete_account">Вы хотите удалить свой аккаунт?</string>
 </resources>

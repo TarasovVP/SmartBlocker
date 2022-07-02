@@ -115,6 +115,9 @@
         <action
             android:id="@+id/startAppThemeFragment"
             app:destination="@id/appThemeFragment" />
+        <action
+            android:id="@+id/startAccountActionDialog"
+            app:destination="@id/accountActionDialog" />
     </fragment>
 
     <fragment
@@ -126,6 +129,9 @@
         android:id="@+id/accountDetailsFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.accountdetals.AccountDetailsFragment"
         android:label="@string/personal_details">
+        <action
+            android:id="@+id/startAccountActionDialog"
+            app:destination="@id/accountActionDialog" />
         <action
             android:id="@+id/startLoginFragment"
             app:destination="@id/loginFragment"
@@ -163,6 +169,27 @@
             app:nullable="true" />
     </dialog>
 
+    <action
+        android:id="@+id/startInfoDialog"
+        app:destination="@id/infoDialog" />
+
+    <dialog
+        android:id="@+id/accountActionDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.AccountActionDialog">
+        <argument
+            android:name="isLogOut"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/appExitDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.AppExitDialog" />
+
+    <action
+        android:id="@+id/startAppExitDialog"
+        app:destination="@id/appExitDialog" />
+
     <dialog
         android:id="@+id/forgotPasswordDialog"
         android:name="com.tarasovvp.blacklister.ui.dialogs.ForgotPasswordDialog">
@@ -172,10 +199,6 @@
             app:argType="string"
             app:nullable="true" />
     </dialog>
-
-    <action
-        android:id="@+id/startInfoDialog"
-        app:destination="@id/infoDialog" />
 
     <fragment
         android:id="@+id/numberAddFragment"

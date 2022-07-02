@@ -6,6 +6,8 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.LOG_OUT
 import com.tarasovvp.blacklister.databinding.FragmentSettingsListBinding
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -23,7 +25,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
         super.onViewCreated(view, savedInstanceState)
 
         binding?.settingsListLogOut?.setSafeOnClickListener {
-            viewModel.signOut()
+            findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(isLogOut = true))
         }
         binding?.settingsListBlockSettings?.setSafeOnClickListener {
             findNavController().navigate(SettingsListFragmentDirections.startBlockSettingsFragment())
@@ -36,6 +38,9 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
         }
         binding?.settingsListAppTheme?.setSafeOnClickListener {
             findNavController().navigate(SettingsListFragmentDirections.startAppThemeFragment())
+        }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(LOG_OUT)?.safeSingleObserve(viewLifecycleOwner) {
+            viewModel.signOut()
         }
     }
 

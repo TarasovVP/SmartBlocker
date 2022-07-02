@@ -51,12 +51,7 @@ class BlackNumberListFragment :
         swipeRefresh = binding?.blackNumberListRefresh
         recyclerView = binding?.blackNumberListRecyclerView
         emptyListText = binding?.blackNumberListEmpty
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
-            DELETE_NUMBER
-        )
-            ?.safeSingleObserve(
-                viewLifecycleOwner
-            ) { blackNumber ->
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
                 viewModel.deleteBlackNumber(blackNumber)
             }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {

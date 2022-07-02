@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (navController?.isBackPressedScreen().isTrue()) {
-            navController?.navigate(MainNavigationDirections.startInfoDialog())
+            navController?.navigate(MainNavigationDirections.startAppExitDialog())
         } else {
             navController?.popBackStack()
         }

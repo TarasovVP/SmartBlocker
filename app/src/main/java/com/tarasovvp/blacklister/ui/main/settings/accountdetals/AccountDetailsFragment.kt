@@ -7,9 +7,12 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.DELETE_USER
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -22,14 +25,19 @@ class AccountDetailsFragment :
     override val viewModelClass = AccountDetailsViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         binding?.accountDetailsMainTitle?.text = String.format(getString(R.string.welcome),
             BlackListerApp.instance?.auth?.currentUser?.displayName)
 
         binding?.accountDetailsDeleteBtn?.setSafeOnClickListener {
+            findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
+        }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(DELETE_USER)?.safeSingleObserve(viewLifecycleOwner) {
             viewModel.deleteUser()
         }
+
         binding?.accountDetailsNewNameBtn?.setSafeOnClickListener {
             viewModel.renameUser(binding?.accountDetailsNewNameInput?.text.toString())
         }
@@ -41,8 +49,7 @@ class AccountDetailsFragment :
             }
         }
 
-        binding?.includeNoAccount?.root?.isVisible =
-            BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+        binding?.includeNoAccount?.root?.isVisible = BlackListerApp.instance?.isLoggedInUser().isTrue().not()
         binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
             findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
         }
