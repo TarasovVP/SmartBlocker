@@ -76,6 +76,10 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                 findNavController().navigate(R.id.startSettingsListFragment)
                 return@setOnMenuItemClickListener true
             }
+            toolbar?.menu?.findItem(R.id.notification_menu_item)?.setOnMenuItemClickListener {
+                findNavController().navigate(R.id.startSettingsListFragment)
+                return@setOnMenuItemClickListener true
+            }
         }
     }
 

@@ -14,8 +14,10 @@
         <entry key="app/src/main/res/drawable/ic_end.xml" value="0.234375" />
         <entry key="app/src/main/res/drawable/ic_incoming_call.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/drawable/ic_missed_call.xml" value="0.2682291666666667" />
+        <entry key="app/src/main/res/drawable/ic_notifications.xml" value="0.1712962962962963" />
         <entry key="app/src/main/res/drawable/ic_outcoming_call.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.25885416666666666" />
+        <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.1712962962962963" />
         <entry key="app/src/main/res/drawable/ic_start.xml" value="0.234375" />
         <entry key="app/src/main/res/drawable/main_bg.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/on_boarding_button_bg.xml" value="0.215625" />
