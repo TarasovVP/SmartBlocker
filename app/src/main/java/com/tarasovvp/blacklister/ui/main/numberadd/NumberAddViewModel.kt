@@ -15,39 +15,14 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
     private val blackNumberRepository = BlackNumberRepository
     private val whiteNumberRepository = WhiteNumberRepository
 
-    val checkWhiteNumberNumberLiveData = MutableLiveData<WhiteNumber>()
     val insertBlackNumberLiveData = MutableLiveData<BlackNumber>()
     val insertWhiteNumberLiveData = MutableLiveData<WhiteNumber>()
-
-    fun checkWhiteNumber(blackNumber: BlackNumber) {
-        viewModelScope.launch {
-            try {
-                blackNumberRepository.checkWhiteNumber(blackNumber) {
-                    insertBlackNumber(blackNumber)
-                }
-            } catch (e: Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
-            }
-        }
-    }
 
     fun insertBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
             try {
                 blackNumberRepository.insertBlackNumber(blackNumber) {
                     insertBlackNumberLiveData.postValue(blackNumber)
-                }
-            } catch (e: Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
-            }
-        }
-    }
-
-    fun checkWhiteNumber(whiteNumber: WhiteNumber) {
-        viewModelScope.launch {
-            try {
-                whiteNumberRepository.checkWhiteNumber(whiteNumber) {
-                    checkWhiteNumberNumberLiveData.postValue(whiteNumber)
                 }
             } catch (e: Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)

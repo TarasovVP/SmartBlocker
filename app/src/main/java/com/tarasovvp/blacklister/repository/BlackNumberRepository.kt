@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -11,9 +12,11 @@ import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.constants.Constants.WHITE_NUMBER
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.WhiteNumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -80,24 +83,18 @@ object BlackNumberRepository {
         return blackNumberDao?.getBlackNumber(blackNumber)
     }
 
-    suspend fun checkWhiteNumber(blackNumber: BlackNumber, result: () -> Unit) {
+    suspend fun checkWhiteNumber(blackNumber: BlackNumber, result: (WhiteNumber?) -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
                 .child(WHITE_NUMBER).child(blackNumber.blackNumber).get()
                 .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        //TODO implemention
+                    Log.e("checkNumberTAG", "BlackNumberRepository checkWhiteNumber number ${blackNumber.blackNumber} isSuccessful ${it.isSuccessful} result ${it.result}")
+                    if (it.isSuccessful && it.result.value.isNotNull()) {
+                        result.invoke(it.result.getValue(WhiteNumber::class.java))
                     }
-                    result.invoke()
                 }
         } else {
-            whiteNumberDao?.getWhiteNumberList(blackNumber.blackNumber)?.forEach { number ->
-                if (blackNumber.start) number.start = false
-                if (blackNumber.contain) number.contain = false
-                if (blackNumber.end) number.end = false
-                whiteNumberDao.insertWhiteNumber(number)
-            }
-            result.invoke()
+            result.invoke(whiteNumberDao?.getWhiteNumber(blackNumber.blackNumber))
         }
     }
 
@@ -111,6 +108,20 @@ object BlackNumberRepository {
                 }
         } else {
             blackNumberDao?.insertBlackNumber(blackNumber)
+            result.invoke()
+        }
+    }
+
+    suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            WhiteNumberRepository.database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+                .child(WHITE_NUMBER)
+                .child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
+                    whiteNumberDao?.insertWhiteNumber(whiteNumber)
+                    result.invoke()
+                }
+        } else {
+            whiteNumberDao?.insertWhiteNumber(whiteNumber)
             result.invoke()
         }
     }

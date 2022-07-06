@@ -25,5 +25,47 @@
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/block_settings_back_ground" />
 
+    <TextView
+        android:id="@+id/block_settings_priority_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_priority"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_25"
+        app:layout_constraintTop_toBottomOf="@+id/block_settings_back_noti" />
+
+    <TextView
+        android:id="@+id/block_settings_black_priority"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="@dimen/size_0"
+        android:text="@string/black_list"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/block_settings_priority"
+        app:layout_constraintTop_toTopOf="@+id/block_settings_priority"
+        app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/block_settings_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintStart_toEndOf="@+id/block_settings_black_priority"
+        app:layout_constraintEnd_toStartOf="@+id/block_settings_white_priority"
+        app:layout_constraintTop_toBottomOf="@+id/block_settings_priority_title" />
+
+    <TextView
+        android:id="@+id/block_settings_white_priority"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="@dimen/size_0"
+        android:text="@string/white_list"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/block_settings_priority"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/block_settings_priority"
+        app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority"  />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

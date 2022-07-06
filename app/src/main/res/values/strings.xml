@@ -86,4 +86,10 @@
     <string name="authorized_user_title">Доступ к своим данным через облако для авторизованных пользователей</string>
     <string name="log_out">Вы хотите выйти из своего аккаунта?</string>
     <string name="delete_account">Вы хотите удалить свой аккаунт?</string>
+    <string name="fill_data_press_button">Для %s %s заполните поле ввода и нажмите кнопку</string>
+    <string name="edit_number">редактирования номера</string>
+    <string name="black">черный</string>
+    <string name="add_number">\"добавления номера в \"</string>
+    <string name="number_added">Number %s is added</string>
+    <string name="change_priority">Выберите приоритетность при совпадении параметров</string>
 </resources>

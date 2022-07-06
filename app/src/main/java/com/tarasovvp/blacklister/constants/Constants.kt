@@ -12,6 +12,7 @@ object Constants {
     const val ZERO = "0"
     const val BLACK_NUMBER = "blackNumber"
     const val WHITE_NUMBER = "whiteNumber"
+    const val WHITE_LIST_PRIORITY = "whiteListPriority"
     const val DELETE_NUMBER = "addNumber"
     const val CONTACT = "contact"
     const val CALL_LOG_CALL = "content://call_log/calls"

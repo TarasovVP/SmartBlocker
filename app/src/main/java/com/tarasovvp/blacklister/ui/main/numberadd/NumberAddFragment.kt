@@ -39,13 +39,13 @@ class NumberAddFragment :
         }
         binding?.numberAddSubmit?.setSafeOnClickListener {
             if (args.blackNumber.isNotNull()) {
-                viewModel.checkWhiteNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
+                viewModel.insertBlackNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
                     end = binding?.numberAddEnd?.isChecked.isTrue(),
                     category = binding?.numberAddCategory?.selectedItemPosition.orZero()))
             } else {
-                viewModel.checkWhiteNumber(WhiteNumber(whiteNumber = binding?.numberAddSearch?.text.toString(),
+                viewModel.insertWhiteNumber(WhiteNumber(whiteNumber = binding?.numberAddSearch?.text.toString(),
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
                     end = binding?.numberAddEnd?.isChecked.isTrue()))
@@ -54,11 +54,12 @@ class NumberAddFragment :
     }
 
     private fun initViewsWithData() {
-        binding?.numberAddTitle?.text = "Для ${
+        val text = String.format(getString(R.string.fill_data_press_button),
             if (args.blackNumber?.blackNumber.isNullOrEmpty()
                     .not() || args.whiteNumber?.whiteNumber.isNullOrEmpty().not()
-            ) "редактирования номера" else "добавления номера в ${if (args.blackNumber.isNotNull()) "черный" else "белый"} список"
-        } заполните поле ввода и нажмите кнопку"
+            ) getString(R.string.edit_number) else getString(R.string.add_number),
+            if (args.blackNumber.isNotNull()) getString(R.string.black_list) else getString(R.string.white_list))
+        binding?.numberAddTitle?.text = text
         binding?.numberAddTitle?.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
             if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number,
             0,
@@ -88,15 +89,12 @@ class NumberAddFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            checkWhiteNumberNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
-                viewModel.insertWhiteNumber(whiteNumber)
-            })
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
-                showMessage("Number ${blackNumber.blackNumber} is added", false)
+                showMessage(String.format(getString(R.string.number_added), blackNumber.blackNumber), false)
                 findNavController().popBackStack()
             })
             insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
-                showMessage("Number ${whiteNumber.whiteNumber} is added", false)
+                showMessage(String.format(getString(R.string.number_added), whiteNumber.whiteNumber), false)
                 findNavController().popBackStack()
             })
         }
