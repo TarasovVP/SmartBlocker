@@ -90,11 +90,13 @@ class NumberAddFragment :
     override fun observeLiveData() {
         with(viewModel) {
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
-                showMessage(String.format(getString(R.string.number_added), blackNumber.blackNumber), false)
+                showMessage(String.format(getString(R.string.number_added),
+                    blackNumber.blackNumber), false)
                 findNavController().popBackStack()
             })
             insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
-                showMessage(String.format(getString(R.string.number_added), whiteNumber.whiteNumber), false)
+                showMessage(String.format(getString(R.string.number_added),
+                    whiteNumber.whiteNumber), false)
                 findNavController().popBackStack()
             })
         }

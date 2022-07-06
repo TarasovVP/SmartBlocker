@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.repository.*
 import kotlinx.coroutines.launch
@@ -19,17 +20,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val whiteNumberRepository = WhiteNumberRepository
     private val contactRepository = ContactRepository
     private val blockedCallRepository = BlockedCallRepository
+    private val realDataBaseRepository = RealDataBaseRepository
 
-    val successBlackNumberLiveData = MutableLiveData<Boolean>()
     val successWhiteNumberLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
     val errorLiveData = MutableLiveData<String>()
+
+    fun getWhiteListPriority() {
+        viewModelScope.launch {
+            try {
+                realDataBaseRepository.getWhiteListPriority { isWhiteListPriority ->
+                    SharedPreferencesUtil.isWhiteListPriority = isWhiteListPriority
+                    insertAllBlackNumbers()
+                }
+            } catch (e: Exception) {
+                errorLiveData.postValue(e.localizedMessage)
+                e.printStackTrace()
+            }
+        }
+    }
 
     fun insertAllBlackNumbers() {
         viewModelScope.launch {
             try {
                 blackNumberRepository.insertAllBlackNumbers {
-                    successBlackNumberLiveData.postValue(true)
+                    insertAllWhiteNumbers()
                 }
             } catch (e: Exception) {
                 errorLiveData.postValue(e.localizedMessage)

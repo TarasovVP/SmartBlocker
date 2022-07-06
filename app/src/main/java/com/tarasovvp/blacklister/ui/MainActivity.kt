@@ -101,9 +101,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         with(mainViewModel) {
-            successBlackNumberLiveData.safeSingleObserve(this@MainActivity, {
-                insertAllWhiteNumbers()
-            })
             successWhiteNumberLiveData.safeSingleObserve(this@MainActivity, {
                 getAllData()
             })
@@ -119,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     fun getAllData() {
         if (checkPermissions().isTrue()) {
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-                mainViewModel.insertAllBlackNumbers()
+                mainViewModel.getWhiteListPriority()
             } else {
                 mainViewModel.getAllData()
             }
