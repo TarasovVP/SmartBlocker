@@ -11,6 +11,7 @@ import com.tarasovvp.blacklister.extensions.breakCallNougatAndLower
 import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
 import com.tarasovvp.blacklister.extensions.deleteLastMissedCall
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.repository.BlackNumberRepository
 import com.tarasovvp.blacklister.repository.WhiteNumberRepository
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
@@ -28,17 +29,20 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
-        val blackNumberList = blackNumberRepository.getBlackNumberList(phone)
-        val whiteNumberList = whiteNumberRepository.getWhiteNumberList(phone)
-        if (blackNumberList?.isNullOrEmpty()?.not().isTrue() && whiteNumberList?.isNullOrEmpty()
-                .isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
+        val isInWhiteList =
+            whiteNumberRepository.getWhiteNumberList(phone)?.isNullOrEmpty().isTrue().not()
+        val isInBlackList =
+            blackNumberRepository.getBlackNumberList(phone)?.isNullOrEmpty().isTrue().not()
+        val isBlockNeeded =
+            (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
+        if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING
         ) {
             phoneListener.invoke("phone $phone")
             breakCall(context)
         } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE && phone.isNotEmpty()) {
             Executors.newSingleThreadScheduledExecutor().schedule({
-                if (blackNumberList?.isNullOrEmpty()?.not().isTrue()) {
-                    val isDeleteSuccess = context.deleteLastMissedCall(phone)
+                if (isBlockNeeded) {
+                    context.deleteLastMissedCall(phone)
                 }
                 context.sendBroadcast(Intent(CALL_RECEIVE))
             }, 1, TimeUnit.SECONDS)

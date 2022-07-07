@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,7 +22,7 @@ object RealDataBaseRepository {
     val database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
     private val currentUserDatabase = database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
 
-    suspend fun getCurrentUser(result: (CurrentUser?) -> Unit) {
+    fun getCurrentUser(result: (CurrentUser?) -> Unit) {
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
                 val currentUser = CurrentUser()
@@ -74,36 +75,8 @@ object RealDataBaseRepository {
         })
     }
 
-    suspend fun getWhiteNumbers(result: (ArrayList<WhiteNumber>) -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).get().addOnSuccessListener { snapshot ->
-            val whiteNumberList = arrayListOf<WhiteNumber>()
-            snapshot.children.forEach {
-                it.getValue<WhiteNumber>()?.let { whiteNumber ->
-                    whiteNumberList.add(whiteNumber)
-                }
-            }
-            result.invoke(whiteNumberList)
-        }.addOnFailureListener {
-            //TODO implement error message
-        }
-    }
-
-    suspend fun getBlackNumbers(result: (ArrayList<BlackNumber>) -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).get().addOnSuccessListener { snapshot ->
-            val blackNumberList = arrayListOf<BlackNumber>()
-            snapshot.children.forEach {
-                it.getValue<BlackNumber>()?.let { blackNumber ->
-                    blackNumberList.add(blackNumber)
-                }
-            }
-            result.invoke(blackNumberList)
-        }.addOnFailureListener {
-            //TODO implement error message
-        }
-    }
-
     suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).setValue(blackNumber).addOnCompleteListener {
+        currentUserDatabase.child(BLACK_LIST).child(blackNumber.blackNumber).setValue(blackNumber).addOnCompleteListener {
             result.invoke()
         }.addOnFailureListener {
             //TODO implement error message
@@ -111,7 +84,7 @@ object RealDataBaseRepository {
     }
 
     suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).setValue(whiteNumber).addOnCompleteListener {
+        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
             result.invoke()
         }.addOnFailureListener {
             //TODO implement error message

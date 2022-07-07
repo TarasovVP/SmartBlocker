@@ -12,12 +12,12 @@ object WhiteNumberRepository {
     private val dao = BlackListerApp.instance?.database?.whiteNumberDao()
     private val realDataBaseRepository = RealDataBaseRepository
 
-    suspend fun insertAllWhiteNumbers(whiteNumberList: ArrayList<WhiteNumber>) {
+    fun insertAllWhiteNumbers(whiteNumberList: ArrayList<WhiteNumber>) {
         dao?.deleteAllWhiteNumbers()
         dao?.insertAllWhiteNumbers(whiteNumberList)
     }
 
-    suspend fun allWhiteNumbers(): List<WhiteNumber>? {
+    fun allWhiteNumbers(): List<WhiteNumber>? {
         return dao?.getAllWhiteNumbers()
     }
 

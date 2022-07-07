@@ -5,6 +5,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeLiveData() {
         with(mainViewModel) {
             successAllDataLiveData.safeSingleObserve(this@MainActivity, {
-
+                Log.e("allDataTAG", "MainActivity observeLiveData successAllDataLiveData ")
             })
             errorLiveData.safeSingleObserve(this@MainActivity, { error ->
 
