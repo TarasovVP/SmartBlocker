@@ -46,7 +46,7 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
         viewModelScope.launch {
             try {
                 contactRepository.updateContact(contact)
-                contact.phone?.let { phone -> BlackNumber(blackNumber = phone) }
+                contact.phone?.let { phone -> BlackNumber(number = phone) }
                     ?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
                 getContactList()
             } catch (e: java.lang.Exception) {

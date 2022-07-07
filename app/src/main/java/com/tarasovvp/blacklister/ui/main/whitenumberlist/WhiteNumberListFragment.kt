@@ -113,7 +113,7 @@ class WhiteNumberListFragment :
 
     override fun searchDataList() {
         val filteredWhiteNumberList = whiteNumberList?.filter { whiteNumber ->
-            whiteNumber.whiteNumber.lowercase(Locale.getDefault()).contains(
+            whiteNumber.number.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ) && (if (selectedFilterItems[0]) whiteNumber.contain else true)
                     && (if (selectedFilterItems[1]) whiteNumber.start else true)

@@ -14,10 +14,10 @@ interface BlackNumberDao {
     @Query("SELECT * FROM blackNumber")
     fun getAllBlackNumbers(): List<BlackNumber>
 
-    @Query("SELECT * FROM blackNumber WHERE blackNumber = :blackNumber")
+    @Query("SELECT * FROM blackNumber WHERE number = :blackNumber")
     fun getBlackNumber(blackNumber: String): BlackNumber?
 
-    @Query("SELECT * FROM blackNumber WHERE (blackNumber = :blackNumber) OR (:blackNumber LIKE '%' || blackNumber || '%' AND contain = 1) OR (:blackNumber LIKE blackNumber || '%' AND start = 1) OR (:blackNumber LIKE '%' || blackNumber AND `end` = 1)")
+    @Query("SELECT * FROM blackNumber WHERE (number = :blackNumber) OR (:blackNumber LIKE '%' || number || '%' AND contain = 1) OR (:blackNumber LIKE number || '%' AND start = 1) OR (:blackNumber LIKE '%' || number AND `end` = 1)")
     fun getBlackNumberList(blackNumber: String): List<BlackNumber>
 
     @Delete

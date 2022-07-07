@@ -14,10 +14,10 @@ interface WhiteNumberDao {
     @Query("SELECT * FROM whiteNumber")
     fun getAllWhiteNumbers(): List<WhiteNumber>
 
-    @Query("SELECT * FROM whiteNumber WHERE whiteNumber = :whiteNumber")
+    @Query("SELECT * FROM whiteNumber WHERE number = :whiteNumber")
     fun getWhiteNumber(whiteNumber: String): WhiteNumber?
 
-    @Query("SELECT * FROM whiteNumber WHERE (whiteNumber = :whiteNumber) OR (:whiteNumber LIKE '%' || whiteNumber || '%' AND contain = 1) OR (:whiteNumber LIKE whiteNumber || '%' AND start = 1) OR (:whiteNumber LIKE '%' || whiteNumber AND `end` = 1)")
+    @Query("SELECT * FROM whiteNumber WHERE (number = :whiteNumber) OR (:whiteNumber LIKE '%' || number || '%' AND contain = 1) OR (:whiteNumber LIKE number || '%' AND start = 1) OR (:whiteNumber LIKE '%' || number AND `end` = 1)")
     fun getWhiteNumberList(whiteNumber: String): List<WhiteNumber>
 
     @Delete

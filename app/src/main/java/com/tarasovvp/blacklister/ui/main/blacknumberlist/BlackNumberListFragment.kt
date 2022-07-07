@@ -109,7 +109,7 @@ class BlackNumberListFragment :
 
     override fun searchDataList() {
         val filteredBlackNumberList = blackNumberList?.filter { blackNumber ->
-            blackNumber.blackNumber.lowercase(Locale.getDefault()).contains(
+            blackNumber.number.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ) && (if (selectedFilterItems[0]) blackNumber.contain else true)
                     && (if (selectedFilterItems[1]) blackNumber.start else true)

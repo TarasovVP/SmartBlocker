@@ -309,10 +309,10 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
     val keyList = ArrayList<Any>(this.map {
         when (it) {
             is BlackNumber -> {
-                it.blackNumber.substring(0, 1)
+                it.number.substring(0, 1)
             }
             is WhiteNumber -> {
-                it.whiteNumber.substring(0, 1)
+                it.number.substring(0, 1)
             }
             is Contact -> {
                 it.name?.substring(0, 1)
@@ -329,10 +329,10 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
         val valueList = this.filter {
             key == when (it) {
                 is BlackNumber -> {
-                    it.blackNumber.substring(0, 1)
+                    it.number.substring(0, 1)
                 }
                 is WhiteNumber -> {
-                    it.whiteNumber.substring(0, 1)
+                    it.number.substring(0, 1)
                 }
                 is Contact -> {
                     it.name?.substring(0, 1)

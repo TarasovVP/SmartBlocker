@@ -1,6 +1,5 @@
 package com.tarasovvp.blacklister.repository
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -59,7 +58,7 @@ object RealDataBaseRepository {
                 blackNumberObject?.values?.forEach {
                     it.values.forEach { numberType ->
                         numberType.values.forEach { number ->
-                            if (number.blackNumber == blackNumber) {
+                            if (number.number == blackNumber) {
                                 blackNumberList.add(number)
                             }
                         }
@@ -76,7 +75,7 @@ object RealDataBaseRepository {
     }
 
     suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).child(blackNumber.blackNumber).setValue(blackNumber).addOnCompleteListener {
+        currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).setValue(blackNumber).addOnCompleteListener {
             result.invoke()
         }.addOnFailureListener {
             //TODO implement error message
@@ -84,7 +83,7 @@ object RealDataBaseRepository {
     }
 
     suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.whiteNumber).setValue(whiteNumber).addOnCompleteListener {
+        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).setValue(whiteNumber).addOnCompleteListener {
             result.invoke()
         }.addOnFailureListener {
             //TODO implement error message
@@ -92,7 +91,7 @@ object RealDataBaseRepository {
     }
 
     suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.whiteNumber).removeValue()
+        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).removeValue()
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {
@@ -101,7 +100,7 @@ object RealDataBaseRepository {
     }
 
     suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).child(blackNumber.blackNumber).removeValue()
+        currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).removeValue()
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {

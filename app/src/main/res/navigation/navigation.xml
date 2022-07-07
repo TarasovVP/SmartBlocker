@@ -65,10 +65,8 @@
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/startLoginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@+id/mainNavigation"
-            app:popUpToInclusive="true"/>
+            android:id="@+id/startNumberAddFragment"
+            app:destination="@id/numberAddFragment" />
     </fragment>
 
     <fragment
@@ -102,7 +100,7 @@
     <fragment
         android:id="@+id/settingsListFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.settingslist.SettingsListFragment"
-        android:label="@string/settings" >
+        android:label="@string/settings">
         <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
@@ -123,7 +121,7 @@
     <fragment
         android:id="@+id/blockSettingsFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.blocksettings.BlockSettingsFragment"
-        android:label="@string/block_settings"/>
+        android:label="@string/block_settings" />
 
     <fragment
         android:id="@+id/accountDetailsFragment"
@@ -136,18 +134,18 @@
             android:id="@+id/startLoginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@+id/mainNavigation"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/appLanguageFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.applanguage.AppLanguageFragment"
-        android:label="@string/app_language"/>
+        android:label="@string/app_language" />
 
     <fragment
         android:id="@+id/appThemeFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.apptheme.AppThemeFragment"
-        android:label="@string/app_theme"/>
+        android:label="@string/app_theme" />
 
     <dialog
         android:id="@+id/infoDialog"
@@ -203,7 +201,7 @@
     <fragment
         android:id="@+id/numberAddFragment"
         android:name="com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragment"
-        android:label="@string/addBlackNumber" >
+        android:label="@string/addBlackNumber">
         <argument
             android:name="blackNumber"
             android:defaultValue="@null"

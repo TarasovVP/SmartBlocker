@@ -36,10 +36,10 @@ class CallLogListFragment :
                         R.id.change -> {
                             if (callLog.isBlackList) {
                                 findNavController().navigate(CallLogListFragmentDirections.startInfoDialog(
-                                    blackNumber = BlackNumber(blackNumber = callLog.phone.toString())))
+                                    blackNumber = BlackNumber(number = callLog.phone.toString())))
                             } else {
                                 findNavController().navigate(CallLogListFragmentDirections.startNumberAddFragment(
-                                    BlackNumber(blackNumber = callLog.phone.toString())))
+                                    BlackNumber(number = callLog.phone.toString())))
                             }
                         }
                         R.id.details -> {

@@ -20,7 +20,7 @@ class InfoDialog : BaseDialog<DialogInfoBinding>() {
     override fun initUI() {
         binding?.dialogInfoTitle?.text =
             if (args.blackNumber.isNotNull()) String.format(getString(R.string.delete),
-                args.blackNumber?.blackNumber) else String.format(if (args.contact?.isBlackList.isTrue()) getString(
+                args.blackNumber?.number) else String.format(if (args.contact?.isBlackList.isTrue()) getString(
                 R.string.delete_contact_from_black_list) else getString(R.string.add_contact_to_black_list),
                 args.contact?.name)
         binding?.dialogInfoCancel?.setSafeOnClickListener {

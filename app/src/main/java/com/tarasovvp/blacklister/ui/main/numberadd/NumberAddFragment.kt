@@ -2,17 +2,13 @@ package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
-import com.tarasovvp.blacklister.enum.BlackNumberCategory
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.WhiteNumber
@@ -30,22 +26,18 @@ class NumberAddFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args.blackNumber?.apply {
-            initNumberAddCategory()
-        }
         initViewsWithData()
         binding?.numberAddSearch?.doAfterTextChanged {
             binding?.numberAddSubmit?.isEnabled = it?.isNotEmpty().isTrue()
         }
         binding?.numberAddSubmit?.setSafeOnClickListener {
             if (args.blackNumber.isNotNull()) {
-                viewModel.insertBlackNumber(BlackNumber(blackNumber = binding?.numberAddSearch?.text.toString(),
+                viewModel.insertBlackNumber(BlackNumber(number = binding?.numberAddSearch?.text.toString(),
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
-                    end = binding?.numberAddEnd?.isChecked.isTrue(),
-                    category = binding?.numberAddCategory?.selectedItemPosition.orZero()))
+                    end = binding?.numberAddEnd?.isChecked.isTrue()))
             } else {
-                viewModel.insertWhiteNumber(WhiteNumber(whiteNumber = binding?.numberAddSearch?.text.toString(),
+                viewModel.insertWhiteNumber(WhiteNumber(number = binding?.numberAddSearch?.text.toString(),
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
                     end = binding?.numberAddEnd?.isChecked.isTrue()))
@@ -55,8 +47,8 @@ class NumberAddFragment :
 
     private fun initViewsWithData() {
         val text = String.format(getString(R.string.fill_data_press_button),
-            if (args.blackNumber?.blackNumber.isNullOrEmpty()
-                    .not() || args.whiteNumber?.whiteNumber.isNullOrEmpty().not()
+            if (args.blackNumber?.number.isNullOrEmpty()
+                    .not() || args.whiteNumber?.number.isNullOrEmpty().not()
             ) getString(R.string.edit_number) else getString(R.string.add_number),
             if (args.blackNumber.isNotNull()) getString(R.string.black_list) else getString(R.string.white_list))
         binding?.numberAddTitle?.text = text
@@ -64,7 +56,7 @@ class NumberAddFragment :
             if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number,
             0,
             0)
-        binding?.numberAddSearch?.setText(if (args.blackNumber.isNotNull()) args.blackNumber?.blackNumber.orEmpty() else args.whiteNumber?.whiteNumber.orEmpty())
+        binding?.numberAddSearch?.setText(if (args.blackNumber.isNotNull()) args.blackNumber?.number.orEmpty() else args.whiteNumber?.number.orEmpty())
         binding?.numberAddStart?.isChecked =
             if (args.blackNumber.isNotNull()) args.blackNumber?.start.isTrue() else args.whiteNumber?.start.isTrue()
         binding?.numberAddContain?.isChecked =
@@ -72,31 +64,20 @@ class NumberAddFragment :
         binding?.numberAddEnd?.isChecked =
             if (args.blackNumber.isNotNull()) args.blackNumber?.end.isTrue() else args.whiteNumber?.end.isTrue()
         binding?.numberAddSubmit?.isEnabled =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.blackNumber.isNullOrEmpty().isTrue()
-                .not() else args.whiteNumber?.whiteNumber.isNullOrEmpty().isTrue().not()
-    }
-
-    private fun initNumberAddCategory() {
-        binding?.numberAddCategory?.isVisible = true
-        val categoryList = BlackNumberCategory.values().map {
-            getString(it.title)
-        }
-        val adapter = ArrayAdapter(requireContext(),
-            android.R.layout.simple_spinner_item, categoryList)
-        binding?.numberAddCategory?.adapter = adapter
-        binding?.numberAddCategory?.setSelection(args.blackNumber?.category.orZero())
+            if (args.blackNumber.isNotNull()) args.blackNumber?.number.isNullOrEmpty().isTrue()
+                .not() else args.whiteNumber?.number.isNullOrEmpty().isTrue().not()
     }
 
     override fun observeLiveData() {
         with(viewModel) {
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
                 showMessage(String.format(getString(R.string.number_added),
-                    blackNumber.blackNumber), false)
+                    blackNumber.number), false)
                 findNavController().popBackStack()
             })
             insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
                 showMessage(String.format(getString(R.string.number_added),
-                    whiteNumber.whiteNumber), false)
+                    whiteNumber.number), false)
                 findNavController().popBackStack()
             })
         }

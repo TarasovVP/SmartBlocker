@@ -92,4 +92,7 @@
     <string name="add_number">\"добавления номера в \"</string>
     <string name="number_added">Number %s is added</string>
     <string name="change_priority">Выберите приоритетность при совпадении параметров</string>
+    <string name="prioritness">Приоритетность: %s</string>
+    <string name="black_list_criteria">Критерии совпадения из черного списка</string>
+    <string name="white_list_criteria">Критерии совпадения из белого списка</string>
 </resources>

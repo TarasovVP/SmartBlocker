@@ -54,7 +54,7 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?, View) -> U
 
         fun bindData(position: Int) {
             val blackNumber = getDataInPosition(position)
-            binding?.itemNumberValue?.text = blackNumber.blackNumber
+            binding?.itemNumberValue?.text = blackNumber.number
             binding?.itemNumberStart?.isVisible = blackNumber.start
             binding?.itemNumberContain?.isVisible = blackNumber.contain
             binding?.itemNumberEnd?.isVisible = blackNumber.end

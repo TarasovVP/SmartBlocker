@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class WhiteNumber(
-    @PrimaryKey val whiteNumber: String = "",
+    @PrimaryKey val number: String = "",
     var start: Boolean = false,
     var contain: Boolean = false,
     var end: Boolean = false,
