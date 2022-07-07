@@ -13,6 +13,8 @@ object Constants {
     const val BLACK_NUMBER = "blackNumber"
     const val WHITE_NUMBER = "whiteNumber"
     const val WHITE_LIST_PRIORITY = "whiteListPriority"
+    const val BLACK_LIST = "blackList"
+    const val WHITE_LIST = "whiteList"
     const val DELETE_NUMBER = "addNumber"
     const val CONTACT = "contact"
     const val CALL_LOG_CALL = "content://call_log/calls"

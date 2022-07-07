@@ -5,7 +5,6 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -101,9 +100,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         with(mainViewModel) {
-            successWhiteNumberLiveData.safeSingleObserve(this@MainActivity, {
-                getAllData()
-            })
             successAllDataLiveData.safeSingleObserve(this@MainActivity, {
 
             })
@@ -116,7 +112,7 @@ class MainActivity : AppCompatActivity() {
     fun getAllData() {
         if (checkPermissions().isTrue()) {
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-                mainViewModel.getWhiteListPriority()
+                mainViewModel.getCurrentUser()
             } else {
                 mainViewModel.getAllData()
             }

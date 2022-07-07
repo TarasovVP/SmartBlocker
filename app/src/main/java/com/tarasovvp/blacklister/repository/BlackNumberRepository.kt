@@ -12,12 +12,9 @@ object BlackNumberRepository {
     private val blackNumberDao = BlackListerApp.instance?.database?.blackNumberDao()
     private val realDataBaseRepository = RealDataBaseRepository
 
-    suspend fun insertAllBlackNumbers(result: () -> Unit) {
+    suspend fun insertAllBlackNumbers(blackNumberList: ArrayList<BlackNumber>) {
         blackNumberDao?.deleteAllBlackNumbers()
-        realDataBaseRepository.getBlackNumbers { blackNumbers ->
-            blackNumberDao?.insertAllBlackNumbers(blackNumbers)
-            result.invoke()
-        }
+        blackNumberDao?.insertAllBlackNumbers(blackNumberList)
     }
 
     suspend fun allBlackNumbers(): List<BlackNumber>? {

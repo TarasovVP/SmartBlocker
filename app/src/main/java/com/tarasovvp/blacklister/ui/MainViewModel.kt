@@ -1,16 +1,16 @@
 package com.tarasovvp.blacklister.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.CallLog
+import com.tarasovvp.blacklister.model.CurrentUser
+import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.repository.*
 import kotlinx.coroutines.launch
 
@@ -22,16 +22,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val blockedCallRepository = BlockedCallRepository
     private val realDataBaseRepository = RealDataBaseRepository
 
-    val successWhiteNumberLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
     val errorLiveData = MutableLiveData<String>()
 
-    fun getWhiteListPriority() {
+    fun getCurrentUser() {
         viewModelScope.launch {
             try {
-                realDataBaseRepository.getWhiteListPriority { isWhiteListPriority ->
-                    SharedPreferencesUtil.isWhiteListPriority = isWhiteListPriority
-                    insertAllBlackNumbers()
+                realDataBaseRepository.getCurrentUser { currentUser ->
+                    SharedPreferencesUtil.isWhiteListPriority = currentUser?.isWhiteListPriority.isTrue()
+                    currentUser?.let { insertAllBlackNumbers(it) }
                 }
             } catch (e: Exception) {
                 errorLiveData.postValue(e.localizedMessage)
@@ -40,12 +39,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun insertAllBlackNumbers() {
+    private fun insertAllBlackNumbers(currentUser: CurrentUser) {
         viewModelScope.launch {
             try {
-                blackNumberRepository.insertAllBlackNumbers {
-                    insertAllWhiteNumbers()
-                }
+                blackNumberRepository.insertAllBlackNumbers(currentUser.blackNumberList)
+                insertAllWhiteNumbers(currentUser.whiteNumberList)
             } catch (e: Exception) {
                 errorLiveData.postValue(e.localizedMessage)
                 e.printStackTrace()
@@ -53,12 +51,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun insertAllWhiteNumbers() {
+    private fun insertAllWhiteNumbers(whiteNumberList: ArrayList<WhiteNumber>) {
         viewModelScope.launch {
             try {
-                whiteNumberRepository.insertAllWhiteNumbers {
-                    successWhiteNumberLiveData.postValue(true)
-                }
+                whiteNumberRepository.insertAllWhiteNumbers(whiteNumberList)
+                getAllData()
             } catch (e: java.lang.Exception) {
                 errorLiveData.postValue(e.localizedMessage)
                 e.printStackTrace()
