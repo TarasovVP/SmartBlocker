@@ -10,7 +10,7 @@ object ContactRepository {
 
     private val dao = BlackListerApp.instance?.database?.contactDao()
 
-    suspend fun insertContacts(list: List<Contact>) {
+    fun insertContacts(list: List<Contact>) {
         dao?.insertAllContacts(list)
     }
 

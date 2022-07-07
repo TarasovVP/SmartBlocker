@@ -2,12 +2,10 @@ package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.content.IntentFilter
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.blacklister.constants.Constants.BLACK_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.databinding.FragmentCallLogListBinding
 import com.tarasovvp.blacklister.extensions.*
-import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -76,7 +74,7 @@ class CallLogListFragment :
             })
         }
         (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this, {
                 viewModel.getCallLogList()
             })
         }

@@ -17,18 +17,9 @@
 package com.tarasovvp.blacklister
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.NoActivityResumedException
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.rule.ActivityTestRule
 import com.tarasovvp.blacklister.ui.MainActivity
-import org.hamcrest.CoreMatchers.allOf
-import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Rule
-import org.junit.Test
 
 
 class BottomNavigationTest {
@@ -38,124 +29,4 @@ class BottomNavigationTest {
 
     @get:Rule
     var activityTestRule = ActivityTestRule(MainActivity::class.java)
-
-    @Test
-    fun bottomNavView_clickOnAllItems() {
-
-        assertStartScreen()
-
-        moveToFirstScreen()
-
-        assertFirstScreen()
-
-        openThirdScreen()
-
-        assertThirdScreen()
-
-        openSecondScreen()
-
-        assertSecondScreen()
-
-        pressBack()
-
-        assertStartScreen()
-
-        moveToFirstScreen()
-
-        openForthScreen()
-
-        assertForthScreen()
-    }
-
-    @Test
-    fun bottomNavView_backGoesToFirstItem() {
-
-        moveToFirstScreen()
-
-        pressBack()
-
-        assertStartScreen()
-    }
-
-    @Test(expected = NoActivityResumedException::class)
-    fun bottomNavView_backfromFirstItemExits() {
-
-        assertStartScreen()
-
-        pressBack()
-
-        fail()
-    }
-
-    @Test
-    fun bottomNavView_backstackMaintained() {
-
-        moveToFirstScreen()
-
-        openThirdScreen()
-
-        assertThirdScreen()
-
-        openFirstScreen()
-
-        assertFirstScreen()
-
-        pressBack()
-
-        assertStartScreen()
-
-        pressBackUnconditionally()
-
-        assertTrue(activityTestRule.activity.isDestroyed)
-    }
-
-    private fun assertStartScreen() {
-        onView(withText(R.string.login))
-            .check(matches(isDisplayed()))
-    }
-
-    private fun moveToFirstScreen() {
-        onView(withText(R.string.next))
-            .perform(click())
-    }
-
-    private fun openFirstScreen() {
-        onView(allOf(withContentDescription(R.string.log_list), isDisplayed()))
-            .perform(click())
-    }
-
-    private fun assertFirstScreen() {
-        onView(withText(R.string.log_list_))
-            .check(matches(isDisplayed()))
-    }
-
-    private fun openSecondScreen() {
-        onView(allOf(withContentDescription(R.string.contact_list), isDisplayed()))
-            .perform(click())
-    }
-
-    private fun assertSecondScreen() {
-        onView(withText(R.string.contact_list_))
-            .check(matches(isDisplayed()))
-    }
-
-    private fun openThirdScreen() {
-        onView(allOf(withContentDescription(R.string.number_list), isDisplayed()))
-            .perform(click())
-    }
-
-    private fun assertThirdScreen() {
-        onView(withId(R.id.number_list_text))
-            .check(matches(isDisplayed()))
-    }
-
-    private fun openForthScreen() {
-        onView(allOf(withContentDescription(R.string.settings), isDisplayed()))
-            .perform(click())
-    }
-
-    private fun assertForthScreen() {
-        onView(withText(R.string.settings_))
-            .check(matches(isDisplayed()))
-    }
 }

@@ -39,7 +39,7 @@
     <string name="only_blocked">Only Blocked</string>
     <string name="edit">Edit</string>
     <string name="change">Change</string>
-    <string name="delete_contact_from_black_list">Remove %s from blacklist?</string>
+    <string name="delete_number_from_list">Remove %s from blacklist?</string>
     <string name="add_contact_to_black_list">Do you want to blacklist %s?</string>
     <string name="only_black_list">Only from the black list</string>
     <string name="details">Details</string>

@@ -9,11 +9,6 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction,MenuTitle" />
     <item
-        android:id="@+id/notification_menu_item"
-        android:icon="@drawable/ic_notifications"
-        app:showAsAction="always"
-        tools:ignore="MenuTitle" />
-    <item
         android:id="@+id/settings_menu_item"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always"

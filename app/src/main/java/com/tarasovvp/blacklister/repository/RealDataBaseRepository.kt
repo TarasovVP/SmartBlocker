@@ -46,35 +46,7 @@ object RealDataBaseRepository {
             }
     }
 
-    suspend fun blackNumbersRemoteCount(
-        blackNumber: String,
-        result: (ArrayList<BlackNumber?>) -> Unit,
-    ) {
-        database.child(USERS).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val blackNumberList = arrayListOf<BlackNumber?>()
-                val blackNumberObject =
-                    snapshot.getValue<HashMap<String, HashMap<String, HashMap<String, BlackNumber>>>>()
-                blackNumberObject?.values?.forEach {
-                    it.values.forEach { numberType ->
-                        numberType.values.forEach { number ->
-                            if (number.number == blackNumber) {
-                                blackNumberList.add(number)
-                            }
-                        }
-                    }
-                }
-                result.invoke(blackNumberList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                //TODO implement error message
-                error.message
-            }
-        })
-    }
-
-    suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
+    fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
         currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).setValue(blackNumber).addOnCompleteListener {
             result.invoke()
         }.addOnFailureListener {
@@ -82,7 +54,7 @@ object RealDataBaseRepository {
         }
     }
 
-    suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
+    fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).setValue(whiteNumber).addOnCompleteListener {
             result.invoke()
         }.addOnFailureListener {
@@ -90,7 +62,7 @@ object RealDataBaseRepository {
         }
     }
 
-    suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
+    fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).removeValue()
             .addOnCompleteListener {
                 result.invoke()
@@ -99,7 +71,7 @@ object RealDataBaseRepository {
             }
     }
 
-    suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
+    fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
         currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).removeValue()
             .addOnCompleteListener {
                 result.invoke()
@@ -108,7 +80,7 @@ object RealDataBaseRepository {
             }
     }
 
-    suspend fun changeWhiteListPriority(whiteListPriority: Boolean, result: () -> Unit) {
+    fun changeWhiteListPriority(whiteListPriority: Boolean, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST_PRIORITY).setValue(whiteListPriority)
             .addOnCompleteListener {
                 result.invoke()

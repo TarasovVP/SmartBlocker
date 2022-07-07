@@ -10,20 +10,12 @@ object CallLogRepository {
 
     private val dao = BlackListerApp.instance?.database?.callLogDao()
 
-    suspend fun insertCallLogs(callLogList: List<CallLog>) {
+    fun insertCallLogs(callLogList: List<CallLog>) {
         dao?.insertAllCallLogs(callLogList)
     }
 
-    suspend fun getAllCallLogs(): List<CallLog>? {
+    fun getAllCallLogs(): List<CallLog>? {
         return dao?.allCallLogs()
-    }
-
-    suspend fun updateCallLog(callLog: CallLog) {
-        dao?.updateCallLog(callLog)
-    }
-
-    suspend fun deleteAllCallLogs() {
-        dao?.deleteAllCallLogs()
     }
 
     suspend fun getHashMapFromCallLogList(callLogList: List<CallLog>): HashMap<String, List<CallLog>> =

@@ -39,7 +39,7 @@
     <string name="only_blocked">Тільки заблоковані</string>
     <string name="edit">Редагувати</string>
     <string name="change">Змінити</string>
-    <string name="delete_contact_from_black_list">Видалити %s із чорного списку?</string>
+    <string name="delete_number_from_list">Видалити %s із чорного списку?</string>
     <string name="add_contact_to_black_list">Додати %s до чорного списку?</string>
     <string name="only_black_list">Тільки із чорного спіксу</string>
     <string name="details">Деталі</string>

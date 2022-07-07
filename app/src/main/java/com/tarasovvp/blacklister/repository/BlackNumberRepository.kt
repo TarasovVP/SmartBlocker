@@ -21,17 +21,7 @@ object BlackNumberRepository {
         return blackNumberDao?.getAllBlackNumbers()
     }
 
-    suspend fun blackNumbersRemoteCount(
-        blackNumber: String,
-        result: (ArrayList<BlackNumber?>) -> Unit,
-    ) {
-        realDataBaseRepository.blackNumbersRemoteCount(blackNumber) { blackNumbers ->
-            result.invoke(blackNumbers)
-        }
-    }
-
-
-    suspend fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
+    fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertBlackNumber(blackNumber) {
                 blackNumberDao?.insertBlackNumber(blackNumber)
@@ -43,7 +33,7 @@ object BlackNumberRepository {
         }
     }
 
-    suspend fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
+    fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteBlackNumber(blackNumber) {
                 blackNumberDao?.delete(blackNumber)

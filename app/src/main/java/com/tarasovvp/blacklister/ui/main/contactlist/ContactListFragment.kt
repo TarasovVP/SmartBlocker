@@ -1,13 +1,10 @@
 package com.tarasovvp.blacklister.ui.main.contactlist
 
-import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -62,7 +59,7 @@ class ContactListFragment :
             })
         }
         (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this, {
                 viewModel.getContactList()
             })
         }

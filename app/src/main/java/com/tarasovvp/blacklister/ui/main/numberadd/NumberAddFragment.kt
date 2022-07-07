@@ -2,11 +2,11 @@ package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
@@ -84,18 +84,21 @@ class NumberAddFragment :
         binding?.numberAddSubmit?.isEnabled =
             if (args.blackNumber.isNotNull()) args.blackNumber?.number.isNullOrEmpty().isTrue()
                 .not() else args.whiteNumber?.number.isNullOrEmpty().isTrue().not()
+        binding?.numberDeleteSubmit?.isVisible = args.blackNumber?.number.orEmpty().isNotEmpty() || args.whiteNumber?.number.orEmpty().isNotEmpty()
     }
 
     override fun observeLiveData() {
         with(viewModel) {
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumber ->
-                showMessage(String.format(getString(R.string.number_added),
-                    blackNumber.number), false)
+                showMessage(String.format(getString(R.string.number_added), blackNumber.number), false)
                 findNavController().popBackStack()
             })
             insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumber ->
-                showMessage(String.format(getString(R.string.number_added),
-                    whiteNumber.number), false)
+                showMessage(String.format(getString(R.string.number_added), whiteNumber.number), false)
+                findNavController().popBackStack()
+            })
+            deleteNumberLiveData.safeSingleObserve(viewLifecycleOwner, {
+                showMessage(String.format(getString(R.string.delete_number_from_list), if (args.blackNumber.isNotNull()) args.blackNumber?.number.orEmpty() else args.whiteNumber?.number.orEmpty()), false)
                 findNavController().popBackStack()
             })
         }

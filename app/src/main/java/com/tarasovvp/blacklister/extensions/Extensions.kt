@@ -11,11 +11,8 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
-import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorInt
-import androidx.appcompat.view.ContextThemeWrapper
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -50,7 +47,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
-
 
 fun Context.contactList(): ArrayList<Contact> {
     val projection = arrayOf(
@@ -375,14 +371,6 @@ fun Any?.isNotNull() = this != null
 fun Boolean?.isTrue() = this == true
 
 fun Int?.orZero() = this ?: 0
-
-fun Context.showPopUpMenu(menu: Int, view: View, listener: PopupMenu.OnMenuItemClickListener) {
-    val wrapper = ContextThemeWrapper(this, R.style.PopupMenu)
-    val pop = PopupMenu(wrapper, view)
-    pop.inflate(menu)
-    pop.setOnMenuItemClickListener(listener)
-    pop.show()
-}
 
 fun Context.setAppLocale(language: String): Context {
     val locale = Locale(language)
