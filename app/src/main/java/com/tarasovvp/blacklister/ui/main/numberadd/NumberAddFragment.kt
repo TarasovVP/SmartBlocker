@@ -6,6 +6,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -30,6 +32,14 @@ class NumberAddFragment :
         binding?.numberAddSearch?.doAfterTextChanged {
             binding?.numberAddSubmit?.isEnabled = it?.isNotEmpty().isTrue()
         }
+        binding?.numberDeleteSubmit?.setSafeOnClickListener {
+            args.blackNumber?.let {
+                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(blackNumber = it))
+            }
+            args.whiteNumber?.let {
+                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(whiteNumber = it))
+            }
+        }
         binding?.numberAddSubmit?.setSafeOnClickListener {
             if (args.blackNumber.isNotNull()) {
                 viewModel.insertBlackNumber(BlackNumber(number = binding?.numberAddSearch?.text.toString(),
@@ -41,6 +51,14 @@ class NumberAddFragment :
                     start = binding?.numberAddStart?.isChecked.isTrue(),
                     contain = binding?.numberAddContain?.isChecked.isTrue(),
                     end = binding?.numberAddEnd?.isChecked.isTrue()))
+            }
+        }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
+            args.blackNumber?.let {
+                viewModel.deleteBlackNumber(it)
+            }
+            args.whiteNumber?.let {
+                viewModel.deleteWhiteNumber(it)
             }
         }
     }

@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
@@ -31,7 +32,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun initView()
-    abstract fun getDataList()
     abstract fun searchDataList()
 
     protected fun RecyclerView.initRecyclerView() {
@@ -46,12 +46,12 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
         recyclerView?.initRecyclerView()
         if (context?.checkPermissions().isTrue()) {
             swipeRefresh?.isRefreshing = true
-            getDataList()
+            getAllData()
         } else {
             permissionLauncher.launch(permissionsArray())
         }
         swipeRefresh?.setOnRefreshListener {
-            getDataList()
+            getAllData()
         }
     }
 
@@ -92,7 +92,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                getDataList()
+                getAllData()
             }
         }
 
@@ -104,6 +104,12 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
         }
         swipeRefresh?.isRefreshing = false
         return newData.isEmpty()
+    }
+
+    protected fun getAllData() {
+        (activity as MainActivity).apply {
+            getAllData()
+        }
     }
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {

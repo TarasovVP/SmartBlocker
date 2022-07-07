@@ -13,7 +13,7 @@ import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?, View) -> Unit) :
+class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?) -> Unit) :
     BaseAdapter<WhiteNumber>() {
 
     override fun onCreateViewHolder(
@@ -61,7 +61,7 @@ class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?, View) -> U
             binding?.itemNumberAvatar?.setImageResource(R.drawable.ic_white_number)
             binding?.root?.setSafeOnClickListener {
                 binding?.itemNumberMenu?.apply {
-                    whiteNumberClick.invoke(blackNumber, this)
+                    whiteNumberClick.invoke(blackNumber)
                 }
             }
         }

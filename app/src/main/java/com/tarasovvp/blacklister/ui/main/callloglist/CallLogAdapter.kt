@@ -13,7 +13,7 @@ import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class CallLogAdapter(private val callLogClick: (CallLog, View) -> Unit) :
+class CallLogAdapter(private val callLogClick: (String) -> Unit) :
     BaseAdapter<CallLog>() {
 
     override fun onCreateViewHolder(
@@ -59,9 +59,7 @@ class CallLogAdapter(private val callLogClick: (CallLog, View) -> Unit) :
             binding?.itemCallLogTypeIcon?.setImageResource(callLog.callLogIcon())
             binding?.itemCallLogAvatar?.loadCircleImage(callLog.photoUrl)
             binding?.root?.setSafeOnClickListener {
-                binding?.itemCallLogMenu?.apply {
-                    callLogClick.invoke(callLog, this)
-                }
+                callLog.phone?.let { callLogClick.invoke(it) }
             }
         }
     }

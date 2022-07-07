@@ -74,9 +74,6 @@
         android:name="com.tarasovvp.blacklister.ui.main.blacknumberlist.BlackNumberListFragment"
         android:label="@string/black_list">
         <action
-            android:id="@+id/startInfoDialog"
-            app:destination="@id/infoDialog" />
-        <action
             android:id="@+id/startNumberAddFragment"
             app:destination="@id/numberAddFragment" />
     </fragment>
@@ -85,9 +82,6 @@
         android:id="@+id/whiteNumberListFragment"
         android:name="com.tarasovvp.blacklister.ui.main.whitenumberlist.WhiteNumberListFragment"
         android:label="@string/white_list">
-        <action
-            android:id="@+id/startInfoDialog"
-            app:destination="@id/infoDialog" />
         <action
             android:id="@+id/startNumberAddFragment"
             app:destination="@id/numberAddFragment" />
@@ -148,8 +142,8 @@
         android:label="@string/app_theme" />
 
     <dialog
-        android:id="@+id/infoDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.InfoDialog">
+        android:id="@+id/deleteNumberDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.DeleteNumberDialog">
         <argument
             android:name="blackNumber"
             android:defaultValue="@null"
@@ -160,16 +154,7 @@
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.WhiteNumber"
             app:nullable="true" />
-        <argument
-            android:name="contact"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Contact"
-            app:nullable="true" />
     </dialog>
-
-    <action
-        android:id="@+id/startInfoDialog"
-        app:destination="@id/infoDialog" />
 
     <dialog
         android:id="@+id/accountActionDialog"
@@ -212,5 +197,8 @@
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.WhiteNumber"
             app:nullable="true" />
+        <action
+            android:id="@+id/startDeleteNumberDialog"
+            app:destination="@id/deleteNumberDialog" />
     </fragment>
 </navigation>

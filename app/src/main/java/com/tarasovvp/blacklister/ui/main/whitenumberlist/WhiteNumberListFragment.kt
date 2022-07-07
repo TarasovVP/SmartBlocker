@@ -2,15 +2,13 @@ package com.tarasovvp.blacklister.ui.main.whitenumberlist
 
 import android.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.WhiteNumber
+import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -28,21 +26,9 @@ class WhiteNumberListFragment :
 
     override fun createAdapter(): BaseAdapter<WhiteNumber>? {
         return context?.let { context ->
-            WhiteNumberAdapter { whiteNumber, view ->
-                val listener = PopupMenu.OnMenuItemClickListener { item ->
-                    when (item?.itemId) {
-                        R.id.delete -> {
-                            findNavController().navigate(WhiteNumberListFragmentDirections.startInfoDialog(
-                                whiteNumber = whiteNumber))
-                        }
-                        R.id.edit -> {
-                            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
-                                whiteNumber = whiteNumber))
-                        }
-                    }
-                    true
-                }
-                context.showPopUpMenu(R.menu.black_number_menu, view, listener)
+            WhiteNumberAdapter { whiteNumber ->
+                findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
+                    whiteNumber = whiteNumber))
             }
         }
     }
@@ -51,14 +37,6 @@ class WhiteNumberListFragment :
         swipeRefresh = binding?.blackNumberListRefresh
         recyclerView = binding?.blackNumberListRecyclerView
         emptyListText = binding?.blackNumberListEmpty
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WhiteNumber>(
-            DELETE_NUMBER
-        )
-            ?.safeSingleObserve(
-                viewLifecycleOwner
-            ) { whiteNumber ->
-                viewModel.deleteWhiteNumber(whiteNumber)
-            }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
                 whiteNumber = WhiteNumber()))
@@ -93,10 +71,6 @@ class WhiteNumberListFragment :
         return true
     }
 
-    override fun getDataList() {
-        viewModel.getWhiteNumberList()
-    }
-
     override fun observeLiveData() {
         with(viewModel) {
             whiteNumberList.safeObserve(viewLifecycleOwner, { whiteNumberList ->
@@ -107,6 +81,11 @@ class WhiteNumberListFragment :
             })
             whiteNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumberList ->
                 whiteNumberList?.let { setDataList(it) }
+            })
+        }
+        (activity as MainActivity).apply {
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
+                viewModel.getWhiteNumberList()
             })
         }
     }

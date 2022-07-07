@@ -13,7 +13,7 @@ import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?, View) -> Unit) :
+class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?) -> Unit) :
     BaseAdapter<BlackNumber>() {
 
     override fun onCreateViewHolder(
@@ -61,7 +61,7 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?, View) -> U
             binding?.itemNumberAvatar?.setImageResource(R.drawable.ic_black_number)
             binding?.root?.setSafeOnClickListener {
                 binding?.itemNumberMenu?.apply {
-                    blackNumberClick.invoke(blackNumber, this)
+                    blackNumberClick.invoke(blackNumber)
                 }
             }
         }

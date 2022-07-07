@@ -25,18 +25,6 @@ class WhiteNumberListViewModel(application: Application) : BaseViewModel(applica
         }
     }
 
-    fun deleteWhiteNumber(whiteNumber: WhiteNumber) {
-        viewModelScope.launch {
-            try {
-                whiteNumberRepository.deleteWhiteNumber(whiteNumber) {
-                    getWhiteNumberList()
-                }
-            } catch (e: java.lang.Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
-            }
-        }
-    }
-
     fun getHashMapFromWhiteNumberList(whiteNumberList: List<WhiteNumber>) {
         viewModelScope.launch {
             try {

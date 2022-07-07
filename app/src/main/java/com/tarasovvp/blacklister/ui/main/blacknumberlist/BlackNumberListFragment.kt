@@ -11,6 +11,7 @@ import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -27,22 +28,10 @@ class BlackNumberListFragment :
     private var selectedFilterItems: BooleanArray = booleanArrayOf(false, false, false)
 
     override fun createAdapter(): BaseAdapter<BlackNumber>? {
-        return context?.let { context ->
-            BlackNumberAdapter { blackNumber, view ->
-                val listener = PopupMenu.OnMenuItemClickListener { item ->
-                    when (item?.itemId) {
-                        R.id.delete -> {
-                            findNavController().navigate(BlackNumberListFragmentDirections.startInfoDialog(
-                                blackNumber = blackNumber))
-                        }
-                        R.id.edit -> {
-                            findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(
-                                blackNumber = blackNumber))
-                        }
-                    }
-                    true
-                }
-                context.showPopUpMenu(R.menu.black_number_menu, view, listener)
+        return context?.let {
+            BlackNumberAdapter { blackNumber ->
+                findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(
+                    blackNumber = blackNumber))
             }
         }
     }
@@ -51,10 +40,6 @@ class BlackNumberListFragment :
         swipeRefresh = binding?.blackNumberListRefresh
         recyclerView = binding?.blackNumberListRecyclerView
         emptyListText = binding?.blackNumberListEmpty
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BlackNumber>(
-            DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
-            viewModel.deleteBlackNumber(blackNumber)
-        }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(
                 blackNumber = BlackNumber()))
@@ -89,10 +74,6 @@ class BlackNumberListFragment :
         return true
     }
 
-    override fun getDataList() {
-        viewModel.getBlackNumberList()
-    }
-
     override fun observeLiveData() {
         with(viewModel) {
             blackNumberList.safeObserve(viewLifecycleOwner, { blackNumberList ->
@@ -103,6 +84,11 @@ class BlackNumberListFragment :
             })
             blackNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumberHashMap ->
                 blackNumberHashMap?.let { setDataList(it) }
+            })
+        }
+        (activity as MainActivity).apply {
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
+                viewModel.getBlackNumberList()
             })
         }
     }

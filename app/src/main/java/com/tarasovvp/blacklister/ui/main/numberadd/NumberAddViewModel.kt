@@ -17,6 +17,7 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
 
     val insertBlackNumberLiveData = MutableLiveData<BlackNumber>()
     val insertWhiteNumberLiveData = MutableLiveData<WhiteNumber>()
+    val deleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun insertBlackNumber(blackNumber: BlackNumber) {
         viewModelScope.launch {
@@ -30,6 +31,18 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
+    fun deleteBlackNumber(blackNumber: BlackNumber) {
+        viewModelScope.launch {
+            try {
+                blackNumberRepository.deleteBlackNumber(blackNumber) {
+                    deleteNumberLiveData.postValue(true)
+                }
+            } catch (e: java.lang.Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
+
     fun insertWhiteNumber(whiteNumber: WhiteNumber) {
         viewModelScope.launch {
             try {
@@ -37,6 +50,18 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
                     insertWhiteNumberLiveData.postValue(whiteNumber)
                 }
             } catch (e: Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
+
+    fun deleteWhiteNumber(whiteNumber: WhiteNumber) {
+        viewModelScope.launch {
+            try {
+                whiteNumberRepository.deleteWhiteNumber(whiteNumber) {
+                    deleteNumberLiveData.postValue(true)
+                }
+            } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }
         }

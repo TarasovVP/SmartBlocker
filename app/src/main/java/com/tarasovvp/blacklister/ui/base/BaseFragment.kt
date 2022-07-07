@@ -50,7 +50,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
 
     private fun checkTopBottomBarVisibility() {
         (activity as MainActivity).apply {
-            if (findNavController().currentDestination?.id != R.id.infoDialog) {
+            if (findNavController().currentDestination?.id != R.id.deleteNumberDialog) {
                 bottomNavigationView?.isVisible = navigationScreens.contains(findNavController().currentDestination?.id)
             }
         }

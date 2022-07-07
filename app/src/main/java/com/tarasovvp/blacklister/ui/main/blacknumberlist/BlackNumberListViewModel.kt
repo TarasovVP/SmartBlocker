@@ -25,18 +25,6 @@ class BlackNumberListViewModel(application: Application) : BaseViewModel(applica
         }
     }
 
-    fun deleteBlackNumber(blackNumber: BlackNumber) {
-        viewModelScope.launch {
-            try {
-                blackNumberRepository.deleteBlackNumber(blackNumber) {
-                    getBlackNumberList()
-                }
-            } catch (e: java.lang.Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
-            }
-        }
-    }
-
     fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>) {
         viewModelScope.launch {
             try {

@@ -13,7 +13,7 @@ import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class ContactAdapter(private val contactClick: (Contact, View) -> Unit) :
+class ContactAdapter(private val contactClick: (String) -> Unit) :
     BaseAdapter<Contact>() {
 
     override fun onCreateViewHolder(
@@ -58,10 +58,8 @@ class ContactAdapter(private val contactClick: (Contact, View) -> Unit) :
             binding?.itemContactName?.text = contact.name
             binding?.itemContactNumber?.text = contact.phone
             binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
-            binding?.root?.setSafeOnClickListener { view ->
-                binding?.itemContactMenu?.apply {
-                    contactClick.invoke(contact, this)
-                }
+            binding?.root?.setSafeOnClickListener {
+                contact.phone?.let { contactClick.invoke(it) }
             }
         }
     }

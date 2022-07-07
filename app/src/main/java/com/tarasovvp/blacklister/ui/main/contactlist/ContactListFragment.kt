@@ -9,6 +9,7 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpMenu
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import java.util.*
@@ -24,23 +25,8 @@ class ContactListFragment :
 
     override fun createAdapter(): BaseAdapter<Contact>? {
         return context?.let {
-            ContactAdapter { contact, view ->
-                val listener = PopupMenu.OnMenuItemClickListener { item ->
-                    when (item?.itemId) {
-                        R.id.change -> {
-                            findNavController().navigate(ContactListFragmentDirections.startInfoDialog(
-                                contact = contact))
-                        }
-                        R.id.details -> {
-                            findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(
-                                number = contact.phone))
-                        }
-                    }
-                    true
-                }
-                it.showPopUpMenu(if (contact.isBlackList) R.menu.number_delete_menu else R.menu.number_add_menu,
-                    view,
-                    listener)
+            ContactAdapter { number ->
+                findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(number = number))
             }
         }
     }
@@ -75,10 +61,11 @@ class ContactListFragment :
                 contactHashMap?.let { setDataList(it) }
             })
         }
-    }
-
-    override fun getDataList() {
-        viewModel.getContactList()
+        (activity as MainActivity).apply {
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
+                viewModel.getContactList()
+            })
+        }
     }
 
     override fun searchDataList() {
