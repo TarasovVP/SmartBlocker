@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +36,11 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
                 showMessage(exception, true)
             })
         }
+        (activity as MainActivity).apply {
+            mainViewModel.exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
+                showMessage(exception, true)
+            })
+        }
     }
 
     private fun getCurrentBackStackEntry() {
@@ -51,7 +57,8 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
     private fun checkTopBottomBarVisibility() {
         (activity as MainActivity).apply {
             if (findNavController().currentDestination?.id != R.id.deleteNumberDialog) {
-                bottomNavigationView?.isVisible = navigationScreens.contains(findNavController().currentDestination?.id)
+                bottomNavigationView?.isVisible =
+                    navigationScreens.contains(findNavController().currentDestination?.id)
             }
         }
     }

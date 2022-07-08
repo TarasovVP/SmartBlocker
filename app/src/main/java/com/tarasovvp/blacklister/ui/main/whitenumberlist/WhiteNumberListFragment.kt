@@ -84,7 +84,7 @@ class WhiteNumberListFragment :
             })
         }
         (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
+            mainViewModel?.successAllDataLiveData?.safeSingleObserve(this, { success ->
                 viewModel.getWhiteNumberList()
             })
         }

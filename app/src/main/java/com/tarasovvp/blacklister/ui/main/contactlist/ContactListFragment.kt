@@ -1,6 +1,9 @@
 package com.tarasovvp.blacklister.ui.main.contactlist
 
+import android.content.Intent
+import android.util.Log
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isTrue

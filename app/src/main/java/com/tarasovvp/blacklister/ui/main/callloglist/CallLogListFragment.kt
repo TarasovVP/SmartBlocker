@@ -26,7 +26,8 @@ class CallLogListFragment :
     override fun createAdapter(): BaseAdapter<CallLog>? {
         return context?.let {
             CallLogAdapter { number ->
-                findNavController().navigate(CallLogListFragmentDirections.startNumberDetailFragment(number = number))
+                findNavController().navigate(CallLogListFragmentDirections.startNumberDetailFragment(
+                    number = number))
             }
         }
     }

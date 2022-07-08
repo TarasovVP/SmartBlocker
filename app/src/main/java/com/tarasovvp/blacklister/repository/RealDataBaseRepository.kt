@@ -1,11 +1,9 @@
 package com.tarasovvp.blacklister.repository
 
+import android.content.Intent
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST
 import com.tarasovvp.blacklister.constants.Constants.USERS
@@ -19,7 +17,8 @@ import com.tarasovvp.blacklister.model.WhiteNumber
 object RealDataBaseRepository {
 
     val database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
-    private val currentUserDatabase = database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+    private val currentUserDatabase =
+        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
 
     fun getCurrentUser(result: (CurrentUser?) -> Unit) {
         currentUserDatabase.get()
@@ -27,38 +26,43 @@ object RealDataBaseRepository {
                 val currentUser = CurrentUser()
                 task.result.children.forEach { snapshot ->
                     when (snapshot.key) {
-                        WHITE_LIST_PRIORITY -> currentUser.isWhiteListPriority = snapshot.getValue(Boolean::class.java).isTrue()
+                        WHITE_LIST_PRIORITY -> currentUser.isWhiteListPriority =
+                            snapshot.getValue(Boolean::class.java).isTrue()
                         BLACK_LIST -> {
                             snapshot.children.forEach { child ->
-                                child.getValue(BlackNumber::class.java)?.let { currentUser.blackNumberList.add(it) }
+                                child.getValue(BlackNumber::class.java)
+                                    ?.let { currentUser.blackNumberList.add(it) }
                             }
                         }
                         WHITE_LIST -> {
                             snapshot.children.forEach { child ->
-                                child.getValue(WhiteNumber::class.java)?.let { currentUser.whiteNumberList.add(it) }
+                                child.getValue(WhiteNumber::class.java)
+                                    ?.let { currentUser.whiteNumberList.add(it) }
                             }
                         }
                     }
                 }
                 result.invoke(currentUser)
             }.addOnFailureListener {
-                //TODO implement error message
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
             }
     }
 
     fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).setValue(blackNumber).addOnCompleteListener {
-            result.invoke()
-        }.addOnFailureListener {
-            //TODO implement error message
+        currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).setValue(blackNumber)
+            .addOnCompleteListener {
+                result.invoke()
+            }.addOnFailureListener {
+            sendExceptionBroadCast(it.localizedMessage.orEmpty())
         }
     }
 
     fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).setValue(whiteNumber).addOnCompleteListener {
-            result.invoke()
-        }.addOnFailureListener {
-            //TODO implement error message
+        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).setValue(whiteNumber)
+            .addOnCompleteListener {
+                result.invoke()
+            }.addOnFailureListener {
+            sendExceptionBroadCast(it.localizedMessage.orEmpty())
         }
     }
 
@@ -67,7 +71,7 @@ object RealDataBaseRepository {
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {
-                //TODO implement error message
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
             }
     }
 
@@ -76,7 +80,7 @@ object RealDataBaseRepository {
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {
-                //TODO implement error message
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
             }
     }
 
@@ -85,7 +89,13 @@ object RealDataBaseRepository {
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {
-                //TODO implement error message
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
             }
+    }
+
+    private fun sendExceptionBroadCast(exception: String) {
+        val intent = Intent(Constants.EXCEPTION)
+        intent.putExtra(Constants.EXCEPTION, exception)
+        BlackListerApp.instance?.sendBroadcast(intent)
     }
 }

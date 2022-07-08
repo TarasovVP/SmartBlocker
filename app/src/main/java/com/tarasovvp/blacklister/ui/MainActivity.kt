@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,11 +18,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.MainNavigationDirections
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.setAppLocale
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
+import com.tarasovvp.blacklister.utils.ExceptionReceiver
 import com.tarasovvp.blacklister.utils.ForegroundCallService
 import com.tarasovvp.blacklister.utils.PermissionUtil
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
     val mainViewModel: MainViewModel by viewModels()
+    private var exceptionReceiver: ExceptionReceiver? = null
     var navigationScreens = arrayListOf(
         R.id.callLogListFragment,
         R.id.contactListFragment,
@@ -49,6 +53,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    override fun onStart() {
+        super.onStart()
+        exceptionReceiver = ExceptionReceiver { exception ->
+            mainViewModel.exceptionLiveData.postValue(exception)
+        }
+        registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(exceptionReceiver)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
