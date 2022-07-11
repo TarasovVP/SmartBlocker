@@ -1,9 +1,11 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -29,9 +31,13 @@ abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
     fun showMessage(message: String, isError: Boolean) {
         (activity as MainActivity).apply {
             ContextCompat.getColor(this,
-                if (isError) android.R.color.holo_red_light else R.color.black).let { color ->
-                Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                    .withColor(color).show()
+                if (isError) android.R.color.holo_red_light else R.color.main_bg).let { color ->
+                Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).apply {
+                    val params = view.layoutParams as FrameLayout.LayoutParams
+                    params.width = FrameLayout.LayoutParams.MATCH_PARENT
+                    params.gravity = Gravity.TOP
+                    view.layoutParams = params
+                }.withColor(color).show()
             }
         }
     }

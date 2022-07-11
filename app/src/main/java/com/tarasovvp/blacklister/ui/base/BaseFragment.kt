@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
