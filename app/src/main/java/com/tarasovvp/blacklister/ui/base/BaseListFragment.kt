@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
@@ -33,6 +34,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun initView()
     abstract fun searchDataList()
+    abstract fun getData()
 
     protected fun RecyclerView.initRecyclerView() {
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -46,12 +48,12 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
         recyclerView?.initRecyclerView()
         if (context?.checkPermissions().isTrue()) {
             swipeRefresh?.isRefreshing = true
-            getAllData()
+            getData()
         } else {
             permissionLauncher.launch(permissionsArray())
         }
         swipeRefresh?.setOnRefreshListener {
-            getAllData()
+            getData()
         }
     }
 
@@ -76,6 +78,10 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                 findNavController().navigate(R.id.startSettingsListFragment)
                 return@setOnMenuItemClickListener true
             }
+            mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+                this@BaseListFragment.getData()
+                Log.e("getAllDataTAG", "BaseListFragment observeLiveData successAllDataLiveData ")
+            }
         }
     }
 
@@ -88,7 +94,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                getAllData()
+                getData()
             }
         }
 
@@ -100,12 +106,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
         }
         swipeRefresh?.isRefreshing = false
         return newData.isEmpty()
-    }
-
-    protected fun getAllData() {
-        (activity as MainActivity).apply {
-            getAllData()
-        }
     }
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {

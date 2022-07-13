@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
 import android.app.AlertDialog
+import android.util.Log
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
@@ -8,7 +9,6 @@ import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -83,11 +83,6 @@ class BlackNumberListFragment :
                 blackNumberHashMap?.let { setDataList(it) }
             }
         }
-        (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this) {
-                viewModel.getBlackNumberList()
-            }
-        }
     }
 
     override fun searchDataList() {
@@ -101,6 +96,11 @@ class BlackNumberListFragment :
         if (!checkDataListEmptiness(filteredBlackNumberList)) {
             viewModel.getHashMapFromBlackNumberList(filteredBlackNumberList)
         }
+    }
+
+    override fun getData() {
+        Log.e("getAllDataTAG", "BlackNumberListFragment getAllData")
+        viewModel.getBlackNumberList()
     }
 }
 

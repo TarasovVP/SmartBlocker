@@ -22,7 +22,6 @@ class AccountDetailsFragment : BaseFragment<FragmentAccountDetailsBinding, Accou
     override val viewModelClass = AccountDetailsViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         binding?.accountDetailsMainTitle?.text = String.format(getString(R.string.welcome),

@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.content.IntentFilter
+import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
@@ -38,7 +39,7 @@ class CallLogListFragment :
             startService()
         }
         callHandleReceiver = CallHandleReceiver {
-            getAllData()
+            getData()
         }
         context?.registerReceiver(callHandleReceiver, IntentFilter(CALL_RECEIVE))
     }
@@ -74,11 +75,6 @@ class CallLogListFragment :
                 callLogHashMap?.let { setDataList(it) }
             }
         }
-        (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this) {
-                viewModel.getCallLogList()
-            }
-        }
     }
 
     override fun searchDataList() {
@@ -95,5 +91,10 @@ class CallLogListFragment :
                 viewModel.getHashMapFromCallLogList(this)
             }
         }
+    }
+
+    override fun getData() {
+        Log.e("getAllDataTAG", "CallLogListFragment getAllData")
+        viewModel.getCallLogList()
     }
 }

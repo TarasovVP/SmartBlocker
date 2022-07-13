@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contactlist
 
+import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
@@ -80,5 +81,10 @@ class ContactListFragment :
                 viewModel.getHashMapFromContactList(this)
             }
         }
+    }
+
+    override fun getData() {
+        Log.e("getAllDataTAG", "ContactListFragment getAllData")
+        viewModel.getContactList()
     }
 }

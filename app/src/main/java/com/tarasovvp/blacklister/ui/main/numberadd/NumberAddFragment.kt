@@ -14,6 +14,7 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.WhiteNumber
+import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -34,10 +35,12 @@ class NumberAddFragment :
         }
         binding?.numberDeleteSubmit?.setSafeOnClickListener {
             args.blackNumber?.let {
-                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(blackNumber = it))
+                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
+                    blackNumber = it))
             }
             args.whiteNumber?.let {
-                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(whiteNumber = it))
+                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
+                    whiteNumber = it))
             }
         }
         binding?.numberAddSubmit?.setSafeOnClickListener {
@@ -53,7 +56,8 @@ class NumberAddFragment :
                     end = binding?.numberAddEnd?.isChecked.isTrue()))
             }
         }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
             args.blackNumber?.let {
                 viewModel.deleteBlackNumber(it)
             }
@@ -64,45 +68,36 @@ class NumberAddFragment :
     }
 
     private fun initViewsWithData() {
-        val text = String.format(getString(R.string.fill_data_press_button),
-            if (args.blackNumber?.number.isNullOrEmpty()
-                    .not() || args.whiteNumber?.number.isNullOrEmpty().not()
-            ) getString(R.string.edit_number) else getString(R.string.add_number),
-            if (args.blackNumber.isNotNull()) getString(R.string.black_list) else getString(R.string.white_list))
-        binding?.numberAddTitle?.text = text
-        binding?.numberAddTitle?.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-            if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number,
-            0,
-            0)
+        binding?.numberAddTitle?.text = String.format(getString(R.string.fill_data_press_button), if (args.blackNumber?.number.isNullOrEmpty().not() || args.whiteNumber?.number.isNullOrEmpty().not()) getString(R.string.edit_number) else getString(R.string.add_number), if (args.blackNumber.isNotNull()) getString(R.string.black_list) else getString(R.string.white_list))
+        binding?.numberAddTitle?.setCompoundDrawablesRelativeWithIntrinsicBounds(0, if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number, 0, 0)
         binding?.numberAddSearch?.setText(if (args.blackNumber.isNotNull()) args.blackNumber?.number.orEmpty() else args.whiteNumber?.number.orEmpty())
-        binding?.numberAddStart?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.start.isTrue() else args.whiteNumber?.start.isTrue()
-        binding?.numberAddContain?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.contain.isTrue() else args.whiteNumber?.contain.isTrue()
-        binding?.numberAddEnd?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.end.isTrue() else args.whiteNumber?.end.isTrue()
-        binding?.numberAddSubmit?.isEnabled =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.number.isNullOrEmpty().isTrue()
-                .not() else args.whiteNumber?.number.isNullOrEmpty().isTrue().not()
+        binding?.numberAddStart?.isChecked = if (args.blackNumber.isNotNull()) args.blackNumber?.start.isTrue() else args.whiteNumber?.start.isTrue()
+        binding?.numberAddContain?.isChecked = if (args.blackNumber.isNotNull()) args.blackNumber?.contain.isTrue() else args.whiteNumber?.contain.isTrue()
+        binding?.numberAddEnd?.isChecked = if (args.blackNumber.isNotNull()) args.blackNumber?.end.isTrue() else args.whiteNumber?.end.isTrue()
+        binding?.numberAddSubmit?.isEnabled = if (args.blackNumber.isNotNull()) args.blackNumber?.number.isNullOrEmpty().isTrue().not() else args.whiteNumber?.number.isNullOrEmpty().isTrue().not()
         binding?.numberDeleteSubmit?.isVisible = args.blackNumber?.number.orEmpty().isNotEmpty() || args.whiteNumber?.number.orEmpty().isNotEmpty()
     }
 
     override fun observeLiveData() {
         with(viewModel) {
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
-                showMessage(String.format(getString(R.string.number_added), blackNumber.number), false)
-                findNavController().popBackStack()
+                handleSuccessNumberAction(String.format(getString(R.string.number_added), blackNumber.number))
             }
             insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumber ->
-                showMessage(String.format(getString(R.string.number_added), whiteNumber.number), false)
-                findNavController().popBackStack()
+                handleSuccessNumberAction(String.format(getString(R.string.number_added), whiteNumber.number))
             }
             deleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
-                showMessage(String.format(getString(R.string.delete_number_from_list),
-                    if (args.blackNumber.isNotNull()) args.blackNumber?.number.orEmpty() else args.whiteNumber?.number.orEmpty()), false)
-                findNavController().popBackStack()
+                handleSuccessNumberAction(String.format(getString(R.string.delete_number_from_list), if (args.blackNumber.isNotNull()) args.blackNumber?.number.orEmpty() else args.whiteNumber?.number.orEmpty()))
             }
         }
+    }
+
+    private fun handleSuccessNumberAction(message: String) {
+        showMessage(message, false)
+        (activity as MainActivity).apply {
+            getAllData()
+        }
+        findNavController().popBackStack()
     }
 
 }
