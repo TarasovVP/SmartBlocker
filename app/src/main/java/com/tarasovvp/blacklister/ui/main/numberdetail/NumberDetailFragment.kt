@@ -60,6 +60,11 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
         binding?.numberDetailPriority?.text = String.format(getString(R.string.prioritness),
             if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
                 R.string.black_list))
+        binding?.numberDetailAddFilter?.setSafeOnClickListener {
+            contact.phone?.let {
+                findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(blackNumber = BlackNumber(number = it)))
+            }
+        }
     }
 
     private fun setBlackNumberList(blackNumberList: List<BlackNumber>) {
