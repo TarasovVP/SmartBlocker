@@ -31,14 +31,14 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
 
     open fun observeExceptionLiveData() {
         with(viewModel) {
-            exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
+            exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { exception ->
                 showMessage(exception, true)
-            })
+            }
         }
         (activity as MainActivity).apply {
-            mainViewModel.exceptionLiveData.safeSingleObserve(viewLifecycleOwner, { exception ->
+            mainViewModel.exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { exception ->
                 showMessage(exception, true)
-            })
+            }
         }
     }
 

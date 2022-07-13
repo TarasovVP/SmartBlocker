@@ -47,7 +47,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
 
     override fun observeLiveData() {
         with(viewModel) {
-            successLiveData.safeSingleObserve(viewLifecycleOwner, {
+            successLiveData.safeSingleObserve(viewLifecycleOwner) {
                 SharedPreferencesUtil.clearAll()
                 BlackListerApp.instance?.database?.clearAllTables()
                 showMessage(getString(R.string.operation_succeeded), false)
@@ -55,7 +55,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
-            })
+            }
         }
     }
 

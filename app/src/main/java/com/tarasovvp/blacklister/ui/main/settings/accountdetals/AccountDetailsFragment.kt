@@ -15,8 +15,7 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class AccountDetailsFragment :
-    BaseFragment<FragmentAccountDetailsBinding, AccountDetailsViewModel>() {
+class AccountDetailsFragment : BaseFragment<FragmentAccountDetailsBinding, AccountDetailsViewModel>() {
 
     override fun getViewBinding() = FragmentAccountDetailsBinding.inflate(layoutInflater)
 
@@ -48,8 +47,7 @@ class AccountDetailsFragment :
             }
         }
 
-        binding?.includeNoAccount?.root?.isVisible =
-            BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+        binding?.includeNoAccount?.root?.isVisible = BlackListerApp.instance?.isLoggedInUser().isTrue().not()
         binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
             findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
         }
@@ -57,24 +55,24 @@ class AccountDetailsFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            successLiveData.safeSingleObserve(viewLifecycleOwner, {
+            successLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.operation_succeeded), false)
                 (activity as MainActivity).apply {
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
-            })
-            successRenameUserLiveData.safeSingleObserve(viewLifecycleOwner, { name ->
+            }
+            successRenameUserLiveData.safeSingleObserve(viewLifecycleOwner) { name ->
                 showMessage(String.format(getString(R.string.rename_succeed), name), false)
                 binding?.accountDetailsMainTitle?.text =
                     String.format(getString(R.string.welcome), name)
                 binding?.accountDetailsNewNameInput?.text?.clear()
-            })
-            successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner, { name ->
+            }
+            successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) { name ->
                 showMessage(String.format(getString(R.string.change_password_succeed)), false)
                 binding?.accountDetailsNewPasswordCreate?.text?.clear()
                 binding?.accountDetailsNewPasswordConfirm?.text?.clear()
-            })
+            }
         }
     }
 

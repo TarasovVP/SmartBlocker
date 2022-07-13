@@ -117,12 +117,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         with(mainViewModel) {
-            successAllDataLiveData.safeSingleObserve(this@MainActivity, {
+            successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 Log.e("allDataTAG", "MainActivity observeLiveData successAllDataLiveData ")
-            })
-            errorLiveData.safeSingleObserve(this@MainActivity, { error ->
+            }
+            errorLiveData.safeSingleObserve(this@MainActivity) { error ->
 
-            })
+            }
         }
     }
 

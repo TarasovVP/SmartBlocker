@@ -24,10 +24,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
     override fun observeLiveData() {
         with(viewModel) {
-            successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
+            successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.success_sign_up), false)
                 findNavController().popBackStack()
-            })
+            }
         }
     }
 

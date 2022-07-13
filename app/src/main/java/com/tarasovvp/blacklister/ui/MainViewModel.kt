@@ -77,11 +77,9 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 val contactList = getApplication<Application>().contactList()
                 contactList.forEach { contact ->
                     val isInWhiteList =
-                        whiteNumberRepository.getWhiteNumberList(contact.phone.orEmpty())
-                            ?.isNullOrEmpty().isTrue().not()
+                        whiteNumberRepository.getWhiteNumberList(contact.phone.orEmpty())?.isEmpty().isTrue().not()
                     val isInBlackList =
-                        blackNumberRepository.getBlackNumberList(contact.phone.orEmpty())
-                            ?.isNullOrEmpty().isTrue().not()
+                        blackNumberRepository.getBlackNumberList(contact.phone.orEmpty())?.isEmpty().isTrue().not()
                     contact.isBlackList =
                         (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
                     contact.isWhiteList =
@@ -99,11 +97,9 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 }
                 callLogList.forEach { callLog ->
                     val isInWhiteList =
-                        whiteNumberRepository.getWhiteNumberList(callLog.phone.orEmpty())
-                            ?.isNullOrEmpty().isTrue().not()
+                        whiteNumberRepository.getWhiteNumberList(callLog.phone.orEmpty())?.isEmpty().isTrue().not()
                     val isInBlackList =
-                        blackNumberRepository.getBlackNumberList(callLog.phone.orEmpty())
-                            ?.isNullOrEmpty().isTrue().not()
+                        blackNumberRepository.getBlackNumberList(callLog.phone.orEmpty())?.isEmpty().isTrue().not()
                     callLog.isBlackList =
                         (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
                     callLog.isWhiteList =

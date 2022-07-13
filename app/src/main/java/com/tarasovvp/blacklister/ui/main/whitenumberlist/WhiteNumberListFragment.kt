@@ -25,7 +25,7 @@ class WhiteNumberListFragment :
     private var selectedFilterItems: BooleanArray = booleanArrayOf(false, false, false)
 
     override fun createAdapter(): BaseAdapter<WhiteNumber>? {
-        return context?.let { context ->
+        return context?.let {
             WhiteNumberAdapter { whiteNumber ->
                 findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
                     whiteNumber = whiteNumber))
@@ -73,20 +73,20 @@ class WhiteNumberListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            whiteNumberList.safeObserve(viewLifecycleOwner, { whiteNumberList ->
+            whiteNumberList.safeObserve(viewLifecycleOwner) { whiteNumberList ->
                 this@WhiteNumberListFragment.whiteNumberList = whiteNumberList
                 if (!checkDataListEmptiness(whiteNumberList)) {
                     getHashMapFromWhiteNumberList(whiteNumberList)
                 }
-            })
-            whiteNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumberList ->
+            }
+            whiteNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumberList ->
                 whiteNumberList?.let { setDataList(it) }
-            })
+            }
         }
         (activity as MainActivity).apply {
-            mainViewModel?.successAllDataLiveData?.safeSingleObserve(this, { success ->
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this) {
                 viewModel.getWhiteNumberList()
-            })
+            }
         }
     }
 

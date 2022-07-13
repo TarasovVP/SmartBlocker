@@ -76,15 +76,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun observeLiveData() {
         with(viewModel) {
-            successSignInLiveData.safeSingleObserve(viewLifecycleOwner, {
+            successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).apply {
                     getAllData()
                 }
                 findNavController().navigate(R.id.callLogListFragment)
-            })
-            successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner, {
+            }
+            successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.password_reset_text), false)
-            })
+            }
         }
     }
 

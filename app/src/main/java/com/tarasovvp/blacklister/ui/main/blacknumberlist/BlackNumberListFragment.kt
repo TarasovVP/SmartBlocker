@@ -73,20 +73,20 @@ class BlackNumberListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            blackNumberList.safeObserve(viewLifecycleOwner, { blackNumberList ->
+            blackNumberList.safeObserve(viewLifecycleOwner) { blackNumberList ->
                 this@BlackNumberListFragment.blackNumberList = blackNumberList
                 if (!checkDataListEmptiness(blackNumberList)) {
                     getHashMapFromBlackNumberList(blackNumberList)
                 }
-            })
-            blackNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumberHashMap ->
+            }
+            blackNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumberHashMap ->
                 blackNumberHashMap?.let { setDataList(it) }
-            })
+            }
         }
         (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this, { success ->
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this) {
                 viewModel.getBlackNumberList()
-            })
+            }
         }
     }
 

@@ -64,20 +64,20 @@ class CallLogListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            callLogLiveData.safeObserve(viewLifecycleOwner, { callLogList ->
+            callLogLiveData.safeObserve(viewLifecycleOwner) { callLogList ->
                 this@CallLogListFragment.callLogList = callLogList
                 if (!checkDataListEmptiness(callLogList)) {
                     getHashMapFromCallLogList(callLogList)
                 }
-            })
-            callLogHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { callLogHashMap ->
+            }
+            callLogHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { callLogHashMap ->
                 callLogHashMap?.let { setDataList(it) }
-            })
+            }
         }
         (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this, {
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this) {
                 viewModel.getCallLogList()
-            })
+            }
         }
     }
 

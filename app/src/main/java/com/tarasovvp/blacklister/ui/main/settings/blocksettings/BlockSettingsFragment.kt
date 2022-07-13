@@ -39,9 +39,8 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
     }
 
     override fun observeLiveData() {
-        viewModel.isWhiteListPriorityLiveData.safeSingleObserve(viewLifecycleOwner,
-            { isWhiteListPriority ->
-                SharedPreferencesUtil.isWhiteListPriority = isWhiteListPriority
-            })
+        viewModel.isWhiteListPriorityLiveData.safeSingleObserve(viewLifecycleOwner) { isWhiteListPriority ->
+            SharedPreferencesUtil.isWhiteListPriority = isWhiteListPriority
+        }
     }
 }

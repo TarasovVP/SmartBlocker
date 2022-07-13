@@ -30,9 +30,9 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         val isInWhiteList =
-            whiteNumberRepository.getWhiteNumberList(phone)?.isNullOrEmpty().isTrue().not()
+            whiteNumberRepository.getWhiteNumberList(phone)?.isEmpty().isTrue().not()
         val isInBlackList =
-            blackNumberRepository.getBlackNumberList(phone)?.isNullOrEmpty().isTrue().not()
+            blackNumberRepository.getBlackNumberList(phone)?.isEmpty().isTrue().not()
         val isBlockNeeded =
             (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
         if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING

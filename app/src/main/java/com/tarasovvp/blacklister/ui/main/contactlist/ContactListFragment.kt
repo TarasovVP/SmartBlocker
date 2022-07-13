@@ -1,9 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contactlist
 
-import android.content.Intent
-import android.util.Log
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -26,7 +23,8 @@ class ContactListFragment :
     override fun createAdapter(): BaseAdapter<Contact>? {
         return context?.let {
             ContactAdapter { number ->
-                findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(number = number))
+                findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(
+                    number = number))
             }
         }
     }
@@ -51,20 +49,20 @@ class ContactListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            contactLiveData.safeSingleObserve(viewLifecycleOwner, { contactList ->
+            contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 this@ContactListFragment.contactList = contactList
                 if (!checkDataListEmptiness(contactList)) {
                     getHashMapFromContactList(contactList)
                 }
-            })
-            contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner, { contactHashMap ->
+            }
+            contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { contactHashMap ->
                 contactHashMap?.let { setDataList(it) }
-            })
+            }
         }
         (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this, {
+            mainViewModel.successAllDataLiveData.safeSingleObserve(this) {
                 viewModel.getContactList()
-            })
+            }
         }
     }
 

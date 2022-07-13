@@ -36,15 +36,15 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
 
     override fun observeLiveData() {
         with(viewModel) {
-            numberDetailLiveData.safeSingleObserve(viewLifecycleOwner, { contact ->
+            numberDetailLiveData.safeSingleObserve(viewLifecycleOwner) { contact ->
                 setContactInfo(contact)
-            })
-            blackNumberLiveData.safeSingleObserve(viewLifecycleOwner, { blackNumberList ->
+            }
+            blackNumberLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumberList ->
                 setBlackNumberList(blackNumberList)
-            })
-            whiteNumberLiveData.safeSingleObserve(viewLifecycleOwner, { whiteNumberList ->
+            }
+            whiteNumberLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumberList ->
                 setWhiteNumberList(whiteNumberList)
-            })
+            }
         }
     }
 
