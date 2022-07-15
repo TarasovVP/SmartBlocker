@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.blacknumberlist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.databinding.ItemNumberBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?) -> Unit) :
+class BlackNumberAdapter(val blackNumberClickListener: BlackNumberClickListener) :
     BaseAdapter<BlackNumber>() {
+
+    var isDeleteMode: Boolean = false
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -59,11 +63,25 @@ class BlackNumberAdapter(private val blackNumberClick: (BlackNumber?) -> Unit) :
             binding?.itemNumberContain?.isVisible = blackNumber.contain
             binding?.itemNumberEnd?.isVisible = blackNumber.end
             binding?.itemNumberAvatar?.setImageResource(R.drawable.ic_black_number)
+            binding?.itemNumberDelete?.isVisible = isDeleteMode
+            binding?.itemNumberArrow?.isVisible = isDeleteMode.not()
+            binding?.itemNumberDelete?.isChecked = blackNumber.isCheckedForDelete
             binding?.root?.setSafeOnClickListener {
-                binding?.itemNumberMenu?.apply {
-                    blackNumberClick.invoke(blackNumber)
+                if (isDeleteMode) {
+                    binding?.itemNumberDelete?.isChecked = binding?.itemNumberDelete?.isChecked.isTrue().not()
+                } else {
+                    blackNumberClickListener.onBlackNumberClick(blackNumber)
                 }
             }
+            binding?.root?.setOnLongClickListener {
+                blackNumberClickListener.onBlackNumberLongClick()
+                return@setOnLongClickListener true
+            }
+            binding?.itemNumberDelete?.setOnCheckedChangeListener { _, checked ->
+                blackNumber.isCheckedForDelete = checked
+                blackNumberClickListener.onBlackNumberDeleteCheckChange(blackNumber)
+            }
+            Log.e("deleteTAG", "BlackNumberAdapter isDeleteMode $isDeleteMode")
         }
     }
 }

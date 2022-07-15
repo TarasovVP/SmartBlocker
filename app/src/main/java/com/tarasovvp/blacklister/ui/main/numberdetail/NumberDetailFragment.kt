@@ -68,7 +68,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     }
 
     private fun setBlackNumberList(blackNumberList: List<BlackNumber>) {
-        binding?.numberDetailBlackListTitle?.isVisible = blackNumberList.isNullOrEmpty().not()
+        binding?.numberDetailBlackListTitle?.isVisible = blackNumberList.isEmpty().not()
         blackNumberList.forEach { blackNumber ->
             val itemNumber = ItemNumberBinding.inflate(layoutInflater)
             itemNumber.itemNumberAvatar.setImageResource(R.drawable.ic_black_number)
@@ -85,7 +85,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     }
 
     private fun setWhiteNumberList(whiteNumberList: List<WhiteNumber>) {
-        binding?.numberDetailWhiteListTitle?.isVisible = whiteNumberList.isNullOrEmpty().not()
+        binding?.numberDetailWhiteListTitle?.isVisible = whiteNumberList.isEmpty().not()
         whiteNumberList.forEach { whiteNumber ->
             val itemNumber = ItemNumberBinding.inflate(layoutInflater)
             itemNumber.itemNumberAvatar.setImageResource(R.drawable.ic_white_number)

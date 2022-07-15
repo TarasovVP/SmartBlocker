@@ -31,7 +31,31 @@
         app:layout_constraintStart_toEndOf="@+id/black_number_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/black_number_list_right_gd"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/black_number_list_delete_all" />
+
+    <CheckBox
+        android:id="@+id/black_number_list_delete_all"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/padding_10"
+        android:text="@string/choose_all"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/black_number_list_left_gd"
+        app:layout_constraintEnd_toStartOf="@+id/black_number_list_delete_btn"
+        app:layout_constraintTop_toBottomOf="@+id/black_number_list_filter"
         app:layout_constraintBottom_toTopOf="@+id/black_number_list_refresh" />
+
+    <ImageButton
+        android:id="@+id/black_number_list_delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/black_number_list_delete_all"
+        app:layout_constraintEnd_toStartOf="@+id/black_number_list_right_gd"
+        app:layout_constraintTop_toTopOf="@+id/black_number_list_delete_all"
+        app:layout_constraintBottom_toBottomOf="@+id/black_number_list_delete_all" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/black_number_list_refresh"
@@ -39,7 +63,7 @@
         android:layout_height="@dimen/size_0"
         app:layout_constraintStart_toEndOf="@+id/black_number_list_left_gd"
         app:layout_constraintEnd_toStartOf="@+id/black_number_list_right_gd"
-        app:layout_constraintTop_toBottomOf="@+id/black_number_list_filter"
+        app:layout_constraintTop_toBottomOf="@+id/black_number_list_delete_all"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView

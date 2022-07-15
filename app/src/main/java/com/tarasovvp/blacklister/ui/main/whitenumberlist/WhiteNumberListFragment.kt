@@ -26,9 +26,13 @@ class WhiteNumberListFragment :
 
     override fun createAdapter(): BaseAdapter<WhiteNumber>? {
         return context?.let {
-            WhiteNumberAdapter { whiteNumber ->
-                findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
-                    whiteNumber = whiteNumber))
+            WhiteNumberAdapter { whiteNumber, isDeleting ->
+                if (isDeleting) {
+
+                } else {
+                    findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
+                        whiteNumber = whiteNumber))
+                }
             }
         }
     }

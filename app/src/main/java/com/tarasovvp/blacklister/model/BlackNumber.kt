@@ -13,4 +13,6 @@ data class BlackNumber(
     val start: Boolean = false,
     val contain: Boolean = false,
     val end: Boolean = false
-) : Parcelable, BaseAdapter.MainData
+) : Parcelable, BaseAdapter.MainData {
+    var isCheckedForDelete = false
+}

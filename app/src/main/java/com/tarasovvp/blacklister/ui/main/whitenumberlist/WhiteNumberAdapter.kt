@@ -13,7 +13,7 @@ import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?) -> Unit) :
+class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?, Boolean) -> Unit) :
     BaseAdapter<WhiteNumber>() {
 
     override fun onCreateViewHolder(
@@ -53,16 +53,18 @@ class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?) -> Unit) :
         var binding: ItemNumberBinding? = ItemNumberBinding.bind(itemView)
 
         fun bindData(position: Int) {
-            val blackNumber = getDataInPosition(position)
-            binding?.itemNumberValue?.text = blackNumber.number
-            binding?.itemNumberStart?.isVisible = blackNumber.start
-            binding?.itemNumberContain?.isVisible = blackNumber.contain
-            binding?.itemNumberEnd?.isVisible = blackNumber.end
+            val whiteNumber = getDataInPosition(position)
+            binding?.itemNumberValue?.text = whiteNumber.number
+            binding?.itemNumberStart?.isVisible = whiteNumber.start
+            binding?.itemNumberContain?.isVisible = whiteNumber.contain
+            binding?.itemNumberEnd?.isVisible = whiteNumber.end
             binding?.itemNumberAvatar?.setImageResource(R.drawable.ic_white_number)
+            binding?.itemNumberDelete?.setOnCheckedChangeListener { _, checked ->
+                whiteNumber.isCheckedForDelete = checked
+                whiteNumberClick.invoke(whiteNumber, true)
+            }
             binding?.root?.setSafeOnClickListener {
-                binding?.itemNumberMenu?.apply {
-                    whiteNumberClick.invoke(blackNumber)
-                }
+                whiteNumberClick.invoke(whiteNumber, false)
             }
         }
     }

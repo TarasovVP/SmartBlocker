@@ -13,4 +13,6 @@ data class WhiteNumber(
     var start: Boolean = false,
     var contain: Boolean = false,
     var end: Boolean = false,
-) : Parcelable, BaseAdapter.MainData
+) : Parcelable, BaseAdapter.MainData {
+    var isCheckedForDelete = false
+}
