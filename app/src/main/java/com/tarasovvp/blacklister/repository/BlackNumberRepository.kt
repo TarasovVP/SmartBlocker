@@ -45,6 +45,22 @@ object BlackNumberRepository {
         }
     }
 
+    fun deleteBlackNumberList(blackNumberList: List<BlackNumber>, result: () -> Unit) {
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            realDataBaseRepository.deleteBlackNumberList(blackNumberList) {
+                blackNumberList.forEach { blackNumber ->
+                    blackNumberDao?.delete(blackNumber)
+                }
+                result.invoke()
+            }
+        } else {
+            blackNumberList.forEach { blackNumber ->
+                blackNumberDao?.delete(blackNumber)
+            }
+            result.invoke()
+        }
+    }
+
     suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>> =
         withContext(
             Dispatchers.Default

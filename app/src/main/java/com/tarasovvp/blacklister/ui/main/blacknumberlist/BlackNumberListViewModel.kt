@@ -14,6 +14,7 @@ class BlackNumberListViewModel(application: Application) : BaseViewModel(applica
 
     private val blackNumberRepository = BlackNumberRepository
     val blackNumberHashMapLiveData = MutableLiveData<HashMap<String, List<BlackNumber>>?>()
+    val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun getBlackNumberList() {
         viewModelScope.launch {
@@ -34,6 +35,12 @@ class BlackNumberListViewModel(application: Application) : BaseViewModel(applica
             } catch (e: java.lang.Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
             }
+        }
+    }
+
+    fun deleteBlackNumbers(arrayList: List<BlackNumber>) {
+        blackNumberRepository.deleteBlackNumberList(arrayList) {
+            successDeleteNumberLiveData.postValue(true)
         }
     }
 }

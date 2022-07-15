@@ -63,9 +63,7 @@ class BlackNumberListFragment :
             adapter?.notifyDataSetChanged()
         }
         binding?.blackNumberListDeleteBtn?.setSafeOnClickListener {
-            blackNumberList?.removeAll { it.isCheckedForDelete }
-            Log.e("deleteTAG", "BlackNumberListFragment blackNumberListDeleteBtn blackNumberList?.size ${blackNumberList?.size}")
-            changeDeleteMode()
+            viewModel.deleteBlackNumbers(blackNumberList?.filter { it.isCheckedForDelete }.orEmpty())
         }
         binding?.blackNumberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(
@@ -130,6 +128,11 @@ class BlackNumberListFragment :
             }
             blackNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumberHashMap ->
                 blackNumberHashMap?.let { setDataList(it) }
+            }
+            successDeleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
+                this@BlackNumberListFragment.blackNumberList?.removeAll { it.isCheckedForDelete }
+                changeDeleteMode()
+                searchDataList()
             }
         }
     }
