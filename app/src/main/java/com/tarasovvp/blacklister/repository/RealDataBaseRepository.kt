@@ -76,7 +76,7 @@ object RealDataBaseRepository {
     }
 
     fun deleteWhiteNumberList(whiteNumberList: List<WhiteNumber>, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).get()
+        currentUserDatabase.child(WHITE_LIST).get()
             .addOnCompleteListener { task ->
                 task.result.children.forEach { snapshot ->
                     if (whiteNumberList.map { it.number }.contains(snapshot.key)) snapshot.ref.removeValue()

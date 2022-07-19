@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/blackNumberListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.blacknumberlist.BlackNumberListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.numberlist.BlackNumberListFragment"
         android:label="@string/black_list">
         <action
             android:id="@+id/startNumberAddFragment"
@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/whiteNumberListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.whitenumberlist.WhiteNumberListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.numberlist.WhiteNumberListFragment"
         android:label="@string/white_list">
         <action
             android:id="@+id/startNumberAddFragment"

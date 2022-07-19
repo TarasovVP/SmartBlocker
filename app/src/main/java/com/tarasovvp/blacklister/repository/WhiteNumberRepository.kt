@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.repository
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -62,6 +63,13 @@ object WhiteNumberRepository {
     }
 
     suspend fun getHashMapFromWhiteNumberList(whiteNumberList: List<WhiteNumber>): HashMap<String, List<WhiteNumber>> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            whiteNumberList.toHashMapFromList()
+        }
+
+    suspend fun getHashMapFromNumberList(whiteNumberList: List<Number>): HashMap<String, List<Number>> =
         withContext(
             Dispatchers.Default
         ) {

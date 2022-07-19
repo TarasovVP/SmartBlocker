@@ -1,7 +1,6 @@
-package com.tarasovvp.blacklister.ui.main.whitenumberlist
+package com.tarasovvp.blacklister.ui.main.numberlist
 
 import android.app.AlertDialog
-import android.util.Log
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -11,42 +10,38 @@ import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.blacknumberlist.BlackNumberAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
-class WhiteNumberListFragment :
-    BaseListFragment<FragmentBlackNumberListBinding, WhiteNumberListViewModel, WhiteNumber>() {
+open class NumberListFragment :
+    BaseListFragment<FragmentBlackNumberListBinding, NumberListViewModel, Number>() {
 
     override fun getViewBinding() = FragmentBlackNumberListBinding.inflate(layoutInflater)
 
-    override val viewModelClass = WhiteNumberListViewModel::class.java
+    override val viewModelClass = NumberListViewModel::class.java
 
-    private var whiteNumberList: ArrayList<WhiteNumber>? = null
+    private var numberList: ArrayList<Number>? = null
     private var isDeleteMode = false
     private var selectedFilterItems: BooleanArray = booleanArrayOf(false, false, false)
 
-    override fun createAdapter(): BaseAdapter<WhiteNumber>? {
+    override fun createAdapter(): BaseAdapter<Number>? {
         return context?.let {
-            WhiteNumberAdapter(object : WhiteNumberClickListener {
-                override fun onWhiteNumberClick(whiteNumber: WhiteNumber) {
-                    findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
-                        whiteNumber = whiteNumber))
+            NumberAdapter(object : NumberClickListener {
+                override fun onNumberClick(number: Number) {
+                    findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment())
                 }
 
-                override fun onWhiteNumberLongClick() {
+                override fun onNumberLongClick() {
                     changeDeleteMode()
                 }
 
-                override fun onWhiteNumberDeleteCheckChange(whiteNumber: WhiteNumber) {
-                    whiteNumberList?.find {
-                        it.number == whiteNumber.number
-                    }?.isCheckedForDelete = whiteNumber.isCheckedForDelete
-                    binding?.numberListDeleteBtn?.isVisible =
-                        whiteNumberList?.none { it.isCheckedForDelete }.isTrue().not()
+                override fun onNumberDeleteCheckChange(number: Number) {
+                    numberList?.find { it.number == number.number }?.isCheckedForDelete = number.isCheckedForDelete
+                    binding?.numberListDeleteBtn?.isVisible = numberList?.none { it.isCheckedForDelete }.isTrue().not()
                 }
 
             })
@@ -58,14 +53,12 @@ class WhiteNumberListFragment :
         recyclerView = binding?.numberListRecyclerView
         emptyListText = binding?.numberListEmpty
         binding?.numberListDeleteAll?.setOnCheckedChangeListener { _, checked ->
-            whiteNumberList?.forEach {
-                it.isCheckedForDelete = checked
-            }
+            numberList?.forEach { it.isCheckedForDelete = checked }
             adapter?.notifyDataSetChanged()
         }
         binding?.numberListDeleteBtn?.setSafeOnClickListener {
-            viewModel.deleteWhiteNumberList(whiteNumberList?.filter { it.isCheckedForDelete }
-                .orEmpty())
+            viewModel.deleteNumberList(numberList?.filter { it.isCheckedForDelete }.orEmpty(),
+                this is BlackNumberListFragment)
         }
         binding?.numberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
@@ -77,24 +70,20 @@ class WhiteNumberListFragment :
     }
 
     private fun changeDeleteMode() {
-        Log.e("deleteTAG",
-            "WhiteNumberListFragment changeDeleteMode isDeleteMode $isDeleteMode whiteNumberList?.size ${whiteNumberList?.size}")
         isDeleteMode = isDeleteMode.not()
         binding?.numberListFilter?.isVisible = isDeleteMode.not()
         binding?.numberListDeleteAll?.isVisible = isDeleteMode
         binding?.numberListDeleteBtn?.isVisible =
-            isDeleteMode && whiteNumberList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
+            isDeleteMode && numberList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
         if (isDeleteMode.not()) {
-            whiteNumberList?.forEach {
+            numberList?.forEach {
                 it.isCheckedForDelete = false
             }
             binding?.numberListDeleteAll?.isChecked = false
         }
-        (adapter as WhiteNumberAdapter).apply {
-            isDeleteMode = this@WhiteNumberListFragment.isDeleteMode
+        (adapter as NumberAdapter).apply {
+            isDeleteMode = this@NumberListFragment.isDeleteMode
             notifyDataSetChanged()
-            Log.e("deleteTAG",
-                "WhiteNumberListFragment BlackNumberAdapter changeDeleteMode whiteNumberList?.size ${whiteNumberList?.size}")
         }
     }
 
@@ -125,18 +114,17 @@ class WhiteNumberListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            whiteNumberList.safeObserve(viewLifecycleOwner) { whiteNumberList ->
-                this@WhiteNumberListFragment.whiteNumberList =
-                    whiteNumberList as ArrayList<WhiteNumber>
-                if (!checkDataListEmptiness(whiteNumberList)) {
-                    getHashMapFromWhiteNumberList(whiteNumberList)
+            whiteNumberList.safeObserve(viewLifecycleOwner) { numberList ->
+                this@NumberListFragment.numberList = numberList as ArrayList<Number>
+                if (!checkDataListEmptiness(numberList)) {
+                    getHashMapFromNumberList(numberList)
                 }
             }
-            whiteNumberHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumberList ->
+            numberHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumberList ->
                 whiteNumberList?.let { setDataList(it) }
             }
             successDeleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
-                this@WhiteNumberListFragment.whiteNumberList?.removeAll { it.isCheckedForDelete }
+                this@NumberListFragment.numberList?.removeAll { it.isCheckedForDelete }
                 changeDeleteMode()
                 searchDataList()
             }
@@ -144,21 +132,20 @@ class WhiteNumberListFragment :
     }
 
     override fun searchDataList() {
-        val filteredWhiteNumberList = whiteNumberList?.filter { whiteNumber ->
-            whiteNumber.number.lowercase(Locale.getDefault()).contains(
+        val filteredNumberList = numberList?.filter { number ->
+            number.number.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (if (selectedFilterItems[0]) whiteNumber.contain else true)
-                    && (if (selectedFilterItems[1]) whiteNumber.start else true)
-                    && if (selectedFilterItems[2]) whiteNumber.end else true
-        } as ArrayList<WhiteNumber>
-        if (!checkDataListEmptiness(filteredWhiteNumberList)) {
-            viewModel.getHashMapFromWhiteNumberList(filteredWhiteNumberList)
+            ) && (if (selectedFilterItems[0]) number.contain else true)
+                    && (if (selectedFilterItems[1]) number.start else true)
+                    && if (selectedFilterItems[2]) number.end else true
+        }.orEmpty()
+        if (!checkDataListEmptiness(filteredNumberList)) {
+            viewModel.getHashMapFromNumberList(filteredNumberList)
         }
     }
 
     override fun getData() {
-        Log.e("getAllDataTAG", "WhiteNumberListFragment getAllData")
-        viewModel.getWhiteNumberList()
+        viewModel.getWhiteNumberList(this is BlackNumberListFragment)
     }
 }
 
