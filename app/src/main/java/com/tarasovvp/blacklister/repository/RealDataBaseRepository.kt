@@ -75,6 +75,18 @@ object RealDataBaseRepository {
             }
     }
 
+    fun deleteWhiteNumberList(whiteNumberList: List<WhiteNumber>, result: () -> Unit) {
+        currentUserDatabase.child(BLACK_LIST).get()
+            .addOnCompleteListener { task ->
+                task.result.children.forEach { snapshot ->
+                    if (whiteNumberList.map { it.number }.contains(snapshot.key)) snapshot.ref.removeValue()
+                }
+                result.invoke()
+            }.addOnFailureListener {
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+            }
+    }
+
     fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
         currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).removeValue()
             .addOnCompleteListener {

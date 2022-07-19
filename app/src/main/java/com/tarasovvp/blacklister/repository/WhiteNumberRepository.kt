@@ -21,7 +21,7 @@ object WhiteNumberRepository {
         return dao?.getAllWhiteNumbers()
     }
 
-    suspend fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
+    fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertWhiteNumber(whiteNumber) {
                 dao?.insertWhiteNumber(whiteNumber)
@@ -33,7 +33,7 @@ object WhiteNumberRepository {
         }
     }
 
-    suspend fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
+    fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteWhiteNumber(whiteNumber) {
                 dao?.delete(whiteNumber)
@@ -41,6 +41,22 @@ object WhiteNumberRepository {
             }
         } else {
             dao?.delete(whiteNumber)
+            result.invoke()
+        }
+    }
+
+    fun deleteWhiteNumberList(whiteNumberList: List<WhiteNumber>, result: () -> Unit) {
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            realDataBaseRepository.deleteWhiteNumberList(whiteNumberList) {
+                whiteNumberList.forEach { whiteNumber ->
+                    dao?.delete(whiteNumber)
+                }
+                result.invoke()
+            }
+        } else {
+            whiteNumberList.forEach { whiteNumber ->
+                dao?.delete(whiteNumber)
+            }
             result.invoke()
         }
     }

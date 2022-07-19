@@ -8,13 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.databinding.ItemNumberBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?, Boolean) -> Unit) :
+class WhiteNumberAdapter(val whiteNumberClickListener: WhiteNumberClickListener) :
     BaseAdapter<WhiteNumber>() {
+
+    var isDeleteMode: Boolean = false
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -59,12 +62,24 @@ class WhiteNumberAdapter(private val whiteNumberClick: (WhiteNumber?, Boolean) -
             binding?.itemNumberContain?.isVisible = whiteNumber.contain
             binding?.itemNumberEnd?.isVisible = whiteNumber.end
             binding?.itemNumberAvatar?.setImageResource(R.drawable.ic_white_number)
+            binding?.itemNumberDelete?.isVisible = isDeleteMode
+            binding?.itemNumberArrow?.isVisible = isDeleteMode.not()
+            binding?.itemNumberDelete?.isChecked = whiteNumber.isCheckedForDelete
+            binding?.root?.setSafeOnClickListener {
+                if (isDeleteMode) {
+                    binding?.itemNumberDelete?.isChecked =
+                        binding?.itemNumberDelete?.isChecked.isTrue().not()
+                } else {
+                    whiteNumberClickListener.onWhiteNumberClick(whiteNumber)
+                }
+            }
+            binding?.root?.setOnLongClickListener {
+                whiteNumberClickListener.onWhiteNumberLongClick()
+                return@setOnLongClickListener true
+            }
             binding?.itemNumberDelete?.setOnCheckedChangeListener { _, checked ->
                 whiteNumber.isCheckedForDelete = checked
-                whiteNumberClick.invoke(whiteNumber, true)
-            }
-            binding?.root?.setSafeOnClickListener {
-                whiteNumberClick.invoke(whiteNumber, false)
+                whiteNumberClickListener.onWhiteNumberDeleteCheckChange(whiteNumber)
             }
         }
     }

@@ -45,7 +45,7 @@ class BlackNumberListFragment :
                     blackNumberList?.find {
                         it.number == blackNumber.number
                     }?.isCheckedForDelete = blackNumber.isCheckedForDelete
-                    binding?.blackNumberListDeleteBtn?.isVisible = blackNumberList?.none { it.isCheckedForDelete }.isTrue().not()
+                    binding?.numberListDeleteBtn?.isVisible = blackNumberList?.none { it.isCheckedForDelete }.isTrue().not()
                 }
 
             })
@@ -53,23 +53,23 @@ class BlackNumberListFragment :
     }
 
     override fun initView() {
-        swipeRefresh = binding?.blackNumberListRefresh
-        recyclerView = binding?.blackNumberListRecyclerView
-        emptyListText = binding?.blackNumberListEmpty
-        binding?.blackNumberListDeleteAll?.setOnCheckedChangeListener { _, checked ->
+        swipeRefresh = binding?.numberListRefresh
+        recyclerView = binding?.numberListRecyclerView
+        emptyListText = binding?.numberListEmpty
+        binding?.numberListDeleteAll?.setOnCheckedChangeListener { _, checked ->
             blackNumberList?.forEach {
                 it.isCheckedForDelete = checked
             }
             adapter?.notifyDataSetChanged()
         }
-        binding?.blackNumberListDeleteBtn?.setSafeOnClickListener {
+        binding?.numberListDeleteBtn?.setSafeOnClickListener {
             viewModel.deleteBlackNumbers(blackNumberList?.filter { it.isCheckedForDelete }.orEmpty())
         }
-        binding?.blackNumberListFabNew?.setSafeOnClickListener {
+        binding?.numberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(BlackNumberListFragmentDirections.startNumberAddFragment(
                 blackNumber = BlackNumber()))
         }
-        binding?.blackNumberListFilter?.setSafeOnClickListener {
+        binding?.numberListFilter?.setSafeOnClickListener {
             filterDataList()
         }
     }
@@ -77,14 +77,14 @@ class BlackNumberListFragment :
     private fun changeDeleteMode() {
         Log.e("deleteTAG", "BlackNumberListFragment changeDeleteMode isDeleteMode $isDeleteMode blackNumberList?.size ${blackNumberList?.size}")
         isDeleteMode = isDeleteMode.not()
-        binding?.blackNumberListFilter?.isVisible = isDeleteMode.not()
-        binding?.blackNumberListDeleteAll?.isVisible = isDeleteMode
-        binding?.blackNumberListDeleteBtn?.isVisible = isDeleteMode && blackNumberList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
+        binding?.numberListFilter?.isVisible = isDeleteMode.not()
+        binding?.numberListDeleteAll?.isVisible = isDeleteMode
+        binding?.numberListDeleteBtn?.isVisible = isDeleteMode && blackNumberList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
         if (isDeleteMode.not()) {
             blackNumberList?.forEach {
                 it.isCheckedForDelete = false
             }
-            binding?.blackNumberListDeleteAll?.isChecked = false
+            binding?.numberListDeleteAll?.isChecked = false
         }
         (adapter as BlackNumberAdapter).apply {
             isDeleteMode = this@BlackNumberListFragment.isDeleteMode
@@ -109,7 +109,7 @@ class BlackNumberListFragment :
                     itemsTitleList.add(title)
                 }
             }
-            binding?.blackNumberListFilter?.text =
+            binding?.numberListFilter?.text =
                 if (itemsTitleList.isEmpty()) getString(R.string.black_number_no_filter) else itemsTitleList.joinToString(
                     ", ")
             searchDataList()
