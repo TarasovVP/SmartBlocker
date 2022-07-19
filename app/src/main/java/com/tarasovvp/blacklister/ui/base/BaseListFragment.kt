@@ -36,7 +36,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     abstract fun searchDataList()
     abstract fun getData()
 
-    protected fun RecyclerView.initRecyclerView() {
+    private fun RecyclerView.initRecyclerView() {
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         this.adapter = this@BaseListFragment.adapter
     }
@@ -99,8 +99,8 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
         }
 
     protected open fun checkDataListEmptiness(newData: List<D>): Boolean {
-        emptyListText?.isVisible = newData.isNullOrEmpty()
-        if (newData.isNullOrEmpty()) {
+        emptyListText?.isVisible = newData.isEmpty()
+        if (newData.isEmpty()) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()
         }

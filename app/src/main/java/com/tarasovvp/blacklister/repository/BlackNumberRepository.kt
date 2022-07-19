@@ -2,10 +2,7 @@ package com.tarasovvp.blacklister.repository
 
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.BlackNumber
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 object BlackNumberRepository {
 
@@ -60,13 +57,6 @@ object BlackNumberRepository {
             result.invoke()
         }
     }
-
-    suspend fun getHashMapFromBlackNumberList(blackNumberList: List<BlackNumber>): HashMap<String, List<BlackNumber>> =
-        withContext(
-            Dispatchers.Default
-        ) {
-            blackNumberList.toHashMapFromList()
-        }
 
     fun getBlackNumberList(blackNumber: String): List<BlackNumber>? {
         return blackNumberDao?.getBlackNumberList(blackNumber)

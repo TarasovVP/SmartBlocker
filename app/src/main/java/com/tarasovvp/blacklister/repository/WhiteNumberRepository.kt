@@ -62,13 +62,6 @@ object WhiteNumberRepository {
         }
     }
 
-    suspend fun getHashMapFromWhiteNumberList(whiteNumberList: List<WhiteNumber>): HashMap<String, List<WhiteNumber>> =
-        withContext(
-            Dispatchers.Default
-        ) {
-            whiteNumberList.toHashMapFromList()
-        }
-
     suspend fun getHashMapFromNumberList(whiteNumberList: List<Number>): HashMap<String, List<Number>> =
         withContext(
             Dispatchers.Default

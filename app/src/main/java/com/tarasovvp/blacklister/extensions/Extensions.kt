@@ -41,13 +41,10 @@ import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.LinkedHashMap
 
 fun Context.contactList(): ArrayList<Contact> {
     val projection = arrayOf(
@@ -257,8 +254,8 @@ fun String.toMillisecondsFromString(): Long {
 
 fun Activity.isServiceRunning(serviceClass: Class<*>): Boolean {
     val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
-    for (service in manager!!.getRunningServices(Int.MAX_VALUE)) {
-        if (serviceClass.name == service.service.className) {
+    manager?.getRunningServices(Int.MAX_VALUE)?.forEach {
+        if (serviceClass.name == it.service.className) {
             return true
         }
     }
@@ -329,50 +326,6 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
                     it.number.substring(0, 1)
                 }
                 is WhiteNumber -> {
-                    it.number.substring(0, 1)
-                }
-                is Contact -> {
-                    it.name?.substring(0, 1)
-                }
-                is com.tarasovvp.blacklister.model.CallLog -> {
-                    it.calendarFromTime()
-                }
-                else -> it
-            }
-        }
-        if (key is Calendar) {
-            val callLog = valueList[0] as com.tarasovvp.blacklister.model.CallLog
-            hashMapFromList[callLog.dateFromTime().toString()] = valueList
-        } else if (key is String) {
-            hashMapFromList[key] = valueList
-        }
-
-    }
-    return hashMapFromList
-}
-
-fun <T> List<T>.hashMapFromList(): LinkedHashMap<String, List<T>> {
-    val hashMapFromList = LinkedHashMap<String, List<T>>()
-    val keyList = ArrayList<Any>(this.map {
-        when (it) {
-            is Number -> {
-                it.number.substring(0, 1)
-            }
-            is Contact -> {
-                it.name?.substring(0, 1)
-            }
-            is com.tarasovvp.blacklister.model.CallLog -> {
-                it.calendarFromTime()
-            }
-            else -> {
-                return@map null
-            }
-        }
-    }.toList().distinct())
-    for (key in keyList) {
-        val valueList = this.filter {
-            key == when (it) {
-                is Number -> {
                     it.number.substring(0, 1)
                 }
                 is Contact -> {

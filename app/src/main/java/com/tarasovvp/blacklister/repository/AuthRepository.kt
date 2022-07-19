@@ -7,8 +7,8 @@ import com.tarasovvp.blacklister.constants.Constants
 
 object AuthRepository {
 
-    val auth = BlackListerApp.instance?.auth
-    val currentUser = FirebaseAuth.getInstance().currentUser
+    private val auth = BlackListerApp.instance?.auth
+    private val currentUser = FirebaseAuth.getInstance().currentUser
 
     fun sendPasswordResetEmail(email: String, result: () -> Unit) {
         auth?.sendPasswordResetEmail(email)
