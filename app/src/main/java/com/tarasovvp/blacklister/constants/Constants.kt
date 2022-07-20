@@ -11,7 +11,7 @@ object Constants {
     const val EIGHT_ZERO = "80"
     const val ZERO = "0"
     const val WHITE_LIST_PRIORITY = "whiteListPriority"
-    const val BLOCK_ANONYMOUS = "blockUnanimous"
+    const val BLOCK_HIDDEN = "blockHidden"
     const val BLACK_LIST = "blackList"
     const val WHITE_LIST = "whiteList"
     const val DELETE_NUMBER = "addNumber"

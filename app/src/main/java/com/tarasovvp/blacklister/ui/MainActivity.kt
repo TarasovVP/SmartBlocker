@@ -24,6 +24,7 @@ import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.setAppLocale
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
+import com.tarasovvp.blacklister.utils.CallHandleReceiver
 import com.tarasovvp.blacklister.utils.ExceptionReceiver
 import com.tarasovvp.blacklister.utils.ForegroundCallService
 import com.tarasovvp.blacklister.utils.PermissionUtil
@@ -36,7 +37,10 @@ class MainActivity : AppCompatActivity() {
     var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
     val mainViewModel: MainViewModel by viewModels()
+
     private var exceptionReceiver: ExceptionReceiver? = null
+    private var callHandleReceiver: CallHandleReceiver? = null
+
     var navigationScreens = arrayListOf(
         R.id.callLogListFragment,
         R.id.contactListFragment,
@@ -55,6 +59,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        callHandleReceiver = CallHandleReceiver {
+                getAllData()
+            Log.e("blockTAG", "CallLogListFragment callHandleReceiver")
+        }
+        registerReceiver(callHandleReceiver, IntentFilter(Constants.CALL_RECEIVE))
         exceptionReceiver = ExceptionReceiver { exception ->
             mainViewModel.exceptionLiveData.postValue(exception)
         }
@@ -63,6 +72,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        unregisterReceiver(callHandleReceiver)
         unregisterReceiver(exceptionReceiver)
     }
 

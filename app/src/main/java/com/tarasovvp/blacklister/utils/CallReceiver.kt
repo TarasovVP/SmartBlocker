@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
+import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.extensions.breakCallNougatAndLower
 import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
@@ -13,6 +15,7 @@ import com.tarasovvp.blacklister.extensions.deleteLastMissedCall
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.repository.BlackNumberRepository
+import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.WhiteNumberRepository
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import java.util.concurrent.Executors
@@ -22,6 +25,14 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
 
     private val blackNumberRepository = BlackNumberRepository
     private val whiteNumberRepository = WhiteNumberRepository
+    private val blockedCallRepository = BlockedCallRepository
+
+    init {
+        BlackListerApp.instance?.apply {
+            phoneListener.invoke(String.format(this.getString(R.string.blocked_calls),
+                blockedCallRepository.allBlockedCalls()?.size))
+        }
+    }
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
@@ -29,16 +40,20 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
-        val isInWhiteList = whiteNumberRepository.getWhiteNumberList(phone)?.isEmpty().isTrue().not()
-        val isInBlackList = blackNumberRepository.getBlackNumberList(phone)?.isEmpty().isTrue().not()
-        val isBlockNeeded = (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (phone.isEmpty() && SharedPreferencesUtil.blockAnonymous)
+        val isInWhiteList =
+            whiteNumberRepository.getWhiteNumberList(phone)?.isEmpty().isTrue().not()
+        val isInBlackList =
+            blackNumberRepository.getBlackNumberList(phone)?.isEmpty().isTrue().not()
+        val isBlockNeeded =
+            (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (phone.isEmpty() && SharedPreferencesUtil.blockHidden)
         if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
-            phoneListener.invoke("phone $phone")
             breakCall(context)
         } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE && phone.isNotEmpty()) {
             Executors.newSingleThreadScheduledExecutor().schedule({
                 if (isBlockNeeded) {
                     context.deleteLastMissedCall(phone)
+                    phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
+                        blockedCallRepository.allBlockedCalls()?.size))
                 }
                 context.sendBroadcast(Intent(CALL_RECEIVE))
             }, 1, TimeUnit.SECONDS)

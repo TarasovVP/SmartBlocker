@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import com.tarasovvp.blacklister.databinding.FragmentBlockSettingsBinding
 import com.tarasovvp.blacklister.extensions.isServiceRunning
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -32,8 +31,8 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
                 }
             }
         }
-        binding?.blockSettingsBackUnanimous?.isChecked = SharedPreferencesUtil.blockAnonymous
-        binding?.blockSettingsBackUnanimous?.setOnCheckedChangeListener { _, isChecked ->
+        binding?.blockSettingsBackHidden?.isChecked = SharedPreferencesUtil.blockHidden
+        binding?.blockSettingsBackHidden?.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changeBlockAnonymous(isChecked)
         }
         binding?.blockSettingsPriority?.isChecked = SharedPreferencesUtil.isWhiteListPriority

@@ -2,7 +2,7 @@ package com.tarasovvp.blacklister.local
 
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.blacklister.constants.Constants.APP_LANG_RU
-import com.tarasovvp.blacklister.constants.Constants.BLOCK_ANONYMOUS
+import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.local.Settings.APP_LANG
 import com.tarasovvp.blacklister.local.Settings.APP_THEME
@@ -53,12 +53,12 @@ object SharedPreferencesUtil {
             )
         }
 
-    var blockAnonymous: Boolean
-        get() = loadBoolean(BLOCK_ANONYMOUS)
-        set(blockAnonymous) {
+    var blockHidden: Boolean
+        get() = loadBoolean(BLOCK_HIDDEN)
+        set(blockHidden) {
             saveBoolean(
-                BLOCK_ANONYMOUS,
-                blockAnonymous
+                BLOCK_HIDDEN,
+                blockHidden
             )
         }
 

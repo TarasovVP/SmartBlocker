@@ -34,10 +34,10 @@ class BlockSettingsViewModel(application: Application) : BaseViewModel(applicati
             try {
                 if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                     realDataBaseRepository.changeBlockAnonymous(blockUnanimous) {
-                        SharedPreferencesUtil.blockAnonymous = blockUnanimous
+                        SharedPreferencesUtil.blockHidden = blockUnanimous
                     }
                 } else {
-                    SharedPreferencesUtil.blockAnonymous = blockUnanimous
+                    SharedPreferencesUtil.blockHidden = blockUnanimous
                 }
             } catch (e: Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)

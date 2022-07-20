@@ -64,7 +64,7 @@
     <string name="confirm_new_password">Подтвердите новый пароль</string>
     <string name="change_name">Сменить имя</string>
     <string name="change_password">Сменить пароль</string>
-    <string name="block_anonymous">Блокировать анонимные звонки</string>
+    <string name="block_hidden">Блокировать скрытые номера</string>
     <string name="day">Светлая тема</string>
     <string name="night">Темная тема</string>
     <string name="auto">Автоматически следовать настройкам режима вашего устройства</string>
@@ -97,4 +97,6 @@
     <string name="white_list_criteria">Критерии совпадения из белого списка</string>
     <string name="add_filter">Добавить фильтр</string>
     <string name="choose_all">Выбрать все</string>
+    <string name="hidden">Скрытый</string>
+    <string name="blocked_calls">Заблокировано %s звонков</string>
 </resources>

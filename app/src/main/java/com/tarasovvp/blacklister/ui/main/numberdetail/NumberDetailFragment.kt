@@ -30,7 +30,11 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args.number?.let { number ->
-            viewModel.getContact(number)
+            if (number.isEmpty())  {
+                viewModel.numberDetailLiveData.postValue(Contact(name = getString(R.string.hidden)))
+            } else {
+                viewModel.getContact(number)
+            }
             viewModel.getBlackNumberList(number)
             viewModel.getWhiteNumberList(number)
         }
