@@ -15,7 +15,4 @@ object BlockedCallRepository {
         return dao?.allBlockedCalls()
     }
 
-    fun deleteAllCallLogs() {
-        dao?.deleteAllCallLogs()
-    }
 }

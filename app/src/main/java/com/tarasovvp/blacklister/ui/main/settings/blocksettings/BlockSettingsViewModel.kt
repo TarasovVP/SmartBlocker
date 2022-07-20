@@ -12,16 +12,19 @@ class BlockSettingsViewModel(application: Application) : BaseViewModel(applicati
     private val realDataBaseRepository = RealDataBaseRepository
 
     fun changePriority(whiteListPriority: Boolean) {
+        showProgress()
         launch {
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 realDataBaseRepository.changeWhiteListPriority(whiteListPriority) {
                     SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
                 }
             }
+            hideProgress()
         }
     }
 
     fun changeBlockAnonymous(blockUnanimous: Boolean) {
+        showProgress()
         launch {
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 realDataBaseRepository.changeBlockAnonymous(blockUnanimous) {
@@ -30,6 +33,7 @@ class BlockSettingsViewModel(application: Application) : BaseViewModel(applicati
             } else {
                 SharedPreferencesUtil.blockHidden = blockUnanimous
             }
+            hideProgress()
         }
     }
 }

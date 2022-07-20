@@ -18,26 +18,32 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
     val deleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun insertBlackNumber(blackNumber: BlackNumber) {
+        showProgress()
         launch {
             blackNumberRepository.insertBlackNumber(blackNumber) {
                 insertBlackNumberLiveData.postValue(blackNumber)
             }
+            hideProgress()
         }
     }
 
     fun deleteBlackNumber(blackNumber: BlackNumber) {
+        showProgress()
         launch {
             blackNumberRepository.deleteBlackNumber(blackNumber) {
                 deleteNumberLiveData.postValue(true)
             }
+            hideProgress()
         }
     }
 
     fun insertWhiteNumber(whiteNumber: WhiteNumber) {
+        showProgress()
         launch {
             whiteNumberRepository.insertWhiteNumber(whiteNumber) {
                 insertWhiteNumberLiveData.postValue(whiteNumber)
             }
+            hideProgress()
         }
     }
 

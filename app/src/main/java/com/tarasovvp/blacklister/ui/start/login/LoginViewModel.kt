@@ -13,20 +13,26 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
     val successSignInLiveData = MutableLiveData<Boolean>()
 
     fun sendPasswordResetEmail(email: String) {
+        showProgress()
         authRepository.sendPasswordResetEmail(email) {
             successPasswordResetLiveData.postValue(true)
+            hideProgress()
         }
     }
 
     fun signInWithEmailAndPassword(email: String, password: String) {
+        showProgress()
         authRepository.signInWithEmailAndPassword(email, password) {
             successSignInLiveData.postValue(true)
+            hideProgress()
         }
     }
 
     fun firebaseAuthWithGoogle(idToken: String) {
+        showProgress()
         authRepository.firebaseAuthWithGoogle(idToken) {
             successSignInLiveData.postValue(true)
+            hideProgress()
         }
     }
 }

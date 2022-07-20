@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.ui.main.contactlist
 
 import android.util.Log
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -34,10 +33,6 @@ class ContactListFragment :
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
         emptyListText = binding?.contactListEmpty
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Contact>(Constants.CONTACT)
-            ?.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
-                viewModel.updateContact(blackNumber)
-            }
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
         }

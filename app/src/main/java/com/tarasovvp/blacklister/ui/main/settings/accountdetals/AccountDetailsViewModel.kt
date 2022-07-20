@@ -14,20 +14,26 @@ class AccountDetailsViewModel(application: Application) : BaseViewModel(applicat
     val successChangePasswordLiveData = MutableLiveData<Boolean>()
 
     fun changePassword(password: String) {
+        showProgress()
         authRepository.changePassword(password) {
             successChangePasswordLiveData.postValue(true)
+            hideProgress()
         }
     }
 
     fun deleteUser() {
+        showProgress()
         authRepository.deleteUser {
             successLiveData.postValue(true)
+            hideProgress()
         }
     }
 
     fun renameUser(name: String) {
+        showProgress()
         authRepository.renameUser(name) { displayName ->
             successRenameUserLiveData.postValue(displayName)
+            hideProgress()
         }
     }
 }

@@ -23,6 +23,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun getCurrentUser() {
         launch {
+            showProgress()
             realDataBaseRepository.getCurrentUser { currentUser ->
                 Log.e("allDataTAG",
                     "MainViewModel getCurrentUser blackNumberList ${currentUser?.blackNumberList}")
@@ -52,6 +53,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getAllData() {
+        showProgress()
         launch {
             Log.e("allDataTAG", "MainViewModel getAllData")
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
@@ -98,6 +100,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             callLogRepository.insertCallLogs(callLogList)
 
             successAllDataLiveData.postValue(true)
+            hideProgress()
         }
     }
 }

@@ -21,28 +21,34 @@ class NumberDetailViewModel(application: Application) : BaseViewModel(applicatio
     val whiteNumberLiveData = MutableLiveData<List<WhiteNumber>>()
 
     fun getBlackNumberList(number: String) {
+        showProgress()
         launch {
             val blackNumberList = blackNumberRepository.getBlackNumberList(number)
             blackNumberList?.let {
                 blackNumberLiveData.postValue(it)
             }
+            hideProgress()
         }
     }
 
     fun getWhiteNumberList(number: String) {
+        showProgress()
         launch {
             val whiteNumberList = whiteNumberRepository.getWhiteNumberList(number)
             whiteNumberList?.let {
                 whiteNumberLiveData.postValue(it)
             }
+            hideProgress()
         }
     }
 
     fun getContact(number: String) {
+        showProgress()
         launch {
             val contact = contactRepository.getContactByNumber(number) ?: Contact(name = number,
                 phone = number)
             numberDetailLiveData.postValue(contact)
+            hideProgress()
         }
     }
 }

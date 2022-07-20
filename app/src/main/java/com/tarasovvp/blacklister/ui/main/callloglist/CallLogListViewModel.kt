@@ -14,21 +14,25 @@ class CallLogListViewModel(application: Application) : BaseViewModel(application
     val callLogHashMapLiveData = MutableLiveData<HashMap<String, List<CallLog>>?>()
 
     fun getCallLogList() {
+        showProgress()
         launch {
             val allCallLogs = callLogRepository.getAllCallLogs()
             allCallLogs?.apply {
                 callLogLiveData.postValue(this)
             }
+            hideProgress()
         }
     }
 
     fun getHashMapFromCallLogList(callLogList: List<CallLog>) {
+        showProgress()
         launch {
             val hashMapList =
                 callLogRepository.getHashMapFromCallLogList(callLogList.sortedByDescending {
                     it.time
                 })
             callLogHashMapLiveData.postValue(hashMapList)
+            hideProgress()
         }
     }
 }

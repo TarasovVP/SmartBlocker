@@ -100,6 +100,11 @@ object AuthRepository {
         }
     }
 
+    fun signOut(result: () -> Unit) {
+        auth?.signOut()
+        result.invoke()
+    }
+
     fun renameUser(name: String, result: (String) -> Unit) {
         val profileUpdates = UserProfileChangeRequest.Builder()
             .setDisplayName(name).build()

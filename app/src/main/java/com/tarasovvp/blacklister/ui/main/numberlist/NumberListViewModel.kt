@@ -20,34 +20,41 @@ class NumberListViewModel(application: Application) : BaseViewModel(application)
 
     fun getWhiteNumberList(isBlackList: Boolean) {
         launch {
+            showProgress()
             val numberList = if (isBlackList) {
                 blackNumberRepository.allBlackNumbers()
             } else {
                 whiteNumberRepository.allWhiteNumbers()
             }
             numberListLiveData.postValue(numberList)
+            hideProgress()
         }
     }
 
     fun getHashMapFromNumberList(numberList: List<Number>) {
         launch {
+            showProgress()
             numberHashMapLiveData.postValue(
                 whiteNumberRepository.getHashMapFromNumberList(numberList)
             )
+            hideProgress()
         }
     }
 
     @Suppress("UNCHECKED_CAST")
     fun deleteNumberList(numberList: List<Number>, isBlackList: Boolean) {
-        if (isBlackList) {
-            blackNumberRepository.deleteBlackNumberList(blackNumberList = numberList as List<BlackNumber>) {
-                successDeleteNumberLiveData.postValue(true)
+        showProgress()
+        launch {
+            if (isBlackList) {
+                blackNumberRepository.deleteBlackNumberList(blackNumberList = numberList as List<BlackNumber>) {
+                    successDeleteNumberLiveData.postValue(true)
+                }
+            } else {
+                whiteNumberRepository.deleteWhiteNumberList(numberList as List<WhiteNumber>) {
+                    successDeleteNumberLiveData.postValue(true)
+                }
             }
-        } else {
-            whiteNumberRepository.deleteWhiteNumberList(numberList as List<WhiteNumber>) {
-                successDeleteNumberLiveData.postValue(true)
-            }
+            hideProgress()
         }
-
     }
 }

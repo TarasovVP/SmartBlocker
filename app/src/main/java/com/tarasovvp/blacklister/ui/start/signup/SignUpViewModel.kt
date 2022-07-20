@@ -12,8 +12,10 @@ class SignUpViewModel(application: Application) : BaseViewModel(application) {
     val successSignInLiveData = MutableLiveData<Boolean>()
 
     fun createUserWithEmailAndPassword(email: String, password: String, name: String) {
+        showProgress()
         authRepository.createUserWithEmailAndPassword(email, password, name) {
             successSignInLiveData.postValue(true)
+            hideProgress()
         }
     }
 }
