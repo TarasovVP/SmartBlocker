@@ -29,14 +29,10 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
-        val isInWhiteList =
-            whiteNumberRepository.getWhiteNumberList(phone)?.isEmpty().isTrue().not()
-        val isInBlackList =
-            blackNumberRepository.getBlackNumberList(phone)?.isEmpty().isTrue().not()
-        val isBlockNeeded =
-            (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
-        if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING
-        ) {
+        val isInWhiteList = whiteNumberRepository.getWhiteNumberList(phone)?.isEmpty().isTrue().not()
+        val isInBlackList = blackNumberRepository.getBlackNumberList(phone)?.isEmpty().isTrue().not()
+        val isBlockNeeded = (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (phone.isEmpty() && SharedPreferencesUtil.blockAnonymous)
+        if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
             phoneListener.invoke("phone $phone")
             breakCall(context)
         } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE && phone.isNotEmpty()) {

@@ -16,12 +16,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/block_settings_back_noti"
+        android:id="@+id/block_settings_back_anonymous"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_25"
         android:checked="true"
-        android:text="@string/switch_on_notification"
+        android:text="@string/block_anonymous"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/block_settings_back_ground" />
 
@@ -33,7 +33,7 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:layout_marginTop="@dimen/margin_25"
-        app:layout_constraintTop_toBottomOf="@+id/block_settings_back_noti" />
+        app:layout_constraintTop_toBottomOf="@+id/block_settings_back_anonymous" />
 
     <TextView
         android:id="@+id/block_settings_black_priority"

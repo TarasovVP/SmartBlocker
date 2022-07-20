@@ -9,7 +9,6 @@ object Settings {
     const val ON_BOARDING_SEEN = "onBoardingSeen"
     const val APP_LANG = "appLang"
     const val APP_THEME = "appTheme"
-    const val PRIORITY = "priority"
 
     private var sharedPreferences: SharedPreferences? = null
 

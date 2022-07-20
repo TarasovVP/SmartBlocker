@@ -32,15 +32,15 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
                 }
             }
         }
+        binding?.blockSettingsBackUnanimous?.isChecked = SharedPreferencesUtil.blockAnonymous
+        binding?.blockSettingsBackUnanimous?.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.changeBlockAnonymous(isChecked)
+        }
         binding?.blockSettingsPriority?.isChecked = SharedPreferencesUtil.isWhiteListPriority
         binding?.blockSettingsPriority?.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changePriority(isChecked)
         }
     }
 
-    override fun observeLiveData() {
-        viewModel.isWhiteListPriorityLiveData.safeSingleObserve(viewLifecycleOwner) { isWhiteListPriority ->
-            SharedPreferencesUtil.isWhiteListPriority = isWhiteListPriority
-        }
-    }
+    override fun observeLiveData() = Unit
 }

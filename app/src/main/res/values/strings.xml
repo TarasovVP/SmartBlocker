@@ -64,7 +64,7 @@
     <string name="confirm_new_password">Подтвердите новый пароль</string>
     <string name="change_name">Сменить имя</string>
     <string name="change_password">Сменить пароль</string>
-    <string name="switch_on_notification">Включить уведомления</string>
+    <string name="block_anonymous">Блокировать анонимные звонки</string>
     <string name="day">Светлая тема</string>
     <string name="night">Темная тема</string>
     <string name="auto">Автоматически следовать настройкам режима вашего устройства</string>

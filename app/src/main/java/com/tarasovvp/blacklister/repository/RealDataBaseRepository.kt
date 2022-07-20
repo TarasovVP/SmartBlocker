@@ -6,6 +6,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST
+import com.tarasovvp.blacklister.constants.Constants.BLOCK_ANONYMOUS
 import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
@@ -110,6 +111,15 @@ object RealDataBaseRepository {
 
     fun changeWhiteListPriority(whiteListPriority: Boolean, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST_PRIORITY).setValue(whiteListPriority)
+            .addOnCompleteListener {
+                result.invoke()
+            }.addOnFailureListener {
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+            }
+    }
+
+    fun changeBlockAnonymous(blockUnanimous: Boolean, result: () -> Unit) {
+        currentUserDatabase.child(BLOCK_ANONYMOUS).setValue(blockUnanimous)
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {

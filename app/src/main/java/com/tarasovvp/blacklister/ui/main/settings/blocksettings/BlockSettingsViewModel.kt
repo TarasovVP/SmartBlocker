@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.settings.blocksettings
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -13,17 +12,32 @@ import kotlinx.coroutines.launch
 class BlockSettingsViewModel(application: Application) : BaseViewModel(application) {
 
     private val realDataBaseRepository = RealDataBaseRepository
-    val isWhiteListPriorityLiveData = MutableLiveData<Boolean>()
 
     fun changePriority(whiteListPriority: Boolean) {
         viewModelScope.launch {
             try {
                 if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                     realDataBaseRepository.changeWhiteListPriority(whiteListPriority) {
-                        isWhiteListPriorityLiveData.postValue(true)
+                        SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
                     }
                 } else {
                     SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
+                }
+            } catch (e: Exception) {
+                exceptionLiveData.postValue(e.localizedMessage)
+            }
+        }
+    }
+
+    fun changeBlockAnonymous(blockUnanimous: Boolean) {
+        viewModelScope.launch {
+            try {
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+                    realDataBaseRepository.changeBlockAnonymous(blockUnanimous) {
+                        SharedPreferencesUtil.blockAnonymous = blockUnanimous
+                    }
+                } else {
+                    SharedPreferencesUtil.blockAnonymous = blockUnanimous
                 }
             } catch (e: Exception) {
                 exceptionLiveData.postValue(e.localizedMessage)
