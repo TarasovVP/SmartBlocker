@@ -16,12 +16,14 @@ class AccountActionDialog : BaseDialog<DialogInfoBinding>() {
     override fun getViewBinding() = DialogInfoBinding.inflate(layoutInflater)
 
     override fun initUI() {
-        binding?.dialogInfoTitle?.text = if (args.isLogOut) getString(R.string.log_out) else getString(R.string.delete_account)
+        binding?.dialogInfoTitle?.text =
+            if (args.isLogOut) getString(R.string.log_out) else getString(R.string.delete_account)
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }
         binding?.dialogInfoConfirm?.setSafeOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(if (args.isLogOut) LOG_OUT else DELETE_USER, true)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(if (args.isLogOut) LOG_OUT else DELETE_USER,
+                true)
             dismiss()
         }
     }

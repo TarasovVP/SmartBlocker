@@ -7,7 +7,7 @@ object BlockedCallRepository {
 
     private val dao = BlackListerApp.instance?.database?.blockedCallDao()
 
-    fun insertBlockedCall(blockedCall: BlockedCall) {
+    fun insertBlockedCall(blockedCall: BlockedCall?) {
         dao?.insertBlockedCall(blockedCall)
     }
 

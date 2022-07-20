@@ -54,8 +54,8 @@ object RealDataBaseRepository {
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {
-            sendExceptionBroadCast(it.localizedMessage.orEmpty())
-        }
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+            }
     }
 
     fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
@@ -63,8 +63,8 @@ object RealDataBaseRepository {
             .addOnCompleteListener {
                 result.invoke()
             }.addOnFailureListener {
-            sendExceptionBroadCast(it.localizedMessage.orEmpty())
-        }
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+            }
     }
 
     fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
@@ -80,7 +80,8 @@ object RealDataBaseRepository {
         currentUserDatabase.child(WHITE_LIST).get()
             .addOnCompleteListener { task ->
                 task.result.children.forEach { snapshot ->
-                    if (whiteNumberList.map { it.number }.contains(snapshot.key)) snapshot.ref.removeValue()
+                    if (whiteNumberList.map { it.number }
+                            .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()
             }.addOnFailureListener {
@@ -101,7 +102,8 @@ object RealDataBaseRepository {
         currentUserDatabase.child(BLACK_LIST).get()
             .addOnCompleteListener { task ->
                 task.result.children.forEach { snapshot ->
-                    if (blackNumberList.map { it.number }.contains(snapshot.key)) snapshot.ref.removeValue()
+                    if (blackNumberList.map { it.number }
+                            .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()
             }.addOnFailureListener {

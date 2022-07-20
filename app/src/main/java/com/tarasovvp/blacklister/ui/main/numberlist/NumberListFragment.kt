@@ -40,8 +40,10 @@ open class NumberListFragment :
                 }
 
                 override fun onNumberDeleteCheckChange(number: Number) {
-                    numberList?.find { it.number == number.number }?.isCheckedForDelete = number.isCheckedForDelete
-                    binding?.numberListDeleteBtn?.isVisible = numberList?.none { it.isCheckedForDelete }.isTrue().not()
+                    numberList?.find { it.number == number.number }?.isCheckedForDelete =
+                        number.isCheckedForDelete
+                    binding?.numberListDeleteBtn?.isVisible =
+                        numberList?.none { it.isCheckedForDelete }.isTrue().not()
                 }
 
             })
@@ -114,7 +116,7 @@ open class NumberListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            whiteNumberList.safeObserve(viewLifecycleOwner) { numberList ->
+            numberListLiveData.safeObserve(viewLifecycleOwner) { numberList ->
                 this@NumberListFragment.numberList = numberList as ArrayList<Number>
                 if (!checkDataListEmptiness(numberList)) {
                     getHashMapFromNumberList(numberList)

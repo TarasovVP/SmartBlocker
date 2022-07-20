@@ -11,6 +11,9 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.view.Gravity
+import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
@@ -23,7 +26,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
-import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.CALL_LOG_CALL
@@ -42,9 +44,37 @@ import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.WhiteNumber
+import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.ui.MainActivity
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
+
+
+fun CoroutineScope.launchIO(
+    onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
+    block: suspend CoroutineScope.() -> Unit,
+): Job =
+    launch(CoroutineExceptionHandler { _, exception ->
+        onError(exception, block)
+    }) {
+        withContext(Dispatchers.IO) {
+            block()
+        }
+    }
+
+fun View.showMessage(message: String, isError: Boolean) {
+    ContextCompat.getColor(context, if (isError) android.R.color.holo_red_light else R.color.blue)
+        .let { color ->
+            Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
+                .apply {
+                    val params = view.layoutParams as FrameLayout.LayoutParams
+                    params.width = FrameLayout.LayoutParams.MATCH_PARENT
+                    params.gravity = Gravity.TOP
+                    view.layoutParams = params
+                }.withColor(color).show()
+        }
+}
 
 fun Context.contactList(): ArrayList<Contact> {
     val projection = arrayOf(
@@ -161,14 +191,9 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
             val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
             if (phone == phoneNumber.toFormattedPhoneNumber()) {
                 try {
-                    BlackListerApp.instance?.database?.blockedCallDao()
-                        ?.insertBlockedCall(time?.let {
-                            BlockedCall(
-                                name = cursor.getString(0),
-                                phone = phoneNumber,
-                                time = it
-                            )
-                        })
+                    BlockedCallRepository.insertBlockedCall(time?.let {
+                        BlockedCall(name = cursor.getString(0), phone = phoneNumber, time = it)
+                    })
                     this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()

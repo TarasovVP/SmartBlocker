@@ -78,7 +78,9 @@ class NumberAddFragment :
                 if (args.number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(
                     R.string.white_list))
             numberAddTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-                if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number, 0, 0)
+                if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number,
+                0,
+                0)
             numberAddSearch.setText(args.number?.number.orEmpty())
             numberAddStart.isChecked = args.number?.start.isTrue()
             numberAddContain.isChecked = args.number?.contain.isTrue()
@@ -106,8 +108,8 @@ class NumberAddFragment :
     }
 
     private fun handleSuccessNumberAction(message: String) {
-        showMessage(message, false)
         (activity as MainActivity).apply {
+            showMessage(message, false)
             getAllData()
         }
         findNavController().popBackStack()

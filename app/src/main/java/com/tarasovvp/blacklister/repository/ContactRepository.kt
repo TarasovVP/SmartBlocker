@@ -1,6 +1,8 @@
 package com.tarasovvp.blacklister.repository
 
+import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.Contact
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,13 @@ object ContactRepository {
     fun updateContact(contact: Contact) {
         dao?.updateContact(contact)
     }
+
+    suspend fun getSystemContactList(context: Context): ArrayList<Contact> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            context.contactList()
+        }
 
     suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>> =
         withContext(

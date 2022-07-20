@@ -30,7 +30,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args.number?.let { number ->
-            if (number.isEmpty())  {
+            if (number.isEmpty()) {
                 viewModel.numberDetailLiveData.postValue(Contact(name = getString(R.string.hidden)))
             } else {
                 viewModel.getContact(number)
@@ -64,8 +64,9 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                 contact.isWhiteList -> R.drawable.ic_accepted
                 else -> 0
             })
-            numberDetailPriority.text = String.format(getString(R.string.prioritness), if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
-                R.string.black_list))
+            numberDetailPriority.text = String.format(getString(R.string.prioritness),
+                if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
+                    R.string.black_list))
             numberDetailAddFilter.setSafeOnClickListener {
                 findNavController().navigate(NumberDetailFragmentDirections.startAddToListDialog())
             }
@@ -73,9 +74,11 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                 findNavController().navigate(NumberDetailFragmentDirections.startBlockSettingsFragment())
             }
         }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(ADD_TO_LIST)?.safeSingleObserve(viewLifecycleOwner) { isBlackList ->
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            ADD_TO_LIST)?.safeSingleObserve(viewLifecycleOwner) { isBlackList ->
             contact.phone?.let {
-                findNavController().navigate(AddToListDialogDirections.startNumberAddFragment(number = Number(number = it).apply {
+                findNavController().navigate(AddToListDialogDirections.startNumberAddFragment(number = Number(
+                    number = it).apply {
                     isBlackNumber = isBlackList
                 }))
             }

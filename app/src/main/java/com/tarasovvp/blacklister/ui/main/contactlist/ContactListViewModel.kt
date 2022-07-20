@@ -2,13 +2,11 @@ package com.tarasovvp.blacklister.ui.main.contactlist
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.repository.BlackNumberRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
-import kotlinx.coroutines.launch
 
 class ContactListViewModel(application: Application) : BaseViewModel(application) {
 
@@ -19,56 +17,42 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
     val contactHashMapLiveData = MutableLiveData<HashMap<String, List<Contact>>?>()
 
     fun getContactList() {
-        viewModelScope.launch {
-            try {
-                val contactList = contactRepository.getAllContacts()
-                contactList?.apply {
-                    contactLiveData.postValue(this)
-                }
-            } catch (e: Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
+        launch {
+
+            val contactList = contactRepository.getAllContacts()
+            contactList?.apply {
+                contactLiveData.postValue(this)
             }
         }
     }
 
     fun getHashMapFromContactList(contactList: List<Contact>) {
-        viewModelScope.launch {
-            try {
-                contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(
-                    contactList))
-            } catch (e: java.lang.Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
-            }
+        launch {
+            contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(
+                contactList))
         }
     }
 
     fun updateContact(contact: Contact) {
-        viewModelScope.launch {
-            try {
-                contactRepository.updateContact(contact)
-                contact.phone?.let { phone -> BlackNumber(number = phone) }
-                    ?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
-                getContactList()
-            } catch (e: java.lang.Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
-            }
+        launch {
+
+            contactRepository.updateContact(contact)
+            contact.phone?.let { phone -> BlackNumber(number = phone) }
+                ?.let { blackNumber -> updateBlackNumber(contact.isBlackList, blackNumber) }
+            getContactList()
         }
     }
 
     private fun updateBlackNumber(isBlackList: Boolean, blackNumber: BlackNumber) {
-        viewModelScope.launch {
-            try {
-                if (isBlackList) {
-                    blackNumberRepository.insertBlackNumber(blackNumber) {
-                        //TODO check implementing
-                    }
-                } else {
-                    blackNumberRepository.deleteBlackNumber(blackNumber) {
-
-                    }
+        launch {
+            if (isBlackList) {
+                blackNumberRepository.insertBlackNumber(blackNumber) {
+                    //TODO check implementing
                 }
-            } catch (e: java.lang.Exception) {
-                exceptionLiveData.postValue(e.localizedMessage)
+            } else {
+                blackNumberRepository.deleteBlackNumber(blackNumber) {
+
+                }
             }
         }
     }

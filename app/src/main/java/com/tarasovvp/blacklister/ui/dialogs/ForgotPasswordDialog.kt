@@ -19,7 +19,8 @@ class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
             dismiss()
         }
         binding?.dialogForgotPasswordConfirm?.setSafeOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(FORGOT_PASSWORD, binding?.dialogForgotPasswordInput?.text.toString())
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(FORGOT_PASSWORD,
+                binding?.dialogForgotPasswordInput?.text.toString())
             dismiss()
         }
     }

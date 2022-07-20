@@ -6,11 +6,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -22,6 +26,7 @@ import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.setAppLocale
+import com.tarasovvp.blacklister.extensions.showMessage
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.blacklister.utils.CallHandleReceiver
@@ -60,8 +65,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         callHandleReceiver = CallHandleReceiver {
-                getAllData()
-            Log.e("blockTAG", "CallLogListFragment callHandleReceiver")
+            mainViewModel.getAllData()
         }
         registerReceiver(callHandleReceiver, IntentFilter(Constants.CALL_RECEIVE))
         exceptionReceiver = ExceptionReceiver { exception ->
@@ -130,10 +134,17 @@ class MainActivity : AppCompatActivity() {
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 Log.e("getAllDataTAG", "MainActivity observeLiveData successAllDataLiveData ")
             }
-            errorLiveData.safeSingleObserve(this@MainActivity) { error ->
-
+            exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
+                showMessage(errorMessage, true)
+            }
+            isProgressProcess.safeSingleObserve(this@MainActivity) { isVisible ->
+                findViewById<ProgressBar>(R.id.progress_bar).isVisible = isVisible
             }
         }
+    }
+
+    fun showMessage(message: String, isError: Boolean) {
+        findViewById<FrameLayout>(R.id.host_main_fragment).showMessage(message, isError)
     }
 
     fun getAllData() {

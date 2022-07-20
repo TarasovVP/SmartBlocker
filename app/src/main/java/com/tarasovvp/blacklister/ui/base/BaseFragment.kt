@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -9,6 +10,7 @@ import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.showMessage
 import com.tarasovvp.blacklister.ui.MainActivity
 
 abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFragment<VB>() {
@@ -25,21 +27,7 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
         checkTopBottomBarVisibility()
         checkToolbarSearchVisibility()
         getCurrentBackStackEntry()
-        observeExceptionLiveData()
         observeLiveData()
-    }
-
-    open fun observeExceptionLiveData() {
-        with(viewModel) {
-            exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { exception ->
-                showMessage(exception, true)
-            }
-        }
-        (activity as MainActivity).apply {
-            mainViewModel.exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { exception ->
-                showMessage(exception, true)
-            }
-        }
     }
 
     private fun getCurrentBackStackEntry() {

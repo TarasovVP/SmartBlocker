@@ -39,13 +39,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         setOnButtonsClick()
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(FORGOT_PASSWORD)?.safeSingleObserve(viewLifecycleOwner) { email ->
-                if (email.isNotEmpty()) {
-                    viewModel.sendPasswordResetEmail(email)
-                } else {
-                    showMessage(getString(R.string.enter_your_email), true)
-                }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
+            FORGOT_PASSWORD)?.safeSingleObserve(viewLifecycleOwner) { email ->
+            if (email.isNotEmpty()) {
+                viewModel.sendPasswordResetEmail(email)
+            } else {
+                showMessage(getString(R.string.enter_your_email), true)
             }
+        }
     }
 
     private fun setOnButtonsClick() {

@@ -15,7 +15,8 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class AccountDetailsFragment : BaseFragment<FragmentAccountDetailsBinding, AccountDetailsViewModel>() {
+class AccountDetailsFragment :
+    BaseFragment<FragmentAccountDetailsBinding, AccountDetailsViewModel>() {
 
     override fun getViewBinding() = FragmentAccountDetailsBinding.inflate(layoutInflater)
 
@@ -46,7 +47,8 @@ class AccountDetailsFragment : BaseFragment<FragmentAccountDetailsBinding, Accou
             }
         }
 
-        binding?.includeNoAccount?.root?.isVisible = BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+        binding?.includeNoAccount?.root?.isVisible =
+            BlackListerApp.instance?.isLoggedInUser().isTrue().not()
         binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
             findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
         }
@@ -55,8 +57,8 @@ class AccountDetailsFragment : BaseFragment<FragmentAccountDetailsBinding, Accou
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
-                showMessage(getString(R.string.operation_succeeded), false)
                 (activity as MainActivity).apply {
+                    showMessage(getString(R.string.operation_succeeded), false)
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 }

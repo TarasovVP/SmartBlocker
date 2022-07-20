@@ -1,6 +1,8 @@
 package com.tarasovvp.blacklister.repository
 
+import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.CallLog
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +19,14 @@ object CallLogRepository {
     fun getAllCallLogs(): List<CallLog>? {
         return dao?.allCallLogs()
     }
+
+    suspend fun getSystemCallLogList(context: Context): ArrayList<CallLog> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            context.callLogList()
+        }
+
 
     suspend fun getHashMapFromCallLogList(callLogList: List<CallLog>): HashMap<String, List<CallLog>> =
         withContext(

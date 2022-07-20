@@ -8,5 +8,5 @@ import kotlinx.android.parcel.Parcelize
 data class CurrentUser(
     @SerializedName("whiteListPriority") var isWhiteListPriority: Boolean = false,
     @SerializedName("blackList") var blackNumberList: ArrayList<BlackNumber> = arrayListOf(),
-    @SerializedName("whiteList") var whiteNumberList: ArrayList<WhiteNumber> = arrayListOf()
+    @SerializedName("whiteList") var whiteNumberList: ArrayList<WhiteNumber> = arrayListOf(),
 ) : Parcelable
