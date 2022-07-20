@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.main.numberadd
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.repository.BlackNumberRepository
 import com.tarasovvp.blacklister.repository.WhiteNumberRepository
@@ -15,42 +16,50 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
 
     val insertBlackNumberLiveData = MutableLiveData<BlackNumber>()
     val insertWhiteNumberLiveData = MutableLiveData<WhiteNumber>()
+    val existBlackNumberLiveData = MutableLiveData<BlackNumber?>()
+    val existWhiteNumberLiveData = MutableLiveData<WhiteNumber?>()
     val deleteNumberLiveData = MutableLiveData<Boolean>()
 
-    fun insertBlackNumber(blackNumber: BlackNumber) {
+    fun checkNumberExist(number: String, isBlackNumber: Boolean) {
         showProgress()
         launch {
-            blackNumberRepository.insertBlackNumber(blackNumber) {
-                insertBlackNumberLiveData.postValue(blackNumber)
+
+            if (isBlackNumber) {
+                val blackNumber = blackNumberRepository.getBlackNumber(number)
+                existBlackNumberLiveData.postValue(blackNumber)
+            } else {
+                existWhiteNumberLiveData.postValue(whiteNumberRepository.getWhiteNumber(number))
             }
             hideProgress()
         }
     }
 
-    fun deleteBlackNumber(blackNumber: BlackNumber) {
+    fun insertNumber(number: Number) {
         showProgress()
         launch {
-            blackNumberRepository.deleteBlackNumber(blackNumber) {
-                deleteNumberLiveData.postValue(true)
+            if (number.isBlackNumber) {
+                blackNumberRepository.insertBlackNumber(number as BlackNumber) {
+                    insertBlackNumberLiveData.postValue(number)
+                }
+            } else {
+                whiteNumberRepository.insertWhiteNumber(number as WhiteNumber) {
+                    insertWhiteNumberLiveData.postValue(number)
+                }
             }
             hideProgress()
         }
     }
 
-    fun insertWhiteNumber(whiteNumber: WhiteNumber) {
-        showProgress()
+    fun deleteNumber(number: Number) {
         launch {
-            whiteNumberRepository.insertWhiteNumber(whiteNumber) {
-                insertWhiteNumberLiveData.postValue(whiteNumber)
-            }
-            hideProgress()
-        }
-    }
-
-    fun deleteWhiteNumber(whiteNumber: WhiteNumber) {
-        launch {
-            whiteNumberRepository.deleteWhiteNumber(whiteNumber) {
-                deleteNumberLiveData.postValue(true)
+            if (number.isBlackNumber) {
+                blackNumberRepository.deleteBlackNumber(number as BlackNumber) {
+                    deleteNumberLiveData.postValue(true)
+                }
+            } else {
+                whiteNumberRepository.deleteWhiteNumber(number as WhiteNumber) {
+                    deleteNumberLiveData.postValue(true)
+                }
             }
         }
     }

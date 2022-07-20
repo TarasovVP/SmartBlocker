@@ -32,7 +32,7 @@ open class NumberListFragment :
         return context?.let {
             NumberAdapter(object : NumberClickListener {
                 override fun onNumberClick(number: Number) {
-                    findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment())
+                    findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(number = number))
                 }
 
                 override fun onNumberLongClick() {
@@ -63,8 +63,9 @@ open class NumberListFragment :
                 this is BlackNumberListFragment)
         }
         binding?.numberListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
-                number = WhiteNumber()))
+            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(number = Number().apply {
+                isBlackNumber = this@NumberListFragment is BlackNumberListFragment
+            }))
         }
         binding?.numberListFilter?.setSafeOnClickListener {
             filterDataList()

@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -12,6 +13,7 @@ import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -28,10 +30,10 @@ class NumberAddFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewsWithData()
-        binding?.numberAddSearch?.doAfterTextChanged {
-            binding?.numberAddSubmit?.isEnabled = it?.isNotEmpty().isTrue()
-        }
+        binding?.numberAddInput?.setText(args.number?.number.orEmpty())
+        initViewsWithData(args.number)
+        setExistNumberChecking()
+
         binding?.numberDeleteSubmit?.setSafeOnClickListener {
             args.number?.let {
                 if (it.isBlackNumber) {
@@ -44,54 +46,61 @@ class NumberAddFragment :
             }
         }
         binding?.numberAddSubmit?.setSafeOnClickListener {
-            if (args.number?.isBlackNumber.isTrue()) {
-                viewModel.insertBlackNumber(BlackNumber(number = binding?.numberAddSearch?.text.toString()).apply {
-                    start = binding?.numberAddStart?.isChecked.isTrue()
-                    contain = binding?.numberAddContain?.isChecked.isTrue()
-                    end = binding?.numberAddEnd?.isChecked.isTrue()
-                })
-            } else {
-                viewModel.insertWhiteNumber(WhiteNumber(number = binding?.numberAddSearch?.text.toString()).apply {
-                    start = binding?.numberAddStart?.isChecked.isTrue()
-                    contain = binding?.numberAddContain?.isChecked.isTrue()
-                    end = binding?.numberAddEnd?.isChecked.isTrue()
-                })
-            }
+            viewModel.insertNumber(Number(number = binding?.numberAddInput?.text.toString()).apply {
+                start = binding?.numberAddStart?.isChecked.isTrue()
+                contain = binding?.numberAddContain?.isChecked.isTrue()
+                end = binding?.numberAddEnd?.isChecked.isTrue()
+                isBlackNumber = args.number?.isBlackNumber.isTrue()
+            })
         }
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
             DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) {
             args.number?.let {
-                if (it.isBlackNumber) {
-                    viewModel.deleteBlackNumber(it as BlackNumber)
-                } else {
-                    viewModel.deleteWhiteNumber(it as WhiteNumber)
-                }
+                viewModel.deleteNumber(it)
             }
         }
     }
 
-    private fun initViewsWithData() {
+    private fun setExistNumberChecking() {
+        viewModel.checkNumberExist(args.number?.number.orEmpty(),
+            args.number?.isBlackNumber.isTrue())
+        binding?.numberAddInput?.doAfterTextChanged {
+            viewModel.checkNumberExist(it.toString(), args.number?.isBlackNumber.isTrue())
+        }
+    }
+
+    private fun initViewsWithData(number: Number?) {
         binding?.apply {
             numberAddTitle.text = String.format(getString(R.string.fill_data_press_button),
-                if (args.number?.number.isNullOrEmpty().not()
+                if (number?.number.isNullOrEmpty()
+                        .not()
                 ) getString(R.string.edit_number) else getString(R.string.add_number),
-                if (args.number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(
+                if (number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(
                     R.string.white_list))
             numberAddTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-                if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number,
+                if (number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number,
                 0,
                 0)
-            numberAddSearch.setText(args.number?.number.orEmpty())
-            numberAddStart.isChecked = args.number?.start.isTrue()
-            numberAddContain.isChecked = args.number?.contain.isTrue()
-            numberAddEnd.isChecked = args.number?.end.isTrue()
-            numberAddSubmit.isEnabled = args.number?.number.isNullOrEmpty().isTrue().not()
-            numberDeleteSubmit.isVisible = args.number?.number.orEmpty().isNotEmpty()
+            numberAddStart.isChecked = number?.start.isTrue()
+            numberAddContain.isChecked = number?.contain.isTrue()
+            numberAddEnd.isChecked = number?.end.isTrue()
+            binding?.numberAddSubmit?.text = if (number?.number.isNullOrEmpty()
+                    .not() && args.number?.number == number?.number
+            ) getString(R.string.add_number) else getString(R.string.edit_number)
+            binding?.numberAddSubmit?.isVisible = number?.number.isNullOrEmpty().not()
+            binding?.numberDeleteSubmit?.isVisible = number?.number.isNullOrEmpty().not()
+            Log.e("numberAddTAG", "NumberAddFragment initViewsWithData number $number")
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
+            existBlackNumberLiveData.observe(viewLifecycleOwner) { blackNumber ->
+                initViewsWithData(blackNumber)
+            }
+            existWhiteNumberLiveData.observe(viewLifecycleOwner) { whiteNumber ->
+                initViewsWithData(whiteNumber)
+            }
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
                 handleSuccessNumberAction(String.format(getString(R.string.number_added),
                     blackNumber.number))

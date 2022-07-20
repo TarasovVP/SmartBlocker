@@ -10,26 +10,30 @@ import kotlinx.coroutines.withContext
 
 object WhiteNumberRepository {
 
-    private val dao = BlackListerApp.instance?.database?.whiteNumberDao()
+    private val whiteNumberDao = BlackListerApp.instance?.database?.whiteNumberDao()
     private val realDataBaseRepository = RealDataBaseRepository
 
     fun insertAllWhiteNumbers(whiteNumberList: ArrayList<WhiteNumber>) {
-        dao?.deleteAllWhiteNumbers()
-        dao?.insertAllWhiteNumbers(whiteNumberList)
+        whiteNumberDao?.deleteAllWhiteNumbers()
+        whiteNumberDao?.insertAllWhiteNumbers(whiteNumberList)
     }
 
     fun allWhiteNumbers(): List<WhiteNumber>? {
-        return dao?.getAllWhiteNumbers()
+        return whiteNumberDao?.getAllWhiteNumbers()
+    }
+
+    fun getWhiteNumber(number: String): WhiteNumber? {
+        return whiteNumberDao?.getWhiteNumber(number)
     }
 
     fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertWhiteNumber(whiteNumber) {
-                dao?.insertWhiteNumber(whiteNumber)
+                whiteNumberDao?.insertWhiteNumber(whiteNumber)
                 result.invoke()
             }
         } else {
-            dao?.insertWhiteNumber(whiteNumber)
+            whiteNumberDao?.insertWhiteNumber(whiteNumber)
             result.invoke()
         }
     }
@@ -37,11 +41,11 @@ object WhiteNumberRepository {
     fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteWhiteNumber(whiteNumber) {
-                dao?.delete(whiteNumber)
+                whiteNumberDao?.delete(whiteNumber)
                 result.invoke()
             }
         } else {
-            dao?.delete(whiteNumber)
+            whiteNumberDao?.delete(whiteNumber)
             result.invoke()
         }
     }
@@ -50,13 +54,13 @@ object WhiteNumberRepository {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteWhiteNumberList(whiteNumberList) {
                 whiteNumberList.forEach { whiteNumber ->
-                    dao?.delete(whiteNumber)
+                    whiteNumberDao?.delete(whiteNumber)
                 }
                 result.invoke()
             }
         } else {
             whiteNumberList.forEach { whiteNumber ->
-                dao?.delete(whiteNumber)
+                whiteNumberDao?.delete(whiteNumber)
             }
             result.invoke()
         }
@@ -70,6 +74,6 @@ object WhiteNumberRepository {
         }
 
     fun getWhiteNumberList(whiteNumber: String): List<WhiteNumber>? {
-        return dao?.getWhiteNumberList(whiteNumber)
+        return whiteNumberDao?.getWhiteNumberList(whiteNumber)
     }
 }
