@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.repository.BlackNumberRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
@@ -19,7 +20,7 @@ class NumberDetailViewModel(application: Application) : BaseViewModel(applicatio
     private val whiteNumberRepository = WhiteNumberRepository
 
     val numberDetailLiveData = MutableLiveData<Contact>()
-    val blackNumberLiveData = MutableLiveData<List<BlackNumber>>()
+    val blackNumberLiveData = MutableLiveData<List<Number>>()
     val whiteNumberLiveData = MutableLiveData<List<WhiteNumber>>()
 
     fun getBlackNumberList(number: String) {

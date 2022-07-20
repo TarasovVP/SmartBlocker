@@ -62,7 +62,7 @@ open class NumberListFragment :
         }
         binding?.numberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
-                whiteNumber = WhiteNumber()))
+                number = WhiteNumber()))
         }
         binding?.numberListFilter?.setSafeOnClickListener {
             filterDataList()

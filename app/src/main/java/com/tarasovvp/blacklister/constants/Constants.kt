@@ -39,6 +39,7 @@ object Constants {
     const val APP_LANG_UA = "ua"
     const val APP_LANG_EN = "en"
     const val FORGOT_PASSWORD = "forgotPassword"
+    const val ADD_TO_LIST = "addToList"
     const val DELETE_USER = "deleteUser"
     const val LOG_OUT = "logOut"
     const val EXCEPTION = "exception"

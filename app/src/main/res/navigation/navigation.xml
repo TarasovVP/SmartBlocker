@@ -67,7 +67,21 @@
         <action
             android:id="@+id/startNumberAddFragment"
             app:destination="@id/numberAddFragment" />
+        <action
+            android:id="@+id/startAddToListDialog"
+            app:destination="@id/addToListDialog" />
+        <action
+            android:id="@+id/startBlockSettingsFragment"
+            app:destination="@id/blockSettingsFragment" />
     </fragment>
+
+    <dialog
+        android:id="@+id/addToListDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.AddToListDialog" >
+        <action
+            android:id="@+id/startNumberAddFragment"
+            app:destination="@id/numberAddFragment" />
+    </dialog>
 
     <fragment
         android:id="@+id/blackNumberListFragment"
@@ -188,17 +202,13 @@
         android:name="com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragment"
         android:label="@string/addBlackNumber">
         <argument
-            android:name="blackNumber"
+            android:name="number"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.BlackNumber"
-            app:nullable="true" />
-        <argument
-            android:name="whiteNumber"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.WhiteNumber"
+            app:argType="com.tarasovvp.blacklister.model.Number"
             app:nullable="true" />
         <action
             android:id="@+id/startDeleteNumberDialog"
             app:destination="@id/deleteNumberDialog" />
     </fragment>
+
 </navigation>

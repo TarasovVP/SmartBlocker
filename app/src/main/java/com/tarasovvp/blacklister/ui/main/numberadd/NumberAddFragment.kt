@@ -9,7 +9,6 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
@@ -34,17 +33,18 @@ class NumberAddFragment :
             binding?.numberAddSubmit?.isEnabled = it?.isNotEmpty().isTrue()
         }
         binding?.numberDeleteSubmit?.setSafeOnClickListener {
-            args.blackNumber?.let {
-                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
-                    blackNumber = it))
-            }
-            args.whiteNumber?.let {
-                findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
-                    whiteNumber = it))
+            args.number?.let {
+                if (it.isBlackNumber) {
+                    findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
+                        blackNumber = it as BlackNumber))
+                } else {
+                    findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
+                        whiteNumber = it as WhiteNumber))
+                }
             }
         }
         binding?.numberAddSubmit?.setSafeOnClickListener {
-            if (args.blackNumber.isNotNull()) {
+            if (args.number?.isBlackNumber.isTrue()) {
                 viewModel.insertBlackNumber(BlackNumber(number = binding?.numberAddSearch?.text.toString()).apply {
                     start = binding?.numberAddStart?.isChecked.isTrue()
                     contain = binding?.numberAddContain?.isChecked.isTrue()
@@ -60,38 +60,32 @@ class NumberAddFragment :
         }
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
             DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) {
-            args.blackNumber?.let {
-                viewModel.deleteBlackNumber(it)
-            }
-            args.whiteNumber?.let {
-                viewModel.deleteWhiteNumber(it)
+            args.number?.let {
+                if (it.isBlackNumber) {
+                    viewModel.deleteBlackNumber(it as BlackNumber)
+                } else {
+                    viewModel.deleteWhiteNumber(it as WhiteNumber)
+                }
             }
         }
     }
 
     private fun initViewsWithData() {
-        binding?.numberAddTitle?.text = String.format(getString(R.string.fill_data_press_button),
-            if (args.blackNumber?.number.isNullOrEmpty()
-                    .not() || args.whiteNumber?.number.isNullOrEmpty().not()
-            ) getString(R.string.edit_number) else getString(R.string.add_number),
-            if (args.blackNumber.isNotNull()) getString(R.string.black_list) else getString(R.string.white_list))
-        binding?.numberAddTitle?.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-            if (args.blackNumber.isNotNull()) R.drawable.ic_black_number else R.drawable.ic_white_number,
-            0,
-            0)
-        binding?.numberAddSearch?.setText(if (args.blackNumber.isNotNull()) args.blackNumber?.number.orEmpty() else args.whiteNumber?.number.orEmpty())
-        binding?.numberAddStart?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.start.isTrue() else args.whiteNumber?.start.isTrue()
-        binding?.numberAddContain?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.contain.isTrue() else args.whiteNumber?.contain.isTrue()
-        binding?.numberAddEnd?.isChecked =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.end.isTrue() else args.whiteNumber?.end.isTrue()
-        binding?.numberAddSubmit?.isEnabled =
-            if (args.blackNumber.isNotNull()) args.blackNumber?.number.isNullOrEmpty().isTrue()
-                .not() else args.whiteNumber?.number.isNullOrEmpty().isTrue().not()
-        binding?.numberDeleteSubmit?.isVisible =
-            args.blackNumber?.number.orEmpty().isNotEmpty() || args.whiteNumber?.number.orEmpty()
-                .isNotEmpty()
+        binding?.apply {
+            numberAddTitle.text = String.format(getString(R.string.fill_data_press_button),
+                if (args.number?.number.isNullOrEmpty().not()
+                ) getString(R.string.edit_number) else getString(R.string.add_number),
+                if (args.number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(
+                    R.string.white_list))
+            numberAddTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
+                if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number, 0, 0)
+            numberAddSearch.setText(args.number?.number.orEmpty())
+            numberAddStart.isChecked = args.number?.start.isTrue()
+            numberAddContain.isChecked = args.number?.contain.isTrue()
+            numberAddEnd.isChecked = args.number?.end.isTrue()
+            numberAddSubmit.isEnabled = args.number?.number.isNullOrEmpty().isTrue().not()
+            numberDeleteSubmit.isVisible = args.number?.number.orEmpty().isNotEmpty()
+        }
     }
 
     override fun observeLiveData() {
@@ -106,7 +100,7 @@ class NumberAddFragment :
             }
             deleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
                 handleSuccessNumberAction(String.format(getString(R.string.delete_number_from_list),
-                    if (args.blackNumber.isNotNull()) args.blackNumber?.number.orEmpty() else args.whiteNumber?.number.orEmpty()))
+                    args.number?.number.orEmpty()))
             }
         }
     }

@@ -6,15 +6,17 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.ADD_TO_LIST
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
 import com.tarasovvp.blacklister.databinding.ItemNumberBinding
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.WhiteNumber
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.base.BaseFragment
+import com.tarasovvp.blacklister.ui.dialogs.AddToListDialogDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDetailViewModel>() {
@@ -40,64 +42,64 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                 setContactInfo(contact)
             }
             blackNumberLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumberList ->
-                setBlackNumberList(blackNumberList)
+                setNumberList(blackNumberList)
             }
             whiteNumberLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumberList ->
-                setWhiteNumberList(whiteNumberList)
+                setNumberList(whiteNumberList)
             }
         }
     }
 
     private fun setContactInfo(contact: Contact) {
-        binding?.numberDetailName?.text = contact.name
-        binding?.numberDetailPhone?.text = contact.phone
-        binding?.numberDetailAvatar?.loadCircleImage(contact.photoUrl)
-        binding?.numberDetailType?.setImageResource(when {
-            contact.isBlackList -> R.drawable.ic_block
-            contact.isWhiteList -> R.drawable.ic_accepted
-            else -> 0
-        })
-        binding?.numberDetailPriority?.text = String.format(getString(R.string.prioritness),
-            if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
+        binding?.apply {
+            numberDetailName.text = contact.name
+            numberDetailPhone.text = contact.phone
+            numberDetailAvatar.loadCircleImage(contact.photoUrl)
+            numberDetailType.setImageResource(when {
+                contact.isBlackList -> R.drawable.ic_block
+                contact.isWhiteList -> R.drawable.ic_accepted
+                else -> 0
+            })
+            numberDetailPriority.text = String.format(getString(R.string.prioritness), if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
                 R.string.black_list))
-        binding?.numberDetailAddFilter?.setSafeOnClickListener {
+            numberDetailAddFilter.setSafeOnClickListener {
+                findNavController().navigate(NumberDetailFragmentDirections.startAddToListDialog())
+            }
+            numberDetailPriority.setSafeOnClickListener {
+                findNavController().navigate(NumberDetailFragmentDirections.startBlockSettingsFragment())
+            }
+        }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(ADD_TO_LIST)?.safeSingleObserve(viewLifecycleOwner) { isBlackList ->
             contact.phone?.let {
-                findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(blackNumber = BlackNumber(number = it)))
+                findNavController().navigate(AddToListDialogDirections.startNumberAddFragment(number = Number(number = it).apply {
+                    isBlackNumber = isBlackList
+                }))
             }
         }
     }
 
-    private fun setBlackNumberList(blackNumberList: List<BlackNumber>) {
-        binding?.numberDetailBlackListTitle?.isVisible = blackNumberList.isEmpty().not()
-        blackNumberList.forEach { blackNumber ->
-            val itemNumber = ItemNumberBinding.inflate(layoutInflater)
-            itemNumber.itemNumberAvatar.setImageResource(R.drawable.ic_black_number)
-            itemNumber.itemNumberValue.text = blackNumber.number
-            itemNumber.itemNumberStart.isVisible = blackNumber.start
-            itemNumber.itemNumberContain.isVisible = blackNumber.contain
-            itemNumber.itemNumberEnd.isVisible = blackNumber.end
-            itemNumber.root.setSafeOnClickListener {
-                findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(
-                    blackNumber = blackNumber))
-            }
-            binding?.numberDetailBlackNumberList?.addView(itemNumber.root)
+    private fun setNumberList(numberList: List<Number>) {
+        if (numberList.find { it.isBlackNumber }.isNotNull()) {
+            binding?.numberDetailBlackListTitle?.isVisible = numberList.isEmpty().not()
+        } else {
+            binding?.numberDetailWhiteListTitle?.isVisible = numberList.isEmpty().not()
         }
-    }
-
-    private fun setWhiteNumberList(whiteNumberList: List<WhiteNumber>) {
-        binding?.numberDetailWhiteListTitle?.isVisible = whiteNumberList.isEmpty().not()
-        whiteNumberList.forEach { whiteNumber ->
+        numberList.forEach { number ->
             val itemNumber = ItemNumberBinding.inflate(layoutInflater)
-            itemNumber.itemNumberAvatar.setImageResource(R.drawable.ic_white_number)
-            itemNumber.itemNumberValue.text = whiteNumber.number
-            itemNumber.itemNumberStart.isVisible = whiteNumber.start
-            itemNumber.itemNumberContain.isVisible = whiteNumber.contain
-            itemNumber.itemNumberEnd.isVisible = whiteNumber.end
+            itemNumber.itemNumberAvatar.setImageResource(if (number.isBlackNumber) R.drawable.ic_black_number else R.drawable.ic_white_number)
+            itemNumber.itemNumberValue.text = number.number
+            itemNumber.itemNumberStart.isVisible = number.start
+            itemNumber.itemNumberContain.isVisible = number.contain
+            itemNumber.itemNumberEnd.isVisible = number.end
             itemNumber.root.setSafeOnClickListener {
                 findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(
-                    whiteNumber = whiteNumber))
+                    number = number))
             }
-            binding?.numberDetailWhiteNumberList?.addView(itemNumber.root)
+            if (number.isBlackNumber) {
+                binding?.numberDetailBlackNumberList?.addView(itemNumber.root)
+            } else {
+                binding?.numberDetailWhiteNumberList?.addView(itemNumber.root)
+            }
         }
     }
 }
