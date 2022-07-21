@@ -34,7 +34,7 @@ class NumberAddFragment :
         binding?.numberAddInput?.setText(args.number?.number.orEmpty())
         initViewsWithData(args.number)
         setExistNumberChecking()
-
+        Log.e("numberAddTAG", "NumberAddFragment onViewCreated number args.number ${args.number}")
         binding?.numberDeleteSubmit?.setSafeOnClickListener {
             args.number?.let {
                 if (it.isBlackNumber) {
