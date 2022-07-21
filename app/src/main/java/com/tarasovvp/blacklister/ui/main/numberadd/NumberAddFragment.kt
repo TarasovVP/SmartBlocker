@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -11,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlackNumber
@@ -32,9 +32,8 @@ class NumberAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.numberAddInput?.setText(args.number?.number.orEmpty())
-        initViewsWithData(args.number)
+        initViewsWithData(args.number, false)
         setExistNumberChecking()
-        Log.e("numberAddTAG", "NumberAddFragment onViewCreated number args.number ${args.number}")
         binding?.numberDeleteSubmit?.setSafeOnClickListener {
             args.number?.let {
                 if (it.isBlackNumber) {
@@ -69,37 +68,34 @@ class NumberAddFragment :
         }
     }
 
-    private fun initViewsWithData(number: Number?) {
+    private fun initViewsWithData(number: Number?, isFromDb: Boolean) {
         binding?.apply {
-            numberAddTitle.text = String.format(getString(R.string.fill_data_press_button),
-                if (number?.number.isNullOrEmpty()
-                        .not()
-                ) getString(R.string.edit_number) else getString(R.string.add_number),
-                if (number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(
-                    R.string.white_list))
-            numberAddTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-                if (number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number,
-                0,
-                0)
+            numberAddTitle.text =
+                if (numberAddInput.text.isEmpty()) getString(R.string.add_filter_message) else String.format(
+                    if (isFromDb && number.isNotNull()) getString(R.string.edit_filter_with_number_message) else getString(
+                        R.string.add_filter_with_number_message),
+                    binding?.numberAddInput?.text)
+            numberDeleteSubmit.isVisible = isFromDb && number.isNotNull()
+            numberAddSubmit.text =
+                if (isFromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
+            numberAddSubmit.isVisible = numberAddInput.text.isNotEmpty()
             numberAddStart.isChecked = number?.start.isTrue()
             numberAddContain.isChecked = number?.contain.isTrue()
             numberAddEnd.isChecked = number?.end.isTrue()
-            binding?.numberAddSubmit?.text =
-                if (number?.number.isNullOrEmpty().not() && args.number?.number == number?.number
-                ) getString(R.string.add_number) else getString(R.string.edit_number)
-            binding?.numberAddSubmit?.isVisible = number?.number.isNullOrEmpty().not()
-            binding?.numberDeleteSubmit?.isVisible = number?.number.isNullOrEmpty().not()
-            Log.e("numberAddTAG", "NumberAddFragment initViewsWithData number $number")
+            numberAddTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
+                if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number,
+                0,
+                0)
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
             existBlackNumberLiveData.observe(viewLifecycleOwner) { blackNumber ->
-                initViewsWithData(blackNumber)
+                initViewsWithData(blackNumber, true)
             }
             existWhiteNumberLiveData.observe(viewLifecycleOwner) { whiteNumber ->
-                initViewsWithData(whiteNumber)
+                initViewsWithData(whiteNumber, true)
             }
             insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
                 handleSuccessNumberAction(String.format(getString(R.string.number_added),

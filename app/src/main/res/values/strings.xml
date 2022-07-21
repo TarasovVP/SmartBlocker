@@ -99,4 +99,7 @@
     <string name="choose_all">Выбрать все</string>
     <string name="hidden">Скрытый</string>
     <string name="blocked_calls">Заблокировано %s звонков</string>
+    <string name="add_filter_message">Для добавления фильтра введите цифры в поле ввода, отметьте условия применения(по необходимости) и нажмите кнопку подтверждения</string>
+    <string name="add_filter_with_number_message">Для добавления фильтра %s отметьте условия применения(по необходимости) и нажмите кнопку подтверждения</string>
+    <string name="edit_filter_with_number_message">Для редактирования филтра %s измените условия применения и нажмите кнопку подтверждения</string>
 </resources>
