@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.dialogs
 
-import androidx.navigation.fragment.findNavController
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.databinding.DialogInfoBinding
@@ -17,7 +18,7 @@ class AppExitDialog : BaseDialog<DialogInfoBinding>() {
             dismiss()
         }
         binding?.dialogInfoConfirm?.setSafeOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(APP_EXIT, true)
+            setFragmentResult(APP_EXIT, bundleOf())
             dismiss()
         }
     }

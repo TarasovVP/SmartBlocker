@@ -77,11 +77,7 @@
 
     <dialog
         android:id="@+id/addToListDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.AddToListDialog" >
-        <action
-            android:id="@+id/startNumberAddFragment"
-            app:destination="@id/numberAddFragment" />
-    </dialog>
+        android:name="com.tarasovvp.blacklister.ui.dialogs.AddToListDialog" />
 
     <fragment
         android:id="@+id/blackNumberListFragment"

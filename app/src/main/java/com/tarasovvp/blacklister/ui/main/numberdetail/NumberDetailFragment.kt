@@ -3,10 +3,14 @@ package com.tarasovvp.blacklister.ui.main.numberdetail
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.ADD_TO_LIST
+import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST
+import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
 import com.tarasovvp.blacklister.databinding.ItemNumberBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
@@ -16,7 +20,6 @@ import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.ui.dialogs.AddToListDialogDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDetailViewModel>() {
@@ -74,14 +77,11 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                 findNavController().navigate(NumberDetailFragmentDirections.startBlockSettingsFragment())
             }
         }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
-            ADD_TO_LIST)?.safeSingleObserve(viewLifecycleOwner) { isBlackList ->
-            contact.phone?.let {
-                findNavController().navigate(AddToListDialogDirections.startNumberAddFragment(number = Number(
-                    number = it).apply {
-                    isBlackNumber = isBlackList
+        setFragmentResultListener(ADD_TO_LIST) { _, bundle ->
+            findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(
+                number = Number(number = contact.phone.orEmpty()).apply {
+                    isBlackNumber = bundle.getBoolean(WHITE_LIST).not()
                 }))
-            }
         }
     }
 

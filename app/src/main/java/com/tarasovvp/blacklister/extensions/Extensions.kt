@@ -395,6 +395,9 @@ fun Boolean?.isTrue() = this == true
 
 fun Int?.orZero() = this ?: 0
 
+val String.Companion.EMPTY: String
+    get() = ""
+
 fun Context.setAppLocale(language: String): Context {
     val locale = Locale(language)
     Locale.setDefault(locale)

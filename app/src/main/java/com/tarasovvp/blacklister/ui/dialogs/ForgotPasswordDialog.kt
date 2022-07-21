@@ -1,7 +1,9 @@
 package com.tarasovvp.blacklister.ui.dialogs
 
-import androidx.navigation.fragment.findNavController
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
+import com.tarasovvp.blacklister.constants.Constants.EMAIL
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.databinding.DialogForgotPasswordBinding
 import com.tarasovvp.blacklister.ui.base.BaseDialog
@@ -19,8 +21,8 @@ class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
             dismiss()
         }
         binding?.dialogForgotPasswordConfirm?.setSafeOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(FORGOT_PASSWORD,
-                binding?.dialogForgotPasswordInput?.text.toString())
+            setFragmentResult(FORGOT_PASSWORD,
+                bundleOf(EMAIL to binding?.dialogForgotPasswordInput?.text.toString()))
             dismiss()
         }
     }

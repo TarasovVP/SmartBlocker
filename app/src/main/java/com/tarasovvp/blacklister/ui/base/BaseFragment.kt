@@ -3,12 +3,12 @@ package com.tarasovvp.blacklister.ui.base
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 
 abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFragment<VB>() {
@@ -29,14 +29,9 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
     }
 
     private fun getCurrentBackStackEntry() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(APP_EXIT)
-            ?.safeSingleObserve(
-                viewLifecycleOwner
-            ) { exitApp ->
-                if (exitApp) {
-                    activity?.finish()
-                }
-            }
+        setFragmentResultListener(APP_EXIT) { _, _ ->
+            activity?.finish()
+        }
     }
 
     private fun checkTopBottomBarVisibility() {

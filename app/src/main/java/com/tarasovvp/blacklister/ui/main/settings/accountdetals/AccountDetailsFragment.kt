@@ -4,15 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.DELETE_USER
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
+import com.tarasovvp.blacklister.ui.main.numberdetail.NumberDetailFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class AccountDetailsFragment :
@@ -31,14 +35,11 @@ class AccountDetailsFragment :
         binding?.accountDetailsDeleteBtn?.setSafeOnClickListener {
             findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
         }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
-            DELETE_USER)?.safeSingleObserve(viewLifecycleOwner) {
-            viewModel.deleteUser()
-        }
 
         binding?.accountDetailsNewNameBtn?.setSafeOnClickListener {
             viewModel.renameUser(binding?.accountDetailsNewNameInput?.text.toString())
         }
+
         binding?.accountDetailsNewPasswordBtn?.setSafeOnClickListener {
             if (binding?.accountDetailsNewPasswordCreate?.text.toString() == binding?.accountDetailsNewPasswordConfirm?.text.toString()) {
                 viewModel.changePassword(binding?.accountDetailsNewPasswordConfirm?.text.toString())
@@ -51,6 +52,10 @@ class AccountDetailsFragment :
             BlackListerApp.instance?.isLoggedInUser().isTrue().not()
         binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
             findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
+        }
+
+        setFragmentResultListener(DELETE_USER) { _, _ ->
+            viewModel.deleteUser()
         }
     }
 

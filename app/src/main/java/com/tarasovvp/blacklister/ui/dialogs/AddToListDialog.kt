@@ -1,7 +1,9 @@
 package com.tarasovvp.blacklister.ui.dialogs
 
-import androidx.navigation.fragment.findNavController
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.tarasovvp.blacklister.constants.Constants.ADD_TO_LIST
+import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.databinding.DialogAddToListBinding
 import com.tarasovvp.blacklister.ui.base.BaseDialog
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -15,8 +17,8 @@ class AddToListDialog : BaseDialog<DialogAddToListBinding>() {
             dismiss()
         }
         binding?.dialogAddToListConfirm?.setSafeOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(ADD_TO_LIST,
-                binding?.dialogAddToListPriority?.isChecked)
+            setFragmentResult(ADD_TO_LIST,
+                bundleOf(WHITE_LIST to binding?.dialogAddToListPriority?.isChecked))
             dismiss()
         }
     }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
@@ -53,8 +54,7 @@ class NumberAddFragment :
                 isBlackNumber = args.number?.isBlackNumber.isTrue()
             })
         }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
-            DELETE_NUMBER)?.safeSingleObserve(viewLifecycleOwner) {
+        setFragmentResultListener(DELETE_NUMBER) { _, _ ->
             args.number?.let {
                 viewModel.deleteNumber(it)
             }
@@ -84,9 +84,9 @@ class NumberAddFragment :
             numberAddStart.isChecked = number?.start.isTrue()
             numberAddContain.isChecked = number?.contain.isTrue()
             numberAddEnd.isChecked = number?.end.isTrue()
-            binding?.numberAddSubmit?.text = if (number?.number.isNullOrEmpty()
-                    .not() && args.number?.number == number?.number
-            ) getString(R.string.add_number) else getString(R.string.edit_number)
+            binding?.numberAddSubmit?.text =
+                if (number?.number.isNullOrEmpty().not() && args.number?.number == number?.number
+                ) getString(R.string.add_number) else getString(R.string.edit_number)
             binding?.numberAddSubmit?.isVisible = number?.number.isNullOrEmpty().not()
             binding?.numberDeleteSubmit?.isVisible = number?.number.isNullOrEmpty().not()
             Log.e("numberAddTAG", "NumberAddFragment initViewsWithData number $number")

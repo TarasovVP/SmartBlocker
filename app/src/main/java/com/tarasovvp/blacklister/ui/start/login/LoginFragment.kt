@@ -4,18 +4,24 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.EMAIL
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.constants.Constants.SERVER_CLIENT_ID
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
+import com.tarasovvp.blacklister.ui.main.numberdetail.NumberDetailFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
@@ -39,8 +45,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         setOnButtonsClick()
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
-            FORGOT_PASSWORD)?.safeSingleObserve(viewLifecycleOwner) { email ->
+        setFragmentResultListener(FORGOT_PASSWORD) { _, bundle ->
+            val email = bundle.getString(EMAIL, String.EMPTY)
             if (email.isNotEmpty()) {
                 viewModel.sendPasswordResetEmail(email)
             } else {

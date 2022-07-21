@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.dialogs
 
-import androidx.navigation.fragment.findNavController
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
@@ -21,7 +22,7 @@ class DeleteNumberDialog : BaseDialog<DialogInfoBinding>() {
             dismiss()
         }
         binding?.dialogInfoConfirm?.setSafeOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(DELETE_NUMBER, true)
+            setFragmentResult(DELETE_NUMBER, bundleOf())
             dismiss()
         }
     }
