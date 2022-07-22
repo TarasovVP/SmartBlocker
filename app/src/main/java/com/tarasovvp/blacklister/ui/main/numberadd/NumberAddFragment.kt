@@ -19,6 +19,7 @@ import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
+import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewModel>() {
@@ -46,9 +47,9 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
     private fun setExistNumberChecking() {
         viewModel.checkNumberExist(args.number?.number.orEmpty(),
             args.number?.isBlackNumber.isTrue())
-        binding?.numberAddInput?.doAfterTextChanged {
+        binding?.numberAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
             viewModel.checkNumberExist(it.toString(), args.number?.isBlackNumber.isTrue())
-        }
+        })
     }
 
     private fun initViewsWithData(number: Number?, isFromDb: Boolean) {

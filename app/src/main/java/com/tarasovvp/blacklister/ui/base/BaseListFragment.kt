@@ -3,10 +3,10 @@ package com.tarasovvp.blacklister.ui.base
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +18,7 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
+import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
 
@@ -60,20 +61,16 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).apply {
-            val searchView =
-                toolbar?.menu?.findItem(R.id.search_menu_item)?.actionView as? SearchView
-            searchView?.queryHint = getString(R.string.enter_phone_number)
-            searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(query: String?): Boolean {
-                    searchQuery = query
-                    searchDataList()
-                    return true
-                }
+            val searchView = SearchView(this)
+            toolbar?.menu?.findItem(R.id.search_menu_item)?.apply {
+                actionView = searchView
+            }
+            searchView.queryHint = getString(R.string.enter_phone_number)
+            searchView.setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
+                searchQuery = it
+                searchDataList()
             })
+
             toolbar?.menu?.findItem(R.id.settings_menu_item)?.setOnMenuItemClickListener {
                 findNavController().navigate(R.id.startSettingsListFragment)
                 return@setOnMenuItemClickListener true
