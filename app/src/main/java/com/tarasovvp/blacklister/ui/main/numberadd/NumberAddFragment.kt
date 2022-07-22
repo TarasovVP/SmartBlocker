@@ -16,15 +16,12 @@ import com.tarasovvp.blacklister.extensions.getViewsFromLayout
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Number
-import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class NumberAddFragment :
-    BaseFragment<FragmentNumberAddBinding, NumberAddViewModel>() {
+class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewModel>() {
 
     override fun getViewBinding() = FragmentNumberAddBinding.inflate(layoutInflater)
 
@@ -89,11 +86,8 @@ class NumberAddFragment :
         binding?.apply {
             numberDeleteSubmit.setSafeOnClickListener {
                 args.number?.let {
-                    if (it.isBlackNumber) {
-                        findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(blackNumber = it as BlackNumber))
-                    } else {
-                        findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(whiteNumber = it as WhiteNumber))
-                    }
+                    findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
+                        number = it))
                 }
             }
             numberAddSubmit.setSafeOnClickListener {

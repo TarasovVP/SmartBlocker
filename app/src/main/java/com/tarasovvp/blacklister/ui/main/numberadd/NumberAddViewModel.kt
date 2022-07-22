@@ -22,7 +22,6 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
     fun checkNumberExist(number: String, isBlackNumber: Boolean) {
         showProgress()
         launch {
-
             if (isBlackNumber) {
                 val blackNumber = blackNumberRepository.getBlackNumber(number)
                 existBlackNumberLiveData.postValue(blackNumber)

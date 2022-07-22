@@ -16,8 +16,7 @@ class DeleteNumberDialog : BaseDialog<DialogInfoBinding>() {
     private val args: DeleteNumberDialogArgs by navArgs()
 
     override fun initUI() {
-        binding?.dialogInfoTitle?.text = String.format(getString(R.string.delete),
-            if (args.blackNumber?.number.isNullOrEmpty()) args.whiteNumber?.number.orEmpty() else args.blackNumber?.number.orEmpty())
+        binding?.dialogInfoTitle?.text = String.format(getString(R.string.delete), args.number?.number.orEmpty())
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }

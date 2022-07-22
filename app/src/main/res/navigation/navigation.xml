@@ -155,14 +155,9 @@
         android:id="@+id/deleteNumberDialog"
         android:name="com.tarasovvp.blacklister.ui.dialogs.DeleteNumberDialog">
         <argument
-            android:name="blackNumber"
+            android:name="number"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.BlackNumber"
-            app:nullable="true" />
-        <argument
-            android:name="whiteNumber"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.WhiteNumber"
+            app:argType="com.tarasovvp.blacklister.model.Number"
             app:nullable="true" />
     </dialog>
 
