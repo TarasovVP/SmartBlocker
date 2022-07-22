@@ -14,8 +14,7 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
     private val blackNumberRepository = BlackNumberRepository
     private val whiteNumberRepository = WhiteNumberRepository
 
-    val existBlackNumberLiveData = MutableLiveData<BlackNumber?>()
-    val existWhiteNumberLiveData = MutableLiveData<WhiteNumber?>()
+    val existNumberLiveData = MutableLiveData<Number?>()
     val insertNumberLiveData = MutableLiveData<String>()
     val deleteNumberLiveData = MutableLiveData<String>()
 
@@ -23,10 +22,9 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
         showProgress()
         launch {
             if (isBlackNumber) {
-                val blackNumber = blackNumberRepository.getBlackNumber(number)
-                existBlackNumberLiveData.postValue(blackNumber)
+                existNumberLiveData.postValue(blackNumberRepository.getBlackNumber(number))
             } else {
-                existWhiteNumberLiveData.postValue(whiteNumberRepository.getWhiteNumber(number))
+                existNumberLiveData.postValue(whiteNumberRepository.getWhiteNumber(number))
             }
             hideProgress()
         }

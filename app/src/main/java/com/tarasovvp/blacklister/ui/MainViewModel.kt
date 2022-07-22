@@ -25,8 +25,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         launch {
             showProgress()
             realDataBaseRepository.getCurrentUser { currentUser ->
-                Log.e("allDataTAG",
-                    "MainViewModel getCurrentUser blackNumberList ${currentUser?.blackNumberList}")
                 SharedPreferencesUtil.isWhiteListPriority =
                     currentUser?.isWhiteListPriority.isTrue()
                 currentUser?.let { insertAllBlackNumbers(it) }
@@ -37,16 +35,12 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     private fun insertAllBlackNumbers(currentUser: CurrentUser) {
         launch {
             blackNumberRepository.insertAllBlackNumbers(currentUser.blackNumberList)
-            Log.e("allDataTAG",
-                "MainViewModel insertAllBlackNumbers blackNumberList ${currentUser.blackNumberList}")
             insertAllWhiteNumbers(currentUser.whiteNumberList)
         }
     }
 
     private fun insertAllWhiteNumbers(whiteNumberList: ArrayList<WhiteNumber>) {
         launch {
-
-            Log.e("allDataTAG", "MainViewModel insertAllWhiteNumbers")
             whiteNumberRepository.insertAllWhiteNumbers(whiteNumberList)
             getAllData()
         }

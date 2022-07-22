@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,7 +15,9 @@ import com.tarasovvp.blacklister.extensions.getViewsFromLayout
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Number
+import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
@@ -92,23 +93,26 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                 }
             }
             numberAddSubmit.setSafeOnClickListener {
-                viewModel.insertNumber(Number(number = numberAddInput.text.toString()).apply {
+                val number = if (args.number?.isBlackNumber.isTrue()) {
+                    BlackNumber(number = numberAddInput.text.toString())
+                } else {
+                    WhiteNumber(number = numberAddInput.text.toString())
+                }
+                number.apply {
                     start = numberAddStart.isChecked
                     contain = numberAddContain.isChecked
                     end = numberAddEnd.isChecked
                     isBlackNumber = args.number?.isBlackNumber.isTrue()
-                })
+                }
+                viewModel.insertNumber(number)
             }
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            existBlackNumberLiveData.observe(viewLifecycleOwner) { blackNumber ->
-                initViewsWithData(blackNumber, true)
-            }
-            existWhiteNumberLiveData.observe(viewLifecycleOwner) { whiteNumber ->
-                initViewsWithData(whiteNumber, true)
+            existNumberLiveData.observe(viewLifecycleOwner) { number ->
+                initViewsWithData(number, true)
             }
             insertNumberLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
                 handleSuccessNumberAction(String.format(getString(R.string.number_added), number))
