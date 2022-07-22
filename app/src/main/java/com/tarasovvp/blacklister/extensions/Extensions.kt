@@ -13,6 +13,7 @@ import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.ColorInt
@@ -405,4 +406,27 @@ fun Context.setAppLocale(language: String): Context {
     config.setLocale(locale)
     config.setLayoutDirection(locale)
     return createConfigurationContext(config)
+}
+
+fun <T> ViewGroup.getViewsFromLayout(
+    viewType: Class<T>,
+): ArrayList<T> {
+    return this.getViewsFromLayout(ArrayList(), viewType)
+}
+
+private fun <T> ViewGroup.getViewsFromLayout(
+    views: ArrayList<T>,
+    viewType: Class<T>
+): ArrayList<T> {
+    val childCount = this.childCount
+    for (i in 0 until childCount) {
+        val view = this.getChildAt(i)
+        if (viewType.isInstance(view)) {
+            val targetView = this.getChildAt(i) as T
+            views.add(targetView)
+        } else if (view is ViewGroup) {
+            view.getViewsFromLayout(views, viewType)
+        }
+    }
+    return views
 }

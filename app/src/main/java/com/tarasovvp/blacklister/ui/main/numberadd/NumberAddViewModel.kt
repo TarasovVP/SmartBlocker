@@ -14,11 +14,10 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
     private val blackNumberRepository = BlackNumberRepository
     private val whiteNumberRepository = WhiteNumberRepository
 
-    val insertBlackNumberLiveData = MutableLiveData<BlackNumber>()
-    val insertWhiteNumberLiveData = MutableLiveData<WhiteNumber>()
     val existBlackNumberLiveData = MutableLiveData<BlackNumber?>()
     val existWhiteNumberLiveData = MutableLiveData<WhiteNumber?>()
-    val deleteNumberLiveData = MutableLiveData<Boolean>()
+    val insertNumberLiveData = MutableLiveData<String>()
+    val deleteNumberLiveData = MutableLiveData<String>()
 
     fun checkNumberExist(number: String, isBlackNumber: Boolean) {
         showProgress()
@@ -39,11 +38,11 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
         launch {
             if (number.isBlackNumber) {
                 blackNumberRepository.insertBlackNumber(number as BlackNumber) {
-                    insertBlackNumberLiveData.postValue(number)
+                    insertNumberLiveData.postValue(number.number)
                 }
             } else {
                 whiteNumberRepository.insertWhiteNumber(number as WhiteNumber) {
-                    insertWhiteNumberLiveData.postValue(number)
+                    insertNumberLiveData.postValue(number.number)
                 }
             }
             hideProgress()
@@ -54,11 +53,11 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
         launch {
             if (number.isBlackNumber) {
                 blackNumberRepository.deleteBlackNumber(number as BlackNumber) {
-                    deleteNumberLiveData.postValue(true)
+                    deleteNumberLiveData.postValue(number.number)
                 }
             } else {
                 whiteNumberRepository.deleteWhiteNumber(number as WhiteNumber) {
-                    deleteNumberLiveData.postValue(true)
+                    deleteNumberLiveData.postValue(number.number)
                 }
             }
         }

@@ -2,6 +2,8 @@ package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
 import android.view.View
+import android.widget.CheckBox
+import android.widget.CompoundButton
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -10,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
+import com.tarasovvp.blacklister.extensions.getViewsFromLayout
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -32,27 +35,10 @@ class NumberAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.numberAddInput?.setText(args.number?.number.orEmpty())
+        binding?.numberAddIcon?.setImageResource(if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number)
         initViewsWithData(args.number, false)
         setExistNumberChecking()
-        binding?.numberDeleteSubmit?.setSafeOnClickListener {
-            args.number?.let {
-                if (it.isBlackNumber) {
-                    findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
-                        blackNumber = it as BlackNumber))
-                } else {
-                    findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
-                        whiteNumber = it as WhiteNumber))
-                }
-            }
-        }
-        binding?.numberAddSubmit?.setSafeOnClickListener {
-            viewModel.insertNumber(Number(number = binding?.numberAddInput?.text.toString()).apply {
-                start = binding?.numberAddStart?.isChecked.isTrue()
-                contain = binding?.numberAddContain?.isChecked.isTrue()
-                end = binding?.numberAddEnd?.isChecked.isTrue()
-                isBlackNumber = args.number?.isBlackNumber.isTrue()
-            })
-        }
+        setClickListeners()
         setFragmentResultListener(DELETE_NUMBER) { _, _ ->
             args.number?.let {
                 viewModel.deleteNumber(it)
@@ -78,14 +64,46 @@ class NumberAddFragment :
             numberDeleteSubmit.isVisible = isFromDb && number.isNotNull()
             numberAddSubmit.text =
                 if (isFromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
-            numberAddSubmit.isVisible = numberAddInput.text.isNotEmpty()
             numberAddStart.isChecked = number?.start.isTrue()
             numberAddContain.isChecked = number?.contain.isTrue()
             numberAddEnd.isChecked = number?.end.isTrue()
-            numberAddTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-                if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number,
-                0,
-                0)
+            setCheckChangeListeners(isFromDb, number)
+        }
+    }
+
+    private fun setCheckChangeListeners(fromDb: Boolean, number: Number?) {
+        binding?.apply {
+            numberAddSubmit.isVisible =
+                numberAddInput.text.isNotEmpty() && (fromDb && number.isNotNull() && numberAddStart.isChecked == number?.start.isTrue() && numberAddContain.isChecked == number?.contain.isTrue() && numberAddEnd.isChecked == number?.end.isTrue()).not()
+            val checkChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
+                numberAddSubmit.isVisible =
+                    numberAddInput.text.isNotEmpty() && (fromDb && number.isNotNull() && numberAddStart.isChecked == number?.start.isTrue() && numberAddContain.isChecked == number?.contain.isTrue() && numberAddEnd.isChecked == number?.end.isTrue()).not()
+            }
+            container.getViewsFromLayout(CheckBox::class.java).forEach { checkBox ->
+                checkBox.setOnCheckedChangeListener(checkChangeListener)
+            }
+        }
+    }
+
+    private fun setClickListeners() {
+        binding?.apply {
+            numberDeleteSubmit.setSafeOnClickListener {
+                args.number?.let {
+                    if (it.isBlackNumber) {
+                        findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(blackNumber = it as BlackNumber))
+                    } else {
+                        findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(whiteNumber = it as WhiteNumber))
+                    }
+                }
+            }
+            numberAddSubmit.setSafeOnClickListener {
+                viewModel.insertNumber(Number(number = numberAddInput.text.toString()).apply {
+                    start = numberAddStart.isChecked
+                    contain = numberAddContain.isChecked
+                    end = numberAddEnd.isChecked
+                    isBlackNumber = args.number?.isBlackNumber.isTrue()
+                })
+            }
         }
     }
 
@@ -97,13 +115,8 @@ class NumberAddFragment :
             existWhiteNumberLiveData.observe(viewLifecycleOwner) { whiteNumber ->
                 initViewsWithData(whiteNumber, true)
             }
-            insertBlackNumberLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumber ->
-                handleSuccessNumberAction(String.format(getString(R.string.number_added),
-                    blackNumber.number))
-            }
-            insertWhiteNumberLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumber ->
-                handleSuccessNumberAction(String.format(getString(R.string.number_added),
-                    whiteNumber.number))
+            insertNumberLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
+                handleSuccessNumberAction(String.format(getString(R.string.number_added), number))
             }
             deleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
                 handleSuccessNumberAction(String.format(getString(R.string.delete_number_from_list),
