@@ -102,4 +102,6 @@
     <string name="add_filter_message">Для добавления фильтра введите цифры в поле ввода, отметьте условия применения(по необходимости) и нажмите кнопку подтверждения</string>
     <string name="add_filter_with_number_message">Для добавления фильтра %s отметьте условия применения(по необходимости) и нажмите кнопку подтверждения</string>
     <string name="edit_filter_with_number_message">Для редактирования фильтра %s измените условия применения и нажмите кнопку подтверждения</string>
+    <string name="black_list_empty">Нет совпадений из черного списка</string>
+    <string name="white_list_empty">Нет совпадений из белого списка</string>
 </resources>

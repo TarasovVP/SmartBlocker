@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.repository
 
 import com.tarasovvp.blacklister.BlackListerApp
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.BlackNumber
 
@@ -16,7 +15,7 @@ object BlackNumberRepository {
     }
 
     fun allBlackNumbers(): List<BlackNumber>? {
-        return blackNumberDao?.getAllBlackNumbers()
+        return blackNumberDao?.allBlackNumbers()
     }
 
     fun getBlackNumber(number: String): BlackNumber? {
@@ -64,7 +63,7 @@ object BlackNumberRepository {
     }
 
     fun getBlackNumberList(blackNumber: String): List<BlackNumber>? {
-        return blackNumberDao?.getBlackNumberList(blackNumber)
+        return blackNumberDao?.queryBlackNumberList(blackNumber)
     }
 
 }

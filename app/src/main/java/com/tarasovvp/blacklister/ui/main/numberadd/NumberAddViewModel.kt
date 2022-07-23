@@ -3,9 +3,11 @@ package com.tarasovvp.blacklister.ui.main.numberadd
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.repository.BlackNumberRepository
+import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.WhiteNumberRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
@@ -13,10 +15,12 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
 
     private val blackNumberRepository = BlackNumberRepository
     private val whiteNumberRepository = WhiteNumberRepository
+    private val contactRepository = ContactRepository
 
     val existNumberLiveData = MutableLiveData<Number?>()
     val insertNumberLiveData = MutableLiveData<String>()
     val deleteNumberLiveData = MutableLiveData<String>()
+    val queryContactListLiveData = MutableLiveData<List<Contact>>()
 
     fun checkNumberExist(number: String, isBlackNumber: Boolean) {
         showProgress()
@@ -27,6 +31,13 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
                 existNumberLiveData.postValue(whiteNumberRepository.getWhiteNumber(number))
             }
             hideProgress()
+        }
+    }
+
+    fun checkContactListByNumber(number: Number) {
+        showProgress()
+        launch {
+            queryContactListLiveData.postValue(contactRepository.getQueryContacts(number).orEmpty())
         }
     }
 

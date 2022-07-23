@@ -14,6 +14,9 @@ interface ContactDao {
     @Query("SELECT * FROM contact WHERE phone = :phone")
     fun getContactByPhone(phone: String): Contact?
 
+    @Query("SELECT * FROM contact WHERE (phone = :number) OR (phone LIKE '%' || :number || '%' AND :contain) OR (phone LIKE :number || '%' AND :start) OR (phone LIKE '%' || :number AND :end)")
+    fun queryContactList(number: String, contain: Boolean, start: Boolean, end: Boolean): List<Contact>
+
     @Update
     fun updateContact(contact: Contact)
 

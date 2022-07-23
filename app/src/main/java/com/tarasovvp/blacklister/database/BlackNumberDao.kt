@@ -12,13 +12,13 @@ interface BlackNumberDao {
     fun insertBlackNumber(blackNumbers: BlackNumber)
 
     @Query("SELECT * FROM blackNumber")
-    fun getAllBlackNumbers(): List<BlackNumber>
+    fun allBlackNumbers(): List<BlackNumber>
 
     @Query("SELECT * FROM blackNumber WHERE number = :blackNumber")
     fun getBlackNumber(blackNumber: String): BlackNumber?
 
     @Query("SELECT * FROM blackNumber WHERE (number = :blackNumber) OR (:blackNumber LIKE '%' || number || '%' AND contain = 1) OR (:blackNumber LIKE number || '%' AND start = 1) OR (:blackNumber LIKE '%' || number AND `end` = 1)")
-    fun getBlackNumberList(blackNumber: String): List<BlackNumber>
+    fun queryBlackNumberList(blackNumber: String): List<BlackNumber>
 
     @Delete
     fun delete(blackNumber: BlackNumber)

@@ -18,7 +18,7 @@ class NumberListViewModel(application: Application) : BaseViewModel(application)
     private val blackNumberRepository = BlackNumberRepository
     val numberHashMapLiveData = MutableLiveData<HashMap<String, List<Number>>?>()
 
-    fun getWhiteNumberList(isBlackList: Boolean) {
+    fun getNumberList(isBlackList: Boolean) {
         launch {
             showProgress()
             val numberList = if (isBlackList) {

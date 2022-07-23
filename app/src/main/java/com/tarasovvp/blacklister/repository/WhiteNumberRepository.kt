@@ -19,7 +19,7 @@ object WhiteNumberRepository {
     }
 
     fun allWhiteNumbers(): List<WhiteNumber>? {
-        return whiteNumberDao?.getAllWhiteNumbers()
+        return whiteNumberDao?.allWhiteNumbers()
     }
 
     fun getWhiteNumber(number: String): WhiteNumber? {
@@ -74,6 +74,6 @@ object WhiteNumberRepository {
         }
 
     fun getWhiteNumberList(whiteNumber: String): List<WhiteNumber>? {
-        return whiteNumberDao?.getWhiteNumberList(whiteNumber)
+        return whiteNumberDao?.queryWhiteNumberList(whiteNumber)
     }
 }

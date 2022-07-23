@@ -61,8 +61,7 @@ class NumberAdapter(val numberClickListener: NumberClickListener) :
             binding?.itemNumberDelete?.isChecked = number.isCheckedForDelete
             binding?.root?.setSafeOnClickListener {
                 if (isDeleteMode) {
-                    binding?.itemNumberDelete?.isChecked =
-                        binding?.itemNumberDelete?.isChecked.isTrue().not()
+                    binding?.itemNumberDelete?.isChecked = binding?.itemNumberDelete?.isChecked.isTrue().not()
                 } else {
                     numberClickListener.onNumberClick(number)
                 }

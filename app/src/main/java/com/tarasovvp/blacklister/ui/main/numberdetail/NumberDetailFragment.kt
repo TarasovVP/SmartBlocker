@@ -11,7 +11,6 @@ import com.tarasovvp.blacklister.constants.Constants.ADD_TO_LIST
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
 import com.tarasovvp.blacklister.databinding.ItemNumberBinding
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -47,10 +46,10 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                 setContactInfo(contact)
             }
             blackNumberLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumberList ->
-                setNumberList(blackNumberList)
+                setNumberList(blackNumberList, true)
             }
             whiteNumberLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumberList ->
-                setNumberList(whiteNumberList)
+                setNumberList(whiteNumberList, false)
             }
         }
     }
@@ -83,11 +82,11 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
         }
     }
 
-    private fun setNumberList(numberList: List<Number>) {
-        if (numberList.find { it.isBlackNumber }.isNotNull()) {
-            binding?.numberDetailBlackListTitle?.isVisible = numberList.isEmpty().not()
+    private fun setNumberList(numberList: List<Number>, isBlackList: Boolean) {
+        if (isBlackList) {
+            binding?.numberDetailBlackListEmpty?.isVisible = numberList.isEmpty()
         } else {
-            binding?.numberDetailWhiteListTitle?.isVisible = numberList.isEmpty().not()
+            binding?.numberDetailWhiteListEmpty?.isVisible = numberList.isEmpty()
         }
         numberList.forEach { number ->
             val itemNumber = ItemNumberBinding.inflate(layoutInflater)

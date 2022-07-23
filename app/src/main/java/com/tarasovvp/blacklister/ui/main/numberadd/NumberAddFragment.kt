@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -8,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
@@ -104,15 +106,33 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                     end = numberAddEnd.isChecked
                     isBlackNumber = args.number?.isBlackNumber.isTrue()
                 }
-                viewModel.insertNumber(number)
+                viewModel.checkContactListByNumber(getFilter())
             }
         }
+    }
+
+    fun getFilter(): Number {
+        val number = if (args.number?.isBlackNumber.isTrue()) {
+            BlackNumber(number = binding?.numberAddInput?.text.toString())
+        } else {
+            WhiteNumber(number = binding?.numberAddInput?.text.toString())
+        }
+        number.apply {
+            start = binding?.numberAddStart?.isChecked.isTrue()
+            contain = binding?.numberAddContain?.isChecked.isTrue()
+            end = binding?.numberAddEnd?.isChecked.isTrue()
+            isBlackNumber = args.number?.isBlackNumber.isTrue()
+        }
+        return number
     }
 
     override fun observeLiveData() {
         with(viewModel) {
             existNumberLiveData.observe(viewLifecycleOwner) { number ->
                 initViewsWithData(number, true)
+            }
+            queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) {
+                Log.e("checkContactTAG", "NumberAddFragment contactList ${Gson().toJson(it)}")
             }
             insertNumberLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
                 handleSuccessNumberAction(String.format(getString(R.string.number_added), number))

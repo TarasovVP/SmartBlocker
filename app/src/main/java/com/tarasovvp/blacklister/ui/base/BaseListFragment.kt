@@ -77,7 +77,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
             }
             mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                 this@BaseListFragment.getData()
-                Log.e("getAllDataTAG", "BaseListFragment observeLiveData successAllDataLiveData ")
             }
         }
     }

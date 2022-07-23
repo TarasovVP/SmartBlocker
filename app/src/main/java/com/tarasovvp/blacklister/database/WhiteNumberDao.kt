@@ -12,13 +12,13 @@ interface WhiteNumberDao {
     fun insertWhiteNumber(whiteNumber: WhiteNumber)
 
     @Query("SELECT * FROM whiteNumber")
-    fun getAllWhiteNumbers(): List<WhiteNumber>
+    fun allWhiteNumbers(): List<WhiteNumber>
 
     @Query("SELECT * FROM whiteNumber WHERE number = :whiteNumber")
     fun getWhiteNumber(whiteNumber: String): WhiteNumber?
 
     @Query("SELECT * FROM whiteNumber WHERE (number = :whiteNumber) OR (:whiteNumber LIKE '%' || number || '%' AND contain = 1) OR (:whiteNumber LIKE number || '%' AND start = 1) OR (:whiteNumber LIKE '%' || number AND `end` = 1)")
-    fun getWhiteNumberList(whiteNumber: String): List<WhiteNumber>
+    fun queryWhiteNumberList(whiteNumber: String): List<WhiteNumber>
 
     @Delete
     fun delete(whiteNumber: WhiteNumber)

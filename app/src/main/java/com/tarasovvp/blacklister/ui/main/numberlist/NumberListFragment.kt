@@ -11,7 +11,6 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Number
-import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -58,14 +57,15 @@ open class NumberListFragment :
             numberList?.forEach { it.isCheckedForDelete = checked }
             adapter?.notifyDataSetChanged()
         }
+        setClickListeners()
+    }
+
+    private fun setClickListeners() {
         binding?.numberListDeleteBtn?.setSafeOnClickListener {
-            viewModel.deleteNumberList(numberList?.filter { it.isCheckedForDelete }.orEmpty(),
-                this is BlackNumberListFragment)
+            viewModel.deleteNumberList(numberList?.filter { it.isCheckedForDelete }.orEmpty(), this is BlackNumberListFragment)
         }
         binding?.numberListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(number = Number().apply {
-                isBlackNumber = this@NumberListFragment is BlackNumberListFragment
-            }))
+            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(number = Number().apply { isBlackNumber = this@NumberListFragment is BlackNumberListFragment }))
         }
         binding?.numberListFilter?.setSafeOnClickListener {
             filterDataList()
@@ -94,8 +94,7 @@ open class NumberListFragment :
         val filterItems = arrayOf(getString(R.string.black_number_contain),
             getString(R.string.black_number_start),
             getString(R.string.black_number_end))
-        val builder =
-            AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
         builder.setMultiChoiceItems(filterItems, selectedFilterItems
         ) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
         builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
@@ -148,7 +147,7 @@ open class NumberListFragment :
     }
 
     override fun getData() {
-        viewModel.getWhiteNumberList(this is BlackNumberListFragment)
+        viewModel.getNumberList(this is BlackNumberListFragment)
     }
 }
 

@@ -5,6 +5,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.contactList
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.Number
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -18,6 +19,10 @@ object ContactRepository {
 
     fun getAllContacts(): List<Contact>? {
         return dao?.getAllContacts()
+    }
+
+    fun getQueryContacts(number: Number): List<Contact>? {
+        return dao?.queryContactList(number.number, number.contain, number.start, number.end)
     }
 
     fun getContactByNumber(phone: String): Contact? {
