@@ -200,6 +200,9 @@
         <action
             android:id="@+id/startDeleteNumberDialog"
             app:destination="@id/deleteNumberDialog" />
+        <action
+            android:id="@+id/startBlockSettingsFragment"
+            app:destination="@id/blockSettingsFragment" />
     </fragment>
 
 </navigation>

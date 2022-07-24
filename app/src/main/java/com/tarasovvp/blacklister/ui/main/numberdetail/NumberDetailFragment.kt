@@ -17,6 +17,7 @@ import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.base.BaseFragment
+import com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDetailViewModel>() {
@@ -29,6 +30,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setPriority()
         args.number?.let { number ->
             if (number.isEmpty()) {
                 viewModel.numberDetailLiveData.postValue(Contact(name = getString(R.string.hidden)))
@@ -54,6 +56,14 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
         }
     }
 
+    private fun setPriority() {
+        binding?.numberDetailPriority?.text = String.format(getString(R.string.prioritness), if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(R.string.black_list))
+        binding?.numberDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number, 0, R.drawable.ic_edit, 0)
+        binding?.numberDetailPriority?.setSafeOnClickListener {
+            findNavController().navigate(NumberAddFragmentDirections.startBlockSettingsFragment())
+        }
+    }
+
     private fun setContactInfo(contact: Contact) {
         binding?.apply {
             numberDetailName.text = contact.name
@@ -69,9 +79,6 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
                     R.string.black_list))
             numberDetailAddFilter.setSafeOnClickListener {
                 findNavController().navigate(NumberDetailFragmentDirections.startAddToListDialog())
-            }
-            numberDetailPriority.setSafeOnClickListener {
-                findNavController().navigate(NumberDetailFragmentDirections.startBlockSettingsFragment())
             }
         }
         setFragmentResultListener(ADD_TO_LIST) { _, bundle ->

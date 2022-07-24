@@ -17,6 +17,7 @@ import com.tarasovvp.blacklister.extensions.getViewsFromLayout
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.BlackNumber
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
@@ -37,6 +38,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
         super.onViewCreated(view, savedInstanceState)
         binding?.numberAddInput?.setText(args.number?.number.orEmpty())
         binding?.numberAddIcon?.setImageResource(if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number)
+        setPriority()
         initViewsWithData(args.number, false)
         setExistNumberChecking()
         setClickListeners()
@@ -44,6 +46,14 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             args.number?.let {
                 viewModel.deleteNumber(it)
             }
+        }
+    }
+
+    private fun setPriority() {
+        binding?.numberAddPriority?.text = String.format(getString(R.string.prioritness), if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(R.string.black_list))
+        binding?.numberAddPriority?.setCompoundDrawablesWithIntrinsicBounds(if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number, 0, R.drawable.ic_edit, 0)
+        binding?.numberAddPriority?.setSafeOnClickListener {
+            findNavController().navigate(NumberAddFragmentDirections.startBlockSettingsFragment())
         }
     }
 
@@ -55,30 +65,37 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
         })
     }
 
-    private fun initViewsWithData(number: Number?, isFromDb: Boolean) {
+    private fun initViewsWithData(number: Number?, fromDb: Boolean) {
         binding?.apply {
             numberAddTitle.text =
                 if (numberAddInput.text.isEmpty()) getString(R.string.add_filter_message) else String.format(
-                    if (isFromDb && number.isNotNull()) getString(R.string.edit_filter_with_number_message) else getString(
+                    if (fromDb && number.isNotNull()) getString(R.string.edit_filter_with_number_message) else getString(
                         R.string.add_filter_with_number_message),
                     binding?.numberAddInput?.text)
-            numberDeleteSubmit.isVisible = isFromDb && number.isNotNull()
+            numberDeleteSubmit.isVisible = fromDb && number.isNotNull()
             numberAddSubmit.text =
-                if (isFromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
+                if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
             numberAddStart.isChecked = number?.start.isTrue()
             numberAddContain.isChecked = number?.contain.isTrue()
             numberAddEnd.isChecked = number?.end.isTrue()
-            setCheckChangeListeners(isFromDb, number)
+            setCheckChangeListeners(fromDb, number)
+            numberAddInfo.isVisible =
+                numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
+            if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
+                viewModel.checkContactListByNumber(getNumber())
+            }
         }
     }
 
     private fun setCheckChangeListeners(fromDb: Boolean, number: Number?) {
         binding?.apply {
-            numberAddSubmit.isVisible =
-                numberAddInput.text.isNotEmpty() && (fromDb && number.isNotNull() && numberAddStart.isChecked == number?.start.isTrue() && numberAddContain.isChecked == number?.contain.isTrue() && numberAddEnd.isChecked == number?.end.isTrue()).not()
+            numberAddSubmit.isVisible = existNumber(fromDb, number)
             val checkChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
-                numberAddSubmit.isVisible =
-                    numberAddInput.text.isNotEmpty() && (fromDb && number.isNotNull() && numberAddStart.isChecked == number?.start.isTrue() && numberAddContain.isChecked == number?.contain.isTrue() && numberAddEnd.isChecked == number?.end.isTrue()).not()
+                numberAddSubmit.isVisible = existNumber(fromDb, number)
+                if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
+                    viewModel.checkContactListByNumber(getNumber())
+                }
+                numberAddInfo.isVisible = numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
             }
             container.getViewsFromLayout(CheckBox::class.java).forEach { checkBox ->
                 checkBox.setOnCheckedChangeListener(checkChangeListener)
@@ -95,23 +112,16 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                 }
             }
             numberAddSubmit.setSafeOnClickListener {
-                val number = if (args.number?.isBlackNumber.isTrue()) {
-                    BlackNumber(number = numberAddInput.text.toString())
-                } else {
-                    WhiteNumber(number = numberAddInput.text.toString())
-                }
-                number.apply {
-                    start = numberAddStart.isChecked
-                    contain = numberAddContain.isChecked
-                    end = numberAddEnd.isChecked
-                    isBlackNumber = args.number?.isBlackNumber.isTrue()
-                }
-                viewModel.checkContactListByNumber(getFilter())
+                viewModel.insertNumber(getNumber())
             }
         }
     }
 
-    fun getFilter(): Number {
+    private fun existNumber(fromDb: Boolean, number: Number?): Boolean {
+        return binding?.numberAddInput?.text.isNullOrEmpty().not() && (fromDb && number.isNotNull() && binding?.numberAddStart?.isChecked == number?.start && binding?.numberAddContain?.isChecked == number?.contain && binding?.numberAddEnd?.isChecked == number?.end)
+    }
+
+    private fun getNumber(): Number {
         val number = if (args.number?.isBlackNumber.isTrue()) {
             BlackNumber(number = binding?.numberAddInput?.text.toString())
         } else {
@@ -131,8 +141,12 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             existNumberLiveData.observe(viewLifecycleOwner) { number ->
                 initViewsWithData(number, true)
             }
-            queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) {
-                Log.e("checkContactTAG", "NumberAddFragment contactList ${Gson().toJson(it)}")
+            queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+                binding?.numberAddInfo?.isVisible = contactList.isNotEmpty()
+                binding?.numberAddInfo?.text =
+                    "Могут быть заблокированы номеров ${contactList.size} контактов из списка ваших контактов"
+                Log.e("checkContactTAG",
+                    "NumberAddFragment contactList ${Gson().toJson(contactList)}")
             }
             insertNumberLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
                 handleSuccessNumberAction(String.format(getString(R.string.number_added), number))

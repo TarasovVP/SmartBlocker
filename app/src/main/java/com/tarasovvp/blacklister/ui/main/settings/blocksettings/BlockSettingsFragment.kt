@@ -38,6 +38,7 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
         binding?.blockSettingsPriority?.isChecked = SharedPreferencesUtil.isWhiteListPriority
         binding?.blockSettingsPriority?.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changePriority(isChecked)
+            (activity as MainActivity).getAllData()
         }
     }
 

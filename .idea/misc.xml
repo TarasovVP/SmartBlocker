@@ -6,12 +6,14 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.2015625" />
         <entry key="../../.gradle/caches/transforms-3/539dedf4db2a966ad233aa0d2bf8dc72/transformed/appcompat-1.3.0/res/drawable/abc_ic_clear_material.xml" value="0.24375" />
         <entry key="../../Library/Android/sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.24270833333333333" />
+        <entry key="app/src/main/res/drawable/ic_add.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_arrow_forward.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/ic_arrow_transparent.xml" value="0.36614583333333334" />
         <entry key="app/src/main/res/drawable/ic_black_number.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/ic_block.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/ic_contact_avatar.xml" value="0.2109375" />
         <entry key="app/src/main/res/drawable/ic_contain.xml" value="0.234375" />
+        <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_end.xml" value="0.234375" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.122" />
         <entry key="app/src/main/res/drawable/ic_incoming_call.xml" value="0.2682291666666667" />
