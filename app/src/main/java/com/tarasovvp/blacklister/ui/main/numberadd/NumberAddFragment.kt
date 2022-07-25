@@ -72,15 +72,13 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                     if (fromDb && number.isNotNull()) getString(R.string.edit_filter_with_number_message) else getString(
                         R.string.add_filter_with_number_message),
                     binding?.numberAddInput?.text)
-            numberDeleteSubmit.isVisible = fromDb && number.isNotNull()
-            numberAddSubmit.text =
-                if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
+            numberAddSubmit.isVisible = numberAddInput.text.isNotEmpty()
+            numberAddSubmit.text = if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
             numberAddStart.isChecked = number?.start.isTrue()
             numberAddContain.isChecked = number?.contain.isTrue()
             numberAddEnd.isChecked = number?.end.isTrue()
             setCheckChangeListeners(fromDb, number)
-            numberAddInfo.isVisible =
-                numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
+            numberAddInfo.isVisible = numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
             if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
                 viewModel.checkContactListByNumber(getNumber())
             }
@@ -89,9 +87,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
 
     private fun setCheckChangeListeners(fromDb: Boolean, number: Number?) {
         binding?.apply {
-            numberAddSubmit.isVisible = existNumber(fromDb, number)
             val checkChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
-                numberAddSubmit.isVisible = existNumber(fromDb, number)
                 if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
                     viewModel.checkContactListByNumber(getNumber())
                 }
@@ -143,8 +139,10 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 binding?.numberAddInfo?.isVisible = contactList.isNotEmpty()
-                binding?.numberAddInfo?.text =
-                    "Могут быть заблокированы номеров ${contactList.size} контактов из списка ваших контактов"
+                binding?.numberAddInfo?.text = String.format(getString(R.string.block_add_info), contactList.size)
+                binding?.numberAddInfo?.setSafeOnClickListener {
+                    findNavController().navigate(NumberAddFragmentDirections.startContactListFragment(getNumber()))
+                }
                 Log.e("checkContactTAG",
                     "NumberAddFragment contactList ${Gson().toJson(contactList)}")
             }

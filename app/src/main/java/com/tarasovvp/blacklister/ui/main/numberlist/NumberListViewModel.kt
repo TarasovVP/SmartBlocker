@@ -3,9 +3,11 @@ package com.tarasovvp.blacklister.ui.main.numberlist
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.repository.BlackNumberRepository
+import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.WhiteNumberRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
@@ -16,6 +18,8 @@ class NumberListViewModel(application: Application) : BaseViewModel(application)
 
     private val whiteNumberRepository = WhiteNumberRepository
     private val blackNumberRepository = BlackNumberRepository
+    private val contactRepository = ContactRepository
+
     val numberHashMapLiveData = MutableLiveData<HashMap<String, List<Number>>?>()
 
     fun getNumberList(isBlackList: Boolean) {

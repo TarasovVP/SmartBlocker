@@ -53,6 +53,11 @@
         <action
             android:id="@+id/startNumberDetailFragment"
             app:destination="@id/numberDetailFragment" />
+        <argument
+            android:name="number"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Number"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -203,6 +208,9 @@
         <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
+        <action
+            android:id="@+id/startContactListFragment"
+            app:destination="@id/contactListFragment" />
     </fragment>
 
 </navigation>

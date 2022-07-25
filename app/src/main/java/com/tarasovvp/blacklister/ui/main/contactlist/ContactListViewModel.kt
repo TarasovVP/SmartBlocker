@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.main.contactlist
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
@@ -21,6 +22,13 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
                 contactLiveData.postValue(this)
             }
             hideProgress()
+        }
+    }
+
+    fun checkContactListByNumber(number: Number) {
+        showProgress()
+        launch {
+            contactLiveData.postValue(contactRepository.getQueryContacts(number).orEmpty())
         }
     }
 

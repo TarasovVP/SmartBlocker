@@ -2,7 +2,9 @@ package com.tarasovvp.blacklister.ui.main.contactlist
 
 import android.util.Log
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Contact
@@ -17,6 +19,7 @@ class ContactListFragment :
     override fun getViewBinding() = FragmentContactListBinding.inflate(layoutInflater)
 
     override val viewModelClass = ContactListViewModel::class.java
+    private val args: ContactListFragmentArgs by navArgs()
 
     private var contactList: List<Contact>? = null
 
@@ -80,6 +83,10 @@ class ContactListFragment :
 
     override fun getData() {
         Log.e("getAllDataTAG", "ContactListFragment getAllData")
-        viewModel.getContactList()
+        if (args.number.isNotNull()) {
+            args.number?.let { viewModel.checkContactListByNumber(it) }
+        } else {
+            viewModel.getContactList()
+        }
     }
 }
