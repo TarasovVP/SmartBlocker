@@ -28,7 +28,11 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
     fun checkContactListByNumber(number: Number) {
         showProgress()
         launch {
-            contactLiveData.postValue(contactRepository.getQueryContacts(number).orEmpty())
+            val contactList = contactRepository.getQueryContacts(number).orEmpty()
+            contactList.forEach {
+                it.isBlackList = true
+            }
+            contactLiveData.postValue(contactList)
         }
     }
 

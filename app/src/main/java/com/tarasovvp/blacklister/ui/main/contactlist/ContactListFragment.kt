@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.contactlist
 
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
@@ -13,7 +14,7 @@ import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import java.util.*
 
-class ContactListFragment :
+open class ContactListFragment :
     BaseListFragment<FragmentContactListBinding, ContactListViewModel, Contact>() {
 
     override fun getViewBinding() = FragmentContactListBinding.inflate(layoutInflater)
@@ -36,6 +37,8 @@ class ContactListFragment :
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
         emptyListText = binding?.contactListEmpty
+        Log.e("contactTAG", "ContactListFragment this $this")
+        binding?.contactListCheck?.isVisible = (this is ContactBlackListFragment).not()
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
         }

@@ -141,7 +141,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                 binding?.numberAddInfo?.isVisible = contactList.isNotEmpty()
                 binding?.numberAddInfo?.text = String.format(getString(R.string.block_add_info), contactList.size)
                 binding?.numberAddInfo?.setSafeOnClickListener {
-                    findNavController().navigate(NumberAddFragmentDirections.startContactListFragment(getNumber()))
+                    findNavController().navigate(NumberAddFragmentDirections.startContactBlackListFragment(getNumber()))
                 }
                 Log.e("checkContactTAG",
                     "NumberAddFragment contactList ${Gson().toJson(contactList)}")
