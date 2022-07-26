@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_bg"
     android:visibility="gone"
-    android:padding="@dimen/padding_20">
+    android:padding="@dimen/padding_16">
 
     <TextView
         android:id="@+id/no_account_title"

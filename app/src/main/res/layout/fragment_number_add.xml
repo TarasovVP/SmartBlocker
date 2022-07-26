@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_16">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_container"
@@ -18,25 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/number_add_left_gd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.04" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/number_add_right_gd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.96" />
-
             <TextView
                 android:id="@+id/number_add_priority"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
                 android:drawablePadding="@dimen/padding_10"
                 android:text="@string/prioritness"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,77 +30,86 @@
 
             <ImageView
                 android:id="@+id/number_add_icon"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="@dimen/margin_15"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_5"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_priority"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-
             <TextView
                 android:id="@+id/number_add_title"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/padding_10"
-                app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
-                app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_icon" />
 
             <EditText
                 android:id="@+id/number_add_input"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
+                android:layout_marginTop="@dimen/margin_15"
                 android:hint="@string/enter_number"
                 android:inputType="numberDecimal"
-                app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
-                app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_title"
                 tools:ignore="Autofill,LabelFor,TextFields" />
 
+            <TextView
+                android:id="@+id/number_add_conditions_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:textColor="@color/white"
+                android:text="@string/add_conditions_title"
+                app:layout_constraintTop_toBottomOf="@+id/number_add_input" />
+
+            <TextView
+                android:id="@+id/number_add_conditions_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_5"
+                android:drawablePadding="@dimen/padding_10"
+                android:alpha="0.6"
+                android:textColor="@color/white"
+                android:text="@string/add_conditions_info"
+                app:layout_constraintTop_toBottomOf="@+id/number_add_conditions_title"
+                app:drawableStartCompat="@drawable/ic_info"/>
+
             <CheckBox
                 android:id="@+id/number_add_contain"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/black_number_contain"
-                app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
-                app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_input" />
+                app:layout_constraintTop_toBottomOf="@+id/number_add_conditions_info" />
 
             <CheckBox
                 android:id="@+id/number_add_start"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/black_number_start"
-                app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
-                app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_contain" />
 
             <CheckBox
                 android:id="@+id/number_add_end"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
+                android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/black_number_end"
-                app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
-                app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_start" />
 
             <TextView
                 android:id="@+id/number_add_info"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_25"
+                android:layout_marginTop="@dimen/margin_25"
                 android:gravity="center"
                 android:drawablePadding="@dimen/padding_10"
                 android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/number_add_right_gd"
-                app:layout_constraintStart_toEndOf="@+id/number_add_left_gd"
+                android:paddingBottom="@dimen/padding_16"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_end"
                 app:drawableStartCompat="@drawable/ic_info"
                 app:drawableEndCompat="@drawable/ic_arrow_forward" />
@@ -126,7 +121,6 @@
         android:id="@+id/number_delete_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_16"
         android:layout_marginBottom="@dimen/margin_16"
         android:text="@string/delete_menu"
         android:visibility="gone"
@@ -137,8 +131,6 @@
         android:id="@+id/number_add_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_16"
-        android:layout_marginBottom="@dimen/margin_16"
         android:text="@string/add"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />

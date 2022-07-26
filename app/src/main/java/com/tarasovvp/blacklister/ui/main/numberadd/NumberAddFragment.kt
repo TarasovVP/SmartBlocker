@@ -35,6 +35,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).toolbar?.title = if (args.number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
         binding?.numberAddInput?.setText(args.number?.number.orEmpty())
         binding?.numberAddIcon?.setImageResource(if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number)
         setPriority()

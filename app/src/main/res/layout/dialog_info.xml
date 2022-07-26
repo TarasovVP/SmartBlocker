@@ -10,33 +10,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_bg">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/dialog_info_left_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.085" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/dialog_info_right_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.915" />
+        android:background="@color/main_bg"
+        android:padding="@dimen/padding_16">
 
         <TextView
             android:id="@+id/dialog_info_title"
-            android:layout_width="@dimen/size_0"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_15"
             android:textSize="@dimen/text_size_14"
             android:gravity="center"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/dialog_info_cancel"
-            app:layout_constraintEnd_toStartOf="@+id/dialog_info_right_guideline"
-            app:layout_constraintStart_toEndOf="@+id/dialog_info_left_guideline"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -49,7 +34,7 @@
             android:layout_marginEnd="@dimen/margin_10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dialog_info_confirm"
-            app:layout_constraintStart_toEndOf="@+id/dialog_info_left_guideline"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dialog_info_title" />
 
         <Button
@@ -60,7 +45,7 @@
             android:theme="@style/StrokeButton"
             android:layout_marginStart="@dimen/margin_10"
             app:layout_constraintBottom_toBottomOf="@+id/dialog_info_cancel"
-            app:layout_constraintEnd_toStartOf="@+id/dialog_info_right_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/dialog_info_cancel"
             app:layout_constraintTop_toTopOf="@+id/dialog_info_cancel" />
 

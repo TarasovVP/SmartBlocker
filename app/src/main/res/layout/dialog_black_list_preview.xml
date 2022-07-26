@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_bg"
-            android:padding="@dimen/padding_10">
+            android:padding="@dimen/padding_16">
 
             <TextView
                 android:id="@+id/dialog_black_list_preview_title"

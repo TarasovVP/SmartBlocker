@@ -10,11 +10,9 @@ import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
@@ -33,7 +31,8 @@ open class NumberListFragment :
         return context?.let {
             NumberAdapter(object : NumberClickListener {
                 override fun onNumberClick(number: Number) {
-                    findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(number = number))
+                    findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
+                        number = number))
                 }
 
                 override fun onNumberLongClick() {
@@ -65,10 +64,14 @@ open class NumberListFragment :
 
     private fun setClickListeners() {
         binding?.numberListDeleteBtn?.setSafeOnClickListener {
-            viewModel.deleteNumberList(numberList?.filter { it.isCheckedForDelete }.orEmpty(), this is BlackNumberListFragment)
+            viewModel.deleteNumberList(numberList?.filter { it.isCheckedForDelete }.orEmpty(),
+                this is BlackNumberListFragment)
         }
         binding?.numberListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(number = Number().apply { isBlackNumber = this@NumberListFragment is BlackNumberListFragment }))
+            findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(
+                number = Number().apply {
+                    isBlackNumber = this@NumberListFragment is BlackNumberListFragment
+                }))
         }
         binding?.numberListFilter?.setSafeOnClickListener {
             filterDataList()
@@ -77,6 +80,7 @@ open class NumberListFragment :
 
     private fun changeDeleteMode() {
         isDeleteMode = isDeleteMode.not()
+        binding?.numberListPriority?.isVisible = isDeleteMode.not()
         binding?.numberListFilter?.isVisible = isDeleteMode.not()
         binding?.numberListDeleteAll?.isVisible = isDeleteMode
         binding?.numberListDeleteBtn?.isVisible =
@@ -97,7 +101,8 @@ open class NumberListFragment :
         val filterItems = arrayOf(getString(R.string.black_number_contain),
             getString(R.string.black_number_start),
             getString(R.string.black_number_end))
-        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
+        val builder =
+            AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
         builder.setMultiChoiceItems(filterItems, selectedFilterItems
         ) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
         builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }

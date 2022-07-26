@@ -4,20 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/number_list_left_gd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/number_list_right_gd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96" />
-
     <TextView
         android:id="@+id/number_list_filter"
         android:layout_width="@dimen/size_0"
@@ -28,7 +14,7 @@
         app:drawableStartCompat="@drawable/ic_filter"
         app:layout_constraintBottom_toTopOf="@+id/number_list_delete_all"
         app:layout_constraintEnd_toStartOf="@+id/number_list_priority"
-        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -38,7 +24,7 @@
         android:layout_marginTop="@dimen/margin_10"
         android:drawablePadding="@dimen/padding_10"
         android:text="@string/prioritness"
-        app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
@@ -50,7 +36,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/number_list_refresh"
         app:layout_constraintEnd_toStartOf="@+id/number_list_delete_btn"
-        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/number_list_filter" />
 
     <ImageButton
@@ -61,17 +47,15 @@
         android:src="@drawable/ic_delete"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/number_list_delete_all"
-        app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"
+        app:layout_constraintEnd_toStartOf="@+id/number_list_priority"
         app:layout_constraintStart_toEndOf="@+id/number_list_delete_all"
         app:layout_constraintTop_toTopOf="@+id/number_list_delete_all" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/number_list_refresh"
-        android:layout_width="@dimen/size_0"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/size_0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"
-        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
         app:layout_constraintTop_toBottomOf="@+id/number_list_delete_all">
 
         <androidx.recyclerview.widget.RecyclerView

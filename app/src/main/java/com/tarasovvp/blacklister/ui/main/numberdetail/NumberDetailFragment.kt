@@ -57,8 +57,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     }
 
     private fun setPriority() {
-        binding?.numberDetailPriority?.text = String.format(getString(R.string.prioritness), if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(R.string.black_list))
-        binding?.numberDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number, 0, R.drawable.ic_edit, 0)
+        binding?.numberDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(0, 0, if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number, 0)
         binding?.numberDetailPriority?.setSafeOnClickListener {
             findNavController().navigate(NumberAddFragmentDirections.startBlockSettingsFragment())
         }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_5"
-    android:layout_marginHorizontal="@dimen/margin_20">
+    android:layout_marginHorizontal="@dimen/margin_16">
 
     <ImageView
         android:id="@+id/item_contact_avatar"
