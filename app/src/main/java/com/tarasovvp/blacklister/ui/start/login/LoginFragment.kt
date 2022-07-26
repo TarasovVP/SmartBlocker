@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -11,17 +12,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.EMAIL
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.constants.Constants.SERVER_CLIENT_ID
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.ui.main.numberdetail.NumberDetailFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
@@ -43,7 +41,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.actionBar?.hide()
         setOnButtonsClick()
         setFragmentResultListener(FORGOT_PASSWORD) { _, bundle ->
             val email = bundle.getString(EMAIL, String.EMPTY)
@@ -56,28 +53,30 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     }
 
     private fun setOnButtonsClick() {
-        binding?.continueButton?.setSafeOnClickListener {
-            if (binding?.email?.text.isNullOrEmpty() || binding?.password?.text.isNullOrEmpty()) {
-                showMessage(getString(R.string.enter_login_password), true)
-            } else {
-                viewModel.signInWithEmailAndPassword(binding?.email?.text.toString(),
-                    binding?.password?.text.toString())
+        binding?.apply {
+            loginContinue.setSafeOnClickListener {
+                if (loginEmailInput.text.isEmpty() || loginPasswordInput.text.isEmpty()) {
+                    showMessage(getString(R.string.enter_login_password), true)
+                } else {
+                    viewModel.signInWithEmailAndPassword(loginEmailInput.text.toString(),
+                        loginPasswordInput.text.toString())
+                }
             }
-        }
-        binding?.continueWithoutAccButton?.setSafeOnClickListener {
-            (activity as MainActivity).apply {
-                getAllData()
+            loginContinueWithoutAcc.setSafeOnClickListener {
+                (activity as MainActivity).apply {
+                    getAllData()
+                }
+                findNavController().navigate(R.id.callLogListFragment)
             }
-            findNavController().navigate(R.id.callLogListFragment)
-        }
-        binding?.register?.setSafeOnClickListener {
-            findNavController().navigate(R.id.startSignUpFragment)
-        }
-        binding?.buttonForgotPassword?.setSafeOnClickListener {
-            findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = binding?.email?.text.toString()))
-        }
-        binding?.googleAuth?.setSafeOnClickListener {
-            googleSignInLauncher.launch(googleSignInClient?.signInIntent)
+            loginSignUp.setSafeOnClickListener {
+                findNavController().navigate(R.id.startSignUpFragment)
+            }
+            loginForgotPassword.setSafeOnClickListener {
+                findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.text.toString()))
+            }
+            loginGoogleAuth.setSafeOnClickListener {
+                googleSignInLauncher.launch(googleSignInClient?.signInIntent)
+            }
         }
     }
 

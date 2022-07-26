@@ -17,10 +17,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
-        binding?.continueButton?.setSafeOnClickListener {
-            viewModel.createUserWithEmailAndPassword(binding?.email?.text.toString(),
-                binding?.password?.text.toString(),
-                binding?.name?.text.toString())
+        binding?.signUpContinue?.setSafeOnClickListener {
+            viewModel.createUserWithEmailAndPassword(binding?.signUpEmail?.text.toString(),
+                binding?.signUpRepeatPassword?.text.toString(),
+                binding?.signUpName?.text.toString())
         }
     }
 

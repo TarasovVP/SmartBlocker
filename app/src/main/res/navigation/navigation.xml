@@ -32,7 +32,8 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.signup.SignUpFragment" />
+        android:name="com.tarasovvp.blacklister.ui.start.signup.SignUpFragment"
+        android:label="@string/sign_up"/>
 
     <fragment
         android:id="@+id/callLogListFragment"

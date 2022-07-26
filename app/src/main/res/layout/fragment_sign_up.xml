@@ -1,199 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true"
+    android:padding="@dimen/padding_16">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_title_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.04" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_subtitle_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.12" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_socials_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_socials_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.28" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/left_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/right_facebook_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.46" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/left_google_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.54" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/right_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/sign_up_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign up with email"
-        app:layout_constraintBottom_toTopOf="@id/top_first_name_gl"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bot_socials_gl" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_first_name_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.36" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_first_name_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.44" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_last_name_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.47" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_last_name_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_email_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.58" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_email_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.66" />
+        android:text="@string/sign_up_with_email"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_35"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/name"
-        android:layout_width="0dp"
+        android:id="@+id/sign_up_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:hint="@string/name"
         android:inputType="text"
-        android:layout_marginVertical="@dimen/margin_15"
-        app:layout_constraintBottom_toTopOf="@id/email"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_first_name_gl" />
+        android:layout_marginTop="@dimen/margin_25"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_title" />
 
     <EditText
-        android:id="@+id/email"
-        android:layout_width="0dp"
+        android:id="@+id/sign_up_email"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@id/name"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintBottom_toTopOf="@id/password" />
+        android:layout_marginTop="@dimen/margin_15"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_name" />
 
     <EditText
-        android:id="@+id/password"
-        android:layout_width="0dp"
+        android:id="@+id/sign_up_password"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
-        android:layout_marginVertical="@dimen/margin_15"
-        app:layout_constraintBottom_toTopOf="@id/repeat_password"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toBottomOf="@id/email" />
+        android:layout_marginTop="@dimen/margin_15"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_email" />
 
     <EditText
-        android:id="@+id/repeat_password"
-        android:layout_width="0dp"
+        android:id="@+id/sign_up_repeat_password"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Repeat password"
+        android:hint="@string/repeat_password"
         android:inputType="textPassword"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toBottomOf="@id/password"
-        app:layout_constraintBottom_toTopOf="@+id/top_password_gl"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_password_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.69" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_password_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.77" />
+        android:layout_marginTop="@dimen/margin_15"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_password" />
 
     <Button
-        android:id="@+id/continue_button"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Register"
-        app:layout_constraintBottom_toBottomOf="@id/bot_continue_button_gl"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_continue_button_gl" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_continue_button_gl"
-        android:layout_width="wrap_content"
+        android:id="@+id/sign_up_continue"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.82" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_continue_button_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        android:text="@string/sign_up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_repeat_password"
+        app:layout_constraintVertical_bias="1"  />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

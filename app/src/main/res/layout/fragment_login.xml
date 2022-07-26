@@ -1,218 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true"
+    android:padding="@dimen/padding_16">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:includeFontPadding="false"
-        android:text="Log in"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/top_title_gl" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_title_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.055" />
+        <TextView
+            android:id="@+id/login_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:includeFontPadding="false"
+            android:text="@string/log_in"
+            android:layout_marginTop="@dimen/margin_35"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_subtitle_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.135" />
+        <TextView
+            android:id="@+id/login_google_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/with_google_account"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_35"
+            app:layout_constraintTop_toBottomOf="@+id/login_title" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_socials_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/login_google_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_google_title" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="With google account"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_subtitle_gl" />
+        <TextView
+            android:id="@+id/login_email_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or_login_with_email"
+            android:layout_marginTop="@dimen/margin_35"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_google_auth" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_socials_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.28" />
+        <EditText
+            android:id="@+id/login_email_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:layout_marginTop="@dimen/margin_10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintTop_toBottomOf="@+id/login_email_title" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/left_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        <EditText
+            android:id="@+id/login_password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:layout_marginTop="@dimen/margin_10"
+            app:layout_constraintTop_toBottomOf="@+id/login_email_input" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/right_facebook_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.46" />
+        <TextView
+            android:id="@+id/login_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/padding_10"
+            android:layout_marginVertical="@dimen/margin_5"
+            android:text="@string/forgot_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_password_input" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/left_google_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.54" />
+        <TextView
+            android:id="@+id/login_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:layout_marginVertical="@dimen/margin_5"
+            android:paddingVertical="@dimen/padding_10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_password_input" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/right_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        <Button
+            android:id="@+id/login_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/continue_"
+            android:layout_marginVertical="@dimen/margin_5"
+            app:layout_constraintTop_toBottomOf="@+id/login_sign_up"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintBottom_toTopOf="@id/login_continue_without_acc" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_login_with_email_text_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32" />
+        <TextView
+            android:id="@+id/login_continue_without_acc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/continue_without_account"
+            android:paddingVertical="@dimen/padding_10"
+            android:layout_marginVertical="@dimen/margin_5"
+            android:textColor="@color/blue"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_email_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.38" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_auth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/bot_socials_gl"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_socials_gl" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Or login with email"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_login_with_email_text_gl" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_email_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.46" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="@id/bot_email_gl"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_email_gl" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_password_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.49" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_password_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.57" />
-
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@id/bot_password_gl"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toTopOf="@id/top_password_gl" />
-
-    <TextView
-        android:id="@+id/buttonForgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="Forgot password"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toBottomOf="@id/top_forgot_password_gl" />
-
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintTop_toBottomOf="@id/top_forgot_password_gl"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_forgot_password_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
-
-    <Button
-        android:id="@+id/continue_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        app:layout_constraintBottom_toTopOf="@id/continue_without_acc_button"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toBottomOf="@id/buttonForgotPassword" />
-
-    <TextView
-        android:id="@+id/continue_without_acc_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue without account"
-        android:textColor="@color/blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/left_gl"
-        app:layout_constraintRight_toRightOf="@id/right_gl"
-        app:layout_constraintTop_toBottomOf="@id/continue_button" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/top_continue_button_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.82" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bot_continue_button_gl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

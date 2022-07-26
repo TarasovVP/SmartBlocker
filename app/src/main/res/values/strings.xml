@@ -106,4 +106,16 @@
     <string name="white_list_empty">Нет совпадений из белого списка</string>
     <string name="block_add_info">Могут быть %s %s номеров из списка ваших контактов</string>
     <string name="progress_title">Подождите. Идет обновление данных.</string>
+    <string name="log_in">Log in</string>
+    <string name="with_google_account">With google account</string>
+    <string name="or_login_with_email">Or login with email</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="continue_">Continue</string>
+    <string name="continue_without_account">Continue without account</string>
+    <string name="sign_up_with_email">Sign up with email</string>
+    <string name="name">Name</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="sign_up">Sign up</string>
 </resources>

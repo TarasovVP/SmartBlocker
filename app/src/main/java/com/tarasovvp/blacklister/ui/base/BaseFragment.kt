@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
@@ -10,6 +11,8 @@ import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.ui.MainActivity
+import com.tarasovvp.blacklister.ui.start.login.LoginFragment
+import com.tarasovvp.blacklister.ui.start.onboarding.OnBoardingFragment
 
 abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFragment<VB>() {
 
@@ -37,9 +40,9 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
     private fun checkTopBottomBarVisibility() {
         (activity as MainActivity).apply {
             if (findNavController().currentDestination?.id != R.id.deleteNumberDialog) {
-                bottomNavigationView?.isVisible =
-                    navigationScreens.contains(findNavController().currentDestination?.id)
+                bottomNavigationView?.isVisible = navigationScreens.contains(findNavController().currentDestination?.id)
             }
+                toolbar?.isVisible = findNavController().currentDestination?.id != R.id.loginFragment && findNavController().currentDestination?.id != R.id.onBoardingFragment
         }
     }
 
