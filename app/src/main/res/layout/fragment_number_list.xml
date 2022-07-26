@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/number_list_left_gd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04"/>
+        app:layout_constraintGuide_percent="0.04" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/number_list_right_gd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96"/>
+        app:layout_constraintGuide_percent="0.96" />
 
     <TextView
         android:id="@+id/number_list_filter"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/padding_10"
         android:paddingVertical="@dimen/padding_10"
         android:text="@string/black_number_no_filter"
         app:drawableStartCompat="@drawable/ic_filter"
-        android:drawablePadding="@dimen/padding_10"
-        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintBottom_toTopOf="@+id/number_list_delete_all"
         app:layout_constraintEnd_toStartOf="@+id/number_list_priority"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/number_list_delete_all" />
+        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/number_list_priority"
@@ -39,8 +38,8 @@
         android:layout_marginTop="@dimen/margin_10"
         android:drawablePadding="@dimen/padding_10"
         android:text="@string/prioritness"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"/>
+        app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
         android:id="@+id/number_list_delete_all"
@@ -49,36 +48,37 @@
         android:paddingVertical="@dimen/padding_10"
         android:text="@string/choose_all"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintBottom_toTopOf="@+id/number_list_refresh"
         app:layout_constraintEnd_toStartOf="@+id/number_list_delete_btn"
-        app:layout_constraintTop_toBottomOf="@+id/number_list_filter"
-        app:layout_constraintBottom_toTopOf="@+id/number_list_refresh" />
+        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/number_list_filter" />
 
     <ImageButton
         android:id="@+id/number_list_delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_delete"
         android:background="@android:color/transparent"
+        android:src="@drawable/ic_delete"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/number_list_delete_all"
+        app:layout_constraintBottom_toBottomOf="@+id/number_list_delete_all"
         app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"
-        app:layout_constraintTop_toTopOf="@+id/number_list_delete_all"
-        app:layout_constraintBottom_toBottomOf="@+id/number_list_delete_all" />
+        app:layout_constraintStart_toEndOf="@+id/number_list_delete_all"
+        app:layout_constraintTop_toTopOf="@+id/number_list_delete_all" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/number_list_refresh"
         android:layout_width="@dimen/size_0"
         android:layout_height="@dimen/size_0"
-        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"
-        app:layout_constraintTop_toBottomOf="@+id/number_list_delete_all"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
+        app:layout_constraintTop_toBottomOf="@+id/number_list_delete_all">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/number_list_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
@@ -86,18 +86,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/list_empty" />
+        android:text="@string/list_empty"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/number_list_fab_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/ic_add"
+        android:layout_margin="@dimen/margin_30"
         android:backgroundTint="@color/blue"
-        android:layout_margin="@dimen/margin_30"/>
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

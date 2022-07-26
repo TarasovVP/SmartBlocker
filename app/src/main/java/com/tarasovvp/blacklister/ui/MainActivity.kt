@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                 showMessage(errorMessage, true)
             }
             isProgressProcess.safeSingleObserve(this@MainActivity) { isVisible ->
-                findViewById<ProgressBar>(R.id.progress_bar).isVisible = isVisible
+                findViewById<ProgressBar>(R.id.progress_bar_container).isVisible = isVisible
             }
         }
     }

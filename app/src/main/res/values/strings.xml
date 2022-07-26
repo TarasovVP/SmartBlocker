@@ -41,7 +41,7 @@
     <string name="change">Изменить</string>
     <string name="delete_number_from_list">Номер %s удален</string>
     <string name="add_contact_to_black_list">Добавить %s в черный список?</string>
-    <string name="only_black_list">Только из черного спикса</string>
+    <string name="only_black_list">Только из черного списка</string>
     <string name="details">Детали</string>
     <string name="delete_black_list">Удалить из черного списка</string>
     <string name="add_black_list">Добавить в черный список</string>
@@ -82,7 +82,7 @@
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="inner_data_access_title">Доступ к данным телефона - списку звонков и контактов для более удобного их модерирования</string>
-    <string name="black_white_list_title">Управление входящими звонками  через черный и белый список</string>
+    <string name="black_white_list_title">Управление входящими звонками через черный и белый список</string>
     <string name="authorized_user_title">Доступ к своим данным через облако для авторизованных пользователей</string>
     <string name="log_out">Вы хотите выйти из своего аккаунта?</string>
     <string name="delete_account">Вы хотите удалить свой аккаунт?</string>
@@ -105,4 +105,5 @@
     <string name="black_list_empty">Нет совпадений из черного списка</string>
     <string name="white_list_empty">Нет совпадений из белого списка</string>
     <string name="block_add_info">Могут быть %s %s номеров из списка ваших контактов</string>
+    <string name="progress_title">Подождите. Идет обновление данных.</string>
 </resources>
