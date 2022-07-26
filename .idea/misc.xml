@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/layout/block_settings.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/contact_list_fragment.xml" value="0.2318840579710145" />
         <entry key="app/src/main/res/layout/dialog_add_list.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/layout/dialog_black_list_preview.xml" value="0.15715579710144928" />
         <entry key="app/src/main/res/layout/dialog_forgot_password.xml" value="0.2115036231884058" />
         <entry key="app/src/main/res/layout/dialog_info.xml" value="0.30117753623188404" />
         <entry key="app/src/main/res/layout/fragment_account_details.xml" value="0.2269021739130435" />

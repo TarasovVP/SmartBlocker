@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST_PREVIEW
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
 import com.tarasovvp.blacklister.extensions.getViewsFromLayout
@@ -46,6 +47,9 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             args.number?.let {
                 viewModel.deleteNumber(it)
             }
+        }
+        setFragmentResultListener(BLACK_LIST_PREVIEW) { _, _ ->
+            viewModel.insertNumber(getNumber())
         }
     }
 
@@ -141,7 +145,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                 binding?.numberAddInfo?.isVisible = contactList.isNotEmpty()
                 binding?.numberAddInfo?.text = String.format(getString(R.string.block_add_info), contactList.size)
                 binding?.numberAddInfo?.setSafeOnClickListener {
-                    findNavController().navigate(NumberAddFragmentDirections.startContactBlackListFragment(getNumber()))
+                    findNavController().navigate(NumberAddFragmentDirections.startBlackListPreviewDialog(title = "Фильтр ${binding?.numberAddInput?.text} может заблокировать следующие контакты из списка контактов:", numberList = contactList.map { it.phone }.joinToString()))
                 }
                 Log.e("checkContactTAG",
                     "NumberAddFragment contactList ${Gson().toJson(contactList)}")

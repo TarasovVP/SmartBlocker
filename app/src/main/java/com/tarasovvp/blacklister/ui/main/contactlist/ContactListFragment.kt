@@ -37,8 +37,6 @@ open class ContactListFragment :
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
         emptyListText = binding?.contactListEmpty
-        Log.e("contactTAG", "ContactListFragment this $this")
-        binding?.contactListCheck?.isVisible = (this is ContactBlackListFragment).not()
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
         }
@@ -86,10 +84,6 @@ open class ContactListFragment :
 
     override fun getData() {
         Log.e("getAllDataTAG", "ContactListFragment getAllData")
-        if (args.number.isNotNull()) {
-            args.number?.let { viewModel.checkContactListByNumber(it) }
-        } else {
-            viewModel.getContactList()
-        }
+        viewModel.getContactList()
     }
 }

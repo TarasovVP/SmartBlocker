@@ -60,16 +60,20 @@
             app:nullable="true" />
     </fragment>
 
-    <fragment
-        android:id="@+id/contactBlackListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.contactlist.ContactBlackListFragment"
-        android:label="@string/contact_list" >
+    <dialog
+        android:id="@+id/blackListPreviewDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.BlackListPreviewDialog" >
         <argument
-            android:name="number"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Number"
+            android:name="numberList"
+            android:defaultValue=""
+            app:argType="string"
             app:nullable="true" />
-    </fragment>
+        <argument
+            android:name="title"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
 
     <fragment
         android:id="@+id/numberDetailFragment"
@@ -220,8 +224,8 @@
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
         <action
-            android:id="@+id/startContactBlackListFragment"
-            app:destination="@id/contactBlackListFragment" />
+            android:id="@+id/startBlackListPreviewDialog"
+            app:destination="@id/blackListPreviewDialog" />
     </fragment>
 
 </navigation>
