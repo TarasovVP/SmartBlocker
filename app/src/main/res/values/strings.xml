@@ -106,6 +106,7 @@
     <string name="black_list_empty">Нет совпадений из черного списка</string>
     <string name="white_list_empty">Нет совпадений из белого списка</string>
     <string name="block_add_info">Могут быть %s %s номеров из списка ваших контактов</string>
+    <string name="not_block_add_info">Из-за другой приоритетности не могут быть %s %s номеров из списка ваших контактов</string>
     <string name="progress_title">Подождите. Идет обновление данных.</string>
     <string name="log_in">Log in</string>
     <string name="with_google_account">With google account</string>
@@ -127,4 +128,6 @@
     <string name="add_conditions_info">Если не будут выбраны условия применения, приложение будет блокировать номера в точности совпадающие с введеным номером. Не забывайте, что входящие вызовы содержат код страны. Если не уверены в точности кода выберите параметр \'содержит\'</string>
     <string name="add_to_list_title">Добавить номер в фильтр</string>
     <string name="forgot_password_title">Enter your email and we send new password on it</string>
+    <string name="can_block">заблокированы</string>
+    <string name="can_unblock">разблокированы</string>
 </resources>

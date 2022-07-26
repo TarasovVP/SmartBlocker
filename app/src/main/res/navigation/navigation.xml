@@ -65,14 +65,14 @@
         android:id="@+id/blackListPreviewDialog"
         android:name="com.tarasovvp.blacklister.ui.dialogs.BlackListPreviewDialog" >
         <argument
-            android:name="numberList"
-            android:defaultValue=""
-            app:argType="string"
+            android:name="number"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Number"
             app:nullable="true" />
         <argument
-            android:name="title"
-            android:defaultValue=""
-            app:argType="string"
+            android:name="contactList"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Contact[]"
             app:nullable="true" />
     </dialog>
 

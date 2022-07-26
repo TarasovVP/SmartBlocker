@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -35,7 +36,8 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).toolbar?.title = if (args.number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
+        (activity as MainActivity).toolbar?.title =
+            if (args.number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
         binding?.numberAddInput?.setText(args.number?.number.orEmpty())
         binding?.numberAddIcon?.setImageResource(if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number)
         setPriority()
@@ -72,30 +74,43 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
 
     private fun initViewsWithData(number: Number?, fromDb: Boolean) {
         binding?.apply {
+            numberAddStart.isChecked = number?.start.isTrue()
+            numberAddContain.isChecked = number?.contain.isTrue()
+            numberAddEnd.isChecked = number?.end.isTrue()
             numberAddTitle.text =
                 if (numberAddInput.text.isEmpty()) getString(R.string.add_filter_message) else String.format(
                     if (fromDb && number.isNotNull()) getString(R.string.edit_filter_with_number_message) else getString(
                         R.string.add_filter_with_number_message),
                     numberAddInput.text)
-            numberAddSubmit.isVisible = numberAddInput.text.isNotEmpty()
+            numberAddSubmit.isVisible =
+                numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
             numberAddSubmit.text =
                 if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
-            numberAddStart.isChecked = number?.start.isTrue()
-            numberAddContain.isChecked = number?.contain.isTrue()
-            numberAddEnd.isChecked = number?.end.isTrue()
-            setCheckChangeListeners(fromDb, number)
+            numberDeleteSubmit.isVisible = numberAddInput.text.isNotEmpty() && number.isNotNull()
             numberAddInfo.isVisible =
-                numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
-            if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
+                numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
+            if (numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()) {
                 viewModel.checkContactListByNumber(getNumber())
             }
+            setCheckChangeListeners(fromDb, number)
+            Log.e("addNumberTAG",
+                "NumberAddFragment initViewsWithData args.number ${args.number?.number} fromDb $fromDb number $number numberAddInput.isNotEmpty() ${numberAddInput.text.isNotEmpty()}")
+            Log.e("addNumberTAG",
+                "NumberAddFragment initViewsWithData isNumberIdentical ${
+                    isNumberIdentical(fromDb,
+                        number)
+                } numberAddEnd?.isChecked ${binding?.numberAddEnd?.isChecked}")
+            Log.e("addNumberTAG",
+                "NumberAddFragment initViewsWithData isWhiteListPriority ${SharedPreferencesUtil.isWhiteListPriority} number?.isBlackNumber ${args.number?.isBlackNumber}")
         }
     }
 
     private fun setCheckChangeListeners(fromDb: Boolean, number: Number?) {
         binding?.apply {
             val checkChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
-                if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
+                numberAddSubmit.isVisible =
+                    numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
+                if (numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()) {
                     viewModel.checkContactListByNumber(getNumber())
                 }
             }
@@ -119,9 +134,8 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
         }
     }
 
-    private fun existNumber(fromDb: Boolean, number: Number?): Boolean {
-        return binding?.numberAddInput?.text.isNullOrEmpty()
-            .not() && (fromDb && number.isNotNull() && binding?.numberAddStart?.isChecked == number?.start && binding?.numberAddContain?.isChecked == number?.contain && binding?.numberAddEnd?.isChecked == number?.end)
+    private fun isNumberIdentical(fromDb: Boolean, number: Number?): Boolean {
+        return fromDb && number.isNotNull() && binding?.numberAddStart?.isChecked == number?.start && binding?.numberAddContain?.isChecked == number?.contain && binding?.numberAddEnd?.isChecked == number?.end
     }
 
     private fun getNumber(): Number {
@@ -146,13 +160,29 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 binding?.numberAddInfo?.isVisible = contactList.isNotEmpty()
-                binding?.numberAddInfo?.text = String.format(getString(R.string.block_add_info),
-                    if (args.number?.isBlackNumber.isTrue()) "заблокированы" else "разблокированы",
-                    contactList.size)
+                var numberAddInfoText = ""
+                contactList.filterNot {
+                    if (args.number?.isBlackNumber.isTrue()) it.isWhiteList && SharedPreferencesUtil.isWhiteListPriority else it.isBlackList && SharedPreferencesUtil.isWhiteListPriority.not()
+                }.apply {
+                    if (this.isNotEmpty()) numberAddInfoText += String.format(getString(R.string.block_add_info),
+                        if (args.number?.isBlackNumber.isTrue()) getString(R.string.can_block) else getString(
+                            R.string.can_unblock),
+                        this.size)
+                }
+                contactList.filter {
+                    if (args.number?.isBlackNumber.isTrue()) it.isWhiteList && SharedPreferencesUtil.isWhiteListPriority else it.isBlackList && SharedPreferencesUtil.isWhiteListPriority.not()
+                }.apply {
+                    if (numberAddInfoText.isNotEmpty()) numberAddInfoText += "\n"
+                    if (this.isNotEmpty()) numberAddInfoText += String.format(getString(R.string.not_block_add_info),
+                        if (args.number?.isBlackNumber.isTrue()) getString(R.string.can_block) else getString(
+                            R.string.can_unblock),
+                        this.size)
+                }
+                binding?.numberAddInfo?.text = numberAddInfoText
                 binding?.numberAddInfo?.setSafeOnClickListener {
                     findNavController().navigate(NumberAddFragmentDirections.startBlackListPreviewDialog(
-                        title = "Фильтр ${binding?.numberAddInput?.text} может ${if (args.number?.isBlackNumber.isTrue()) "заблокировать" else "разблокировать"} следующие контакты из списка контактов: ",
-                        numberList = contactList.map { it.name }.joinToString()))
+                        number = args.number,
+                        contactList = contactList.toTypedArray()))
                 }
             }
             insertNumberLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
