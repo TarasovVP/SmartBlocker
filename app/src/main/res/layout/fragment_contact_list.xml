@@ -11,7 +11,7 @@
         android:id="@+id/contact_list_check"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_5"
+        android:paddingVertical="@dimen/padding_5"
         android:text="@string/only_black_list"
         app:layout_constraintBottom_toTopOf="@+id/contact_list_refresh"
         app:layout_constraintEnd_toStartOf="@+id/contact_list_priority"
@@ -21,12 +21,13 @@
     <TextView
         android:id="@+id/contact_list_priority"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_10"
-        android:drawablePadding="@dimen/padding_10"
+        android:layout_height="@dimen/size_0"
+        android:drawablePadding="@dimen/padding_5"
+        android:gravity="center_vertical"
         android:text="@string/prioritness"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/contact_list_check"
+        app:layout_constraintBottom_toBottomOf="@+id/contact_list_check"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/contact_list_refresh"
