@@ -11,6 +11,7 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.CALL_LOG_CALL
@@ -110,18 +112,19 @@ fun Context.contactList(): ArrayList<Contact> {
                 when (getString(mimeTypeField)) {
                     ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE -> {
                         val data = getString(dataField)
-                        if (data.length > 9) {
-                            val id = getString(idField)
-                            val photoUrl = getString(photoUri)
-                            val name = getString(nameField)
-                            contactsById[data] =
-                                Contact(
-                                    id = id,
-                                    name = name,
-                                    photoUrl = photoUrl,
-                                    phone = data.toFormattedPhoneNumber()
-                                )
+                        val id = getString(idField)
+                        val photoUrl = getString(photoUri)
+                        val name = getString(nameField)
+                        if (name?.contains("Мой зай").isTrue()) {
+                            Log.e("allDataTAG", "Extensions Context.contactList name == Мой зай data $data id $id name $name")
                         }
+                        contactsById[data] =
+                            Contact(
+                                id = id,
+                                name = name,
+                                photoUrl = photoUrl,
+                                phone = data
+                            )
                     }
                 }
             }
@@ -416,7 +419,7 @@ fun <T> ViewGroup.getViewsFromLayout(
 
 private fun <T> ViewGroup.getViewsFromLayout(
     views: ArrayList<T>,
-    viewType: Class<T>
+    viewType: Class<T>,
 ): ArrayList<T> {
     val childCount = this.childCount
     for (i in 0 until childCount) {

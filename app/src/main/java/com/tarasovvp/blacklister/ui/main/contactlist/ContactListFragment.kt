@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
@@ -56,6 +57,7 @@ open class ContactListFragment :
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 this@ContactListFragment.contactList = contactList
+                Log.e("allDataTAG", "ContactListFragment contactLiveData contactList contains(\"Мой зай\") ${Gson().toJson(contactList.filter { it.name?.contains("Мой зай").isTrue() })}")
                 if (!checkDataListEmptiness(contactList)) {
                     getHashMapFromContactList(contactList)
                 }

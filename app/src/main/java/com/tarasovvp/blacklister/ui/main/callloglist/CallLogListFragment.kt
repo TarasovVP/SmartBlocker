@@ -1,19 +1,16 @@
 package com.tarasovvp.blacklister.ui.main.callloglist
 
+import android.util.Log
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.databinding.FragmentCallLogListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragmentDirections
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
 class CallLogListFragment :
@@ -88,6 +85,7 @@ class CallLogListFragment :
     }
 
     override fun getData() {
+        Log.e("progressTAG", "CallLogListFragment getCallLogList()")
         viewModel.getCallLogList()
     }
 }

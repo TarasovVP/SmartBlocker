@@ -17,9 +17,12 @@ object ContactRepository {
         dao?.insertAllContacts(list)
     }
 
-    fun getAllContacts(): List<Contact>? {
-        return dao?.getAllContacts()
-    }
+    suspend fun getAllContacts(): List<Contact>? =
+        withContext(
+            Dispatchers.Default
+        ) {
+            dao?.getAllContacts()
+        }
 
     fun getQueryContacts(number: Number): List<Contact>? {
         return dao?.queryContactList(number.number, number.contain, number.start, number.end)

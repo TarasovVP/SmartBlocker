@@ -5,6 +5,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.CallLog
+import com.tarasovvp.blacklister.model.Number
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -16,9 +17,12 @@ object CallLogRepository {
         dao?.insertAllCallLogs(callLogList)
     }
 
-    fun getAllCallLogs(): List<CallLog>? {
-        return dao?.allCallLogs()
-    }
+    suspend fun getAllCallLogs(): List<CallLog>? =
+        withContext(
+            Dispatchers.Default
+        ) {
+            dao?.allCallLogs()
+        }
 
     suspend fun getSystemCallLogList(context: Context): ArrayList<CallLog> =
         withContext(

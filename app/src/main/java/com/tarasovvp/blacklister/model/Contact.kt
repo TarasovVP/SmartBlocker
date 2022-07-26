@@ -9,11 +9,10 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class Contact(
-    @PrimaryKey var id: String = "",
+    var id: String = "",
     var name: String? = "",
     var photoUrl: String? = "",
-    var phone: String? = "",
-    var isPhoneClient: Boolean = false,
+    @PrimaryKey var phone: String = "",
     var isBlackList: Boolean = false,
-    var isWhiteList: Boolean = false,
+    var isWhiteList: Boolean = false
 ) : Parcelable, BaseAdapter.MainData
