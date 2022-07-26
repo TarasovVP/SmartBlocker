@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.main.numberlist.BlackNumberListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/number_list_left_gd"
@@ -29,9 +28,19 @@
         app:drawableStartCompat="@drawable/ic_filter"
         android:drawablePadding="@dimen/padding_10"
         app:layout_constraintStart_toEndOf="@+id/number_list_left_gd"
-        app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"
+        app:layout_constraintEnd_toStartOf="@+id/number_list_priority"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/number_list_delete_all" />
+
+    <TextView
+        android:id="@+id/number_list_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:drawablePadding="@dimen/padding_10"
+        android:text="@string/prioritness"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/number_list_right_gd"/>
 
     <CheckBox
         android:id="@+id/number_list_delete_all"

@@ -26,10 +26,20 @@
         android:layout_height="wrap_content"
         android:text="@string/only_blocked"
         android:layout_marginVertical="@dimen/margin_5"
-        app:layout_constraintEnd_toStartOf="@+id/call_log_list_right_gd"
+        app:layout_constraintEnd_toStartOf="@+id/call_log_list_priority"
         app:layout_constraintStart_toEndOf="@+id/call_log_list_left_gd"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/call_log_list_refresh"/>
+
+    <TextView
+        android:id="@+id/call_log_list_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:drawablePadding="@dimen/padding_10"
+        android:text="@string/prioritness"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/call_log_list_right_gd"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/call_log_list_refresh"

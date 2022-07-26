@@ -45,7 +45,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/block_settings_priority"
         app:layout_constraintTop_toTopOf="@+id/block_settings_priority"
-        app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority" />
+        app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority"
+        app:drawableStartCompat="@drawable/ic_black_number" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/block_settings_priority"
@@ -66,6 +67,7 @@
         app:layout_constraintStart_toEndOf="@+id/block_settings_priority"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/block_settings_priority"
-        app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority"  />
+        app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority"
+        app:drawableEndCompat="@drawable/ic_white_number" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

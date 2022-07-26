@@ -142,6 +142,10 @@
             app:destination="@id/accountActionDialog" />
     </fragment>
 
+    <action
+        android:id="@+id/startBlockSettingsFragment"
+        app:destination="@id/blockSettingsFragment" />
+
     <fragment
         android:id="@+id/blockSettingsFragment"
         android:name="com.tarasovvp.blacklister.ui.main.settings.blocksettings.BlockSettingsFragment"

@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.numberadd
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -9,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST_PREVIEW
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
@@ -54,8 +52,10 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
     }
 
     private fun setPriority() {
-        binding?.numberAddPriority?.text = String.format(getString(R.string.prioritness), if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(R.string.black_list))
-        binding?.numberAddPriority?.setCompoundDrawablesWithIntrinsicBounds(if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number, 0, R.drawable.ic_edit, 0)
+        binding?.numberAddPriority?.setCompoundDrawablesWithIntrinsicBounds(0,
+            0,
+            if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number,
+            0)
         binding?.numberAddPriority?.setSafeOnClickListener {
             findNavController().navigate(NumberAddFragmentDirections.startBlockSettingsFragment())
         }
@@ -75,14 +75,16 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                 if (numberAddInput.text.isEmpty()) getString(R.string.add_filter_message) else String.format(
                     if (fromDb && number.isNotNull()) getString(R.string.edit_filter_with_number_message) else getString(
                         R.string.add_filter_with_number_message),
-                    binding?.numberAddInput?.text)
+                    numberAddInput.text)
             numberAddSubmit.isVisible = numberAddInput.text.isNotEmpty()
-            numberAddSubmit.text = if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
+            numberAddSubmit.text =
+                if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
             numberAddStart.isChecked = number?.start.isTrue()
             numberAddContain.isChecked = number?.contain.isTrue()
             numberAddEnd.isChecked = number?.end.isTrue()
             setCheckChangeListeners(fromDb, number)
-            numberAddInfo.isVisible = numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
+            numberAddInfo.isVisible =
+                numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
             if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
                 viewModel.checkContactListByNumber(getNumber())
             }
@@ -95,7 +97,6 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                 if (numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()) {
                     viewModel.checkContactListByNumber(getNumber())
                 }
-                numberAddInfo.isVisible = numberAddInput.text.isNotEmpty() && existNumber(fromDb, number).not()
             }
             container.getViewsFromLayout(CheckBox::class.java).forEach { checkBox ->
                 checkBox.setOnCheckedChangeListener(checkChangeListener)
@@ -118,7 +119,8 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
     }
 
     private fun existNumber(fromDb: Boolean, number: Number?): Boolean {
-        return binding?.numberAddInput?.text.isNullOrEmpty().not() && (fromDb && number.isNotNull() && binding?.numberAddStart?.isChecked == number?.start && binding?.numberAddContain?.isChecked == number?.contain && binding?.numberAddEnd?.isChecked == number?.end)
+        return binding?.numberAddInput?.text.isNullOrEmpty()
+            .not() && (fromDb && number.isNotNull() && binding?.numberAddStart?.isChecked == number?.start && binding?.numberAddContain?.isChecked == number?.contain && binding?.numberAddEnd?.isChecked == number?.end)
     }
 
     private fun getNumber(): Number {
@@ -143,12 +145,14 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 binding?.numberAddInfo?.isVisible = contactList.isNotEmpty()
-                binding?.numberAddInfo?.text = String.format(getString(R.string.block_add_info), contactList.size)
+                binding?.numberAddInfo?.text = String.format(getString(R.string.block_add_info),
+                    if (args.number?.isBlackNumber.isTrue()) "заблокированы" else "разблокированы",
+                    contactList.size)
                 binding?.numberAddInfo?.setSafeOnClickListener {
-                    findNavController().navigate(NumberAddFragmentDirections.startBlackListPreviewDialog(title = "Фильтр ${binding?.numberAddInput?.text} может заблокировать следующие контакты из списка контактов:", numberList = contactList.map { it.phone }.joinToString()))
+                    findNavController().navigate(NumberAddFragmentDirections.startBlackListPreviewDialog(
+                        title = "Фильтр ${binding?.numberAddInput?.text} может ${if (args.number?.isBlackNumber.isTrue()) "заблокировать" else "разблокировать"} следующие контакты из списка контактов: ",
+                        numberList = contactList.map { it.name }.joinToString()))
                 }
-                Log.e("checkContactTAG",
-                    "NumberAddFragment contactList ${Gson().toJson(contactList)}")
             }
             insertNumberLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
                 handleSuccessNumberAction(String.format(getString(R.string.number_added), number))

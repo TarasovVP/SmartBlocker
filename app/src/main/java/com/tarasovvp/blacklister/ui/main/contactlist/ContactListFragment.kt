@@ -4,14 +4,18 @@ import android.util.Log
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragmentDirections
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
 open class ContactListFragment :
@@ -37,6 +41,7 @@ open class ContactListFragment :
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
         emptyListText = binding?.contactListEmpty
+        priorityText = binding?.contactListPriority
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
         }

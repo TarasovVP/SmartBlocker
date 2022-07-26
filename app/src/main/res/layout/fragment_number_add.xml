@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:drawablePadding="@dimen/padding_10"
+                android:text="@string/prioritness"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -108,7 +109,7 @@
                 android:id="@+id/number_add_info"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
+                android:layout_marginVertical="@dimen/margin_25"
                 android:gravity="center"
                 android:drawablePadding="@dimen/padding_10"
                 android:visibility="gone"

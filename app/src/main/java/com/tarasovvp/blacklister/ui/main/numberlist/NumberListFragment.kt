@@ -5,21 +5,23 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.databinding.FragmentBlackNumberListBinding
+import com.tarasovvp.blacklister.databinding.FragmentNumberListBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
 open class NumberListFragment :
-    BaseListFragment<FragmentBlackNumberListBinding, NumberListViewModel, Number>() {
+    BaseListFragment<FragmentNumberListBinding, NumberListViewModel, Number>() {
 
-    override fun getViewBinding() = FragmentBlackNumberListBinding.inflate(layoutInflater)
+    override fun getViewBinding() = FragmentNumberListBinding.inflate(layoutInflater)
 
     override val viewModelClass = NumberListViewModel::class.java
 
@@ -53,6 +55,7 @@ open class NumberListFragment :
         swipeRefresh = binding?.numberListRefresh
         recyclerView = binding?.numberListRecyclerView
         emptyListText = binding?.numberListEmpty
+        priorityText = binding?.numberListPriority
         binding?.numberListDeleteAll?.setOnCheckedChangeListener { _, checked ->
             numberList?.forEach { it.isCheckedForDelete = checked }
             adapter?.notifyDataSetChanged()
