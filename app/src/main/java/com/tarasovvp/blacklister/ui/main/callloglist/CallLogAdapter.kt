@@ -53,7 +53,8 @@ class CallLogAdapter(private val callLogClick: (String) -> Unit) :
                 callLog.isWhiteList -> R.drawable.ic_accepted
                 else -> 0
             })
-            binding?.itemCallLogName?.text = if (callLog.phone.isNullOrEmpty()) itemView.context.getString(R.string.hidden) else callLog.name
+            binding?.itemCallLogName?.text =
+                if (callLog.phone.isNullOrEmpty()) itemView.context.getString(R.string.hidden) else callLog.name
             binding?.itemCallLogNumber?.text = callLog.phone
             binding?.itemCallLogTime?.text = callLog.dateTimeFromTime()
             binding?.itemCallLogTypeIcon?.setImageResource(callLog.callLogIcon())

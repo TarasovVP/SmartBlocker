@@ -19,7 +19,6 @@ import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
-import com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragmentDirections
 import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
@@ -91,6 +90,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
                 return@setOnMenuItemClickListener true
             }
             mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+                Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
                 this@BaseListFragment.getData()
             }
         }

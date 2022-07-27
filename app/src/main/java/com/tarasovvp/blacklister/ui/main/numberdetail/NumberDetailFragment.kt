@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.ADD_TO_LIST
+import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
 import com.tarasovvp.blacklister.databinding.ItemNumberBinding
@@ -35,10 +36,10 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
             if (number.isEmpty()) {
                 viewModel.numberDetailLiveData.postValue(Contact(name = getString(R.string.hidden)))
             } else {
-                viewModel.getContact(number)
+                viewModel.getContact(number.filter { it.isDigit() || it == PLUS_CHAR })
             }
-            viewModel.getBlackNumberList(number)
-            viewModel.getWhiteNumberList(number)
+            viewModel.getBlackNumberList(number.filter { it.isDigit() || it == PLUS_CHAR })
+            viewModel.getWhiteNumberList(number.filter { it.isDigit() || it == PLUS_CHAR })
         }
     }
 
@@ -57,7 +58,10 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     }
 
     private fun setPriority() {
-        binding?.numberDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(0, 0, if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number, 0)
+        binding?.numberDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(0,
+            0,
+            if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number,
+            0)
         binding?.numberDetailPriority?.setSafeOnClickListener {
             findNavController().navigate(NumberAddFragmentDirections.startBlockSettingsFragment())
         }
@@ -82,7 +86,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
         }
         setFragmentResultListener(ADD_TO_LIST) { _, bundle ->
             findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(
-                number = Number(number = contact.phone.orEmpty()).apply {
+                number = Number(number = contact.trimmedPhone).apply {
                     isBlackNumber = bundle.getBoolean(WHITE_LIST).not()
                 }))
         }
@@ -101,6 +105,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
             itemNumber.itemNumberStart.isVisible = number.start
             itemNumber.itemNumberContain.isVisible = number.contain
             itemNumber.itemNumberEnd.isVisible = number.end
+            number.number = number.number.filter { it.isDigit() || it == PLUS_CHAR }
             itemNumber.root.setSafeOnClickListener {
                 findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(
                     number = number))

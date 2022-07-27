@@ -7,15 +7,12 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.LOG_OUT
 import com.tarasovvp.blacklister.databinding.FragmentSettingsListBinding
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.ui.main.numberdetail.NumberDetailFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsListViewModel>() {

@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui.main.numberlist
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.repository.BlackNumberRepository

@@ -8,15 +8,12 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.DELETE_USER
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.ui.main.numberdetail.NumberDetailFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class AccountDetailsFragment :

@@ -7,7 +7,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-internal class DebouncingQueryTextListener(lifecycle: Lifecycle, private val onDebouncingQueryTextChange: (String?) -> Unit) : SearchView.OnQueryTextListener {
+internal class DebouncingQueryTextListener(
+    lifecycle: Lifecycle,
+    private val onDebouncingQueryTextChange: (String?) -> Unit,
+) : SearchView.OnQueryTextListener {
     private var debouncePeriod: Long = 500
 
     private val coroutineScope = lifecycle.coroutineScope

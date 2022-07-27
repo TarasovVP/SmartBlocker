@@ -53,10 +53,10 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             contactList.forEach { contact ->
                 val isInWhiteList =
-                    whiteNumberRepository.getWhiteNumberList(contact.phone)?.isEmpty()
+                    whiteNumberRepository.getWhiteNumberList(contact.trimmedPhone)?.isEmpty()
                         .isTrue().not()
                 val isInBlackList =
-                    blackNumberRepository.getBlackNumberList(contact.phone)?.isEmpty()
+                    blackNumberRepository.getBlackNumberList(contact.trimmedPhone)?.isEmpty()
                         .isTrue().not()
                 contact.isBlackList =
                     (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
@@ -64,6 +64,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                     (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority) || (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority.not() && isInBlackList.not())
             }
             contactRepository.insertContacts(contactList)
+
             val callLogList = callLogRepository.getSystemCallLogList(getApplication<Application>())
             val blockedCallList = blockedCallRepository.allBlockedCalls()
             blockedCallList?.forEach { blockedCall ->
@@ -74,9 +75,11 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             }
             callLogList.forEach { callLog ->
                 val isInWhiteList =
-                    whiteNumberRepository.getWhiteNumberList(callLog.phone.orEmpty())?.isEmpty().isTrue().not()
+                    whiteNumberRepository.getWhiteNumberList(callLog.phone.orEmpty())?.isEmpty()
+                        .isTrue().not()
                 val isInBlackList =
-                    blackNumberRepository.getBlackNumberList(callLog.phone.orEmpty())?.isEmpty().isTrue().not()
+                    blackNumberRepository.getBlackNumberList(callLog.phone.orEmpty())?.isEmpty()
+                        .isTrue().not()
                 callLog.isBlackList =
                     (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
                 callLog.isWhiteList =

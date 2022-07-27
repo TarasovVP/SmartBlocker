@@ -59,7 +59,7 @@ class ContactAdapter(private val contactClick: (String) -> Unit) :
             binding?.itemContactNumber?.text = contact.phone
             binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
             binding?.root?.setSafeOnClickListener {
-                contact.phone?.let { contactClick.invoke(it) }
+                contact.phone.let { contactClick.invoke(it) }
             }
         }
     }

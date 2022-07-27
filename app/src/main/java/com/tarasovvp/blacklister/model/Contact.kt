@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -14,5 +15,7 @@ data class Contact(
     var photoUrl: String? = "",
     @PrimaryKey var phone: String = "",
     var isBlackList: Boolean = false,
-    var isWhiteList: Boolean = false
-) : Parcelable, BaseAdapter.MainData
+    var isWhiteList: Boolean = false,
+) : Parcelable, BaseAdapter.MainData {
+    var trimmedPhone = phone.filter { it.isDigit() || it == PLUS_CHAR }
+}

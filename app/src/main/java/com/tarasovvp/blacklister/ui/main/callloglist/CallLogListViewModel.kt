@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.callloglist
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.repository.CallLogRepository
@@ -25,12 +26,16 @@ class CallLogListViewModel(application: Application) : BaseViewModel(application
     }
 
     fun getHashMapFromCallLogList(callLogList: List<CallLog>) {
+        Log.e("callLogTAG",
+            "CallLogListViewModel getHashMapFromCallLogList callLogList.size ${callLogList.size}")
         showProgress()
         launch {
             val hashMapList =
                 callLogRepository.getHashMapFromCallLogList(callLogList.sortedByDescending {
                     it.time
                 })
+            Log.e("callLogTAG",
+                "CallLogListViewModel getHashMapFromCallLogList hashMapList.size ${hashMapList.size}")
             callLogHashMapLiveData.postValue(hashMapList)
             hideProgress()
         }

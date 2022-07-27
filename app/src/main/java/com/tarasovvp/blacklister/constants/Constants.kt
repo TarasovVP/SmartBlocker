@@ -11,6 +11,7 @@ object Constants {
     const val THREE_EIGHT_ZERO = "380"
     const val EIGHT_ZERO = "80"
     const val ZERO = "0"
+    const val PLUS_CHAR = '+'
     const val WHITE_LIST_PRIORITY = "whiteListPriority"
     const val BLOCK_HIDDEN = "blockHidden"
     const val BLACK_LIST = "blackList"

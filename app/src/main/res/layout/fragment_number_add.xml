@@ -53,7 +53,7 @@
                 android:layout_marginTop="@dimen/margin_15"
                 android:hint="@string/enter_number"
                 android:inputType="phone"
-                android:digits="012345678+"
+                android:digits="0123456789+"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_title"
                 tools:ignore="Autofill,LabelFor,TextFields" />
 

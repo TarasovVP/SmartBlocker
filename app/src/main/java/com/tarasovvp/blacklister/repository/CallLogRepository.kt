@@ -5,7 +5,6 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.callLogList
 import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.CallLog
-import com.tarasovvp.blacklister.model.Number
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

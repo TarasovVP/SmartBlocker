@@ -8,7 +8,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-internal class DebouncingTextChangeListener(lifecycle: Lifecycle, private val onDebouncingTextChange: (String?) -> Unit) :  TextWatcher{
+internal class DebouncingTextChangeListener(
+    lifecycle: Lifecycle,
+    private val onDebouncingTextChange: (String?) -> Unit,
+) : TextWatcher {
     private var debouncePeriod: Long = 500
     private val coroutineScope = lifecycle.coroutineScope
     private var searchJob: Job? = null
