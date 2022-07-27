@@ -38,7 +38,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).toolbar?.title =
             if (args.number?.isBlackNumber.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
-        binding?.numberAddInput?.setText(args.number?.number.orEmpty())
+        binding?.numberAddInput?.setText(args.number?.number.orEmpty().filter { it.isDigit() || it == '+' })
         binding?.numberAddIcon?.setImageResource(if (args.number?.isBlackNumber.isTrue()) R.drawable.ic_black_number else R.drawable.ic_white_number)
         setPriority()
         initViewsWithData(args.number, false)
@@ -77,39 +77,25 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             numberAddStart.isChecked = number?.start.isTrue()
             numberAddContain.isChecked = number?.contain.isTrue()
             numberAddEnd.isChecked = number?.end.isTrue()
-            numberAddTitle.text =
-                if (numberAddInput.text.isEmpty()) getString(R.string.add_filter_message) else String.format(
+            numberAddTitle.text = if (numberAddInput.text.isEmpty()) getString(R.string.add_filter_message) else String.format(
                     if (fromDb && number.isNotNull()) getString(R.string.edit_filter_with_number_message) else getString(
                         R.string.add_filter_with_number_message),
                     numberAddInput.text)
-            numberAddSubmit.isVisible =
-                numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
-            numberAddSubmit.text =
-                if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
+            numberAddSubmit.isVisible = numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
+            numberAddSubmit.text = if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
             numberDeleteSubmit.isVisible = numberAddInput.text.isNotEmpty() && number.isNotNull()
-            numberAddInfo.isVisible =
-                numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
+            numberAddInfo.isVisible = numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
             if (numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()) {
                 viewModel.checkContactListByNumber(getNumber())
             }
             setCheckChangeListeners(fromDb, number)
-            Log.e("addNumberTAG",
-                "NumberAddFragment initViewsWithData args.number ${args.number?.number} fromDb $fromDb number $number numberAddInput.isNotEmpty() ${numberAddInput.text.isNotEmpty()}")
-            Log.e("addNumberTAG",
-                "NumberAddFragment initViewsWithData isNumberIdentical ${
-                    isNumberIdentical(fromDb,
-                        number)
-                } numberAddEnd?.isChecked ${binding?.numberAddEnd?.isChecked}")
-            Log.e("addNumberTAG",
-                "NumberAddFragment initViewsWithData isWhiteListPriority ${SharedPreferencesUtil.isWhiteListPriority} number?.isBlackNumber ${args.number?.isBlackNumber}")
         }
     }
 
     private fun setCheckChangeListeners(fromDb: Boolean, number: Number?) {
         binding?.apply {
             val checkChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
-                numberAddSubmit.isVisible =
-                    numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
+                numberAddSubmit.isVisible = numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
                 if (numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()) {
                     viewModel.checkContactListByNumber(getNumber())
                 }
@@ -124,8 +110,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
         binding?.apply {
             numberDeleteSubmit.setSafeOnClickListener {
                 args.number?.let {
-                    findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(
-                        number = it))
+                    findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(number = it))
                 }
             }
             numberAddSubmit.setSafeOnClickListener {
@@ -189,8 +174,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                 handleSuccessNumberAction(String.format(getString(R.string.number_added), number))
             }
             deleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
-                handleSuccessNumberAction(String.format(getString(R.string.delete_number_from_list),
-                    args.number?.number.orEmpty()))
+                handleSuccessNumberAction(String.format(getString(R.string.delete_number_from_list), args.number?.number.orEmpty()))
             }
         }
     }

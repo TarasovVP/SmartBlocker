@@ -115,9 +115,6 @@ fun Context.contactList(): ArrayList<Contact> {
                         val id = getString(idField)
                         val photoUrl = getString(photoUri)
                         val name = getString(nameField)
-                        if (name?.contains("Мой зай").isTrue()) {
-                            Log.e("allDataTAG", "Extensions Context.contactList name == Мой зай data $data id $id name $name")
-                        }
                         contactsById[data] =
                             Contact(
                                 id = id,
