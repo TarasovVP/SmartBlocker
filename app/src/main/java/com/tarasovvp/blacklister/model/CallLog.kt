@@ -8,7 +8,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.DATE_FORMAT
 import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
-import com.tarasovvp.blacklister.constants.Constants.OUTCOMING_CALL
+import com.tarasovvp.blacklister.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.constants.Constants.TIME_FORMAT
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
@@ -31,7 +31,7 @@ data class CallLog(
 ) : Parcelable, BaseAdapter.MainData {
     fun callLogIcon(): Int {
         return when (type) {
-            OUTCOMING_CALL -> R.drawable.ic_outcoming_call
+            OUT_COMING_CALL -> R.drawable.ic_outcoming_call
             MISSED_CALL -> R.drawable.ic_missed_call
             REJECTED_CALL -> R.drawable.ic_rejected_call
             BLOCKED_CALL -> R.drawable.ic_stop

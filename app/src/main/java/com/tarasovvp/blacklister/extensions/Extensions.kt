@@ -288,15 +288,15 @@ fun Activity.isServiceRunning(serviceClass: Class<*>): Boolean {
 
 fun Context.createNotificationChannel() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val chan = NotificationChannel(
+        val channel = NotificationChannel(
             Constants.NOTIFICATION_CHANNEL,
             Constants.FOREGROUND_CALL_SERVICE, NotificationManager.IMPORTANCE_HIGH
         )
-        chan.lightColor = Color.BLUE
-        chan.importance = NotificationManager.IMPORTANCE_NONE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        channel.lightColor = Color.BLUE
+        channel.importance = NotificationManager.IMPORTANCE_NONE
+        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val service = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(chan)
+        service.createNotificationChannel(channel)
     }
 }
 

@@ -33,6 +33,7 @@ import com.tarasovvp.blacklister.utils.ExceptionReceiver
 import com.tarasovvp.blacklister.utils.ForegroundCallService
 import com.tarasovvp.blacklister.utils.PermissionUtil
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -112,7 +113,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang)))
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang ?: Locale.getDefault().language)))
     }
 
     fun startService() {

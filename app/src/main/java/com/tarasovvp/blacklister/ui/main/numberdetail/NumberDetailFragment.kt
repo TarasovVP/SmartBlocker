@@ -107,8 +107,7 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
             itemNumber.itemNumberEnd.isVisible = number.end
             number.number = number.number.filter { it.isDigit() || it == PLUS_CHAR }
             itemNumber.root.setSafeOnClickListener {
-                findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(
-                    number = number))
+                findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(number = number))
             }
             if (number.isBlackNumber) {
                 binding?.numberDetailBlackNumberList?.addView(itemNumber.root)

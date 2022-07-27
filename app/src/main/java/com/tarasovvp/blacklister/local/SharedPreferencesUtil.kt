@@ -1,7 +1,7 @@
 package com.tarasovvp.blacklister.local
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.tarasovvp.blacklister.constants.Constants.APP_LANG_RU
+import com.tarasovvp.blacklister.constants.Constants.APP_LANG_EN
 import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.local.Settings.APP_LANG
@@ -26,8 +26,8 @@ object SharedPreferencesUtil {
             )
         }
 
-    var appLang: String
-        get() = loadString(APP_LANG) ?: APP_LANG_RU
+    var appLang: String?
+        get() = loadString(APP_LANG)
         set(appLang) {
             saveString(
                 APP_LANG,

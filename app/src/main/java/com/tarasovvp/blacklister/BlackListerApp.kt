@@ -12,6 +12,8 @@ import com.tarasovvp.blacklister.extensions.createNotificationChannel
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.Settings
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
+import java.util.*
 
 class BlackListerApp : Application() {
 
@@ -30,6 +32,7 @@ class BlackListerApp : Application() {
         FirebaseAnalytics.getInstance(this)
         Settings.loadSettingsHelper(this, this.packageName)
         createNotificationChannel()
+        if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang = Locale.getDefault().language
     }
 
     fun isLoggedInUser() = auth?.currentUser.isNotNull().isTrue()

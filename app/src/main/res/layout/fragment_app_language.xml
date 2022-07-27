@@ -34,7 +34,7 @@
                 android:text="@string/russian" />
 
             <RadioButton
-                android:id="@+id/settings_languages_rb_ua"
+                android:id="@+id/settings_languages_rb_uk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="@dimen/padding_20"

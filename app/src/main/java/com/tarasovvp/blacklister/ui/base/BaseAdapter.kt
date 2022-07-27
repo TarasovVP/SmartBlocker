@@ -45,10 +45,10 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
         }
     }
 
-    fun setHeaderAndData(datas: List<D>, header: HeaderData) {
+    fun setHeaderAndData(dataList: List<D>, header: HeaderData) {
         mData = mData ?: ArrayList()
         mData?.add(header)
-        mData?.addAll(datas as Collection<MainData>)
+        mData?.addAll(dataList as Collection<MainData>)
     }
 
     protected fun getDataInPosition(position: Int): D {
