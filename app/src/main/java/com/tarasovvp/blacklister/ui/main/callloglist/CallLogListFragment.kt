@@ -7,6 +7,7 @@ import com.tarasovvp.blacklister.databinding.FragmentCallLogListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showMessage
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -33,10 +34,7 @@ class CallLogListFragment :
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).apply {
-            startService()
-        }
-
+        (activity as MainActivity).startBlocker()
     }
 
     override fun onResume() {

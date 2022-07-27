@@ -22,16 +22,10 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.MainNavigationDirections
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.setAppLocale
-import com.tarasovvp.blacklister.extensions.showMessage
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
+import com.tarasovvp.blacklister.utils.*
 import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
-import com.tarasovvp.blacklister.utils.CallHandleReceiver
-import com.tarasovvp.blacklister.utils.ExceptionReceiver
-import com.tarasovvp.blacklister.utils.ForegroundCallService
-import com.tarasovvp.blacklister.utils.PermissionUtil
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import java.util.*
 
@@ -45,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private var exceptionReceiver: ExceptionReceiver? = null
     private var callHandleReceiver: CallHandleReceiver? = null
+    private var callReceiver: CallReceiver? = null
 
     var navigationScreens = arrayListOf(
         R.id.callLogListFragment,
@@ -78,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         unregisterReceiver(callHandleReceiver)
         unregisterReceiver(exceptionReceiver)
+        unregisterReceiver(callReceiver)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,17 +112,27 @@ class MainActivity : AppCompatActivity() {
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang ?: Locale.getDefault().language)))
     }
 
-    fun startService() {
-        callIntent = Intent(this, ForegroundCallService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(callIntent)
+    fun startBlocker() {
+        if (SharedPreferencesUtil.foreGround) {
+            if (callReceiver.isNotNull()) unregisterReceiver(callReceiver)
+            callIntent = Intent(this, ForegroundCallService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(callIntent)
+            } else {
+                startService(callIntent)
+            }
         } else {
-            startService(callIntent)
+            if (callIntent.isNotNull()) stopService(callIntent)
+            callReceiver = CallReceiver {
+            }
+            val filter = IntentFilter(Constants.PHONE_STATE)
+            registerReceiver(callReceiver, filter)
         }
     }
 
-    fun stopService() {
-        stopService(callIntent)
+    fun stopBlocker() {
+        if (callReceiver.isNotNull()) unregisterReceiver(callReceiver)
+        if (callIntent.isNotNull()) stopService(callIntent)
     }
 
     private fun observeLiveData() {

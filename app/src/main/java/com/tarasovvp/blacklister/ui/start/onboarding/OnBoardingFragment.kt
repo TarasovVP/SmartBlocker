@@ -44,6 +44,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
             }
         }
         initViewPager()
+        SharedPreferencesUtil.foreGround = true
     }
 
     private fun initViewPager() {

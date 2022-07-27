@@ -1,11 +1,11 @@
 package com.tarasovvp.blacklister.local
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.tarasovvp.blacklister.constants.Constants.APP_LANG_EN
 import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.local.Settings.APP_LANG
 import com.tarasovvp.blacklister.local.Settings.APP_THEME
+import com.tarasovvp.blacklister.local.Settings.FOREGROUND
 import com.tarasovvp.blacklister.local.Settings.ON_BOARDING_SEEN
 import com.tarasovvp.blacklister.local.Settings.clearSharedPreferences
 import com.tarasovvp.blacklister.local.Settings.loadBoolean
@@ -50,6 +50,15 @@ object SharedPreferencesUtil {
             saveBoolean(
                 WHITE_LIST_PRIORITY,
                 priority
+            )
+        }
+
+    var foreGround: Boolean
+        get() = loadBoolean(FOREGROUND)
+        set(foreGround) {
+            saveBoolean(
+                FOREGROUND,
+                foreGround
             )
         }
 

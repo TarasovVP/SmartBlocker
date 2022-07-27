@@ -29,8 +29,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
 
     init {
         BlackListerApp.instance?.apply {
-            phoneListener.invoke(String.format(this.getString(R.string.blocked_calls),
-                blockedCallRepository.allBlockedCalls()?.size))
+            phoneListener.invoke(String.format(this.getString(R.string.blocked_calls), blockedCallRepository.allBlockedCalls()?.size))
         }
     }
 

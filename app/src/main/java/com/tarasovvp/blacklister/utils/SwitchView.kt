@@ -36,5 +36,9 @@ class SwitchView @JvmOverloads constructor(
 
     fun setSwitchChange(isChecked: Boolean) {
         binding?.viewSwitchSwitcher?.isChecked = isChecked
+        binding?.viewSwitchOffMode?.alpha = if (isChecked) 0.5f else 1f
+        binding?.viewSwitchOffModeIcon?.alpha = if (isChecked) 0.5f else 1f
+        binding?.viewSwitchOnMode?.alpha = if (isChecked) 1f else 0.5f
+        binding?.viewSwitchOnModeIcon?.alpha = if (isChecked) 1f else 0.5f
     }
 }

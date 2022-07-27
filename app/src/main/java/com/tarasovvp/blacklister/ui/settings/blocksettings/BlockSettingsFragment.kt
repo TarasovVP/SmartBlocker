@@ -24,14 +24,22 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
     private fun initViews() {
         binding?.apply {
             (activity as MainActivity).apply {
+                Log.e("serviceTAG", "BlockSettingsFragment initViews SharedPreferencesUtil.foreGround ${SharedPreferencesUtil.foreGround} isServiceRunning ${this.isServiceRunning(ForegroundCallService::class.java)}")
                 blockSettingsTurn.setSwitchChange(this.isServiceRunning(ForegroundCallService::class.java))
                 blockSettingsTurn.setClickListener { isChecked ->
                     blockSettingsTurn.setSwitchChange(isChecked.not())
-                    if (isChecked) {
-                        startService()
+                    if (isChecked.not()) {
+                        startBlocker()
                     } else {
-                        stopService()
+                        stopBlocker()
                     }
+                }
+                blockSettingsForeground.setSwitchChange(SharedPreferencesUtil.foreGround)
+                blockSettingsForeground.setClickListener { isChecked ->
+                    blockSettingsForeground.setSwitchChange(isChecked.not())
+                    SharedPreferencesUtil.foreGround = isChecked.not()
+                    startBlocker()
+                    Log.e("serviceTAG", "BlockSettingsFragment blockSettingsForeground.setClickListener isChecked $isChecked isServiceRunning ${this.isServiceRunning(ForegroundCallService::class.java)}")
                 }
             }
             blockSettingsHidden.setSwitchChange(SharedPreferencesUtil.blockHidden)
@@ -48,7 +56,6 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
     override fun observeLiveData() {
         with(viewModel) {
             successPriorityLiveData.safeSingleObserve(viewLifecycleOwner) { whiteListPriority ->
-                Log.e("settingsTAG", "BlockSettingsFragment successPriorityLiveData whiteListPriority $whiteListPriority")
                 binding?.blockSettingsPriority?.setSwitchChange(whiteListPriority)
                 SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
                 (activity as MainActivity).getAllData()
