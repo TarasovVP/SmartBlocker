@@ -1,6 +1,7 @@
-package com.tarasovvp.blacklister.ui.main.settings.blocksettings
+package com.tarasovvp.blacklister.ui.settings.blocksettings
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -11,27 +12,32 @@ class BlockSettingsViewModel(application: Application) : BaseViewModel(applicati
 
     private val realDataBaseRepository = RealDataBaseRepository
 
+    val successPriorityLiveData = MutableLiveData<Boolean>()
+    val successBlockHiddenLiveData = MutableLiveData<Boolean>()
+
     fun changePriority(whiteListPriority: Boolean) {
         showProgress()
         launch {
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 realDataBaseRepository.changeWhiteListPriority(whiteListPriority) {
-                    SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
+                    successPriorityLiveData.postValue(whiteListPriority)
                 }
+            } else {
+                SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
             }
             hideProgress()
         }
     }
 
-    fun changeBlockAnonymous(blockUnanimous: Boolean) {
+    fun changeBlockHidden(blockHidden: Boolean) {
         showProgress()
         launch {
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-                realDataBaseRepository.changeBlockAnonymous(blockUnanimous) {
-                    SharedPreferencesUtil.blockHidden = blockUnanimous
+                realDataBaseRepository.changeBlockHidden(blockHidden) {
+                    successBlockHiddenLiveData.postValue(blockHidden)
                 }
             } else {
-                SharedPreferencesUtil.blockHidden = blockUnanimous
+                SharedPreferencesUtil.blockHidden = blockHidden
             }
             hideProgress()
         }

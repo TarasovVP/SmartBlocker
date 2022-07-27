@@ -124,7 +124,7 @@
 
     <fragment
         android:id="@+id/settingsListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.settings.settingslist.SettingsListFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.settingslist.SettingsListFragment"
         android:label="@string/settings">
         <action
             android:id="@+id/startBlockSettingsFragment"
@@ -149,12 +149,12 @@
 
     <fragment
         android:id="@+id/blockSettingsFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.settings.blocksettings.BlockSettingsFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.blocksettings.BlockSettingsFragment"
         android:label="@string/block_settings" />
 
     <fragment
         android:id="@+id/accountDetailsFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.settings.accountdetals.AccountDetailsFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.accountdetals.AccountDetailsFragment"
         android:label="@string/personal_details">
         <action
             android:id="@+id/startAccountActionDialog"
@@ -168,12 +168,12 @@
 
     <fragment
         android:id="@+id/appLanguageFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.settings.applanguage.AppLanguageFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.applanguage.AppLanguageFragment"
         android:label="@string/app_language" />
 
     <fragment
         android:id="@+id/appThemeFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.settings.apptheme.AppThemeFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.apptheme.AppThemeFragment"
         android:label="@string/app_theme" />
 
     <dialog

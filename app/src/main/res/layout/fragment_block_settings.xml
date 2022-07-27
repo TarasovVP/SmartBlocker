@@ -10,102 +10,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/block_settings_back_ground_title"
+        <com.tarasovvp.blacklister.utils.SwitchView
+            android:id="@+id/block_settings_turn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_25"
-            android:text="@string/change_back_ground"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:title="@string/change_turn_block"
+            app:turnOffModeText="@string/turn_off"
+            app:turnOffModeIcon="@drawable/ic_block"
+            app:turnOnModeText="@string/turn_on"
+            app:turnOnModeIcon="@drawable/ic_accepted"
+            app:info="@string/change_back_ground"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <CheckBox
-            android:id="@+id/block_settings_back_ground"
+        <com.tarasovvp.blacklister.utils.SwitchView
+            android:id="@+id/block_settings_foreground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:checked="true"
-            android:text="@string/bg_work_on"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/block_settings_back_ground_title" />
+            app:title="@string/change_back_ground"
+            app:turnOffModeText="@string/back_ground"
+            app:turnOnModeText="@string/fore_ground"
+            app:info="@string/settings_back_ground_info"
+            app:layout_constraintTop_toBottomOf="@+id/block_settings_turn"/>
 
-        <TextView
-            android:id="@+id/block_settings_back_ground_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:alpha="0.6"
-            android:drawablePadding="@dimen/padding_10"
-            android:text="@string/settings_back_ground_info"
-            android:textColor="@color/white"
-            app:drawableStartCompat="@drawable/ic_info"
-            app:layout_constraintTop_toBottomOf="@+id/block_settings_back_ground" />
-
-        <TextView
-            android:id="@+id/block_settings_priority_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_25"
-            android:text="@string/change_priority"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/block_settings_back_ground_info" />
-
-        <TextView
-            android:id="@+id/block_settings_black_priority"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="@dimen/size_0"
-            android:gravity="center"
-            android:text="@string/black_list"
-            android:textColor="@color/white"
-            app:drawableStartCompat="@drawable/ic_black_number"
-            app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority"
-            app:layout_constraintEnd_toStartOf="@+id/block_settings_priority"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/block_settings_priority" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <com.tarasovvp.blacklister.utils.SwitchView
             android:id="@+id/block_settings_priority"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            app:layout_constraintEnd_toStartOf="@+id/block_settings_white_priority"
-            app:layout_constraintStart_toEndOf="@+id/block_settings_black_priority"
-            app:layout_constraintTop_toBottomOf="@+id/block_settings_priority_title" />
-
-        <TextView
-            android:id="@+id/block_settings_white_priority"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="@dimen/size_0"
-            android:gravity="center"
-            android:text="@string/white_list"
-            android:textColor="@color/white"
-            app:drawableEndCompat="@drawable/ic_white_number"
-            app:layout_constraintBottom_toBottomOf="@+id/block_settings_priority"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/block_settings_priority"
-            app:layout_constraintTop_toTopOf="@+id/block_settings_priority" />
-
-        <TextView
-            android:id="@+id/block_settings_priority_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:alpha="0.6"
-            android:drawablePadding="@dimen/padding_10"
-            android:text="@string/change_priority_info"
-            android:textColor="@color/white"
-            app:drawableStartCompat="@drawable/ic_info"
-            app:layout_constraintTop_toBottomOf="@+id/block_settings_white_priority" />
+            app:title="@string/change_priority"
+            app:turnOffModeText="@string/black_list"
+            app:turnOffModeIcon="@drawable/ic_black_number"
+            app:turnOnModeText="@string/white_list"
+            app:turnOnModeIcon="@drawable/ic_white_number"
+            app:info="@string/change_priority_info"
+            app:layout_constraintTop_toBottomOf="@+id/block_settings_foreground"/>
 
-        <CheckBox
-            android:id="@+id/block_settings_back_hidden"
+        <com.tarasovvp.blacklister.utils.SwitchView
+            android:id="@+id/block_settings_hidden"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_25"
-            android:checked="true"
-            android:text="@string/block_hidden"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/block_settings_priority_info" />
+            app:title="@string/block_hidden"
+            app:turnOffModeText="@string/turn_off"
+            app:turnOffModeIcon="@drawable/ic_block"
+            app:turnOnModeText="@string/turn_on"
+            app:turnOnModeIcon="@drawable/ic_accepted"
+            app:info="@string/change_back_ground"
+            app:layout_constraintTop_toBottomOf="@+id/block_settings_priority"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

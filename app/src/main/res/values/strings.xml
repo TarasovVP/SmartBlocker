@@ -64,7 +64,7 @@
     <string name="confirm_new_password">Confirm new password</string>
     <string name="change_name">Change name</string>
     <string name="change_password">Change password</string>
-    <string name="block_hidden">Block closed numbers</string>
+    <string name="block_hidden">Block hidden numbers</string>
     <string name="day">Light theme</string>
     <string name="night">Dark theme</string>
     <string name="auto">Automatically follow your device\'s mode settings</string>
@@ -131,4 +131,9 @@
     <string name="can_block">blocked</string>
     <string name="can_unblock">unblocked</string>
     <string name="success_">Success</string>
+    <string name="change_turn_block">Работа блокировщика</string>
+    <string name="turn_on">Включена</string>
+    <string name="turn_off">Выключена</string>
+    <string name="back_ground">Только при включенном приложении</string>
+    <string name="fore_ground">В фоне</string>
 </resources>

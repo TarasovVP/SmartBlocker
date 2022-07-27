@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.settings.settingslist
+package com.tarasovvp.blacklister.ui.settings.settingslist
 
 import android.content.Intent
 import android.os.Bundle

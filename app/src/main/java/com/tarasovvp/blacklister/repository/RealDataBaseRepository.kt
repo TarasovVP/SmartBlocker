@@ -7,6 +7,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST
 import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
+import com.tarasovvp.blacklister.constants.Constants.EXCEPTION
 import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
@@ -24,6 +25,7 @@ object RealDataBaseRepository {
     fun getCurrentUser(result: (CurrentUser?) -> Unit) {
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 val currentUser = CurrentUser()
                 task.result.children.forEach { snapshot ->
                     when (snapshot.key) {
@@ -51,7 +53,8 @@ object RealDataBaseRepository {
 
     fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
         currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).setValue(blackNumber)
-            .addOnCompleteListener {
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
                 sendExceptionBroadCast(it.localizedMessage.orEmpty())
@@ -60,7 +63,8 @@ object RealDataBaseRepository {
 
     fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).setValue(whiteNumber)
-            .addOnCompleteListener {
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
                 sendExceptionBroadCast(it.localizedMessage.orEmpty())
@@ -69,7 +73,8 @@ object RealDataBaseRepository {
 
     fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).removeValue()
-            .addOnCompleteListener {
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
                 sendExceptionBroadCast(it.localizedMessage.orEmpty())
@@ -79,6 +84,7 @@ object RealDataBaseRepository {
     fun deleteWhiteNumberList(whiteNumberList: List<WhiteNumber>, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).get()
             .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
                     if (whiteNumberList.map { it.number }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
@@ -91,7 +97,8 @@ object RealDataBaseRepository {
 
     fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
         currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).removeValue()
-            .addOnCompleteListener {
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
                 sendExceptionBroadCast(it.localizedMessage.orEmpty())
@@ -101,6 +108,7 @@ object RealDataBaseRepository {
     fun deleteBlackNumberList(blackNumberList: List<BlackNumber>, result: () -> Unit) {
         currentUserDatabase.child(BLACK_LIST).get()
             .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
                     if (blackNumberList.map { it.number }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
@@ -113,16 +121,18 @@ object RealDataBaseRepository {
 
     fun changeWhiteListPriority(whiteListPriority: Boolean, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST_PRIORITY).setValue(whiteListPriority)
-            .addOnCompleteListener {
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
                 sendExceptionBroadCast(it.localizedMessage.orEmpty())
             }
     }
 
-    fun changeBlockAnonymous(blockUnanimous: Boolean, result: () -> Unit) {
+    fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
         currentUserDatabase.child(BLOCK_HIDDEN).setValue(blockUnanimous)
-            .addOnCompleteListener {
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
                 sendExceptionBroadCast(it.localizedMessage.orEmpty())
@@ -130,8 +140,8 @@ object RealDataBaseRepository {
     }
 
     private fun sendExceptionBroadCast(exception: String) {
-        val intent = Intent(Constants.EXCEPTION)
-        intent.putExtra(Constants.EXCEPTION, exception)
+        val intent = Intent(EXCEPTION)
+        intent.putExtra(EXCEPTION, exception)
         BlackListerApp.instance?.sendBroadcast(intent)
     }
 }

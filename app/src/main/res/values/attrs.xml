@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwitchView">
+        <attr name="title" format="string" />
+        <attr name="turnOnModeText" format="string" />
+        <attr name="turnOnModeIcon" format="integer" />
+        <attr name="turnOffModeText" format="string" />
+        <attr name="turnOffModeIcon" format="integer" />
+        <attr name="info" format="string" />
+    </declare-styleable>
+</resources>

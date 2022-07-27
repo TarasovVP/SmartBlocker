@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/padding_25">
+
+    <TextView
+        android:id="@+id/view_switch_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/view_switch_off_mode_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/view_switch_switcher"
+        app:layout_constraintEnd_toStartOf="@+id/view_switch_off_mode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_switch_switcher" />
+
+    <TextView
+        android:id="@+id/view_switch_off_mode"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="@dimen/size_0"
+        android:gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/view_switch_switcher"
+        app:layout_constraintEnd_toStartOf="@+id/view_switch_switcher"
+        app:layout_constraintStart_toEndOf="@+id/view_switch_off_mode_icon"
+        app:layout_constraintTop_toTopOf="@+id/view_switch_switcher" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/view_switch_switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:clickable="false"
+        app:layout_constraintEnd_toStartOf="@+id/view_switch_on_mode"
+        app:layout_constraintStart_toEndOf="@+id/view_switch_off_mode"
+        app:layout_constraintTop_toBottomOf="@+id/view_switch_title" />
+
+    <ImageView
+        android:id="@+id/view_switch_on_mode_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/view_switch_switcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view_switch_on_mode"
+        app:layout_constraintTop_toTopOf="@+id/view_switch_switcher" />
+
+    <TextView
+        android:id="@+id/view_switch_on_mode"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="@dimen/size_0"
+        android:gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/view_switch_switcher"
+        app:layout_constraintEnd_toStartOf="@+id/view_switch_on_mode_icon"
+        app:layout_constraintStart_toEndOf="@+id/view_switch_switcher"
+        app:layout_constraintTop_toTopOf="@+id/view_switch_switcher" />
+
+    <TextView
+        android:id="@+id/view_switch_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:alpha="0.6"
+        android:drawablePadding="@dimen/padding_10"
+        android:textColor="@color/white"
+        app:drawableStartCompat="@drawable/ic_info"
+        app:layout_constraintTop_toBottomOf="@+id/view_switch_on_mode" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey"
+        android:layout_marginTop="@dimen/margin_10"
+        app:layout_constraintTop_toBottomOf="@+id/view_switch_info" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

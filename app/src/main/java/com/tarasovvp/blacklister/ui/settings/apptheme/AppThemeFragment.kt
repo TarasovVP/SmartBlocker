@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.settings.apptheme
+package com.tarasovvp.blacklister.ui.settings.apptheme
 
 import android.os.Bundle
 import android.view.View

@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.settings.applanguage
+package com.tarasovvp.blacklister.ui.settings.applanguage
 
 import android.os.Bundle
 import android.view.View
