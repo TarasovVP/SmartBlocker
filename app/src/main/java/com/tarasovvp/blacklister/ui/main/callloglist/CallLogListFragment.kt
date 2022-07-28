@@ -6,7 +6,6 @@ import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.databinding.FragmentCallLogListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.showMessage
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -34,8 +33,9 @@ class CallLogListFragment :
 
     override fun onStart() {
         super.onStart()
-        Log.e("callLogTAG", "CallLogListFragment onStart()")
-        (activity as MainActivity).startBlocker()
+        (activity as MainActivity).apply {
+            if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+        }
     }
 
     override fun onResume() {
@@ -67,9 +67,7 @@ class CallLogListFragment :
             callLogHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { callLogHashMap ->
                 Log.e("callLogTAG",
                     "CallLogListFragment callLogHashMapLiveData callLogHashMap?.size ${callLogHashMap?.size}")
-                binding?.root?.showMessage("callLogHashMapLiveData", false)
                 callLogHashMap?.let { setDataList(it) }
-                binding?.root?.showMessage("setDataList", false)
                 Log.e("callLogTAG", "CallLogListFragment setDataList after")
             }
         }
@@ -77,7 +75,6 @@ class CallLogListFragment :
 
     override fun searchDataList() {
         Log.e("callLogTAG", "CallLogListFragment searchDataList")
-        binding?.root?.showMessage("StartSearching", false)
         val filteredCallLogList = callLogList?.filter { callLog ->
             (callLog.name?.lowercase(Locale.getDefault())?.contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
@@ -93,7 +90,6 @@ class CallLogListFragment :
                 viewModel.getHashMapFromCallLogList(this)
             }
         }
-        binding?.root?.showMessage("getHashMapFromCallLogList", false)
     }
 
     override fun getData() {

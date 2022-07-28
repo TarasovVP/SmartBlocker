@@ -31,7 +31,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var callIntent: Intent? = null
     private var navController: NavController? = null
     var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
@@ -39,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private var exceptionReceiver: ExceptionReceiver? = null
     private var callHandleReceiver: CallHandleReceiver? = null
+    private var callIntent: Intent? = null
     private var callReceiver: CallReceiver? = null
 
     var navigationScreens = arrayListOf(
@@ -141,6 +141,10 @@ class MainActivity : AppCompatActivity() {
     fun stopBlocker() {
         if (callReceiver.isNotNull()) unregisterReceiver(callReceiver)
         if (callIntent.isNotNull()) stopService(callIntent)
+    }
+
+    fun isBlockerLaunched(): Boolean {
+        return callReceiver.isNotNull() || callIntent.isNotNull()
     }
 
     private fun observeLiveData() {
