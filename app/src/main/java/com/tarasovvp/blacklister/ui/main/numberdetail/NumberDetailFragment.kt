@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.ui.main.numberdetail
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,7 +10,7 @@ import com.tarasovvp.blacklister.constants.Constants.ADD_TO_LIST
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
-import com.tarasovvp.blacklister.databinding.ItemNumberBinding
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -28,6 +27,8 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     override val viewModelClass = NumberDetailViewModel::class.java
 
     private val args: NumberDetailFragmentArgs by navArgs()
+
+    private var expandableNumberAdapter: NumberDetailAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -93,26 +94,19 @@ class NumberDetailFragment : BaseFragment<FragmentNumberDetailBinding, NumberDet
     }
 
     private fun setNumberList(numberList: List<Number>, isBlackList: Boolean) {
-        if (isBlackList) {
-            binding?.numberDetailBlackListEmpty?.isVisible = numberList.isEmpty()
+        val title =
+            "Найдено ${numberList.size} фильтров из ${if (isBlackList) "черного списка" else "белого списка"}"
+        if (expandableNumberAdapter.isNotNull()) {
+            expandableNumberAdapter?.titleList?.add(title)
+            expandableNumberAdapter?.numberListMap?.put(title, numberList)
         } else {
-            binding?.numberDetailWhiteListEmpty?.isVisible = numberList.isEmpty()
-        }
-        numberList.forEach { number ->
-            val itemNumber = ItemNumberBinding.inflate(layoutInflater)
-            itemNumber.itemNumberAvatar.setImageResource(if (number.isBlackNumber) R.drawable.ic_black_number else R.drawable.ic_white_number)
-            itemNumber.itemNumberValue.text = number.number
-            itemNumber.itemNumberStart.isVisible = number.start
-            itemNumber.itemNumberContain.isVisible = number.contain
-            itemNumber.itemNumberEnd.isVisible = number.end
-            number.number = number.number.filter { it.isDigit() || it == PLUS_CHAR }
-            itemNumber.root.setSafeOnClickListener {
-                findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(number = number))
-            }
-            if (number.isBlackNumber) {
-                binding?.numberDetailBlackNumberList?.addView(itemNumber.root)
-            } else {
-                binding?.numberDetailWhiteNumberList?.addView(itemNumber.root)
+            expandableNumberAdapter =
+                NumberDetailAdapter(arrayListOf(title), hashMapOf(title to numberList))
+            binding?.numberDetailNumberList?.setAdapter(expandableNumberAdapter)
+            binding?.numberDetailNumberList?.setOnChildClickListener { _, _, _, childPosition, _ ->
+                findNavController().navigate(NumberDetailFragmentDirections.startNumberAddFragment(
+                    number = numberList[childPosition]))
+                return@setOnChildClickListener true
             }
         }
     }

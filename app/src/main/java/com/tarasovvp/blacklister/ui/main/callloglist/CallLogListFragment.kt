@@ -25,8 +25,7 @@ class CallLogListFragment :
     override fun createAdapter(): BaseAdapter<CallLog>? {
         return context?.let {
             CallLogAdapter { number ->
-                findNavController().navigate(CallLogListFragmentDirections.startNumberDetailFragment(
-                    number = number))
+                findNavController().navigate(CallLogListFragmentDirections.startNumberDetailFragment(number = number))
             }
         }
     }
@@ -76,12 +75,9 @@ class CallLogListFragment :
     override fun searchDataList() {
         Log.e("callLogTAG", "CallLogListFragment searchDataList")
         val filteredCallLogList = callLogList?.filter { callLog ->
-            (callLog.name?.lowercase(Locale.getDefault())?.contains(
-                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ).isTrue() || callLog.phone?.lowercase(Locale.getDefault())?.contains(
-                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            )
-                .isTrue()) && if (binding?.callLogListCheck?.isChecked.isTrue()) callLog.type == BLOCKED_CALL else true
+            (callLog.name?.lowercase(Locale.getDefault())?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
+                    || callLog.phone?.lowercase(Locale.getDefault())?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
+                    && if (binding?.callLogListCheck?.isChecked.isTrue()) callLog.type == BLOCKED_CALL else true
         } as? ArrayList<CallLog>
         Log.e("callLogTAG",
             "CallLogListFragment searchDataList filteredCallLogList?.size ${filteredCallLogList?.size}")
