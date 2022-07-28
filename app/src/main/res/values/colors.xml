@@ -11,4 +11,5 @@
     <color name="main_bg">#181A1D</color>
     <color name="blue">#267DFF</color>
     <color name="progress_bg">#80000000</color>
+    <color name="disable_color">#32989595</color>
 </resources>

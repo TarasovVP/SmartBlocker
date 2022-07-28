@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/padding_25">
+    android:background="@drawable/switch_view_selector">
 
     <TextView
         android:id="@+id/view_switch_title"
@@ -68,6 +68,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_5"
         android:alpha="0.6"
+        android:text="@string/details_"
+        android:gravity="center_vertical"
         android:drawablePadding="@dimen/padding_10"
         android:textColor="@color/white"
         app:drawableStartCompat="@drawable/ic_info"

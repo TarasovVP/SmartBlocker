@@ -5,6 +5,7 @@ import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.local.Settings.APP_LANG
 import com.tarasovvp.blacklister.local.Settings.APP_THEME
+import com.tarasovvp.blacklister.local.Settings.BLOCK_TURN_OFF
 import com.tarasovvp.blacklister.local.Settings.FOREGROUND
 import com.tarasovvp.blacklister.local.Settings.ON_BOARDING_SEEN
 import com.tarasovvp.blacklister.local.Settings.clearSharedPreferences
@@ -50,6 +51,15 @@ object SharedPreferencesUtil {
             saveBoolean(
                 WHITE_LIST_PRIORITY,
                 priority
+            )
+        }
+
+    var blockTurnOff: Boolean
+        get() = loadBoolean(BLOCK_TURN_OFF)
+        set(blockTurnOff) {
+            saveBoolean(
+                BLOCK_TURN_OFF,
+                blockTurnOff
             )
         }
 

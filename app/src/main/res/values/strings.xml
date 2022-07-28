@@ -136,4 +136,5 @@
     <string name="turn_off">Выключена</string>
     <string name="back_ground">Только при включенном приложении</string>
     <string name="fore_ground">В фоне</string>
+    <string name="details_">Детали...</string>
 </resources>

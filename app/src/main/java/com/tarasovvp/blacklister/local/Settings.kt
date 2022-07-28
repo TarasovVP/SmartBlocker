@@ -10,6 +10,7 @@ object Settings {
     const val APP_LANG = "appLang"
     const val APP_THEME = "appTheme"
     const val FOREGROUND = "foreground"
+    const val BLOCK_TURN_OFF = "blockTurnOff"
 
     private var sharedPreferences: SharedPreferences? = null
 

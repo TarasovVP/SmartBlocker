@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ViewSwitchBinding
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.showMessage
 
 class SwitchView @JvmOverloads constructor(
     context: Context,
@@ -18,27 +19,41 @@ class SwitchView @JvmOverloads constructor(
 
     init {
         binding = ViewSwitchBinding.inflate(LayoutInflater.from(context), this, true)
-        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.SwitchView, 0, 0)
-        binding?.viewSwitchTitle?.text = typedArray.getString(R.styleable.SwitchView_title)
-        binding?.viewSwitchOffMode?.text = typedArray.getString(R.styleable.SwitchView_turnOffModeText)
-        binding?.viewSwitchOffModeIcon?.setImageResource(typedArray.getResourceId(R.styleable.SwitchView_turnOffModeIcon, 0))
-        binding?.viewSwitchOnMode?.text = typedArray.getString(R.styleable.SwitchView_turnOnModeText)
-        binding?.viewSwitchOnModeIcon?.setImageResource(typedArray.getResourceId(R.styleable.SwitchView_turnOnModeIcon, 0))
-        binding?.viewSwitchInfo?.text = typedArray.getString(R.styleable.SwitchView_info)
-        typedArray.recycle()
+        var infoText = ""
+        binding?.apply {
+            with(context.theme.obtainStyledAttributes(attrs, R.styleable.SwitchView, 0, 0)) {
+                viewSwitchTitle.text = getString(R.styleable.SwitchView_title)
+                viewSwitchOffMode.text = getString(R.styleable.SwitchView_turnOffModeText)
+                viewSwitchOffModeIcon.setImageResource(getResourceId(R.styleable.SwitchView_turnOffModeIcon, 0))
+                viewSwitchOnMode.text = getString(R.styleable.SwitchView_turnOnModeText)
+                viewSwitchOnModeIcon.setImageResource(getResourceId(R.styleable.SwitchView_turnOnModeIcon, 0))
+                infoText = getString(R.styleable.SwitchView_info).orEmpty()
+                recycle()
+            }
+            viewSwitchInfo.setSafeOnClickListener {
+                if (infoText.isNotEmpty()
+                    && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showMessage(infoText, false)
+            }
+        }
     }
 
-    fun setClickListener(switchClickListener: (Boolean) -> Unit) {
+    fun setSwitchClickListener(switchClickListener: (Boolean) -> Unit) {
         binding?.root?.setSafeOnClickListener {
             switchClickListener.invoke(binding?.viewSwitchSwitcher?.isChecked.isTrue())
         }
     }
 
     fun setSwitchChange(isChecked: Boolean) {
-        binding?.viewSwitchSwitcher?.isChecked = isChecked
-        binding?.viewSwitchOffMode?.alpha = if (isChecked) 0.5f else 1f
-        binding?.viewSwitchOffModeIcon?.alpha = if (isChecked) 0.5f else 1f
-        binding?.viewSwitchOnMode?.alpha = if (isChecked) 1f else 0.5f
-        binding?.viewSwitchOnModeIcon?.alpha = if (isChecked) 1f else 0.5f
+        binding?.apply {
+            viewSwitchSwitcher.isChecked = isChecked
+            viewSwitchOffMode.alpha = if (isChecked) 0.5f else 1f
+            viewSwitchOffModeIcon.alpha = if (isChecked) 0.5f else 1f
+            viewSwitchOnMode.alpha = if (isChecked) 1f else 0.5f
+            viewSwitchOnModeIcon.alpha = if (isChecked) 1f else 0.5f
+        }
+    }
+
+    fun setEnableChange(isEnable: Boolean) {
+        binding?.root?.isEnabled = isEnable
     }
 }

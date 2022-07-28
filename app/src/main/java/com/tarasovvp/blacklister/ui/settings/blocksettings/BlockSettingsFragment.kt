@@ -1,15 +1,12 @@
 package com.tarasovvp.blacklister.ui.settings.blocksettings
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.tarasovvp.blacklister.databinding.FragmentBlockSettingsBinding
-import com.tarasovvp.blacklister.extensions.isServiceRunning
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.utils.ForegroundCallService
 
 class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSettingsViewModel>() {
 
@@ -24,32 +21,41 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
     private fun initViews() {
         binding?.apply {
             (activity as MainActivity).apply {
-                Log.e("serviceTAG", "BlockSettingsFragment initViews SharedPreferencesUtil.foreGround ${SharedPreferencesUtil.foreGround} isServiceRunning ${this.isServiceRunning(ForegroundCallService::class.java)}")
-                blockSettingsTurn.setSwitchChange(this.isServiceRunning(ForegroundCallService::class.java))
-                blockSettingsTurn.setClickListener { isChecked ->
+                blockSettingsTurn.setSwitchChange(SharedPreferencesUtil.blockTurnOff.not())
+                checkBlockSettingsEnable(SharedPreferencesUtil.blockTurnOff.not())
+                blockSettingsTurn.setSwitchClickListener { isChecked ->
                     blockSettingsTurn.setSwitchChange(isChecked.not())
+                    SharedPreferencesUtil.blockTurnOff = isChecked
                     if (isChecked.not()) {
                         startBlocker()
                     } else {
                         stopBlocker()
                     }
+                    checkBlockSettingsEnable(isChecked.not())
                 }
-                blockSettingsForeground.setSwitchChange(SharedPreferencesUtil.foreGround)
-                blockSettingsForeground.setClickListener { isChecked ->
+                blockSettingsForeground.setSwitchChange(SharedPreferencesUtil.foreGround.not())
+                blockSettingsForeground.setSwitchClickListener { isChecked ->
                     blockSettingsForeground.setSwitchChange(isChecked.not())
-                    SharedPreferencesUtil.foreGround = isChecked.not()
+                    SharedPreferencesUtil.foreGround = isChecked
                     startBlocker()
-                    Log.e("serviceTAG", "BlockSettingsFragment blockSettingsForeground.setClickListener isChecked $isChecked isServiceRunning ${this.isServiceRunning(ForegroundCallService::class.java)}")
                 }
             }
             blockSettingsHidden.setSwitchChange(SharedPreferencesUtil.blockHidden)
-            blockSettingsHidden.setClickListener { isChecked ->
+            blockSettingsHidden.setSwitchClickListener { isChecked ->
                 viewModel.changeBlockHidden(isChecked.not())
             }
             blockSettingsPriority.setSwitchChange(SharedPreferencesUtil.isWhiteListPriority)
-            blockSettingsPriority.setClickListener { isChecked ->
+            blockSettingsPriority.setSwitchClickListener { isChecked ->
                 viewModel.changePriority(isChecked.not())
             }
+        }
+    }
+
+    private fun checkBlockSettingsEnable(isChecked: Boolean) {
+        binding?.apply {
+            blockSettingsForeground.setEnableChange(isChecked)
+            blockSettingsHidden.setEnableChange(isChecked)
+            blockSettingsPriority.setEnableChange(isChecked)
         }
     }
 

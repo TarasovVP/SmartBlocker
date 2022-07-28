@@ -73,7 +73,9 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         unregisterReceiver(callHandleReceiver)
         unregisterReceiver(exceptionReceiver)
-        unregisterReceiver(callReceiver)
+        callReceiver?.apply {
+            unregisterReceiver(this)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,19 +116,25 @@ class MainActivity : AppCompatActivity() {
 
     fun startBlocker() {
         if (SharedPreferencesUtil.foreGround) {
-            if (callReceiver.isNotNull()) unregisterReceiver(callReceiver)
+            callIntent?.apply {
+                stopService(this)
+                callIntent = null
+            }
+            callReceiver = CallReceiver {
+            }
+            val filter = IntentFilter(Constants.PHONE_STATE)
+            registerReceiver(callReceiver, filter)
+        } else {
+            callReceiver?.apply {
+                unregisterReceiver(this)
+                callReceiver = null
+            }
             callIntent = Intent(this, ForegroundCallService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(callIntent)
             } else {
                 startService(callIntent)
             }
-        } else {
-            if (callIntent.isNotNull()) stopService(callIntent)
-            callReceiver = CallReceiver {
-            }
-            val filter = IntentFilter(Constants.PHONE_STATE)
-            registerReceiver(callReceiver, filter)
         }
     }
 

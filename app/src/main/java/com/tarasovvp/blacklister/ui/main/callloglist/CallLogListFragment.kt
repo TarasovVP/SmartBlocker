@@ -34,6 +34,7 @@ class CallLogListFragment :
 
     override fun onStart() {
         super.onStart()
+        Log.e("callLogTAG", "CallLogListFragment onStart()")
         (activity as MainActivity).startBlocker()
     }
 
