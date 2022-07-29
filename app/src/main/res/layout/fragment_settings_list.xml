@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_16"
-    tools:context=".ui.settings.settingslist.SettingsListFragment">
+    tools:context=".ui.settings.settings_list.SettingsListFragment">
 
     <TextView
         android:id="@+id/settings_list_block_settings"

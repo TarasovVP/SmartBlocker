@@ -65,7 +65,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 (activity as MainActivity).apply {
                     getAllData()
                 }
-                findNavController().navigate(R.id.callLogListFragment)
+                findNavController().navigate(R.id.callListFragment)
             }
             loginSignUp.setSafeOnClickListener {
                 findNavController().navigate(R.id.startSignUpFragment)
@@ -85,7 +85,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 (activity as MainActivity).apply {
                     getAllData()
                 }
-                findNavController().navigate(R.id.callLogListFragment)
+                findNavController().navigate(R.id.callListFragment)
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.password_reset_text), false)

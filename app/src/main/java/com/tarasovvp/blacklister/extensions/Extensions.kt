@@ -29,23 +29,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
-import com.tarasovvp.blacklister.constants.Constants.CALL_LOG_CALL
+import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.DATE
 import com.tarasovvp.blacklister.constants.Constants.DESC
 import com.tarasovvp.blacklister.constants.Constants.EIGHT_ZERO
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
 import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
+import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.NUMBER
 import com.tarasovvp.blacklister.constants.Constants.PHONE_NUMBER_CODE
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.constants.Constants.THREE_EIGHT_ZERO
 import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
-import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.model.BlockedCall
-import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.WhiteNumber
+import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
+import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.MainActivity
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -129,7 +128,7 @@ fun Context.contactList(): ArrayList<Contact> {
     return ArrayList(contacts.toList())
 }
 
-fun Context.callLogList(): ArrayList<com.tarasovvp.blacklister.model.CallLog> {
+fun Context.systemLogCallList(): ArrayList<LogCall> {
     val projection = arrayOf(
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
@@ -137,34 +136,30 @@ fun Context.callLogList(): ArrayList<com.tarasovvp.blacklister.model.CallLog> {
         CallLog.Calls.DATE
     )
 
-    val callLogList = ArrayList<com.tarasovvp.blacklister.model.CallLog>()
+    val logCallList = ArrayList<LogCall>()
     val cursor: Cursor? = this.contentResolver.query(
-        Uri.parse(CALL_LOG_CALL),
+        Uri.parse(LOG_CALL_CALL),
         projection,
         null,
         null,
         null
     )
-    cursor?.use { callLogCursor ->
-        while (callLogCursor.moveToNext()) {
-            val time: String? =
-                callLogCursor.getString(3)
-            time?.let {
-                com.tarasovvp.blacklister.model.CallLog(
-                    name = callLogCursor.getString(0),
-                    phone = callLogCursor.getString(1),
-                    type = callLogCursor.getString(2),
-                    time = it
-                )
-            }?.let { callLog ->
-                callLogList.add(callLog)
-            }
+    cursor?.use { logCallCursor ->
+        while (logCallCursor.moveToNext()) {
+            val logCall = LogCall()
+            logCall.time = logCallCursor.getString(3)
+            logCall.name = logCallCursor.getString(0)
+            logCall.phone = logCallCursor.getString(1)
+            logCall.type = logCallCursor.getString(1)
+            logCall.photoUrl =
+                ContactRepository.getContactByNumber(logCall.phone.orEmpty())?.photoUrl
+            logCallList.add(logCall)
         }
     }
-    callLogList.sortByDescending {
+    logCallList.sortByDescending {
         it.time?.toMillisecondsFromString()
     }
-    return callLogList
+    return logCallList
 }
 
 fun Context.deleteLastMissedCall(phone: String): Boolean {
@@ -176,7 +171,7 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
     )
 
     val cursor: Cursor? = this.contentResolver.query(
-        Uri.parse(CALL_LOG_CALL),
+        Uri.parse(LOG_CALL_CALL),
         projection,
         null,
         null,
@@ -185,15 +180,19 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
     cursor?.use {
         while (cursor.moveToNext()) {
             val phoneNumber: String = cursor.getString(1)
-            val time: String? =
-                cursor.getString(3)
+            val time: String? = cursor.getString(3)
             val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
             if (phone == phoneNumber.toFormattedPhoneNumber()) {
                 try {
-                    BlockedCallRepository.insertBlockedCall(time?.let {
-                        BlockedCall(name = cursor.getString(0), phone = phoneNumber, time = it)
-                    })
-                    this.contentResolver.delete(Uri.parse(CALL_LOG_CALL), queryString, null)
+                    val blockedCall = BlockedCall()
+                    blockedCall.time = time
+                    blockedCall.name = cursor.getString(0)
+                    blockedCall.phone = phoneNumber
+                    blockedCall.type = BLOCKED_CALL
+                    blockedCall.photoUrl =
+                        ContactRepository.getContactByNumber(phoneNumber)?.photoUrl
+                    BlockedCallRepository.insertBlockedCall(blockedCall)
+                    this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), queryString, null)
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                     return false
@@ -276,16 +275,6 @@ fun String.toMillisecondsFromString(): Long {
     }
 }
 
-fun Activity.isServiceRunning(serviceClass: Class<*>): Boolean {
-    val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
-    manager?.getRunningServices(Int.MAX_VALUE)?.forEach {
-        if (serviceClass.name == it.service.className) {
-            return true
-        }
-    }
-    return false
-}
-
 fun Context.createNotificationChannel() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val channel = NotificationChannel(
@@ -335,7 +324,7 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
             is Contact -> {
                 it.name?.substring(0, 1)
             }
-            is com.tarasovvp.blacklister.model.CallLog -> {
+            is Call -> {
                 it.calendarFromTime()
             }
             else -> {
@@ -355,15 +344,15 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
                 is Contact -> {
                     it.name?.substring(0, 1)
                 }
-                is com.tarasovvp.blacklister.model.CallLog -> {
+                is Call -> {
                     it.calendarFromTime()
                 }
                 else -> it
             }
         }
         if (key is Calendar) {
-            val callLog = valueList[0] as com.tarasovvp.blacklister.model.CallLog
-            hashMapFromList[callLog.dateFromTime().toString()] = valueList
+            val call = valueList[0] as Call
+            hashMapFromList[call.dateFromTime().toString()] = valueList
         } else if (key is String) {
             hashMapFromList[key] = valueList
         }

@@ -5,46 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_16"
-    tools:context=".ui.main.contact_list.ContactListFragment">
+    tools:context=".ui.main.call_list.CallListFragment">
 
     <CheckBox
-        android:id="@+id/contact_list_check"
+        android:id="@+id/call_list_check"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/padding_5"
-        android:text="@string/only_black_list"
-        app:layout_constraintBottom_toTopOf="@+id/contact_list_refresh"
-        app:layout_constraintEnd_toStartOf="@+id/contact_list_priority"
+        android:text="@string/all_call_log_list"
+        app:layout_constraintBottom_toTopOf="@+id/call_list_refresh"
+        app:layout_constraintEnd_toStartOf="@+id/call_list_priority"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/contact_list_priority"
+        android:id="@+id/call_list_priority"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/size_0"
-        android:drawablePadding="@dimen/padding_5"
         android:gravity="center_vertical"
+        android:drawablePadding="@dimen/padding_5"
         android:text="@string/prioritness"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/contact_list_check"
-        app:layout_constraintBottom_toBottomOf="@+id/contact_list_check"/>
+        app:layout_constraintTop_toTopOf="@+id/call_list_check"
+        app:layout_constraintBottom_toBottomOf="@+id/call_list_check"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/contact_list_refresh"
+        android:id="@+id/call_list_refresh"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact_list_check">
+        app:layout_constraintTop_toBottomOf="@+id/call_list_check">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/contact_list_recycler_view"
+            android:id="@+id/call_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
-        android:id="@+id/contact_list_empty"
+        android:id="@+id/call_list_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

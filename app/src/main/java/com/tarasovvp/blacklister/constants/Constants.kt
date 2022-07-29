@@ -18,7 +18,7 @@ object Constants {
     const val WHITE_LIST = "whiteList"
     const val DELETE_NUMBER = "addNumber"
     const val EMAIL = "email"
-    const val CALL_LOG_CALL = "content://call_log/calls"
+    const val LOG_CALL_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"
     const val END_CALL = "endCall"
     const val OUT_COMING_CALL = "2"

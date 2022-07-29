@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private var callReceiver: CallReceiver? = null
 
     var navigationScreens = arrayListOf(
-        R.id.callLogListFragment,
+        R.id.callListFragment,
         R.id.contactListFragment,
         R.id.blackNumberListFragment,
         R.id.whiteNumberListFragment
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 when {
                     SharedPreferencesUtil.isOnBoardingSeen.not() -> R.id.onBoardingFragment
                     BlackListerApp.instance?.isLoggedInUser().isTrue() -> {
-                        R.id.callLogListFragment
+                        R.id.callListFragment
                     }
                     else -> R.id.loginFragment
                 }

@@ -36,7 +36,7 @@
     <string name="addBlackNumber">Додавання номера</string>
     <string name="add">Додати</string>
     <string name="enter_login_password">Введіть логін та пароль</string>
-    <string name="only_blocked">Тільки заблоковані</string>
+    <string name="all_call_log_list">Весь список дзвінків</string>
     <string name="edit">Редагувати</string>
     <string name="change">Змінити</string>
     <string name="delete_number_from_list">Видалити %s із чорного списку?</string>

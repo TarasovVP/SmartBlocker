@@ -19,7 +19,7 @@
         android:name="com.tarasovvp.blacklister.ui.start.login.LoginFragment">
         <action
             android:id="@+id/startCallLogList"
-            app:destination="@id/callLogListFragment"
+            app:destination="@id/callListFragment"
             app:popUpTo="@+id/mainNavigation"
             app:popUpToInclusive="true" />
         <action
@@ -32,13 +32,13 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.signup.SignUpFragment"
+        android:name="com.tarasovvp.blacklister.ui.start.sign_up.SignUpFragment"
         android:label="@string/sign_up"/>
 
     <fragment
-        android:id="@+id/callLogListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.callloglist.CallLogListFragment"
-        android:label="@string/log_list">
+        android:id="@+id/callListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.call_list.CallListFragment"
+        android:label="@string/blocked_call_log">
         <action
             android:id="@+id/startNumberAddFragment"
             app:destination="@id/numberAddFragment" />
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.contactlist.ContactListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.contact_list.ContactListFragment"
         android:label="@string/contact_list">
         <action
             android:id="@+id/startNumberDetailFragment"
@@ -78,7 +78,7 @@
 
     <fragment
         android:id="@+id/numberDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.numberdetail.NumberDetailFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.number_detail.NumberDetailFragment"
         android:label="@string/details">
         <argument
             android:name="number"
@@ -102,7 +102,7 @@
 
     <fragment
         android:id="@+id/blackNumberListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.numberlist.BlackNumberListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.number_list.BlackNumberListFragment"
         android:label="@string/black_list">
         <action
             android:id="@+id/startNumberAddFragment"
@@ -111,7 +111,7 @@
 
     <fragment
         android:id="@+id/whiteNumberListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.numberlist.WhiteNumberListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.number_list.WhiteNumberListFragment"
         android:label="@string/white_list">
         <action
             android:id="@+id/startNumberAddFragment"
@@ -124,7 +124,7 @@
 
     <fragment
         android:id="@+id/settingsListFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.settingslist.SettingsListFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.settings_list.SettingsListFragment"
         android:label="@string/settings">
         <action
             android:id="@+id/startBlockSettingsFragment"
@@ -149,12 +149,12 @@
 
     <fragment
         android:id="@+id/blockSettingsFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.blocksettings.BlockSettingsFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.block_settings.BlockSettingsFragment"
         android:label="@string/block_settings" />
 
     <fragment
         android:id="@+id/accountDetailsFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.accountdetals.AccountDetailsFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.account_detals.AccountDetailsFragment"
         android:label="@string/personal_details">
         <action
             android:id="@+id/startAccountActionDialog"
@@ -168,12 +168,12 @@
 
     <fragment
         android:id="@+id/appLanguageFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.applanguage.AppLanguageFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.app_language.AppLanguageFragment"
         android:label="@string/app_language" />
 
     <fragment
         android:id="@+id/appThemeFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.apptheme.AppThemeFragment"
+        android:name="com.tarasovvp.blacklister.ui.settings.app_theme.AppThemeFragment"
         android:label="@string/app_theme" />
 
     <dialog
@@ -215,7 +215,7 @@
 
     <fragment
         android:id="@+id/numberAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.numberadd.NumberAddFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.number_add.NumberAddFragment"
         android:label="@string/addBlackNumber">
         <argument
             android:name="number"

@@ -36,7 +36,7 @@
     <string name="addBlackNumber">Add BlackNumber</string>
     <string name="add">Add</string>
     <string name="enter_login_password">Enter your login and password</string>
-    <string name="only_blocked">Only Blocked</string>
+    <string name="all_call_log_list">All call log list</string>
     <string name="edit">Edit</string>
     <string name="change">Change</string>
     <string name="delete_number_from_list">Remove %s from blacklist?</string>
@@ -137,4 +137,5 @@
     <string name="back_ground">Только при включенном приложении</string>
     <string name="fore_ground">В фоне</string>
     <string name="details_">Детали...</string>
+    <string name="blocked_call_log">Заблокированные номера</string>
 </resources>

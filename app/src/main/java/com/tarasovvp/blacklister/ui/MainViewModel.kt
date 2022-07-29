@@ -5,14 +5,13 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.model.CallLog
 import com.tarasovvp.blacklister.model.CurrentUser
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
-    private val callLogRepository = CallLogRepository
+    private val logCallRepository = LogCallRepository
     private val blackNumberRepository = BlackNumberRepository
     private val whiteNumberRepository = WhiteNumberRepository
     private val contactRepository = ContactRepository
@@ -65,33 +64,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             }
             contactRepository.insertContacts(contactList)
 
-            val callLogList = callLogRepository.getSystemCallLogList(getApplication<Application>())
-            val blockedCallList = blockedCallRepository.allBlockedCalls()
-            blockedCallList?.forEach { blockedCall ->
-                callLogList.add(CallLog(name = blockedCall.name,
-                    phone = blockedCall.phone,
-                    type = blockedCall.type,
-                    time = blockedCall.time))
-            }
-            callLogList.forEach { callLog ->
-                val isInWhiteList =
-                    whiteNumberRepository.getWhiteNumberList(callLog.phone.orEmpty())?.isEmpty()
-                        .isTrue().not()
-                val isInBlackList =
-                    blackNumberRepository.getBlackNumberList(callLog.phone.orEmpty())?.isEmpty()
-                        .isTrue().not()
-                callLog.isBlackList =
-                    (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
-                callLog.isWhiteList =
-                    (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority) || (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority.not() && isInBlackList.not())
-                val index = contactList.indexOfFirst { it.phone == callLog.phone }
-                if (index >= 0) {
-                    val contact =
-                        contactList[contactList.indexOfFirst { it.phone == callLog.phone }]
-                    callLog.photoUrl = contact.photoUrl
-                }
-            }
-            callLogRepository.insertCallLogs(callLogList)
+            logCallRepository.insertAllLogCalls(logCallRepository.getSystemLogCallList(getApplication<Application>()))
+
             successAllDataLiveData.postValue(true)
             hideProgress()
         }

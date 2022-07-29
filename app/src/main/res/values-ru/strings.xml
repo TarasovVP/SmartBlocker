@@ -36,7 +36,7 @@
     <string name="addBlackNumber">Добавление фильтра</string>
     <string name="add">Добавить</string>
     <string name="enter_login_password">Введите логин и пароль</string>
-    <string name="only_blocked">Только заблокированные</string>
+    <string name="all_call_log_list">Весь список звонков</string>
     <string name="edit">Редактировать</string>
     <string name="change">Изменить</string>
     <string name="delete_number_from_list">Номер %s удален</string>
