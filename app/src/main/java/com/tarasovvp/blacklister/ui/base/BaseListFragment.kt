@@ -120,6 +120,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     }
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {
+        Log.e("callLogTAG", "BaseListFragment setDataList dataListHashMap ${dataListHashMap.size}")
         adapter?.clearData()
         dataListHashMap.forEach { dataEntry ->
             adapter?.setHeaderAndData(

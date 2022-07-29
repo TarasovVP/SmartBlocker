@@ -3,18 +3,23 @@ package com.tarasovvp.blacklister.ui.main.call_list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.databinding.ItemCallBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class CallAdapter(private val callClick: (String) -> Unit) :
+class CallAdapter(val callClickListener: CallClickListener) :
     BaseAdapter<Call>() {
+
+    var isDeleteMode: Boolean = false
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -54,9 +59,30 @@ class CallAdapter(private val callClick: (String) -> Unit) :
             binding?.itemCallTime?.text = call.dateTimeFromTime()
             binding?.itemCallTypeIcon?.setImageResource(call.callIcon())
             binding?.itemCallAvatar?.loadCircleImage(call.photoUrl)
-            binding?.root?.setSafeOnClickListener {
-                call.phone?.let { callClick.invoke(it) }
+            binding?.itemCallArrow?.isVisible = isDeleteMode.not()
+            binding?.itemCallDelete?.isVisible = isDeleteMode && call.type == BLOCKED_CALL
+            binding?.itemCallDelete?.isChecked = call.isCheckedForDelete
+            binding?.itemCallDelete?.setOnCheckedChangeListener { _, checked ->
+                call.isCheckedForDelete = checked
+                callClickListener.onCallDeleteCheckChange(call)
             }
+            binding?.itemCallDeleteInfo?.isVisible = isDeleteMode && call.type != BLOCKED_CALL
+            binding?.itemCallDeleteInfo?.setSafeOnClickListener {
+                callClickListener.onCallDeleteInfoClick()
+            }
+            binding?.root?.setSafeOnClickListener {
+                if (isDeleteMode) {
+                    binding?.itemCallDelete?.isChecked =
+                        binding?.itemCallDelete?.isChecked.isTrue().not()
+                } else {
+                    callClickListener.onCallClick(call.phone.orEmpty())
+                }
+            }
+            binding?.root?.setOnLongClickListener {
+                callClickListener.onCallLongClick()
+                return@setOnLongClickListener true
+            }
+
         }
     }
 }

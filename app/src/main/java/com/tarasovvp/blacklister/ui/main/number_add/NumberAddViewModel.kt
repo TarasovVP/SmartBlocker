@@ -38,6 +38,7 @@ class NumberAddViewModel(application: Application) : BaseViewModel(application) 
         showProgress()
         launch {
             queryContactListLiveData.postValue(contactRepository.getQueryContacts(number).orEmpty())
+            hideProgress()
         }
     }
 

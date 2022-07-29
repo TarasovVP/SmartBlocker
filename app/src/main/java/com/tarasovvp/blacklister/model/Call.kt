@@ -23,6 +23,9 @@ open class Call(
     var time: String? = "",
     var photoUrl: String? = "",
 ) : Parcelable, BaseAdapter.MainData {
+
+    var isCheckedForDelete = false
+
     fun callIcon(): Int {
         return when (type) {
             OUT_COMING_CALL -> R.drawable.ic_outcoming_call

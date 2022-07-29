@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.repository
 
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.model.BlockedCall
+import com.tarasovvp.blacklister.model.Call
 
 object BlockedCallRepository {
 
@@ -13,6 +14,10 @@ object BlockedCallRepository {
 
     fun allBlockedCalls(): List<BlockedCall>? {
         return dao?.allBlockedCalls()
+    }
+
+    fun deleteBlockedCalls(callList: List<Call>) {
+        dao?.deleteBlockCalls(callList.map { it.id })
     }
 
 }

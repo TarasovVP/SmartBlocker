@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.call_list
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
@@ -15,6 +14,7 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
 
     val callLiveData = MutableLiveData<List<Call>>()
     val callHashMapLiveData = MutableLiveData<HashMap<String, List<Call>>?>()
+    val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun getBlockedCallList() {
         showProgress()
@@ -39,17 +39,22 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getHashMapFromCallList(callList: List<Call>) {
-        Log.e("callLogTAG",
-            "CallLogListViewModel getHashMapFromCallLogList callLogList.size ${callList.size}")
         showProgress()
         launch {
             val hashMapList =
                 callRepository.getHashMapFromCallList(callList.sortedByDescending {
                     it.time
                 })
-            Log.e("callLogTAG",
-                "CallLogListViewModel getHashMapFromCallLogList hashMapList.size ${hashMapList.size}")
             callHashMapLiveData.postValue(hashMapList)
+            hideProgress()
+        }
+    }
+
+    fun deleteCallList(callList: List<Call>) {
+        showProgress()
+        launch {
+            blockedCallRepository.deleteBlockedCalls(callList)
+            successDeleteNumberLiveData.postValue(true)
             hideProgress()
         }
     }

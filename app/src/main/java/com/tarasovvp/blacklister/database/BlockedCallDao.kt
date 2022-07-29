@@ -13,6 +13,6 @@ interface BlockedCallDao {
     @Query("SELECT * FROM blockedCall")
     fun allBlockedCalls(): List<BlockedCall>
 
-    @Query("DELETE FROM blockedCall")
-    fun deleteAllCallLogs()
+    @Query("delete from blockedcall where id in (:callIdList)")
+    fun deleteBlockCalls(callIdList: List<Int>)
 }

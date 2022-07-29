@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -73,6 +74,7 @@ fun View.showMessage(message: String, isError: Boolean) {
                     params.width = FrameLayout.LayoutParams.MATCH_PARENT
                     params.gravity = Gravity.TOP
                     view.layoutParams = params
+                    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = Int.MAX_VALUE
                 }.withColor(color).show()
         }
 }
@@ -320,10 +322,10 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
                 it.calendarFromTime()
             }
             is Contact -> {
-                it.name?.first()
+                it.name?.first().toString()
             }
             is Number -> {
-                it.number.first()
+                it.number.first().toString()
             }
             else -> {
                 return@map null
@@ -337,10 +339,10 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
                     it.calendarFromTime()
                 }
                 is Contact -> {
-                    it.name?.substring(0, 1)
+                    it.name?.first().toString()
                 }
                 is Number -> {
-                    it.number.substring(0, 1)
+                    it.number.first().toString()
                 }
                 else -> it
             }

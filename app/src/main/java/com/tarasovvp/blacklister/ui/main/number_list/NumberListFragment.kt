@@ -40,10 +40,9 @@ open class NumberListFragment :
                 }
 
                 override fun onNumberDeleteCheckChange(number: Number) {
-                    numberList?.find { it.number == number.number }?.isCheckedForDelete =
-                        number.isCheckedForDelete
-                    binding?.numberListDeleteBtn?.isVisible =
-                        numberList?.none { it.isCheckedForDelete }.isTrue().not()
+                    numberList?.find { it.number == number.number }?.isCheckedForDelete = number.isCheckedForDelete
+                    binding?.numberListDeleteBtn?.isVisible = numberList?.none { it.isCheckedForDelete }.isTrue().not()
+                    binding?.numberListDeleteAll?.isChecked = numberList?.none { it.isCheckedForDelete.not() }.isTrue()
                 }
 
             })
@@ -80,20 +79,22 @@ open class NumberListFragment :
 
     private fun changeDeleteMode() {
         isDeleteMode = isDeleteMode.not()
-        binding?.numberListPriority?.isVisible = isDeleteMode.not()
-        binding?.numberListFilter?.isVisible = isDeleteMode.not()
-        binding?.numberListDeleteAll?.isVisible = isDeleteMode
-        binding?.numberListDeleteBtn?.isVisible =
-            isDeleteMode && numberList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
-        if (isDeleteMode.not()) {
-            numberList?.forEach {
-                it.isCheckedForDelete = false
-            }
-            binding?.numberListDeleteAll?.isChecked = false
-        }
         (adapter as NumberAdapter).apply {
             isDeleteMode = this@NumberListFragment.isDeleteMode
             notifyDataSetChanged()
+        }
+        binding?.apply {
+            numberListPriority.isVisible = isDeleteMode.not()
+            numberListFilter.isVisible = isDeleteMode.not()
+            numberListDeleteAll.isVisible = isDeleteMode
+            numberListDeleteBtn.isVisible =
+                isDeleteMode && numberList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
+            if (isDeleteMode.not()) {
+                numberList?.forEach {
+                    it.isCheckedForDelete = false
+                }
+                numberListDeleteAll.isChecked = false
+            }
         }
     }
 
