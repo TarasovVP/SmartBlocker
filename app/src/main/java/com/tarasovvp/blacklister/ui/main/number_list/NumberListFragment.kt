@@ -3,8 +3,10 @@ package com.tarasovvp.blacklister.ui.main.number_list
 import android.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentNumberListBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -59,12 +61,15 @@ open class NumberListFragment :
             adapter?.notifyDataSetChanged()
         }
         setClickListeners()
+        setFragmentResultListener(Constants.DELETE_NUMBER) { _, _ ->
+            viewModel.deleteNumberList(numberList?.filter { it.isCheckedForDelete }.orEmpty(),
+                this is BlackNumberListFragment)
+        }
     }
 
     private fun setClickListeners() {
         binding?.numberListDeleteBtn?.setSafeOnClickListener {
-            viewModel.deleteNumberList(numberList?.filter { it.isCheckedForDelete }.orEmpty(),
-                this is BlackNumberListFragment)
+            findNavController().navigate(WhiteNumberListFragmentDirections.startDeleteNumberDialog())
         }
         binding?.numberListFabNew?.setSafeOnClickListener {
             findNavController().navigate(WhiteNumberListFragmentDirections.startNumberAddFragment(

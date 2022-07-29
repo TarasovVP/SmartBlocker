@@ -45,6 +45,9 @@
         <action
             android:id="@+id/startNumberDetailFragment"
             app:destination="@id/numberDetailFragment" />
+        <action
+            android:id="@+id/startDeleteNumberDialog"
+            app:destination="@id/deleteNumberDialog" />
     </fragment>
 
     <fragment
@@ -107,6 +110,9 @@
         <action
             android:id="@+id/startNumberAddFragment"
             app:destination="@id/numberAddFragment" />
+        <action
+            android:id="@+id/startDeleteNumberDialog"
+            app:destination="@id/deleteNumberDialog" />
     </fragment>
 
     <fragment
@@ -116,6 +122,9 @@
         <action
             android:id="@+id/startNumberAddFragment"
             app:destination="@id/numberAddFragment" />
+        <action
+            android:id="@+id/startDeleteNumberDialog"
+            app:destination="@id/deleteNumberDialog" />
     </fragment>
 
     <action

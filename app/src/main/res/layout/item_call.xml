@@ -58,17 +58,37 @@
         android:layout_marginEnd="@dimen/margin_15"
         app:layout_constraintStart_toEndOf="@+id/item_call_time"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_call_menu"
+        app:layout_constraintEnd_toStartOf="@+id/item_call_arrow"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/item_call_menu"
+        android:id="@+id/item_call_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_forward"
         app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
         app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/item_call_delete" />
+
+    <CheckBox
+        android:id="@+id/item_call_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/item_call_delete_info" />
+
+    <ImageButton
+        android:id="@+id/item_call_delete_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:src="@drawable/ic_info"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <View
         android:id="@+id/item_call_divider"

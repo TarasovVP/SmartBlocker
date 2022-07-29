@@ -1,8 +1,10 @@
 package com.tarasovvp.blacklister.ui.main.call_list
 
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -13,6 +15,7 @@ import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.number_list.WhiteNumberListFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 import kotlin.collections.ArrayList
@@ -83,6 +86,9 @@ class CallListFragment :
                 adapter?.notifyDataSetChanged()
             }
             binding?.callListDeleteBtn?.setSafeOnClickListener {
+                findNavController().navigate(CallListFragmentDirections.startDeleteNumberDialog())
+            }
+            setFragmentResultListener(Constants.DELETE_NUMBER) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
             }
         }
