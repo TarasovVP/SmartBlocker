@@ -19,20 +19,23 @@ class SwitchView @JvmOverloads constructor(
 
     init {
         binding = ViewSwitchBinding.inflate(LayoutInflater.from(context), this, true)
-        var infoText = ""
+        var infoText: String
         binding?.apply {
             with(context.theme.obtainStyledAttributes(attrs, R.styleable.SwitchView, 0, 0)) {
                 viewSwitchTitle.text = getString(R.styleable.SwitchView_title)
                 viewSwitchOffMode.text = getString(R.styleable.SwitchView_turnOffModeText)
-                viewSwitchOffModeIcon.setImageResource(getResourceId(R.styleable.SwitchView_turnOffModeIcon, 0))
+                viewSwitchOffModeIcon.setImageResource(getResourceId(R.styleable.SwitchView_turnOffModeIcon,
+                    0))
                 viewSwitchOnMode.text = getString(R.styleable.SwitchView_turnOnModeText)
-                viewSwitchOnModeIcon.setImageResource(getResourceId(R.styleable.SwitchView_turnOnModeIcon, 0))
+                viewSwitchOnModeIcon.setImageResource(getResourceId(R.styleable.SwitchView_turnOnModeIcon,
+                    0))
                 infoText = getString(R.styleable.SwitchView_info).orEmpty()
                 recycle()
             }
             viewSwitchInfo.setSafeOnClickListener {
                 if (infoText.isNotEmpty()
-                    && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showMessage(infoText, false)
+                    && binding?.root?.isEnabled.isTrue()
+                ) viewSwitchInfo.showMessage(infoText, false)
             }
         }
     }

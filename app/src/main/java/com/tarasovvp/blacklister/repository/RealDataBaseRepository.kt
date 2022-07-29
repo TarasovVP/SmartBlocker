@@ -63,7 +63,7 @@ object RealDataBaseRepository {
 
     fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).setValue(whiteNumber)
-            .addOnCompleteListener {task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
@@ -73,7 +73,7 @@ object RealDataBaseRepository {
 
     fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).removeValue()
-            .addOnCompleteListener {task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
@@ -121,7 +121,7 @@ object RealDataBaseRepository {
 
     fun changeWhiteListPriority(whiteListPriority: Boolean, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST_PRIORITY).setValue(whiteListPriority)
-            .addOnCompleteListener {task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
@@ -131,7 +131,7 @@ object RealDataBaseRepository {
 
     fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
         currentUserDatabase.child(BLOCK_HIDDEN).setValue(blockUnanimous)
-            .addOnCompleteListener {task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {

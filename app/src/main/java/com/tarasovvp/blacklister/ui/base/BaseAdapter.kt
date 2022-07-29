@@ -5,7 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.model.HeaderDataItem
 
-abstract class BaseAdapter<D : BaseAdapter.MainData> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class BaseAdapter<D : BaseAdapter.MainData> :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mData: ArrayList<MainData>? = null
 

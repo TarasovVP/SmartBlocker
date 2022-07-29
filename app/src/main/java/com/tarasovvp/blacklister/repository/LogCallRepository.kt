@@ -33,7 +33,6 @@ object LogCallRepository {
 
 
     suspend fun getHashMapFromCallList(logCallList: List<Call>): HashMap<String, List<Call>> =
-
         withContext(
             Dispatchers.Default
         ) {

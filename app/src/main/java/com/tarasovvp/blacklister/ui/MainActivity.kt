@@ -8,12 +8,11 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.FrameLayout
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -34,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     private var navController: NavController? = null
     var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
+    var progress: ConstraintLayout? = null
+
     val mainViewModel: MainViewModel by viewModels()
 
     private var exceptionReceiver: ExceptionReceiver? = null
@@ -82,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Blacklister)
         setContentView(R.layout.activity_main)
+        progress = findViewById(R.id.progress_bar_container)
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
@@ -111,7 +113,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang ?: Locale.getDefault().language)))
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang
+            ?: Locale.getDefault().language)))
     }
 
     fun startBlocker() {
@@ -155,9 +158,6 @@ class MainActivity : AppCompatActivity() {
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showMessage(errorMessage, true)
                 isProgressProcess.postValue(false)
-            }
-            isProgressProcess.safeSingleObserve(this@MainActivity) { isVisible ->
-                findViewById<ProgressBar>(R.id.progress_bar_container).isVisible = isVisible
             }
         }
     }

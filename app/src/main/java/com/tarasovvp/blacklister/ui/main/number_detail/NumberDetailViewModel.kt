@@ -45,7 +45,8 @@ class NumberDetailViewModel(application: Application) : BaseViewModel(applicatio
     fun getContact(number: String) {
         showProgress()
         launch {
-            val contact = contactRepository.getContactByNumber(number) ?: Contact(name = "Нет в списке контактов", phone = number)
+            val contact = contactRepository.getContactByNumber(number)
+                ?: Contact(name = "Нет в списке контактов", phone = number)
             numberDetailLiveData.postValue(contact)
             hideProgress()
         }

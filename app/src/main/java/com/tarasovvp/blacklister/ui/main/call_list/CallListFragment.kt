@@ -3,13 +3,11 @@ package com.tarasovvp.blacklister.ui.main.call_list
 import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Call
-import com.tarasovvp.blacklister.model.LogCall
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -22,7 +20,7 @@ class CallListFragment :
 
     override val viewModelClass = CallListViewModel::class.java
 
-    private var logCallList: List<Call>? = null
+    private var callList: List<Call>? = null
 
     override fun createAdapter(): BaseAdapter<Call>? {
         return context?.let {
@@ -51,8 +49,7 @@ class CallListFragment :
         emptyListText = binding?.callListEmpty
         priorityText = binding?.callListPriority
         binding?.callListCheck?.setOnCheckedChangeListener { _, checked ->
-            Log.e("callLogTAG", "logCallListFragment setOnCheckedChangeListener")
-            searchDataList()
+            getData()
             (activity as MainActivity).toolbar?.title =
                 getString(if (checked) R.string.log_list else R.string.blocked_call_log)
         }
@@ -60,21 +57,16 @@ class CallListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            blockedCallLiveData.safeSingleObserve(viewLifecycleOwner) { blockedCallList ->
-                this@CallListFragment.logCallList = blockedCallList
-                Log.e("callLogTAG",
-                    "logCallListFragment blockedCallLiveData blockedCallList.size ${blockedCallList.size}")
-                if (checkDataListEmptiness(blockedCallList).not()) {
-                    getHashMapFromCallList(blockedCallList)
+            callLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
+                callList = if (binding?.callListCheck?.isChecked.isTrue()) {
+                    callList.orEmpty().plus(callListData)
+                } else {
+                    callListData
                 }
-            }
-            logCallLiveData.safeSingleObserve(viewLifecycleOwner) { logCallList ->
-                this@CallListFragment.logCallList = logCallList
+
                 Log.e("callLogTAG",
-                    "logCallListFragment callLogLiveData logCallList.size ${logCallList.size}")
-                if (checkDataListEmptiness(logCallList).not()) {
-                    getHashMapFromCallList(logCallList)
-                }
+                    "logCallListFragment callLogLiveData callList.orEmpty() + logCallList.size ${callList?.size}")
+                searchDataList()
             }
             callHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { callHashMap ->
                 Log.e("callLogTAG",
@@ -87,15 +79,15 @@ class CallListFragment :
 
     override fun searchDataList() {
         Log.e("callLogTAG", "logCallListFragment searchDataList")
-        val filteredLogCallList = logCallList?.filter { callLog ->
-            (callLog.name?.lowercase(Locale.getDefault())
+        val filteredCallList = callList?.filter { call ->
+            (call.name?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
-                    || callLog.phone?.lowercase(Locale.getDefault())
+                    || call.phone?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-        } as? ArrayList<Call>
+        }
         Log.e("callLogTAG",
-            "logCallListFragment searchDataList filteredlogCallList?.size ${filteredLogCallList?.size}")
-        filteredLogCallList?.apply {
+            "logCallListFragment searchDataList filteredlogCallList?.size ${filteredCallList?.size}")
+        filteredCallList?.apply {
             if (checkDataListEmptiness(this).not()) {
                 viewModel.getHashMapFromCallList(this)
             }
@@ -104,6 +96,10 @@ class CallListFragment :
 
     override fun getData() {
         Log.e("callLogTAG", "logCallListFragment viewModel.getlogCallList()")
-        viewModel.getBlockedCallList()
+        if (binding?.callListCheck?.isChecked.isTrue()) {
+            viewModel.getLogCallList()
+        } else {
+            viewModel.getBlockedCallList()
+        }
     }
 }

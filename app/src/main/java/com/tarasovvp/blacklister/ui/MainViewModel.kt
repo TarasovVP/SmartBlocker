@@ -15,7 +15,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     private val blackNumberRepository = BlackNumberRepository
     private val whiteNumberRepository = WhiteNumberRepository
     private val contactRepository = ContactRepository
-    private val blockedCallRepository = BlockedCallRepository
     private val realDataBaseRepository = RealDataBaseRepository
 
     val successAllDataLiveData = MutableLiveData<Boolean>()
@@ -64,7 +63,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             }
             contactRepository.insertContacts(contactList)
 
-            logCallRepository.insertAllLogCalls(logCallRepository.getSystemLogCallList(getApplication<Application>()))
+            logCallRepository.insertAllLogCalls(logCallRepository.getSystemLogCallList(
+                getApplication<Application>()))
 
             successAllDataLiveData.postValue(true)
             hideProgress()

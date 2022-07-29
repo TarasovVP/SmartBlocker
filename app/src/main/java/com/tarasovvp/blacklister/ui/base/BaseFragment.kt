@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 
 abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFragment<VB>() {
@@ -26,6 +27,13 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
         checkToolbarSearchVisibility()
         getCurrentBackStackEntry()
         observeLiveData()
+        setProgressVisibility()
+    }
+
+    private fun setProgressVisibility() {
+        viewModel.isProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
+            (activity as MainActivity).progress?.isVisible = isVisible
+        }
     }
 
     private fun getCurrentBackStackEntry() {

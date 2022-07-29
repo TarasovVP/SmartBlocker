@@ -43,6 +43,7 @@ import com.tarasovvp.blacklister.constants.Constants.THREE_EIGHT_ZERO
 import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.model.*
+import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -315,37 +316,31 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
     val hashMapFromList = LinkedHashMap<String, List<T>>()
     val keyList = ArrayList<Any>(this.map {
         when (it) {
-            is BlackNumber -> {
-                it.number.substring(0, 1)
-            }
-            is WhiteNumber -> {
-                it.number.substring(0, 1)
-            }
-            is Contact -> {
-                it.name?.substring(0, 1)
-            }
             is Call -> {
                 it.calendarFromTime()
+            }
+            is Contact -> {
+                it.name?.first()
+            }
+            is Number -> {
+                it.number.first()
             }
             else -> {
                 return@map null
             }
         }
     }.toList().distinct())
-    for (key in keyList) {
+    keyList.forEach { key ->
         val valueList = this.filter {
             key == when (it) {
-                is BlackNumber -> {
-                    it.number.substring(0, 1)
-                }
-                is WhiteNumber -> {
-                    it.number.substring(0, 1)
+                is Call -> {
+                    it.calendarFromTime()
                 }
                 is Contact -> {
                     it.name?.substring(0, 1)
                 }
-                is Call -> {
-                    it.calendarFromTime()
+                is Number -> {
+                    it.number.substring(0, 1)
                 }
                 else -> it
             }
@@ -356,7 +351,6 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
         } else if (key is String) {
             hashMapFromList[key] = valueList
         }
-
     }
     return hashMapFromList
 }

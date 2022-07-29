@@ -32,7 +32,8 @@ class BlackListerApp : Application() {
         FirebaseAnalytics.getInstance(this)
         Settings.loadSettingsHelper(this, this.packageName)
         createNotificationChannel()
-        if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang = Locale.getDefault().language
+        if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang =
+            Locale.getDefault().language
     }
 
     fun isLoggedInUser() = auth?.currentUser.isNotNull().isTrue()
