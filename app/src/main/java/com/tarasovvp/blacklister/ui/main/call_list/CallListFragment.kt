@@ -15,10 +15,8 @@ import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.number_list.WhiteNumberListFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CallListFragment :
     BaseListFragment<FragmentCallListBinding, CallListViewModel, Call>() {
@@ -43,14 +41,14 @@ class CallListFragment :
                 }
 
                 override fun onCallDeleteCheckChange(call: Call) {
-                    callList?.find { it.phone == call.phone }?.isCheckedForDelete =
-                        call.isCheckedForDelete
+                    callList?.find { it.phone == call.phone }?.isCheckedForDelete = call.isCheckedForDelete
                     binding?.callListDeleteBtn?.isVisible = callList?.none { it.isCheckedForDelete }.isTrue().not()
                     binding?.callListDeleteAll?.isChecked = callList?.none { it.isCheckedForDelete.not() }.isTrue()
                 }
 
                 override fun onCallDeleteInfoClick() {
-                    binding?.callListRecyclerView?.showMessage("Удалить можно только заблокированные приложением номера. Для редактирования списка вызовов перейдите в журнал телефона", false)
+                    binding?.callListRecyclerView?.showMessage("Удалить можно только заблокированные приложением номера. Для редактирования списка вызовов перейдите в журнал телефона",
+                        false)
                 }
 
             })

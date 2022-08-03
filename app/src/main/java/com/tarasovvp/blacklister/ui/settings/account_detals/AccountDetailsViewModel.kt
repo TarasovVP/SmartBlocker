@@ -10,8 +10,15 @@ class AccountDetailsViewModel(application: Application) : BaseViewModel(applicat
     private val authRepository = AuthRepository
 
     val successLiveData = MutableLiveData<Boolean>()
-    val successRenameUserLiveData = MutableLiveData<String>()
     val successChangePasswordLiveData = MutableLiveData<Boolean>()
+
+    fun signOut() {
+        showProgress()
+        authRepository.signOut {
+            successLiveData.postValue(true)
+            hideProgress()
+        }
+    }
 
     fun changePassword(password: String) {
         showProgress()
@@ -25,14 +32,6 @@ class AccountDetailsViewModel(application: Application) : BaseViewModel(applicat
         showProgress()
         authRepository.deleteUser {
             successLiveData.postValue(true)
-            hideProgress()
-        }
-    }
-
-    fun renameUser(name: String) {
-        showProgress()
-        authRepository.renameUser(name) { displayName ->
-            successRenameUserLiveData.postValue(displayName)
             hideProgress()
         }
     }

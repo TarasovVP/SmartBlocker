@@ -20,22 +20,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/sign_up_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/name"
-        android:inputType="text"
-        android:layout_marginTop="@dimen/margin_25"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_title" />
-
-    <EditText
         android:id="@+id/sign_up_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:layout_marginTop="@dimen/margin_15"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_name" />
+        app:layout_constraintTop_toBottomOf="@id/sign_up_title" />
 
     <EditText
         android:id="@+id/sign_up_password"

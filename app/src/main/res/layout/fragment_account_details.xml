@@ -18,34 +18,13 @@
             android:paddingVertical="@dimen/padding_20"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/account_details_new_name_title"
+        <Button
+            android:id="@+id/account_details_log_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20"
-            android:text="@string/change_name"
+            android:layout_marginVertical="@dimen/margin_25"
+            android:text="@string/sign_out"
             app:layout_constraintTop_toBottomOf="@+id/account_details_main_title" />
-
-        <EditText
-            android:id="@+id/account_details_new_name_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_15"
-            android:hint="@string/enter_new_name"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_title" />
-
-        <Button
-            android:id="@+id/account_details_new_name_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_25"
-            android:text="@string/ok"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_input" />
 
         <TextView
             android:id="@+id/account_details_new_password_title"
@@ -53,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_20"
             android:text="@string/change_password"
-            app:layout_constraintTop_toBottomOf="@+id/account_details_new_name_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/account_details_log_out" />
 
         <EditText
             android:id="@+id/account_details_new_password_create"
@@ -89,7 +68,7 @@
 
         <Button
             android:id="@+id/account_details_delete_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/delete_acc"
             app:layout_constraintBottom_toBottomOf="parent"

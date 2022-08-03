@@ -1,7 +1,9 @@
 package com.tarasovvp.blacklister.repository
 
 import android.content.Intent
-import com.google.firebase.auth.*
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 
@@ -48,31 +50,14 @@ object AuthRepository {
     fun createUserWithEmailAndPassword(
         email: String,
         password: String,
-        name: String,
         result: () -> Unit,
     ) {
         auth?.createUserWithEmailAndPassword(email, password)
             ?.addOnCompleteListener { createUserTask ->
                 if (createUserTask.isSuccessful) {
-                    updateUser(createUserTask.result?.user, name) {
-                        result.invoke()
-                    }
-                } else {
-                    sendExceptionBroadCast(createUserTask.exception?.localizedMessage.orEmpty())
-                }
-            }
-    }
-
-    private fun updateUser(currentUser: FirebaseUser?, name: String, result: () -> Unit) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(name).build()
-
-        currentUser?.updateProfile(profileUpdates)
-            ?.addOnCompleteListener { updateUserTask ->
-                if (updateUserTask.isSuccessful) {
                     result.invoke()
                 } else {
-                    sendExceptionBroadCast(updateUserTask.exception?.localizedMessage.orEmpty())
+                    sendExceptionBroadCast(createUserTask.exception?.localizedMessage.orEmpty())
                 }
             }
     }
@@ -103,20 +88,6 @@ object AuthRepository {
     fun signOut(result: () -> Unit) {
         auth?.signOut()
         result.invoke()
-    }
-
-    fun renameUser(name: String, result: (String) -> Unit) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(name).build()
-
-        currentUser?.updateProfile(profileUpdates)
-            ?.addOnCompleteListener { updateUserTask ->
-                if (updateUserTask.isSuccessful) {
-                    result.invoke(BlackListerApp.instance?.auth?.currentUser?.displayName.orEmpty())
-                } else {
-                    sendExceptionBroadCast(updateUserTask.exception?.localizedMessage.orEmpty())
-                }
-            }
     }
 
     private fun sendExceptionBroadCast(exception: String) {

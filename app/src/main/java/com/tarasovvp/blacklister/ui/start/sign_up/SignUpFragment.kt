@@ -19,8 +19,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         activity?.actionBar?.hide()
         binding?.signUpContinue?.setSafeOnClickListener {
             viewModel.createUserWithEmailAndPassword(binding?.signUpEmail?.text.toString(),
-                binding?.signUpRepeatPassword?.text.toString(),
-                binding?.signUpName?.text.toString())
+                binding?.signUpRepeatPassword?.text.toString())
         }
     }
 
