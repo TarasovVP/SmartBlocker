@@ -41,9 +41,13 @@ class AccountDetailsFragment :
             findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
         }
 
+        binding?.accountDetailsNewPasswordTitle?.setOnCheckedChangeListener { _, isChecked ->
+            binding?.accountDetailsChangePasswordContainer?.isVisible = isChecked
+        }
+
         binding?.accountDetailsNewPasswordBtn?.setSafeOnClickListener {
             if (binding?.accountDetailsNewPasswordCreate?.text.toString() == binding?.accountDetailsNewPasswordConfirm?.text.toString()) {
-                viewModel.changePassword(binding?.accountDetailsNewPasswordConfirm?.text.toString())
+                viewModel.changePassword(binding?.accountDetailsCurrentPassword?.text.toString(), binding?.accountDetailsNewPasswordConfirm?.text.toString())
             } else {
                 showMessage(getString(R.string.passwords_different), true)
             }

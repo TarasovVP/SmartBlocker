@@ -62,15 +62,21 @@ object AuthRepository {
             }
     }
 
-    fun changePassword(password: String, result: () -> Unit) {
+    fun changePassword(currentPassword: String, newPassword: String, result: () -> Unit) {
         val user = FirebaseAuth.getInstance().currentUser
-        val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), password)
-        user?.reauthenticate(credential)
-            ?.addOnCompleteListener { changePasswordTask ->
-                if (changePasswordTask.isSuccessful) {
-                    result.invoke()
+        val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), currentPassword)
+        user?.reauthenticateAndRetrieveData(credential)
+            ?.addOnCompleteListener { passwordTask ->
+                if (passwordTask.isSuccessful) {
+                    user.updatePassword(newPassword).addOnCompleteListener {
+                        if (passwordTask.isSuccessful) {
+                            result.invoke()
+                        } else {
+                            sendExceptionBroadCast(passwordTask.exception?.localizedMessage.orEmpty())
+                        }
+                    }
                 } else {
-                    sendExceptionBroadCast(changePasswordTask.exception?.localizedMessage.orEmpty())
+                    sendExceptionBroadCast(passwordTask.exception?.localizedMessage.orEmpty())
                 }
             }
     }

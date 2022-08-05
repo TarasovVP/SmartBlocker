@@ -20,9 +20,9 @@ class AccountDetailsViewModel(application: Application) : BaseViewModel(applicat
         }
     }
 
-    fun changePassword(password: String) {
+    fun changePassword(currentPassword: String, newPassword: String) {
         showProgress()
-        authRepository.changePassword(password) {
+        authRepository.changePassword(currentPassword, newPassword) {
             successChangePasswordLiveData.postValue(true)
             hideProgress()
         }
