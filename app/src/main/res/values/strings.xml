@@ -27,7 +27,7 @@
     <string name="list_empty">List is empty</string>
     <string name="exit_application">Do you want to exit the application?</string>
     <string name="sign_out">Log out</string>
-    <string name="delete_acc">Delete account</string>
+    <string name="delete_acc">Delete</string>
     <string name="welcome">Welcome %s!</string>
     <string name="operation_succeeded">Operation completed successfully</string>
     <string name="rename_succeed">Name %s set successfully</string>
@@ -138,4 +138,7 @@
     <string name="fore_ground">В фоне</string>
     <string name="details_">Детали...</string>
     <string name="blocked_call_log">Заблокированные номера</string>
+    <string name="log_out_title">Выйти из аккаунта и сбросить все настройки</string>
+    <string name="delete_account_title">Полностью удалить аккаунт</string>
+    <string name="change_password_btn">Сменить</string>
 </resources>

@@ -12,10 +12,12 @@ import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
@@ -41,13 +43,16 @@ import com.tarasovvp.blacklister.constants.Constants.NUMBER
 import com.tarasovvp.blacklister.constants.Constants.PHONE_NUMBER_CODE
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.constants.Constants.THREE_EIGHT_ZERO
+import com.tarasovvp.blacklister.constants.Constants.TWO_SECONDS
 import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
+import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.MainActivity
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -77,6 +82,25 @@ fun View.showMessage(message: String, isError: Boolean) {
                     view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = Int.MAX_VALUE
                 }.withColor(color).show()
         }
+}
+
+fun View.showPopUpWindow(info: Info) {
+    val popupView = PopUpWindowInfoBinding.inflate(LayoutInflater.from(context))
+    popupView.popUpWindowTitle.text = info.title
+    popupView.popUpWindowDescription.text = info.description
+    popupView.popUpWindowIcon.setImageResource(info.icon)
+    popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+    val popupWidth: Int = popupView.root.measuredWidth
+    val popupWindow = PopupWindow(
+        popupView.root,
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        true
+    )
+    popupWindow.showAsDropDown(this, 0, popupWidth)
+    popupView.popUpWindowClose.setSafeOnClickListener {
+        popupWindow.dismiss()
+    }
 }
 
 fun Context.contactList(): ArrayList<Contact> {

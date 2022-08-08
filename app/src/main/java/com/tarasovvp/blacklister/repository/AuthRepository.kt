@@ -5,7 +5,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.blacklister.BlackListerApp
-import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.EXCEPTION
 
 object AuthRepository {
 
@@ -97,8 +97,8 @@ object AuthRepository {
     }
 
     private fun sendExceptionBroadCast(exception: String) {
-        val intent = Intent(Constants.EXCEPTION)
-        intent.putExtra(Constants.EXCEPTION, exception)
+        val intent = Intent(EXCEPTION)
+        intent.putExtra(EXCEPTION, exception)
         BlackListerApp.instance?.sendBroadcast(intent)
     }
 }

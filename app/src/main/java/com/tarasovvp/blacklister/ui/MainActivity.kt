@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -157,7 +158,7 @@ class MainActivity : AppCompatActivity() {
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showMessage(errorMessage, true)
-                isProgressProcess.postValue(false)
+                progress?.isVisible = false
             }
         }
     }

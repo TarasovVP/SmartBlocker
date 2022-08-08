@@ -47,4 +47,5 @@ object Constants {
     const val DELETE_USER = "deleteUser"
     const val LOG_OUT = "logOut"
     const val EXCEPTION = "exception"
+    const val TWO_SECONDS = 2000L
 }

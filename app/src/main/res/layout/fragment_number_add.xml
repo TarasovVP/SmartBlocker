@@ -74,7 +74,7 @@
                 android:drawablePadding="@dimen/padding_10"
                 android:alpha="0.6"
                 android:textColor="@color/white"
-                android:text="@string/add_conditions_info"
+                android:text="@string/details_"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_conditions_title"
                 app:drawableStartCompat="@drawable/ic_info"/>
 
@@ -82,6 +82,9 @@
                 android:id="@+id/number_add_contain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_contain"
+                android:layoutDirection="rtl"
+                android:drawablePadding="@dimen/padding_10"
                 android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/black_number_contain"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_conditions_info" />
@@ -90,6 +93,9 @@
                 android:id="@+id/number_add_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_start"
+                android:layoutDirection="rtl"
+                android:drawablePadding="@dimen/padding_10"
                 android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/black_number_start"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_contain" />
@@ -98,6 +104,9 @@
                 android:id="@+id/number_add_end"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_end"
+                android:layoutDirection="rtl"
+                android:drawablePadding="@dimen/padding_10"
                 android:layout_marginTop="@dimen/margin_10"
                 android:text="@string/black_number_end"
                 app:layout_constraintTop_toBottomOf="@+id/number_add_start" />

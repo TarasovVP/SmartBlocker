@@ -12,12 +12,10 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST_PREVIEW
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
-import com.tarasovvp.blacklister.extensions.getViewsFromLayout
-import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.model.Number
 import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -112,6 +110,9 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
 
     private fun setClickListeners() {
         binding?.apply {
+            numberAddConditionsInfo.setSafeOnClickListener {
+                numberAddInfo.showPopUpWindow(Info(title = getString(R.string.add_conditions_title), description = getString(R.string.add_conditions_info), icon = R.drawable.ic_test))
+            }
             numberDeleteSubmit.setSafeOnClickListener {
                 args.number?.let {
                     findNavController().navigate(NumberAddFragmentDirections.startDeleteNumberDialog(

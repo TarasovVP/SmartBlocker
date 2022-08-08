@@ -27,7 +27,7 @@
     <string name="list_empty">Список порожній</string>
     <string name="exit_application">Ви бажаєте вийти з програми?</string>
     <string name="sign_out">Вихід</string>
-    <string name="delete_acc">Видалити обліковий запис</string>
+    <string name="delete_acc">Видалити</string>
     <string name="welcome">Ласкаво просимо, %s!</string>
     <string name="operation_succeeded">Операцію виконано успішно</string>
     <string name="rename_succeed">Ім\'я %s успішно встановлено</string>

@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.settings.account_detals
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.DELETE_USER
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
+import com.tarasovvp.blacklister.extensions.getViewsFromLayout
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -28,43 +30,46 @@ class AccountDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding?.accountDetailsMainTitle?.text = String.format(getString(R.string.welcome),
-            BlackListerApp.instance?.auth?.currentUser?.displayName)
-
-        binding?.accountDetailsLogOut?.setSafeOnClickListener {
-            findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(
-                isLogOut = true))
-        }
-
-        binding?.accountDetailsDeleteBtn?.setSafeOnClickListener {
-            findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
-        }
-
-        binding?.accountDetailsNewPasswordTitle?.setOnCheckedChangeListener { _, isChecked ->
-            binding?.accountDetailsChangePasswordContainer?.isVisible = isChecked
-        }
-
-        binding?.accountDetailsNewPasswordBtn?.setSafeOnClickListener {
-            if (binding?.accountDetailsNewPasswordCreate?.text.toString() == binding?.accountDetailsNewPasswordConfirm?.text.toString()) {
-                viewModel.changePassword(binding?.accountDetailsCurrentPassword?.text.toString(), binding?.accountDetailsNewPasswordConfirm?.text.toString())
-            } else {
-                showMessage(getString(R.string.passwords_different), true)
-            }
-        }
-
-        binding?.includeNoAccount?.root?.isVisible =
-            BlackListerApp.instance?.isLoggedInUser().isTrue().not()
-        binding?.includeNoAccount?.noAccountBtn?.setSafeOnClickListener {
-            findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
-        }
-
+        initViews()
         setFragmentResultListener(DELETE_USER) { _, _ ->
             viewModel.deleteUser()
         }
 
         setFragmentResultListener(Constants.LOG_OUT) { _, _ ->
             viewModel.signOut()
+        }
+    }
+
+    private fun initViews() {
+        binding?.apply {
+            includeNoAccount.root.isVisible = BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+            accountDetailsMainTitle.text = String.format(getString(R.string.welcome), BlackListerApp.instance?.auth?.currentUser?.email)
+
+            accountDetailsNewPasswordCheck.setOnCheckedChangeListener { _, isChecked ->
+                accountDetailsChangePasswordContainer.isVisible = isChecked
+                if (isChecked) {
+                    accountDetailsChangePasswordContainer.getViewsFromLayout(EditText::class.java).apply {
+                        this.forEach { it.text.clear() }
+                    }
+                }
+            }
+
+            accountDetailsLogOut.setSafeOnClickListener {
+                findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(isLogOut = true))
+            }
+            accountDetailsDeleteBtn.setSafeOnClickListener {
+                findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
+            }
+            accountDetailsNewPasswordBtn.setSafeOnClickListener {
+                if (accountDetailsNewPasswordCreate.text.toString() == accountDetailsNewPasswordConfirm.text.toString()) {
+                    viewModel.changePassword(accountDetailsCurrentPassword.text.toString(), accountDetailsNewPasswordConfirm.text.toString())
+                } else {
+                    showMessage(getString(R.string.passwords_different), true)
+                }
+            }
+            includeNoAccount.noAccountBtn.setSafeOnClickListener {
+                findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
+            }
         }
     }
 
@@ -81,8 +86,7 @@ class AccountDetailsFragment :
             }
             successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(String.format(getString(R.string.change_password_succeed)), false)
-                binding?.accountDetailsNewPasswordCreate?.text?.clear()
-                binding?.accountDetailsNewPasswordConfirm?.text?.clear()
+                binding?.accountDetailsNewPasswordCheck?.isChecked = false
             }
         }
     }

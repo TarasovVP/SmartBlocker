@@ -27,7 +27,7 @@
     <string name="list_empty">Список пуст</string>
     <string name="exit_application">Вы желаете выйти из приложения?</string>
     <string name="sign_out">Выход</string>
-    <string name="delete_acc">Удалить аккаунт</string>
+    <string name="delete_acc">Удалить</string>
     <string name="welcome">Добро пожаловать, %s!</string>
     <string name="operation_succeeded">Операция выполнена успешно</string>
     <string name="rename_succeed">Имя %s успешно установлено</string>
