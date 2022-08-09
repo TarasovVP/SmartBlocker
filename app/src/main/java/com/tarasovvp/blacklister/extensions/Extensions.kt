@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.extensions
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
@@ -43,7 +44,6 @@ import com.tarasovvp.blacklister.constants.Constants.NUMBER
 import com.tarasovvp.blacklister.constants.Constants.PHONE_NUMBER_CODE
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.constants.Constants.THREE_EIGHT_ZERO
-import com.tarasovvp.blacklister.constants.Constants.TWO_SECONDS
 import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
@@ -79,7 +79,8 @@ fun View.showMessage(message: String, isError: Boolean) {
                     params.width = FrameLayout.LayoutParams.MATCH_PARENT
                     params.gravity = Gravity.TOP
                     view.layoutParams = params
-                    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = Int.MAX_VALUE
+                    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines =
+                        Int.MAX_VALUE
                 }.withColor(color).show()
         }
 }
@@ -90,14 +91,19 @@ fun View.showPopUpWindow(info: Info) {
     popupView.popUpWindowDescription.text = info.description
     popupView.popUpWindowIcon.setImageResource(info.icon)
     popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-    val popupWidth: Int = popupView.root.measuredWidth
     val popupWindow = PopupWindow(
         popupView.root,
-        ViewGroup.LayoutParams.MATCH_PARENT,
+        (Resources.getSystem().displayMetrics.widthPixels * 0.9).toInt(),
         ViewGroup.LayoutParams.WRAP_CONTENT,
         true
     )
-    popupWindow.showAsDropDown(this, 0, popupWidth)
+    val locationScreen = intArrayOf(0, 0)
+    this.getLocationOnScreen(locationScreen)
+    val isBelowScreenMiddle =
+        locationScreen[1] > Resources.getSystem().displayMetrics.heightPixels / 2
+    popupWindow.showAsDropDown(this,
+        this.measuredWidth,
+        if (isBelowScreenMiddle) -popupView.root.measuredHeight else 0)
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }

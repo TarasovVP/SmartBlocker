@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding_16"
-    android:background="#66FFBB33">
+    android:background="#392704">
 
     <TextView
         android:id="@+id/pop_up_window_title"

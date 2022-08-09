@@ -1,17 +1,16 @@
 package com.tarasovvp.blacklister.ui.main.call_list
 
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
-import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.showMessage
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Call
+import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -46,11 +45,9 @@ class CallListFragment :
                     binding?.callListDeleteAll?.isChecked = callList?.none { it.isCheckedForDelete.not() }.isTrue()
                 }
 
-                override fun onCallDeleteInfoClick() {
-                    binding?.callListRecyclerView?.showMessage("Удалить можно только заблокированные приложением номера. Для редактирования списка вызовов перейдите в журнал телефона",
-                        false)
+                override fun onCallDeleteInfoClick(view: View) {
+                    view.showPopUpWindow(Info(title = getString(R.string.call_deleting), description = getString(R.string.call_delete_info)))
                 }
-
             })
         }
     }
@@ -81,7 +78,9 @@ class CallListFragment :
             }
             callListDeleteAll.setOnCheckedChangeListener { _, checked ->
                 callList?.forEach { it.isCheckedForDelete = checked }
-                adapter?.notifyDataSetChanged()
+                recyclerView?.post {
+                    adapter?.notifyDataSetChanged()
+                }
             }
             binding?.callListDeleteBtn?.setSafeOnClickListener {
                 findNavController().navigate(CallListFragmentDirections.startDeleteNumberDialog())
@@ -96,7 +95,9 @@ class CallListFragment :
         isDeleteMode = isDeleteMode.not()
         (adapter as CallAdapter).apply {
             isDeleteMode = this@CallListFragment.isDeleteMode
-            notifyDataSetChanged()
+            recyclerView?.post {
+                adapter?.notifyDataSetChanged()
+            }
         }
         binding?.apply {
             priorityText?.isVisible = isDeleteMode.not()

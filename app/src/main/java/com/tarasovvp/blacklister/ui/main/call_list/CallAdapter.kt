@@ -68,7 +68,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
             }
             binding?.itemCallDeleteInfo?.isVisible = isDeleteMode && call.type != BLOCKED_CALL
             binding?.itemCallDeleteInfo?.setSafeOnClickListener {
-                callClickListener.onCallDeleteInfoClick()
+                callClickListener.onCallDeleteInfoClick(it)
             }
             binding?.root?.setSafeOnClickListener {
                 if (isDeleteMode) {

@@ -141,4 +141,6 @@
     <string name="log_out_title">Выйти из аккаунта и сбросить все настройки</string>
     <string name="delete_account_title">Полностью удалить аккаунт</string>
     <string name="change_password_btn">Сменить</string>
+    <string name="call_deleting">Удаление вызова</string>
+    <string name="call_delete_info">Удалить можно только заблокированные приложением номера. Для редактирования списка вызовов перейдите в журнал телефона</string>
 </resources>
