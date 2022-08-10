@@ -14,10 +14,8 @@ import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentNumberAddBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.model.BlackNumber
-import com.tarasovvp.blacklister.model.Info
+import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.model.Number
-import com.tarasovvp.blacklister.model.WhiteNumber
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
@@ -30,6 +28,8 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
     override val viewModelClass = NumberAddViewModel::class.java
 
     private val args: NumberAddFragmentArgs by navArgs()
+
+    private var contactByNumberAdapter: ContactByNumberAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,8 +84,6 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
             numberAddSubmit.text =
                 if (fromDb && number.isNotNull()) getString(R.string.edit) else getString(R.string.add)
             numberDeleteSubmit.isVisible = numberAddInput.text.isNotEmpty() && number.isNotNull()
-            numberAddInfo.isVisible =
-                numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()
             if (numberAddInput.text.isNotEmpty() && isNumberIdentical(fromDb, number).not()) {
                 viewModel.checkContactListByNumber(getNumber())
             }
@@ -111,7 +109,9 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
     private fun setClickListeners() {
         binding?.apply {
             numberAddConditionsInfo.setSafeOnClickListener {
-                numberAddInfo.showPopUpWindow(Info(title = getString(R.string.add_conditions_title), description = getString(R.string.add_conditions_info), icon = R.drawable.ic_test))
+                numberAddConditionsInfo.showPopUpWindow(Info(title = getString(R.string.add_conditions_title),
+                    description = getString(R.string.add_conditions_info),
+                    icon = R.drawable.ic_test))
             }
             numberDeleteSubmit.setSafeOnClickListener {
                 args.number?.let {
@@ -144,13 +144,25 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
         return number
     }
 
+    private fun setContactByNumberList(contactList: List<Contact>) {
+        val title =
+            "Найдено ${contactList.size} контактов, которые будут ${if (args.number?.isBlackNumber.isTrue()) "заблокированы" else "разблокированы"} этим фильтром"
+        contactByNumberAdapter =
+            ContactByNumberAdapter(arrayListOf(title), hashMapOf(title to contactList))
+        binding?.numberAddContactByNumberList?.setAdapter(contactByNumberAdapter)
+        binding?.numberAddContactByNumberList?.setOnChildClickListener { _, _, _, childPosition, _ ->
+            findNavController().navigate(NumberAddFragmentDirections.startNumberDetailFragment(
+                number = contactList[childPosition].phone))
+            return@setOnChildClickListener true
+        }
+    }
+
     override fun observeLiveData() {
         with(viewModel) {
             existNumberLiveData.observe(viewLifecycleOwner) { number ->
                 initViewsWithData(number, true)
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                binding?.numberAddInfo?.isVisible = contactList.isNotEmpty()
                 var numberAddInfoText = ""
                 contactList.filterNot {
                     if (args.number?.isBlackNumber.isTrue()) it.isWhiteList && SharedPreferencesUtil.isWhiteListPriority else it.isBlackList && SharedPreferencesUtil.isWhiteListPriority.not()
@@ -169,12 +181,7 @@ class NumberAddFragment : BaseFragment<FragmentNumberAddBinding, NumberAddViewMo
                             R.string.can_unblock),
                         this.size)
                 }
-                binding?.numberAddInfo?.text = numberAddInfoText
-                binding?.numberAddInfo?.setSafeOnClickListener {
-                    findNavController().navigate(NumberAddFragmentDirections.startBlackListPreviewDialog(
-                        number = args.number,
-                        contactList = contactList.toTypedArray()))
-                }
+                setContactByNumberList(contactList)
             }
             insertNumberLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
                 handleSuccessNumberAction(String.format(getString(R.string.number_added), number))

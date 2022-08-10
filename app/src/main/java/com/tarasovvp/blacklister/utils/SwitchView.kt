@@ -14,7 +14,7 @@ import com.tarasovvp.blacklister.model.Info
 class SwitchView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var binding: ViewSwitchBinding? = null
