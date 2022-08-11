@@ -9,14 +9,14 @@ import com.tarasovvp.blacklister.databinding.DialogInfoBinding
 import com.tarasovvp.blacklister.ui.base.BaseDialog
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class DeleteNumberDialog : BaseDialog<DialogInfoBinding>() {
+class DeleteFilterDialog : BaseDialog<DialogInfoBinding>() {
 
     override fun getViewBinding() = DialogInfoBinding.inflate(layoutInflater)
 
-    private val args: DeleteNumberDialogArgs by navArgs()
+    private val args: DeleteFilterDialogArgs by navArgs()
 
     override fun initUI() {
-        binding?.dialogInfoTitle?.text = String.format(getString(R.string.delete), args.number?.number.orEmpty())
+        binding?.dialogInfoTitle?.text = String.format(getString(R.string.delete), args.filter?.filter.orEmpty())
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }

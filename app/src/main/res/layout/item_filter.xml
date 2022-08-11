@@ -7,85 +7,85 @@
     android:layout_marginHorizontal="@dimen/margin_16">
 
     <ImageView
-        android:id="@+id/item_number_avatar"
+        android:id="@+id/item_filter_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/item_number_divider"
-        app:layout_constraintEnd_toStartOf="@+id/item_number_value"
+        app:layout_constraintBottom_toTopOf="@+id/item_filter_divider"
+        app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/item_number_value"
+        android:id="@+id/item_filter_value"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_10"
         android:ellipsize="end"
         android:gravity="top"
         android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="@+id/item_number_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_number_avatar"
-        app:layout_constraintEnd_toStartOf="@+id/item_number_start"
-        app:layout_constraintStart_toEndOf="@+id/item_number_avatar" />
+        app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_filter_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/item_filter_start"
+        app:layout_constraintStart_toEndOf="@+id/item_filter_avatar" />
 
     <ImageView
-        android:id="@+id/item_number_start"
+        android:id="@+id/item_filter_start"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:visibility="gone"
         android:layout_marginEnd="@dimen/margin_10"
         android:src="@drawable/ic_start"
-        app:layout_constraintBottom_toBottomOf="@+id/item_number_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_number_avatar"
-        app:layout_constraintEnd_toStartOf="@+id/item_number_contain" />
+        app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_filter_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/item_filter_contain" />
 
     <ImageView
-        android:id="@+id/item_number_contain"
+        android:id="@+id/item_filter_contain"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:visibility="gone"
         android:layout_marginEnd="@dimen/margin_10"
         android:src="@drawable/ic_contain"
-        app:layout_constraintBottom_toBottomOf="@+id/item_number_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_number_avatar"
-        app:layout_constraintEnd_toStartOf="@+id/item_number_end" />
+        app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_filter_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/item_filter_end" />
 
     <ImageView
-        android:id="@+id/item_number_end"
+        android:id="@+id/item_filter_end"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:visibility="gone"
         android:layout_marginEnd="@dimen/margin_10"
         android:src="@drawable/ic_end"
-        app:layout_constraintBottom_toBottomOf="@+id/item_number_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_number_avatar"
-        app:layout_constraintEnd_toStartOf="@+id/item_number_arrow" />
+        app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_filter_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/item_filter_arrow" />
 
     <ImageView
-        android:id="@+id/item_number_arrow"
+        android:id="@+id/item_filter_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_forward"
-        app:layout_constraintBottom_toBottomOf="@+id/item_number_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_number_avatar"
-        app:layout_constraintEnd_toStartOf="@+id/item_number_delete" />
+        app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_filter_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/item_filter_delete" />
 
     <CheckBox
-        android:id="@+id/item_number_delete"
+        android:id="@+id/item_filter_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/item_number_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_number_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+        app:layout_constraintTop_toTopOf="@+id/item_filter_avatar"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <View
-        android:id="@+id/item_number_divider"
+        android:id="@+id/item_filter_divider"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/grey"
         android:layout_marginTop="@dimen/margin_5"
-        app:layout_constraintTop_toBottomOf="@+id/item_number_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/item_filter_avatar"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

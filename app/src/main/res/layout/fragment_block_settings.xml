@@ -40,9 +40,9 @@
             android:layout_marginTop="@dimen/margin_25"
             app:title="@string/change_priority"
             app:turnOffModeText="@string/black_list"
-            app:turnOffModeIcon="@drawable/ic_black_number"
+            app:turnOffModeIcon="@drawable/ic_black_filter"
             app:turnOnModeText="@string/white_list"
-            app:turnOnModeIcon="@drawable/ic_white_number"
+            app:turnOnModeIcon="@drawable/ic_white_filter"
             app:info="@string/change_priority_info"
             app:layout_constraintTop_toBottomOf="@+id/block_settings_foreground"/>
 

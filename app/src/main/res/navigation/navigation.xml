@@ -40,14 +40,14 @@
         android:name="com.tarasovvp.blacklister.ui.main.call_list.CallListFragment"
         android:label="@string/blocked_call_log">
         <action
-            android:id="@+id/startNumberAddFragment"
-            app:destination="@id/numberAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
-            android:id="@+id/startNumberDetailFragment"
-            app:destination="@id/numberDetailFragment" />
+            android:id="@+id/startContactDetailFragment"
+            app:destination="@id/contactDetailFragment" />
         <action
-            android:id="@+id/startDeleteNumberDialog"
-            app:destination="@id/deleteNumberDialog" />
+            android:id="@+id/startDeleteFilterDialog"
+            app:destination="@id/deleteFilterDialog" />
     </fragment>
 
     <fragment
@@ -55,12 +55,12 @@
         android:name="com.tarasovvp.blacklister.ui.main.contact_list.ContactListFragment"
         android:label="@string/contact_list">
         <action
-            android:id="@+id/startNumberDetailFragment"
-            app:destination="@id/numberDetailFragment" />
+            android:id="@+id/startContactDetailFragment"
+            app:destination="@id/contactDetailFragment" />
         <argument
-            android:name="number"
+            android:name="filter"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Number"
+            app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />
     </fragment>
 
@@ -68,9 +68,9 @@
         android:id="@+id/blackListPreviewDialog"
         android:name="com.tarasovvp.blacklister.ui.dialogs.BlackListPreviewDialog" >
         <argument
-            android:name="number"
+            android:name="filter"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Number"
+            app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />
         <argument
             android:name="contactList"
@@ -80,17 +80,17 @@
     </dialog>
 
     <fragment
-        android:id="@+id/numberDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.number_detail.NumberDetailFragment"
+        android:id="@+id/contactDetailFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragment"
         android:label="@string/details">
         <argument
-            android:name="number"
+            android:name="phone"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/startNumberAddFragment"
-            app:destination="@id/numberAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startAddToListDialog"
             app:destination="@id/addToListDialog" />
@@ -104,27 +104,27 @@
         android:name="com.tarasovvp.blacklister.ui.dialogs.AddToListDialog" />
 
     <fragment
-        android:id="@+id/blackNumberListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.number_list.BlackNumberListFragment"
+        android:id="@+id/blackFilterListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment"
         android:label="@string/black_list">
         <action
-            android:id="@+id/startNumberAddFragment"
-            app:destination="@id/numberAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
-            android:id="@+id/startDeleteNumberDialog"
-            app:destination="@id/deleteNumberDialog" />
+            android:id="@+id/startDeleteFilterDialog"
+            app:destination="@id/deleteFilterDialog" />
     </fragment>
 
     <fragment
-        android:id="@+id/whiteNumberListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.number_list.WhiteNumberListFragment"
+        android:id="@+id/whiteFilterListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment"
         android:label="@string/white_list">
         <action
-            android:id="@+id/startNumberAddFragment"
-            app:destination="@id/numberAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
-            android:id="@+id/startDeleteNumberDialog"
-            app:destination="@id/deleteNumberDialog" />
+            android:id="@+id/startDeleteFilterDialog"
+            app:destination="@id/deleteFilterDialog" />
     </fragment>
 
     <action
@@ -186,12 +186,12 @@
         android:label="@string/app_theme" />
 
     <dialog
-        android:id="@+id/deleteNumberDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.DeleteNumberDialog">
+        android:id="@+id/deleteFilterDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.DeleteFilterDialog">
         <argument
-            android:name="number"
+            android:name="filter"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Number"
+            app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />
     </dialog>
 
@@ -223,17 +223,17 @@
     </dialog>
 
     <fragment
-        android:id="@+id/numberAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.number_add.NumberAddFragment"
-        android:label="@string/addBlackNumber">
+        android:id="@+id/filterAddFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.filter_add.FilterAddFragment"
+        android:label="@string/add_black_filter">
         <argument
-            android:name="number"
+            android:name="filter"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Number"
+            app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />
         <action
-            android:id="@+id/startDeleteNumberDialog"
-            app:destination="@id/deleteNumberDialog" />
+            android:id="@+id/startDeleteFilterDialog"
+            app:destination="@id/deleteFilterDialog" />
         <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
@@ -241,8 +241,8 @@
             android:id="@+id/startBlackListPreviewDialog"
             app:destination="@id/blackListPreviewDialog" />
         <action
-            android:id="@+id/startNumberDetailFragment"
-            app:destination="@id/numberDetailFragment" />
+            android:id="@+id/startContactDetailFragment"
+            app:destination="@id/contactDetailFragment" />
     </fragment>
 
 </navigation>

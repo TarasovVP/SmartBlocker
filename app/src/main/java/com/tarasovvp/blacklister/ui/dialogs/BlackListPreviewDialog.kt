@@ -20,16 +20,16 @@ class BlackListPreviewDialog : BaseDialog<DialogBlackListPreviewBinding>() {
 
     override fun initUI() {
         val filteredContactList = args.contactList?.filterNot {
-            if (args.number?.isBlackNumber.isTrue()) it.isWhiteList && SharedPreferencesUtil.isWhiteListPriority else it.isBlackList && SharedPreferencesUtil.isWhiteListPriority.not()
+            if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
         }
         val filteredNotImplContactList = args.contactList?.filter {
-            if (args.number?.isBlackNumber.isTrue()) it.isWhiteList && SharedPreferencesUtil.isWhiteListPriority else it.isBlackList && SharedPreferencesUtil.isWhiteListPriority.not()
+            if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
         }
         binding?.dialogBlackListPreviewTitle?.isVisible = filteredContactList?.isNotEmpty().isTrue()
         binding?.dialogBlackListPreviewSubTitle?.isVisible =
             filteredContactList?.isNotEmpty().isTrue()
-        binding?.dialogBlackListPreviewTitle?.text = "Фильтр ${args.number?.number} может ${
-            if (args.number?.isBlackNumber.isTrue()) getString(R.string.can_block) else getString(R.string.can_unblock)
+        binding?.dialogBlackListPreviewTitle?.text = "Фильтр ${args.filter?.filter} может ${
+            if (args.filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(R.string.can_unblock)
         } следующие контакты из списка контактов: "
         binding?.dialogBlackListPreviewSubTitle?.text =
             filteredContactList?.map { it.name }?.joinToString()
@@ -38,8 +38,8 @@ class BlackListPreviewDialog : BaseDialog<DialogBlackListPreviewBinding>() {
         binding?.dialogBlackListPreviewNotImplSubTitle?.isVisible =
             filteredNotImplContactList?.isNotEmpty().isTrue()
         binding?.dialogBlackListPreviewNotImplTitle?.text =
-            "Фильтр ${args.number?.number} из-за другой приоритетности не может ${
-                if (args.number?.isBlackNumber.isTrue()) getString(R.string.can_block) else getString(
+            "Фильтр ${args.filter?.filter} из-за другой приоритетности не может ${
+                if (args.filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
                     R.string.can_unblock)
             } следующие контакты из списка контактов: "
         binding?.dialogBlackListPreviewNotImplSubTitle?.text =

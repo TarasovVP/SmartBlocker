@@ -6,69 +6,69 @@
     android:padding="@dimen/padding_16">
 
     <TextView
-        android:id="@+id/number_list_filter"
+        android:id="@+id/filter_list_filter"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/padding_10"
         android:paddingVertical="@dimen/padding_5"
-        android:text="@string/black_number_no_filter"
+        android:text="@string/filter_no_filter"
         app:drawableStartCompat="@drawable/ic_filter"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toTopOf="@+id/number_list_delete_all"
-        app:layout_constraintEnd_toStartOf="@+id/number_list_priority"
+        app:layout_constraintBottom_toTopOf="@+id/filter_list_delete_all"
+        app:layout_constraintEnd_toStartOf="@+id/filter_list_priority"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/number_list_priority"
+        android:id="@+id/filter_list_priority"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/size_0"
         android:drawablePadding="@dimen/padding_5"
         android:gravity="center_vertical"
         android:text="@string/prioritness"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/number_list_filter"
-        app:layout_constraintTop_toTopOf="@+id/number_list_filter" />
+        app:layout_constraintBottom_toBottomOf="@+id/filter_list_filter"
+        app:layout_constraintTop_toTopOf="@+id/filter_list_filter" />
 
     <CheckBox
-        android:id="@+id/number_list_delete_all"
+        android:id="@+id/filter_list_delete_all"
         android:layout_width="@dimen/size_0"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/padding_5"
         android:text="@string/choose_all"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/number_list_refresh"
-        app:layout_constraintEnd_toStartOf="@+id/number_list_delete_btn"
+        app:layout_constraintBottom_toTopOf="@+id/filter_list_refresh"
+        app:layout_constraintEnd_toStartOf="@+id/filter_list_delete_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number_list_filter" />
+        app:layout_constraintTop_toBottomOf="@+id/filter_list_filter" />
 
     <ImageButton
-        android:id="@+id/number_list_delete_btn"
+        android:id="@+id/filter_list_delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_delete"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/number_list_delete_all"
+        app:layout_constraintBottom_toBottomOf="@+id/filter_list_delete_all"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/number_list_delete_all" />
+        app:layout_constraintTop_toTopOf="@+id/filter_list_delete_all" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/number_list_refresh"
+        android:id="@+id/filter_list_refresh"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number_list_delete_all">
+        app:layout_constraintTop_toBottomOf="@+id/filter_list_delete_all">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/number_list_recycler_view"
+            android:id="@+id/filter_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
-        android:id="@+id/number_list_empty"
+        android:id="@+id/filter_list_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -76,7 +76,7 @@
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/number_list_fab_new"
+        android:id="@+id/filter_list_fab_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_10"

@@ -31,7 +31,7 @@ class CallListFragment :
         return context?.let {
             CallAdapter(object : CallClickListener {
                 override fun onCallClick(phone: String) {
-                    findNavController().navigate(CallListFragmentDirections.startNumberDetailFragment(number = phone))
+                    findNavController().navigate(CallListFragmentDirections.startContactDetailFragment(phone = phone))
                 }
 
                 override fun onCallLongClick() {
@@ -82,7 +82,7 @@ class CallListFragment :
                 }
             }
             binding?.callListDeleteBtn?.setSafeOnClickListener {
-                findNavController().navigate(CallListFragmentDirections.startDeleteNumberDialog())
+                findNavController().navigate(CallListFragmentDirections.startDeleteFilterDialog())
             }
             setFragmentResultListener(Constants.DELETE_NUMBER) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())

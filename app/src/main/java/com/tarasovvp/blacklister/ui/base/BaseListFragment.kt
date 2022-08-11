@@ -65,7 +65,7 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     private fun setPriority() {
         priorityText?.setCompoundDrawablesWithIntrinsicBounds(0,
             0,
-            if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_number else R.drawable.ic_black_number,
+            if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_black_filter,
             0)
         priorityText?.setSafeOnClickListener {
             findNavController().navigate(R.id.startBlockSettingsFragment)

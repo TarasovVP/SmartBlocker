@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity() {
     var navigationScreens = arrayListOf(
         R.id.callListFragment,
         R.id.contactListFragment,
-        R.id.blackNumberListFragment,
-        R.id.whiteNumberListFragment
+        R.id.blackFilterListFragment,
+        R.id.whiteFilterListFragment
     )
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->

@@ -14,17 +14,17 @@ import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
 import com.tarasovvp.blacklister.extensions.deleteLastMissedCall
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.repository.BlackNumberRepository
+import com.tarasovvp.blacklister.repository.BlackFilterRepository
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
-import com.tarasovvp.blacklister.repository.WhiteNumberRepository
+import com.tarasovvp.blacklister.repository.WhiteFilterRepository
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 open class CallReceiver(private val phoneListener: (String) -> Unit) : BroadcastReceiver() {
 
-    private val blackNumberRepository = BlackNumberRepository
-    private val whiteNumberRepository = WhiteNumberRepository
+    private val blackFilterRepository = BlackFilterRepository
+    private val whiteFilterRepository = WhiteFilterRepository
     private val blockedCallRepository = BlockedCallRepository
 
     init {
@@ -41,9 +41,9 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         val isInWhiteList =
-            whiteNumberRepository.getWhiteNumberList(phone)?.isEmpty().isTrue().not()
+            whiteFilterRepository.getWhiteFilterList(phone)?.isEmpty().isTrue().not()
         val isInBlackList =
-            blackNumberRepository.getBlackNumberList(phone)?.isEmpty().isTrue().not()
+            blackFilterRepository.getBlackFilterList(phone)?.isEmpty().isTrue().not()
         val isBlockNeeded =
             (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (phone.isEmpty() && SharedPreferencesUtil.blockHidden)
         if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {

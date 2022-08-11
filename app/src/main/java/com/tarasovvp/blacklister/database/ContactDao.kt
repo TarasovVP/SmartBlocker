@@ -14,9 +14,9 @@ interface ContactDao {
     @Query("SELECT * FROM contact WHERE trimmedPhone = :phone")
     fun getContactByPhone(phone: String): Contact?
 
-    @Query("SELECT * FROM contact WHERE (trimmedPhone = :number) OR (trimmedPhone LIKE '%' || :number || '%' AND :contain) OR (trimmedPhone LIKE :number || '%' AND :start) OR (trimmedPhone LIKE '%' || :number AND :end)")
+    @Query("SELECT * FROM contact WHERE (trimmedPhone = :filter) OR (trimmedPhone LIKE '%' || :filter || '%' AND :contain) OR (trimmedPhone LIKE :filter || '%' AND :start) OR (trimmedPhone LIKE '%' || :filter AND :end)")
     fun queryContactList(
-        number: String,
+        filter: String,
         contain: Boolean,
         start: Boolean,
         end: Boolean,

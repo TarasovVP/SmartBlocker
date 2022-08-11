@@ -11,13 +11,13 @@
         android:icon="@drawable/ic_contact_list"
         android:contentDescription="@string/contact_list"/>
     <item
-        android:id="@+id/blackNumberListFragment"
+        android:id="@+id/blackFilterListFragment"
         android:title="@string/black_list"
-        android:icon="@drawable/ic_black_number"
-        android:contentDescription="@string/number_list"/>
+        android:icon="@drawable/ic_black_filter"
+        android:contentDescription="@string/filter_list"/>
     <item
-        android:id="@+id/whiteNumberListFragment"
+        android:id="@+id/whiteFilterListFragment"
         android:title="@string/white_list"
-        android:icon="@drawable/ic_white_number"
-        android:contentDescription="@string/number_list"/>
+        android:icon="@drawable/ic_white_filter"
+        android:contentDescription="@string/filter_list"/>
 </menu>

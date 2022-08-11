@@ -48,6 +48,8 @@
         <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.291213768115942" />
+        <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.20625" />
+        <entry key="app/src/main/res/layout/fragment_filter_list.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/fragment_log_list.xml" value="0.11145833333333334" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.307518115942029" />
@@ -66,6 +68,7 @@
         <entry key="app/src/main/res/layout/item_call.xml" value="0.21784420289855072" />
         <entry key="app/src/main/res/layout/item_call_log.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.2807971014492754" />
+        <entry key="app/src/main/res/layout/item_filter.xml" value="0.20625" />
         <entry key="app/src/main/res/layout/item_header.xml" value="0.19010416666666666" />
         <entry key="app/src/main/res/layout/item_info_window.xml" value="0.1697061803444782" />
         <entry key="app/src/main/res/layout/item_number.xml" value="0.21693840579710144" />

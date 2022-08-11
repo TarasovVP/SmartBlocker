@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.number_detail
+package com.tarasovvp.blacklister.ui.main.contact_detail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,28 +7,28 @@ import android.widget.BaseExpandableListAdapter
 import androidx.core.view.isVisible
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
-import com.tarasovvp.blacklister.databinding.ItemNumberBinding
 import com.tarasovvp.blacklister.extensions.orZero
-import com.tarasovvp.blacklister.model.Number
+import com.tarasovvp.blacklister.model.Filter
 
-class NumberDetailAdapter(
+class ContactDetailAdapter(
     var titleList: ArrayList<String>,
-    var numberListMap: HashMap<String, List<Number>>,
+    var filterListMap: HashMap<String, List<Filter>>,
 ) :
     BaseExpandableListAdapter() {
 
     override fun getGroupCount(): Int = titleList.size
 
     override fun getChildrenCount(groupPosition: Int): Int =
-        numberListMap[titleList[groupPosition]]?.size.orZero()
+        filterListMap[titleList[groupPosition]]?.size.orZero()
 
     override fun getGroup(groupPosition: Int): String {
         return titleList[groupPosition]
     }
 
-    override fun getChild(groupPosition: Int, childPosition: Int): Number? {
-        return numberListMap[titleList[groupPosition]]?.get(childPosition)
+    override fun getChild(groupPosition: Int, childPosition: Int): Filter? {
+        return filterListMap[titleList[groupPosition]]?.get(childPosition)
     }
 
     override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
@@ -49,8 +49,8 @@ class NumberDetailAdapter(
     ): View {
         val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent?.context))
         binding.itemHeaderText.text = titleList[groupPosition]
-        binding.root.isEnabled = numberListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
-        if (numberListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
+        binding.root.isEnabled = filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
+        if (filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
             binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
                 0,
                 if (isExpanded) R.drawable.ic_drop_up else R.drawable.ic_drop_down,
@@ -66,14 +66,14 @@ class NumberDetailAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        ItemNumberBinding.inflate(LayoutInflater.from(parent?.context)).apply {
-            numberListMap[titleList[groupPosition]]?.get(childPosition)?.let { number ->
-                itemNumberAvatar.setImageResource(if (number.isBlackNumber) R.drawable.ic_black_number else R.drawable.ic_white_number)
-                itemNumberValue.text = number.number
-                itemNumberStart.isVisible = number.start
-                itemNumberContain.isVisible = number.contain
-                itemNumberEnd.isVisible = number.end
-                number.number = number.number.filter { it.isDigit() || it == Constants.PLUS_CHAR }
+        ItemFilterBinding.inflate(LayoutInflater.from(parent?.context)).apply {
+            filterListMap[titleList[groupPosition]]?.get(childPosition)?.let { filter ->
+                itemFilterAvatar.setImageResource(if (filter.isBlackFilter) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
+                itemFilterValue.text = filter.filter
+                itemFilterStart.isVisible = filter.start
+                itemFilterContain.isVisible = filter.contain
+                itemFilterEnd.isVisible = filter.end
+                filter.filter = filter.filter.filter { it.isDigit() || it == Constants.PLUS_CHAR }
             }
             return root
         }

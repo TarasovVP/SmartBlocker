@@ -23,9 +23,9 @@ open class ContactListFragment :
 
     override fun createAdapter(): BaseAdapter<Contact>? {
         return context?.let {
-            ContactAdapter { number ->
-                findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(
-                    number = number))
+            ContactAdapter { phone ->
+                findNavController().navigate(ContactListFragmentDirections.startContactDetailFragment(
+                    phone = phone))
             }
         }
     }
@@ -75,7 +75,7 @@ open class ContactListFragment :
             ).isTrue() || contact.phone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
-                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackList else true)
+                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter else true)
         } as? ArrayList<Contact>
         filteredContactList?.apply {
             if (checkDataListEmptiness(this).not()) {

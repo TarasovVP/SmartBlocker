@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.CurrentUser
-import com.tarasovvp.blacklister.model.WhiteNumber
+import com.tarasovvp.blacklister.model.WhiteFilter
 import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
     private val logCallRepository = LogCallRepository
-    private val blackNumberRepository = BlackNumberRepository
-    private val whiteNumberRepository = WhiteNumberRepository
+    private val blackFilterRepository = BlackFilterRepository
+    private val whiteFilterRepository = WhiteFilterRepository
     private val contactRepository = ContactRepository
     private val realDataBaseRepository = RealDataBaseRepository
 
@@ -25,21 +25,21 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             realDataBaseRepository.getCurrentUser { currentUser ->
                 SharedPreferencesUtil.isWhiteListPriority =
                     currentUser?.isWhiteListPriority.isTrue()
-                currentUser?.let { insertAllBlackNumbers(it) }
+                currentUser?.let { insertAllBlackFilters(it) }
             }
         }
     }
 
-    private fun insertAllBlackNumbers(currentUser: CurrentUser) {
+    private fun insertAllBlackFilters(currentUser: CurrentUser) {
         launch {
-            blackNumberRepository.insertAllBlackNumbers(currentUser.blackNumberList)
-            insertAllWhiteNumbers(currentUser.whiteNumberList)
+            blackFilterRepository.insertAllBlackFilters(currentUser.blackFilterList)
+            insertAllWhiteFilters(currentUser.whiteFilterList)
         }
     }
 
-    private fun insertAllWhiteNumbers(whiteNumberList: ArrayList<WhiteNumber>) {
+    private fun insertAllWhiteFilters(whiteFilterList: ArrayList<WhiteFilter>) {
         launch {
-            whiteNumberRepository.insertAllWhiteNumbers(whiteNumberList)
+            whiteFilterRepository.insertAllWhiteFilters(whiteFilterList)
             getAllData()
         }
     }
@@ -51,14 +51,14 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             contactList.forEach { contact ->
                 val isInWhiteList =
-                    whiteNumberRepository.getWhiteNumberList(contact.trimmedPhone)?.isEmpty()
+                    whiteFilterRepository.getWhiteFilterList(contact.trimmedPhone)?.isEmpty()
                         .isTrue().not()
                 val isInBlackList =
-                    blackNumberRepository.getBlackNumberList(contact.trimmedPhone)?.isEmpty()
+                    blackFilterRepository.getBlackFilterList(contact.trimmedPhone)?.isEmpty()
                         .isTrue().not()
-                contact.isBlackList =
+                contact.isBlackFilter =
                     (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
-                contact.isWhiteList =
+                contact.isWhiteFilter =
                     (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority) || (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority.not() && isInBlackList.not())
             }
             contactRepository.insertContacts(contactList)

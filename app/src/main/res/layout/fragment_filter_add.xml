@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_0"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/number_delete_submit"
+        app:layout_constraintBottom_toTopOf="@+id/filter_delete_submit"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/number_add_priority"
+                android:id="@+id/filter_add_priority"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/padding_10"
@@ -29,45 +29,45 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <ImageView
-                android:id="@+id/number_add_icon"
+                android:id="@+id/filter_add_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="@dimen/margin_5"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_priority"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_priority"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
-                android:id="@+id/number_add_title"
+                android:id="@+id/filter_add_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/padding_10"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_icon" />
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_icon" />
 
             <EditText
-                android:id="@+id/number_add_input"
+                android:id="@+id/filter_add_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
-                android:hint="@string/enter_number"
+                android:hint="@string/enter_filter"
                 android:inputType="phone"
                 android:digits="0123456789+"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_title"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_title"
                 tools:ignore="Autofill,LabelFor,TextFields" />
 
             <TextView
-                android:id="@+id/number_add_conditions_title"
+                android:id="@+id/filter_add_conditions_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:textColor="@color/white"
                 android:text="@string/add_conditions_title"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_input" />
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 
             <TextView
-                android:id="@+id/number_add_conditions_info"
+                android:id="@+id/filter_add_conditions_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_5"
@@ -75,70 +75,73 @@
                 android:alpha="0.6"
                 android:textColor="@color/white"
                 android:text="@string/details_"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_conditions_title"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_title"
                 app:drawableStartCompat="@drawable/ic_info"/>
 
             <CheckBox
-                android:id="@+id/number_add_contain"
+                android:id="@+id/filter_add_contain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_contain"
                 android:layoutDirection="rtl"
                 android:drawablePadding="@dimen/padding_10"
                 android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/black_number_contain"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_conditions_info" />
+                android:text="@string/filter_contain"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info" />
 
             <CheckBox
-                android:id="@+id/number_add_start"
+                android:id="@+id/filter_add_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_start"
                 android:layoutDirection="rtl"
                 android:drawablePadding="@dimen/padding_10"
                 android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/black_number_start"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_contain" />
+                android:text="@string/filter_start"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_contain" />
 
             <CheckBox
-                android:id="@+id/number_add_end"
+                android:id="@+id/filter_add_end"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_end"
                 android:layoutDirection="rtl"
                 android:drawablePadding="@dimen/padding_10"
                 android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/black_number_end"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_start" />
+                android:text="@string/filter_end"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_start" />
 
             <ExpandableListView
-                android:id="@+id/number_add_contact_by_number_list"
+                android:id="@+id/filter_add_contact_by_filter_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:groupIndicator="@null"
                 android:layout_marginTop="@dimen/margin_15"
-                app:layout_constraintTop_toBottomOf="@+id/number_add_end" />
+                android:nestedScrollingEnabled="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_end" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/number_delete_submit"
+        android:id="@+id/filter_delete_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/delete_menu"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/number_add_submit"
+        app:layout_constraintBottom_toTopOf="@+id/filter_add_submit"
         app:layout_constraintTop_toBottomOf="@+id/scroll_container" />
 
     <Button
-        android:id="@+id/number_add_submit"
+        android:id="@+id/filter_add_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_5"
         android:text="@string/add"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/number_delete_submit"
+        app:layout_constraintTop_toBottomOf="@+id/filter_delete_submit"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

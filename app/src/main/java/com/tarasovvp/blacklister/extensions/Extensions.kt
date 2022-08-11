@@ -48,7 +48,7 @@ import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.model.*
-import com.tarasovvp.blacklister.model.Number
+import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -185,7 +185,7 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
             logCall.phone = logCallCursor.getString(1)
             logCall.type = logCallCursor.getString(1)
             logCall.photoUrl =
-                ContactRepository.getContactByNumber(logCall.phone.orEmpty())?.photoUrl
+                ContactRepository.getContactByPhone(logCall.phone.orEmpty())?.photoUrl
             logCallList.add(logCall)
         }
     }
@@ -223,7 +223,7 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
                     blockedCall.phone = phoneNumber
                     blockedCall.type = BLOCKED_CALL
                     blockedCall.photoUrl =
-                        ContactRepository.getContactByNumber(phoneNumber)?.photoUrl
+                        ContactRepository.getContactByPhone(phoneNumber)?.photoUrl
                     BlockedCallRepository.insertBlockedCall(blockedCall)
                     this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), queryString, null)
                 } catch (e: java.lang.Exception) {
@@ -354,8 +354,8 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
             is Contact -> {
                 it.name?.first().toString()
             }
-            is Number -> {
-                it.number.first().toString()
+            is Filter -> {
+                it.filter.first().toString()
             }
             else -> {
                 return@map null
@@ -371,8 +371,8 @@ fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
                 is Contact -> {
                     it.name?.first().toString()
                 }
-                is Number -> {
-                    it.number.first().toString()
+                is Filter -> {
+                    it.filter.first().toString()
                 }
                 else -> it
             }

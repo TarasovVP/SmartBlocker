@@ -7,8 +7,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity
 @Parcelize
-data class BlackNumber(
-    @PrimaryKey override var number: String = "",
-) : Number(), Parcelable {
-    override var isBlackNumber = true
-}
+data class WhiteFilter(
+    @PrimaryKey override var filter: String = "",
+) : Filter(), Parcelable

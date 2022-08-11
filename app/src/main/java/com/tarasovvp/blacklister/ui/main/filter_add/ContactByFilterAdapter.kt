@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.number_add
+package com.tarasovvp.blacklister.ui.main.filter_add
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,23 +11,23 @@ import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
 
-class ContactByNumberAdapter(
-    var titleList: ArrayList<String>,
-    var numberListMap: HashMap<String, List<Contact>>,
+class ContactByFilterAdapter(
+    private var titleList: ArrayList<String>,
+    private var contactListMap: HashMap<String, List<Contact>>,
 ) :
     BaseExpandableListAdapter() {
 
     override fun getGroupCount(): Int = titleList.size
 
     override fun getChildrenCount(groupPosition: Int): Int =
-        numberListMap[titleList[groupPosition]]?.size.orZero()
+        contactListMap[titleList[groupPosition]]?.size.orZero()
 
     override fun getGroup(groupPosition: Int): String {
         return titleList[groupPosition]
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): Contact? {
-        return numberListMap[titleList[groupPosition]]?.get(childPosition)
+        return contactListMap[titleList[groupPosition]]?.get(childPosition)
     }
 
     override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
@@ -48,8 +48,8 @@ class ContactByNumberAdapter(
     ): View {
         val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent?.context))
         binding.itemHeaderText.text = titleList[groupPosition]
-        binding.root.isEnabled = numberListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
-        if (numberListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
+        binding.root.isEnabled = contactListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
+        if (contactListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
             binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
                 0,
                 if (isExpanded) R.drawable.ic_drop_up else R.drawable.ic_drop_down,
@@ -66,7 +66,7 @@ class ContactByNumberAdapter(
         parent: ViewGroup?,
     ): View {
         ItemContactBinding.inflate(LayoutInflater.from(parent?.context)).apply {
-            numberListMap[titleList[groupPosition]]?.get(childPosition)?.let { contact ->
+            contactListMap[titleList[groupPosition]]?.get(childPosition)?.let { contact ->
                 itemContactAvatar.loadCircleImage(contact.photoUrl)
                 itemContactName.text = contact.name
                 itemContactNumber.text = contact.phone

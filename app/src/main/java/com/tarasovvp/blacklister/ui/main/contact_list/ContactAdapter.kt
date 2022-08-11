@@ -51,8 +51,8 @@ class ContactAdapter(private val contactClick: (String) -> Unit) :
         fun bindData(position: Int) {
             val contact = getDataInPosition(position)
             binding?.itemContactType?.setImageResource(when {
-                contact.isBlackList -> R.drawable.ic_block
-                contact.isWhiteList -> R.drawable.ic_accepted
+                contact.isBlackFilter -> R.drawable.ic_block
+                contact.isWhiteFilter -> R.drawable.ic_accepted
                 else -> 0
             })
             binding?.itemContactName?.text = contact.name

@@ -12,9 +12,9 @@ import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.model.BlackNumber
+import com.tarasovvp.blacklister.model.BlackFilter
 import com.tarasovvp.blacklister.model.CurrentUser
-import com.tarasovvp.blacklister.model.WhiteNumber
+import com.tarasovvp.blacklister.model.WhiteFilter
 
 object RealDataBaseRepository {
 
@@ -33,14 +33,14 @@ object RealDataBaseRepository {
                             snapshot.getValue(Boolean::class.java).isTrue()
                         BLACK_LIST -> {
                             snapshot.children.forEach { child ->
-                                child.getValue(BlackNumber::class.java)
-                                    ?.let { currentUser.blackNumberList.add(it) }
+                                child.getValue(BlackFilter::class.java)
+                                    ?.let { currentUser.blackFilterList.add(it) }
                             }
                         }
                         WHITE_LIST -> {
                             snapshot.children.forEach { child ->
-                                child.getValue(WhiteNumber::class.java)
-                                    ?.let { currentUser.whiteNumberList.add(it) }
+                                child.getValue(WhiteFilter::class.java)
+                                    ?.let { currentUser.whiteFilterList.add(it) }
                             }
                         }
                     }
@@ -51,8 +51,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun insertBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).setValue(blackNumber)
+    fun insertBlackFilter(blackFilter: BlackFilter, result: () -> Unit) {
+        currentUserDatabase.child(BLACK_LIST).child(blackFilter.filter).setValue(blackFilter)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -61,8 +61,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun insertWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).setValue(whiteNumber)
+    fun insertWhiteFilter(whiteFilter: WhiteFilter, result: () -> Unit) {
+        currentUserDatabase.child(WHITE_LIST).child(whiteFilter.filter).setValue(whiteFilter)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -71,8 +71,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteWhiteNumber(whiteNumber: WhiteNumber, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).child(whiteNumber.number).removeValue()
+    fun deleteWhiteFilter(whiteFilter: WhiteFilter, result: () -> Unit) {
+        currentUserDatabase.child(WHITE_LIST).child(whiteFilter.filter).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -81,12 +81,12 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteWhiteNumberList(whiteNumberList: List<WhiteNumber>, result: () -> Unit) {
+    fun deleteWhiteFilterList(whiteFilterList: List<WhiteFilter>, result: () -> Unit) {
         currentUserDatabase.child(WHITE_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
-                    if (whiteNumberList.map { it.number }
+                    if (whiteFilterList.map { it.filter }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()
@@ -95,8 +95,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteBlackNumber(blackNumber: BlackNumber, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).child(blackNumber.number).removeValue()
+    fun deleteBlackFilter(blackFilter: BlackFilter, result: () -> Unit) {
+        currentUserDatabase.child(BLACK_LIST).child(blackFilter.filter).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -105,12 +105,12 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteBlackNumberList(blackNumberList: List<BlackNumber>, result: () -> Unit) {
+    fun deleteBlackFilterList(blackFilterList: List<BlackFilter>, result: () -> Unit) {
         currentUserDatabase.child(BLACK_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
-                    if (blackNumberList.map { it.number }
+                    if (blackFilterList.map { it.filter }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()

@@ -14,8 +14,8 @@ data class Contact(
     var name: String? = "",
     var photoUrl: String? = "",
     @PrimaryKey var phone: String = "",
-    var isBlackList: Boolean = false,
-    var isWhiteList: Boolean = false,
+    var isBlackFilter: Boolean = false,
+    var isWhiteFilter: Boolean = false,
 ) : Parcelable, BaseAdapter.MainData {
     var trimmedPhone = phone.filter { it.isDigit() || it == PLUS_CHAR }
 }
