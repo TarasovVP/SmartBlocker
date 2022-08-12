@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 when {
                     SharedPreferencesUtil.isOnBoardingSeen.not() -> R.id.onBoardingFragment
                     BlackListerApp.instance?.isLoggedInUser().isTrue() -> {
-                        R.id.callListFragment
+                        R.id.blackFilterListFragment
                     }
                     else -> R.id.loginFragment
                 }

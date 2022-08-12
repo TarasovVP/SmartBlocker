@@ -11,9 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginHorizontal="@dimen/margin_10"
-        app:layout_constraintBottom_toTopOf="@+id/host_main_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar_divider"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/white" />
+
+    <View
+        android:id="@+id/toolbar_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/holo_green_dark"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/host_main_fragment"
@@ -21,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_divider" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"

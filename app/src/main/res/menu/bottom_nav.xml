@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/callListFragment"
-        android:title="@string/log_list"
-        android:icon="@drawable/ic_call_log"
-        android:contentDescription="@string/log_list"/>
-    <item
-        android:id="@+id/contactListFragment"
-        android:title="@string/contact_list"
-        android:icon="@drawable/ic_contact_list"
-        android:contentDescription="@string/contact_list"/>
-    <item
         android:id="@+id/blackFilterListFragment"
         android:title="@string/black_list"
         android:icon="@drawable/ic_black_filter"
@@ -20,4 +10,14 @@
         android:title="@string/white_list"
         android:icon="@drawable/ic_white_filter"
         android:contentDescription="@string/filter_list"/>
+    <item
+        android:id="@+id/contactListFragment"
+        android:title="@string/contact_list"
+        android:icon="@drawable/ic_contact_list"
+        android:contentDescription="@string/contact_list"/>
+    <item
+        android:id="@+id/callListFragment"
+        android:title="@string/log_list"
+        android:icon="@drawable/ic_call_log"
+        android:contentDescription="@string/log_list"/>
 </menu>
