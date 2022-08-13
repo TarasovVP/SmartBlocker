@@ -1,15 +1,18 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ContactByFilterAdapter(
     private var titleList: ArrayList<String>,
@@ -48,7 +51,6 @@ class ContactByFilterAdapter(
     ): View {
         val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent?.context))
         binding.itemHeaderText.text = titleList[groupPosition]
-        binding.root.isEnabled = contactListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
         if (contactListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
             binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
                 0,

@@ -141,4 +141,5 @@
     <string name="change_password_btn">Change</string>
     <string name="call_deleting">Deleting a call</string>
     <string name="call_delete_info">Only numbers blocked by the application can be deleted. To edit the call list, go to the phone log</string>
+    <string name="contact_by_filter_list_title">Эта комбинация будет иметь эффект на %s контактов</string>
 </resources>

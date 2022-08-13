@@ -9,9 +9,9 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_0"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/filter_delete_submit"
+        app:layout_constraintBottom_toTopOf="@+id/filter_add_contact_by_filter_list"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -111,18 +111,18 @@
                 android:text="@string/filter_end"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_start" />
 
-            <ExpandableListView
-                android:id="@+id/filter_add_contact_by_filter_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:groupIndicator="@null"
-                android:layout_marginTop="@dimen/margin_15"
-                android:nestedScrollingEnabled="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/filter_add_end" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ExpandableListView
+        android:id="@+id/filter_add_contact_by_filter_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_0"
+        android:groupIndicator="@null"
+        android:layout_marginTop="@dimen/margin_15"
+        android:nestedScrollingEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/filter_delete_submit"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_container" />
 
     <Button
         android:id="@+id/filter_delete_submit"
@@ -130,8 +130,7 @@
         android:layout_height="wrap_content"
         android:text="@string/delete_menu"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/filter_add_submit"
-        app:layout_constraintTop_toBottomOf="@+id/scroll_container" />
+        app:layout_constraintBottom_toTopOf="@+id/filter_add_submit" />
 
     <Button
         android:id="@+id/filter_add_submit"
@@ -140,7 +139,7 @@
         android:layout_marginTop="@dimen/margin_5"
         android:text="@string/add"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/filter_delete_submit"
+        app:layout_constraintVertical_bias="1"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
