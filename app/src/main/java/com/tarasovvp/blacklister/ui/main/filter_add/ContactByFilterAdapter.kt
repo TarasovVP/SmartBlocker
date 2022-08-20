@@ -1,22 +1,19 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ContactByFilterAdapter(
-    private var titleList: ArrayList<String>,
-    private var contactListMap: HashMap<String, List<Contact>>,
+    var titleList: ArrayList<String>,
+    var contactListMap: HashMap<String, List<Contact>>,
 ) :
     BaseExpandableListAdapter() {
 
@@ -51,12 +48,10 @@ class ContactByFilterAdapter(
     ): View {
         val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent?.context))
         binding.itemHeaderText.text = titleList[groupPosition]
-        if (contactListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
-            binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
-                0,
-                if (isExpanded) R.drawable.ic_drop_up else R.drawable.ic_drop_down,
-                0)
-        }
+        binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
+            0,
+            if (isExpanded) if (groupPosition > 0) R.drawable.ic_drop_up else R.drawable.ic_close else if (groupPosition > 0) R.drawable.ic_drop_down else R.drawable.ic_info,
+            0)
         return binding.root
     }
 

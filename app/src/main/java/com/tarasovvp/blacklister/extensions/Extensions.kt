@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.extensions
 
+import android.animation.ValueAnimator
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -12,14 +13,12 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.PopupWindow
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -442,4 +441,18 @@ private fun <T> ViewGroup.getViewsFromLayout(
         }
     }
     return views
+}
+
+fun ViewGroup.changeViewHeight(isIncrease: Boolean) {
+
+    this.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
+    Log.e("expandTAG", "Extensions changeViewHeight this.measuredHeight ${this.measuredHeight} isIncrease $isIncrease")
+    val anim: ValueAnimator = ValueAnimator.ofInt(if (isIncrease) 0 else 791)
+    /*anim.addUpdateListener { valueAnimator ->
+        Log.e("heightTAG", "Extensions addUpdateListener valueAnimator.animatedValue ${valueAnimator.animatedValue}")
+        layoutParams.height = valueAnimator.animatedValue as Int
+        requestLayout()
+
+    }*/
+    anim.start()
 }

@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -16,11 +15,11 @@ import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
-import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
+
 
 class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
 
@@ -146,28 +145,46 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
     }
 
     private fun setContactByFilterList(contactList: List<Contact>) {
-        val title = String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
-        val affectedContacts = "Найдено ${contactList.size} контактов, которые будут ${if (args.filter?.isBlackFilter.isTrue()) "заблокированы" else "разблокированы"} этим фильтром"
-        val nonAffectedList = contactList.filter {
+        val title =
+            String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
+        binding?.filterAddContactByFilterList?.isEnabled = contactList.isNotEmpty()
+
+        val titleList = arrayListOf(title)
+        val contactListMap = hashMapOf(title to listOf<Contact>())
+
+        val affectedContactList = contactList.filterNot {
             if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
         }
-        val nonAffectedContacts = String.format(getString(R.string.not_block_add_info), if (args.filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(R.string.can_unblock), nonAffectedList.size)
-        contactByFilterAdapter =
-            ContactByFilterAdapter(arrayListOf(title), hashMapOf())
+        if (affectedContactList.isNotEmpty()) {
+            val affectedContacts =
+                "Найдено ${affectedContactList.size} контактов, которые будут ${if (args.filter?.isBlackFilter.isTrue()) "заблокированы" else "разблокированы"} этим фильтром"
+            titleList.add(affectedContacts)
+            contactListMap[affectedContacts] = affectedContactList
+        }
+
+        val nonAffectedContactList = contactList.filter {
+            if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+        }
+        if (nonAffectedContactList.isNotEmpty()) {
+            val nonAffectedContacts = String.format(getString(R.string.not_block_add_info),
+                if (args.filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
+                    R.string.can_unblock),
+                nonAffectedContactList.size)
+            titleList.add(nonAffectedContacts)
+            contactListMap[nonAffectedContacts] = nonAffectedContactList
+        }
+        contactByFilterAdapter = ContactByFilterAdapter(arrayListOf(title), contactListMap)
         binding?.filterAddContactByFilterList?.setAdapter(contactByFilterAdapter)
-        binding?.filterAddContactByFilterList?.isEnabled = contactList.isNotEmpty()
         binding?.filterAddContactByFilterList?.setOnGroupClickListener { expandableListView, _, groupPosition, _ ->
-            Log.e("expandTAG", "FilterAddFragment setOnGroupClickListener contactList.isNotEmpty() ${contactList.isNotEmpty()} expandableListView.isGroupExpanded(0) ${expandableListView.isGroupExpanded(0)}")
-            Log.e("expandTAG", "FilterAddFragment setOnGroupClickListener expandableListView.isGroupExpanded(0).not() ${expandableListView.isGroupExpanded(0).not()}")
             if (groupPosition == 0 && contactList.isNotEmpty()) {
                 binding?.scrollContainer?.isVisible = expandableListView.isGroupExpanded(0)
-                contactByFilterAdapter =
-                    if (contactList.isNotEmpty() && expandableListView.isGroupExpanded(0).not()) {
-                        ContactByFilterAdapter(arrayListOf(title, affectedContacts), hashMapOf(title to arrayListOf(), affectedContacts to contactList))
-                    } else {
-                        ContactByFilterAdapter(arrayListOf(title), hashMapOf())
-                    }
-                binding?.filterAddContactByFilterList?.setAdapter(contactByFilterAdapter)
+                if (expandableListView.isGroupExpanded(0)) {
+                    contactByFilterAdapter?.titleList = arrayListOf(title)
+                    contactByFilterAdapter?.contactListMap = hashMapOf()
+                } else {
+                    contactByFilterAdapter?.titleList = titleList
+                    contactByFilterAdapter?.contactListMap = contactListMap
+                }
             }
             return@setOnGroupClickListener false
         }
