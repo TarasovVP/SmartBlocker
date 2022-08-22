@@ -50,16 +50,18 @@ class ContactAdapter(private val contactClick: (String) -> Unit) :
 
         fun bindData(position: Int) {
             val contact = getDataInPosition(position)
-            binding?.itemContactType?.setImageResource(when {
-                contact.isBlackFilter -> R.drawable.ic_block
-                contact.isWhiteFilter -> R.drawable.ic_accepted
-                else -> 0
-            })
-            binding?.itemContactName?.text = contact.name
-            binding?.itemContactNumber?.text = contact.phone
-            binding?.itemContactAvatar?.loadCircleImage(contact.photoUrl)
-            binding?.root?.setSafeOnClickListener {
-                contact.phone.let { contactClick.invoke(it) }
+            ItemContactBinding.bind(itemView).apply {
+                itemContactType.setImageResource(when {
+                    contact.isBlackFilter -> R.drawable.ic_block
+                    contact.isWhiteFilter -> R.drawable.ic_accepted
+                    else -> 0
+                })
+                itemContactName.text = contact.name
+                itemContactNumber.text = contact.phone
+                itemContactAvatar.loadCircleImage(contact.photoUrl)
+                root.setSafeOnClickListener {
+                    contact.phone.let { contactClick.invoke(it) }
+                }
             }
         }
     }

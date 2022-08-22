@@ -68,7 +68,6 @@ class ContactDetailAdapter(
     ): View {
         ItemFilterBinding.inflate(LayoutInflater.from(parent?.context)).apply {
             filterListMap[titleList[groupPosition]]?.get(childPosition)?.let { filter ->
-                itemFilterAvatar.setImageResource(if (filter.isBlackFilter) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
                 itemFilterValue.text = filter.filter
                 itemFilterStart.isVisible = filter.start
                 itemFilterContain.isVisible = filter.contain

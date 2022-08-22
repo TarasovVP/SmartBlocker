@@ -50,39 +50,40 @@ class CallAdapter(val callClickListener: CallClickListener) :
 
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var binding: ItemCallBinding? = ItemCallBinding.bind(itemView)
+
         fun bindData(position: Int) {
             val call = getDataInPosition(position)
-            binding?.itemCallName?.text =
-                if (call.phone.isNullOrEmpty()) itemView.context.getString(R.string.hidden) else call.name
-            binding?.itemCallNumber?.text = call.phone
-            binding?.itemCallTime?.text = call.dateTimeFromTime()
-            binding?.itemCallTypeIcon?.setImageResource(call.callIcon())
-            binding?.itemCallAvatar?.loadCircleImage(call.photoUrl)
-            binding?.itemCallArrow?.isVisible = isDeleteMode.not()
-            binding?.itemCallDelete?.isVisible = isDeleteMode && call.type == BLOCKED_CALL
-            binding?.itemCallDelete?.isChecked = call.isCheckedForDelete
-            binding?.itemCallDelete?.setOnCheckedChangeListener { _, checked ->
-                call.isCheckedForDelete = checked
-                callClickListener.onCallDeleteCheckChange(call)
-            }
-            binding?.itemCallDeleteInfo?.isVisible = isDeleteMode && call.type != BLOCKED_CALL
-            binding?.itemCallDeleteInfo?.setSafeOnClickListener {
-                callClickListener.onCallDeleteInfoClick(it)
-            }
-            binding?.root?.setSafeOnClickListener {
-                if (isDeleteMode) {
-                    binding?.itemCallDelete?.isChecked =
-                        binding?.itemCallDelete?.isChecked.isTrue().not()
-                } else {
-                    callClickListener.onCallClick(call.phone.orEmpty())
+            ItemCallBinding.bind(itemView).apply {
+                itemCallName.text =
+                    if (call.phone.isNullOrEmpty()) itemView.context.getString(R.string.hidden) else call.name
+                itemCallNumber.text = call.phone
+                itemCallTime.text = call.dateTimeFromTime()
+                itemCallTypeIcon.setImageResource(call.callIcon())
+                itemCallAvatar.loadCircleImage(call.photoUrl)
+                itemCallArrow.isVisible = isDeleteMode.not()
+                itemCallDelete.isVisible = isDeleteMode && call.type == BLOCKED_CALL
+                itemCallDelete.isChecked = call.isCheckedForDelete
+                itemCallDelete.setOnCheckedChangeListener { _, checked ->
+                    call.isCheckedForDelete = checked
+                    callClickListener.onCallDeleteCheckChange(call)
+                }
+                itemCallDeleteInfo.isVisible = isDeleteMode && call.type != BLOCKED_CALL
+                itemCallDeleteInfo.setSafeOnClickListener {
+                    callClickListener.onCallDeleteInfoClick(it)
+                }
+                root.setSafeOnClickListener {
+                    if (isDeleteMode) {
+                        itemCallDelete.isChecked =
+                            itemCallDelete.isChecked.isTrue().not()
+                    } else {
+                        callClickListener.onCallClick(call.phone.orEmpty())
+                    }
+                }
+                root.setOnLongClickListener {
+                    callClickListener.onCallLongClick()
+                    return@setOnLongClickListener true
                 }
             }
-            binding?.root?.setOnLongClickListener {
-                callClickListener.onCallLongClick()
-                return@setOnLongClickListener true
-            }
-
         }
     }
 }

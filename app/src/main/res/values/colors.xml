@@ -13,4 +13,12 @@
     <color name="progress_bg">#80000000</color>
     <color name="disable_color">#32989595</color>
     <color name="divider">#2C3AFA</color>
+
+    //custom colors
+    <color name="midnight_blue">#102B58</color>
+    <color name="alice_blue">#F6F9FF</color>
+
+    //custom project colors
+    <color name="main_color">@color/midnight_blue</color>
+    <color name="main_bg_color">@color/white</color>
 </resources>

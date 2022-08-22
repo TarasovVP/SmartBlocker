@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -47,33 +46,32 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        var binding: ItemFilterBinding? = ItemFilterBinding.bind(itemView)
-
         fun bindData(position: Int) {
             val filter = getDataInPosition(position)
-            binding?.itemFilterValue?.text = filter.filter
-            binding?.itemFilterStart?.isVisible = filter.start
-            binding?.itemFilterContain?.isVisible = filter.contain
-            binding?.itemFilterEnd?.isVisible = filter.end
-            binding?.itemFilterAvatar?.setImageResource(if (filter.isBlackFilter) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
-            binding?.itemFilterDelete?.isVisible = isDeleteMode
-            binding?.itemFilterArrow?.isVisible = isDeleteMode.not()
-            binding?.itemFilterDelete?.isChecked = filter.isCheckedForDelete
-            binding?.root?.setSafeOnClickListener {
-                if (isDeleteMode) {
-                    binding?.itemFilterDelete?.isChecked =
-                        binding?.itemFilterDelete?.isChecked.isTrue().not()
-                } else {
-                    filterClickListener.onNumberClick(filter)
+            ItemFilterBinding.bind(itemView).apply {
+                itemFilterValue.text = filter.filter
+                itemFilterStart.isVisible = filter.start
+                itemFilterContain.isVisible = filter.contain
+                itemFilterEnd.isVisible = filter.end
+                itemFilterDelete.isVisible = isDeleteMode
+                itemFilterArrow.isVisible = isDeleteMode.not()
+                itemFilterDelete.isChecked = filter.isCheckedForDelete
+                root.setSafeOnClickListener {
+                    if (isDeleteMode) {
+                        itemFilterDelete.isChecked =
+                            itemFilterDelete.isChecked.isTrue().not()
+                    } else {
+                        filterClickListener.onNumberClick(filter)
+                    }
                 }
-            }
-            binding?.root?.setOnLongClickListener {
-                filterClickListener.onNumberLongClick()
-                return@setOnLongClickListener true
-            }
-            binding?.itemFilterDelete?.setOnCheckedChangeListener { _, checked ->
-                filter.isCheckedForDelete = checked
-                filterClickListener.onNumberDeleteCheckChange(filter)
+                root.setOnLongClickListener {
+                    filterClickListener.onNumberLongClick()
+                    return@setOnLongClickListener true
+                }
+                itemFilterDelete.setOnCheckedChangeListener { _, checked ->
+                    filter.isCheckedForDelete = checked
+                    filterClickListener.onNumberDeleteCheckChange(filter)
+                }
             }
         }
     }
