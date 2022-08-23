@@ -46,15 +46,38 @@
                 android:paddingHorizontal="@dimen/padding_10"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_icon" />
 
+            <CheckBox
+                android:id="@+id/filter_add_exact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_contain"
+                android:layoutDirection="rtl"
+                android:drawablePadding="@dimen/padding_10"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/exact"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_title" />
+
+            <Spinner
+                android:id="@+id/filter_country_code"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_0"
+                android:paddingHorizontal="@dimen/padding_5"
+                app:layout_constraintTop_toTopOf="@+id/filter_add_input"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
+                app:layout_constraintEnd_toStartOf="@+id/filter_add_input"/>
+
             <EditText
                 android:id="@+id/filter_add_input"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:hint="@string/enter_filter"
                 android:inputType="phone"
                 android:digits="0123456789+"
-                app:layout_constraintTop_toBottomOf="@+id/filter_add_title"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_exact"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/filter_country_code"
                 tools:ignore="Autofill,LabelFor,TextFields" />
 
             <TextView

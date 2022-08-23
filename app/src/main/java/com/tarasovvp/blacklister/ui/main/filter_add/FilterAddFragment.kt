@@ -1,13 +1,19 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.firebase.ui.auth.util.data.PhoneNumberUtils
+import com.google.gson.Gson
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST_PREVIEW
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
@@ -19,6 +25,8 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
@@ -37,6 +45,7 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
             if (args.filter?.isBlackFilter.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
         binding?.filterAddInput?.setText(args.filter?.filter.orEmpty())
         binding?.filterAddIcon?.setImageResource(if (args.filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
+        setCountrySpinner()
         setPriority()
         initViewsWithData(args.filter, false)
         setExistNumberChecking()
@@ -49,6 +58,33 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
         setFragmentResultListener(BLACK_LIST_PREVIEW) { _, _ ->
             viewModel.insertFilter(getFilter())
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun setCountrySpinner() {
+        val currentCountry = Locale.getDefault()
+        val countryCodeMap = HashMap<String, Int>()
+
+        Locale.getAvailableLocales().forEach { locale ->
+            PhoneNumberUtils.getCountryCode(locale.country)?.let { phoneNumberCode ->
+                countryCodeMap[locale.flagEmoji()+locale.country] = phoneNumberCode
+            }
+        }
+
+        val countryAdapter =
+            context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap.keys.toTypedArray()) }
+        countryAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding?.filterCountryCode?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                Log.e("countryTAG", "FilterAddFragment onItemClickListener p0 $p0 p1 $p1 p2 $p2 p3 $p3")
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+
+        }
+        binding?.filterCountryCode?.adapter = countryAdapter
+        //binding?.filterCountryCode?.setSelection(countryCodeMap.keys.toTypedArray().indexOf(currentCountry.flagEmoji()+currentCountry.country))
+        Log.e("countryTAG", "FilterAddFragment countryCodeMap ${Gson().toJson(countryCodeMap)} currentCountry $currentCountry currentNumberCode ${countryCodeMap[currentCountry.country]}")
     }
 
     private fun setPriority() {

@@ -7,21 +7,29 @@ import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.net.Uri
 import android.os.Build
+import android.os.LocaleList
 import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -411,6 +419,20 @@ fun Int?.orZero() = this ?: 0
 val String.Companion.EMPTY: String
     get() = ""
 
+fun Locale.flagEmoji(): String {
+    val firstLetter = Character.codePointAt(country, 0) - 0x41 + 0x1F1E6
+    val secondLetter = Character.codePointAt(country, 1) - 0x41 + 0x1F1E6
+    return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
+}
+
+fun Context.getLocale(): Locale {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        resources.configuration.locales.get(0)
+    } else {
+        resources.configuration.locale
+    }
+}
+
 fun Context.setAppLocale(language: String): Context {
     val locale = Locale(language)
     Locale.setDefault(locale)
@@ -441,18 +463,4 @@ private fun <T> ViewGroup.getViewsFromLayout(
         }
     }
     return views
-}
-
-fun ViewGroup.changeViewHeight(isIncrease: Boolean) {
-
-    this.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
-    Log.e("expandTAG", "Extensions changeViewHeight this.measuredHeight ${this.measuredHeight} isIncrease $isIncrease")
-    val anim: ValueAnimator = ValueAnimator.ofInt(if (isIncrease) 0 else 791)
-    /*anim.addUpdateListener { valueAnimator ->
-        Log.e("heightTAG", "Extensions addUpdateListener valueAnimator.animatedValue ${valueAnimator.animatedValue}")
-        layoutParams.height = valueAnimator.animatedValue as Int
-        requestLayout()
-
-    }*/
-    anim.start()
 }
