@@ -10,58 +10,6 @@
         <item name="colorSecondary">@color/blue</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="android:windowBackground">@drawable/main_bg</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:editTextColor">@color/white</item>
-        <item name="android:textColorHint">@color/grey</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="colorOnSurface">@color/white</item>
-        <!-- Customize your theme here. -->
-        <item name="materialButtonStyle">@style/StrokeButton</item>
-        <item name="checkboxStyle">@style/CheckBox</item>
-        <item name="radioButtonStyle">@style/RadioButtonStyle</item>
     </style>
 
-    <style name="Theme.Blacklister.Launcher">
-        <item name="android:windowBackground">@drawable/splash_bg</item>
-    </style>
-
-    <style name="StrokeButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:maxLines">1</item>
-        <item name="cornerRadius">@dimen/margin_10</item>
-        <item name="android:paddingLeft">@dimen/padding_25</item>
-        <item name="android:paddingRight">@dimen/padding_25</item>
-        <item name="rippleColor">#250092D4</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="strokeWidth">@dimen/margin_2</item>
-        <item name="strokeColor">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
-        <item name="android:textColor">@color/white</item>>
-        <item name="android:maxLines">1</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:buttonTint">@color/white</item>
-    </style>
-
-    <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@color/main_bg</item>
-        <item name="android:itemBackground">@color/main_bg</item>
-    </style>
-
-    <style name="MultiChoiceAlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
-        <item name="colorAccent">@color/blue</item>
-        <item name="android:textColorPrimary">#FFFFFF</item>
-        <item name="android:background">@color/main_bg</item>
-    </style>
-
-    <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:layoutDirection">rtl</item>
-        <item name="android:padding">@dimen/padding_10</item>
-    </style>
 </resources>

@@ -13,14 +13,14 @@
         android:layout_marginHorizontal="@dimen/margin_10"
         app:layout_constraintBottom_toTopOf="@+id/toolbar_divider"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/main_color" />
 
     <View
         android:id="@+id/toolbar_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentTop="true"
-        android:background="@android:color/holo_green_dark"
+        android:background="@color/main_color"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <androidx.fragment.app.FragmentContainerView

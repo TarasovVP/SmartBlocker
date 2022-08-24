@@ -17,8 +17,10 @@
     //custom colors
     <color name="midnight_blue">#102B58</color>
     <color name="alice_blue">#F6F9FF</color>
+    <color name="tangaroa">#1C2739</color>
 
     //custom project colors
     <color name="main_color">@color/midnight_blue</color>
-    <color name="main_bg_color">@color/white</color>
+    <color name="bg">@color/alice_blue</color>
+    <color name="item_color">@color/white</color>
 </resources>
