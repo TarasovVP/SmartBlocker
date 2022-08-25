@@ -92,16 +92,9 @@
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
         <action
-            android:id="@+id/startAddToListDialog"
-            app:destination="@id/addToListDialog" />
-        <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
     </fragment>
-
-    <dialog
-        android:id="@+id/addToListDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.AddToListDialog" />
 
     <fragment
         android:id="@+id/blackFilterListFragment"

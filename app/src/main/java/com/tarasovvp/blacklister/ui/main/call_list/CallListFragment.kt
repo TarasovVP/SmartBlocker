@@ -69,7 +69,6 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyListText = callListEmpty
-            priorityText = callListPriority
             callListCheck.setOnCheckedChangeListener { _, checked ->
                 getData()
                 (activity as MainActivity).toolbar?.title =
@@ -99,7 +98,6 @@ class CallListFragment :
             }
         }
         binding?.apply {
-            priorityText?.isVisible = isDeleteMode.not()
             callListCheck.isVisible = isDeleteMode.not()
             callListDeleteAll.isVisible = isDeleteMode
             callListDeleteBtn.isVisible =

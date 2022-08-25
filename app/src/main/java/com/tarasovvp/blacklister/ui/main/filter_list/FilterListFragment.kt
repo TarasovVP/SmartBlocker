@@ -55,7 +55,6 @@ open class FilterListFragment :
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
         emptyListText = binding?.filterListEmpty
-        priorityText = binding?.filterListPriority
         binding?.filterListDeleteAll?.setOnCheckedChangeListener { _, checked ->
             filterList?.forEach { it.isCheckedForDelete = checked }
             adapter?.notifyDataSetChanged()

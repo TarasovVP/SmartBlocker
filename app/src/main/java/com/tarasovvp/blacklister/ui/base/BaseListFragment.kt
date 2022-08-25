@@ -16,13 +16,11 @@ import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAdapter.MainData> :
     BaseFragment<VB, T>() {
@@ -32,7 +30,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     var swipeRefresh: SwipeRefreshLayout? = null
     var recyclerView: RecyclerView? = null
     var emptyListText: TextView? = null
-    var priorityText: TextView? = null
     protected var searchQuery: String? = ""
 
     abstract fun createAdapter(): BaseAdapter<D>?
@@ -58,17 +55,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
         }
         swipeRefresh?.setOnRefreshListener {
             getData()
-        }
-        setPriority()
-    }
-
-    private fun setPriority() {
-        priorityText?.setCompoundDrawablesWithIntrinsicBounds(0,
-            0,
-            if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_black_filter,
-            0)
-        priorityText?.setSafeOnClickListener {
-            findNavController().navigate(R.id.startBlockSettingsFragment)
         }
     }
 
@@ -120,7 +106,6 @@ abstract class BaseListFragment<VB : ViewBinding, T : BaseViewModel, D : BaseAda
     }
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {
-        Log.e("callLogTAG", "BaseListFragment setDataList dataListHashMap ${dataListHashMap.size}")
         adapter?.clearData()
         dataListHashMap.forEach { dataEntry ->
             adapter?.setHeaderAndData(

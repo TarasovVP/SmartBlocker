@@ -1,8 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contact_list
 
-import android.util.Log
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -34,7 +32,6 @@ open class ContactListFragment :
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
         emptyListText = binding?.contactListEmpty
-        priorityText = binding?.contactListPriority
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
         }
@@ -49,10 +46,6 @@ open class ContactListFragment :
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 this@ContactListFragment.contactList = contactList
-                Log.e("allDataTAG",
-                    "ContactListFragment contactLiveData contactList contains(\"Мой зай\") ${
-                        Gson().toJson(contactList.filter { it.name?.contains("Мой зай").isTrue() })
-                    }")
                 if (checkDataListEmptiness(contactList).not()) {
                     getHashMapFromContactList(contactList)
                 }
@@ -85,7 +78,6 @@ open class ContactListFragment :
     }
 
     override fun getData() {
-        Log.e("getAllDataTAG", "ContactListFragment getAllData")
         viewModel.getContactList()
     }
 }

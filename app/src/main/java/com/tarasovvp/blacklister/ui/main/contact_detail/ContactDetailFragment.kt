@@ -2,13 +2,10 @@ package com.tarasovvp.blacklister.ui.main.contact_detail
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.ADD_TO_LIST
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
-import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
 import com.tarasovvp.blacklister.databinding.FragmentContactDetailBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.loadCircleImage
@@ -81,14 +78,11 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
                 if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
                     R.string.black_list))
             filterDetailAddFilter.setSafeOnClickListener {
-                findNavController().navigate(ContactDetailFragmentDirections.startAddToListDialog())
+                findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
+                    filter = Filter(filter = contact.trimmedPhone).apply {
+                        isBlackFilter = true
+                    }))
             }
-        }
-        setFragmentResultListener(ADD_TO_LIST) { _, bundle ->
-            findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
-                filter = Filter(filter = contact.trimmedPhone).apply {
-                    isBlackFilter = bundle.getBoolean(WHITE_LIST).not()
-                }))
         }
     }
 
