@@ -1,35 +1,28 @@
 package com.tarasovvp.blacklister.extensions
 
-import android.animation.ValueAnimator
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.net.Uri
 import android.os.Build
-import android.os.LocaleList
 import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
-import android.util.DisplayMetrics
-import android.util.Log
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.BlendModeColorFilterCompat
-import androidx.core.graphics.BlendModeCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -55,7 +48,6 @@ import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.model.*
-import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -420,6 +412,7 @@ val String.Companion.EMPTY: String
     get() = ""
 
 fun Locale.flagEmoji(): String {
+    if (country.isEmpty()) return String.EMPTY
     val firstLetter = Character.codePointAt(country, 0) - 0x41 + 0x1F1E6
     val secondLetter = Character.codePointAt(country, 1) - 0x41 + 0x1F1E6
     return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
@@ -440,6 +433,27 @@ fun Context.setAppLocale(language: String): Context {
     config.setLocale(locale)
     config.setLayoutDirection(locale)
     return createConfigurationContext(config)
+}
+
+fun Context.getUserCountry(): String? {
+    try {
+        val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val simCountry = tm.simCountryIso
+        when {
+            simCountry != null && simCountry.length == 2 -> {
+                return simCountry.lowercase(Locale.US)
+            }
+            tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA -> {
+                val networkCountry = tm.networkCountryIso
+                if (networkCountry.isNotNull() && networkCountry.length == 2) {
+                    return networkCountry.lowercase(Locale.US)
+                }
+            }
+        }
+    } catch (e: java.lang.Exception) {
+        return null
+    }
+    return null
 }
 
 fun <T> ViewGroup.getViewsFromLayout(

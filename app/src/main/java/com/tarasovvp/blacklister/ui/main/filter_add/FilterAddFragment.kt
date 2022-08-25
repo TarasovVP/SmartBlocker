@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.ArrayMap
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -26,7 +27,6 @@ import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
@@ -62,9 +62,7 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
 
     @SuppressLint("RestrictedApi")
     private fun setCountrySpinner() {
-        val currentCountry = Locale.getDefault()
-        val countryCodeMap = HashMap<String, Int>()
-
+        val countryCodeMap = ArrayMap<String, Int>()
         Locale.getAvailableLocales().forEach { locale ->
             PhoneNumberUtils.getCountryCode(locale.country)?.let { phoneNumberCode ->
                 countryCodeMap[locale.flagEmoji()+locale.country] = phoneNumberCode
@@ -75,16 +73,15 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
             context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap.keys.toTypedArray()) }
         countryAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding?.filterCountryCode?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Log.e("countryTAG", "FilterAddFragment onItemClickListener p0 $p0 p1 $p1 p2 $p2 p3 $p3")
+            override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long) {
+                binding?.filterAddInput?.setText(String.format("+%s", countryCodeMap.valueAt(position)))
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) = Unit
 
         }
         binding?.filterCountryCode?.adapter = countryAdapter
-        //binding?.filterCountryCode?.setSelection(countryCodeMap.keys.toTypedArray().indexOf(currentCountry.flagEmoji()+currentCountry.country))
-        Log.e("countryTAG", "FilterAddFragment countryCodeMap ${Gson().toJson(countryCodeMap)} currentCountry $currentCountry currentNumberCode ${countryCodeMap[currentCountry.country]}")
+        binding?.filterCountryCode?.setSelection(countryCodeMap.indexOfKey(Locale(Locale.getDefault().language, context?.getUserCountry().orEmpty()).flagEmoji()+context?.getUserCountry()?.uppercase()))
     }
 
     private fun setPriority() {
