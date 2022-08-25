@@ -15,20 +15,9 @@
         app:drawableStartCompat="@drawable/ic_filter"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@+id/filter_list_delete_all"
-        app:layout_constraintEnd_toStartOf="@+id/filter_list_priority"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/filter_list_priority"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/size_0"
-        android:drawablePadding="@dimen/padding_5"
-        android:gravity="center_vertical"
-        android:text="@string/prioritness"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/filter_list_filter"
-        app:layout_constraintTop_toTopOf="@+id/filter_list_filter" />
 
     <CheckBox
         android:id="@+id/filter_list_delete_all"

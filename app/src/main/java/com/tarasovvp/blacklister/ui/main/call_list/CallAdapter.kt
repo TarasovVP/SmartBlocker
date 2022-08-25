@@ -60,7 +60,6 @@ class CallAdapter(val callClickListener: CallClickListener) :
                 itemCallTime.text = call.dateTimeFromTime()
                 itemCallTypeIcon.setImageResource(call.callIcon())
                 itemCallAvatar.loadCircleImage(call.photoUrl)
-                itemCallArrow.isVisible = isDeleteMode.not()
                 itemCallDelete.isVisible = isDeleteMode && call.type == BLOCKED_CALL
                 itemCallDelete.isChecked = call.isCheckedForDelete
                 itemCallDelete.setOnCheckedChangeListener { _, checked ->

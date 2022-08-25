@@ -33,7 +33,7 @@
         android:gravity="top"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/item_contact_number"
-        app:layout_constraintEnd_toStartOf="@+id/item_contact_menu"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,18 +44,8 @@
         android:layout_marginHorizontal="@dimen/margin_15"
         android:paddingVertical="@dimen/padding_5"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/item_contact_menu"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
         app:layout_constraintTop_toBottomOf="@+id/item_contact_name" />
-
-    <ImageView
-        android:id="@+id/item_contact_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_forward"
-        app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_contact_avatar"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

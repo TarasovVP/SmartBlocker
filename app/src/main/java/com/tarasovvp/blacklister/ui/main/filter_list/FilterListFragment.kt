@@ -88,7 +88,6 @@ open class FilterListFragment :
             notifyDataSetChanged()
         }
         binding?.apply {
-            filterListPriority.isVisible = isDeleteMode.not()
             filterListFilter.isVisible = isDeleteMode.not()
             filterListDeleteAll.isVisible = isDeleteMode
             filterListDeleteBtn.isVisible =

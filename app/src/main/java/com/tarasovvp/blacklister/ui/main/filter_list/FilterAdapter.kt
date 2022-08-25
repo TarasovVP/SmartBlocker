@@ -54,7 +54,6 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                 itemFilterContain.isVisible = filter.contain
                 itemFilterEnd.isVisible = filter.end
                 itemFilterDelete.isVisible = isDeleteMode
-                itemFilterArrow.isVisible = isDeleteMode.not()
                 itemFilterDelete.isChecked = filter.isCheckedForDelete
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {

@@ -51,16 +51,7 @@
         android:src="@drawable/ic_end"
         app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
         app:layout_constraintTop_toTopOf="@+id/item_filter_value"
-        app:layout_constraintEnd_toStartOf="@+id/item_filter_arrow" />
-
-    <ImageView
-        android:id="@+id/item_filter_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_forward"
-        app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
-        app:layout_constraintTop_toTopOf="@+id/item_filter_value"
-        app:layout_constraintEnd_toStartOf="@+id/item_filter_delete" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <CheckBox
         android:id="@+id/item_filter_delete"
