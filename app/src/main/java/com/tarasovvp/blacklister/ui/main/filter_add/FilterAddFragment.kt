@@ -1,6 +1,5 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.ArrayMap
 import android.util.Log
@@ -49,7 +48,7 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
         binding?.filterAddInput?.setText(args.filter?.filter.orEmpty())
         binding?.filterAddIcon?.setImageResource(if (args.filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
         setCountrySpinner()
-        setPriority()
+        setFullNumberToggle()
         initViewsWithData(args.filter, false)
         setExistNumberChecking()
         setClickListeners()
@@ -86,13 +85,9 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
             ?.uppercase()).orZero())
     }
 
-    private fun setPriority() {
-        binding?.filterAddPriority?.setCompoundDrawablesWithIntrinsicBounds(0,
-            0,
-            if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_black_filter,
-            0)
-        binding?.filterAddPriority?.setSafeOnClickListener {
-            findNavController().navigate(FilterAddFragmentDirections.startBlockSettingsFragment())
+    private fun setFullNumberToggle() {
+        binding?.filterFullNumberToggle?.setOnCheckedChangeListener { _, isChecked ->
+
         }
     }
 

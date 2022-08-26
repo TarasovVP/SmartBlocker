@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/item_bg"
     android:padding="@dimen/padding_12"
-    android:layout_marginTop="@dimen/margin_15"
-    android:layout_marginHorizontal="@dimen/margin_16">
+    android:layout_marginTop="@dimen/margin_15" >
 
     <TextView
         android:id="@+id/item_filter_value"

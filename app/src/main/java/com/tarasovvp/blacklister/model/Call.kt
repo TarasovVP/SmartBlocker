@@ -31,7 +31,7 @@ open class Call(
             OUT_COMING_CALL -> R.drawable.ic_outcoming_call
             MISSED_CALL -> R.drawable.ic_missed_call
             REJECTED_CALL -> R.drawable.ic_rejected_call
-            BLOCKED_CALL -> R.drawable.ic_stop
+            BLOCKED_CALL -> R.drawable.ic_blocked_call
             else -> R.drawable.ic_incoming_call
         }
     }

@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_25"
             android:text="@string/log_out_title"
-            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/account_details_main_title" />
 
         <Button
@@ -43,7 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_25"
             android:text="@string/delete_account_title"
-            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/account_details_log_out" />
 
         <Button
@@ -60,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_25"
             android:text="@string/change_password"
-            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/account_details_delete_btn" />
 
         <CheckBox

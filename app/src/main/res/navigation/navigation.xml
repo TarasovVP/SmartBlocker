@@ -64,21 +64,6 @@
             app:nullable="true" />
     </fragment>
 
-    <dialog
-        android:id="@+id/blackListPreviewDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.BlackListPreviewDialog" >
-        <argument
-            android:name="filter"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
-            app:nullable="true" />
-        <argument
-            android:name="contactList"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Contact[]"
-            app:nullable="true" />
-    </dialog>
-
     <fragment
         android:id="@+id/contactDetailFragment"
         android:name="com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragment"
@@ -230,9 +215,6 @@
         <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
-        <action
-            android:id="@+id/startBlackListPreviewDialog"
-            app:destination="@id/blackListPreviewDialog" />
         <action
             android:id="@+id/startContactDetailFragment"
             app:destination="@id/contactDetailFragment" />

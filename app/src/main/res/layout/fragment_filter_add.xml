@@ -19,21 +19,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/filter_add_priority"
-                android:layout_width="wrap_content"
+            <ToggleButton
+                android:id="@+id/filter_full_number_toggle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/padding_10"
-                android:text="@string/prioritness"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/exact"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/filter_add_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="@dimen/margin_5"
-                app:layout_constraintTop_toBottomOf="@+id/filter_add_priority"
+                app:layout_constraintTop_toBottomOf="@+id/filter_full_number_toggle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -45,17 +44,6 @@
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/padding_10"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_icon" />
-
-            <CheckBox
-                android:id="@+id/filter_add_exact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_contain"
-                android:layoutDirection="rtl"
-                android:drawablePadding="@dimen/padding_10"
-                android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/exact"
-                app:layout_constraintTop_toBottomOf="@+id/filter_add_title" />
 
             <Spinner
                 android:id="@+id/filter_country_code"
@@ -75,7 +63,7 @@
                 android:hint="@string/enter_filter"
                 android:inputType="phone"
                 android:digits="0123456789+"
-                app:layout_constraintTop_toBottomOf="@+id/filter_add_exact"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/filter_country_code"
                 tools:ignore="Autofill,LabelFor,TextFields" />
@@ -85,7 +73,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
-                android:textColor="@color/white"
                 android:text="@string/add_conditions_title"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 
@@ -96,7 +83,6 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:drawablePadding="@dimen/padding_10"
                 android:alpha="0.6"
-                android:textColor="@color/white"
                 android:text="@string/details_"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_title"
                 app:drawableStartCompat="@drawable/ic_info"/>
