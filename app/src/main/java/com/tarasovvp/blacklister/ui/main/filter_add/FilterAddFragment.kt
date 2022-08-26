@@ -9,12 +9,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.firebase.ui.auth.util.data.PhoneNumberUtils
-import com.google.gson.Gson
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST_PREVIEW
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
@@ -38,6 +39,8 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
     private val args: FilterAddFragmentArgs by navArgs()
 
     private var contactByFilterAdapter: ContactByFilterAdapter? = null
+    private var countryCodeMap: ArrayMap<String, Int>? = null
+    private var phoneUtil = PhoneNumberUtil.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,28 +63,27 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setCountrySpinner() {
-        val countryCodeMap = ArrayMap<String, Int>()
+        countryCodeMap = ArrayMap<String, Int>()
         Locale.getAvailableLocales().forEach { locale ->
-            PhoneNumberUtils.getCountryCode(locale.country)?.let { phoneNumberCode ->
-                countryCodeMap[locale.flagEmoji()+locale.country] = phoneNumberCode
-            }
+            if (locale.country.isNotEmpty() && locale.country.isDigitsOnly().not()) countryCodeMap?.put(locale.flagEmoji() + locale.country, phoneUtil.getCountryCodeForRegion(locale.country))
         }
 
-        val countryAdapter =
-            context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap.keys.toTypedArray()) }
+        val countryAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap?.keys.orEmpty().toTypedArray()) }
         countryAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding?.filterCountryCode?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long) {
-                binding?.filterAddInput?.setText(String.format("+%s", countryCodeMap.valueAt(position)))
+        binding?.filterCountryCode?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long, ) {
+                    binding?.filterAddInput?.setText(String.format("+%s", countryCodeMap?.valueAt(position)))
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) = Unit
-
-        }
         binding?.filterCountryCode?.adapter = countryAdapter
-        binding?.filterCountryCode?.setSelection(countryCodeMap.indexOfKey(Locale(Locale.getDefault().language, context?.getUserCountry().orEmpty()).flagEmoji()+context?.getUserCountry()?.uppercase()))
+        binding?.filterCountryCode?.setSelection(countryCodeMap?.indexOfKey(Locale(Locale.getDefault().language,
+            context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
+            ?.uppercase()).orZero())
     }
 
     private fun setPriority() {
@@ -98,6 +100,18 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
         viewModel.checkFilterExist(args.filter?.filter.orEmpty(),
             args.filter?.isBlackFilter.isTrue())
         binding?.filterAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
+            val phoneNumber: Phonenumber.PhoneNumber? = try {
+                phoneUtil.parse(it.orEmpty(),
+                    countryCodeMap?.keyAt(binding?.filterCountryCode?.selectedItemPosition.orZero()))
+            } catch (e: Exception) {
+                showMessage(e.localizedMessage.orEmpty(), true)
+                null
+            }
+            val isValid = phoneNumber?.let { number -> phoneUtil.isValidNumber(number) }
+            Log.e("filterAddTag",
+                "FilterAddFragment number $it phoneNumber $phoneNumber isValid $isValid keyAt ${
+                    countryCodeMap?.keyAt(binding?.filterCountryCode?.selectedItemPosition.orZero())
+                }")
             viewModel.checkFilterExist(it.toString(), args.filter?.isBlackFilter.isTrue())
         })
     }
