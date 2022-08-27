@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/item_bg"
-    android:padding="@dimen/padding_12"
+    android:padding="@dimen/padding_16"
     android:layout_marginTop="@dimen/margin_15" >
 
     <TextView
@@ -24,7 +24,6 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:visibility="gone"
-        android:layout_marginEnd="@dimen/margin_10"
         android:src="@drawable/ic_start"
         app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
         app:layout_constraintTop_toTopOf="@+id/item_filter_value"
