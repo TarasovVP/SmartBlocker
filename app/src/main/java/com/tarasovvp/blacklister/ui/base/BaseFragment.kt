@@ -3,17 +3,16 @@ package com.tarasovvp.blacklister.ui.base
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 
-abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFragment<VB>() {
+abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindingFragment<B>() {
 
     abstract val viewModelClass: Class<T>
     abstract fun observeLiveData()
@@ -50,7 +49,8 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
                     navigationScreens.contains(this.findNavController(R.id.host_main_fragment).currentDestination?.id)
             }
             toolbar?.isVisible =
-                this.findNavController(R.id.host_main_fragment).currentDestination?.id != R.id.loginFragment && this.findNavController(R.id.host_main_fragment).currentDestination?.id != R.id.onBoardingFragment
+                this.findNavController(R.id.host_main_fragment).currentDestination?.id != R.id.loginFragment && this.findNavController(
+                    R.id.host_main_fragment).currentDestination?.id != R.id.onBoardingFragment
         }
     }
 

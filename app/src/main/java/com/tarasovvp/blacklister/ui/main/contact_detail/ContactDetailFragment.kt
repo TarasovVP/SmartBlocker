@@ -18,8 +18,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, ContactDetailViewModel>() {
 
-    override fun getViewBinding() = FragmentContactDetailBinding.inflate(layoutInflater)
-
+    override var layoutId = R.layout.fragment_contact_detail
     override val viewModelClass = ContactDetailViewModel::class.java
 
     private val args: ContactDetailFragmentArgs by navArgs()

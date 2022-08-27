@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.ui.MainActivity
 
-abstract class BaseBindingFragment<VB : ViewBinding> : Fragment() {
+abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
 
-    protected open var binding: VB? = null
-    abstract fun getViewBinding(): VB
+    abstract var layoutId: Int
+    var binding: B? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = getViewBinding()
+        binding = DataBindingUtil.inflate(
+            inflater, layoutId, container, false
+        )
         return binding?.root
     }
 

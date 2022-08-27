@@ -1,65 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/padding_16"
-    tools:context=".ui.main.call_list.CallListFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <CheckBox
-        android:id="@+id/call_list_check"
-        android:layout_width="@dimen/size_0"
-        android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/padding_5"
-        android:text="@string/all_call_log_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/call_list_delete_all"
-        android:layout_width="@dimen/size_0"
-        android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/padding_5"
-        android:text="@string/choose_all"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/call_list_refresh"
-        app:layout_constraintEnd_toStartOf="@+id/call_list_delete_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/call_list_check" />
-
-    <ImageButton
-        android:id="@+id/call_list_delete_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_delete"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/call_list_delete_all"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/call_list_delete_all" />
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/call_list_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/call_list_delete_all">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/call_list_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/call_list_empty"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/list_empty"
-        android:visibility="gone" />
+        android:padding="@dimen/padding_16"
+        tools:context=".ui.main.call_list.CallListFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <CheckBox
+            android:id="@+id/call_list_check"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_5"
+            android:text="@string/all_call_log_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/call_list_delete_all"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_5"
+            android:text="@string/choose_all"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/call_list_refresh"
+            app:layout_constraintEnd_toStartOf="@+id/call_list_delete_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/call_list_check" />
+
+        <ImageButton
+            android:id="@+id/call_list_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/call_list_delete_all"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/call_list_delete_all" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/call_list_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/call_list_delete_all">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/call_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/call_list_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/list_empty"
+            android:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

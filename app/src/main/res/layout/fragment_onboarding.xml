@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.start.onboarding.OnBoardingFragment"
-    android:padding="@dimen/padding_16">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/on_boarding_view_pager"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_0"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/on_boarding_tab_layout"/>
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_16"
+        tools:context=".ui.start.onboarding.OnBoardingFragment">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/on_boarding_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabBackground="@android:color/transparent"
-        android:background="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@+id/on_boarding_view_pager"
-        app:layout_constraintBottom_toTopOf="@+id/on_boarding_button"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/on_boarding_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toTopOf="@+id/on_boarding_tab_layout"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/on_boarding_button"
-        android:theme="@style/StrokeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/on_boarding_tab_layout"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/on_boarding_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toTopOf="@+id/on_boarding_button"
+            app:layout_constraintTop_toBottomOf="@+id/on_boarding_view_pager"
+            app:tabBackground="@android:color/transparent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/on_boarding_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:theme="@style/StrokeButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/on_boarding_tab_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

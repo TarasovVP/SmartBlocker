@@ -14,7 +14,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 class AppLanguageFragment :
     BaseBindingFragment<FragmentAppLanguageBinding>() {
 
-    override fun getViewBinding() = FragmentAppLanguageBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.fragment_app_language
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -41,6 +41,9 @@ android {
     lintOptions {
         disable 'ContentDescription'
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {

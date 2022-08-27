@@ -7,13 +7,13 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -22,6 +22,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.MainNavigationDirections
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.databinding.ActivityMainBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.utils.*
@@ -31,6 +32,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var binding: ActivityMainBinding? = null
     private var navController: NavController? = null
     var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
@@ -83,8 +85,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Blacklister)
-        setContentView(R.layout.activity_main)
-        progress = findViewById(R.id.progress_bar_container)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        progress = binding?.progressBarContainer
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
@@ -101,10 +103,10 @@ class MainActivity : AppCompatActivity() {
             )
             this.graph = navGraph
 
-            bottomNavigationView = findViewById(R.id.bottom_nav)
+            bottomNavigationView = binding?.bottomNav
             bottomNavigationView?.setupWithNavController(this)
 
-            toolbar = findViewById(R.id.toolbar)
+            toolbar = binding?.toolbar
             toolbar?.setupWithNavController(this)
         }
         observeLiveData()
@@ -164,7 +166,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showMessage(message: String, isError: Boolean) {
-        findViewById<FrameLayout>(R.id.host_main_fragment).showMessage(message, isError)
+        binding?.hostMainFragment?.showMessage(message, isError)
     }
 
     fun getAllData() {

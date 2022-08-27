@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.view.View
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.model.HeaderDataItem
@@ -29,7 +30,7 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
 
     internal inner class HeaderViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var binding: ItemHeaderBinding? = ItemHeaderBinding.bind(itemView)
+        var binding = DataBindingUtil.bind<ItemHeaderBinding>(itemView)
         fun bindData(position: Int) {
             val header = getHeaderDataInPosition(position)
             binding?.itemHeaderText?.text = header.header

@@ -10,7 +10,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class AppExitDialog : BaseDialog<DialogInfoBinding>() {
 
-    override fun getViewBinding() = DialogInfoBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.dialog_info
 
     override fun initUI() {
         binding?.dialogInfoTitle?.text = getString(R.string.exit_application)

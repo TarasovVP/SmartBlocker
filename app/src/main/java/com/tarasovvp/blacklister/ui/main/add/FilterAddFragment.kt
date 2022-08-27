@@ -22,7 +22,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 class FilterAddFragment(private var filter: Filter?) :
     BaseFragment<FragmentFilterAddBinding, AddViewModel>() {
 
-    override fun getViewBinding() = FragmentFilterAddBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.fragment_filter_add
 
     override val viewModelClass = AddViewModel::class.java
 

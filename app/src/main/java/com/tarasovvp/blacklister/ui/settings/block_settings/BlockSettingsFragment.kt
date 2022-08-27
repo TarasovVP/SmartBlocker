@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.settings.block_settings
 
 import android.os.Bundle
 import android.view.View
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentBlockSettingsBinding
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -10,7 +11,7 @@ import com.tarasovvp.blacklister.ui.base.BaseFragment
 
 class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSettingsViewModel>() {
 
-    override fun getViewBinding() = FragmentBlockSettingsBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.fragment_block_settings
     override val viewModelClass = BlockSettingsViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

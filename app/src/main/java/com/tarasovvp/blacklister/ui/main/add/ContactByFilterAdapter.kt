@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import androidx.databinding.DataBindingUtil
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
@@ -46,7 +47,11 @@ class ContactByFilterAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent?.context))
+        val binding =
+            DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent?.context),
+                R.layout.item_header,
+                parent,
+                false)
         binding.itemHeaderText.text = titleList[groupPosition]
         binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
             0,
@@ -62,7 +67,10 @@ class ContactByFilterAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        ItemContactBinding.inflate(LayoutInflater.from(parent?.context)).apply {
+        DataBindingUtil.inflate<ItemContactBinding>(LayoutInflater.from(parent?.context),
+            R.layout.item_contact,
+            parent,
+            false).apply {
             contactListMap[titleList[groupPosition]]?.get(childPosition)?.let { contact ->
                 itemContactAvatar.loadCircleImage(contact.photoUrl)
                 itemContactName.text = contact.name

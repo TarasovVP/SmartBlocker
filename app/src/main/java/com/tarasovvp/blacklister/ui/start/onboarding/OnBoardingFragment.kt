@@ -20,8 +20,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
 
-    override fun getViewBinding() = FragmentOnboardingBinding.inflate(layoutInflater)
-
+    override var layoutId = R.layout.fragment_onboarding
     private var currentPosition = 0
 
     private val requestPermissionLauncher =

@@ -24,8 +24,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 class AccountDetailsFragment :
     BaseFragment<FragmentAccountDetailsBinding, AccountDetailsViewModel>() {
 
-    override fun getViewBinding() = FragmentAccountDetailsBinding.inflate(layoutInflater)
-
+    override var layoutId = R.layout.fragment_account_details
     override val viewModelClass = AccountDetailsViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

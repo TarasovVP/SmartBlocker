@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
@@ -47,7 +48,11 @@ class ContactDetailAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent?.context))
+        val binding =
+            DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent?.context),
+                R.layout.item_header,
+                parent,
+                false)
         binding.itemHeaderText.text = titleList[groupPosition]
         binding.root.isEnabled = filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
         if (filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
@@ -66,7 +71,10 @@ class ContactDetailAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        ItemFilterBinding.inflate(LayoutInflater.from(parent?.context)).apply {
+        DataBindingUtil.inflate<ItemFilterBinding>(LayoutInflater.from(parent?.context),
+            R.layout.item_filter,
+            parent,
+            false).apply {
             filterListMap[titleList[groupPosition]]?.get(childPosition)?.let { filter ->
                 itemFilterValue.text = filter.filter
                 itemFilterStart.isVisible = filter.start

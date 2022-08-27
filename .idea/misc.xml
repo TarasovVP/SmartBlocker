@@ -68,6 +68,7 @@
         <entry key="app/src/main/res/layout/dialog_forgot_password.xml" value="0.2115036231884058" />
         <entry key="app/src/main/res/layout/dialog_info.xml" value="0.30117753623188404" />
         <entry key="app/src/main/res/layout/fragment_account_details.xml" value="0.2269021739130435" />
+        <entry key="app/src/main/res/layout/fragment_add.xml" value="0.33152173913043476" />
         <entry key="app/src/main/res/layout/fragment_add_container.xml" value="0.26856884057971014" />
         <entry key="app/src/main/res/layout/fragment_app_language.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_app_theme.xml" value="0.2269021739130435" />

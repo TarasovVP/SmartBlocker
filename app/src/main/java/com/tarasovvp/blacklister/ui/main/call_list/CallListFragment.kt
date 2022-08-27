@@ -7,7 +7,10 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
-import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.extensions.isNotNull
+import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.showPopUpWindow
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Info
@@ -20,8 +23,7 @@ import java.util.*
 class CallListFragment :
     BaseListFragment<FragmentCallListBinding, CallListViewModel, Call>() {
 
-    override fun getViewBinding() = FragmentCallListBinding.inflate(layoutInflater)
-
+    override var layoutId = R.layout.fragment_call_list
     override val viewModelClass = CallListViewModel::class.java
 
     private var callList: List<Call>? = null
@@ -31,7 +33,8 @@ class CallListFragment :
         return context?.let {
             CallAdapter(object : CallClickListener {
                 override fun onCallClick(phone: String) {
-                    findNavController().navigate(CallListFragmentDirections.startContactDetailFragment(phone = phone))
+                    findNavController().navigate(CallListFragmentDirections.startContactDetailFragment(
+                        phone = phone))
                 }
 
                 override fun onCallLongClick() {
@@ -39,13 +42,17 @@ class CallListFragment :
                 }
 
                 override fun onCallDeleteCheckChange(call: Call) {
-                    callList?.find { it.phone == call.phone }?.isCheckedForDelete = call.isCheckedForDelete
-                    binding?.callListDeleteBtn?.isVisible = callList?.none { it.isCheckedForDelete }.isTrue().not()
-                    binding?.callListDeleteAll?.isChecked = callList?.none { it.isCheckedForDelete.not() }.isTrue()
+                    callList?.find { it.phone == call.phone }?.isCheckedForDelete =
+                        call.isCheckedForDelete
+                    binding?.callListDeleteBtn?.isVisible =
+                        callList?.none { it.isCheckedForDelete }.isTrue().not()
+                    binding?.callListDeleteAll?.isChecked =
+                        callList?.none { it.isCheckedForDelete.not() }.isTrue()
                 }
 
                 override fun onCallDeleteInfoClick(view: View) {
-                    view.showPopUpWindow(Info(title = getString(R.string.call_deleting), description = getString(R.string.call_delete_info)))
+                    view.showPopUpWindow(Info(title = getString(R.string.call_deleting),
+                        description = getString(R.string.call_delete_info)))
                 }
             })
         }

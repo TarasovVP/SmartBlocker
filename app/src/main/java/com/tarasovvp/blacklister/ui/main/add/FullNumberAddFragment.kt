@@ -16,7 +16,10 @@ import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentFullNumberAddBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.model.*
+import com.tarasovvp.blacklister.model.BlackFilter
+import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.Info
+import com.tarasovvp.blacklister.model.WhiteFilter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
@@ -26,8 +29,7 @@ import java.util.*
 class FullNumberAddFragment(private var filter: Filter?) :
     BaseFragment<FragmentFullNumberAddBinding, AddViewModel>() {
 
-    override fun getViewBinding() = FragmentFullNumberAddBinding.inflate(layoutInflater)
-
+    override var layoutId = R.layout.fragment_full_number_add
     override val viewModelClass = AddViewModel::class.java
 
     private var countryCodeMap: ArrayMap<String, Int>? = null

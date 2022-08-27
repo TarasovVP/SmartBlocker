@@ -11,7 +11,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
-    override fun getViewBinding() = FragmentSignUpBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.fragment_sign_up
     override val viewModelClass = SignUpViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

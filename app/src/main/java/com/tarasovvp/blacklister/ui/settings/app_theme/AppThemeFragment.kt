@@ -11,7 +11,7 @@ import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 class AppThemeFragment :
     BaseBindingFragment<FragmentAppThemeBinding>() {
 
-    override fun getViewBinding() = FragmentAppThemeBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.fragment_app_theme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

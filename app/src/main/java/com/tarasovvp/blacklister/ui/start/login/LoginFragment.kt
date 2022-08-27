@@ -23,7 +23,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
-    override fun getViewBinding() = FragmentLoginBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.fragment_login
     override val viewModelClass = LoginViewModel::class.java
 
     private var googleSignInClient: GoogleSignInClient? = null

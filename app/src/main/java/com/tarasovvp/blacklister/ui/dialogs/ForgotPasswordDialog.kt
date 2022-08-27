@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.dialogs
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.EMAIL
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.databinding.DialogForgotPasswordBinding
@@ -11,7 +12,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
 
-    override fun getViewBinding() = DialogForgotPasswordBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.dialog_forgot_password
 
     private val args: ForgotPasswordDialogArgs by navArgs()
 

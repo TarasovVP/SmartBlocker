@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -24,11 +26,17 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
     ): RecyclerView.ViewHolder {
         return if (viewType == HeaderDataItem.HEADER_TYPE) {
             HeaderViewHolder(
-                ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent.context),
+                    R.layout.item_header,
+                    parent,
+                    false).root
             )
         } else {
             ViewHolder(
-                ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                DataBindingUtil.inflate<ItemFilterBinding>(LayoutInflater.from(parent.context),
+                    R.layout.item_filter,
+                    parent,
+                    false).root
             )
         }
     }
@@ -48,7 +56,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
 
         fun bindData(position: Int) {
             val filter = getDataInPosition(position)
-            ItemFilterBinding.bind(itemView).apply {
+            DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
                 itemFilterValue.text = filter.filter
                 itemFilterStart.isVisible = filter.start
                 itemFilterContain.isVisible = filter.contain

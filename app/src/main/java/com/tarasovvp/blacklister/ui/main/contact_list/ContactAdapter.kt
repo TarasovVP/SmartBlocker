@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.main.contact_list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
@@ -22,11 +23,17 @@ class ContactAdapter(private val contactClick: (String) -> Unit) :
     ): RecyclerView.ViewHolder {
         return if (viewType == HeaderDataItem.HEADER_TYPE) {
             HeaderViewHolder(
-                ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent.context),
+                    R.layout.item_header,
+                    parent,
+                    false).root
             )
         } else {
             ViewHolder(
-                ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                DataBindingUtil.inflate<ItemContactBinding>(LayoutInflater.from(parent.context),
+                    R.layout.item_contact,
+                    parent,
+                    false).root
             )
         }
     }
@@ -46,11 +53,9 @@ class ContactAdapter(private val contactClick: (String) -> Unit) :
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        var binding: ItemContactBinding? = ItemContactBinding.bind(itemView)
-
         fun bindData(position: Int) {
             val contact = getDataInPosition(position)
-            ItemContactBinding.bind(itemView).apply {
+            DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
                 itemContactType.setImageResource(when {
                     contact.isBlackFilter -> R.drawable.ic_block
                     contact.isWhiteFilter -> R.drawable.ic_accepted

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
@@ -27,11 +28,17 @@ class CallAdapter(val callClickListener: CallClickListener) :
     ): RecyclerView.ViewHolder {
         return if (viewType == HeaderDataItem.HEADER_TYPE) {
             HeaderViewHolder(
-                ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent.context),
+                    R.layout.item_header,
+                    parent,
+                    false).root
             )
         } else {
             ViewHolder(
-                ItemCallBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+                DataBindingUtil.inflate<ItemCallBinding>(LayoutInflater.from(parent.context),
+                    R.layout.item_call,
+                    parent,
+                    false).root
             )
         }
     }
@@ -53,7 +60,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
 
         fun bindData(position: Int) {
             val call = getDataInPosition(position)
-            ItemCallBinding.bind(itemView).apply {
+            DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 itemCallName.text =
                     if (call.phone.isNullOrEmpty()) itemView.context.getString(R.string.hidden) else call.name
                 itemCallNumber.text = call.phone

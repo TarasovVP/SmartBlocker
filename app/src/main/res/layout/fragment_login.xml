@@ -1,114 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:padding="@dimen/padding_16">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true"
+        android:padding="@dimen/padding_16">
 
-        <TextView
-            android:id="@+id/login_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:includeFontPadding="false"
-            android:text="@string/log_in"
-            android:layout_marginTop="@dimen/margin_35"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/login_google_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/with_google_account"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/margin_35"
-            app:layout_constraintTop_toBottomOf="@+id/login_title" />
+            <TextView
+                android:id="@+id/login_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_35"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/log_in"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/login_google_auth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_google_title" />
+            <TextView
+                android:id="@+id/login_google_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_35"
+                android:gravity="center"
+                android:text="@string/with_google_account"
+                app:layout_constraintTop_toBottomOf="@+id/login_title" />
 
-        <TextView
-            android:id="@+id/login_email_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/or_login_with_email"
-            android:layout_marginTop="@dimen/margin_35"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_google_auth" />
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/login_google_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_google_title" />
 
-        <EditText
-            android:id="@+id/login_email_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:layout_marginTop="@dimen/margin_10"
-            android:inputType="textEmailAddress"
-            app:layout_constraintTop_toBottomOf="@+id/login_email_title" />
+            <TextView
+                android:id="@+id/login_email_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_35"
+                android:text="@string/or_login_with_email"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_google_auth" />
 
-        <EditText
-            android:id="@+id/login_password_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:layout_marginTop="@dimen/margin_10"
-            app:layout_constraintTop_toBottomOf="@+id/login_email_input" />
+            <EditText
+                android:id="@+id/login_email_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                app:layout_constraintTop_toBottomOf="@+id/login_email_title" />
 
-        <TextView
-            android:id="@+id/login_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingVertical="@dimen/padding_10"
-            android:layout_marginVertical="@dimen/margin_5"
-            android:text="@string/forgot_password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_password_input" />
+            <EditText
+                android:id="@+id/login_password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                app:layout_constraintTop_toBottomOf="@+id/login_email_input" />
 
-        <TextView
-            android:id="@+id/login_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up"
-            android:layout_marginVertical="@dimen/margin_5"
-            android:paddingVertical="@dimen/padding_10"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_password_input" />
+            <TextView
+                android:id="@+id/login_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/forgot_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_password_input" />
 
-        <Button
-            android:id="@+id/login_continue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/continue_"
-            android:layout_marginVertical="@dimen/margin_5"
-            app:layout_constraintTop_toBottomOf="@+id/login_sign_up"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintBottom_toTopOf="@id/login_continue_without_acc" />
+            <TextView
+                android:id="@+id/login_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_5"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/sign_up"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_password_input" />
 
-        <TextView
-            android:id="@+id/login_continue_without_acc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/continue_without_account"
-            android:paddingVertical="@dimen/padding_10"
-            android:layout_marginVertical="@dimen/margin_5"
-            android:textColor="@color/blue"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            <Button
+                android:id="@+id/login_continue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_5"
+                android:text="@string/continue_"
+                app:layout_constraintBottom_toTopOf="@id/login_continue_without_acc"
+                app:layout_constraintTop_toBottomOf="@+id/login_sign_up"
+                app:layout_constraintVertical_bias="1" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <TextView
+                android:id="@+id/login_continue_without_acc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_5"
+                android:gravity="center"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/continue_without_account"
+                android:textColor="@color/blue"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -11,7 +11,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class DeleteFilterDialog : BaseDialog<DialogInfoBinding>() {
 
-    override fun getViewBinding() = DialogInfoBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.dialog_info
 
     private val args: DeleteFilterDialogArgs by navArgs()
 

@@ -9,21 +9,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
-import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 
-abstract class BaseDialog<VB : ViewBinding> : DialogFragment() {
+abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
 
-    protected open var binding: VB? = null
-    abstract fun getViewBinding(): VB
+    abstract var layoutId: Int
+    var binding: B? = null
 
     abstract fun initUI()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
-        binding = getViewBinding()
+        binding = DataBindingUtil.inflate(
+            inflater, layoutId, container, false
+        )
         initUI()
         return binding?.root
     }

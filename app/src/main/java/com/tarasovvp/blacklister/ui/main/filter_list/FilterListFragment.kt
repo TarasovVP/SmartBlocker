@@ -21,8 +21,7 @@ import java.util.*
 open class FilterListFragment :
     BaseListFragment<FragmentFilterListBinding, FilterListViewModel, Filter>() {
 
-    override fun getViewBinding() = FragmentFilterListBinding.inflate(layoutInflater)
-
+    override var layoutId = R.layout.fragment_filter_list
     override val viewModelClass = FilterListViewModel::class.java
 
     private var filterList: ArrayList<Filter>? = null
@@ -42,9 +41,12 @@ open class FilterListFragment :
                 }
 
                 override fun onNumberDeleteCheckChange(filter: Filter) {
-                    filterList?.find { it.filter == filter.filter }?.isCheckedForDelete = filter.isCheckedForDelete
-                    binding?.filterListDeleteBtn?.isVisible = filterList?.none { it.isCheckedForDelete }.isTrue().not()
-                    binding?.filterListDeleteAll?.isChecked = filterList?.none { it.isCheckedForDelete.not() }.isTrue()
+                    filterList?.find { it.filter == filter.filter }?.isCheckedForDelete =
+                        filter.isCheckedForDelete
+                    binding?.filterListDeleteBtn?.isVisible =
+                        filterList?.none { it.isCheckedForDelete }.isTrue().not()
+                    binding?.filterListDeleteAll?.isChecked =
+                        filterList?.none { it.isCheckedForDelete.not() }.isTrue()
                 }
 
             })

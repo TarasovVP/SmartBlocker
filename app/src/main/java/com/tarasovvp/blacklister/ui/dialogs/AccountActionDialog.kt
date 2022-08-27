@@ -14,7 +14,7 @@ class AccountActionDialog : BaseDialog<DialogInfoBinding>() {
 
     private val args: AccountActionDialogArgs by navArgs()
 
-    override fun getViewBinding() = DialogInfoBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.dialog_info
 
     override fun initUI() {
         binding?.dialogInfoTitle?.text =

@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.start.onboarding
 
 import android.os.Bundle
 import android.view.View
+import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentSingleOnboardingBinding
 import com.tarasovvp.blacklister.enum.OnBoarding
 import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
@@ -9,7 +10,7 @@ import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 class SingleOnBoardingFragment(private val onBoarding: OnBoarding) :
     BaseBindingFragment<FragmentSingleOnboardingBinding>() {
 
-    override fun getViewBinding() = FragmentSingleOnboardingBinding.inflate(layoutInflater)
+    override var layoutId = R.layout.fragment_single_onboarding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
