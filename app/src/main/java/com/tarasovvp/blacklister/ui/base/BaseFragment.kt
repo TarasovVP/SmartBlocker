@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.tarasovvp.blacklister.R
@@ -44,19 +45,19 @@ abstract class BaseFragment<VB : ViewBinding, T : BaseViewModel> : BaseBindingFr
 
     private fun checkTopBottomBarVisibility() {
         (activity as MainActivity).apply {
-            if (findNavController().currentDestination?.id != R.id.deleteFilterDialog) {
+            if (this.findNavController(R.id.host_main_fragment).currentDestination?.id != R.id.deleteFilterDialog) {
                 bottomNavigationView?.isVisible =
-                    navigationScreens.contains(findNavController().currentDestination?.id)
+                    navigationScreens.contains(this.findNavController(R.id.host_main_fragment).currentDestination?.id)
             }
             toolbar?.isVisible =
-                findNavController().currentDestination?.id != R.id.loginFragment && findNavController().currentDestination?.id != R.id.onBoardingFragment
+                this.findNavController(R.id.host_main_fragment).currentDestination?.id != R.id.loginFragment && this.findNavController(R.id.host_main_fragment).currentDestination?.id != R.id.onBoardingFragment
         }
     }
 
     private fun checkToolbarSearchVisibility() {
         (activity as MainActivity).apply {
             toolbar?.menu?.clear()
-            if (navigationScreens.contains(findNavController().currentDestination?.id)) {
+            if (navigationScreens.contains(this.findNavController(R.id.host_main_fragment).currentDestination?.id)) {
                 toolbar?.inflateMenu(R.menu.toolbar_search)
             }
         }

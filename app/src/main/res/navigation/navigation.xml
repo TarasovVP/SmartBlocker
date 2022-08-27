@@ -202,8 +202,7 @@
 
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.add.AddFragment"
-        android:label="@string/add_black_filter">
+        android:name="com.tarasovvp.blacklister.ui.main.add.AddFragment" >
         <argument
             android:name="filter"
             android:defaultValue="@null"

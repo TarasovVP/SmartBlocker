@@ -30,8 +30,6 @@ class FilterAddFragment(private var filter: Filter?) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).toolbar?.title =
-            if (filter?.isBlackFilter.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
         binding?.filterAddInput?.setText(filter?.filter.orEmpty())
         binding?.filterAddIcon?.setImageResource(if (filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
         initViewsWithData(filter, false)

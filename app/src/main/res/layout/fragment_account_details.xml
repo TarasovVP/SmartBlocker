@@ -64,7 +64,7 @@
             android:id="@+id/account_details_new_password_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/expanded_check_box_selector"
+            android:button="@drawable/selector_expanded_check_box"
             android:layoutDirection="rtl"
             android:layout_marginTop="@dimen/margin_10"
             android:text="@string/change_password_btn"

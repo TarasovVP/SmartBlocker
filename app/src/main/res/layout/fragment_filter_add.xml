@@ -19,20 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ToggleButton
-                android:id="@+id/filter_full_number_toggle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/exact"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageView
                 android:id="@+id/filter_add_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="@dimen/margin_5"
-                app:layout_constraintTop_toBottomOf="@+id/filter_full_number_toggle"
+                android:layout_marginTop="@dimen/margin_16"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -45,27 +37,15 @@
                 android:paddingHorizontal="@dimen/padding_10"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_icon" />
 
-            <Spinner
-                android:id="@+id/filter_country_code"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_0"
-                android:paddingHorizontal="@dimen/padding_5"
-                app:layout_constraintTop_toTopOf="@+id/filter_add_input"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
-                app:layout_constraintEnd_toStartOf="@+id/filter_add_input"/>
-
             <EditText
                 android:id="@+id/filter_add_input"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:hint="@string/enter_filter"
                 android:inputType="phone"
                 android:digits="0123456789+"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/filter_country_code"
                 tools:ignore="Autofill,LabelFor,TextFields" />
 
             <TextView
@@ -120,6 +100,25 @@
                 android:text="@string/filter_end"
                 app:layout_constraintTop_toBottomOf="@+id/filter_add_start" />
 
+            <Button
+                android:id="@+id/filter_delete_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/delete_menu"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/filter_add_end" />
+
+            <Button
+                android:id="@+id/filter_add_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_5"
+                android:text="@string/add"
+                android:visibility="gone"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintTop_toBottomOf="@+id/filter_delete_submit" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -130,26 +129,8 @@
         android:groupIndicator="@null"
         android:layout_marginTop="@dimen/margin_15"
         android:nestedScrollingEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/filter_delete_submit"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scroll_container" />
-
-    <Button
-        android:id="@+id/filter_delete_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/delete_menu"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/filter_add_submit" />
-
-    <Button
-        android:id="@+id/filter_add_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_5"
-        android:text="@string/add"
-        android:visibility="gone"
-        app:layout_constraintVertical_bias="1"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
