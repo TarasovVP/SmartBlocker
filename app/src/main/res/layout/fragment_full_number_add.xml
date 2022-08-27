@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:padding="@dimen/padding_16">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/full_number_add_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/full_number_add_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/padding_10"
+                app:layout_constraintTop_toBottomOf="@+id/full_number_add_icon" />
+
+            <Spinner
+                android:id="@+id/full_number_country_code"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_0"
+                android:paddingHorizontal="@dimen/padding_5"
+                app:layout_constraintTop_toTopOf="@+id/full_number_add_input"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/full_number_add_input"
+                app:layout_constraintEnd_toStartOf="@+id/full_number_add_input"/>
+
+            <EditText
+                android:id="@+id/full_number_add_input"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:hint="@string/enter_filter"
+                android:inputType="phone"
+                android:digits="0123456789+"
+                app:layout_constraintTop_toBottomOf="@+id/full_number_add_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/full_number_country_code"
+                tools:ignore="Autofill,LabelFor,TextFields" />
+
+            <TextView
+                android:id="@+id/full_number_add_conditions_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_5"
+                android:drawablePadding="@dimen/padding_10"
+                android:alpha="0.6"
+                android:text="@string/details_"
+                app:layout_constraintTop_toBottomOf="@+id/full_number_add_input"
+                app:drawableStartCompat="@drawable/ic_info"/>
+
+            <Button
+                android:id="@+id/full_number_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_menu"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/full_number_add_conditions_info" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

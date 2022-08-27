@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.filter_add
+package com.tarasovvp.blacklister.ui.main.add
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.WhiteFilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
-class FilterAddViewModel(application: Application) : BaseViewModel(application) {
+class AddViewModel(application: Application) : BaseViewModel(application) {
 
     private val blackFilterRepository = BlackFilterRepository
     private val whiteFilterRepository = WhiteFilterRepository

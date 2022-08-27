@@ -33,7 +33,7 @@ open class FilterListFragment :
         return context?.let {
             FilterAdapter(object : FilterClickListener {
                 override fun onNumberClick(filter: Filter) {
-                    findNavController().navigate(WhiteFilterListFragmentDirections.startFilterAddFragment(
+                    findNavController().navigate(WhiteFilterListFragmentDirections.startAddFragment(
                         filter = filter))
                 }
 
@@ -71,7 +71,7 @@ open class FilterListFragment :
             findNavController().navigate(WhiteFilterListFragmentDirections.startDeleteFilterDialog())
         }
         binding?.filterListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(WhiteFilterListFragmentDirections.startFilterAddFragment(
+            findNavController().navigate(WhiteFilterListFragmentDirections.startAddFragment(
                 filter = Filter().apply {
                     isBlackFilter = this@FilterListFragment is BlackFilterListFragment
                 }))

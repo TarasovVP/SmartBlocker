@@ -1,22 +1,13 @@
-package com.tarasovvp.blacklister.ui.main.filter_add
+package com.tarasovvp.blacklister.ui.main.add
 
 import android.os.Bundle
-import android.util.ArrayMap
-import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.CompoundButton
-import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST_PREVIEW
 import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.extensions.*
@@ -26,88 +17,38 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
-import java.util.*
 
 
-class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
+class FilterAddFragment(private var filter: Filter?) :
+    BaseFragment<FragmentFilterAddBinding, AddViewModel>() {
 
     override fun getViewBinding() = FragmentFilterAddBinding.inflate(layoutInflater)
 
-    override val viewModelClass = FilterAddViewModel::class.java
-
-    private val args: FilterAddFragmentArgs by navArgs()
+    override val viewModelClass = AddViewModel::class.java
 
     private var contactByFilterAdapter: ContactByFilterAdapter? = null
-    private var countryCodeMap: ArrayMap<String, Int>? = null
-    private var phoneUtil = PhoneNumberUtil.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).toolbar?.title =
-            if (args.filter?.isBlackFilter.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
-        binding?.filterAddInput?.setText(args.filter?.filter.orEmpty())
-        binding?.filterAddIcon?.setImageResource(if (args.filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
-        setCountrySpinner()
-        setFullNumberToggle()
-        initViewsWithData(args.filter, false)
+            if (filter?.isBlackFilter.isTrue()) getString(R.string.black_list) else getString(R.string.white_list)
+        binding?.filterAddInput?.setText(filter?.filter.orEmpty())
+        binding?.filterAddIcon?.setImageResource(if (filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
+        initViewsWithData(filter, false)
         setExistNumberChecking()
         setClickListeners()
         setFragmentResultListener(DELETE_NUMBER) { _, _ ->
-            args.filter?.let {
+            filter?.let {
                 viewModel.deleteFilter(it)
             }
-        }
-        setFragmentResultListener(BLACK_LIST_PREVIEW) { _, _ ->
-            viewModel.insertFilter(getFilter())
-        }
-    }
-
-    private fun setCountrySpinner() {
-        countryCodeMap = ArrayMap<String, Int>()
-        Locale.getAvailableLocales().forEach { locale ->
-            if (locale.country.isNotEmpty() && locale.country.isDigitsOnly().not()) countryCodeMap?.put(locale.flagEmoji() + locale.country, phoneUtil.getCountryCodeForRegion(locale.country))
-        }
-
-        val countryAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap?.keys.orEmpty().toTypedArray()) }
-        countryAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding?.filterCountryCode?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long, ) {
-                    binding?.filterAddInput?.setText(String.format("+%s", countryCodeMap?.valueAt(position)))
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
-
-            }
-        binding?.filterCountryCode?.adapter = countryAdapter
-        binding?.filterCountryCode?.setSelection(countryCodeMap?.indexOfKey(Locale(Locale.getDefault().language,
-            context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
-            ?.uppercase()).orZero())
-    }
-
-    private fun setFullNumberToggle() {
-        binding?.filterFullNumberToggle?.setOnCheckedChangeListener { _, isChecked ->
-
         }
     }
 
     private fun setExistNumberChecking() {
-        viewModel.checkFilterExist(args.filter?.filter.orEmpty(),
-            args.filter?.isBlackFilter.isTrue())
+        viewModel.checkFilterExist(filter?.filter.orEmpty(),
+            filter?.isBlackFilter.isTrue())
         binding?.filterAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
-            val phoneNumber: Phonenumber.PhoneNumber? = try {
-                phoneUtil.parse(it.orEmpty(),
-                    countryCodeMap?.keyAt(binding?.filterCountryCode?.selectedItemPosition.orZero()))
-            } catch (e: Exception) {
-                showMessage(e.localizedMessage.orEmpty(), true)
-                null
-            }
-            val isValid = phoneNumber?.let { number -> phoneUtil.isValidNumber(number) }
-            Log.e("filterAddTag",
-                "FilterAddFragment number $it phoneNumber $phoneNumber isValid $isValid keyAt ${
-                    countryCodeMap?.keyAt(binding?.filterCountryCode?.selectedItemPosition.orZero())
-                }")
-            viewModel.checkFilterExist(it.toString(), args.filter?.isBlackFilter.isTrue())
+            viewModel.checkFilterExist(it.toString(), filter?.isBlackFilter.isTrue())
         })
     }
 
@@ -125,7 +66,6 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
                 filterAddInput.text.isNotEmpty() && isFilterIdentical(fromDb, filter).not()
             filterAddSubmit.text =
                 if (fromDb && filter.isNotNull()) getString(R.string.edit) else getString(R.string.add)
-            filterAddSubmit.isVisible = filterAddInput.text.isNotEmpty() && filter.isNotNull()
             if (filterAddInput.text.isNotEmpty() && isFilterIdentical(fromDb, filter).not()) {
                 viewModel.checkContactListByFilter(getFilter())
             }
@@ -156,8 +96,8 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
                     icon = R.drawable.ic_test))
             }
             filterDeleteSubmit.setSafeOnClickListener {
-                args.filter?.let {
-                    findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(
+                filter?.let {
+                    findNavController().navigate(AddFragmentDirections.startDeleteFilterDialog(
                         filter = it))
                 }
             }
@@ -172,7 +112,7 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
     }
 
     private fun getFilter(): Filter {
-        val filter = if (args.filter?.isBlackFilter.isTrue()) {
+        val filter = if (filter?.isBlackFilter.isTrue()) {
             BlackFilter(filter = binding?.filterAddInput?.text.toString())
         } else {
             WhiteFilter(filter = binding?.filterAddInput?.text.toString())
@@ -181,7 +121,7 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
             start = binding?.filterAddStart?.isChecked.isTrue()
             contain = binding?.filterAddContain?.isChecked.isTrue()
             end = binding?.filterAddEnd?.isChecked.isTrue()
-            isBlackFilter = args.filter?.isBlackFilter.isTrue()
+            isBlackFilter = filter.isBlackFilter.isTrue()
         }
         return filter
     }
@@ -195,21 +135,21 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
         val contactListMap = hashMapOf(title to listOf<Contact>())
 
         val affectedContactList = contactList.filterNot {
-            if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+            if (filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
         }
         if (affectedContactList.isNotEmpty()) {
             val affectedContacts =
-                "Найдено ${affectedContactList.size} контактов, которые будут ${if (args.filter?.isBlackFilter.isTrue()) "заблокированы" else "разблокированы"} этим фильтром"
+                "Найдено ${affectedContactList.size} контактов, которые будут ${if (filter?.isBlackFilter.isTrue()) "заблокированы" else "разблокированы"} этим фильтром"
             titleList.add(affectedContacts)
             contactListMap[affectedContacts] = affectedContactList
         }
 
         val nonAffectedContactList = contactList.filter {
-            if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+            if (filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
         }
         if (nonAffectedContactList.isNotEmpty()) {
             val nonAffectedContacts = String.format(getString(R.string.not_block_add_info),
-                if (args.filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
+                if (filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
                     R.string.can_unblock),
                 nonAffectedContactList.size)
             titleList.add(nonAffectedContacts)
@@ -231,7 +171,7 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
             return@setOnGroupClickListener false
         }
         binding?.filterAddContactByFilterList?.setOnChildClickListener { _, _, _, childPosition, _ ->
-            findNavController().navigate(FilterAddFragmentDirections.startContactDetailFragment(
+            findNavController().navigate(AddFragmentDirections.startContactDetailFragment(
                 phone = contactList[childPosition].phone))
             return@setOnChildClickListener contactList.isEmpty()
         }
@@ -245,19 +185,19 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 var filterAddInfoText = ""
                 contactList.filterNot {
-                    if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+                    if (filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
                 }.apply {
                     if (this.isNotEmpty()) filterAddInfoText += String.format(getString(R.string.block_add_info),
-                        if (args.filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
+                        if (filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
                             R.string.can_unblock),
                         this.size)
                 }
                 contactList.filter {
-                    if (args.filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+                    if (filter?.isBlackFilter.isTrue()) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
                 }.apply {
                     if (filterAddInfoText.isNotEmpty()) filterAddInfoText += "\n"
                     if (this.isNotEmpty()) filterAddInfoText += String.format(getString(R.string.not_block_add_info),
-                        if (args.filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
+                        if (filter?.isBlackFilter.isTrue()) getString(R.string.can_block) else getString(
                             R.string.can_unblock),
                         this.size)
                 }
@@ -268,7 +208,7 @@ class FilterAddFragment : BaseFragment<FragmentFilterAddBinding, FilterAddViewMo
             }
             deleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
                 handleSuccessFilterAction(String.format(getString(R.string.delete_filter_from_list),
-                    args.filter?.filter.orEmpty()))
+                    filter?.filter.orEmpty()))
             }
         }
     }
