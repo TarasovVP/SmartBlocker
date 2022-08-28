@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui.main.filter_list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
@@ -57,12 +56,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
         fun bindData(position: Int) {
             val filter = getDataInPosition(position)
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
-
-                itemFilterStart.isVisible = filter.start
-                itemFilterContain.isVisible = filter.contain
-                itemFilterEnd.isVisible = filter.end
-                itemFilterDelete.isVisible = isDeleteMode
-                itemFilterDelete.isChecked = filter.isCheckedForDelete
+                filter.isDeleteMode = isDeleteMode
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
                         itemFilterDelete.isChecked =
@@ -79,6 +73,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                     filter.isCheckedForDelete = checked
                     filterClickListener.onNumberDeleteCheckChange(filter)
                 }
+                this.filter = filter
             }
         }
     }

@@ -77,7 +77,7 @@
             android:id="@+id/item_call_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{call.blockedType &amp;&amp; call.deleteMode ? View.VISIBLE : View.GONE}"
+            android:visibility="@{!call.deleteVisible ? View.VISIBLE : View.GONE}"
             android:checked="@{call.checkedForDelete}"
             app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
             app:layout_constraintEnd_toStartOf="@+id/item_call_delete_info"

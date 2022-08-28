@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
-import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -55,13 +54,7 @@ class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<C
         fun bindData(position: Int) {
             val contact = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
-                itemContactType.setImageResource(when {
-                    contact.isBlackFilter -> R.drawable.ic_block
-                    contact.isWhiteFilter -> R.drawable.ic_accepted
-                    else -> 0
-                })
-
-                itemContactAvatar.loadCircleImage(contact.photoUrl)
+               this.contact = contact
                 root.setSafeOnClickListener {
                     contact.phone.let { contactClick.invoke(it) }
                 }

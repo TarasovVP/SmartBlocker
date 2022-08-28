@@ -25,47 +25,27 @@
             android:maxLines="1"
             android:text="@{filter.filter}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_start"
+            app:layout_constraintEnd_toStartOf="@+id/item_filter_type"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/item_filter_start"
+            android:id="@+id/item_filter_type"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_start"
-            android:visibility="gone"
+            android:visibility="@{!filter.deleteMode ? View.VISIBLE : View.GONE}"
+            app:imageResource="@{filter.filterTypeIcon()}"
             app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_contain"
-            app:layout_constraintTop_toTopOf="@+id/item_filter_value" />
-
-        <ImageView
-            android:id="@+id/item_filter_contain"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="@dimen/margin_10"
-            android:src="@drawable/ic_contain"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_end"
-            app:layout_constraintTop_toTopOf="@+id/item_filter_value" />
-
-        <ImageView
-            android:id="@+id/item_filter_end"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="@dimen/margin_10"
-            android:src="@drawable/ic_end"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
             app:layout_constraintTop_toTopOf="@+id/item_filter_value" />
 
         <CheckBox
             android:id="@+id/item_filter_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE}"
+            android:checked="@{filter.checkedForDelete}"
             app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/item_filter_value" />

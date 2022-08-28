@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.orZero
@@ -72,15 +70,9 @@ class ContactDetailAdapter(
         parent: ViewGroup?,
     ): View {
         DataBindingUtil.inflate<ItemFilterBinding>(LayoutInflater.from(parent?.context),
-            R.layout.item_filter,
-            parent,
-            false).apply {
+            R.layout.item_filter, parent, false).apply {
             filterListMap[titleList[groupPosition]]?.get(childPosition)?.let { filter ->
-                itemFilterValue.text = filter.filter
-                itemFilterStart.isVisible = filter.start
-                itemFilterContain.isVisible = filter.contain
-                itemFilterEnd.isVisible = filter.end
-                filter.filter = filter.filter.filter { it.isDigit() || it == Constants.PLUS_CHAR }
+                this.filter = filter
             }
             return root
         }
