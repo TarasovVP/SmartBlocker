@@ -7,7 +7,6 @@ import com.tarasovvp.blacklister.constants.Constants.DATE_FORMAT
 import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
 import com.tarasovvp.blacklister.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
-import com.tarasovvp.blacklister.constants.Constants.TIME_FORMAT
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
 import com.tarasovvp.blacklister.extensions.toMillisecondsFromString
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -25,6 +24,11 @@ open class Call(
 ) : Parcelable, BaseAdapter.MainData {
 
     var isCheckedForDelete = false
+    var isDeleteMode = false
+
+    fun isPhoneEmpty(): Boolean {
+        return phone.isNullOrEmpty()
+    }
 
     fun callIcon(): Int {
         return when (type) {
@@ -51,7 +55,11 @@ open class Call(
         return time?.toDateFromMilliseconds(DATE_FORMAT)
     }
 
-    fun dateTimeFromTime(): String? {
-        return time?.toDateFromMilliseconds(TIME_FORMAT)
+    fun isBlockedType(): Boolean {
+        return type == BLOCKED_CALL
+    }
+
+    fun isDeleteVisible(): Boolean {
+        return isBlockedType() && isDeleteMode
     }
 }

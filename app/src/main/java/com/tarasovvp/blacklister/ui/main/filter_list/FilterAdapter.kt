@@ -57,7 +57,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
         fun bindData(position: Int) {
             val filter = getDataInPosition(position)
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
-                itemFilterValue.text = filter.filter
+
                 itemFilterStart.isVisible = filter.start
                 itemFilterContain.isVisible = filter.contain
                 itemFilterEnd.isVisible = filter.end

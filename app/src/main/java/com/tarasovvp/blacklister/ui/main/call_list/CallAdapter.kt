@@ -3,15 +3,12 @@ package com.tarasovvp.blacklister.ui.main.call_list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.databinding.ItemCallBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -61,19 +58,12 @@ class CallAdapter(val callClickListener: CallClickListener) :
         fun bindData(position: Int) {
             val call = getDataInPosition(position)
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
-                itemCallName.text =
-                    if (call.phone.isNullOrEmpty()) itemView.context.getString(R.string.hidden) else call.name
-                itemCallNumber.text = call.phone
-                itemCallTime.text = call.dateTimeFromTime()
-                itemCallTypeIcon.setImageResource(call.callIcon())
-                itemCallAvatar.loadCircleImage(call.photoUrl)
-                itemCallDelete.isVisible = isDeleteMode && call.type == BLOCKED_CALL
-                itemCallDelete.isChecked = call.isCheckedForDelete
+                call.isDeleteMode = isDeleteMode
                 itemCallDelete.setOnCheckedChangeListener { _, checked ->
                     call.isCheckedForDelete = checked
                     callClickListener.onCallDeleteCheckChange(call)
                 }
-                itemCallDeleteInfo.isVisible = isDeleteMode && call.type != BLOCKED_CALL
+
                 itemCallDeleteInfo.setSafeOnClickListener {
                     callClickListener.onCallDeleteInfoClick(it)
                 }
@@ -89,6 +79,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                     callClickListener.onCallLongClick()
                     return@setOnLongClickListener true
                 }
+                this.call = call
             }
         }
     }

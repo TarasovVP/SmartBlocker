@@ -30,10 +30,10 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
 
     internal inner class HeaderViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var binding = DataBindingUtil.bind<ItemHeaderBinding>(itemView)
+
         fun bindData(position: Int) {
-            val header = getHeaderDataInPosition(position)
-            binding?.itemHeaderText?.text = header.header
+            DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.headerDataItem =
+                getHeaderDataInPosition(position)
         }
 
     }
@@ -52,6 +52,7 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
         mData?.addAll(dataList as Collection<MainData>)
     }
 
+    @Suppress("UNCHECKED_CAST")
     protected fun getDataInPosition(position: Int): D {
         return mData?.get(position) as D
     }

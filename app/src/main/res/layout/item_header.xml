@@ -2,11 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="headerDataItem"
+            type="com.tarasovvp.blacklister.model.HeaderDataItem" />
+
+    </data>
+
     <TextView
         android:id="@+id/item_header_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_10"
+        android:text="@{headerDataItem.header}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </layout>

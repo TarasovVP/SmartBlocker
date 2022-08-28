@@ -23,6 +23,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -236,6 +237,8 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
     return false
 }
 
+
+@BindingAdapter("bind:circleImageUrl")
 fun ImageView.loadCircleImage(photoUrl: String?) {
     if (photoUrl.isNullOrEmpty()) {
         this.setImageResource(R.drawable.ic_avatar)

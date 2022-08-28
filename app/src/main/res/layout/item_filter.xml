@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="filter"
+            type="com.tarasovvp.blacklister.model.Filter" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +23,7 @@
             android:ellipsize="end"
             android:gravity="top"
             android:maxLines="1"
+            android:text="@{filter.filter}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_filter_start"
             app:layout_constraintStart_toStartOf="parent"
