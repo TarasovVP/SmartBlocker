@@ -47,17 +47,17 @@ class ContactByFilterAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        val binding =
             DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent?.context),
                 R.layout.item_header,
                 parent,
-                false)
-        binding.itemHeaderText.text = titleList[groupPosition]
-        binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
-            0,
-            if (isExpanded) if (groupPosition > 0) R.drawable.ic_drop_up else R.drawable.ic_close else if (groupPosition > 0) R.drawable.ic_drop_down else R.drawable.ic_info,
-            0)
-        return binding.root
+                false).apply {
+                itemHeaderText.text = titleList[groupPosition]
+                itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
+                    0,
+                    if (isExpanded) if (groupPosition > 0) R.drawable.ic_drop_up else R.drawable.ic_close else if (groupPosition > 0) R.drawable.ic_drop_down else R.drawable.ic_info,
+                    0)
+                return root
+            }
     }
 
     override fun getChildView(

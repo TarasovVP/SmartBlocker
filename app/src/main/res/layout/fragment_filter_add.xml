@@ -2,6 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="filter"
+            type="com.tarasovvp.blacklister.model.Filter" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,6 +33,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="@dimen/margin_16"
+                    app:imageResource="@{filter.listTypeIcon}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +55,7 @@
                     android:digits="0123456789+"
                     android:hint="@string/enter_filter"
                     android:inputType="phone"
+                    android:text="@{filter.filter}"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_title"
                     tools:ignore="Autofill,LabelFor,TextFields" />
 
@@ -76,6 +86,7 @@
                     android:drawableEnd="@drawable/ic_contain"
                     android:drawablePadding="@dimen/padding_10"
                     android:layoutDirection="rtl"
+                    android:checked="@{filter.contain}"
                     android:text="@string/filter_contain"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info" />
 
@@ -87,6 +98,7 @@
                     android:drawableEnd="@drawable/ic_start"
                     android:drawablePadding="@dimen/padding_10"
                     android:layoutDirection="rtl"
+                    android:checked="@{filter.start}"
                     android:text="@string/filter_start"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_contain" />
 
@@ -98,6 +110,7 @@
                     android:drawableEnd="@drawable/ic_end"
                     android:drawablePadding="@dimen/padding_10"
                     android:layoutDirection="rtl"
+                    android:checked="@{filter.end}"
                     android:text="@string/filter_end"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_start" />
 
@@ -115,8 +128,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_5"
-                    android:text="@string/add"
-                    android:visibility="gone"
+                    android:text="@{filter.fromDb ? @string/edit : @string/add}"
+                    android:visibility="@{!filter.isFilterIdentical ? View.VISIBLE : View.GONE}"
                     app:layout_constraintTop_toBottomOf="@+id/filter_delete_submit"
                     app:layout_constraintVertical_bias="1" />
 

@@ -30,9 +30,9 @@ class FilterAddFragment(private var filter: Filter?) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.filterAddInput?.setText(filter?.filter.orEmpty())
-        binding?.filterAddIcon?.setImageResource(if (filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
-        initViewsWithData(filter, false)
+        binding?.filter = filter
+        initViewsWithData(filter)
+        setCheckChangeListeners(filter)
         setExistNumberChecking()
         setClickListeners()
         setFragmentResultListener(DELETE_NUMBER) { _, _ ->
@@ -50,34 +50,27 @@ class FilterAddFragment(private var filter: Filter?) :
         })
     }
 
-    private fun initViewsWithData(filter: Filter?, fromDb: Boolean) {
+    private fun initViewsWithData(filter: Filter?) {
         binding?.apply {
-            filterAddStart.isChecked = filter?.start.isTrue()
-            filterAddContain.isChecked = filter?.contain.isTrue()
-            filterAddEnd.isChecked = filter?.end.isTrue()
             filterAddTitle.text =
                 if (filterAddInput.text.isEmpty()) getString(R.string.add_filter_message) else String.format(
-                    if (fromDb && filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(
+                    if (filter?.isFromDb.isTrue() && filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(
                         R.string.add_filter_with_filter_message),
                     filterAddInput.text)
-            filterAddSubmit.isVisible =
-                filterAddInput.text.isNotEmpty() && isFilterIdentical(fromDb, filter).not()
-            filterAddSubmit.text =
-                if (fromDb && filter.isNotNull()) getString(R.string.edit) else getString(R.string.add)
-            if (filterAddInput.text.isNotEmpty() && isFilterIdentical(fromDb, filter).not()) {
-                viewModel.checkContactListByFilter(getFilter())
+            if (filterAddInput.text.isNotEmpty() && filter?.isFilterIdentical(binding?.filterAddStart?.isChecked.isTrue(), binding?.filterAddContain?.isChecked.isTrue(), binding?.filterAddEnd?.isChecked.isTrue()).isTrue().not()) {
+                viewModel.checkContactListByFilter(getFilterObject())
             }
-            setCheckChangeListeners(fromDb, filter)
+
         }
     }
 
-    private fun setCheckChangeListeners(fromDb: Boolean, filter: Filter?) {
+    private fun setCheckChangeListeners(filter: Filter?) {
         binding?.apply {
             val checkChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
                 filterAddSubmit.isVisible =
-                    filterAddInput.text.isNotEmpty() && isFilterIdentical(fromDb, filter).not()
-                if (filterAddInput.text.isNotEmpty() && isFilterIdentical(fromDb, filter).not()) {
-                    viewModel.checkContactListByFilter(getFilter())
+                    filterAddInput.text.isNotEmpty() && filter?.isFilterIdentical(binding?.filterAddStart?.isChecked.isTrue(), binding?.filterAddContain?.isChecked.isTrue(), binding?.filterAddEnd?.isChecked.isTrue()).isTrue().not()
+                if (filterAddInput.text.isNotEmpty() && filter?.isFilterIdentical(binding?.filterAddStart?.isChecked.isTrue(), binding?.filterAddContain?.isChecked.isTrue(), binding?.filterAddEnd?.isChecked.isTrue()).isTrue().not()) {
+                    viewModel.checkContactListByFilter(getFilterObject())
                 }
             }
             container.getViewsFromLayout(CheckBox::class.java).forEach { checkBox ->
@@ -100,16 +93,12 @@ class FilterAddFragment(private var filter: Filter?) :
                 }
             }
             filterAddSubmit.setSafeOnClickListener {
-                viewModel.insertFilter(getFilter())
+                viewModel.insertFilter(getFilterObject())
             }
         }
     }
 
-    private fun isFilterIdentical(fromDb: Boolean, filter: Filter?): Boolean {
-        return fromDb && filter.isNotNull() && binding?.filterAddStart?.isChecked == filter?.start && binding?.filterAddContain?.isChecked == filter?.contain && binding?.filterAddEnd?.isChecked == filter?.end
-    }
-
-    private fun getFilter(): Filter {
+    private fun getFilterObject(): Filter {
         val filter = if (filter?.isBlackFilter.isTrue()) {
             BlackFilter(filter = binding?.filterAddInput?.text.toString())
         } else {
@@ -178,7 +167,10 @@ class FilterAddFragment(private var filter: Filter?) :
     override fun observeLiveData() {
         with(viewModel) {
             existFilterLiveData.observe(viewLifecycleOwner) { filter ->
-                initViewsWithData(filter, true)
+                filter?.isFromDb = true
+                filter?.isFilterIdentical = filter?.isFilterIdentical(binding?.filterAddStart?.isChecked.isTrue(), binding?.filterAddContain?.isChecked.isTrue(), binding?.filterAddEnd?.isChecked.isTrue()).isTrue()
+                initViewsWithData(filter)
+                setCheckChangeListeners(filter)
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 var filterAddInfoText = ""

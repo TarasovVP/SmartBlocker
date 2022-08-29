@@ -46,20 +46,20 @@ class ContactDetailAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        val binding =
             DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent?.context),
                 R.layout.item_header,
                 parent,
-                false)
-        binding.itemHeaderText.text = titleList[groupPosition]
-        binding.root.isEnabled = filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
-        if (filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
-            binding.itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
-                0,
-                if (isExpanded) R.drawable.ic_drop_up else R.drawable.ic_drop_down,
-                0)
-        }
-        return binding.root
+                false).apply {
+                itemHeaderText.text = titleList[groupPosition]
+                root.isEnabled = filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
+                if (filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
+                    itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
+                        0,
+                        if (isExpanded) R.drawable.ic_drop_up else R.drawable.ic_drop_down,
+                        0)
+                }
+                return root
+            }
     }
 
     override fun getChildView(
