@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
-import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
 
@@ -72,9 +71,7 @@ class ContactByFilterAdapter(
             parent,
             false).apply {
             contactListMap[titleList[groupPosition]]?.get(childPosition)?.let { contact ->
-                itemContactAvatar.loadCircleImage(contact.photoUrl)
-                itemContactName.text = contact.name
-                itemContactNumber.text = contact.phone
+                this.contact = contact
             }
             return root
         }

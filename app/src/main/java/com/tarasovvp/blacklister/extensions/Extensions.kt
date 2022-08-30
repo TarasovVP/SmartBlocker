@@ -421,14 +421,6 @@ fun Locale.flagEmoji(): String {
     return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
 }
 
-fun Context.getLocale(): Locale {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        resources.configuration.locales.get(0)
-    } else {
-        resources.configuration.locale
-    }
-}
-
 fun Context.setAppLocale(language: String): Context {
     val locale = Locale(language)
     Locale.setDefault(locale)

@@ -8,7 +8,6 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.databinding.FragmentContactDetailBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.loadCircleImage
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Contact
@@ -65,14 +64,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
 
     private fun setContactInfo(contact: Contact) {
         binding?.apply {
-            filterDetailName.text = contact.name
-            filterDetailPhone.text = contact.phone
-            filterDetailAvatar.loadCircleImage(contact.photoUrl)
-            filterDetailType.setImageResource(when {
-                contact.isBlackFilter -> R.drawable.ic_block
-                contact.isWhiteFilter -> R.drawable.ic_accepted
-                else -> 0
-            })
+            this.contact = contact
             filterDetailPriority.text = String.format(getString(R.string.prioritness),
                 if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
                     R.string.black_list))
