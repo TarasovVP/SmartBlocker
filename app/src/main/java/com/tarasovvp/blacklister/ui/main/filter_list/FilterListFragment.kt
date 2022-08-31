@@ -134,9 +134,7 @@ open class FilterListFragment :
         with(viewModel) {
             filterListLiveData.safeObserve(viewLifecycleOwner) { filterList ->
                 this@FilterListFragment.filterList = filterList as ArrayList<Filter>
-                if (checkDataListEmptiness(filterList).not()) {
-                    getHashMapFromFilterList(filterList)
-                }
+                searchDataList()
             }
             filterHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 filterList?.let { setDataList(it) }
@@ -157,7 +155,8 @@ open class FilterListFragment :
                     && (if (selectedFilterItems[1]) filter.start else true)
                     && if (selectedFilterItems[2]) filter.end else true
         }.orEmpty()
-        if (checkDataListEmptiness(filteredList).not()) {
+        checkDataListEmptiness(filteredList)
+        if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList)
         }
     }

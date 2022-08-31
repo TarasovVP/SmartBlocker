@@ -95,14 +95,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
             }
         }
 
-    protected open fun checkDataListEmptiness(newData: List<D>): Boolean {
+    protected open fun checkDataListEmptiness(newData: List<D>) {
         emptyListText?.isVisible = newData.isEmpty()
         if (newData.isEmpty()) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()
         }
         swipeRefresh?.isRefreshing = false
-        return newData.isEmpty()
     }
 
     protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {

@@ -46,9 +46,7 @@ open class ContactListFragment :
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 this@ContactListFragment.contactList = contactList
-                if (checkDataListEmptiness(contactList).not()) {
-                    getHashMapFromContactList(contactList)
-                }
+                searchDataList()
             }
             contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { contactHashMap ->
                 contactHashMap?.let { setDataList(it) }
@@ -69,12 +67,9 @@ open class ContactListFragment :
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
                 .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter else true)
-        } as? ArrayList<Contact>
-        filteredContactList?.apply {
-            if (checkDataListEmptiness(this).not()) {
-                viewModel.getHashMapFromContactList(this)
-            }
-        }
+        }.orEmpty()
+        checkDataListEmptiness(filteredContactList)
+        viewModel.getHashMapFromContactList(filteredContactList)
     }
 
     override fun getData() {

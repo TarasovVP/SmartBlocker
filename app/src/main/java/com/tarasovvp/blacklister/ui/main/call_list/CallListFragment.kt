@@ -145,11 +145,10 @@ class CallListFragment :
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.phone?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-        }
-        filteredCallList?.apply {
-            if (checkDataListEmptiness(this).not()) {
-                viewModel.getHashMapFromCallList(this)
-            }
+        }.orEmpty()
+        checkDataListEmptiness(filteredCallList)
+        if (filteredCallList.isNotEmpty()) {
+            viewModel.getHashMapFromCallList(filteredCallList)
         }
     }
 
