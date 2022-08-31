@@ -1,9 +1,11 @@
 package com.tarasovvp.blacklister.ui.start.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -82,10 +84,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as MainActivity).apply {
-                    getAllData()
-                }
-                findNavController().navigate(R.id.callListFragment)
+                (activity as MainActivity).getAllData()
+                Log.e("getAllDataTAG", "LoginFragment observeLiveData successAllDataLiveData navigate(R.id.blackFilterListFragment)")
+                findNavController().navigate(R.id.blackFilterListFragment)
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.password_reset_text), false)

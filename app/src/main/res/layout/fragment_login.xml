@@ -14,24 +14,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/login_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/margin_35"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:text="@string/log_in"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/login_google_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_35"
+                android:layout_marginTop="@dimen/margin_82"
                 android:gravity="center"
                 android:text="@string/with_google_account"
-                app:layout_constraintTop_toBottomOf="@+id/login_title" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/login_google_auth"

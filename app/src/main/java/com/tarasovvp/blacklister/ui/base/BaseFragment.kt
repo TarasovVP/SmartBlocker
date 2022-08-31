@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
@@ -32,7 +33,8 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
 
     private fun setProgressVisibility() {
         viewModel.isProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
-            (activity as MainActivity).progress?.isVisible = isVisible
+            Log.e("getAllDataTAG", "BaseFragment isProgressProcess isVisible $isVisible")
+            (activity as MainActivity).setProgressVisibility(isVisible)
         }
     }
 
@@ -48,9 +50,6 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
                 bottomNavigationView?.isVisible =
                     navigationScreens.contains(this.findNavController(R.id.host_main_fragment).currentDestination?.id)
             }
-            toolbar?.isVisible =
-                this.findNavController(R.id.host_main_fragment).currentDestination?.id != R.id.loginFragment && this.findNavController(
-                    R.id.host_main_fragment).currentDestination?.id != R.id.onBoardingFragment
         }
     }
 

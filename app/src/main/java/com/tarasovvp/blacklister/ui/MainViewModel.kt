@@ -21,6 +21,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun getCurrentUser() {
         launch {
+            Log.e("getAllDataTAG", "MainViewModel getCurrentUser")
             showProgress()
             realDataBaseRepository.getCurrentUser { currentUser ->
                 SharedPreferencesUtil.isWhiteListPriority =
@@ -32,6 +33,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     private fun insertAllBlackFilters(currentUser: CurrentUser) {
         launch {
+            Log.e("getAllDataTAG", "MainViewModel insertAllBlackFilters")
             blackFilterRepository.insertAllBlackFilters(currentUser.blackFilterList)
             insertAllWhiteFilters(currentUser.whiteFilterList)
         }
@@ -39,6 +41,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     private fun insertAllWhiteFilters(whiteFilterList: ArrayList<WhiteFilter>) {
         launch {
+            Log.e("getAllDataTAG", "MainViewModel insertAllWhiteFilters")
             whiteFilterRepository.insertAllWhiteFilters(whiteFilterList)
             getAllData()
         }
@@ -47,7 +50,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     fun getAllData() {
         showProgress()
         launch {
-            Log.e("allDataTAG", "MainViewModel getAllData")
+            Log.e("getAllDataTAG", "MainViewModel getAllData")
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             contactList.forEach { contact ->
                 val isInWhiteList =

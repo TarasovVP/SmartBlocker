@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.filter_list
 
 import android.app.AlertDialog
+import android.util.Log
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
@@ -54,6 +55,7 @@ open class FilterListFragment :
     }
 
     override fun initView() {
+        Log.e("getAllDataTAG", "FilterListFragment initView")
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
         emptyListText = binding?.filterListEmpty

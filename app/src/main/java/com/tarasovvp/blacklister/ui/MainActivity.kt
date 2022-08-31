@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -36,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     private var navController: NavController? = null
     var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
-    var progress: ConstraintLayout? = null
 
     val mainViewModel: MainViewModel by viewModels()
 
@@ -86,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Blacklister)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        progress = binding?.progressBarContainer
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
@@ -110,7 +107,8 @@ class MainActivity : AppCompatActivity() {
             toolbar?.setupWithNavController(this)
         }
         observeLiveData()
-        if (SharedPreferencesUtil.isOnBoardingSeen) {
+        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            Log.e("getAllDataTAG", "MainActivity isOnBoardingSeen && isLoggedInUser getAllData()")
             getAllData()
         }
     }
@@ -160,7 +158,8 @@ class MainActivity : AppCompatActivity() {
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showMessage(errorMessage, true)
-                progress?.isVisible = false
+                Log.e("getAllDataTAG", "MainActivity exceptionLiveData setProgressVisibility(false)")
+                setProgressVisibility(false)
             }
         }
     }
@@ -169,11 +168,22 @@ class MainActivity : AppCompatActivity() {
         binding?.hostMainFragment?.showMessage(message, isError)
     }
 
+    fun setProgressVisibility(isVisible: Boolean) {
+        Log.e("getAllDataTAG", "MainActivity isProgressProcess isVisible $isVisible")
+        binding?.progressBarContainer?.isVisible = isVisible
+    }
+
     fun getAllData() {
         if (checkPermissions().isTrue()) {
+            Log.e("getAllDataTAG", "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true)")
+            setProgressVisibility(true)
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+                Log.e("getAllDataTAG",
+                    "MainActivity getCurrentUser BlackListerApp.instance?.isLoggedInUser().isTrue() getCurrentUser()")
                 mainViewModel.getCurrentUser()
             } else {
+                Log.e("getAllDataTAG",
+                    "MainActivity getCurrentUser isLoggedInUser().not() getAllData()")
                 mainViewModel.getAllData()
             }
         } else {
