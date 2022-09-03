@@ -18,11 +18,13 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     private val realDataBaseRepository = RealDataBaseRepository
 
     val successAllDataLiveData = MutableLiveData<Boolean>()
+    val progressStatusLiveData = MutableLiveData<String>()
 
     fun getCurrentUser() {
         launch {
             Log.e("getAllDataTAG", "MainViewModel getCurrentUser")
             showProgress()
+            progressStatusLiveData.postValue("Старт")
             realDataBaseRepository.getCurrentUser { currentUser ->
                 SharedPreferencesUtil.isWhiteListPriority =
                     currentUser?.isWhiteListPriority.isTrue()
@@ -50,8 +52,11 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     fun getAllData() {
         showProgress()
         launch {
-            Log.e("getAllDataTAG", "MainViewModel getAllData")
+            Log.e("getAllDataTAG", "MainViewModel getAllData start")
+            Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
+            progressStatusLiveData.postValue("Собираем контакты")
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
+            Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
                 val isInWhiteList =
                     whiteFilterRepository.getWhiteFilterList(contact.trimmedPhone)?.isEmpty()
@@ -64,11 +69,14 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 contact.isWhiteFilter =
                     (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority) || (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority.not() && isInBlackList.not())
             }
+            Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
-
-            logCallRepository.insertAllLogCalls(logCallRepository.getSystemLogCallList(
-                getApplication<Application>()))
-
+            Log.e("allDataTAG", "MainViewModel getAllData getSystemLogCallList")
+            progressStatusLiveData.postValue("Собираем список звонко")
+            val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>())
+            Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
+            logCallRepository.insertAllLogCalls(callLogList)
+            Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
             hideProgress()
         }

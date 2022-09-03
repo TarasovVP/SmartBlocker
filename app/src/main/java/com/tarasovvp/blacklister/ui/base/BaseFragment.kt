@@ -33,7 +33,7 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
 
     private fun setProgressVisibility() {
         viewModel.isProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
-            Log.e("getAllDataTAG", "BaseFragment isProgressProcess isVisible $isVisible")
+            //Log.e("getAllDataTAG", "BaseFragment isProgressProcess isVisible $isVisible")
             (activity as MainActivity).setProgressVisibility(isVisible)
         }
     }

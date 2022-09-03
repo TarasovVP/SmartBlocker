@@ -32,10 +32,6 @@ object ContactRepository {
         return dao?.getContactByPhone(phone)
     }
 
-    fun updateContact(contact: Contact) {
-        dao?.updateContact(contact)
-    }
-
     suspend fun getSystemContactList(context: Context): ArrayList<Contact> =
         withContext(
             Dispatchers.Default

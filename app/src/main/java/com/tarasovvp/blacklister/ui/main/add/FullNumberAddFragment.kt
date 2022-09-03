@@ -94,7 +94,7 @@ class FullNumberAddFragment(private var filter: Filter?) :
                 phoneUtil.parse(it.orEmpty(),
                     countryCodeMap?.keyAt(binding?.fullNumberCountryCode?.selectedItemPosition.orZero()))
             } catch (e: Exception) {
-                showMessage(e.localizedMessage.orEmpty(), true)
+                e.printStackTrace()
                 null
             }
             viewModel.checkFilterExist(it.toString(), filter?.isBlackFilter.isTrue())

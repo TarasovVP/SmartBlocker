@@ -155,11 +155,15 @@ class MainActivity : AppCompatActivity() {
         with(mainViewModel) {
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 Log.e("getAllDataTAG", "MainActivity observeLiveData successAllDataLiveData ")
+                setMainProgressVisibility(false)
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showMessage(errorMessage, true)
                 Log.e("getAllDataTAG", "MainActivity exceptionLiveData setProgressVisibility(false)")
-                setProgressVisibility(false)
+                setMainProgressVisibility(false)
+            }
+            progressStatusLiveData.safeSingleObserve(this@MainActivity) { title ->
+                binding?.mainProgressBarTitle?.text = title
             }
         }
     }
@@ -168,15 +172,20 @@ class MainActivity : AppCompatActivity() {
         binding?.hostMainFragment?.showMessage(message, isError)
     }
 
+    private fun setMainProgressVisibility(isVisible: Boolean) {
+        //Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible $isVisible")
+        binding?.mainProgressBarContainer?.isVisible = isVisible
+    }
+
     fun setProgressVisibility(isVisible: Boolean) {
-        Log.e("getAllDataTAG", "MainActivity isProgressProcess isVisible $isVisible")
-        binding?.progressBarContainer?.isVisible = isVisible
+        //Log.e("getAllDataTAG", "MainActivity setProgressVisibility isVisible $isVisible")
+        binding?.progressBar?.isVisible = isVisible
     }
 
     fun getAllData() {
         if (checkPermissions().isTrue()) {
             Log.e("getAllDataTAG", "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true)")
-            setProgressVisibility(true)
+            setMainProgressVisibility(true)
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 Log.e("getAllDataTAG",
                     "MainActivity getCurrentUser BlackListerApp.instance?.isLoggedInUser().isTrue() getCurrentUser()")

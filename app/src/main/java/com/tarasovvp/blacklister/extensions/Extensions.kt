@@ -124,7 +124,6 @@ fun Context.contactList(): ArrayList<Contact> {
         ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE,
         ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
     )
-
     val contacts = this
         .contentResolver
         .query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null)
@@ -168,7 +167,6 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
         CallLog.Calls.TYPE,
         CallLog.Calls.DATE
     )
-
     val logCallList = ArrayList<LogCall>()
     val cursor: Cursor? = this.contentResolver.query(
         Uri.parse(LOG_CALL_CALL),
