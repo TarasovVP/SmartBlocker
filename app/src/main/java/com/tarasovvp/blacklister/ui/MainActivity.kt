@@ -173,12 +173,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMainProgressVisibility(isVisible: Boolean) {
-        //Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible $isVisible")
+        Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible $isVisible")
         binding?.mainProgressBarContainer?.isVisible = isVisible
     }
 
     fun setProgressVisibility(isVisible: Boolean) {
-        //Log.e("getAllDataTAG", "MainActivity setProgressVisibility isVisible $isVisible")
+        Log.e("getAllDataTAG", "MainActivity setProgressVisibility isVisible $isVisible")
         binding?.progressBar?.isVisible = isVisible
     }
 

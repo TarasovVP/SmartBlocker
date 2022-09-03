@@ -12,6 +12,8 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
+import com.tarasovvp.blacklister.ui.main.add.FilterAddFragment
+import com.tarasovvp.blacklister.ui.main.add.FullNumberAddFragment
 
 abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindingFragment<B>() {
 
@@ -33,7 +35,6 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
 
     private fun setProgressVisibility() {
         viewModel.isProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
-            //Log.e("getAllDataTAG", "BaseFragment isProgressProcess isVisible $isVisible")
             (activity as MainActivity).setProgressVisibility(isVisible)
         }
     }
@@ -55,7 +56,13 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
 
     private fun checkToolbarSearchVisibility() {
         (activity as MainActivity).apply {
-            toolbar?.menu?.clear()
+            if ((this@BaseFragment is FullNumberAddFragment || this@BaseFragment is FilterAddFragment).not()) {
+                toolbar?.menu?.clear()
+            }
+            Log.e("toolbarTAG",
+                "BaseFragment checkToolbarSearchVisibility currentDestination?.displayName ${
+                    this.findNavController(R.id.host_main_fragment).currentDestination?.displayName
+                } this ${this@BaseFragment}")
             if (navigationScreens.contains(this.findNavController(R.id.host_main_fragment).currentDestination?.id)) {
                 toolbar?.inflateMenu(R.menu.toolbar_search)
             }

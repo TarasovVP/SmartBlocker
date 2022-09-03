@@ -7,20 +7,6 @@
         android:layout_height="match_parent"
         android:padding="@dimen/padding_16">
 
-        <TextView
-            android:id="@+id/filter_list_filter"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/padding_10"
-            android:gravity="center_vertical"
-            android:paddingVertical="@dimen/padding_5"
-            android:text="@string/filter_no_filter"
-            app:drawableStartCompat="@drawable/ic_filter"
-            app:layout_constraintBottom_toTopOf="@+id/filter_list_delete_all"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <CheckBox
             android:id="@+id/filter_list_delete_all"
             android:layout_width="@dimen/size_0"
@@ -31,7 +17,7 @@
             app:layout_constraintBottom_toTopOf="@+id/filter_list_refresh"
             app:layout_constraintEnd_toStartOf="@+id/filter_list_delete_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_list_filter" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/filter_list_delete_btn"

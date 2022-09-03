@@ -1,8 +1,5 @@
 package com.tarasovvp.blacklister.ui.main.filter_list
 
-import android.app.AlertDialog
-import android.util.Log
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -49,13 +46,11 @@ open class FilterListFragment :
                     binding?.filterListDeleteAll?.isChecked =
                         filterList?.none { it.isCheckedForDelete.not() }.isTrue()
                 }
-
             })
         }
     }
 
     override fun initView() {
-        Log.e("getAllDataTAG", "FilterListFragment initView")
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
         emptyListText = binding?.filterListEmpty
@@ -63,6 +58,7 @@ open class FilterListFragment :
             filterList?.forEach { it.isCheckedForDelete = checked }
             adapter?.notifyDataSetChanged()
         }
+        setToolbar()
         setClickListeners()
         setFragmentResultListener(Constants.DELETE_NUMBER) { _, _ ->
             viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty(),
@@ -70,18 +66,32 @@ open class FilterListFragment :
         }
     }
 
+    private fun setToolbar() {
+
+    }
+
     private fun setClickListeners() {
         binding?.filterListDeleteBtn?.setSafeOnClickListener {
-            findNavController().navigate(WhiteFilterListFragmentDirections.startDeleteFilterDialog())
+            val direction = if (this is BlackFilterListFragment) {
+                BlackFilterListFragmentDirections.startDeleteFilterDialog()
+            } else {
+                WhiteFilterListFragmentDirections.startDeleteFilterDialog()
+            }
+            findNavController().navigate(direction)
         }
         binding?.filterListFabNew?.setSafeOnClickListener {
-            findNavController().navigate(WhiteFilterListFragmentDirections.startAddFragment(
-                filter = Filter().apply {
-                    isBlackFilter = this@FilterListFragment is BlackFilterListFragment
-                }))
-        }
-        binding?.filterListFilter?.setSafeOnClickListener {
-            filterDataList()
+            val direction = if (this is BlackFilterListFragment) {
+                BlackFilterListFragmentDirections.startAddFragment(
+                    filter = Filter().apply {
+                        isBlackFilter = true
+                    })
+            } else {
+                WhiteFilterListFragmentDirections.startAddFragment(
+                    filter = Filter().apply {
+                        isBlackFilter = false
+                    })
+            }
+            findNavController().navigate(direction)
         }
     }
 
@@ -92,7 +102,6 @@ open class FilterListFragment :
             notifyDataSetChanged()
         }
         binding?.apply {
-            filterListFilter.isVisible = isDeleteMode.not()
             filterListDeleteAll.isVisible = isDeleteMode
             filterListDeleteBtn.isVisible =
                 isDeleteMode && filterList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
@@ -103,31 +112,6 @@ open class FilterListFragment :
                 filterListDeleteAll.isChecked = false
             }
         }
-    }
-
-    private fun filterDataList(): Boolean {
-        val filterItems = arrayOf(getString(R.string.filter_contain),
-            getString(R.string.filter_start),
-            getString(R.string.filter_end))
-        val builder =
-            AlertDialog.Builder(ContextThemeWrapper(context, R.style.MultiChoiceAlertDialog))
-        builder.setMultiChoiceItems(filterItems, selectedFilterItems
-        ) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
-        builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
-        builder.setPositiveButton(R.string.ok) { _, _ ->
-            val itemsTitleList = arrayListOf<String>()
-            filterItems.forEachIndexed { index, title ->
-                if (selectedFilterItems[index]) {
-                    itemsTitleList.add(title)
-                }
-            }
-            binding?.filterListFilter?.text =
-                if (itemsTitleList.isEmpty()) getString(R.string.filter_no_filter) else itemsTitleList.joinToString(
-                    ", ")
-            searchDataList()
-        }
-        builder.show()
-        return true
     }
 
     override fun observeLiveData() {
