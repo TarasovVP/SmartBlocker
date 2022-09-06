@@ -90,7 +90,7 @@ class CallListFragment :
             binding?.callListDeleteBtn?.setSafeOnClickListener {
                 findNavController().navigate(CallListFragmentDirections.startDeleteFilterDialog())
             }
-            setFragmentResultListener(Constants.DELETE_NUMBER) { _, _ ->
+            setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
             }
         }

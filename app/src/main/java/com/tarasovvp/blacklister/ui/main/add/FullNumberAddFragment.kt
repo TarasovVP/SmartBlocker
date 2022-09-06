@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.DELETE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFullNumberAddBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -43,7 +43,7 @@ class FullNumberAddFragment(private var filter: Filter?) :
         initViewsWithData(filter, false)
         setExistNumberChecking()
         setClickListeners()
-        setFragmentResultListener(DELETE_NUMBER) { _, _ ->
+        setFragmentResultListener(DELETE_FILTER) { _, _ ->
             filter?.let {
                 viewModel.deleteFilter(it)
             }

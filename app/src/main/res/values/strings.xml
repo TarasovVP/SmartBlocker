@@ -14,6 +14,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="delete">Delete %s?</string>
+    <string name="change_filter">Change to %s?</string>
     <string name="delete_menu">Delete</string>
     <string name="give_all_permissions">Give all permissions to continue</string>
     <string name="bg_work_on">Working in the background</string>

@@ -175,6 +175,16 @@
     </dialog>
 
     <dialog
+        android:id="@+id/changeFilterDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.ChangeFilterDialog">
+        <argument
+            android:name="filter"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:nullable="true" />
+    </dialog>
+
+    <dialog
         android:id="@+id/accountActionDialog"
         android:name="com.tarasovvp.blacklister.ui.dialogs.AccountActionDialog">
         <argument
@@ -212,6 +222,9 @@
         <action
             android:id="@+id/startDeleteFilterDialog"
             app:destination="@id/deleteFilterDialog" />
+        <action
+            android:id="@+id/startChangeFilterDialog"
+            app:destination="@id/changeFilterDialog" />
         <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />

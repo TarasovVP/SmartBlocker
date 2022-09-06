@@ -59,7 +59,7 @@ open class FilterListFragment :
             adapter?.notifyDataSetChanged()
         }
         setClickListeners()
-        setFragmentResultListener(Constants.DELETE_NUMBER) { _, _ ->
+        setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
             viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty(),
                 this is BlackFilterListFragment)
         }

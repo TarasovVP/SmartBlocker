@@ -11,7 +11,6 @@
             android:id="@+id/view_switch_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -28,7 +27,6 @@
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
             android:gravity="center"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/view_switch_switcher"
             app:layout_constraintEnd_toStartOf="@+id/view_switch_switcher"
             app:layout_constraintStart_toEndOf="@+id/view_switch_off_mode_icon"
@@ -58,7 +56,6 @@
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
             android:gravity="center"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/view_switch_switcher"
             app:layout_constraintEnd_toStartOf="@+id/view_switch_on_mode_icon"
             app:layout_constraintStart_toEndOf="@+id/view_switch_switcher"
@@ -73,7 +70,6 @@
             android:drawablePadding="@dimen/padding_10"
             android:gravity="center_vertical"
             android:text="@string/details_"
-            android:textColor="@color/white"
             app:drawableStartCompat="@drawable/ic_info"
             app:layout_constraintTop_toBottomOf="@+id/view_switch_on_mode" />
 

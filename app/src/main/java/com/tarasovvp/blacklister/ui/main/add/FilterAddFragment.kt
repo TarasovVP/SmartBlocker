@@ -8,7 +8,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.DELETE_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.CHANGE_FILTER
+import com.tarasovvp.blacklister.constants.Constants.DELETE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -35,7 +36,7 @@ class FilterAddFragment(private var filter: Filter?) :
         setCheckChangeListeners(filter)
         setExistNumberChecking()
         setClickListeners()
-        setFragmentResultListener(DELETE_NUMBER) { _, _ ->
+        setFragmentResultListener(DELETE_FILTER) { _, _ ->
             filter?.let {
                 viewModel.deleteFilter(it)
             }

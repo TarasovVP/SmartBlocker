@@ -14,6 +14,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="delete">Видалити %s?</string>
+    <string name="change_filter">Змінити на %s?</string>
     <string name="delete_menu">Видалити</string>
     <string name="give_all_permissions">Для продовження необхідно надати всі дозволи</string>
     <string name="bg_work_on">Робота у фоновому режимі</string>
