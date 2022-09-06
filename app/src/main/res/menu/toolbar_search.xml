@@ -13,10 +13,4 @@
         android:icon="@drawable/ic_settings"
         app:showAsAction="always"
         tools:ignore="MenuTitle" />
-    <item
-        android:id="@+id/delete_menu_item"
-        android:icon="@drawable/ic_delete"
-        app:showAsAction="always"
-        android:visible="false"
-        tools:ignore="MenuTitle" />
 </menu>

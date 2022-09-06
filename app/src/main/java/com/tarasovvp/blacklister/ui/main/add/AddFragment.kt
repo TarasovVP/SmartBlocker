@@ -20,6 +20,11 @@ class AddFragment : BaseBindingFragment<FragmentAddBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("toolbarTAG", "AddFragment onViewCreated")
+        setToolbar()
+        initViewPager()
+    }
+
+    private fun setToolbar() {
         (activity as MainActivity).apply {
             toolbar?.apply {
                 title = if (args.filter?.isBlackFilter.isTrue()) getString(R.string.black_list) else getString(
@@ -39,7 +44,6 @@ class AddFragment : BaseBindingFragment<FragmentAddBinding>() {
                 }
             }
         }
-        initViewPager()
     }
 
     private fun initViewPager() {
