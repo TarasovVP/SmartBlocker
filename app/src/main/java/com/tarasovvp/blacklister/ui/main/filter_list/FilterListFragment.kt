@@ -41,10 +41,10 @@ open class FilterListFragment :
                 }
 
                 override fun onNumberDeleteCheckChange(filter: Filter) {
-                    filterList?.find { it.filter == filter.filter }?.isCheckedForDelete =
-                        filter.isCheckedForDelete
-                    binding?.filterListDeleteAll?.isChecked =
-                        filterList?.none { it.isCheckedForDelete.not() }.isTrue()
+                    filterList?.find { it.filter == filter.filter }?.isCheckedForDelete = filter.isCheckedForDelete
+                    if (filterList?.none { it.isCheckedForDelete }.isTrue()) {
+                        changeDeleteMode()
+                    }
                 }
             })
         }
@@ -54,10 +54,6 @@ open class FilterListFragment :
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
         emptyListText = binding?.filterListEmpty
-        binding?.filterListDeleteAll?.setOnCheckedChangeListener { _, checked ->
-            filterList?.forEach { it.isCheckedForDelete = checked }
-            adapter?.notifyDataSetChanged()
-        }
         setClickListeners()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
             viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty(),
@@ -89,7 +85,6 @@ open class FilterListFragment :
             notifyDataSetChanged()
         }
         binding?.apply {
-            filterListDeleteAll.isVisible = isDeleteMode
                 (activity as MainActivity).toolbar?.apply {
                     Log.e("toolbarTAG", "FilterListFragment menu $menu")
                     menu?.clear()
@@ -103,7 +98,7 @@ open class FilterListFragment :
                                     } else {
                                         WhiteFilterListFragmentDirections.startDeleteFilterDialog()
                                     }
-                                    findNavController().navigate(direction)
+                                    this@FilterListFragment.findNavController().navigate(direction)
                                 } else {
                                     showMessage(context.getString(R.string.choose_least_one_filter), true)
                                 }
@@ -119,7 +114,6 @@ open class FilterListFragment :
                 filterList?.forEach {
                     it.isCheckedForDelete = false
                 }
-                filterListDeleteAll.isChecked = false
             }
         }
     }

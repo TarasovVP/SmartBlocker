@@ -42,8 +42,8 @@
 
         <CheckBox
             android:id="@+id/item_filter_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE}"
             android:checked="@{filter.checkedForDelete}"
             app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"

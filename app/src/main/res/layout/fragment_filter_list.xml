@@ -7,24 +7,12 @@
         android:layout_height="match_parent"
         android:padding="@dimen/padding_16">
 
-        <CheckBox
-            android:id="@+id/filter_list_delete_all"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/padding_5"
-            android:text="@string/choose_all"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/filter_list_refresh"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/filter_list_refresh"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_list_delete_all">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/filter_list_recycler_view"
