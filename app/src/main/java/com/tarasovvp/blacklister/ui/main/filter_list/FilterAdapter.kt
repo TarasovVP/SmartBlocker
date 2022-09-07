@@ -59,22 +59,21 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                 filter.isDeleteMode = isDeleteMode
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        itemFilterDelete.isChecked =
-                            itemFilterDelete.isChecked.isTrue().not()
+                        itemFilterDelete.isChecked = itemFilterDelete.isChecked.isTrue().not()
                     } else {
-                        filterClickListener.onNumberClick(filter)
+                        filterClickListener.onFilterClick(filter)
                     }
                 }
                 root.setOnLongClickListener {
                     if (filter.isDeleteMode.not()) {
                         filter.isCheckedForDelete = true
-                        filterClickListener.onNumberLongClick()
+                        filterClickListener.onFilterLongClick()
                     }
                     return@setOnLongClickListener filter.isDeleteMode.not()
                 }
                 itemFilterDelete.setOnCheckedChangeListener { _, checked ->
                     filter.isCheckedForDelete = checked
-                    filterClickListener.onNumberDeleteCheckChange(filter)
+                    filterClickListener.onFilterDeleteCheckChange(filter)
                 }
                 this.filter = filter
             }

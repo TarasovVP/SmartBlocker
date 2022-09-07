@@ -1,13 +1,12 @@
 package com.tarasovvp.blacklister.ui.main.call_list
 
+import android.util.Log
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpWindow
@@ -17,7 +16,6 @@ import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
 class CallListFragment :
@@ -44,10 +42,9 @@ class CallListFragment :
                 override fun onCallDeleteCheckChange(call: Call) {
                     callList?.find { it.phone == call.phone }?.isCheckedForDelete =
                         call.isCheckedForDelete
-                    binding?.callListDeleteBtn?.isVisible =
-                        callList?.none { it.isCheckedForDelete }.isTrue().not()
-                    binding?.callListDeleteAll?.isChecked =
-                        callList?.none { it.isCheckedForDelete.not() }.isTrue()
+                    if (callList?.none { it.isCheckedForDelete }.isTrue()) {
+                        changeDeleteMode()
+                    }
                 }
 
                 override fun onCallDeleteInfoClick(view: View) {
@@ -81,15 +78,6 @@ class CallListFragment :
                 (activity as MainActivity).toolbar?.title =
                     getString(if (checked) R.string.log_list else R.string.blocked_call_log)
             }
-            callListDeleteAll.setOnCheckedChangeListener { _, checked ->
-                callList?.forEach { it.isCheckedForDelete = checked }
-                recyclerView?.post {
-                    adapter?.notifyDataSetChanged()
-                }
-            }
-            binding?.callListDeleteBtn?.setSafeOnClickListener {
-                findNavController().navigate(CallListFragmentDirections.startDeleteFilterDialog())
-            }
             setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
             }
@@ -105,15 +93,25 @@ class CallListFragment :
             }
         }
         binding?.apply {
-            callListCheck.isVisible = isDeleteMode.not()
-            callListDeleteAll.isVisible = isDeleteMode
-            callListDeleteBtn.isVisible =
-                isDeleteMode && callList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()
+            (activity as MainActivity).toolbar?.apply {
+                Log.e("toolbarTAG", "CallListFragment menu $menu")
+                menu?.clear()
+                inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.delete_menu_item -> {
+                            this@CallListFragment.findNavController()
+                                .navigate(CallListFragmentDirections.startDeleteFilterDialog())
+                            true
+                        }
+                        else -> return@setOnMenuItemClickListener true
+                    }
+                }
+            }
             if (isDeleteMode.not()) {
                 callList?.forEach {
                     it.isCheckedForDelete = false
                 }
-                callListDeleteAll.isChecked = false
             }
         }
     }

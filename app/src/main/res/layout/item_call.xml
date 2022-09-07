@@ -67,6 +67,7 @@
             android:id="@+id/item_call_type_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="@{call.deleteVisible ? View.VISIBLE : View.GONE}"
             app:imageResource="@{call.callIcon()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

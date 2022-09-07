@@ -59,25 +59,26 @@ class CallAdapter(val callClickListener: CallClickListener) :
             val call = getDataInPosition(position)
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 call.isDeleteMode = isDeleteMode
-                itemCallDelete.setOnCheckedChangeListener { _, checked ->
-                    call.isCheckedForDelete = checked
-                    callClickListener.onCallDeleteCheckChange(call)
-                }
-
                 itemCallDeleteInfo.setSafeOnClickListener {
                     callClickListener.onCallDeleteInfoClick(it)
                 }
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        itemCallDelete.isChecked =
-                            itemCallDelete.isChecked.isTrue().not()
+                        itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
                     } else {
                         callClickListener.onCallClick(call.phone.orEmpty())
                     }
                 }
                 root.setOnLongClickListener {
-                    callClickListener.onCallLongClick()
-                    return@setOnLongClickListener true
+                    if (call.isDeleteMode.not()) {
+                        call.isCheckedForDelete = true
+                        callClickListener.onCallLongClick()
+                    }
+                    return@setOnLongClickListener call.isDeleteMode.not()
+                }
+                itemCallDelete.setOnCheckedChangeListener { _, checked ->
+                    call.isCheckedForDelete = checked
+                    callClickListener.onCallDeleteCheckChange(call)
                 }
                 this.call = call
             }

@@ -3,14 +3,14 @@ package com.tarasovvp.blacklister.ui.main.filter_list
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
-import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.safeObserve
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -31,17 +31,18 @@ open class FilterListFragment :
     override fun createAdapter(): BaseAdapter<Filter>? {
         return context?.let {
             FilterAdapter(object : FilterClickListener {
-                override fun onNumberClick(filter: Filter) {
+                override fun onFilterClick(filter: Filter) {
                     findNavController().navigate(WhiteFilterListFragmentDirections.startAddFragment(
                         filter = filter))
                 }
 
-                override fun onNumberLongClick() {
+                override fun onFilterLongClick() {
                     changeDeleteMode()
                 }
 
-                override fun onNumberDeleteCheckChange(filter: Filter) {
-                    filterList?.find { it.filter == filter.filter }?.isCheckedForDelete = filter.isCheckedForDelete
+                override fun onFilterDeleteCheckChange(filter: Filter) {
+                    filterList?.find { it.filter == filter.filter }?.isCheckedForDelete =
+                        filter.isCheckedForDelete
                     if (filterList?.none { it.isCheckedForDelete }.isTrue()) {
                         changeDeleteMode()
                     }
@@ -85,28 +86,24 @@ open class FilterListFragment :
             notifyDataSetChanged()
         }
         binding?.apply {
-                (activity as MainActivity).toolbar?.apply {
-                    Log.e("toolbarTAG", "FilterListFragment menu $menu")
-                    menu?.clear()
-                    inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
-                    setOnMenuItemClickListener { menuItem ->
-                        when (menuItem.itemId) {
-                            R.id.delete_menu_item -> {
-                                if (filterList?.find { it.isCheckedForDelete }?.isNotNull().isTrue()) {
-                                    val direction = if (this@FilterListFragment is BlackFilterListFragment) {
-                                        BlackFilterListFragmentDirections.startDeleteFilterDialog()
-                                    } else {
-                                        WhiteFilterListFragmentDirections.startDeleteFilterDialog()
-                                    }
-                                    this@FilterListFragment.findNavController().navigate(direction)
+            (activity as MainActivity).toolbar?.apply {
+                Log.e("toolbarTAG", "FilterListFragment menu $menu")
+                menu?.clear()
+                inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.delete_menu_item -> {
+                            val direction =
+                                if (this@FilterListFragment is BlackFilterListFragment) {
+                                    BlackFilterListFragmentDirections.startDeleteFilterDialog()
                                 } else {
-                                    showMessage(context.getString(R.string.choose_least_one_filter), true)
+                                    WhiteFilterListFragmentDirections.startDeleteFilterDialog()
                                 }
-
-                                true
-                            }
-                            else -> return@setOnMenuItemClickListener true
+                            this@FilterListFragment.findNavController().navigate(direction)
+                            true
                         }
+                        else -> return@setOnMenuItemClickListener true
+                    }
                 }
             }
 
@@ -119,12 +116,14 @@ open class FilterListFragment :
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.e("toolbarTAG", "FilterListFragment onPrepareOptionsMenu menu.getItem(0) ${menu.getItem(0)}")
+        Log.e("toolbarTAG",
+            "FilterListFragment onPrepareOptionsMenu menu.getItem(0) ${menu.getItem(0)}")
         super.onPrepareOptionsMenu(menu)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.e("toolbarTAG", "FilterListFragment onCreateOptionsMenu menu.getItem(0) ${menu.getItem(0)}")
+        Log.e("toolbarTAG",
+            "FilterListFragment onCreateOptionsMenu menu.getItem(0) ${menu.getItem(0)}")
         super.onCreateOptionsMenu(menu, inflater)
     }
 
