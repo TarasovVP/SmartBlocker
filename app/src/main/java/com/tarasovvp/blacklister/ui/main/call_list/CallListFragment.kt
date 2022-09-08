@@ -10,12 +10,12 @@ import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpWindow
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment
 import java.util.*
 
 class CallListFragment :
@@ -40,8 +40,7 @@ class CallListFragment :
                 }
 
                 override fun onCallDeleteCheckChange(call: Call) {
-                    callList?.find { it.phone == call.phone }?.isCheckedForDelete =
-                        call.isCheckedForDelete
+                    callList?.find { it.phone == call.phone }?.isCheckedForDelete = call.isCheckedForDelete
                     if (callList?.none { it.isCheckedForDelete }.isTrue()) {
                         changeDeleteMode()
                     }
@@ -52,14 +51,6 @@ class CallListFragment :
                         description = getString(R.string.call_delete_info)))
                 }
             })
-        }
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        (activity as MainActivity).apply {
-            if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
         }
     }
 
@@ -96,6 +87,7 @@ class CallListFragment :
             (activity as MainActivity).toolbar?.apply {
                 Log.e("toolbarTAG", "CallListFragment menu $menu")
                 menu?.clear()
+                title = if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
                 inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
                 setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {

@@ -88,6 +88,7 @@ open class FilterListFragment :
         binding?.apply {
             (activity as MainActivity).toolbar?.apply {
                 Log.e("toolbarTAG", "FilterListFragment menu $menu")
+                title = if (isDeleteMode) getString(R.string.delete_) else getString(if (this@FilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
                 menu?.clear()
                 inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
                 setOnMenuItemClickListener { menuItem ->
@@ -113,18 +114,6 @@ open class FilterListFragment :
                 }
             }
         }
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.e("toolbarTAG",
-            "FilterListFragment onPrepareOptionsMenu menu.getItem(0) ${menu.getItem(0)}")
-        super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.e("toolbarTAG",
-            "FilterListFragment onCreateOptionsMenu menu.getItem(0) ${menu.getItem(0)}")
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun observeLiveData() {
