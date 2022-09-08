@@ -24,7 +24,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         launch {
             Log.e("getAllDataTAG", "MainViewModel getCurrentUser")
             showProgress()
-            progressStatusLiveData.postValue("Старт")
+            progressStatusLiveData.postValue("Сбор информацию")
             realDataBaseRepository.getCurrentUser { currentUser ->
                 SharedPreferencesUtil.isWhiteListPriority =
                     currentUser?.isWhiteListPriority.isTrue()
@@ -54,7 +54,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         launch {
             Log.e("getAllDataTAG", "MainViewModel getAllData start")
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
-            progressStatusLiveData.postValue("Обновляем контакты")
+            progressStatusLiveData.postValue("Обновление контактов")
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
@@ -72,7 +72,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
             Log.e("allDataTAG", "MainViewModel getAllData getSystemLogCallList")
-            progressStatusLiveData.postValue("Обновляем список звонков")
+            progressStatusLiveData.postValue("Обновление списка звонков")
             val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)

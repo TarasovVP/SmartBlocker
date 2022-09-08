@@ -104,7 +104,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
         swipeRefresh?.isRefreshing = false
     }
 
-    protected open fun setDataList(dataListHashMap: HashMap<String, List<D>>) {
+    protected open fun setDataList(dataListHashMap: Map<String, List<D>>) {
         adapter?.clearData()
         dataListHashMap.forEach { dataEntry ->
             adapter?.setHeaderAndData(

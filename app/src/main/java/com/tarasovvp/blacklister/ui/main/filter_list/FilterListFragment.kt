@@ -1,8 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.filter_list
 
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R

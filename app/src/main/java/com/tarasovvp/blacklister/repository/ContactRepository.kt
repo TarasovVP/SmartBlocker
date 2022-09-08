@@ -2,8 +2,8 @@ package com.tarasovvp.blacklister.repository
 
 import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.contactList
-import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import kotlinx.coroutines.Dispatchers
@@ -39,10 +39,10 @@ object ContactRepository {
             context.contactList()
         }
 
-    suspend fun getHashMapFromContactList(contactList: List<Contact>): HashMap<String, List<Contact>> =
+    suspend fun getHashMapFromContactList(contactList: List<Contact>): Map<String, List<Contact>> =
         withContext(
             Dispatchers.Default
         ) {
-            contactList.toHashMapFromList()
+            contactList.groupBy { if (it.name.isNullOrEmpty()) String.EMPTY else it.name?.get(0).toString() }
         }
 }

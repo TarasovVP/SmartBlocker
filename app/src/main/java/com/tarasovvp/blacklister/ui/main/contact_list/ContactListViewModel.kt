@@ -11,7 +11,7 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
     private val contactRepository = ContactRepository
 
     val contactLiveData = MutableLiveData<List<Contact>>()
-    val contactHashMapLiveData = MutableLiveData<HashMap<String, List<Contact>>?>()
+    val contactHashMapLiveData = MutableLiveData<Map<String, List<Contact>>?>()
 
     fun getContactList() {
         showProgress()

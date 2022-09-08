@@ -17,7 +17,7 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
     private val whiteFilterRepository = WhiteFilterRepository
     private val blackFilterRepository = BlackFilterRepository
 
-    val filterHashMapLiveData = MutableLiveData<HashMap<String, List<Filter>>?>()
+    val filterHashMapLiveData = MutableLiveData<Map<String, List<Filter>>?>()
 
     fun getFilterList(isBlackList: Boolean) {
         launch {

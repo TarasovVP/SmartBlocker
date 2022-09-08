@@ -344,49 +344,6 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
     return builder
 }
 
-fun <T> List<T>.toHashMapFromList(): LinkedHashMap<String, List<T>> {
-    val hashMapFromList = LinkedHashMap<String, List<T>>()
-    val keyList = ArrayList<Any>(this.map {
-        when (it) {
-            is Call -> {
-                it.calendarFromTime()
-            }
-            is Contact -> {
-                it.name?.first().toString()
-            }
-            is Filter -> {
-                it.filter.first().toString()
-            }
-            else -> {
-                return@map null
-            }
-        }
-    }.toList().distinct())
-    keyList.forEach { key ->
-        val valueList = this.filter {
-            key == when (it) {
-                is Call -> {
-                    it.calendarFromTime()
-                }
-                is Contact -> {
-                    it.name?.first().toString()
-                }
-                is Filter -> {
-                    it.filter.first().toString()
-                }
-                else -> it
-            }
-        }
-        if (key is Calendar) {
-            val call = valueList[0] as Call
-            hashMapFromList[call.dateFromTime().toString()] = valueList
-        } else if (key is String) {
-            hashMapFromList[key] = valueList
-        }
-    }
-    return hashMapFromList
-}
-
 fun <T> LiveData<T>.safeObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
     this.observe(owner) {
         it?.let(observer)
@@ -463,6 +420,7 @@ private fun <T> ViewGroup.getViewsFromLayout(
     for (i in 0 until childCount) {
         val view = this.getChildAt(i)
         if (viewType.isInstance(view)) {
+            @Suppress("UNCHECKED_CAST")
             val targetView = this.getChildAt(i) as T
             views.add(targetView)
         } else if (view is ViewGroup) {

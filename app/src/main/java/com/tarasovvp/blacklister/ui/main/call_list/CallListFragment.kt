@@ -85,7 +85,7 @@ class CallListFragment :
         }
         binding?.apply {
             (activity as MainActivity).toolbar?.apply {
-                Log.e("toolbarTAG", "CallListFragment menu $menu")
+                Log.e("callTAG", "CallListFragment menu $menu")
                 menu?.clear()
                 title = if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
                 inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
@@ -130,12 +130,14 @@ class CallListFragment :
     }
 
     override fun searchDataList() {
+        Log.e("callTAG", "CallListFragment searchDataList() start")
         val filteredCallList = callList?.filter { call ->
             (call.name?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.phone?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
         }.orEmpty()
+        Log.e("callTAG", "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
         checkDataListEmptiness(filteredCallList)
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList)

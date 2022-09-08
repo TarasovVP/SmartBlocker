@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.repository
 import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.systemLogCallList
-import com.tarasovvp.blacklister.extensions.toHashMapFromList
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.LogCall
 import kotlinx.coroutines.Dispatchers
@@ -32,11 +31,11 @@ object LogCallRepository {
         }
 
 
-    suspend fun getHashMapFromCallList(logCallList: List<Call>): HashMap<String, List<Call>> =
+    suspend fun getHashMapFromCallList(logCallList: List<Call>): Map<String, List<Call>> =
         withContext(
             Dispatchers.Default
         ) {
-            logCallList.toHashMapFromList()
+            logCallList.groupBy { it.dateFromTime().toString() }
         }
 
 }
