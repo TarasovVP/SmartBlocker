@@ -161,16 +161,14 @@ fun Context.contactList(): ArrayList<Contact> {
 }
 
 fun Context.systemLogCallList(): ArrayList<LogCall> {
-    val projection = arrayOf(
-        CallLog.Calls.CACHED_NAME,
-        CallLog.Calls.NUMBER,
-        CallLog.Calls.TYPE,
-        CallLog.Calls.DATE
-    )
+    val projection = arrayListOf(CallLog.Calls.CACHED_NAME, CallLog.Calls.NUMBER, CallLog.Calls.TYPE, CallLog.Calls.DATE)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        projection.add(CallLog.Calls.CACHED_PHOTO_URI)
+    }
     val logCallList = ArrayList<LogCall>()
     val cursor: Cursor? = this.contentResolver.query(
         Uri.parse(LOG_CALL_CALL),
-        projection,
+        projection.toTypedArray(),
         null,
         null,
         null
@@ -178,17 +176,13 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
     cursor?.use { logCallCursor ->
         while (logCallCursor.moveToNext()) {
             val logCall = LogCall()
-            logCall.time = logCallCursor.getString(3)
             logCall.name = logCallCursor.getString(0)
             logCall.phone = logCallCursor.getString(1)
-            logCall.type = logCallCursor.getString(1)
-            logCall.photoUrl =
-                ContactRepository.getContactByPhone(logCall.phone.orEmpty())?.photoUrl
+            logCall.type = logCallCursor.getString(2)
+            logCall.time = logCallCursor.getString(3)
+            logCall.photoUrl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) logCallCursor.getString(4) else ContactRepository.getContactByPhone(logCall.phone.orEmpty())?.photoUrl
             logCallList.add(logCall)
         }
-    }
-    logCallList.sortByDescending {
-        it.time?.toMillisecondsFromString()
     }
     return logCallList
 }

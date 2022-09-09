@@ -9,10 +9,8 @@ import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
 import com.tarasovvp.blacklister.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
-import com.tarasovvp.blacklister.extensions.toMillisecondsFromString
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @Parcelize
 open class Call(
@@ -39,17 +37,6 @@ open class Call(
             BLOCKED_CALL -> R.drawable.ic_blocked_call
             else -> R.drawable.ic_incoming_call
         }
-    }
-
-    fun calendarFromTime(): Calendar {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = time?.toMillisecondsFromString() ?: 0
-        calendar.add(Calendar.MONTH, 1)
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return calendar
     }
 
     fun dateTimeFromTime(): String? {
