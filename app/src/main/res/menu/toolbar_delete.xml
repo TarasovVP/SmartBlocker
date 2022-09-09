@@ -7,4 +7,10 @@
         android:icon="@drawable/ic_delete"
         app:showAsAction="always"
         tools:ignore="MenuTitle" />
+
+    <item
+        android:id="@+id/close_menu_item"
+        android:icon="@drawable/ic_close"
+        app:showAsAction="always"
+        tools:ignore="MenuTitle" />
 </menu>
