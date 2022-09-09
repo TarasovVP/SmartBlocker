@@ -5,12 +5,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
-import com.tarasovvp.blacklister.repository.LogCallRepository
+import com.tarasovvp.blacklister.repository.CallRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class CallListViewModel(application: Application) : BaseViewModel(application) {
 
-    private val callRepository = LogCallRepository
+    private val callRepository = CallRepository
     private val blockedCallRepository = BlockedCallRepository
 
     val callLiveData = MutableLiveData<List<Call>>()

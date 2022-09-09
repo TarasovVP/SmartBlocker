@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.model
 
 import android.os.Parcelable
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.DATE_FORMAT
 import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
@@ -51,15 +52,15 @@ open class Call(
         return calendar
     }
 
+    fun dateTimeFromTime(): String? {
+        return time?.toDateFromMilliseconds(Constants.TIME_FORMAT)
+    }
+
     fun dateFromTime(): String? {
         return time?.toDateFromMilliseconds(DATE_FORMAT)
     }
 
     fun isBlockedType(): Boolean {
         return type == BLOCKED_CALL
-    }
-
-    fun isDeleteVisible(): Boolean {
-        return isBlockedType() && isDeleteMode
     }
 }

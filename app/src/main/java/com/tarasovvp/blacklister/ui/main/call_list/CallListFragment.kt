@@ -15,7 +15,7 @@ import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment
+import com.tarasovvp.blacklister.ui.main.filter_list.FilterAdapter
 import java.util.*
 
 class CallListFragment :
@@ -40,8 +40,9 @@ class CallListFragment :
                 }
 
                 override fun onCallDeleteCheckChange(call: Call) {
-                    callList?.find { it.phone == call.phone }?.isCheckedForDelete = call.isCheckedForDelete
-                    if (callList?.none { it.isCheckedForDelete }.isTrue()) {
+                    callList?.find { it.time == call.time}?.isCheckedForDelete =
+                        call.isCheckedForDelete
+                    if (callList?.none { it.isCheckedForDelete }.isTrue() && isDeleteMode) {
                         changeDeleteMode()
                     }
                 }
@@ -64,6 +65,7 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyListText = callListEmpty
+            setToolBarMenuClickListener()
             callListCheck.setOnCheckedChangeListener { _, checked ->
                 getData()
                 (activity as MainActivity).toolbar?.title =
@@ -71,6 +73,29 @@ class CallListFragment :
             }
             setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
+            }
+        }
+    }
+
+    private fun setToolBarMenuClickListener() {
+        (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.delete_menu_item -> {
+                    this@CallListFragment.findNavController()
+                        .navigate(CallListFragmentDirections.startDeleteFilterDialog())
+                    true
+                }
+                R.id.close_menu_item -> {
+                    (adapter as CallAdapter).apply {
+                        isDeleteMode = false
+                        callList?.forEach {
+                            it.isCheckedForDelete = false
+                        }
+                        notifyDataSetChanged()
+                    }
+                    true
+                }
+                else -> return@setOnMenuItemClickListener true
             }
         }
     }
@@ -83,28 +108,12 @@ class CallListFragment :
                 adapter?.notifyDataSetChanged()
             }
         }
-        binding?.apply {
-            (activity as MainActivity).toolbar?.apply {
-                Log.e("callTAG", "CallListFragment menu $menu")
-                menu?.clear()
-                title = if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
-                inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
-                setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.delete_menu_item -> {
-                            this@CallListFragment.findNavController()
-                                .navigate(CallListFragmentDirections.startDeleteFilterDialog())
-                            true
-                        }
-                        else -> return@setOnMenuItemClickListener true
-                    }
-                }
-            }
-            if (isDeleteMode.not()) {
-                callList?.forEach {
-                    it.isCheckedForDelete = false
-                }
-            }
+        (activity as MainActivity).toolbar?.apply {
+            Log.e("callTAG", "CallListFragment menu $menu")
+            menu?.clear()
+            title =
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
+            inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
         }
     }
 
@@ -112,7 +121,7 @@ class CallListFragment :
         with(viewModel) {
             callLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
                 callList = if (binding?.callListCheck?.isChecked.isTrue()) {
-                    callList.orEmpty().plus(callListData)
+                    callList.orEmpty().plus(callListData).distinct()
                 } else {
                     callListData
                 }
@@ -137,7 +146,8 @@ class CallListFragment :
                     || call.phone?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
         }.orEmpty()
-        Log.e("callTAG", "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
+        Log.e("callTAG",
+            "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
         checkDataListEmptiness(filteredCallList)
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList)

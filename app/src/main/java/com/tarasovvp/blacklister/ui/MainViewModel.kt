@@ -11,7 +11,7 @@ import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
-    private val logCallRepository = LogCallRepository
+    private val logCallRepository = CallRepository
     private val blackFilterRepository = BlackFilterRepository
     private val whiteFilterRepository = WhiteFilterRepository
     private val contactRepository = ContactRepository

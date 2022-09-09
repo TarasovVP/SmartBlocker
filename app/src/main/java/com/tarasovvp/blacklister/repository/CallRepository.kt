@@ -8,7 +8,7 @@ import com.tarasovvp.blacklister.model.LogCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object LogCallRepository {
+object CallRepository {
 
     private val dao = BlackListerApp.instance?.database?.logCallDao()
 
