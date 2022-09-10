@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.util.Log
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
@@ -36,10 +37,10 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
-
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
+        Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $phone")
         val isInWhiteList =
             whiteFilterRepository.getWhiteFilterList(phone)?.isEmpty().isTrue().not()
         val isInBlackList =
@@ -47,10 +48,13 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val isBlockNeeded =
             (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (phone.isEmpty() && SharedPreferencesUtil.blockHidden)
         if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+            Log.e("blockTAG", "CallReceiver onReceive breakCall")
             breakCall(context)
         } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE && phone.isNotEmpty()) {
+            Log.e("blockTAG", "CallReceiver onReceive phone $phone currentTimeMillis ${System.currentTimeMillis()}")
             Executors.newSingleThreadScheduledExecutor().schedule({
                 if (isBlockNeeded) {
+                    Log.e("blockTAG", "CallReceiver newSingleThreadScheduledExecutor phone $phone currentTimeMillis ${System.currentTimeMillis()}")
                     context.deleteLastMissedCall(phone)
                     phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
                         blockedCallRepository.allBlockedCalls()?.size))

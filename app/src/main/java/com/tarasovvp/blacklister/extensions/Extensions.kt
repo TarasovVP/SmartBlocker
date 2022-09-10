@@ -12,6 +12,7 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +49,10 @@ import com.tarasovvp.blacklister.constants.Constants.THREE_EIGHT_ZERO
 import com.tarasovvp.blacklister.constants.Constants.TYPE
 import com.tarasovvp.blacklister.constants.Constants.ZERO
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
-import com.tarasovvp.blacklister.model.*
+import com.tarasovvp.blacklister.model.BlockedCall
+import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.Info
+import com.tarasovvp.blacklister.model.LogCall
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -161,7 +165,10 @@ fun Context.contactList(): ArrayList<Contact> {
 }
 
 fun Context.systemLogCallList(): ArrayList<LogCall> {
-    val projection = arrayListOf(CallLog.Calls.CACHED_NAME, CallLog.Calls.NUMBER, CallLog.Calls.TYPE, CallLog.Calls.DATE)
+    val projection = arrayListOf(CallLog.Calls.CACHED_NAME,
+        CallLog.Calls.NUMBER,
+        CallLog.Calls.TYPE,
+        CallLog.Calls.DATE)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
     }
@@ -180,7 +187,9 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
             logCall.phone = logCallCursor.getString(1)
             logCall.type = logCallCursor.getString(2)
             logCall.time = logCallCursor.getString(3)
-            logCall.photoUrl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) logCallCursor.getString(4) else ContactRepository.getContactByPhone(logCall.phone.orEmpty())?.photoUrl
+            logCall.photoUrl =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) logCallCursor.getString(4) else ContactRepository.getContactByPhone(
+                    logCall.phone.orEmpty())?.photoUrl
             logCallList.add(logCall)
         }
     }
@@ -188,36 +197,40 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
 }
 
 fun Context.deleteLastMissedCall(phone: String): Boolean {
-    val projection = arrayOf(
+    val projection = arrayListOf(
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
         CallLog.Calls.TYPE,
         CallLog.Calls.DATE
     )
-
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        projection.add(CallLog.Calls.CACHED_PHOTO_URI)
+    }
     val cursor: Cursor? = this.contentResolver.query(
         Uri.parse(LOG_CALL_CALL),
-        projection,
+        projection.toTypedArray(),
         null,
         null,
         "${CallLog.Calls.DATE} $DESC"
     )
+    Log.e("blockTAG", "Extensions deleteLastMissedCall phone $phone currentTimeMillis ${System.currentTimeMillis()}")
     cursor?.use {
         while (cursor.moveToNext()) {
-            val phoneNumber: String = cursor.getString(1)
+            val number: String? = cursor.getString(1)
             val time: String? = cursor.getString(3)
-            val queryString = "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'"
-            if (phone == phoneNumber.toFormattedPhoneNumber()) {
+            val type: String? = cursor.getString(2)
+            Log.e("blockTAG", "Extensions deleteLastMissedCall moveToNext phoneNumber $number time $time type $type")
+            if (phone == number && type == REJECTED_CALL) {
                 try {
                     val blockedCall = BlockedCall()
                     blockedCall.time = time
                     blockedCall.name = cursor.getString(0)
-                    blockedCall.phone = phoneNumber
+                    blockedCall.phone = number
                     blockedCall.type = BLOCKED_CALL
-                    blockedCall.photoUrl =
-                        ContactRepository.getContactByPhone(phoneNumber)?.photoUrl
+                    blockedCall.photoUrl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) cursor.getString(4) else ContactRepository.getContactByPhone(
+                        blockedCall.phone.orEmpty())?.photoUrl
                     BlockedCallRepository.insertBlockedCall(blockedCall)
-                    this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), queryString, null)
+                    this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'", null)
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                     return false
@@ -228,7 +241,6 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
     }
     return false
 }
-
 
 @BindingAdapter("bind:circleImageUrl")
 fun ImageView.loadCircleImage(photoUrl: String?) {
