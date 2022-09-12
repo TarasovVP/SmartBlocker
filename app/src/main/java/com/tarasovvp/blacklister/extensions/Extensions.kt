@@ -38,12 +38,12 @@ import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_DATE
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
+import com.tarasovvp.blacklister.constants.Constants.CALL_TYPE
 import com.tarasovvp.blacklister.constants.Constants.DESC
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
 import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
-import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL import com.tarasovvp.blacklister.constants.Constants.CALL_NUMBER
+import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
-import com.tarasovvp.blacklister.constants.Constants.CALL_TYPE
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
@@ -124,40 +124,26 @@ fun Context.contactList(): ArrayList<Contact> {
         ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE,
         ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
     )
-    val contacts = this
+    val cursor: Cursor? = this
         .contentResolver
         .query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null)
-        .run {
-            if (this == null) {
-                throw IllegalStateException("Cursor null")
-            }
-            val contactsById = mutableMapOf<String, Contact>()
-            val mimeTypeField = getColumnIndex(ContactsContract.Data.MIMETYPE)
-            val idField = getColumnIndex(ContactsContract.Data.CONTACT_ID)
-            val nameField = getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
-            val photoUri = getColumnIndex(ContactsContract.Contacts.PHOTO_URI)
-            val dataField = getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DATA)
-            while (moveToNext()) {
-                when (getString(mimeTypeField)) {
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE -> {
-                        val data = getString(dataField)
-                        val id = getString(idField)
-                        val photoUrl = getString(photoUri)
-                        val name = getString(nameField)
-                        contactsById[data] =
-                            Contact(
-                                id = id,
-                                name = name,
-                                photoUrl = photoUrl,
-                                phone = data
-                            )
-                    }
+    val contactList = arrayListOf<Contact>()
+    cursor?.use { contactCursor ->
+        while (contactCursor.moveToNext()) {
+            when (contactCursor.getString(0)) {
+                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE -> {
+                    contactList.add(Contact(
+                        id = contactCursor.getString(1),
+                        name = contactCursor.getString(2),
+                        photoUrl = contactCursor.getString(3),
+                        phone = contactCursor.getString(4)
+                    ))
                 }
             }
-            close()
-            contactsById.values.toList().sortedWith(compareBy { it.name })
         }
-    return ArrayList(contacts.toList())
+    }
+    contactList.sortBy { it.name }
+    return contactList
 }
 
 fun Context.systemLogCallList(): ArrayList<LogCall> {
@@ -233,7 +219,8 @@ fun Context.deleteLastBlockedCall(phone: String): Boolean {
                     BlockedCallRepository.insertBlockedCall(blockedCall)
                     Log.e("blockTAG",
                         "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL phone $phone name ${blockedCall.name} time $time phone $number type $type id $id")
-                    val queryString = "${CALL_ID}'$id' AND ${CALL_DATE}'$time' AND ${CALL_TYPE}'$REJECTED_CALL'"
+                    val queryString =
+                        "${CALL_ID}'$id' AND ${CALL_DATE}'$time' AND ${CALL_TYPE}'$REJECTED_CALL'"
                     Log.e("blockTAG", "Extensions delete queryString $queryString")
                     this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${CALL_ID}'$id'", null)
                 } catch (e: java.lang.Exception) {
