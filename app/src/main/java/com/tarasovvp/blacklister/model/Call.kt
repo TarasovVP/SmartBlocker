@@ -15,6 +15,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 open class Call(
     open var id: Int = 0,
+    var callId: String? = "",
     var name: String? = "",
     var phone: String? = "",
     var type: String? = "",
@@ -27,6 +28,10 @@ open class Call(
 
     fun isPhoneEmpty(): Boolean {
         return phone.isNullOrEmpty()
+    }
+
+    fun isNameEmpty(): Boolean {
+        return name.isNullOrEmpty()
     }
 
     fun callIcon(): Int {

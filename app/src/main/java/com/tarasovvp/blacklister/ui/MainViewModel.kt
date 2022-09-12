@@ -58,16 +58,10 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
-                val isInWhiteList =
-                    whiteFilterRepository.getWhiteFilterList(contact.trimmedPhone)?.isEmpty()
-                        .isTrue().not()
-                val isInBlackList =
-                    blackFilterRepository.getBlackFilterList(contact.trimmedPhone)?.isEmpty()
-                        .isTrue().not()
-                contact.isBlackFilter =
-                    (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
-                contact.isWhiteFilter =
-                    (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority) || (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority.not() && isInBlackList.not())
+                val isInWhiteList = whiteFilterRepository.getWhiteFilterList(contact.trimmedPhone)?.isEmpty().isTrue().not()
+                val isInBlackList = blackFilterRepository.getBlackFilterList(contact.trimmedPhone)?.isEmpty().isTrue().not()
+                contact.isBlackFilter = (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
+                contact.isWhiteFilter = (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority) || (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority.not() && isInBlackList.not())
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)

@@ -12,7 +12,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.blacklister.extensions.breakCallNougatAndLower
 import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
-import com.tarasovvp.blacklister.extensions.deleteLastMissedCall
+import com.tarasovvp.blacklister.extensions.deleteLastBlockedCall
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.repository.BlackFilterRepository
@@ -47,15 +47,16 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
             blackFilterRepository.getBlackFilterList(phone)?.isEmpty().isTrue().not()
         val isBlockNeeded =
             (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (phone.isEmpty() && SharedPreferencesUtil.blockHidden)
+        Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $phone isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
         if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
             Log.e("blockTAG", "CallReceiver onReceive breakCall")
             breakCall(context)
-        } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE && phone.isNotEmpty()) {
+        } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
             Log.e("blockTAG", "CallReceiver onReceive phone $phone currentTimeMillis ${System.currentTimeMillis()}")
             Executors.newSingleThreadScheduledExecutor().schedule({
                 if (isBlockNeeded) {
                     Log.e("blockTAG", "CallReceiver newSingleThreadScheduledExecutor phone $phone currentTimeMillis ${System.currentTimeMillis()}")
-                    context.deleteLastMissedCall(phone)
+                    context.deleteLastBlockedCall(phone)
                     phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
                         blockedCallRepository.allBlockedCalls()?.size))
                 }

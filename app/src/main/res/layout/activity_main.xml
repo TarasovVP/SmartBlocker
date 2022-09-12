@@ -10,7 +10,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_10"
             app:layout_constraintBottom_toTopOf="@+id/toolbar_divider"
             app:layout_constraintTop_toTopOf="parent"

@@ -23,7 +23,7 @@
             android:src="@drawable/ic_avatar"
             app:circleImageUrl="@{call.photoUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_call_name"
+            app:layout_constraintEnd_toStartOf="@+id/item_call_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,32 +36,37 @@
             android:gravity="top"
             android:maxLines="1"
             android:text="@{call.phoneEmpty ? @string/hidden : call.name}"
+            android:visibility="@{call.nameEmpty &amp;&amp; !call.phoneEmpty ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
             app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
+            app:layout_constraintBottom_toTopOf="@+id/item_call_number"/>
 
         <TextView
             android:id="@+id/item_call_number"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_8"
-            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_4"
             android:text="@{call.phone}"
+            android:visibility="@{call.isPhoneEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
             app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/item_call_name" />
+            app:layout_constraintTop_toBottomOf="@+id/item_call_name"
+            app:layout_constraintBottom_toTopOf="@+id/item_call_time"/>
 
         <TextView
             android:id="@+id/item_call_time"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_8"
-            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_4"
             android:textSize="@dimen/text_size_10"
             android:text="@{call.dateTimeFromTime()}"
             app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
             app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/item_call_number" />
+            app:layout_constraintTop_toBottomOf="@+id/item_call_number"
+            app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"/>
 
         <ImageView
             android:id="@+id/item_call_type_icon"

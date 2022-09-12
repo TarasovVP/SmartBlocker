@@ -7,10 +7,6 @@ object Constants {
     const val SERVER_CLIENT_ID =
         "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com"
     const val USERS = "users"
-    const val PHONE_NUMBER_CODE = "+380"
-    const val THREE_EIGHT_ZERO = "380"
-    const val EIGHT_ZERO = "80"
-    const val ZERO = "0"
     const val PLUS_CHAR = '+'
     const val WHITE_LIST_PRIORITY = "whiteListPriority"
     const val BLOCK_HIDDEN = "blockHidden"
@@ -33,9 +29,10 @@ object Constants {
     const val FOREGROUND_ID = 99
     const val PHONE_STATE = "android.intent.action.PHONE_STATE"
     const val DESC = "DESC"
-    const val NUMBER = "NUMBER="
-    const val DATE = "DATE="
-    const val TYPE = "TYPE="
+    const val CALL_ID = "_ID="
+    const val CALL_NUMBER = "NUMBER="
+    const val CALL_DATE = "DATE="
+    const val CALL_TYPE = "TYPE="
     const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
@@ -43,8 +40,6 @@ object Constants {
     const val APP_LANG_UK = "uk"
     const val APP_LANG_EN = "en"
     const val FORGOT_PASSWORD = "forgotPassword"
-    const val BLACK_LIST_PREVIEW = "blackListPreview"
-    const val ADD_TO_LIST = "addToList"
     const val DELETE_USER = "deleteUser"
     const val LOG_OUT = "logOut"
     const val EXCEPTION = "exception"

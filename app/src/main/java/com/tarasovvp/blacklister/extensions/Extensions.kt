@@ -36,18 +36,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
-import com.tarasovvp.blacklister.constants.Constants.DATE
+import com.tarasovvp.blacklister.constants.Constants.CALL_DATE
+import com.tarasovvp.blacklister.constants.Constants.CALL_ID
 import com.tarasovvp.blacklister.constants.Constants.DESC
-import com.tarasovvp.blacklister.constants.Constants.EIGHT_ZERO
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
 import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
-import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
-import com.tarasovvp.blacklister.constants.Constants.NUMBER
-import com.tarasovvp.blacklister.constants.Constants.PHONE_NUMBER_CODE
+import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL import com.tarasovvp.blacklister.constants.Constants.CALL_NUMBER
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
-import com.tarasovvp.blacklister.constants.Constants.THREE_EIGHT_ZERO
-import com.tarasovvp.blacklister.constants.Constants.TYPE
-import com.tarasovvp.blacklister.constants.Constants.ZERO
+import com.tarasovvp.blacklister.constants.Constants.CALL_TYPE
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
@@ -196,12 +192,13 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
     return logCallList
 }
 
-fun Context.deleteLastMissedCall(phone: String): Boolean {
+fun Context.deleteLastBlockedCall(phone: String): Boolean {
     val projection = arrayListOf(
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
         CallLog.Calls.TYPE,
-        CallLog.Calls.DATE
+        CallLog.Calls.DATE,
+        CallLog.Calls._ID
     )
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
@@ -213,26 +210,35 @@ fun Context.deleteLastMissedCall(phone: String): Boolean {
         null,
         "${CallLog.Calls.DATE} $DESC"
     )
-    Log.e("blockTAG", "Extensions deleteLastMissedCall phone $phone currentTimeMillis ${System.currentTimeMillis()}")
+    Log.e("blockTAG",
+        "Extensions deleteLastMissedCall phone $phone currentTimeMillis ${System.currentTimeMillis()}")
     cursor?.use {
         while (cursor.moveToNext()) {
+            val name = cursor.getString(0)
             val number: String? = cursor.getString(1)
-            val time: String? = cursor.getString(3)
             val type: String? = cursor.getString(2)
-            Log.e("blockTAG", "Extensions deleteLastMissedCall moveToNext phoneNumber $number time $time type $type")
+            val time: String? = cursor.getString(3)
+            val id: String? = cursor.getString(4)
             if (phone == number && type == REJECTED_CALL) {
                 try {
                     val blockedCall = BlockedCall()
+                    blockedCall.callId = id
                     blockedCall.time = time
-                    blockedCall.name = cursor.getString(0)
+                    blockedCall.name = name
                     blockedCall.phone = number
                     blockedCall.type = BLOCKED_CALL
-                    blockedCall.photoUrl = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) cursor.getString(4) else ContactRepository.getContactByPhone(
-                        blockedCall.phone.orEmpty())?.photoUrl
+                    blockedCall.photoUrl =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) cursor.getString(5) else ContactRepository.getContactByPhone(
+                            blockedCall.phone.orEmpty())?.photoUrl
                     BlockedCallRepository.insertBlockedCall(blockedCall)
-                    this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${NUMBER}'$phone' AND ${DATE}'$time' AND ${TYPE}'$REJECTED_CALL'", null)
+                    Log.e("blockTAG",
+                        "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL phone $phone name ${blockedCall.name} time $time phone $number type $type id $id")
+                    val queryString = "${CALL_ID}'$id' AND ${CALL_DATE}'$time' AND ${CALL_TYPE}'$REJECTED_CALL'"
+                    Log.e("blockTAG", "Extensions delete queryString $queryString")
+                    this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${CALL_ID}'$id'", null)
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
+                    Log.e("blockTAG", "Extensions delete Exception ${e.localizedMessage}")
                     return false
                 }
                 return true
@@ -277,26 +283,6 @@ fun Context.breakCallPieAndHigher() {
     } catch (e: Exception) {
         e.printStackTrace()
     }
-}
-
-fun String.toFormattedPhoneNumber(): String {
-    var phone = Regex("[^0-9]").replace(this, "")
-    if (phone.isEmpty() || phone.length < 10) return ""
-    phone = when {
-        phone.startsWith(ZERO) && phone.length > 1 -> {
-            phone.substring(1)
-        }
-        phone.startsWith(EIGHT_ZERO) && phone.length > 2 -> {
-            phone.substring(2)
-        }
-        phone.startsWith(THREE_EIGHT_ZERO) && phone.length > 3 -> {
-            phone.substring(3)
-        }
-        else -> {
-            phone
-        }
-    }
-    return String.format("%s%s", PHONE_NUMBER_CODE, phone)
 }
 
 fun String.toDateFromMilliseconds(dateFormat: String): String {
