@@ -5,11 +5,9 @@ import android.view.View
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentAppLanguageBinding
-import com.tarasovvp.blacklister.extensions.showMessage
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class AppLanguageFragment :
     BaseBindingFragment<FragmentAppLanguageBinding>() {
@@ -31,12 +29,9 @@ class AppLanguageFragment :
                 else -> Constants.APP_LANG_EN
             }
             SharedPreferencesUtil.appLang = appLang
-        }
-        binding?.settingsLanguagesBtn?.setSafeOnClickListener {
             (activity as MainActivity).apply {
                 recreate()
             }
-            binding?.root?.showMessage(getString(R.string.success_), false)
         }
     }
 }

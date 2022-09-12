@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.room.Room
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -32,8 +33,10 @@ class BlackListerApp : Application() {
         FirebaseAnalytics.getInstance(this)
         Settings.loadSettingsHelper(this, this.packageName)
         createNotificationChannel()
-        if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang =
-            Locale.getDefault().language
+        if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang = Locale.getDefault().language
+        SharedPreferencesUtil.appTheme.apply {
+            AppCompatDelegate.setDefaultNightMode(this)
+        }
     }
 
     fun isLoggedInUser() = auth?.currentUser.isNotNull().isTrue()

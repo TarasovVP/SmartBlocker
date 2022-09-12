@@ -63,6 +63,7 @@
     <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textColor">@color/main_color</item>
         <item name="android:layoutDirection">rtl</item>
-        <item name="android:padding">@dimen/padding_10</item>
+        <item name="android:paddingTop">@dimen/padding_20</item>
+        <item name="android:paddingBottom">@dimen/padding_20</item>
     </style>
 </resources>

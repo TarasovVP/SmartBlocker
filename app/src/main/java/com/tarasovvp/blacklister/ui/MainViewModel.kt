@@ -50,7 +50,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getAllData() {
-        showProgress()
         launch {
             Log.e("getAllDataTAG", "MainViewModel getAllData start")
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
@@ -72,7 +71,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             logCallRepository.insertAllLogCalls(callLogList)
             Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
-            hideProgress()
         }
     }
 }

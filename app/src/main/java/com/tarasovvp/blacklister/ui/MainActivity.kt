@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -43,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
     private var callReceiver: CallReceiver? = null
+    private var isRecreating: Boolean = false
 
     var navigationScreens = arrayListOf(
         R.id.callListFragment,
@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
             toolbar?.setupWithNavController(this)
         }
         observeLiveData()
-        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-            Log.e("getAllDataTAG", "MainActivity isOnBoardingSeen && isLoggedInUser getAllData()")
+        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNotNull().not()) {
+            Log.e("getAllDataTAG", "MainActivity isOnBoardingSeen && isLoggedInUser getAllData() savedInstanceState $savedInstanceState")
             getAllData()
         }
     }
@@ -184,8 +184,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getAllData() {
-        if (checkPermissions().isTrue()) {
-            Log.e("getAllDataTAG", "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true)")
+        if (checkPermissions().isTrue() && isRecreating.not()) {
+            Log.e("getAllDataTAG", "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true) isChangingConfigurations $isChangingConfigurations isFinishing $isFinishing isRecreating $isRecreating")
             setMainProgressVisibility(true)
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 Log.e("getAllDataTAG",
@@ -196,6 +196,7 @@ class MainActivity : AppCompatActivity() {
                     "MainActivity getCurrentUser isLoggedInUser().not() getAllData()")
                 mainViewModel.getAllData()
             }
+            isRecreating = false
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }
