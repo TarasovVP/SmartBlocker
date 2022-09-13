@@ -59,7 +59,7 @@
         <entry key="app/src/main/res/drawable/selector_radio_group.xml" value="0.1635" />
         <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/switch_view_selector.xml" value="0.1695" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.190625" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.16990291262135923" />
         <entry key="app/src/main/res/layout/block_settings.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/contact_list_fragment.xml" value="0.2318840579710145" />
         <entry key="app/src/main/res/layout/dialog_add_list.xml" value="0.17864583333333334" />
@@ -103,8 +103,10 @@
         <entry key="app/src/main/res/layout/item_call.xml" value="0.21784420289855072" />
         <entry key="app/src/main/res/layout/item_call_log.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.2807971014492754" />
-        <entry key="app/src/main/res/layout/item_filter.xml" value="1.0" />
-        <entry key="app/src/main/res/layout/item_header.xml" value="0.19010416666666666" />
+        <entry key="app/src/main/res/layout/item_expandable_header.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_filter.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_filter_small.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_header.xml" value="0.11734693877551021" />
         <entry key="app/src/main/res/layout/item_info_window.xml" value="0.1697061803444782" />
         <entry key="app/src/main/res/layout/item_number.xml" value="0.21693840579710144" />
         <entry key="app/src/main/res/layout/log_list_fragment.xml" value="0.2318840579710145" />

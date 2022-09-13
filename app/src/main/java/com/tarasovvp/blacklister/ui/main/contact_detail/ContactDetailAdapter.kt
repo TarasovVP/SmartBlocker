@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.databinding.ItemFilterBinding
-import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.databinding.ItemExpandableHeaderBinding
+import com.tarasovvp.blacklister.databinding.ItemFilterSmallBinding
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Filter
 
@@ -46,20 +47,21 @@ class ContactDetailAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-            DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent?.context),
-                R.layout.item_header,
+        val rootView = convertView
+            ?: DataBindingUtil.inflate<ItemExpandableHeaderBinding>(LayoutInflater.from(parent?.context),
+                R.layout.item_expandable_header,
                 parent,
-                false).apply {
-                itemHeaderText.text = titleList[groupPosition]
-                root.isEnabled = filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()
-                if (filterListMap[titleList[groupPosition]].orEmpty().isEmpty().not()) {
-                    itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
-                        0,
-                        if (isExpanded) R.drawable.ic_drop_up else R.drawable.ic_drop_down,
-                        0)
-                }
-                return root
+                false).root
+        rootView.findViewById<TextView>(R.id.item_expandable_header_text).apply {
+            text = titleList[groupPosition]
+            if (filterListMap[text].orEmpty().isNotEmpty()) {
+                setCompoundDrawablesWithIntrinsicBounds(0,
+                    0,
+                    if (isExpanded) R.drawable.ic_drop_up else R.drawable.ic_drop_down,
+                    0)
             }
+        }
+        return rootView
     }
 
     override fun getChildView(
@@ -69,8 +71,8 @@ class ContactDetailAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        DataBindingUtil.inflate<ItemFilterBinding>(LayoutInflater.from(parent?.context),
-            R.layout.item_filter, parent, false).apply {
+        DataBindingUtil.inflate<ItemFilterSmallBinding>(LayoutInflater.from(parent?.context),
+            R.layout.item_filter_small, parent, false).apply {
             filterListMap[titleList[groupPosition]]?.get(childPosition)?.let { filter ->
                 this.filter = filter
             }

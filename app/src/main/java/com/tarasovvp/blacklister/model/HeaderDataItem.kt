@@ -4,7 +4,7 @@ import com.tarasovvp.blacklister.ui.base.BaseAdapter
 
 data class HeaderDataItem(
     override val headerType: Int,
-    val header: String,
+    val header: String
 ) : BaseAdapter.HeaderData {
 
     companion object {

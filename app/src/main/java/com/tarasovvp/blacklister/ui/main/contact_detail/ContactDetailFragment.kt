@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.contact_detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -33,8 +34,22 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
             } else {
                 viewModel.getContact(phone.filter { it.isDigit() || it == PLUS_CHAR })
             }
-            viewModel.getBlackFilterList(phone.filter { it.isDigit() || it == PLUS_CHAR })
-            viewModel.getWhiteFilterList(phone.filter { it.isDigit() || it == PLUS_CHAR })
+            if (expandableNumberAdapter.isNotNull()) {
+                binding?.filterDetailFilterList?.setAdapter(expandableNumberAdapter)
+            } else {
+                viewModel.getBlackFilterList(phone.filter { it.isDigit() || it == PLUS_CHAR })
+                viewModel.getWhiteFilterList(phone.filter { it.isDigit() || it == PLUS_CHAR })
+            }
+            binding?.filterDetailFilterList?.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
+                Log.e("contactTAG",
+                    "ContactDetailFragment setNumberList setOnChildClickListener groupPosition $groupPosition childPosition $childPosition")
+                findNavController().navigate(ContactDetailFragmentDirections.startAddFragment(
+                    filter = expandableNumberAdapter?.getChild(groupPosition, childPosition)))
+                return@setOnChildClickListener true
+            }
+            binding?.filterDetailFilterList?.setOnGroupClickListener { _, _, groupPosition, _ ->
+                return@setOnGroupClickListener expandableNumberAdapter?.getChildrenCount(groupPosition) == 0
+            }
         }
     }
 
@@ -80,6 +95,8 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     private fun setNumberList(filterList: List<Filter>, isBlackList: Boolean) {
         val title =
             "Найдено ${filterList.size} фильтров из ${if (isBlackList) "черного списка" else "белого списка"}"
+        Log.e("contactTAG",
+            "ContactDetailFragment setNumberList filterList $filterList isBlackList $isBlackList title $title")
         if (expandableNumberAdapter.isNotNull()) {
             expandableNumberAdapter?.titleList?.add(title)
             expandableNumberAdapter?.filterListMap?.put(title, filterList)
@@ -87,11 +104,8 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
             expandableNumberAdapter =
                 ContactDetailAdapter(arrayListOf(title), hashMapOf(title to filterList))
             binding?.filterDetailFilterList?.setAdapter(expandableNumberAdapter)
-            binding?.filterDetailFilterList?.setOnChildClickListener { _, _, _, childPosition, _ ->
-                findNavController().navigate(ContactDetailFragmentDirections.startAddFragment(
-                    filter = filterList[childPosition]))
-                return@setOnChildClickListener true
-            }
         }
+        Log.e("contactTAG",
+            "ContactDetailFragment setNumberList expandableNumberAdapter titleList ${expandableNumberAdapter?.titleList} filterListMap ${expandableNumberAdapter?.filterListMap}")
     }
 }

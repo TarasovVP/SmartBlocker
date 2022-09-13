@@ -77,9 +77,11 @@
                 <ExpandableListView
                     android:id="@+id/filter_detail_filter_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/size_0"
                     android:layout_marginTop="@dimen/margin_15"
                     android:groupIndicator="@null"
+                    android:listSelector="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/filter_detail_phone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
