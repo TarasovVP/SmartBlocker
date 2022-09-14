@@ -39,24 +39,24 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
     override fun onReceive(context: Context, intent: Intent) {
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val phone = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
-        Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $phone")
+        val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
+        Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number")
         val isInWhiteList =
-            whiteFilterRepository.getWhiteFilterList(phone)?.isEmpty().isTrue().not()
+            whiteFilterRepository.getWhiteFilterList(number)?.isEmpty().isTrue().not()
         val isInBlackList =
-            blackFilterRepository.getBlackFilterList(phone)?.isEmpty().isTrue().not()
+            blackFilterRepository.getBlackFilterList(number)?.isEmpty().isTrue().not()
         val isBlockNeeded =
-            (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (phone.isEmpty() && SharedPreferencesUtil.blockHidden)
-        Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $phone isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
+            (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
+        Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
         if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
             Log.e("blockTAG", "CallReceiver onReceive breakCall")
             breakCall(context)
         } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
-            Log.e("blockTAG", "CallReceiver onReceive phone $phone currentTimeMillis ${System.currentTimeMillis()}")
+            Log.e("blockTAG", "CallReceiver onReceive phone $number currentTimeMillis ${System.currentTimeMillis()}")
             Executors.newSingleThreadScheduledExecutor().schedule({
                 if (isBlockNeeded) {
-                    Log.e("blockTAG", "CallReceiver newSingleThreadScheduledExecutor phone $phone currentTimeMillis ${System.currentTimeMillis()}")
-                    context.deleteLastBlockedCall(phone)
+                    Log.e("blockTAG", "CallReceiver newSingleThreadScheduledExecutor phone $number currentTimeMillis ${System.currentTimeMillis()}")
+                    context.deleteLastBlockedCall(number)
                     phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
                         blockedCallRepository.allBlockedCalls()?.size))
                 }

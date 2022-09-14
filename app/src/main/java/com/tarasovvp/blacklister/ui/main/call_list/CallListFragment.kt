@@ -15,7 +15,6 @@ import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.filter_list.FilterAdapter
 import java.util.*
 
 class CallListFragment :
@@ -30,9 +29,9 @@ class CallListFragment :
     override fun createAdapter(): BaseAdapter<Call>? {
         return context?.let {
             CallAdapter(object : CallClickListener {
-                override fun onCallClick(phone: String) {
+                override fun onCallClick(number: String) {
                     findNavController().navigate(CallListFragmentDirections.startContactDetailFragment(
-                        phone = phone))
+                        number = number))
                 }
 
                 override fun onCallLongClick() {
@@ -143,7 +142,7 @@ class CallListFragment :
         val filteredCallList = callList?.filter { call ->
             (call.name?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
-                    || call.phone?.lowercase(Locale.getDefault())
+                    || call.number?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
         }.orEmpty()
         Log.e("callTAG",

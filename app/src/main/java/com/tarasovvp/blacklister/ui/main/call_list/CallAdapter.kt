@@ -66,7 +66,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                     if (isDeleteMode) {
                         itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
                     } else {
-                        callClickListener.onCallClick(call.phone.orEmpty())
+                        callClickListener.onCallClick(if (call.normalizedNumber.isNullOrEmpty()) call.number.orEmpty() else call.normalizedNumber.orEmpty())
                     }
                 }
                 root.setOnLongClickListener {

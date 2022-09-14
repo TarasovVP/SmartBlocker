@@ -160,7 +160,7 @@ class FilterAddFragment(private var filter: Filter?) :
         }
         binding?.filterAddContactByFilterList?.setOnChildClickListener { _, _, _, childPosition, _ ->
             findNavController().navigate(AddFragmentDirections.startContactDetailFragment(
-                phone = contactList[childPosition].phone))
+                number = contactList[childPosition].phone))
             return@setOnChildClickListener contactList.isEmpty()
         }
     }

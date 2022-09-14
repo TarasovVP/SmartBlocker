@@ -17,7 +17,8 @@ open class Call(
     open var id: Int = 0,
     var callId: String? = "",
     var name: String? = "",
-    var phone: String? = "",
+    var number: String? = "",
+    var normalizedNumber: String? = "",
     var type: String? = "",
     var time: String? = "",
     var photoUrl: String? = "",
@@ -26,8 +27,8 @@ open class Call(
     var isCheckedForDelete = false
     var isDeleteMode = false
 
-    fun isPhoneEmpty(): Boolean {
-        return phone.isNullOrEmpty()
+    fun isNumberEmpty(): Boolean {
+        return number.isNullOrEmpty()
     }
 
     fun isNameEmpty(): Boolean {

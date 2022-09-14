@@ -87,12 +87,10 @@ class FullNumberAddFragment(private var filter: Filter?) :
     }
 
     private fun setExistNumberChecking() {
-        viewModel.checkFilterExist(filter?.filter.orEmpty(),
-            filter?.isBlackFilter.isTrue())
+        viewModel.checkFilterExist(filter?.filter.orEmpty(), filter?.isBlackFilter.isTrue())
         binding?.fullNumberAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
             val phoneNumber: Phonenumber.PhoneNumber? = try {
-                phoneUtil.parse(it.orEmpty(),
-                    countryCodeMap?.keyAt(binding?.fullNumberCountryCode?.selectedItemPosition.orZero()))
+                phoneUtil.parse(it.orEmpty(), countryCodeMap?.keyAt(binding?.fullNumberCountryCode?.selectedItemPosition.orZero()))
             } catch (e: Exception) {
                 e.printStackTrace()
                 null

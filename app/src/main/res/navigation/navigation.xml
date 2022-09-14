@@ -70,7 +70,7 @@
         android:name="com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragment"
         android:label="@string/details">
         <argument
-            android:name="phone"
+            android:name="number"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />

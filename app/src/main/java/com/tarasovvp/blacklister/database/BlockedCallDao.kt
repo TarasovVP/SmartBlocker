@@ -14,8 +14,8 @@ interface BlockedCallDao {
     @Query("SELECT * FROM blockedCall")
     fun allBlockedCalls(): List<BlockedCall>
 
-    @Query("SELECT * FROM blockedCall WHERE phone = :phone")
-    fun blockedCallsByPhone(phone: String): List<BlockedCall>
+    @Query("SELECT * FROM blockedCall WHERE number = :number")
+    fun blockedCallsByPhone(number: String): List<BlockedCall>
 
     @Query("delete from blockedcall where id in (:callIdList)")
     fun deleteBlockCalls(callIdList: List<Int>)

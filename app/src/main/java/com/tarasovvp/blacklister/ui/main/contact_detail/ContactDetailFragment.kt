@@ -31,7 +31,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setPriority()
-        args.phone?.filter { it.isDigit() || it == PLUS_CHAR }?.let { phone ->
+        args.number?.filter { it.isDigit() || it == PLUS_CHAR }?.let { phone ->
             if (phone.isEmpty()) {
                 viewModel.contactDetailLiveData.postValue(Contact(name = getString(R.string.hidden)))
             } else {

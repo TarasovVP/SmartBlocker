@@ -150,7 +150,8 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
     val projection = arrayListOf(CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
         CallLog.Calls.TYPE,
-        CallLog.Calls.DATE)
+        CallLog.Calls.DATE,
+        CallLog.Calls.CACHED_NORMALIZED_NUMBER)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
     }
@@ -166,19 +167,20 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
         while (logCallCursor.moveToNext()) {
             val logCall = LogCall()
             logCall.name = logCallCursor.getString(0)
-            logCall.phone = logCallCursor.getString(1)
+            logCall.number = logCallCursor.getString(1)
             logCall.type = logCallCursor.getString(2)
             logCall.time = logCallCursor.getString(3)
+            logCall.normalizedNumber = logCallCursor.getString(4)
             logCall.photoUrl =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) logCallCursor.getString(4) else ContactRepository.getContactByPhone(
-                    logCall.phone.orEmpty())?.photoUrl
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) logCallCursor.getString(5) else ContactRepository.getContactByPhone(
+                    logCall.number.orEmpty())?.photoUrl
             logCallList.add(logCall)
         }
     }
     return logCallList
 }
 
-fun Context.deleteLastBlockedCall(phone: String): Boolean {
+fun Context.deleteLastBlockedCall(number: String): Boolean {
     val projection = arrayListOf(
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
@@ -197,28 +199,28 @@ fun Context.deleteLastBlockedCall(phone: String): Boolean {
         "${CallLog.Calls.DATE} $DESC"
     )
     Log.e("blockTAG",
-        "Extensions deleteLastMissedCall phone $phone currentTimeMillis ${System.currentTimeMillis()}")
+        "Extensions deleteLastMissedCall phone $number currentTimeMillis ${System.currentTimeMillis()}")
     cursor?.use {
         while (cursor.moveToNext()) {
             val name = cursor.getString(0)
-            val number: String? = cursor.getString(1)
+            val callNumber: String? = cursor.getString(1)
             val type: String? = cursor.getString(2)
             val time: String? = cursor.getString(3)
             val id: String? = cursor.getString(4)
-            if (phone == number && type == REJECTED_CALL) {
+            if (callNumber == callNumber && type == REJECTED_CALL) {
                 try {
                     val blockedCall = BlockedCall()
                     blockedCall.callId = id
                     blockedCall.time = time
                     blockedCall.name = name
-                    blockedCall.phone = number
+                    blockedCall.number = callNumber
                     blockedCall.type = BLOCKED_CALL
                     blockedCall.photoUrl =
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) cursor.getString(5) else ContactRepository.getContactByPhone(
-                            blockedCall.phone.orEmpty())?.photoUrl
+                            blockedCall.number.orEmpty())?.photoUrl
                     BlockedCallRepository.insertBlockedCall(blockedCall)
                     Log.e("blockTAG",
-                        "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL phone $phone name ${blockedCall.name} time $time phone $number type $type id $id")
+                        "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL phone $callNumber name ${blockedCall.name} time $time phone $callNumber type $type id $id")
                     val queryString =
                         "${CALL_ID}'$id' AND ${CALL_DATE}'$time' AND ${CALL_TYPE}'$REJECTED_CALL'"
                     Log.e("blockTAG", "Extensions delete queryString $queryString")
