@@ -16,6 +16,10 @@ object BlockedCallRepository {
         return dao?.allBlockedCalls()
     }
 
+    fun blockedCallsByPhone(phone: String): List<BlockedCall>? {
+        return dao?.blockedCallsByPhone(phone)
+    }
+
     fun deleteBlockedCalls(callList: List<Call>) {
         dao?.deleteBlockCalls(callList.map { it.id })
     }

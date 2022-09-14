@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.tarasovvp.blacklister.model.BlockedCall
+import com.tarasovvp.blacklister.model.Contact
 
 @Dao
 interface BlockedCallDao {
@@ -12,6 +13,9 @@ interface BlockedCallDao {
 
     @Query("SELECT * FROM blockedCall")
     fun allBlockedCalls(): List<BlockedCall>
+
+    @Query("SELECT * FROM blockedCall WHERE phone = :phone")
+    fun blockedCallsByPhone(phone: String): List<BlockedCall>
 
     @Query("delete from blockedcall where id in (:callIdList)")
     fun deleteBlockCalls(callIdList: List<Int>)

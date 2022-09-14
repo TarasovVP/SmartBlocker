@@ -4,95 +4,107 @@
 
     <data>
         <import type="android.view.View" />
+
         <variable
             name="contact"
             type="com.tarasovvp.blacklister.model.Contact" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_16">
+        android:animateLayoutChanges="true"
+        android:fillViewport="true"
+        android:padding="@dimen/padding_16"
+        app:layout_constraintBottom_toTopOf="@+id/contact_detail_add_filter"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/container"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/filter_detail_add_filter"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/contact_detail_priority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_10"
+                android:text="@string/prioritness"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/contact_detail_avatar"
+                android:layout_width="@dimen/margin_100"
+                android:layout_height="@dimen/margin_100"
+                android:layout_marginTop="@dimen/margin_25"
+                app:circleImageUrl="@{contact.photoUrl}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/contact_detail_type"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:imageResource="@{contact.contactTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/contact_detail_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/contact_detail_avatar" />
+
+            <TextView
+                android:id="@+id/contact_detail_name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:gravity="center"
+                android:text="@{contact.name}"
+                android:textSize="@dimen/text_size_24"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/contact_detail_avatar" />
 
-                <TextView
-                    android:id="@+id/filter_detail_priority"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/padding_10"
-                    android:text="@string/prioritness"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/contact_detail_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:gravity="center"
+                android:text="@{contact.phone}"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintTop_toBottomOf="@+id/contact_detail_name" />
 
-                <ImageView
-                    android:id="@+id/filter_detail_avatar"
-                    android:layout_width="@dimen/margin_100"
-                    android:layout_height="@dimen/margin_100"
-                    android:layout_marginTop="@dimen/margin_25"
-                    app:circleImageUrl="@{contact.photoUrl}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/contact_detail_add_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:text="@string/add_filter"
+                app:layout_constraintTop_toBottomOf="@+id/contact_detail_phone"/>
 
-                <ImageView
-                    android:id="@+id/filter_detail_type"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    app:imageResource="@{contact.contactTypeIcon}"
-                    app:layout_constraintBottom_toBottomOf="@+id/filter_detail_avatar"
-                    app:layout_constraintEnd_toEndOf="@+id/filter_detail_avatar" />
+            <ExpandableListView
+                android:id="@+id/contact_detail_filter_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:groupIndicator="@null"
+                android:listSelector="@android:color/transparent"
+                app:layout_constraintTop_toBottomOf="@+id/contact_detail_add_filter" />
 
-                <TextView
-                    android:id="@+id/filter_detail_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:text="@{contact.name}"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_24"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_detail_avatar" />
+            <TextView
+                android:id="@+id/contact_detail_blocked_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:text="@string/blocked_calls_history"
+                app:layout_constraintTop_toBottomOf="@+id/contact_detail_filter_list" />
 
-                <TextView
-                    android:id="@+id/filter_detail_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:text="@{contact.phone}"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_24"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_detail_name" />
+            <LinearLayout
+                android:id="@+id/contact_detail_blocked_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/contact_detail_blocked_title"/>
 
-                <ExpandableListView
-                    android:id="@+id/filter_detail_filter_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_0"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:groupIndicator="@null"
-                    android:listSelector="@android:color/transparent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_detail_phone" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <Button
-            android:id="@+id/filter_detail_add_filter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_filter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.core.widget.NestedScrollView></layout>
+

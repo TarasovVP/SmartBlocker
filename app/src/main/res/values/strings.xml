@@ -95,7 +95,7 @@
     <string name="prioritness">Priority: </string>
     <string name="black_list_criteria">Blacklist match criteria</string>
     <string name="white_list_criteria">Whitelist match criteria</string>
-    <string name="add_filter">Add filter</string>
+    <string name="add_filter">Add to filter</string>
     <string name="choose_all">Select All</string>
     <string name="hidden">Hidden</string>
     <string name="blocked_calls">%s calls blocked</string>
@@ -147,4 +147,6 @@
     <string name="filter">Фильтр</string>
     <string name="choose_least_one_filter">Выберите минимум один фильтр</string>
     <string name="delete_">Удалить?</string>
+    <string name="contact_filter_match">Найдено %s совпадений из %s</string>
+    <string name="blocked_calls_history">История блокировки номера</string>
 </resources>

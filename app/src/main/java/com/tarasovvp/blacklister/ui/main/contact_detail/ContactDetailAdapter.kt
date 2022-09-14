@@ -14,7 +14,7 @@ import com.tarasovvp.blacklister.model.Filter
 
 class ContactDetailAdapter(
     var titleList: ArrayList<String>,
-    var filterListMap: HashMap<String, List<Filter>>,
+    var filterListMap: HashMap<String, List<Filter>>
 ) :
     BaseExpandableListAdapter() {
 
@@ -45,7 +45,7 @@ class ContactDetailAdapter(
         groupPosition: Int,
         isExpanded: Boolean,
         convertView: View?,
-        parent: ViewGroup?,
+        parent: ViewGroup?
     ): View {
         val rootView = convertView
             ?: DataBindingUtil.inflate<ItemExpandableHeaderBinding>(LayoutInflater.from(parent?.context),
@@ -69,14 +69,16 @@ class ContactDetailAdapter(
         childPosition: Int,
         isLastChild: Boolean,
         convertView: View?,
-        parent: ViewGroup?,
+        parent: ViewGroup?
     ): View {
-        DataBindingUtil.inflate<ItemFilterSmallBinding>(LayoutInflater.from(parent?.context),
-            R.layout.item_filter_small, parent, false).apply {
-            filterListMap[titleList[groupPosition]]?.get(childPosition)?.let { filter ->
-                this.filter = filter
-            }
-            return root
-        }
+        return convertView
+            ?: DataBindingUtil.inflate<ItemFilterSmallBinding>(LayoutInflater.from(parent?.context),
+                R.layout.item_filter_small,
+                parent,
+                false).apply {
+                filterListMap[titleList[groupPosition]]?.get(childPosition)?.let { filter ->
+                    this.filter = filter
+                }
+            }.root
     }
 }
