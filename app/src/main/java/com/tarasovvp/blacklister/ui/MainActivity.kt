@@ -21,6 +21,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.MainNavigationDirections
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.DIALOG
 import com.tarasovvp.blacklister.databinding.ActivityMainBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -103,13 +104,33 @@ class MainActivity : AppCompatActivity() {
 
             bottomNavigationView = binding?.bottomNav
             bottomNavigationView?.setupWithNavController(this)
-
             toolbar = binding?.toolbar
             toolbar?.setupWithNavController(this)
+            bottomNavigationView?.setOnItemReselectedListener {
+                Log.e("adapterTAG",
+                    "MainActivity setOnItemReselectedListener this ${navController?.currentDestination?.displayName} item ${it.title}")
+            }
+            navController?.addOnDestinationChangedListener { _, destination, _ ->
+                Log.e("adapterTAG",
+                    "MainActivity addOnDestinationChangedListener destination.displayName ${destination.displayName} navigatorName ${destination.navigatorName}")
+                if (destination.navigatorName == DIALOG) return@addOnDestinationChangedListener
+                 bottomNavigationView?.isVisible =
+                    navigationScreens.contains(destination.id)
+                toolbar?.menu?.clear()
+                when {
+                    navigationScreens.contains(destination.id) -> {
+                        binding?.toolbar?.navigationIcon = null
+                        toolbar?.inflateMenu(R.menu.toolbar_search)
+                    }
+                }
+            }
         }
         observeLiveData()
-        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNotNull().not()) {
-            Log.e("getAllDataTAG", "MainActivity isOnBoardingSeen && isLoggedInUser getAllData() savedInstanceState $savedInstanceState")
+        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser()
+                .isTrue() && savedInstanceState.isNotNull().not()
+        ) {
+            Log.e("getAllDataTAG",
+                "MainActivity isOnBoardingSeen && isLoggedInUser getAllData() savedInstanceState $savedInstanceState")
             getAllData()
         }
     }
@@ -160,7 +181,8 @@ class MainActivity : AppCompatActivity() {
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showMessage(errorMessage, true)
-                Log.e("getAllDataTAG", "MainActivity exceptionLiveData setProgressVisibility(false)")
+                Log.e("getAllDataTAG",
+                    "MainActivity exceptionLiveData setProgressVisibility(false)")
                 setMainProgressVisibility(false)
             }
             progressStatusLiveData.safeSingleObserve(this@MainActivity) { title ->
@@ -185,7 +207,8 @@ class MainActivity : AppCompatActivity() {
 
     fun getAllData() {
         if (checkPermissions().isTrue() && isRecreating.not()) {
-            Log.e("getAllDataTAG", "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true) isChangingConfigurations $isChangingConfigurations isFinishing $isFinishing isRecreating $isRecreating")
+            Log.e("getAllDataTAG",
+                "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true) isChangingConfigurations $isChangingConfigurations isFinishing $isFinishing isRecreating $isRecreating")
             setMainProgressVisibility(true)
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 Log.e("getAllDataTAG",

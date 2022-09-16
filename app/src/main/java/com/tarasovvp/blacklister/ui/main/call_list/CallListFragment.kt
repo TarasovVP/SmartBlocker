@@ -27,6 +27,7 @@ class CallListFragment :
     private var isDeleteMode = false
 
     override fun createAdapter(): BaseAdapter<Call>? {
+        Log.e("adapterTAG", "CallListFragment createAdapter callList?.size ${callList?.size}")
         return context?.let {
             CallAdapter(object : CallClickListener {
                 override fun onCallClick(number: String) {

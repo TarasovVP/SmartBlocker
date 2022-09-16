@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.filter_list
 
+import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
@@ -26,6 +27,7 @@ open class FilterListFragment :
     private var selectedFilterItems: BooleanArray = booleanArrayOf(false, false, false)
 
     override fun createAdapter(): BaseAdapter<Filter>? {
+        Log.e("adapterTAG", "FilterListFragment createAdapter filterList?.size ${filterList?.size}")
         return context?.let {
             FilterAdapter(object : FilterClickListener {
                 override fun onFilterClick(filter: Filter) {

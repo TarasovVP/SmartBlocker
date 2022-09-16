@@ -37,21 +37,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
     abstract fun searchDataList()
     abstract fun getData()
 
-    private fun RecyclerView.initRecyclerView() {
-        layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        this.adapter = this@BaseListFragment.adapter
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        (activity as MainActivity).toolbar?.navigationIcon = null
-        recyclerView?.initRecyclerView()
-        if (context?.checkPermissions().isTrue()) {
-            swipeRefresh?.isRefreshing = true
-            getData()
-        } else {
-            permissionLauncher.launch(permissionsArray())
+
+        recyclerView?.apply {
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            this.adapter = this@BaseListFragment.adapter
         }
         swipeRefresh?.setOnRefreshListener {
             getData()
@@ -60,6 +52,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
 
     override fun onResume() {
         super.onResume()
+        if (context?.checkPermissions().isTrue()) {
+            swipeRefresh?.isRefreshing = true
+            getData()
+        } else {
+            permissionLauncher.launch(permissionsArray())
+        }
+        //Log.e("adapterTAG", "BaseListFragment onResume adapter?.itemCount ${adapter?.itemCount} adapter $adapter")
         (activity as MainActivity).apply {
             val searchView = SearchView(this)
             toolbar?.menu?.findItem(R.id.search_menu_item)?.apply {

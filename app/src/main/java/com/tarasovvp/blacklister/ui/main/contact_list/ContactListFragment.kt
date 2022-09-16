@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contact_list
 
+import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
@@ -20,6 +21,7 @@ open class ContactListFragment :
     private var contactList: List<Contact>? = null
 
     override fun createAdapter(): BaseAdapter<Contact>? {
+        Log.e("adapterTAG", "ContactListFragment createAdapter contactList?.size ${contactList?.size}")
         return context?.let {
             ContactAdapter { phone ->
                 findNavController().navigate(ContactListFragmentDirections.startContactDetailFragment(

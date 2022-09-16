@@ -41,7 +41,6 @@
     <string name="change">Изменить</string>
     <string name="delete_filter_from_list">Номер %s удален</string>
     <string name="add_contact_to_black_list">Добавить %s в черный список?</string>
-    <string name="only_black_list">Только из черного списка</string>
     <string name="details">Детали</string>
     <string name="delete_black_list">Удалить из черного списка</string>
     <string name="add_black_list">Добавить в черный список</string>

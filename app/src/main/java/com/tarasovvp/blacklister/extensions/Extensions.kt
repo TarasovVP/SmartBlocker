@@ -50,7 +50,6 @@ import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
     block: suspend CoroutineScope.() -> Unit,
@@ -187,31 +186,31 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
     return logCallList
 }
 
-fun Context.deleteLastBlockedCall(number: String): Boolean {
-    Log.e("blockTAG",
-        "Extensions deleteLastMissedCall phone $number currentTimeMillis ${System.currentTimeMillis()}")
+fun Context.deleteLastBlockedCall(number: String) {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
             val blockedCall = cursor.createCallObject(true) as BlockedCall
             if (number == blockedCall.number && REJECTED_CALL == blockedCall.type) {
                 try {
-                    BlockedCallRepository.insertBlockedCall(blockedCall)
                     Log.e("blockTAG",
                         "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${blockedCall.name} time ${blockedCall.time} phone ${blockedCall.number} type ${blockedCall.type} id ${blockedCall.callId}")
-                    val queryString =
-                        "${CALL_ID}'${blockedCall.callId}'"
-                    Log.e("blockTAG", "Extensions delete queryString $queryString")
-                    this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), queryString, null)
+                    val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
+                        "${CALL_ID}'${blockedCall.callId}asdf'",
+                        null)
+                    if (result == 1) {
+                        BlockedCallRepository.insertBlockedCall(blockedCall)
+                    }
+                    Log.e("blockTAG",
+                        "Extensions delete callId ${blockedCall.callId} result $result")
+                    break
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
+                    BlockedCallRepository.insertBlockedCall(blockedCall)
                     Log.e("blockTAG", "Extensions delete Exception ${e.localizedMessage}")
-                    return false
                 }
-                return true
             }
         }
     }
-    return false
 }
 
 @BindingAdapter("bind:circleImageUrl")
