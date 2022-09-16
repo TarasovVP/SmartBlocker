@@ -16,7 +16,6 @@ class SingleOnBoardingFragment(private val onBoarding: OnBoarding) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).toolbar?.isVisible = false
         binding?.singleOnBoardingTitle?.text = getString(onBoarding.title)
         binding?.singleOnBoardingIcon?.setImageResource(onBoarding.icon)
     }

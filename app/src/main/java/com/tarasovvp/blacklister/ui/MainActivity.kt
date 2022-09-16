@@ -61,6 +61,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang
+            ?: Locale.getDefault().language)))
+    }
+
     override fun onStart() {
         super.onStart()
         callHandleReceiver = CallHandleReceiver {
@@ -86,6 +91,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Blacklister)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setNavController()
+        setToolBar()
+        setBottomNavigationView()
+        observeLiveData()
+        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNotNull().not()) {
+            Log.e("getAllDataTAG",
+                "MainActivity isOnBoardingSeen && isLoggedInUser getAllData() savedInstanceState $savedInstanceState")
+            getAllData()
+        }
+    }
+
+    private fun setNavController() {
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
@@ -101,43 +118,37 @@ class MainActivity : AppCompatActivity() {
                 }
             )
             this.graph = navGraph
-
-            bottomNavigationView = binding?.bottomNav
-            bottomNavigationView?.setupWithNavController(this)
-            toolbar = binding?.toolbar
-            toolbar?.setupWithNavController(this)
-            bottomNavigationView?.setOnItemReselectedListener {
-                Log.e("adapterTAG",
-                    "MainActivity setOnItemReselectedListener this ${navController?.currentDestination?.displayName} item ${it.title}")
-            }
-            navController?.addOnDestinationChangedListener { _, destination, _ ->
-                Log.e("adapterTAG",
-                    "MainActivity addOnDestinationChangedListener destination.displayName ${destination.displayName} navigatorName ${destination.navigatorName}")
-                if (destination.navigatorName == DIALOG) return@addOnDestinationChangedListener
-                 bottomNavigationView?.isVisible =
-                    navigationScreens.contains(destination.id)
-                toolbar?.menu?.clear()
-                when {
-                    navigationScreens.contains(destination.id) -> {
-                        binding?.toolbar?.navigationIcon = null
-                        toolbar?.inflateMenu(R.menu.toolbar_search)
-                    }
-                }
-            }
-        }
-        observeLiveData()
-        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser()
-                .isTrue() && savedInstanceState.isNotNull().not()
-        ) {
-            Log.e("getAllDataTAG",
-                "MainActivity isOnBoardingSeen && isLoggedInUser getAllData() savedInstanceState $savedInstanceState")
-            getAllData()
         }
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang
-            ?: Locale.getDefault().language)))
+    private fun setToolBar() {
+        toolbar = binding?.toolbar
+        navController?.let { toolbar?.setupWithNavController(it) }
+    }
+
+    private fun setBottomNavigationView() {
+        bottomNavigationView = binding?.bottomNav
+        navController?.let { bottomNavigationView?.setupWithNavController(it) }
+        bottomNavigationView?.setOnItemReselectedListener {
+        }
+        navController?.addOnDestinationChangedListener { _, destination, _ ->
+            Log.e("adapterTAG",
+                "MainActivity addOnDestinationChangedListener destination.displayName ${destination.displayName} navigatorName ${destination.navigatorName}")
+            if (destination.navigatorName == DIALOG) return@addOnDestinationChangedListener
+            bottomNavigationView?.isVisible = navigationScreens.contains(destination.id)
+            toolbar?.menu?.clear()
+            when {
+                navigationScreens.contains(destination.id) || destination.id == R.id.loginFragment -> {
+                    binding?.toolbar?.navigationIcon = null
+                    if (destination.id != R.id.loginFragment) {
+                        toolbar?.inflateMenu(R.menu.toolbar_search)
+                    }
+                    Log.e("adapterTAG",
+                        "MainActivity addOnDestinationChangedListener navigationScreens.contains(destination.id) || destination.id == R.id.loginFragment")
+                }
+            }
+            toolbar?.isVisible = destination.id != R.id.onBoardingFragment
+        }
     }
 
     fun startBlocker() {
