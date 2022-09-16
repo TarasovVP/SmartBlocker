@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
     private var callReceiver: CallReceiver? = null
-    private var isRecreating: Boolean = false
 
     var navigationScreens = arrayListOf(
         R.id.callListFragment,
@@ -95,9 +94,9 @@ class MainActivity : AppCompatActivity() {
         setToolBar()
         setBottomNavigationView()
         observeLiveData()
+        Log.e("getAllDataTAG",
+            "MainActivity isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen} isLoggedInUser ${BlackListerApp.instance?.isLoggedInUser().isTrue()} savedInstanceState ${savedInstanceState.isNotNull().not()}")
         if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNotNull().not()) {
-            Log.e("getAllDataTAG",
-                "MainActivity isOnBoardingSeen && isLoggedInUser getAllData() savedInstanceState $savedInstanceState")
             getAllData()
         }
     }
@@ -217,9 +216,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getAllData() {
-        if (checkPermissions().isTrue() && isRecreating.not()) {
+        if (checkPermissions().isTrue()) {
             Log.e("getAllDataTAG",
-                "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true) isChangingConfigurations $isChangingConfigurations isFinishing $isFinishing isRecreating $isRecreating")
+                "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true) isChangingConfigurations $isChangingConfigurations isFinishing $isFinishing")
             setMainProgressVisibility(true)
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
                 Log.e("getAllDataTAG",
@@ -230,7 +229,6 @@ class MainActivity : AppCompatActivity() {
                     "MainActivity getCurrentUser isLoggedInUser().not() getAllData()")
                 mainViewModel.getAllData()
             }
-            isRecreating = false
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
         }

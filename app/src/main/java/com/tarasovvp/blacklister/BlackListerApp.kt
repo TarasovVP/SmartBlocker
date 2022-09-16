@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister
 
 import android.app.Application
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.room.Room
 import com.google.android.gms.ads.MobileAds
@@ -29,6 +30,7 @@ class BlackListerApp : Application() {
             .allowMainThreadQueries()
             .build()
         auth = Firebase.auth
+        Log.e("authTAG", "BlackListerApp onCreate auth?.uid ${instance?.auth?.uid}")
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)
         Settings.loadSettingsHelper(this, this.packageName)

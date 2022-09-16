@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.repository
 
 import android.content.Intent
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
@@ -18,11 +17,12 @@ import com.tarasovvp.blacklister.model.WhiteFilter
 
 object RealDataBaseRepository {
 
-    val database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
-    private val currentUserDatabase =
-        database.child(USERS).child(FirebaseAuth.getInstance().currentUser?.uid.orEmpty())
+    var database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
+    private var currentUserDatabase =
+        database.child(USERS).child(BlackListerApp.instance?.auth?.currentUser?.uid.orEmpty())
 
     fun getCurrentUser(result: (CurrentUser?) -> Unit) {
+        if (currentUserDatabase.key == USERS) currentUserDatabase = currentUserDatabase.child(BlackListerApp.instance?.auth?.currentUser?.uid.orEmpty())
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener

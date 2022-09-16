@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.settings.account_detals
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.repository.AuthRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
@@ -23,6 +24,7 @@ class AccountDetailsViewModel(application: Application) : BaseViewModel(applicat
     fun changePassword(currentPassword: String, newPassword: String) {
         showProgress()
         authRepository.changePassword(currentPassword, newPassword) {
+            BlackListerApp.instance?.auth = null
             successChangePasswordLiveData.postValue(true)
             hideProgress()
         }

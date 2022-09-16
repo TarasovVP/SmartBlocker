@@ -1,6 +1,8 @@
 package com.tarasovvp.blacklister.ui.start.login
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,16 +12,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.EMAIL
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.constants.Constants.SERVER_CLIENT_ID
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.deleteLastBlockedCall
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
@@ -82,8 +89,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
+                Log.e("authTAG", "LoginFragment successSignInLiveData auth?.uid ${BlackListerApp.instance?.auth?.uid}")
                 (activity as MainActivity).getAllData()
                 findNavController().navigate(R.id.blackFilterListFragment)
+                Log.e("authTAG", "LoginFragment successSignInLiveData navigate(R.id.blackFilterListFragment) auth?.uid ${BlackListerApp.instance?.auth?.uid}")
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.password_reset_text), false)

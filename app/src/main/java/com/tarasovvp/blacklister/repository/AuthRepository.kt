@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.repository
 
 import android.content.Intent
+import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -40,6 +41,7 @@ object AuthRepository {
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    Log.e("authTAG", "AuthRepository firebaseAuthWithGoogle auth?.uid ${BlackListerApp.instance?.auth?.uid}")
                     result.invoke()
                 } else {
                     sendExceptionBroadCast(task.exception?.localizedMessage.orEmpty())
