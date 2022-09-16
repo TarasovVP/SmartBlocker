@@ -33,7 +33,7 @@ open class ContactListFragment :
     override fun initView() {
         swipeRefresh = binding?.contactListRefresh
         recyclerView = binding?.contactListRecyclerView
-        emptyListText = binding?.contactListEmpty
+        emptyStateContainer = binding?.contactListEmpty
         binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
             searchDataList()
         }

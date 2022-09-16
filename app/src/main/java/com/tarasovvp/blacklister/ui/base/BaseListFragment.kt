@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui.base
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
@@ -29,7 +29,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
 
     var swipeRefresh: SwipeRefreshLayout? = null
     var recyclerView: RecyclerView? = null
-    var emptyListText: TextView? = null
+    var emptyStateContainer: IncludeEmptyStateBinding? = null
     protected var searchQuery: String? = ""
 
     abstract fun createAdapter(): BaseAdapter<D>?
@@ -58,7 +58,6 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
         } else {
             permissionLauncher.launch(permissionsArray())
         }
-        //Log.e("adapterTAG", "BaseListFragment onResume adapter?.itemCount ${adapter?.itemCount} adapter $adapter")
         (activity as MainActivity).apply {
             val searchView = SearchView(this)
             toolbar?.menu?.findItem(R.id.search_menu_item)?.apply {
@@ -95,7 +94,9 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
         }
 
     protected open fun checkDataListEmptiness(newData: List<D>) {
-        emptyListText?.isVisible = newData.isEmpty()
+        emptyStateContainer?.root?.isVisible = newData.isEmpty()
+        emptyStateContainer?.emptyStateTitle?.text = String.format(getString(R.string.empty_state_title), (activity as MainActivity).toolbar?.title)
+        emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)
         if (newData.isEmpty()) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()

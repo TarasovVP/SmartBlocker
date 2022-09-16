@@ -21,13 +21,9 @@
                 android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <TextView
+        <include
             android:id="@+id/filter_list_empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/list_empty"
-            android:visibility="gone" />
+            layout="@layout/include_empty_state" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/filter_list_fab_new"

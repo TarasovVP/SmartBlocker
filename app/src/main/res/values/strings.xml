@@ -149,4 +149,6 @@
     <string name="contact_filter_match">Найдено %s совпадений из %s</string>
     <string name="blocked_calls_history">История блокировки номера</string>
     <string name="only_black_list">Только с признаками блокировки</string>
+    <string name="empty_state_title">В %s ничего нет.</string>
+    <string name="data_collecting">Сбор информации</string>
 </resources>

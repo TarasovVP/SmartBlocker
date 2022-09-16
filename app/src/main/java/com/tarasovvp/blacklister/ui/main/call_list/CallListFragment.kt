@@ -64,7 +64,7 @@ class CallListFragment :
         binding?.apply {
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
-            emptyListText = callListEmpty
+            emptyStateContainer = callListEmpty
             setToolBarMenuClickListener()
             callListCheck.setOnCheckedChangeListener { _, checked ->
                 getData()

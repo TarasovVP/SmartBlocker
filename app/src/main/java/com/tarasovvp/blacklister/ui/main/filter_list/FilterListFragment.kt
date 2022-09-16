@@ -53,7 +53,7 @@ open class FilterListFragment :
     override fun initView() {
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
-        emptyListText = binding?.filterListEmpty
+        emptyStateContainer = binding?.filterListEmpty
         setClickListeners()
         setToolBarMenuClickListener()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
