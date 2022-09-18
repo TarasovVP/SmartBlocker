@@ -51,11 +51,12 @@ open class FilterListFragment :
     }
 
     override fun initView() {
+        findNavController().currentDestination?.label = getString(if (this@FilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+        (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
         emptyStateContainer = binding?.filterListEmpty
         setClickListeners()
-        setToolBarMenuClickListener()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
             viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty(),
                 this is BlackFilterListFragment)
@@ -79,45 +80,54 @@ open class FilterListFragment :
         }
     }
 
-    private fun setToolBarMenuClickListener() {
-        (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.delete_menu_item -> {
-                    val direction =
-                        if (this@FilterListFragment is BlackFilterListFragment) {
-                            BlackFilterListFragmentDirections.startDeleteFilterDialog()
-                        } else {
-                            WhiteFilterListFragmentDirections.startDeleteFilterDialog()
-                        }
-                    this@FilterListFragment.findNavController().navigate(direction)
-                    true
-                }
-                R.id.close_menu_item -> {
-                    (adapter as FilterAdapter).apply {
-                        isDeleteMode = false
-                        filterList?.forEach {
-                            it.isCheckedForDelete = false
-                        }
-                        notifyDataSetChanged()
-                    }
-                    true
-                }
-                else -> return@setOnMenuItemClickListener true
-            }
-        }
-    }
-
     private fun changeDeleteMode() {
+        Log.e("destinationTAG", "FilterList changeDeleteMode isDeleteMode $isDeleteMode")
         isDeleteMode = isDeleteMode.not()
         (adapter as FilterAdapter).apply {
             isDeleteMode = this@FilterListFragment.isDeleteMode
             notifyDataSetChanged()
         }
+        findNavController().currentDestination?.label = if (isDeleteMode) getString(R.string.delete_) else getString(if (this@FilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.apply {
             title =
                 if (isDeleteMode) getString(R.string.delete_) else getString(if (this@FilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
             menu?.clear()
-            inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
+            if (isDeleteMode) {
+                inflateMenu(R.menu.toolbar_delete)
+                setDeleteMenuClickListener()
+            } else {
+                inflateMenu(R.menu.toolbar_search)
+            }
+        }
+    }
+
+    private fun setDeleteMenuClickListener() {
+        (activity as MainActivity).toolbar?.apply {
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.delete_menu_item -> {
+                        val direction =
+                            if (this@FilterListFragment is BlackFilterListFragment) {
+                                BlackFilterListFragmentDirections.startDeleteFilterDialog()
+                            } else {
+                                WhiteFilterListFragmentDirections.startDeleteFilterDialog()
+                            }
+                        this@FilterListFragment.findNavController().navigate(direction)
+                        true
+                    }
+                    R.id.close_menu_item -> {
+                        (adapter as FilterAdapter).apply {
+                            isDeleteMode = false
+                            filterList?.forEach {
+                                it.isCheckedForDelete = false
+                            }
+                            notifyDataSetChanged()
+                        }
+                        true
+                    }
+                    else -> return@setOnMenuItemClickListener true
+                }
+            }
         }
     }
 

@@ -11,7 +11,6 @@
             android:id="@+id/empty_state_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_data_collectlng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_20"
             android:gravity="center"
-            android:text="@string/data_collecting"
             app:layout_constraintTop_toBottomOf="@+id/empty_state_icon"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

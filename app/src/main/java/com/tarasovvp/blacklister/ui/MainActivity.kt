@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
     private var navController: NavController? = null
-    var bottomNavigationView: BottomNavigationView? = null
+    private var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
 
     val mainViewModel: MainViewModel by viewModels()
@@ -43,8 +43,9 @@ class MainActivity : AppCompatActivity() {
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
     private var callReceiver: CallReceiver? = null
+    private var isDialog: Boolean = false
 
-    var navigationScreens = arrayListOf(
+    private var navigationScreens = arrayListOf(
         R.id.callListFragment,
         R.id.contactListFragment,
         R.id.blackFilterListFragment,
@@ -93,10 +94,15 @@ class MainActivity : AppCompatActivity() {
         setNavController()
         setToolBar()
         setBottomNavigationView()
+        setOnDestinationChangedListener()
         observeLiveData()
         Log.e("getAllDataTAG",
-            "MainActivity isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen} isLoggedInUser ${BlackListerApp.instance?.isLoggedInUser().isTrue()} savedInstanceState ${savedInstanceState.isNotNull().not()}")
-        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNotNull().not()) {
+            "MainActivity isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen} isLoggedInUser ${
+                BlackListerApp.instance?.isLoggedInUser().isTrue()
+            } savedInstanceState ${savedInstanceState.isNotNull().not()}")
+        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser()
+                .isTrue() && savedInstanceState.isNotNull().not()
+        ) {
             getAllData()
         }
     }
@@ -130,20 +136,38 @@ class MainActivity : AppCompatActivity() {
         navController?.let { bottomNavigationView?.setupWithNavController(it) }
         bottomNavigationView?.setOnItemReselectedListener {
         }
+        bottomNavigationView?.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.blackFilterListFragment -> navController?.navigate(R.id.blackFilterListFragment)
+                R.id.whiteFilterListFragment -> navController?.navigate(R.id.whiteFilterListFragment)
+                R.id.contactListFragment -> navController?.navigate(R.id.contactListFragment)
+                R.id.callListFragment -> navController?.navigate(R.id.callListFragment)
+            }
+            return@setOnItemSelectedListener true
+        }
+    }
+
+    private fun setOnDestinationChangedListener() {
         navController?.addOnDestinationChangedListener { _, destination, _ ->
-            Log.e("adapterTAG",
-                "MainActivity addOnDestinationChangedListener destination.displayName ${destination.displayName} navigatorName ${destination.navigatorName}")
-            if (destination.navigatorName == DIALOG) return@addOnDestinationChangedListener
+            Log.e("destinationTAG",
+                "MainActivity addOnDestinationChangedListener isDialog $isDialog binding?.title ${binding?.toolbar?.title} title ${toolbar?.title} toolbar?.navigationIcon ${toolbar?.navigationIcon}")
+            if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
+                toolbar?.navigationIcon = null
+            }
+            if (destination.navigatorName == DIALOG || isDialog) {
+                isDialog = isDialog.not()
+                return@addOnDestinationChangedListener
+            }
+            Log.e("destinationTAG", "MainActivity return@addOnDestinationChangedListener after")
             bottomNavigationView?.isVisible = navigationScreens.contains(destination.id)
             toolbar?.menu?.clear()
-            when {
-                navigationScreens.contains(destination.id) || destination.id == R.id.loginFragment -> {
-                    binding?.toolbar?.navigationIcon = null
-                    if (destination.id != R.id.loginFragment) {
-                        toolbar?.inflateMenu(R.menu.toolbar_search)
+            if (navigationScreens.contains(destination.id)) {
+                toolbar?.inflateMenu(R.menu.toolbar_search)
+                toolbar?.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem?.itemId) {
+                        R.id.settings_menu_item -> navController?.navigate(R.id.startSettingsListFragment)
                     }
-                    Log.e("adapterTAG",
-                        "MainActivity addOnDestinationChangedListener navigationScreens.contains(destination.id) || destination.id == R.id.loginFragment")
+                    return@setOnMenuItemClickListener true
                 }
             }
             toolbar?.isVisible = destination.id != R.id.onBoardingFragment
