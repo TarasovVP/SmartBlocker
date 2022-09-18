@@ -59,6 +59,7 @@ class AddViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun deleteFilter(filter: Filter) {
+        showProgress()
         launch {
             if (filter.isBlackFilter) {
                 blackFilterRepository.deleteBlackFilter(filter as BlackFilter) {
@@ -69,6 +70,7 @@ class AddViewModel(application: Application) : BaseViewModel(application) {
                     deleteFilterLiveData.postValue(filter.filter)
                 }
             }
+            hideProgress()
         }
     }
 

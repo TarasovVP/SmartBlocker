@@ -7,10 +7,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentAddBinding
-import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 
@@ -39,9 +40,11 @@ class AddFragment : BaseBindingFragment<FragmentAddBinding>() {
                 menu?.clear()
                 inflateMenu(R.menu.toolbar_filter)
                 menu?.findItem(R.id.filter_menu_item)?.apply {
-                    icon = ContextCompat.getDrawable(context, if (args.filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
+                    icon = ContextCompat.getDrawable(context,
+                        if (args.filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
                     setOnMenuItemClickListener {
-                        findNavController().navigate(AddFragmentDirections.startChangeFilterDialog(args.filter))
+                        findNavController().navigate(AddFragmentDirections.startChangeFilterDialog(
+                            args.filter))
                         return@setOnMenuItemClickListener true
                     }
                 }
@@ -62,13 +65,19 @@ class AddFragment : BaseBindingFragment<FragmentAddBinding>() {
                 lifecycle
             )
         }
-
-        binding?.addViewPager?.isUserInputEnabled = false
-        binding?.addViewPager?.adapter = adapter
-        binding?.addRadioGroup?.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.add_full_number -> binding?.addViewPager?.setCurrentItem(0, false)
-                R.id.add_filter -> binding?.addViewPager?.setCurrentItem(1, false)
+        binding?.apply {
+            addViewPager.isUserInputEnabled = false
+            addViewPager.adapter = adapter
+            addRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.add_full_number -> addViewPager.setCurrentItem(0, false)
+                    R.id.add_filter -> addViewPager.setCurrentItem(1, false)
+                }
+            }
+            Log.e("validTAG", "AddFragment getUserCountry ${args.filter?.filter.getPhoneNumber(context?.getUserCountry().orEmpty())} isValidNumber ${PhoneNumberUtil.getInstance().isValidNumber(args.filter?.filter.getPhoneNumber(context?.getUserCountry().orEmpty()))}")
+            if (args.filter?.filter.isValidPhoneNumber(context?.getUserCountry().orEmpty()).not()) {
+                addViewPager.setCurrentItem(R.id.add_filter, false)
+                addRadioGroup.check(R.id.add_filter)
             }
         }
     }

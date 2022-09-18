@@ -33,6 +33,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
@@ -385,4 +387,15 @@ private fun <T> ViewGroup.getViewsFromLayout(
         }
     }
     return views
+}
+
+fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try {
+    PhoneNumberUtil.getInstance().parse(this.orEmpty(), countryCode.uppercase())
+} catch (e: Exception) {
+    e.printStackTrace()
+    null
+}
+
+fun String?.isValidPhoneNumber(countryCode: String): Boolean {
+   return PhoneNumberUtil.getInstance().isValidNumber(getPhoneNumber(countryCode))
 }

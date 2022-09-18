@@ -37,7 +37,7 @@ class FullNumberAddFragment(private var filter: Filter?) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.fullNumberAddInput?.setText(filter?.filter.orEmpty())
+        binding?.fullNumberAddInput?.setText(if (filter?.filter.orEmpty().isValidPhoneNumber(context?.getUserCountry().orEmpty())) filter?.nationalNumber(context?.getUserCountry().orEmpty()) else filter?.filter.orEmpty())
         binding?.fullNumberAddIcon?.setImageResource(if (filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
         setCountrySpinner()
         initViewsWithData(filter, false)
@@ -73,8 +73,8 @@ class FullNumberAddFragment(private var filter: Filter?) :
                     position: Int,
                     id: Long,
                 ) {
-                    binding?.fullNumberAddInput?.setText(String.format("+%s",
-                        countryCodeMap?.valueAt(position)))
+                    binding?.fullNumberAddInput?.setText(String.format("+%s%s",
+                        countryCodeMap?.valueAt(position), filter?.nationalNumber(countryCodeMap?.valueAt(position).toString())))
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit

@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.model
 
 import android.os.Parcelable
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.extensions.getPhoneNumber
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -39,5 +40,8 @@ open class Filter(
     }
    fun isFilterIdentical(isStart: Boolean, isContain: Boolean, isEnd: Boolean): Boolean {
         return isFromDb && filter.isNotEmpty() && isStart == start &&isContain == contain && isEnd == end
+    }
+    fun nationalNumber(countryCode: String): String {
+        return filter.getPhoneNumber(countryCode)?.nationalNumber.toString()
     }
 }
