@@ -151,4 +151,5 @@
     <string name="only_black_list">Только с признаками блокировки</string>
     <string name="empty_state_title">В %s ничего нет.</string>
     <string name="data_collecting">Сбор информации</string>
+    <string name="no_country_code">No code</string>
 </resources>

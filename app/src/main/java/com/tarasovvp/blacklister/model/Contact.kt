@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
+import com.tarasovvp.blacklister.extensions.trimmed
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -18,7 +18,7 @@ data class Contact(
     var isBlackFilter: Boolean = false,
     var isWhiteFilter: Boolean = false,
 ) : Parcelable, BaseAdapter.MainData {
-    var trimmedPhone = phone.filter { it.isDigit() || it == PLUS_CHAR }
+    var trimmedPhone = phone.trimmed()
     fun contactTypeIcon(): Int {
         return when {
             isBlackFilter -> R.drawable.ic_block

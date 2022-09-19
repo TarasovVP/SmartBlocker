@@ -390,7 +390,7 @@ private fun <T> ViewGroup.getViewsFromLayout(
 }
 
 fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try {
-    PhoneNumberUtil.getInstance().parse(this.orEmpty(), countryCode.uppercase())
+    PhoneNumberUtil.getInstance().parse(this.trimmed(), countryCode.uppercase())
 } catch (e: Exception) {
     e.printStackTrace()
     null
@@ -399,3 +399,5 @@ fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try 
 fun String?.isValidPhoneNumber(countryCode: String): Boolean {
    return PhoneNumberUtil.getInstance().isValidNumber(getPhoneNumber(countryCode))
 }
+
+fun String?.trimmed() = this?.filter { it.isDigit() || it == Constants.PLUS_CHAR }.orEmpty()

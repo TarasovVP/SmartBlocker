@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFullNumberAddBinding
@@ -32,12 +31,14 @@ class FullNumberAddFragment(private var filter: Filter?) :
     override var layoutId = R.layout.fragment_full_number_add
     override val viewModelClass = AddViewModel::class.java
 
-    private var countryCodeMap: ArrayMap<String, Int>? = null
+    private var countryCodeMap: ArrayMap<String, Int?>? = null
     private var phoneUtil = PhoneNumberUtil.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.fullNumberAddInput?.setText(if (filter?.filter.orEmpty().isValidPhoneNumber(context?.getUserCountry().orEmpty())) filter?.nationalNumber(context?.getUserCountry().orEmpty()) else filter?.filter.orEmpty())
+        binding?.fullNumberAddInput?.setText(if (filter?.filter.orEmpty()
+                .isValidPhoneNumber(context?.getUserCountry().orEmpty())
+        ) filter?.nationalNumber(context?.getUserCountry().orEmpty()) else filter?.filter.orEmpty())
         binding?.fullNumberAddIcon?.setImageResource(if (filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
         setCountrySpinner()
         initViewsWithData(filter, false)
@@ -51,7 +52,8 @@ class FullNumberAddFragment(private var filter: Filter?) :
     }
 
     private fun setCountrySpinner() {
-        countryCodeMap = ArrayMap<String, Int>()
+        countryCodeMap = ArrayMap<String, Int?>()
+        countryCodeMap?.put(getString(R.string.no_country_code), null)
         Locale.getAvailableLocales().forEach { locale ->
             if (locale.country.isNotEmpty() && locale.country.isDigitsOnly()
                     .not()
@@ -64,8 +66,7 @@ class FullNumberAddFragment(private var filter: Filter?) :
                 android.R.layout.simple_spinner_item,
                 countryCodeMap?.keys.orEmpty().toTypedArray())
         }
-        countryAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding?.fullNumberCountryCode?.onItemSelectedListener =
+        binding?.fullNumberCountryCodeSpinner?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     spinner: AdapterView<*>?,
@@ -73,28 +74,28 @@ class FullNumberAddFragment(private var filter: Filter?) :
                     position: Int,
                     id: Long,
                 ) {
-                    binding?.fullNumberAddInput?.setText(String.format("+%s%s",
-                        countryCodeMap?.valueAt(position), filter?.nationalNumber(countryCodeMap?.valueAt(position).toString())))
+                    binding?.fullNumberCountryCodeValue?.text =
+                        if (countryCodeMap?.valueAt(position).isNotNull()) String.format("+%s",
+                            countryCodeMap?.valueAt(position)) else String.EMPTY
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
 
             }
-        binding?.fullNumberCountryCode?.adapter = countryAdapter
-        binding?.fullNumberCountryCode?.setSelection(countryCodeMap?.indexOfKey(Locale(Locale.getDefault().language,
+        binding?.fullNumberCountryCodeSpinner?.adapter = countryAdapter
+        binding?.fullNumberCountryCodeSpinner?.setSelection(countryCodeMap?.indexOfKey(Locale(Locale.getDefault().language,
             context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
             ?.uppercase()).orZero())
+        binding?.fullNumberCountryCodeValue?.text =
+            if (filter?.filter.orEmpty()
+                    .isValidPhoneNumber(context?.getUserCountry().orEmpty())
+            ) filter?.nationalNumber(context?.getUserCountry()
+                .orEmpty()) else filter?.filter.orEmpty()
     }
 
     private fun setExistNumberChecking() {
         viewModel.checkFilterExist(filter?.filter.orEmpty(), filter?.isBlackFilter.isTrue())
         binding?.fullNumberAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
-            val phoneNumber: Phonenumber.PhoneNumber? = try {
-                phoneUtil.parse(it.orEmpty(), countryCodeMap?.keyAt(binding?.fullNumberCountryCode?.selectedItemPosition.orZero()))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
             viewModel.checkFilterExist(it.toString(), filter?.isBlackFilter.isTrue())
         })
     }
