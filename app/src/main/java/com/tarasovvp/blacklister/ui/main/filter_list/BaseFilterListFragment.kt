@@ -16,7 +16,7 @@ import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
-open class FilterListFragment :
+open class BaseFilterListFragment :
     BaseListFragment<FragmentFilterListBinding, FilterListViewModel, Filter>() {
 
     override var layoutId = R.layout.fragment_filter_list
@@ -51,7 +51,7 @@ open class FilterListFragment :
     }
 
     override fun initView() {
-        findNavController().currentDestination?.label = getString(if (this@FilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+        findNavController().currentDestination?.label = getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
@@ -84,13 +84,13 @@ open class FilterListFragment :
         Log.e("destinationTAG", "FilterList changeDeleteMode isDeleteMode $isDeleteMode")
         isDeleteMode = isDeleteMode.not()
         (adapter as FilterAdapter).apply {
-            isDeleteMode = this@FilterListFragment.isDeleteMode
+            isDeleteMode = this@BaseFilterListFragment.isDeleteMode
             notifyDataSetChanged()
         }
-        findNavController().currentDestination?.label = if (isDeleteMode) getString(R.string.delete_) else getString(if (this@FilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+        findNavController().currentDestination?.label = if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.apply {
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@FilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
@@ -107,12 +107,12 @@ open class FilterListFragment :
                 when (menuItem.itemId) {
                     R.id.delete_menu_item -> {
                         val direction =
-                            if (this@FilterListFragment is BlackFilterListFragment) {
+                            if (this@BaseFilterListFragment is BlackFilterListFragment) {
                                 BlackFilterListFragmentDirections.startDeleteFilterDialog()
                             } else {
                                 WhiteFilterListFragmentDirections.startDeleteFilterDialog()
                             }
-                        this@FilterListFragment.findNavController().navigate(direction)
+                        this@BaseFilterListFragment.findNavController().navigate(direction)
                         true
                     }
                     R.id.close_menu_item -> {
@@ -134,14 +134,14 @@ open class FilterListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeObserve(viewLifecycleOwner) { filterList ->
-                this@FilterListFragment.filterList = filterList as ArrayList<Filter>
+                this@BaseFilterListFragment.filterList = filterList as ArrayList<Filter>
                 searchDataList()
             }
             filterHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 filterList?.let { setDataList(it) }
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                this@FilterListFragment.filterList?.removeAll { it.isCheckedForDelete }
+                this@BaseFilterListFragment.filterList?.removeAll { it.isCheckedForDelete }
                 changeDeleteMode()
                 searchDataList()
             }

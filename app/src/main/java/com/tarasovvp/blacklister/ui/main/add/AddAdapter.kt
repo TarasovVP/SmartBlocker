@@ -5,10 +5,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.tarasovvp.blacklister.ui.base.BaseFragment
 
 class AddAdapter(
-    list: ArrayList<BaseFragment<out ViewDataBinding, AddViewModel>>,
+    list: ArrayList<BaseAddFragment<out ViewDataBinding>>,
     fm: FragmentManager,
     lifecycle: Lifecycle,
 ) : FragmentStateAdapter(fm, lifecycle) {

@@ -4,7 +4,7 @@ import android.util.Log
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 
-class BlackFilterListFragment : FilterListFragment() {
+class BlackFilterListFragment : BaseFilterListFragment() {
     override fun onStart() {
         super.onStart()
         (activity as MainActivity).apply {

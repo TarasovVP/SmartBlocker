@@ -15,10 +15,10 @@ import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 
-class AddFragment : BaseBindingFragment<FragmentAddBinding>() {
+class ContainerAddFragment : BaseBindingFragment<FragmentAddBinding>() {
 
     override var layoutId = R.layout.fragment_add
-    private val args: AddFragmentArgs by navArgs()
+    private val args: ContainerAddFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +43,7 @@ class AddFragment : BaseBindingFragment<FragmentAddBinding>() {
                     icon = ContextCompat.getDrawable(context,
                         if (args.filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
                     setOnMenuItemClickListener {
-                        findNavController().navigate(AddFragmentDirections.startChangeFilterDialog(
+                        findNavController().navigate(ContainerAddFragmentDirections.startChangeFilterDialog(
                             args.filter))
                         return@setOnMenuItemClickListener true
                     }

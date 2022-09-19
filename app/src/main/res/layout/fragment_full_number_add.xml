@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
@@ -12,8 +12,9 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/full_number_contact_by_filter_list">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/container"
@@ -41,8 +42,8 @@
                 <Spinner
                     android:id="@+id/full_number_country_code_spinner"
                     android:layout_width="wrap_content"
-                    android:background="@drawable/bg_spinner"
                     android:layout_height="@dimen/size_0"
+                    android:background="@drawable/bg_spinner"
                     android:paddingEnd="@dimen/padding_10"
                     app:layout_constraintBottom_toBottomOf="@+id/full_number_add_input"
                     app:layout_constraintStart_toStartOf="parent"
@@ -94,6 +95,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
+        <ExpandableListView
+            android:id="@+id/full_number_contact_by_filter_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginTop="@dimen/margin_15"
+            android:groupIndicator="@null"
+            android:nestedScrollingEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scroll_container" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

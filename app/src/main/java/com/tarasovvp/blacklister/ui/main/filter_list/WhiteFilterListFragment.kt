@@ -1,4 +1,4 @@
 package com.tarasovvp.blacklister.ui.main.filter_list
 
-class WhiteFilterListFragment : FilterListFragment()
+class WhiteFilterListFragment : BaseFilterListFragment()
 
