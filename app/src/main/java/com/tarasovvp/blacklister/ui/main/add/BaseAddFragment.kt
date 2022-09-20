@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.add
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
@@ -11,8 +12,10 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_FILTER
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.model.*
+import com.tarasovvp.blacklister.model.BlackFilter
+import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.WhiteFilter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
@@ -36,7 +39,6 @@ abstract class BaseAddFragment<B : ViewDataBinding>(private var filter: Filter?)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        initViewsWithData(filter, false)
         setExistNumberChecking()
         setClickListeners()
         setFragmentResultListener(DELETE_FILTER) { _, _ ->
@@ -47,31 +49,25 @@ abstract class BaseAddFragment<B : ViewDataBinding>(private var filter: Filter?)
     }
 
     private fun setExistNumberChecking() {
+        icon?.setImageResource(if (filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
+        filterInput?.setText(if (filter?.filter.orEmpty()
+                .isValidPhoneNumber(context?.getUserCountry().orEmpty())
+        ) filter?.nationalNumber(context?.getUserCountry().orEmpty()) else filter?.filter.orEmpty())
         viewModel.checkFilterExist(filter?.filter.orEmpty(), filter?.isBlackFilter.isTrue())
         filterInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
             viewModel.checkFilterExist(it.toString(), filter?.isBlackFilter.isTrue())
         })
     }
 
-    private fun initViewsWithData(filter: Filter?, fromDb: Boolean) {
-        filterInput?.setText(if (filter?.filter.orEmpty()
-                .isValidPhoneNumber(context?.getUserCountry().orEmpty())
-        ) filter?.nationalNumber(context?.getUserCountry().orEmpty()) else filter?.filter.orEmpty())
-        icon?.setImageResource(if (filter?.isBlackFilter.isTrue()) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
-        if (this is FilterAddFragment) {
-            title?.text = if (filterInput?.text?.toString().orEmpty().isEmpty()) getString(R.string.add_filter_message) else String.format(
-                if (fromDb && filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(
-                    R.string.add_filter_with_filter_message), filterInput?.text)
+    private fun initViewsWithData(filter: Filter?) {
+        Log.e("filterAddTAG", "BaseAddFragment initViewsWithData this $this filter $filter")
+        title?.text = if (this is FilterAddFragment) {
+            if (filterInput.inputText().isEmpty()) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message), filterInput?.text)
         } else {
-            filterInput?.setText(if (filter?.filter.orEmpty().isValidPhoneNumber(context?.getUserCountry().orEmpty())) filter?.nationalNumber(context?.getUserCountry().orEmpty()) else filter?.filter.orEmpty())
-            title?.text = if (filterInput?.text?.toString().orEmpty().isEmpty()) getString(R.string.add_filter_message) else String.format(
-                if (fromDb && filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(
-                    R.string.add_filter_with_filter_message), filterInput?.text)
+            if (filterInput.inputText().isEmpty()) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message), filterInput?.text)
         }
-        submitButton?.isVisible =
-            filterInput?.text?.toString().orEmpty().isNotEmpty()
-        submitButton?.text =
-            if (fromDb && filter.isNotNull()) getString(R.string.edit) else getString(R.string.add)
+        submitButton?.isVisible = filterInput.inputText().isNotEmpty()
+        submitButton?.text = if (filter.isNotNull()) getString(R.string.edit) else getString(R.string.add)
         if (submitButton?.text?.toString().orEmpty().isNotEmpty()) {
             viewModel.checkContactListByFilter(getFilter())
         }
@@ -100,17 +96,24 @@ abstract class BaseAddFragment<B : ViewDataBinding>(private var filter: Filter?)
 
     private fun getFilter(): Filter {
         val filter = if (filter?.isBlackFilter.isTrue()) {
-            BlackFilter(filter = filterInput?.text.toString())
+            BlackFilter(filter = filterInput.inputText())
         } else {
-            WhiteFilter(filter = filterInput?.text.toString())
+            WhiteFilter(filter = filterInput.inputText())
         }
         return filter
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            existFilterLiveData.observe(viewLifecycleOwner) { filter ->
-                initViewsWithData(filter, true)
+            existFilterLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
+                Log.e("filterAddTAG",
+                    "BaseAddFragment observeLiveData existFilterLiveData filter $filter")
+                initViewsWithData(filter)
+            }
+            emptyFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
+                Log.e("filterAddTAG",
+                    "BaseAddFragment observeLiveData emptyFilterLiveData isEmpty $it")
+                initViewsWithData(null)
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 var filterAddInfoText = ""

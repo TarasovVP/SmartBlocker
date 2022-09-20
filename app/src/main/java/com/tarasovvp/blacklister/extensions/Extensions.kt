@@ -17,10 +17,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.PopupWindow
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -328,6 +325,10 @@ fun Int?.orZero() = this ?: 0
 val String.Companion.EMPTY: String
     get() = ""
 
+fun EditText?.inputText(): String {
+    return this?.text?.toString().orEmpty()
+}
+
 fun Locale.flagEmoji(): String {
     if (country.isEmpty()) return String.EMPTY
     val firstLetter = Character.codePointAt(country, 0) - 0x41 + 0x1F1E6
@@ -397,7 +398,7 @@ fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try 
 }
 
 fun String?.isValidPhoneNumber(countryCode: String): Boolean {
-   return PhoneNumberUtil.getInstance().isValidNumber(getPhoneNumber(countryCode))
+   return if (getPhoneNumber(countryCode).isNotNull()) PhoneNumberUtil.getInstance().isValidNumber(getPhoneNumber(countryCode)) else false
 }
 
 fun String?.trimmed() = this?.filter { it.isDigit() || it == Constants.PLUS_CHAR }.orEmpty()

@@ -176,7 +176,7 @@
 
     <dialog
         android:id="@+id/changeFilterDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.ChangeFilterDialog">
+        android:name="com.tarasovvp.blacklister.ui.dialogs.ChangeFilterListDialog">
         <argument
             android:name="filter"
             android:defaultValue="@null"

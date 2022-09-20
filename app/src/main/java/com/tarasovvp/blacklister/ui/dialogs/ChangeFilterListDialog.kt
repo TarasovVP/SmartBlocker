@@ -10,15 +10,15 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.ui.base.BaseDialog
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class ChangeFilterDialog : BaseDialog<DialogInfoBinding>() {
+class ChangeFilterListDialog : BaseDialog<DialogInfoBinding>() {
 
     override var layoutId = R.layout.dialog_info
 
-    private val args: ChangeFilterDialogArgs by navArgs()
+    private val args: ChangeFilterListDialogArgs by navArgs()
 
     override fun initUI() {
         binding?.dialogInfoTitle?.text = String.format(getString(R.string.change_filter),
-            if (args.filter?.isBlackFilter.isTrue()) getString(R.string.black_list) else getString(R.string.white_list))
+            getString(if (args.filter?.isBlackFilter.isTrue()) R.string.white_list else R.string.black_list))
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }

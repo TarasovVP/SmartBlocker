@@ -21,6 +21,7 @@ import com.tarasovvp.blacklister.constants.Constants.SERVER_CLIENT_ID
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.deleteLastBlockedCall
+import com.tarasovvp.blacklister.extensions.inputText
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -61,11 +62,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     private fun setOnButtonsClick() {
         binding?.apply {
             loginContinue.setSafeOnClickListener {
-                if (loginEmailInput.text.isEmpty() || loginPasswordInput.text.isEmpty()) {
+                if (loginEmailInput.inputText().isEmpty() || loginPasswordInput.inputText().isEmpty()) {
                     showMessage(getString(R.string.enter_login_password), true)
                 } else {
-                    viewModel.signInWithEmailAndPassword(loginEmailInput.text.toString(),
-                        loginPasswordInput.text.toString())
+                    viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
+                        loginPasswordInput.inputText())
                 }
             }
             loginContinueWithoutAcc.setSafeOnClickListener {
@@ -78,7 +79,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(R.id.startSignUpFragment)
             }
             loginForgotPassword.setSafeOnClickListener {
-                findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.text.toString()))
+                findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.inputText()))
             }
             loginGoogleAuth.setSafeOnClickListener {
                 googleSignInLauncher.launch(googleSignInClient?.signInIntent)

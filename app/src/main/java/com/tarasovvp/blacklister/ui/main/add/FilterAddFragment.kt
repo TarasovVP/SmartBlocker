@@ -9,6 +9,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.DELETE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.extensions.getViewsFromLayout
+import com.tarasovvp.blacklister.extensions.inputText
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.BlackFilter
 import com.tarasovvp.blacklister.model.Filter
@@ -42,10 +43,10 @@ class FilterAddFragment(private var filter: Filter?) :
         binding?.apply {
             val checkChangeListener = CompoundButton.OnCheckedChangeListener { _, _ ->
                 filterAddSubmit.isVisible =
-                    filterAddInput.text.isNotEmpty() && filter?.isFilterIdentical(filterAddStart.isChecked,
+                    filterAddInput.inputText().isNotEmpty() && filter?.isFilterIdentical(filterAddStart.isChecked,
                         filterAddContain.isChecked,
                         filterAddEnd.isChecked).isTrue().not()
-                if (filterAddInput.text.isNotEmpty() && filter?.isFilterIdentical(filterAddStart.isChecked,
+                if (filterAddInput.inputText().isNotEmpty() && filter?.isFilterIdentical(filterAddStart.isChecked,
                         filterAddContain.isChecked,
                         filterAddEnd.isChecked).isTrue().not()
                 ) {
@@ -60,9 +61,9 @@ class FilterAddFragment(private var filter: Filter?) :
 
     private fun getFilterObject(): Filter {
         val filter = if (filter?.isBlackFilter.isTrue()) {
-            BlackFilter(filter = binding?.filterAddInput?.text.toString())
+            BlackFilter(filter = binding?.filterAddInput.inputText())
         } else {
-            WhiteFilter(filter = binding?.filterAddInput?.text.toString())
+            WhiteFilter(filter = binding?.filterAddInput.inputText())
         }
         filter.apply {
             start = binding?.filterAddStart?.isChecked.isTrue()

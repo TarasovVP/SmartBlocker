@@ -7,6 +7,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.EMAIL
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.databinding.DialogForgotPasswordBinding
+import com.tarasovvp.blacklister.extensions.inputText
 import com.tarasovvp.blacklister.ui.base.BaseDialog
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -23,7 +24,7 @@ class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
         }
         binding?.dialogForgotPasswordConfirm?.setSafeOnClickListener {
             setFragmentResult(FORGOT_PASSWORD,
-                bundleOf(EMAIL to binding?.dialogForgotPasswordInput?.text.toString()))
+                bundleOf(EMAIL to binding?.dialogForgotPasswordInput.inputText()))
             dismiss()
         }
     }

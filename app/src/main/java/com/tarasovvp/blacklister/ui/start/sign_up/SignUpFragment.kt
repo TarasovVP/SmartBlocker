@@ -5,6 +5,7 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentSignUpBinding
+import com.tarasovvp.blacklister.extensions.inputText
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -18,8 +19,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         binding?.signUpContinue?.setSafeOnClickListener {
-            viewModel.createUserWithEmailAndPassword(binding?.signUpEmail?.text.toString(),
-                binding?.signUpRepeatPassword?.text.toString())
+            viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),
+                binding?.signUpRepeatPassword.inputText())
         }
     }
 

@@ -13,6 +13,7 @@ import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.DELETE_USER
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
 import com.tarasovvp.blacklister.extensions.getViewsFromLayout
+import com.tarasovvp.blacklister.extensions.inputText
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -60,8 +61,8 @@ class AccountDetailsFragment :
                 findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
             }
             accountDetailsNewPasswordBtn.setSafeOnClickListener {
-                if (accountDetailsNewPasswordCreate.text.toString() == accountDetailsNewPasswordConfirm.text.toString()) {
-                    viewModel.changePassword(accountDetailsCurrentPassword.text.toString(), accountDetailsNewPasswordConfirm.text.toString())
+                if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.text.toString()) {
+                    viewModel.changePassword(accountDetailsCurrentPassword.inputText(), accountDetailsNewPasswordConfirm.text.toString())
                 } else {
                     showMessage(getString(R.string.passwords_different), true)
                 }
