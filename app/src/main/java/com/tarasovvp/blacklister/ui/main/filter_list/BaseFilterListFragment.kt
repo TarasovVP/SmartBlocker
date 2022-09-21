@@ -24,14 +24,13 @@ open class BaseFilterListFragment :
 
     private var filterList: ArrayList<Filter>? = null
     private var isDeleteMode = false
-    private var selectedFilterItems: BooleanArray = booleanArrayOf(false, false, false)
 
     override fun createAdapter(): BaseAdapter<Filter>? {
         Log.e("adapterTAG", "FilterListFragment createAdapter filterList?.size ${filterList?.size}")
         return context?.let {
             FilterAdapter(object : FilterClickListener {
                 override fun onFilterClick(filter: Filter) {
-                    findNavController().navigate(WhiteFilterListFragmentDirections.startAddFragment(
+                    findNavController().navigate(WhiteFilterListFragmentDirections.startFilterAddFragment(
                         filter = filter))
                 }
 
@@ -66,12 +65,12 @@ open class BaseFilterListFragment :
     private fun setClickListeners() {
         binding?.filterListFabNew?.setSafeOnClickListener {
             val direction = if (this is BlackFilterListFragment) {
-                BlackFilterListFragmentDirections.startAddFragment(
+                BlackFilterListFragmentDirections.startFilterAddFragment(
                     filter = Filter().apply {
                         isBlackFilter = true
                     })
             } else {
-                WhiteFilterListFragmentDirections.startAddFragment(
+                WhiteFilterListFragmentDirections.startFilterAddFragment(
                     filter = Filter().apply {
                         isBlackFilter = false
                     })
@@ -152,10 +151,7 @@ open class BaseFilterListFragment :
         val filteredList = filterList?.filter { filter ->
             filter.filter.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (if (selectedFilterItems[0]) filter.contain else true)
-                    && (if (selectedFilterItems[1]) filter.start else true)
-                    && if (selectedFilterItems[2]) filter.end else true
-        }.orEmpty()
+            )}.orEmpty()
         checkDataListEmptiness(filteredList)
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList)

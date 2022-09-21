@@ -41,8 +41,8 @@
         android:name="com.tarasovvp.blacklister.ui.main.call_list.CallListFragment"
         android:label="@string/blocked_call_log">
         <action
-            android:id="@+id/startAddFragment"
-            app:destination="@id/containerAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startContactDetailFragment"
             app:destination="@id/contactDetailFragment" />
@@ -75,8 +75,8 @@
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/startAddFragment"
-            app:destination="@id/containerAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
@@ -87,8 +87,8 @@
         android:name="com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment"
         android:label="@string/black_list">
         <action
-            android:id="@+id/startAddFragment"
-            app:destination="@id/containerAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startDeleteFilterDialog"
             app:destination="@id/deleteFilterDialog" />
@@ -99,8 +99,8 @@
         android:name="com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment"
         android:label="@string/white_list">
         <action
-            android:id="@+id/startAddFragment"
-            app:destination="@id/containerAddFragment" />
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startDeleteFilterDialog"
             app:destination="@id/deleteFilterDialog" />
@@ -212,8 +212,8 @@
     </dialog>
 
     <fragment
-        android:id="@+id/containerAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.add.ContainerAddFragment" >
+        android:id="@+id/filterAddFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.filter_add.FilterAddFragment" >
         <argument
             android:name="filter"
             android:defaultValue="@null"

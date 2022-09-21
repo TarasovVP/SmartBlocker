@@ -17,7 +17,7 @@ interface BlackFilterDao {
     @Query("SELECT * FROM blackfilter WHERE filter = :blackFilter")
     fun getBlackFilter(blackFilter: String): BlackFilter?
 
-    @Query("SELECT * FROM blackfilter WHERE (filter = :blackFilter) OR (:blackFilter LIKE '%' || filter || '%' AND contain = 1) OR (:blackFilter LIKE filter || '%' AND start = 1) OR (:blackFilter LIKE '%' || filter AND `end` = 1)")
+    @Query("SELECT * FROM blackfilter WHERE (filter = :blackFilter) OR (:blackFilter LIKE filter || '%' AND type = 1) OR (:blackFilter LIKE '%' || filter || '%' AND type = 2)")
     fun queryBlackFilterList(blackFilter: String): List<BlackFilter>
 
     @Delete

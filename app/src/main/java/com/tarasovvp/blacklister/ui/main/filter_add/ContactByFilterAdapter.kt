@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.ui.main.add
+package com.tarasovvp.blacklister.ui.main.filter_add
 
 import android.view.LayoutInflater
 import android.view.View

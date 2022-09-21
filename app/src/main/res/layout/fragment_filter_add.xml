@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -47,15 +49,38 @@
                     android:paddingHorizontal="@dimen/padding_10"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_icon" />
 
+                <Spinner
+                    android:id="@+id/filter_add_country_code_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_0"
+                    android:background="@drawable/bg_spinner"
+                    android:paddingEnd="@dimen/padding_10"
+                    app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/filter_add_input"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/filter_add_country_code_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_0"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_18"
+                    app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
+                    app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
+                    app:layout_constraintTop_toTopOf="@+id/filter_add_input" />
+
                 <EditText
                     android:id="@+id/filter_add_input"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/size_0"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_15"
                     android:digits="0123456789+"
                     android:hint="@string/enter_filter"
                     android:inputType="phone"
                     android:text="@{filter.filter}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_title"
                     tools:ignore="Autofill,LabelFor,TextFields" />
 
@@ -78,41 +103,43 @@
                     app:drawableStartCompat="@drawable/ic_info"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_title" />
 
-                <CheckBox
-                    android:id="@+id/filter_add_contain"
+                <RadioGroup
+                    android:id="@+id/type_radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:drawableEnd="@drawable/ic_contain"
-                    android:drawablePadding="@dimen/padding_10"
-                    android:layoutDirection="rtl"
-                    android:checked="@{filter.contain}"
-                    android:text="@string/filter_contain"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info" />
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info">
 
-                <CheckBox
-                    android:id="@+id/filter_add_start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:drawableEnd="@drawable/ic_start"
-                    android:drawablePadding="@dimen/padding_10"
-                    android:layoutDirection="rtl"
-                    android:checked="@{filter.start}"
-                    android:text="@string/filter_start"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_add_contain" />
+                    <RadioButton
+                        android:id="@+id/filter_type_full"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{!filter.isTypeStart() &amp;&amp; !filter.isTypeContain()}"
+                        android:drawableEnd="@drawable/ic_end"
+                        android:drawablePadding="@dimen/padding_10"
+                        android:layoutDirection="rtl"
+                        android:text="@string/full_number" />
 
-                <CheckBox
-                    android:id="@+id/filter_add_end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:drawableEnd="@drawable/ic_end"
-                    android:drawablePadding="@dimen/padding_10"
-                    android:layoutDirection="rtl"
-                    android:checked="@{filter.end}"
-                    android:text="@string/filter_end"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_add_start" />
+                    <RadioButton
+                        android:id="@+id/filter_type_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{filter.isTypeStart()}"
+                        android:drawableEnd="@drawable/ic_start"
+                        android:drawablePadding="@dimen/padding_10"
+                        android:layoutDirection="rtl"
+                        android:text="@string/filter_start" />
+
+                    <RadioButton
+                        android:id="@+id/filter_type_contain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{filter.isTypeContain()}"
+                        android:drawableEnd="@drawable/ic_contain"
+                        android:drawablePadding="@dimen/padding_10"
+                        android:layoutDirection="rtl"
+                        android:text="@string/filter_contain" />
+                </RadioGroup>
 
                 <Button
                     android:id="@+id/filter_delete_submit"
@@ -121,7 +148,7 @@
                     android:layout_marginTop="@dimen/margin_16"
                     android:text="@string/delete_menu"
                     android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_add_end" />
+                    app:layout_constraintTop_toBottomOf="@+id/type_radio_group" />
 
                 <Button
                     android:id="@+id/filter_add_submit"

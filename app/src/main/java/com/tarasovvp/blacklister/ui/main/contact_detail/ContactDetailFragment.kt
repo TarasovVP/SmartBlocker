@@ -52,7 +52,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
         binding?.contactDetailFilterList?.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
             Log.e("contactTAG",
                 "ContactDetailFragment setNumberList setOnChildClickListener groupPosition $groupPosition childPosition $childPosition")
-            findNavController().navigate(ContactDetailFragmentDirections.startAddFragment(
+            findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
                 filter = expandableFilterAdapter?.getChild(groupPosition, childPosition)))
             return@setOnChildClickListener true
         }
@@ -95,7 +95,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
                 if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
                     R.string.black_list))
             contactDetailAddFilter.setSafeOnClickListener {
-                findNavController().navigate(ContactDetailFragmentDirections.startAddFragment(
+                findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
                     filter = Filter(filter = contact.trimmedPhone).apply {
                         isBlackFilter = true
                     }))

@@ -17,7 +17,7 @@ interface WhiteFilterDao {
     @Query("SELECT * FROM whitefilter WHERE filter = :whiteFilter")
     fun getWhiteFilter(whiteFilter: String): WhiteFilter?
 
-    @Query("SELECT * FROM whitefilter WHERE (filter = :whiteFilter) OR (:whiteFilter LIKE '%' || filter || '%' AND contain = 1) OR (:whiteFilter LIKE filter || '%' AND start = 1) OR (:whiteFilter LIKE '%' || filter AND `end` = 1)")
+    @Query("SELECT * FROM whitefilter WHERE (filter = :whiteFilter) OR (:whiteFilter LIKE filter || '%' AND type = 1) OR (:whiteFilter LIKE '%' || filter || '%' AND type = 2)")
     fun queryWhiteFilterList(whiteFilter: String): List<WhiteFilter>
 
     @Delete

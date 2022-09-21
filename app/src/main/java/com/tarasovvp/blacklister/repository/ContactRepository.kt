@@ -25,7 +25,7 @@ object ContactRepository {
         }
 
     fun getQueryContacts(filter: Filter): List<Contact>? {
-        return dao?.queryContactList(filter.filter, filter.contain, filter.start, filter.end)
+        return dao?.queryContactList(filter.filter, filter.type)
     }
 
     fun getContactByPhone(phone: String): Contact? {
