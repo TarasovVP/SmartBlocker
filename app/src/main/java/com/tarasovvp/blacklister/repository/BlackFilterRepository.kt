@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.repository
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.BlackFilter
+import com.tarasovvp.blacklister.model.Filter
 
 object BlackFilterRepository: FilterRepository() {
 
@@ -17,8 +18,8 @@ object BlackFilterRepository: FilterRepository() {
         return blackFilterDao?.allBlackFilters()
     }
 
-    fun getBlackFilter(phone: String): BlackFilter? {
-        return blackFilterDao?.getBlackFilter(phone)
+    fun getBlackFilter(filter: Filter): BlackFilter? {
+        return blackFilterDao?.getBlackFilter(filter.filter, filter.type)
     }
 
     fun insertBlackFilter(blackFilter: BlackFilter, result: () -> Unit) {

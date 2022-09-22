@@ -13,33 +13,28 @@ import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.WhiteFilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
-class AddViewModel(application: Application) : BaseViewModel(application) {
+class FilterAddViewModel(application: Application) : BaseViewModel(application) {
 
     private val blackFilterRepository = BlackFilterRepository
     private val whiteFilterRepository = WhiteFilterRepository
     private val contactRepository = ContactRepository
 
-    val existFilterLiveData = MutableLiveData<Filter?>()
-    val emptyFilterLiveData = MutableLiveData<Boolean>()
+    val existFilterLiveData = MutableLiveData<Filter>()
     val insertFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
     val queryContactListLiveData = MutableLiveData<List<Contact>>()
 
-    fun checkFilterExist(filter: String, isBlackFilter: Boolean) {
-        Log.e("filterAddTAG", "AddViewModel checkFilterExist filter $filter isBlackFilter $isBlackFilter")
+    fun checkFilterExist(filter: Filter) {
+        Log.e("filterAddTAG", "AddViewModel checkFilterExist filter $filter")
         showProgress()
         launch {
-            val existingFilter = if (isBlackFilter) {
+            val existingFilter = if (filter.isBlackFilter) {
                 blackFilterRepository.getBlackFilter(filter)
             } else {
                 whiteFilterRepository.getWhiteFilter(filter)
             }
             Log.e("filterAddTAG", "AddViewModel checkFilterExist existingFilter $existingFilter")
-            if (existingFilter.isNotNull()) {
-                existFilterLiveData.postValue(existingFilter)
-            } else {
-                emptyFilterLiveData.postValue(true)
-            }
+            existFilterLiveData.postValue(existingFilter ?: filter)
             hideProgress()
         }
     }
@@ -55,6 +50,7 @@ class AddViewModel(application: Application) : BaseViewModel(application) {
     fun insertFilter(filter: Filter) {
         showProgress()
         launch {
+            filter.isFromDb = true
             if (filter.isBlackFilter) {
                 blackFilterRepository.insertBlackFilter(filter as BlackFilter) {
                     insertFilterLiveData.postValue(filter.filter)

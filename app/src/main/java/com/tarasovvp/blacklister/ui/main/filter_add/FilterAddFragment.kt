@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.util.ArrayMap
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ExpandableListView
+import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
@@ -18,7 +21,6 @@ import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
-import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
@@ -26,11 +28,11 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
 
-open class FilterAddFragment() :
-    BaseFragment<FragmentFilterAddBinding, AddViewModel>() {
+open class FilterAddFragment :
+    BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
 
     override var layoutId = R.layout.fragment_filter_add
-    override val viewModelClass = AddViewModel::class.java
+    override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
 
     private var isBlackFilter: Boolean = true
@@ -41,12 +43,11 @@ open class FilterAddFragment() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.filter = args.filter
+        Log.e("filterAddTAG", "BaseAddFragment onViewCreated filter ${args.filter?.filter} type ${args.filter?.type} isFromDb ${args.filter?.isFromDb} ")
         isBlackFilter = args.filter?.isBlackFilter.isTrue()
-        setExistNumberChecking()
         setClickListeners()
-        setCheckChangeListeners(args.filter)
         setCountrySpinner()
+        args.filter?.let { viewModel.checkFilterExist(it) }
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
             args.filter?.isBlackFilter = isBlackFilter.not()
             setToolbar()
@@ -61,17 +62,14 @@ open class FilterAddFragment() :
     private fun setToolbar() {
         (activity as MainActivity).apply {
             toolbar?.apply {
-                title =
-                    if (isBlackFilter) getString(R.string.black_list) else getString(
-                        R.string.white_list)
+                title = if (isBlackFilter) getString(R.string.black_list) else getString(
+                    R.string.white_list)
                 menu?.clear()
                 inflateMenu(R.menu.toolbar_filter)
                 menu?.findItem(R.id.filter_menu_item)?.apply {
-                    icon = ContextCompat.getDrawable(context,
-                        if (isBlackFilter) R.drawable.ic_white_filter else R.drawable.ic_black_filter)
+                    icon = ContextCompat.getDrawable(context, if (isBlackFilter) R.drawable.ic_white_filter else R.drawable.ic_black_filter)
                     setOnMenuItemClickListener {
-                        findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(
-                            args.filter))
+                        findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(args.filter))
                         return@setOnMenuItemClickListener true
                     }
                 }
@@ -79,31 +77,41 @@ open class FilterAddFragment() :
         }
     }
 
-    private fun setExistNumberChecking() {
-        binding?.filterAddIcon?.setImageResource(if (isBlackFilter) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
-        binding?.filterAddInput?.setText(if (args.filter?.filter.orEmpty()
-                .isValidPhoneNumber(context?.getUserCountry().orEmpty())
-        ) args.filter?.nationalNumber(context?.getUserCountry()
-            .orEmpty()) else args.filter?.filter.orEmpty())
-        viewModel.checkFilterExist(args.filter?.filter.orEmpty(),
-            isBlackFilter)
-        binding?.filterAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
-            viewModel.checkFilterExist(it.toString(), isBlackFilter)
-        })
+    private fun initViewsWithData(filter: Filter) {
+        Log.e("filterAddTAG", "BaseAddFragment initViewsWithData this $this filter $filter")
+        binding?.apply {
+            this.filter = filter
+            filterAddTitle.text = if (filterAddInput.inputText().isEmpty()) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(
+                R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message), filterAddInput.text)
+            viewModel.checkContactListByFilter(filter)
+        }
+        setExistNumberChecking()
     }
 
-    private fun initViewsWithData(filter: Filter?) {
-        Log.e("filterAddTAG", "BaseAddFragment initViewsWithData this $this filter $filter")
-        if (binding?.filterAddInput.inputText()
-                .isEmpty()
-        ) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(
-            R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message),
-            binding?.filterAddInput?.text)
-        binding?.filterAddSubmit?.isVisible = binding?.filterAddInput.inputText().isNotEmpty()
-        binding?.filterAddSubmit?.text =
-            if (filter.isNotNull()) getString(R.string.edit) else getString(R.string.add)
-        if (binding?.filterAddSubmit?.text?.toString().orEmpty().isNotEmpty()) {
-            viewModel.checkContactListByFilter(getFilterObject())
+    private fun setExistNumberChecking() {
+        binding?.apply {
+            binding?.root?.post {
+                filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
+                    Log.e("filterAddTAG", "BaseAddFragment addTextChangedListener it $it filter ${getFilterObject().filter} type ${getFilterObject().type} isFromDb ${getFilterObject().isFromDb}")
+                    viewModel.checkFilterExist(getFilterObject())
+                })
+                typeRadioGroup.setOnCheckedChangeListener { _, _ ->
+                    Log.e("filterAddTAG", "BaseAddFragment setOnCheckedChangeListener filter ${getFilterObject().filter} type ${getFilterObject().type} isFromDb ${getFilterObject().isFromDb}")
+                    viewModel.checkFilterExist(getFilterObject())
+                }
+            }
+        }
+    }
+
+    private fun getFilterObject(): Filter {
+        val filter = if (isBlackFilter) {
+            BlackFilter(filter = binding?.filterAddInput.inputText())
+        } else {
+            WhiteFilter(filter = binding?.filterAddInput.inputText())
+        }
+        return filter.apply {
+            isBlackFilter = filter.isBlackFilter.isTrue()
+            type = binding?.typeRadioGroup?.indexOfChild(binding?.typeRadioGroup?.findViewById(binding?.typeRadioGroup?.checkedRadioButtonId.orZero())).orZero()
         }
     }
 
@@ -132,11 +140,6 @@ open class FilterAddFragment() :
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData existFilterLiveData filter $filter")
                 initViewsWithData(filter)
-            }
-            emptyFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                Log.e("filterAddTAG",
-                    "BaseAddFragment observeLiveData emptyFilterLiveData isEmpty $it")
-                initViewsWithData(null)
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 var filterAddInfoText = ""
@@ -268,26 +271,5 @@ open class FilterAddFragment() :
                     .isValidPhoneNumber(context?.getUserCountry().orEmpty())
             ) args.filter?.nationalNumber(context?.getUserCountry()
                 .orEmpty()) else args.filter?.filter.orEmpty()
-    }
-
-    private fun setCheckChangeListeners(filter: Filter?) {
-        binding?.apply {
-            typeRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
-
-            }
-        }
-    }
-
-    private fun getFilterObject(): Filter {
-        val filter = if (isBlackFilter) {
-            BlackFilter(filter = binding?.filterAddInput.inputText())
-        } else {
-            WhiteFilter(filter = binding?.filterAddInput.inputText())
-        }
-        return filter.apply {
-            isBlackFilter = filter.isBlackFilter.isTrue()
-            type = binding?.typeRadioGroup?.getViewsFromLayout(RadioButton::class.java)
-                ?.indexOfFirst { it.isChecked }.orZero()
-        }
     }
 }

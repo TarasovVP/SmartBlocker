@@ -5,7 +5,7 @@
     <data>
 
         <import type="android.view.View" />
-
+        <import type="android.content.Context" />
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -55,6 +55,7 @@
                     android:layout_height="@dimen/size_0"
                     android:background="@drawable/bg_spinner"
                     android:paddingEnd="@dimen/padding_10"
+                    android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/filter_add_input"
@@ -66,6 +67,7 @@
                     android:layout_height="@dimen/size_0"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_18"
+                    android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
                     app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
                     app:layout_constraintTop_toTopOf="@+id/filter_add_input" />
@@ -78,7 +80,7 @@
                     android:digits="0123456789+"
                     android:hint="@string/enter_filter"
                     android:inputType="phone"
-                    android:text="@{filter.filter}"
+                    android:text="@{filter.filterToInput(context)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_title"
@@ -147,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
                     android:text="@string/delete_menu"
-                    android:visibility="gone"
+                    android:visibility="@{filter.isFromDb ? View.VISIBLE : View.GONE}"
                     app:layout_constraintTop_toBottomOf="@+id/type_radio_group" />
 
                 <Button

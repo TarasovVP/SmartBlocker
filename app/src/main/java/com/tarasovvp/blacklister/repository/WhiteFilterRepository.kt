@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.repository
 
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.model.WhiteFilter
 
 object WhiteFilterRepository : FilterRepository() {
@@ -17,8 +18,8 @@ object WhiteFilterRepository : FilterRepository() {
         return whiteFilterDao?.allWhiteFilters()
     }
 
-    fun getWhiteFilter(phone: String): WhiteFilter? {
-        return whiteFilterDao?.getWhiteFilter(phone)
+    fun getWhiteFilter(filter: Filter): WhiteFilter? {
+        return whiteFilterDao?.getWhiteFilter(filter.filter, filter.type)
     }
 
     fun insertWhiteFilter(whiteFilter: WhiteFilter, result: () -> Unit) {

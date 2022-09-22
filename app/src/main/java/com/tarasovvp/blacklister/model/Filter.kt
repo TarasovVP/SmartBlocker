@@ -1,8 +1,11 @@
 package com.tarasovvp.blacklister.model
 
+import android.content.Context
 import android.os.Parcelable
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.extensions.getPhoneNumber
+import com.tarasovvp.blacklister.extensions.getUserCountry
+import com.tarasovvp.blacklister.extensions.isValidPhoneNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -29,6 +32,11 @@ open class Filter(
             FILTER_START -> R.drawable.ic_contain
             else -> R.drawable.ic_end
         }
+    }
+
+    fun filterToInput(context: Context): String {
+        return if (filter.isValidPhoneNumber(context.getUserCountry().orEmpty())) nationalNumber(
+            context.getUserCountry().orEmpty()) else filter
     }
 
     fun nationalNumber(countryCode: String): String {
