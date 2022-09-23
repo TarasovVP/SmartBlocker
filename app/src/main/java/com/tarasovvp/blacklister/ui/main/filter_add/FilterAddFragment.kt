@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ExpandableListView
-import android.widget.RadioButton
+import androidx.collection.arrayMapOf
 import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
@@ -38,18 +38,19 @@ open class FilterAddFragment :
     private var isBlackFilter: Boolean = true
     private var contactByFilterAdapter: ContactByFilterAdapter? = null
     private var contactByFilterList: ExpandableListView? = null
-    private var countryCodeMap: ArrayMap<String, Int?>? = null
-    private var phoneUtil = PhoneNumberUtil.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("filterAddTAG", "BaseAddFragment onViewCreated filter ${args.filter?.filter} type ${args.filter?.type} isFromDb ${args.filter?.isFromDb} ")
         isBlackFilter = args.filter?.isBlackFilter.isTrue()
+        setToolbar()
         setClickListeners()
         setCountrySpinner()
         args.filter?.let { viewModel.checkFilterExist(it) }
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
-            args.filter?.isBlackFilter = isBlackFilter.not()
+            Log.e("filterAddTAG", "BaseAddFragment setFragmentResultListener getFilterObject() ${getFilterObject()}")
+            isBlackFilter = isBlackFilter.not()
+            initViewsWithData(getFilterObject())
             setToolbar()
         }
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
@@ -80,15 +81,16 @@ open class FilterAddFragment :
     private fun initViewsWithData(filter: Filter) {
         Log.e("filterAddTAG", "BaseAddFragment initViewsWithData this $this filter $filter")
         binding?.apply {
+            if (filterAddCountryCodeValue.text.isNotEmpty() && filter.filter.startsWith(filterAddCountryCodeValue.text)) filter.filter = filter.filter.replace(filterAddCountryCodeValue.text.toString(), String.EMPTY)
             this.filter = filter
             filterAddTitle.text = if (filterAddInput.inputText().isEmpty()) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(
                 R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message), filterAddInput.text)
             viewModel.checkContactListByFilter(filter)
         }
-        setExistNumberChecking()
+        existNumberChecking()
     }
 
-    private fun setExistNumberChecking() {
+    private fun existNumberChecking() {
         binding?.apply {
             binding?.root?.post {
                 filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
@@ -105,9 +107,9 @@ open class FilterAddFragment :
 
     private fun getFilterObject(): Filter {
         val filter = if (isBlackFilter) {
-            BlackFilter(filter = binding?.filterAddInput.inputText())
+            BlackFilter(filter = String.format("%s%s", binding?.filterAddCountryCodeValue?.text, binding?.filterAddInput.inputText()))
         } else {
-            WhiteFilter(filter = binding?.filterAddInput.inputText())
+            WhiteFilter(filter = String.format("%s%s", binding?.filterAddCountryCodeValue?.text, binding?.filterAddInput.inputText()))
         }
         return filter.apply {
             isBlackFilter = filter.isBlackFilter.isTrue()
@@ -232,44 +234,17 @@ open class FilterAddFragment :
     }
 
     private fun setCountrySpinner() {
-        countryCodeMap = ArrayMap<String, Int?>()
-        countryCodeMap?.put(getString(R.string.no_country_code), null)
-        Locale.getAvailableLocales().forEach { locale ->
-            if (locale.country.isNotEmpty() && locale.country.isDigitsOnly()
-                    .not()
-            ) countryCodeMap?.put(locale.flagEmoji() + locale.country,
-                phoneUtil.getCountryCodeForRegion(locale.country))
-        }
-
-        val countryAdapter = context?.let {
-            ArrayAdapter(it,
-                android.R.layout.simple_spinner_item,
-                countryCodeMap?.keys.orEmpty().toTypedArray())
-        }
-        binding?.filterAddCountryCodeSpinner?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    spinner: AdapterView<*>?,
-                    tv: View?,
-                    position: Int,
-                    id: Long,
-                ) {
-                    binding?.filterAddCountryCodeValue?.text =
-                        if (countryCodeMap?.valueAt(position).isNotNull()) String.format("+%s",
-                            countryCodeMap?.valueAt(position)) else String.EMPTY
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
-
-            }
+        val countryCodeMap = arrayMapOf<String, Int?>(getString(R.string.no_country_code) to null)
+        Locale.getAvailableLocales().forEach { locale -> if (locale.country.isNotEmpty() && locale.country.isDigitsOnly().not()) countryCodeMap[locale.flagEmoji() + locale.country] = PhoneNumberUtil.getInstance().getCountryCodeForRegion(locale.country) }
+        val countryAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap.keys.toTypedArray()) }
         binding?.filterAddCountryCodeSpinner?.adapter = countryAdapter
-        binding?.filterAddCountryCodeSpinner?.setSelection(countryCodeMap?.indexOfKey(Locale(Locale.getDefault().language,
-            context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
-            ?.uppercase()).orZero())
-        binding?.filterAddCountryCodeValue?.text =
-            if (args.filter?.filter.orEmpty()
-                    .isValidPhoneNumber(context?.getUserCountry().orEmpty())
-            ) args.filter?.nationalNumber(context?.getUserCountry()
-                .orEmpty()) else args.filter?.filter.orEmpty()
+        binding?.filterAddCountryCodeSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long, ) {
+                    binding?.filterAddCountryCodeValue?.text = if (countryCodeMap.valueAt(position).isNotNull()) String.format("+%s", countryCodeMap.valueAt(position)) else String.EMPTY
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+        }
+        val countryCodeKey = countryCodeMap.keys.firstOrNull { args.filter?.filter?.startsWith(String.format("+%s", countryCodeMap[it])).isTrue() }
+        binding?.filterAddCountryCodeSpinner?.setSelection(countryCodeMap.indexOfKey(if (countryCodeKey.isNotNull()) countryCodeKey else Locale(Locale.getDefault().language, context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()?.uppercase()).orZero())
     }
 }
