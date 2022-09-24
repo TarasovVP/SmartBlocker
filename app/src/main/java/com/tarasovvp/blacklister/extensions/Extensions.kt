@@ -12,6 +12,7 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.ArrayMap
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -19,8 +20,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.ColorInt
+import androidx.collection.arrayMapOf
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -35,6 +38,7 @@ import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
+import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
 import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
@@ -388,17 +392,6 @@ private fun <T> ViewGroup.getViewsFromLayout(
         }
     }
     return views
-}
-
-fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try {
-    PhoneNumberUtil.getInstance().parse(this.trimmed(), countryCode.uppercase())
-} catch (e: Exception) {
-    e.printStackTrace()
-    null
-}
-
-fun String?.isValidPhoneNumber(countryCode: String): Boolean {
-   return if (getPhoneNumber(countryCode).isNotNull()) PhoneNumberUtil.getInstance().isValidNumber(getPhoneNumber(countryCode)) else false
 }
 
 fun String?.trimmed() = this?.filter { it.isDigit() || it == Constants.PLUS_CHAR }.orEmpty()

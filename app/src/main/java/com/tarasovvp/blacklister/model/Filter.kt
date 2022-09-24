@@ -3,10 +3,11 @@ package com.tarasovvp.blacklister.model
 import android.content.Context
 import android.os.Parcelable
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.extensions.getPhoneNumber
-import com.tarasovvp.blacklister.extensions.getUserCountry
-import com.tarasovvp.blacklister.extensions.isValidPhoneNumber
+import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
+import com.tarasovvp.blacklister.utils.PhoneNumberUtil
+import com.tarasovvp.blacklister.utils.PhoneNumberUtil.extractedFilter
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -35,12 +36,7 @@ open class Filter(
     }
 
     fun filterToInput(context: Context): String {
-        return if (filter.isValidPhoneNumber(context.getUserCountry().orEmpty())) nationalNumber(
-            context.getUserCountry().orEmpty()) else filter
-    }
-
-    fun nationalNumber(countryCode: String): String {
-        return filter.getPhoneNumber(countryCode)?.nationalNumber.toString()
+        return context.extractedFilter(filter)
     }
 
     fun isTypeStart(): Boolean {
