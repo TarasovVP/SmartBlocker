@@ -3,20 +3,15 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.model.BlackFilter
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.WhiteFilter
-import com.tarasovvp.blacklister.repository.BlackFilterRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
-import com.tarasovvp.blacklister.repository.WhiteFilterRepository
+import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class FilterAddViewModel(application: Application) : BaseViewModel(application) {
 
-    private val blackFilterRepository = BlackFilterRepository
-    private val whiteFilterRepository = WhiteFilterRepository
+    private val filterRepository = FilterRepository
     private val contactRepository = ContactRepository
 
     val existFilterLiveData = MutableLiveData<Filter>()
@@ -28,11 +23,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         Log.e("filterAddTAG", "AddViewModel checkFilterExist filter $filter")
         showProgress()
         launch {
-            val existingFilter = if (filter.isBlackFilter) {
-                blackFilterRepository.getBlackFilter(filter)
-            } else {
-                whiteFilterRepository.getWhiteFilter(filter)
-            }
+            val existingFilter = filterRepository.getFilter(filter)
             Log.e("filterAddTAG", "AddViewModel checkFilterExist existingFilter $existingFilter")
             existFilterLiveData.postValue(existingFilter ?: filter)
             hideProgress()
@@ -40,9 +31,11 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun checkContactListByFilter(filter: Filter) {
+        Log.e("filterAddTAG", "AddViewModel checkContactListByFilter filter $filter")
         showProgress()
         launch {
             queryContactListLiveData.postValue(contactRepository.getQueryContacts(filter).orEmpty())
+            Log.e("filterAddTAG", "AddViewModel queryContactListLiveData $filter")
             hideProgress()
         }
     }
@@ -51,14 +44,8 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         showProgress()
         launch {
             filter.isFromDb = true
-            if (filter.isBlackFilter) {
-                blackFilterRepository.insertBlackFilter(filter as BlackFilter) {
-                    insertFilterLiveData.postValue(filter.filter)
-                }
-            } else {
-                whiteFilterRepository.insertWhiteFilter(filter as WhiteFilter) {
-                    insertFilterLiveData.postValue(filter.filter)
-                }
+            filterRepository.insertFilter(filter) {
+                insertFilterLiveData.postValue(filter.filter)
             }
             hideProgress()
         }
@@ -67,14 +54,8 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun deleteFilter(filter: Filter) {
         showProgress()
         launch {
-            if (filter.isBlackFilter) {
-                blackFilterRepository.deleteBlackFilter(filter as BlackFilter) {
-                    deleteFilterLiveData.postValue(filter.filter)
-                }
-            } else {
-                whiteFilterRepository.deleteWhiteFilter(filter as WhiteFilter) {
-                    deleteFilterLiveData.postValue(filter.filter)
-                }
+            filterRepository.deleteFilterList(listOf(filter)) {
+                deleteFilterLiveData.postValue(filter.filter)
             }
             hideProgress()
         }

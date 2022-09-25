@@ -18,7 +18,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         isProgressProcess.postValue(false)
     }
 
-    protected fun showProgress() {
+    fun showProgress() {
         isProgressProcess.postValue(true)
     }
 

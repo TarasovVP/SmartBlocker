@@ -2,11 +2,10 @@ package com.tarasovvp.blacklister.ui.main.filter_list
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.model.BlackFilter
+import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.WhiteFilter
-import com.tarasovvp.blacklister.repository.BlackFilterRepository
-import com.tarasovvp.blacklister.repository.WhiteFilterRepository
+import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class FilterListViewModel(application: Application) : BaseViewModel(application) {
@@ -14,20 +13,14 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
     val filterListLiveData = MutableLiveData<List<Filter>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
 
-    private val whiteFilterRepository = WhiteFilterRepository
-    private val blackFilterRepository = BlackFilterRepository
+    private val filterRepository = FilterRepository
 
     val filterHashMapLiveData = MutableLiveData<Map<String, List<Filter>>?>()
 
     fun getFilterList(isBlackList: Boolean) {
+        showProgress()
         launch {
-            showProgress()
-            val filterList = if (isBlackList) {
-                blackFilterRepository.allBlackFilters()
-            } else {
-                whiteFilterRepository.allWhiteFilters()
-            }
-            filterListLiveData.postValue(filterList)
+            filterListLiveData.postValue(filterRepository.allFilters(if (isBlackList) BLACK_FILTER else WHITE_FILTER))
             hideProgress()
         }
     }
@@ -36,24 +29,18 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
         launch {
             showProgress()
             filterHashMapLiveData.postValue(
-                whiteFilterRepository.getHashMapFromFilterList(filterList)
+                filterRepository.getHashMapFromFilterList(filterList)
             )
             hideProgress()
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun deleteFilterList(filterList: List<Filter>, isBlackList: Boolean) {
+    fun deleteFilterList(filterList: List<Filter>) {
         showProgress()
         launch {
-            if (isBlackList) {
-                blackFilterRepository.deleteBlackFilterList(blackFilterList = filterList as List<BlackFilter>) {
-                    successDeleteFilterLiveData.postValue(true)
-                }
-            } else {
-                whiteFilterRepository.deleteWhiteFilterList(filterList as List<WhiteFilter>) {
-                    successDeleteFilterLiveData.postValue(true)
-                }
+            filterRepository.deleteFilterList(filterList) {
+                successDeleteFilterLiveData.postValue(true)
             }
             hideProgress()
         }

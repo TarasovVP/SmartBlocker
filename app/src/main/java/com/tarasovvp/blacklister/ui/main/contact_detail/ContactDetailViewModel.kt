@@ -5,42 +5,25 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.WhiteFilter
-import com.tarasovvp.blacklister.repository.BlackFilterRepository
-import com.tarasovvp.blacklister.repository.BlockedCallRepository
-import com.tarasovvp.blacklister.repository.ContactRepository
-import com.tarasovvp.blacklister.repository.WhiteFilterRepository
+import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class ContactDetailViewModel(application: Application) : BaseViewModel(application) {
 
     private val contactRepository = ContactRepository
-    private val blackFilterRepository = BlackFilterRepository
-    private val whiteFilterRepository = WhiteFilterRepository
+    private val filterRepository = FilterRepository
     private val blockedCallRepository = BlockedCallRepository
 
     val contactDetailLiveData = MutableLiveData<Contact>()
-    val blackFilterLiveData = MutableLiveData<List<Filter>>()
-    val whiteFilterLiveData = MutableLiveData<List<WhiteFilter>>()
+    val filterLiveData = MutableLiveData<List<Filter>>()
     val blockedCallLiveData = MutableLiveData<List<BlockedCall>>()
 
-    fun getBlackFilterList(phone: String) {
+    fun filterList(phone: String) {
         showProgress()
         launch {
-            val blackNumberList = blackFilterRepository.getBlackFilterList(phone)
+            val blackNumberList = filterRepository.getFilterList(phone)
             blackNumberList?.let {
-                blackFilterLiveData.postValue(it)
-            }
-            hideProgress()
-        }
-    }
-
-    fun getWhiteFilterList(filter: String) {
-        showProgress()
-        launch {
-            val whiteNumberList = whiteFilterRepository.getWhiteFilterList(filter)
-            whiteNumberList?.let {
-                whiteFilterLiveData.postValue(it)
+                filterLiveData.postValue(it)
             }
             hideProgress()
         }

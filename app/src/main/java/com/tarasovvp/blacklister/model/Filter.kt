@@ -2,35 +2,42 @@ package com.tarasovvp.blacklister.model
 
 import android.content.Context
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
-import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
+import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
-import com.tarasovvp.blacklister.utils.PhoneNumberUtil
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil.extractedFilter
 import kotlinx.android.parcel.Parcelize
 
+@Entity
 @Parcelize
-open class Filter(
-    open var filter: String = "",
-    var type: Int = 0,
+class Filter(
+    @PrimaryKey var filter: String = "",
+    var conditionType: Int = DEFAULT_FILTER,
+    var filterType: Int = DEFAULT_FILTER
 ) : Parcelable, BaseAdapter.MainData {
     var isCheckedForDelete = false
-    open var isBlackFilter = false
     var isDeleteMode = false
     var isFromDb = false
-    var isFilterIdentical = false
+
+    fun isFilterEmpty(): Boolean {
+        return filter.isEmpty()
+    }
+
     fun listTypeIcon(): Int {
         return when {
-            isBlackFilter -> R.drawable.ic_black_filter
+            isBlackFilter() -> R.drawable.ic_black_filter
             else -> R.drawable.ic_white_filter
         }
     }
 
     fun filterTypeIcon(): Int {
-        return when (type) {
-            FILTER_FULL -> R.drawable.ic_start
-            FILTER_START -> R.drawable.ic_contain
+        return when (conditionType) {
+            CONDITION_TYPE_FULL -> R.drawable.ic_start
+            CONDITION_TYPE_START -> R.drawable.ic_contain
             else -> R.drawable.ic_end
         }
     }
@@ -40,16 +47,24 @@ open class Filter(
     }
 
     fun isTypeStart(): Boolean {
-        return type == FILTER_START
+        return conditionType == CONDITION_TYPE_START
     }
 
     fun isTypeContain(): Boolean {
-        return type == FILTER_CONTAIN
+        return conditionType == CONDITION_TYPE_CONTAIN
+    }
+
+    fun isBlackFilter(): Boolean {
+        return filterType == BLACK_FILTER
+    }
+
+    fun isWhiteFilter(): Boolean {
+        return filterType == WHITE_FILTER
     }
 
     companion object {
-        const val FILTER_FULL = 0
-        const val FILTER_START = 1
-        const val FILTER_CONTAIN = 2
+        const val CONDITION_TYPE_FULL = 0
+        const val CONDITION_TYPE_START = 1
+        const val CONDITION_TYPE_CONTAIN = 2
     }
 }

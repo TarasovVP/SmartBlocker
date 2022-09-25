@@ -13,7 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
+import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -24,7 +26,6 @@ import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
-
 
 open class FilterAddFragment :
     BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
@@ -40,9 +41,10 @@ open class FilterAddFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("filterLifeCycleTAG", "FilterAddFragment onViewCreated")
         Log.e("filterAddTAG",
-            "BaseAddFragment onViewCreated filter ${args.filter?.filter} type ${args.filter?.type} isFromDb ${args.filter?.isFromDb} ")
-        isBlackFilter = args.filter?.isBlackFilter.isTrue()
+            "BaseAddFragment onViewCreated filter ${args.filter?.filter} type ${args.filter?.conditionType} isFromDb ${args.filter?.isFromDb} ")
+        isBlackFilter = args.filter?.isBlackFilter().isTrue()
         setToolbar()
         setClickListeners()
         setCountrySpinner()
@@ -82,9 +84,12 @@ open class FilterAddFragment :
     }
 
     private fun initViewsWithData(filter: Filter) {
-        Log.e("filterAddTAG", "BaseAddFragment initViewsWithData this $this filter $filter filterToInput ${context?.let {
-            filter.filterToInput(it)
-        }} countryCodeKey ${PhoneNumberUtil.countryCodeKey(filter.filter)}")
+        Log.e("filterAddTAG",
+            "BaseAddFragment initViewsWithData this $this filter $filter filterToInput ${
+                context?.let {
+                    filter.filterToInput(it)
+                }
+            } countryCodeKey ${PhoneNumberUtil.countryCodeKey(filter.filter)}")
         binding?.apply {
             this.filter = filter
             filterAddTitle.text = if (filterAddInput.inputText()
@@ -102,12 +107,21 @@ open class FilterAddFragment :
             binding?.root?.post {
                 filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
                     Log.e("filterAddTAG",
-                        "BaseAddFragment addTextChangedListener it $it filter ${getFilterObject().filter} type ${getFilterObject().type} isFromDb ${getFilterObject().isFromDb}")
+                        "BaseAddFragment addTextChangedListener it $it filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
                     viewModel.checkFilterExist(getFilterObject())
                 })
-                typeRadioGroup.setOnCheckedChangeListener { _, _ ->
+                typeRadioGroup.setOnCheckedChangeListener { _, checkedRadioButtonId ->
                     Log.e("filterAddTAG",
-                        "BaseAddFragment setOnCheckedChangeListener filter ${getFilterObject().filter} type ${getFilterObject().type} isFromDb ${getFilterObject().isFromDb}")
+                        "BaseAddFragment setOnCheckedChangeListener filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
+                    if (checkedRadioButtonId == R.id.filter_type_contain) {
+                        filterAddCountryCodeValue.text = String.EMPTY
+                    } else {
+                        filterAddCountryCodeSpinner.setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(
+                                filter?.filter).isNotNull()
+                        ) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language,
+                            context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
+                            ?.uppercase()).orZero())
+                    }
                     viewModel.checkFilterExist(getFilterObject())
                 }
             }
@@ -115,21 +129,11 @@ open class FilterAddFragment :
     }
 
     private fun getFilterObject(): Filter {
-        val filter = if (isBlackFilter) {
-            BlackFilter(filter = String.format("%s%s",
-                binding?.filterAddCountryCodeValue?.text,
-                binding?.filterAddInput.inputText()))
-        } else {
-            WhiteFilter(filter = String.format("%s%s",
-                binding?.filterAddCountryCodeValue?.text,
-                binding?.filterAddInput.inputText()))
-        }
-        return filter.apply {
-            isBlackFilter = filter.isBlackFilter.isTrue()
-            type =
-                binding?.typeRadioGroup?.indexOfChild(binding?.typeRadioGroup?.findViewById(binding?.typeRadioGroup?.checkedRadioButtonId.orZero()))
-                    .orZero()
-        }
+        return Filter(filter = String.format("%s%s",
+            binding?.filterAddCountryCodeValue?.text,
+            binding?.filterAddInput.inputText()), filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER, conditionType =
+        binding?.typeRadioGroup?.indexOfChild(binding?.typeRadioGroup?.findViewById(binding?.typeRadioGroup?.checkedRadioButtonId.orZero()))
+            .orZero())
     }
 
     private fun setClickListeners() {
@@ -139,14 +143,15 @@ open class FilterAddFragment :
                     description = getString(R.string.add_conditions_info),
                     icon = R.drawable.ic_test))
             }
-            filterDeleteSubmit.setSafeOnClickListener {
-                filter?.let {
-                    findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(
-                        filter = it))
-                }
-            }
             filterAddSubmit.setSafeOnClickListener {
-                viewModel.insertFilter(getFilterObject())
+                filter?.apply {
+                    if (isFromDb.isTrue()) {
+                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(
+                            filter = this))
+                    } else {
+                        viewModel.insertFilter(this)
+                    }
+                }
             }
         }
     }
@@ -161,7 +166,7 @@ open class FilterAddFragment :
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 var filterAddInfoText = ""
                 contactList.filterNot {
-                    if (isBlackFilter) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+                    if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
                 }.apply {
                     if (this.isNotEmpty()) filterAddInfoText += String.format(getString(R.string.block_add_info),
                         if (isBlackFilter) getString(R.string.can_block) else getString(
@@ -169,7 +174,7 @@ open class FilterAddFragment :
                         this.size)
                 }
                 contactList.filter {
-                    if (isBlackFilter) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+                    if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
                 }.apply {
                     if (filterAddInfoText.isNotEmpty()) filterAddInfoText += "\n"
                     if (this.isNotEmpty()) filterAddInfoText += String.format(getString(R.string.not_block_add_info),
@@ -198,7 +203,7 @@ open class FilterAddFragment :
         val contactListMap = hashMapOf(title to listOf<Contact>())
 
         val affectedContactList = contactList.filterNot {
-            if (isBlackFilter) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+            if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
         }
         if (affectedContactList.isNotEmpty()) {
             val affectedContacts =
@@ -208,7 +213,7 @@ open class FilterAddFragment :
         }
 
         val nonAffectedContactList = contactList.filter {
-            if (isBlackFilter) it.isWhiteFilter && SharedPreferencesUtil.isWhiteListPriority else it.isBlackFilter && SharedPreferencesUtil.isWhiteListPriority.not()
+            if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
         }
         if (nonAffectedContactList.isNotEmpty()) {
             val nonAffectedContacts = String.format(getString(R.string.not_block_add_info),
@@ -264,13 +269,18 @@ open class FilterAddFragment :
                     position: Int,
                     id: Long,
                 ) {
-                    binding?.filterAddCountryCodeValue?.text = if (countryCodeMap?.valueAt(position).isNotNull()) String.format(COUNTRY_CODE_START,
+                    binding?.filterAddCountryCodeValue?.text =
+                        if (countryCodeMap?.valueAt(position).isNotNull()) String.format(
+                            COUNTRY_CODE_START,
                             countryCodeMap?.valueAt(position)) else String.EMPTY
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
-        binding?.filterAddCountryCodeSpinner?.setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(args.filter?.filter).isNotNull()) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language,
-                context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()?.uppercase()).orZero())
+        binding?.filterAddCountryCodeSpinner?.setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(
+                args.filter?.filter).isNotNull()
+        ) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language,
+            context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
+            ?.uppercase()).orZero())
     }
 }

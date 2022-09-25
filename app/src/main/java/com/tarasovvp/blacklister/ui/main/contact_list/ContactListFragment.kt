@@ -68,7 +68,7 @@ open class ContactListFragment :
             ).isTrue() || contact.phone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
-                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter else true)
+                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)
         }.orEmpty()
         checkDataListEmptiness(filteredContactList)
         viewModel.getHashMapFromContactList(filteredContactList)

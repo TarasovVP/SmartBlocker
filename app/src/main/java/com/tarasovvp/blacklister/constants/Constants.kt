@@ -11,8 +11,10 @@ object Constants {
     const val COUNTRY_CODE_START = "+%s"
     const val WHITE_LIST_PRIORITY = "whiteListPriority"
     const val BLOCK_HIDDEN = "blockHidden"
-    const val BLACK_LIST = "blackList"
-    const val WHITE_LIST = "whiteList"
+    const val FILTER_LIST = "filterList"
+    const val DEFAULT_FILTER = 0
+    const val BLACK_FILTER = 1
+    const val WHITE_FILTER = 2
     const val DELETE_FILTER = "deleteFilter"
     const val CHANGE_FILTER = "changeFilter"
     const val EMAIL = "email"

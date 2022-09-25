@@ -4,16 +4,14 @@ import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
-import com.tarasovvp.blacklister.constants.Constants.BLACK_LIST
 import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.EXCEPTION
 import com.tarasovvp.blacklister.constants.Constants.USERS
-import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST
+import com.tarasovvp.blacklister.constants.Constants.FILTER_LIST
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.model.BlackFilter
 import com.tarasovvp.blacklister.model.CurrentUser
-import com.tarasovvp.blacklister.model.WhiteFilter
+import com.tarasovvp.blacklister.model.Filter
 
 object RealDataBaseRepository {
 
@@ -29,18 +27,12 @@ object RealDataBaseRepository {
                 val currentUser = CurrentUser()
                 task.result.children.forEach { snapshot ->
                     when (snapshot.key) {
-                        WHITE_LIST_PRIORITY -> currentUser.isWhiteListPriority =
+                        WHITE_LIST_PRIORITY -> currentUser.whiteListPriority =
                             snapshot.getValue(Boolean::class.java).isTrue()
-                        BLACK_LIST -> {
+                        FILTER_LIST -> {
                             snapshot.children.forEach { child ->
-                                child.getValue(BlackFilter::class.java)
-                                    ?.let { currentUser.blackFilterList.add(it) }
-                            }
-                        }
-                        WHITE_LIST -> {
-                            snapshot.children.forEach { child ->
-                                child.getValue(WhiteFilter::class.java)
-                                    ?.let { currentUser.whiteFilterList.add(it) }
+                                child.getValue(Filter::class.java)
+                                    ?.let { currentUser.filterList.add(it) }
                             }
                         }
                     }
@@ -51,8 +43,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun insertBlackFilter(blackFilter: BlackFilter, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).child(blackFilter.filter).setValue(blackFilter)
+    fun insertFilter(whiteFilter: Filter, result: () -> Unit) {
+        currentUserDatabase.child(FILTER_LIST).child(whiteFilter.filter).setValue(whiteFilter)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -61,8 +53,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun insertWhiteFilter(whiteFilter: WhiteFilter, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).child(whiteFilter.filter).setValue(whiteFilter)
+    fun deleteFilter(whiteFilter: Filter, result: () -> Unit) {
+        currentUserDatabase.child(FILTER_LIST).child(whiteFilter.filter).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -71,46 +63,12 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteWhiteFilter(whiteFilter: WhiteFilter, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).child(whiteFilter.filter).removeValue()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                result.invoke()
-            }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
-            }
-    }
-
-    fun deleteWhiteFilterList(whiteFilterList: List<WhiteFilter>, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST).get()
+    fun deleteFilterList(whiteFilterList: List<Filter>, result: () -> Unit) {
+        currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
                     if (whiteFilterList.map { it.filter }
-                            .contains(snapshot.key)) snapshot.ref.removeValue()
-                }
-                result.invoke()
-            }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
-            }
-    }
-
-    fun deleteBlackFilter(blackFilter: BlackFilter, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).child(blackFilter.filter).removeValue()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                result.invoke()
-            }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
-            }
-    }
-
-    fun deleteBlackFilterList(blackFilterList: List<BlackFilter>, result: () -> Unit) {
-        currentUserDatabase.child(BLACK_LIST).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                task.result.children.forEach { snapshot ->
-                    if (blackFilterList.map { it.filter }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()

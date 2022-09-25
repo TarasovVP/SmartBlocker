@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.databinding.FragmentContactDetailBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
@@ -46,8 +47,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
         if (expandableFilterAdapter.isNotNull()) {
             binding?.contactDetailFilterList?.setAdapter(expandableFilterAdapter)
         } else {
-            viewModel.getBlackFilterList(phone)
-            viewModel.getWhiteFilterList(phone)
+            viewModel.filterList(phone)
         }
         binding?.contactDetailFilterList?.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
             Log.e("contactTAG",
@@ -66,11 +66,9 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
             contactDetailLiveData.safeSingleObserve(viewLifecycleOwner) { contact ->
                 setContactInfo(contact)
             }
-            blackFilterLiveData.safeSingleObserve(viewLifecycleOwner) { blackNumberList ->
-                setFilterList(blackNumberList, true)
-            }
-            whiteFilterLiveData.safeSingleObserve(viewLifecycleOwner) { whiteNumberList ->
-                setFilterList(whiteNumberList, false)
+            filterLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
+                setFilterList(filterList.filter { it.isBlackFilter() }, true)
+                setFilterList(filterList.filter { it.isWhiteFilter() }, false)
             }
             blockedCallLiveData.safeSingleObserve(viewLifecycleOwner) { blockedCallList ->
                 setBlockedCallList(blockedCallList)
@@ -81,7 +79,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     private fun setPriority() {
         binding?.contactDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(0,
             0,
-            if (SharedPreferencesUtil.isWhiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_black_filter,
+            if (SharedPreferencesUtil.whiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_black_filter,
             0)
         binding?.contactDetailPriority?.setSafeOnClickListener {
             findNavController().navigate(ContactDetailFragmentDirections.startBlockSettingsFragment())
@@ -92,12 +90,12 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
         binding?.apply {
             this.contact = contact
             contactDetailPriority.text = String.format(getString(R.string.prioritness),
-                if (SharedPreferencesUtil.isWhiteListPriority) getString(R.string.white_list) else getString(
+                if (SharedPreferencesUtil.whiteListPriority) getString(R.string.white_list) else getString(
                     R.string.black_list))
             contactDetailAddFilter.setSafeOnClickListener {
                 findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
                     filter = Filter(filter = contact.trimmedPhone).apply {
-                        isBlackFilter = true
+                        filterType = BLACK_FILTER
                     }))
             }
         }

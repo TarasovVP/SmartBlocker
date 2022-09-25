@@ -21,6 +21,7 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("filterLifeCycleTAG", "BaseFragment onViewCreated")
         getCurrentBackStackEntry()
         observeLiveData()
         setProgressVisibility()

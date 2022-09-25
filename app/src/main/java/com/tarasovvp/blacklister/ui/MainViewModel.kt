@@ -3,18 +3,18 @@ package com.tarasovvp.blacklister.ui
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
+import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.model.CurrentUser
-import com.tarasovvp.blacklister.model.WhiteFilter
+import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
     private val logCallRepository = CallRepository
-    private val blackFilterRepository = BlackFilterRepository
-    private val whiteFilterRepository = WhiteFilterRepository
+    private val filterRepository = FilterRepository
     private val contactRepository = ContactRepository
     private val realDataBaseRepository = RealDataBaseRepository
 
@@ -27,25 +27,17 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             showProgress()
             progressStatusLiveData.postValue("Сбор информацию")
             realDataBaseRepository.getCurrentUser { currentUser ->
-                SharedPreferencesUtil.isWhiteListPriority =
-                    currentUser?.isWhiteListPriority.isTrue()
-                currentUser?.let { insertAllBlackFilters(it) }
+                SharedPreferencesUtil.whiteListPriority =
+                    currentUser?.whiteListPriority.isTrue()
+                currentUser?.let { insertAllFilters(it.filterList) }
             }
         }
     }
 
-    private fun insertAllBlackFilters(currentUser: CurrentUser) {
-        launch {
-            Log.e("getAllDataTAG", "MainViewModel insertAllBlackFilters")
-            blackFilterRepository.insertAllBlackFilters(currentUser.blackFilterList)
-            insertAllWhiteFilters(currentUser.whiteFilterList)
-        }
-    }
-
-    private fun insertAllWhiteFilters(whiteFilterList: ArrayList<WhiteFilter>) {
+    private fun insertAllFilters(filterList: ArrayList<Filter>) {
         launch {
             Log.e("getAllDataTAG", "MainViewModel insertAllWhiteFilters")
-            whiteFilterRepository.insertAllWhiteFilters(whiteFilterList)
+            filterRepository.insertAllFilters(filterList)
             getAllData()
         }
     }
@@ -58,10 +50,14 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
-                val isInWhiteList = whiteFilterRepository.getWhiteFilterList(contact.trimmedPhone)?.isEmpty().isTrue().not()
-                val isInBlackList = blackFilterRepository.getBlackFilterList(contact.trimmedPhone)?.isEmpty().isTrue().not()
-                contact.isBlackFilter = (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not())
-                contact.isWhiteFilter = (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority) || (isInWhiteList && SharedPreferencesUtil.isWhiteListPriority.not() && isInBlackList.not())
+                val filterList = filterRepository.getFilterList(contact.trimmedPhone)
+                val isInWhiteList = filterList?.any { it.isWhiteFilter() }.isTrue()
+                val isInBlackList = filterList?.any { it.isBlackFilter() }.isTrue()
+                contact.filterType = when {
+                    (isInBlackList && SharedPreferencesUtil.whiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.whiteListPriority && isInWhiteList.not()) -> BLACK_FILTER
+                    (isInWhiteList && SharedPreferencesUtil.whiteListPriority) || (isInWhiteList && SharedPreferencesUtil.whiteListPriority.not() && isInBlackList.not()) -> WHITE_FILTER
+                    else -> DEFAULT_FILTER
+                }
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)

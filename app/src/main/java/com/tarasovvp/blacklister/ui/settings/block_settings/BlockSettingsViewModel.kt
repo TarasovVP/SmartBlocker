@@ -23,7 +23,7 @@ class BlockSettingsViewModel(application: Application) : BaseViewModel(applicati
                     successPriorityLiveData.postValue(whiteListPriority)
                 }
             } else {
-                SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
+                SharedPreferencesUtil.whiteListPriority = whiteListPriority
             }
             hideProgress()
         }

@@ -45,7 +45,7 @@ object SharedPreferencesUtil {
             )
         }
 
-    var isWhiteListPriority: Boolean
+    var whiteListPriority: Boolean
         get() = loadBoolean(WHITE_LIST_PRIORITY)
         set(priority) {
             saveBoolean(

@@ -15,17 +15,15 @@ import com.tarasovvp.blacklister.extensions.breakCallPieAndHigher
 import com.tarasovvp.blacklister.extensions.deleteLastBlockedCall
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
-import com.tarasovvp.blacklister.repository.BlackFilterRepository
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
-import com.tarasovvp.blacklister.repository.WhiteFilterRepository
+import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 open class CallReceiver(private val phoneListener: (String) -> Unit) : BroadcastReceiver() {
 
-    private val blackFilterRepository = BlackFilterRepository
-    private val whiteFilterRepository = WhiteFilterRepository
+    private val filterRepository = FilterRepository
     private val blockedCallRepository = BlockedCallRepository
 
     init {
@@ -41,12 +39,13 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number")
+        val filterList = filterRepository.getFilterList(number)
         val isInWhiteList =
-            whiteFilterRepository.getWhiteFilterList(number)?.isEmpty().isTrue().not()
+            filterList?.any { it.isWhiteFilter() }.isTrue()
         val isInBlackList =
-            blackFilterRepository.getBlackFilterList(number)?.isEmpty().isTrue().not()
+            filterList?.any { it.isBlackFilter() }.isTrue()
         val isBlockNeeded =
-            (isInBlackList && SharedPreferencesUtil.isWhiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.isWhiteListPriority && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
+            (isInBlackList && SharedPreferencesUtil.whiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.whiteListPriority && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
         Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
         if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
             Log.e("blockTAG", "CallReceiver onReceive breakCall")

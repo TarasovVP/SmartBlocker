@@ -144,22 +144,13 @@
                 </RadioGroup>
 
                 <Button
-                    android:id="@+id/filter_delete_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:text="@string/delete_menu"
-                    android:visibility="@{filter.isFromDb ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintTop_toBottomOf="@+id/type_radio_group" />
-
-                <Button
                     android:id="@+id/filter_add_submit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_5"
-                    android:text="@{filter.fromDb ? @string/edit : @string/add}"
-                    android:visibility="@{!filter.isFilterIdentical ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_delete_submit"
+                    android:text="@{filter.fromDb ? @string/delete : @string/add}"
+                    android:visibility="@{filter.isFilterEmpty ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintTop_toBottomOf="@+id/type_radio_group"
                     app:layout_constraintVertical_bias="1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

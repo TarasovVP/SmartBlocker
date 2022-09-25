@@ -5,6 +5,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
@@ -30,6 +32,7 @@ open class BaseFilterListFragment :
         return context?.let {
             FilterAdapter(object : FilterClickListener {
                 override fun onFilterClick(filter: Filter) {
+                    Log.e("filterLifeCycleTAG", "FilterListFragment onFilterClick startFilterAddFragment")
                     findNavController().navigate(WhiteFilterListFragmentDirections.startFilterAddFragment(
                         filter = filter))
                 }
@@ -57,8 +60,7 @@ open class BaseFilterListFragment :
         emptyStateContainer = binding?.filterListEmpty
         setClickListeners()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
-            viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty(),
-                this is BlackFilterListFragment)
+            viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
         }
     }
 
@@ -67,14 +69,15 @@ open class BaseFilterListFragment :
             val direction = if (this is BlackFilterListFragment) {
                 BlackFilterListFragmentDirections.startFilterAddFragment(
                     filter = Filter().apply {
-                        isBlackFilter = true
+                        filterType = BLACK_FILTER
                     })
             } else {
                 WhiteFilterListFragmentDirections.startFilterAddFragment(
                     filter = Filter().apply {
-                        isBlackFilter = false
+                        filterType = WHITE_FILTER
                     })
             }
+            Log.e("filterLifeCycleTAG", "FilterListFragment filterListFabNew startFilterAddFragment")
             findNavController().navigate(direction)
         }
     }

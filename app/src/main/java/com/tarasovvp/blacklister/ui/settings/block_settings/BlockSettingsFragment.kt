@@ -45,7 +45,7 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
             blockSettingsHidden.setSwitchClickListener { isChecked ->
                 viewModel.changeBlockHidden(isChecked.not())
             }
-            blockSettingsPriority.setSwitchChange(SharedPreferencesUtil.isWhiteListPriority)
+            blockSettingsPriority.setSwitchChange(SharedPreferencesUtil.whiteListPriority)
             blockSettingsPriority.setSwitchClickListener { isChecked ->
                 viewModel.changePriority(isChecked.not())
             }
@@ -64,7 +64,7 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
         with(viewModel) {
             successPriorityLiveData.safeSingleObserve(viewLifecycleOwner) { whiteListPriority ->
                 binding?.blockSettingsPriority?.setSwitchChange(whiteListPriority)
-                SharedPreferencesUtil.isWhiteListPriority = whiteListPriority
+                SharedPreferencesUtil.whiteListPriority = whiteListPriority
                 (activity as MainActivity).getAllData()
             }
             successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
