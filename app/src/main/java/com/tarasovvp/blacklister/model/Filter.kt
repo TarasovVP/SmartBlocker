@@ -6,15 +6,19 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_CONTAIN
+import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_FULL
+import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_START
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil.extractedFilter
+import com.tarasovvp.blacklister.utils.PhoneNumberUtil.isValidPhoneNumber
 import kotlinx.android.parcel.Parcelize
 
 @Entity
 @Parcelize
-class Filter(
+data class Filter(
     @PrimaryKey var filter: String = "",
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER
@@ -46,8 +50,16 @@ class Filter(
         return context.extractedFilter(filter)
     }
 
+    fun isValidPhoneNumber(context: Context): Boolean {
+        return filter.isValidPhoneNumber(context)
+    }
+
     fun isTypeStart(): Boolean {
         return conditionType == CONDITION_TYPE_START
+    }
+
+    fun isTypeFull(): Boolean {
+        return conditionType == CONDITION_TYPE_FULL
     }
 
     fun isTypeContain(): Boolean {
@@ -60,11 +72,5 @@ class Filter(
 
     fun isWhiteFilter(): Boolean {
         return filterType == WHITE_FILTER
-    }
-
-    companion object {
-        const val CONDITION_TYPE_FULL = 0
-        const val CONDITION_TYPE_START = 1
-        const val CONDITION_TYPE_CONTAIN = 2
     }
 }

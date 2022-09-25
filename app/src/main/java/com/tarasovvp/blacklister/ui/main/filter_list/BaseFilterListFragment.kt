@@ -143,6 +143,7 @@ open class BaseFilterListFragment :
                 filterList?.let { setDataList(it) }
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
+                (activity as MainActivity).getAllData()
                 this@BaseFilterListFragment.filterList?.removeAll { it.isCheckedForDelete }
                 changeDeleteMode()
                 searchDataList()

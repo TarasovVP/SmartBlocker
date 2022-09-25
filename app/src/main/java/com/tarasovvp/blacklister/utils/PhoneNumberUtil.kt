@@ -36,8 +36,8 @@ object PhoneNumberUtil {
         null
     }
 
-    private fun String?.isValidPhoneNumber(countryCode: String): Boolean {
-        return if (getPhoneNumber(countryCode).isNotNull()) phoneNumberUtil?.isValidNumber(getPhoneNumber(countryCode)).isTrue() else false
+    fun String?.isValidPhoneNumber(context: Context): Boolean {
+        return if (getPhoneNumber(context.getUserCountry().orEmpty()).isNotNull()) phoneNumberUtil?.isValidNumber(getPhoneNumber(context.getUserCountry().orEmpty())).isTrue() else false
     }
 
     fun countryCodeKey(filter: String?): String? {
@@ -49,7 +49,7 @@ object PhoneNumberUtil {
     fun Context.extractedFilter(filter: String?): String {
         val countryCodeValue = countryCodeMap?.values?.firstOrNull { filter?.startsWith(String.format(Constants.COUNTRY_CODE_START, it.toString())).isTrue() }
         return when {
-            filter.isValidPhoneNumber(getUserCountry().orEmpty()) -> filter?.getPhoneNumber(getUserCountry().orEmpty())?.nationalNumber.toString()
+            filter.isValidPhoneNumber(this) -> filter?.getPhoneNumber(getUserCountry().orEmpty())?.nationalNumber.toString()
             countryCodeValue.isNotNull() -> filter?.replace(String.format(Constants.COUNTRY_CODE_START, countryCodeValue.toString()), String.EMPTY).orEmpty()
             else -> filter.orEmpty()
         }

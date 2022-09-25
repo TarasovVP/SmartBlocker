@@ -5,7 +5,9 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="android.content.Context" />
+
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -148,8 +150,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_5"
-                    android:text="@{filter.fromDb ? @string/delete : @string/add}"
-                    android:visibility="@{filter.isFilterEmpty ? View.GONE : View.VISIBLE}"
+                    android:text="@{filter.fromDb ? @string/delete_menu : @string/add}"
+                    android:visibility="@{filter.isFilterEmpty || (filter.typeFull &amp;&amp; !filter.isValidPhoneNumber(context)) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@+id/type_radio_group"
                     app:layout_constraintVertical_bias="1" />
 

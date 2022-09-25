@@ -85,8 +85,7 @@ open class FilterAddFragment :
 
     private fun initViewsWithData(filter: Filter) {
         Log.e("filterAddTAG",
-            "BaseAddFragment initViewsWithData this $this filter $filter filterToInput ${
-                context?.let {
+            "BaseAddFragment initViewsWithData this $this filter $filter filterToInput ${context?.let {
                     filter.filterToInput(it)
                 }
             } countryCodeKey ${PhoneNumberUtil.countryCodeKey(filter.filter)}")
@@ -110,18 +109,9 @@ open class FilterAddFragment :
                         "BaseAddFragment addTextChangedListener it $it filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
                     viewModel.checkFilterExist(getFilterObject())
                 })
-                typeRadioGroup.setOnCheckedChangeListener { _, checkedRadioButtonId ->
+                typeRadioGroup.setOnCheckedChangeListener { _, _ ->
                     Log.e("filterAddTAG",
                         "BaseAddFragment setOnCheckedChangeListener filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
-                    if (checkedRadioButtonId == R.id.filter_type_contain) {
-                        filterAddCountryCodeValue.text = String.EMPTY
-                    } else {
-                        filterAddCountryCodeSpinner.setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(
-                                filter?.filter).isNotNull()
-                        ) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language,
-                            context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
-                            ?.uppercase()).orZero())
-                    }
                     viewModel.checkFilterExist(getFilterObject())
                 }
             }
@@ -130,10 +120,8 @@ open class FilterAddFragment :
 
     private fun getFilterObject(): Filter {
         return Filter(filter = String.format("%s%s",
-            binding?.filterAddCountryCodeValue?.text,
-            binding?.filterAddInput.inputText()), filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER, conditionType =
-        binding?.typeRadioGroup?.indexOfChild(binding?.typeRadioGroup?.findViewById(binding?.typeRadioGroup?.checkedRadioButtonId.orZero()))
-            .orZero())
+            if (binding?.typeRadioGroup?.checkedRadioButtonId == R.id.filter_type_contain) String.EMPTY else binding?.filterAddCountryCodeValue?.text,
+            binding?.filterAddInput.inputText()), filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER, conditionType = binding?.typeRadioGroup?.indexOfChild(binding?.typeRadioGroup?.findViewById(binding?.typeRadioGroup?.checkedRadioButtonId.orZero())).orZero())
     }
 
     private fun setClickListeners() {

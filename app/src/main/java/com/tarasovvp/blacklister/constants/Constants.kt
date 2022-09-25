@@ -15,6 +15,9 @@ object Constants {
     const val DEFAULT_FILTER = 0
     const val BLACK_FILTER = 1
     const val WHITE_FILTER = 2
+    const val CONDITION_TYPE_FULL = 0
+    const val CONDITION_TYPE_START = 1
+    const val CONDITION_TYPE_CONTAIN = 2
     const val DELETE_FILTER = "deleteFilter"
     const val CHANGE_FILTER = "changeFilter"
     const val EMAIL = "email"
@@ -32,11 +35,7 @@ object Constants {
     const val FOREGROUND_CALL_SERVICE = "foregroundCallService"
     const val FOREGROUND_ID = 99
     const val PHONE_STATE = "android.intent.action.PHONE_STATE"
-    const val DESC = "DESC"
     const val CALL_ID = "_ID="
-    const val CALL_NUMBER = "NUMBER="
-    const val CALL_DATE = "DATE="
-    const val CALL_TYPE = "TYPE="
     const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
