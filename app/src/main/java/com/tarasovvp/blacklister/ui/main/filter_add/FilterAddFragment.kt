@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ExpandableListView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
@@ -35,8 +34,6 @@ open class FilterAddFragment :
     private val args: FilterAddFragmentArgs by navArgs()
 
     private var isBlackFilter: Boolean = true
-    private var contactByFilterAdapter: ContactByFilterAdapter? = null
-    private var contactByFilterList: ExpandableListView? = null
     private val countryCodeMap = PhoneNumberUtil.countryCodeMap
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,11 +50,11 @@ open class FilterAddFragment :
             Log.e("filterAddTAG",
                 "BaseAddFragment setFragmentResultListener getFilterObject() ${getFilterObject()}")
             isBlackFilter = isBlackFilter.not()
-            initViewsWithData(getFilterObject())
+            viewModel.checkFilterExist(getFilterObject())
             setToolbar()
         }
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
-            args.filter?.let {
+            binding?.filter?.let {
                 viewModel.deleteFilter(it)
             }
         }
@@ -91,19 +88,16 @@ open class FilterAddFragment :
             } countryCodeKey ${PhoneNumberUtil.countryCodeKey(filter.filter)}")
         binding?.apply {
             this.filter = filter
-            filterAddTitle.text = if (filterAddInput.inputText()
-                    .isEmpty()
-            ) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(
-                R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message),
-                filterAddInput.text)
-            viewModel.checkContactListByFilter(filter)
+            filterAddIcon.setImageResource(if (isBlackFilter) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
+            filterAddTitle.text = if (filterAddInput.inputText().isEmpty()) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message), filterAddInput.text)
         }
+        viewModel.checkContactListByFilter(filter)
         existNumberChecking()
     }
 
     private fun existNumberChecking() {
         binding?.apply {
-            binding?.root?.post {
+            root.post {
                 filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
                     Log.e("filterAddTAG",
                         "BaseAddFragment addTextChangedListener it $it filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
@@ -119,9 +113,7 @@ open class FilterAddFragment :
     }
 
     private fun getFilterObject(): Filter {
-        return Filter(filter = String.format("%s%s",
-            if (binding?.typeRadioGroup?.checkedRadioButtonId == R.id.filter_type_contain) String.EMPTY else binding?.filterAddCountryCodeValue?.text,
-            binding?.filterAddInput.inputText()), filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER, conditionType = binding?.typeRadioGroup?.indexOfChild(binding?.typeRadioGroup?.findViewById(binding?.typeRadioGroup?.checkedRadioButtonId.orZero())).orZero())
+        return Filter(filter = String.format("%s%s", if (binding?.typeRadioGroup?.checkedRadioButtonId == R.id.filter_type_contain) String.EMPTY else binding?.filterAddCountryCodeValue?.text, binding?.filterAddInput.inputText()), filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER, conditionType = binding?.typeRadioGroup?.indexOfChild(binding?.typeRadioGroup?.findViewById(binding?.typeRadioGroup?.checkedRadioButtonId.orZero())).orZero())
     }
 
     private fun setClickListeners() {
@@ -148,7 +140,7 @@ open class FilterAddFragment :
         with(viewModel) {
             existFilterLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 Log.e("filterAddTAG",
-                    "BaseAddFragment observeLiveData existFilterLiveData filter $filter")
+                    "BaseAddFragment observeLiveData existFilterLiveData filter $filter filter isFromDb ${filter.isFromDb}")
                 initViewsWithData(filter)
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
@@ -185,8 +177,9 @@ open class FilterAddFragment :
     private fun setContactByFilterList(contactList: List<Contact>) {
         val title =
             String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
-        contactByFilterList?.isEnabled = contactList.isNotEmpty()
-
+        binding?.filterAddContactByFilterList?.isEnabled = contactList.isNotEmpty()
+        Log.e("filterAddTAG",
+            "BaseAddFragment setContactByFilterList contactList $contactList")
         val titleList = arrayListOf(title)
         val contactListMap = hashMapOf(title to listOf<Contact>())
 
@@ -194,8 +187,7 @@ open class FilterAddFragment :
             if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
         }
         if (affectedContactList.isNotEmpty()) {
-            val affectedContacts =
-                "Найдено ${affectedContactList.size} контактов, которые будут ${if (isBlackFilter) "заблокированы" else "разблокированы"} этим фильтром"
+            val affectedContacts = "Найдено ${affectedContactList.size} контактов, которые будут ${if (isBlackFilter) "заблокированы" else "разблокированы"} этим фильтром"
             titleList.add(affectedContacts)
             contactListMap[affectedContacts] = affectedContactList
         }
@@ -204,29 +196,22 @@ open class FilterAddFragment :
             if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
         }
         if (nonAffectedContactList.isNotEmpty()) {
-            val nonAffectedContacts = String.format(getString(R.string.not_block_add_info),
-                if (isBlackFilter) getString(R.string.can_block) else getString(
-                    R.string.can_unblock),
-                nonAffectedContactList.size)
+            val nonAffectedContacts = String.format(getString(R.string.not_block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), nonAffectedContactList.size)
             titleList.add(nonAffectedContacts)
             contactListMap[nonAffectedContacts] = nonAffectedContactList
         }
-        contactByFilterAdapter = ContactByFilterAdapter(arrayListOf(title), contactListMap)
-        contactByFilterList?.setAdapter(contactByFilterAdapter)
-        contactByFilterList?.setOnGroupClickListener { expandableListView, _, groupPosition, _ ->
+        val contactByFilterAdapter = ContactByFilterAdapter(arrayListOf(title), contactListMap)
+        binding?.filterAddContactByFilterList?.setAdapter(contactByFilterAdapter)
+        binding?.filterAddContactByFilterList?.setOnGroupClickListener { expandableListView, _, groupPosition, _ ->
             if (groupPosition == 0 && contactList.isNotEmpty()) {
                 binding?.scrollContainer?.isVisible = expandableListView.isGroupExpanded(0)
-                if (expandableListView.isGroupExpanded(0)) {
-                    contactByFilterAdapter?.titleList = arrayListOf(title)
-                    contactByFilterAdapter?.contactListMap = hashMapOf()
-                } else {
-                    contactByFilterAdapter?.titleList = titleList
-                    contactByFilterAdapter?.contactListMap = contactListMap
-                }
+                contactByFilterAdapter.titleList = if (expandableListView.isGroupExpanded(0)) arrayListOf(title) else titleList
+                contactByFilterAdapter.contactListMap = if (expandableListView.isGroupExpanded(0)) hashMapOf() else contactListMap
+                contactByFilterAdapter.notifyDataSetInvalidated()
             }
             return@setOnGroupClickListener false
         }
-        contactByFilterList?.setOnChildClickListener { _, _, _, childPosition, _ ->
+        binding?.filterAddContactByFilterList?.setOnChildClickListener { _, _, _, childPosition, _ ->
             findNavController().navigate(FilterAddFragmentDirections.startContactDetailFragment(
                 number = contactList[childPosition].phone))
             return@setOnChildClickListener contactList.isEmpty()

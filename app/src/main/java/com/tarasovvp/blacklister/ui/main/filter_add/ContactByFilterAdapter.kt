@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.HeaderDataItem
 
 class ContactByFilterAdapter(
     var titleList: ArrayList<String>,
@@ -50,7 +52,9 @@ class ContactByFilterAdapter(
                 R.layout.item_header,
                 parent,
                 false).apply {
-                itemHeaderText.text = titleList[groupPosition]
+                Log.e("filterAddTAG",
+                    "ContactByFilterAdapter getGroupView groupPosition $groupPosition titleList $titleList")
+                if (groupPosition < titleList.size) headerDataItem = HeaderDataItem( header = titleList[groupPosition])
                 itemHeaderText.setCompoundDrawablesWithIntrinsicBounds(0,
                     0,
                     if (isExpanded) if (groupPosition > 0) R.drawable.ic_drop_up else R.drawable.ic_close else if (groupPosition > 0) R.drawable.ic_drop_down else R.drawable.ic_info,
@@ -70,7 +74,9 @@ class ContactByFilterAdapter(
             R.layout.item_contact,
             parent,
             false).apply {
-            contactListMap[titleList[groupPosition]]?.get(childPosition)?.let { contact ->
+            Log.e("filterAddTAG",
+                "ContactByFilterAdapter getChildView groupPosition $groupPosition contactListMap.size ${contactListMap.size}")
+            if (groupPosition < titleList.size)  contactListMap[titleList[groupPosition]]?.get(childPosition)?.let { contact ->
                 this.contact = contact
             }
             return root

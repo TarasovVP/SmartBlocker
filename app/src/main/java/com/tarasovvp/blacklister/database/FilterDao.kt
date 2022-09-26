@@ -14,8 +14,8 @@ interface FilterDao {
     @Query("SELECT * FROM filter WHERE filterType = :filterType")
     fun allFilters(filterType: Int): List<Filter>
 
-    @Query("SELECT * FROM filter WHERE filter = :filter AND conditionType = :type")
-    fun getFilter(filter: String, type: Int): Filter?
+    @Query("SELECT * FROM filter WHERE filter = :filter AND conditionType = :type AND filterType = :filterType")
+    fun getFilter(filter: String, type: Int, filterType: Int): Filter?
 
     @Query("SELECT * FROM filter WHERE (filter = :filter) OR (:filter LIKE filter || '%' AND conditionType = 1) OR (:filter LIKE '%' || filter || '%' AND conditionType = 2)")
     fun queryFilterList(filter: String): List<Filter>

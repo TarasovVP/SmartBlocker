@@ -11,6 +11,7 @@ import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_FULL
 import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_START
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil.extractedFilter
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil.isValidPhoneNumber
