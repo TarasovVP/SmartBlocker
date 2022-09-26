@@ -6,8 +6,12 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_CONTAIN
+import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_FULL
+import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_START
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
+import com.tarasovvp.blacklister.extensions.filterDataList
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeObserve
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -26,13 +30,15 @@ open class BaseFilterListFragment :
 
     private var filterList: ArrayList<Filter>? = null
     private var isDeleteMode = false
+    private var selectedFilterItems: BooleanArray? = null
 
     override fun createAdapter(): BaseAdapter<Filter>? {
         Log.e("adapterTAG", "FilterListFragment createAdapter filterList?.size ${filterList?.size}")
         return context?.let {
             FilterAdapter(object : FilterClickListener {
                 override fun onFilterClick(filter: Filter) {
-                    Log.e("filterLifeCycleTAG", "FilterListFragment onFilterClick startFilterAddFragment")
+                    Log.e("filterLifeCycleTAG",
+                        "FilterListFragment onFilterClick startFilterAddFragment")
                     findNavController().navigate(WhiteFilterListFragmentDirections.startFilterAddFragment(
                         filter = filter))
                 }
@@ -53,8 +59,10 @@ open class BaseFilterListFragment :
     }
 
     override fun initView() {
-        findNavController().currentDestination?.label = getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+        findNavController().currentDestination?.label =
+            getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
+        selectedFilterItems = booleanArrayOf(false, false, false)
         swipeRefresh = binding?.filterListRefresh
         recyclerView = binding?.filterListRecyclerView
         emptyStateContainer = binding?.filterListEmpty
@@ -65,6 +73,20 @@ open class BaseFilterListFragment :
     }
 
     private fun setClickListeners() {
+        binding?.filterListFilter?.setSafeOnClickListener {
+            selectedFilterItems?.let { selectedFilterItems ->
+                context?.filterDataList(selectedFilterItems) { selectedItems ->
+                    val itemsTitleList = arrayListOf<String>()
+                    selectedItems.forEachIndexed { index, title ->
+                        if (selectedFilterItems[index]) {
+                            itemsTitleList.add(title)
+                        }
+                    }
+                    binding?.filterListFilter?.text = if (itemsTitleList.isEmpty()) getString(R.string.filter_no_filter) else itemsTitleList.joinToString()
+                    searchDataList()
+                }
+            }
+        }
         binding?.filterListFabNew?.setSafeOnClickListener {
             val direction = if (this is BlackFilterListFragment) {
                 BlackFilterListFragmentDirections.startFilterAddFragment(
@@ -77,7 +99,8 @@ open class BaseFilterListFragment :
                         filterType = WHITE_FILTER
                     })
             }
-            Log.e("filterLifeCycleTAG", "FilterListFragment filterListFabNew startFilterAddFragment")
+            Log.e("filterLifeCycleTAG",
+                "FilterListFragment filterListFabNew startFilterAddFragment")
             findNavController().navigate(direction)
         }
     }
@@ -89,7 +112,8 @@ open class BaseFilterListFragment :
             isDeleteMode = this@BaseFilterListFragment.isDeleteMode
             notifyDataSetChanged()
         }
-        findNavController().currentDestination?.label = if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+        findNavController().currentDestination?.label =
+            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.apply {
             title =
                 if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
@@ -155,7 +179,10 @@ open class BaseFilterListFragment :
         val filteredList = filterList?.filter { filter ->
             filter.filter.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            )}.orEmpty()
+            ) && (selectedFilterItems?.get(CONDITION_TYPE_FULL).isTrue() && filter.isTypeFull()
+                    || selectedFilterItems?.get(CONDITION_TYPE_START).isTrue() && filter.isTypeStart()
+                    || selectedFilterItems?.get(CONDITION_TYPE_CONTAIN).isTrue() && filter.isTypeContain() || selectedFilterItems?.contains(true).isTrue().not())
+        }.orEmpty()
         checkDataListEmptiness(filteredList)
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList)

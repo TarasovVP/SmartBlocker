@@ -8,6 +8,7 @@ import android.widget.BaseExpandableListAdapter
 import androidx.databinding.DataBindingUtil
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
+import com.tarasovvp.blacklister.databinding.ItemContactSmallBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
@@ -70,8 +71,8 @@ class ContactByFilterAdapter(
         convertView: View?,
         parent: ViewGroup?,
     ): View {
-        DataBindingUtil.inflate<ItemContactBinding>(LayoutInflater.from(parent?.context),
-            R.layout.item_contact,
+        DataBindingUtil.inflate<ItemContactSmallBinding>(LayoutInflater.from(parent?.context),
+            R.layout.item_contact_small,
             parent,
             false).apply {
             Log.e("filterAddTAG",

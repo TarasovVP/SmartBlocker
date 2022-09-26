@@ -46,7 +46,7 @@
     <string name="add_black_list">Додати до чорного списку</string>
     <string name="enter_phone_number">Введіть номер телефону</string>
     <string name="enter_filter">Введіть номер</string>
-    <string name="filter_contain">Зміст</string>
+    <string name="filter_contain">Включає</string>
     <string name="filter_start">Починається</string>
     <string name="filter_end">Закінчується</string>
     <string name="filter_no_filter">Без фільтра</string>

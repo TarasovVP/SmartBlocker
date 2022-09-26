@@ -17,7 +17,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:padding="@dimen/padding_16">
 
         <androidx.core.widget.NestedScrollView
@@ -164,6 +163,9 @@
             android:layout_marginTop="@dimen/margin_15"
             android:groupIndicator="@null"
             android:nestedScrollingEnabled="true"
+            android:dividerHeight="@dimen/margin_5"
+            android:divider="@android:color/transparent"
+            android:childDivider="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scroll_container" />
 

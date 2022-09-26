@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.ColorInt
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.collection.arrayMapOf
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -52,6 +53,7 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
@@ -395,3 +397,18 @@ private fun <T> ViewGroup.getViewsFromLayout(
 }
 
 fun String?.trimmed() = this?.filter { it.isDigit() || it == Constants.PLUS_CHAR }.orEmpty()
+
+fun Context.filterDataList(selectedFilterItems: BooleanArray, result: (Array<String>) -> Unit): Boolean {
+    val filterItems = arrayOf(getString(R.string.full_number),
+        getString(R.string.filter_start),
+        getString(R.string.filter_contain))
+    val builder =
+        AlertDialog.Builder(ContextThemeWrapper(this, R.style.MultiChoiceAlertDialog))
+    builder.setMultiChoiceItems(filterItems, selectedFilterItems) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
+    builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
+    builder.setPositiveButton(R.string.ok) { _, _ ->
+        result.invoke(filterItems)
+    }
+    builder.show()
+    return true
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="contact"
+            type="com.tarasovvp.blacklister.model.Contact" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:background="@drawable/item_bg"
+        android:padding="@dimen/padding_8">
+
+        <TextView
+            android:id="@+id/item_contact_name"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_8"
+            android:ellipsize="end"
+            android:gravity="top"
+            android:maxLines="1"
+            android:text="@{contact.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/item_contact_type"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_contact_number"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_4"
+            android:layout_marginTop="@dimen/margin_4"
+            android:text="@{contact.phone}"
+            app:layout_constraintStart_toStartOf="@+id/item_contact_name"
+            app:layout_constraintEnd_toEndOf="@+id/item_contact_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_contact_name" />
+
+        <ImageView
+            android:id="@+id/item_contact_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:imageResource="@{contact.contactTypeIcon()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

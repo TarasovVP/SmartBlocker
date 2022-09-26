@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.collection.arrayMapOf
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
@@ -34,7 +35,6 @@ open class FilterAddFragment :
     private val args: FilterAddFragmentArgs by navArgs()
 
     private var isBlackFilter: Boolean = true
-    private val countryCodeMap = PhoneNumberUtil.countryCodeMap
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -144,24 +144,6 @@ open class FilterAddFragment :
                 initViewsWithData(filter)
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                var filterAddInfoText = ""
-                contactList.filterNot {
-                    if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
-                }.apply {
-                    if (this.isNotEmpty()) filterAddInfoText += String.format(getString(R.string.block_add_info),
-                        if (isBlackFilter) getString(R.string.can_block) else getString(
-                            R.string.can_unblock),
-                        this.size)
-                }
-                contactList.filter {
-                    if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
-                }.apply {
-                    if (filterAddInfoText.isNotEmpty()) filterAddInfoText += "\n"
-                    if (this.isNotEmpty()) filterAddInfoText += String.format(getString(R.string.not_block_add_info),
-                        if (isBlackFilter) getString(R.string.can_block) else getString(
-                            R.string.can_unblock),
-                        this.size)
-                }
                 setContactByFilterList(contactList)
             }
             insertFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
@@ -175,8 +157,7 @@ open class FilterAddFragment :
     }
 
     private fun setContactByFilterList(contactList: List<Contact>) {
-        val title =
-            String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
+        val title = String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
         binding?.filterAddContactByFilterList?.isEnabled = contactList.isNotEmpty()
         Log.e("filterAddTAG",
             "BaseAddFragment setContactByFilterList contactList $contactList")
@@ -187,7 +168,7 @@ open class FilterAddFragment :
             if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
         }
         if (affectedContactList.isNotEmpty()) {
-            val affectedContacts = "Найдено ${affectedContactList.size} контактов, которые будут ${if (isBlackFilter) "заблокированы" else "разблокированы"} этим фильтром"
+            val affectedContacts = String.format(getString(R.string.block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), affectedContactList.size)
             titleList.add(affectedContacts)
             contactListMap[affectedContacts] = affectedContactList
         }
@@ -201,20 +182,22 @@ open class FilterAddFragment :
             contactListMap[nonAffectedContacts] = nonAffectedContactList
         }
         val contactByFilterAdapter = ContactByFilterAdapter(arrayListOf(title), contactListMap)
-        binding?.filterAddContactByFilterList?.setAdapter(contactByFilterAdapter)
-        binding?.filterAddContactByFilterList?.setOnGroupClickListener { expandableListView, _, groupPosition, _ ->
-            if (groupPosition == 0 && contactList.isNotEmpty()) {
-                binding?.scrollContainer?.isVisible = expandableListView.isGroupExpanded(0)
-                contactByFilterAdapter.titleList = if (expandableListView.isGroupExpanded(0)) arrayListOf(title) else titleList
-                contactByFilterAdapter.contactListMap = if (expandableListView.isGroupExpanded(0)) hashMapOf() else contactListMap
-                contactByFilterAdapter.notifyDataSetInvalidated()
+        binding?.filterAddContactByFilterList?.apply {
+            setAdapter(contactByFilterAdapter)
+            setOnGroupClickListener { expandableListView, _, groupPosition, _ ->
+                if (groupPosition == 0 && contactList.isNotEmpty()) {
+                    binding?.scrollContainer?.isVisible = expandableListView.isGroupExpanded(0)
+                    contactByFilterAdapter.titleList = if (expandableListView.isGroupExpanded(0)) arrayListOf(title) else titleList
+                    contactByFilterAdapter.contactListMap = if (expandableListView.isGroupExpanded(0)) hashMapOf() else contactListMap
+                    contactByFilterAdapter.notifyDataSetInvalidated()
+                }
+                return@setOnGroupClickListener false
             }
-            return@setOnGroupClickListener false
-        }
-        binding?.filterAddContactByFilterList?.setOnChildClickListener { _, _, _, childPosition, _ ->
-            findNavController().navigate(FilterAddFragmentDirections.startContactDetailFragment(
-                number = contactList[childPosition].phone))
-            return@setOnChildClickListener contactList.isEmpty()
+            setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
+                findNavController().navigate(FilterAddFragmentDirections.startContactDetailFragment(
+                    number = contactListMap[titleList[groupPosition]]?.get(childPosition)?.phone))
+                return@setOnChildClickListener contactList.isEmpty()
+            }
         }
     }
 
@@ -227,33 +210,20 @@ open class FilterAddFragment :
     }
 
     private fun setCountrySpinner() {
+        val countryCodeMap = PhoneNumberUtil.countryCodeMap
         countryCodeMap?.put(getString(R.string.no_country_code), null)
         val countryAdapter = context?.let {
-            ArrayAdapter(it,
-                android.R.layout.simple_spinner_item,
-                countryCodeMap?.keys.orEmpty().toTypedArray())
+            ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap?.keys.orEmpty().toTypedArray())
         }
-        binding?.filterAddCountryCodeSpinner?.adapter = countryAdapter
-        binding?.filterAddCountryCodeSpinner?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    spinner: AdapterView<*>?,
-                    tv: View?,
-                    position: Int,
-                    id: Long,
-                ) {
-                    binding?.filterAddCountryCodeValue?.text =
-                        if (countryCodeMap?.valueAt(position).isNotNull()) String.format(
-                            COUNTRY_CODE_START,
-                            countryCodeMap?.valueAt(position)) else String.EMPTY
+        binding?.filterAddCountryCodeSpinner?.apply {
+            adapter = countryAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long, ) {
+                        binding?.filterAddCountryCodeValue?.text = if (countryCodeMap?.valueAt(position).isNotNull()) String.format(COUNTRY_CODE_START, countryCodeMap?.valueAt(position)) else String.EMPTY
+                    }
+                    override fun onNothingSelected(p0: AdapterView<*>?) = Unit
                 }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
-            }
-        binding?.filterAddCountryCodeSpinner?.setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(
-                args.filter?.filter).isNotNull()
-        ) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language,
-            context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
-            ?.uppercase()).orZero())
+            setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(args.filter?.filter).isNotNull()) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language, context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()?.uppercase()).orZero())
+        }
     }
 }
