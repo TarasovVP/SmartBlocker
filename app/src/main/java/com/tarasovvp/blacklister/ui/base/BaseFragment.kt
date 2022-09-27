@@ -5,6 +5,9 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.tarasovvp.blacklister.constants.Constants.APP_EXIT
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -25,6 +28,12 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
         getCurrentBackStackEntry()
         observeLiveData()
         setProgressVisibility()
+        lifecycle.addObserver(object : LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                Log.e("filterLifeCycleTAG", "BaseFragment LifecycleEventObserver source $source event ${event.name}")
+            }
+
+        })
     }
 
     private fun setProgressVisibility() {

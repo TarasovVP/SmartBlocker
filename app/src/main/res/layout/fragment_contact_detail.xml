@@ -14,7 +14,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:fillViewport="true"
         android:padding="@dimen/padding_16"
         app:layout_constraintBottom_toTopOf="@+id/contact_detail_add_filter"

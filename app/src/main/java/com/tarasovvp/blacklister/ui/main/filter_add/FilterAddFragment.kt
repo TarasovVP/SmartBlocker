@@ -18,7 +18,6 @@ import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.extensions.*
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -26,6 +25,7 @@ import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
+import kotlin.collections.ArrayList
 
 open class FilterAddFragment :
     BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
@@ -157,56 +157,28 @@ open class FilterAddFragment :
     }
 
     private fun setContactByFilterList(contactList: List<Contact>) {
-        val title = String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
-        binding?.filterAddContactByFilterList?.isEnabled = contactList.isNotEmpty()
-        Log.e("filterAddTAG",
-            "BaseAddFragment setContactByFilterList contactList $contactList")
-        val titleList = arrayListOf(title)
-        val contactListMap = hashMapOf(title to listOf<Contact>())
-
-        val affectedContactList = contactList.filterNot {
-            if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
-        }
-        if (affectedContactList.isNotEmpty()) {
-            val affectedContacts = String.format(getString(R.string.block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), affectedContactList.size)
-            titleList.add(affectedContacts)
-            contactListMap[affectedContacts] = affectedContactList
-        }
-
-        val nonAffectedContactList = contactList.filter {
-            if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
-        }
-        if (nonAffectedContactList.isNotEmpty()) {
-            val nonAffectedContacts = String.format(getString(R.string.not_block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), nonAffectedContactList.size)
-            titleList.add(nonAffectedContacts)
-            contactListMap[nonAffectedContacts] = nonAffectedContactList
-        }
-        val contactByFilterAdapter = ContactByFilterAdapter(arrayListOf(title), contactListMap)
         binding?.filterAddContactByFilterList?.apply {
+            isEnabled = contactList.isNotEmpty()
+            Log.e("filterAddTAG",
+                "BaseAddFragment setContactByFilterList contactList $contactList")
+            val contactListMap = context?.contactListMap(contactList, isBlackFilter) ?: linkedMapOf()
+            val contactByFilterAdapter = ContactByFilterAdapter(arrayListOf(contactListMap.keys.toTypedArray()[0]), contactListMap)
             setAdapter(contactByFilterAdapter)
             setOnGroupClickListener { expandableListView, _, groupPosition, _ ->
                 if (groupPosition == 0 && contactList.isNotEmpty()) {
-                    binding?.scrollContainer?.isVisible = expandableListView.isGroupExpanded(0)
-                    contactByFilterAdapter.titleList = if (expandableListView.isGroupExpanded(0)) arrayListOf(title) else titleList
-                    contactByFilterAdapter.contactListMap = if (expandableListView.isGroupExpanded(0)) hashMapOf() else contactListMap
+                    binding?.isPreviewMode = expandableListView.isGroupExpanded(0).not()
+                    contactByFilterAdapter.titleList = if (expandableListView.isGroupExpanded(0)) arrayListOf(contactListMap.keys.toTypedArray()[0]) else ArrayList(contactListMap.keys)
+                    contactByFilterAdapter.contactListMap = if (expandableListView.isGroupExpanded(0)) linkedMapOf() else contactListMap
                     contactByFilterAdapter.notifyDataSetInvalidated()
                 }
                 return@setOnGroupClickListener false
             }
             setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
                 findNavController().navigate(FilterAddFragmentDirections.startContactDetailFragment(
-                    number = contactListMap[titleList[groupPosition]]?.get(childPosition)?.phone))
+                    number = contactListMap[ ArrayList(contactListMap.keys)[groupPosition]]?.get(childPosition)?.phone))
                 return@setOnChildClickListener contactList.isEmpty()
             }
         }
-    }
-
-    private fun handleSuccessFilterAction(message: String) {
-        (activity as MainActivity).apply {
-            showMessage(message, false)
-            getAllData()
-        }
-        findNavController().popBackStack()
     }
 
     private fun setCountrySpinner() {
@@ -225,5 +197,13 @@ open class FilterAddFragment :
                 }
             setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(args.filter?.filter).isNotNull()) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language, context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()?.uppercase()).orZero())
         }
+    }
+
+    private fun handleSuccessFilterAction(message: String) {
+        (activity as MainActivity).apply {
+            showMessage(message, false)
+            getAllData()
+        }
+        findNavController().popBackStack()
     }
 }

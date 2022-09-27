@@ -42,18 +42,6 @@ object FilterRepository {
         }
     }
 
-    fun deleteWhiteFilter(filter: Filter, result: () -> Unit) {
-        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-            realDataBaseRepository.deleteFilter(filter) {
-                filterDao?.delete(filter)
-                result.invoke()
-            }
-        } else {
-            filterDao?.delete(filter)
-            result.invoke()
-        }
-    }
-
     fun deleteFilterList(filterList: List<Filter>, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilterList(filterList) {

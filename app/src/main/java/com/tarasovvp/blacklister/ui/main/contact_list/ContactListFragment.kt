@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contact_list
 
+import android.content.Context
 import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
@@ -21,7 +22,7 @@ open class ContactListFragment :
     private var contactList: List<Contact>? = null
 
     override fun createAdapter(): BaseAdapter<Contact>? {
-        Log.e("adapterTAG", "ContactListFragment createAdapter contactList?.size ${contactList?.size}")
+        Log.e("adapterTAG", "ContactListFragment createAdapter  contactList?.size ${contactList?.size}")
         return context?.let {
             ContactAdapter { phone ->
                 findNavController().navigate(ContactListFragmentDirections.startContactDetailFragment(
@@ -30,18 +31,20 @@ open class ContactListFragment :
         }
     }
 
-    override fun initView() {
-        swipeRefresh = binding?.contactListRefresh
-        recyclerView = binding?.contactListRecyclerView
-        emptyStateContainer = binding?.contactListEmpty
-        binding?.contactListCheck?.setOnCheckedChangeListener { _, _ ->
-            searchDataList()
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.e("adapterTAG", "ContactListFragment onAttach adapter $adapter")
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding?.contactListCheck?.isChecked = false
+    override fun initView() {
+        binding?.apply {
+            swipeRefresh = contactListRefresh
+            recyclerView = contactListRecyclerView
+            emptyStateContainer = contactListEmpty
+            contactListCheck.setOnCheckedChangeListener { _, _ ->
+                searchDataList()
+            }
+        }
     }
 
     override fun observeLiveData() {
@@ -75,6 +78,7 @@ open class ContactListFragment :
     }
 
     override fun getData() {
+        Log.e("adapterTAG", "ContactListFragment getData()")
         viewModel.getContactList()
     }
 }

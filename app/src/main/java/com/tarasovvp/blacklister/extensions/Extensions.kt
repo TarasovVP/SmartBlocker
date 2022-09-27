@@ -45,6 +45,7 @@ import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
@@ -54,6 +55,8 @@ import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.LinkedHashMap
 
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
@@ -411,4 +414,25 @@ fun Context.filterDataList(selectedFilterItems: BooleanArray, result: (Array<Str
     }
     builder.show()
     return true
+}
+
+fun Context.contactListMap(contactList: List<Contact>, isBlackFilter: Boolean): LinkedHashMap<String, List<Contact>> {
+    val title = String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
+    val contactListMap = linkedMapOf<String, List<Contact>>(title to listOf())
+    val affectedContactList = contactList.filterNot {
+        if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
+    }
+    if (affectedContactList.isNotEmpty()) {
+        val affectedContacts = String.format(getString(R.string.block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), affectedContactList.size)
+        contactListMap[affectedContacts] = affectedContactList
+    }
+
+    val nonAffectedContactList = contactList.filter {
+        if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
+    }
+    if (nonAffectedContactList.isNotEmpty()) {
+        val nonAffectedContacts = String.format(getString(R.string.not_block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), nonAffectedContactList.size)
+        contactListMap[nonAffectedContacts] = nonAffectedContactList
+    }
+    return contactListMap
 }

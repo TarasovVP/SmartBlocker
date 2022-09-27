@@ -7,16 +7,19 @@
         <import type="android.view.View" />
 
         <import type="android.content.Context" />
-
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
+        <variable
+            name="isPreviewMode"
+            type="Boolean" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:padding="@dimen/padding_16">
 
         <androidx.core.widget.NestedScrollView
@@ -36,6 +39,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="@dimen/margin_16"
+                    android:visibility="@{isPreviewMode ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_15"
                     android:gravity="center"
+                    android:visibility="@{isPreviewMode ? View.GONE : View.VISIBLE}"
                     android:paddingHorizontal="@dimen/padding_10"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_icon" />
 
@@ -55,6 +60,7 @@
                     android:layout_height="@dimen/size_0"
                     android:background="@drawable/bg_spinner"
                     android:paddingEnd="@dimen/padding_10"
+                    android:enabled="@{!isPreviewMode}"
                     android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
                     app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +86,7 @@
                     android:digits="0123456789+"
                     android:hint="@string/enter_filter"
                     android:inputType="phone"
+                    android:enabled="@{!isPreviewMode}"
                     android:text="@{filter.filterToInput(context)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
@@ -91,6 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_15"
+                    android:visibility="@{isPreviewMode ? View.GONE : View.VISIBLE}"
                     android:text="@string/add_conditions_title"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 
@@ -102,6 +110,7 @@
                     android:alpha="0.6"
                     android:drawablePadding="@dimen/padding_10"
                     android:text="@string/details_"
+                    android:visibility="@{isPreviewMode ? View.GONE : View.VISIBLE}"
                     app:drawableStartCompat="@drawable/ic_info"
                     app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_title" />
 
@@ -116,7 +125,9 @@
                         android:id="@+id/filter_type_full"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="@{!filter.isTypeStart() &amp;&amp; !filter.isTypeContain()}"
+                        android:checked="@{filter.isTypeFull()}"
+                        android:visibility="@{(isPreviewMode &amp;&amp; !filter.isTypeFull()) ? View.GONE : View.VISIBLE}"
+                        android:enabled="@{!isPreviewMode}"
                         android:drawableEnd="@drawable/ic_end"
                         android:drawablePadding="@dimen/padding_10"
                         android:layoutDirection="rtl"
@@ -127,6 +138,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:checked="@{filter.isTypeStart()}"
+                        android:visibility="@{(isPreviewMode &amp;&amp; !filter.isTypeStart()) ? View.GONE : View.VISIBLE}"
+                        android:enabled="@{!isPreviewMode}"
                         android:drawableEnd="@drawable/ic_start"
                         android:drawablePadding="@dimen/padding_10"
                         android:layoutDirection="rtl"
@@ -137,6 +150,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:checked="@{filter.isTypeContain()}"
+                        android:visibility="@{(isPreviewMode &amp;&amp; !filter.isTypeContain()) ? View.GONE : View.VISIBLE}"
+                        android:enabled="@{!isPreviewMode}"
                         android:drawableEnd="@drawable/ic_contain"
                         android:drawablePadding="@dimen/padding_10"
                         android:layoutDirection="rtl"

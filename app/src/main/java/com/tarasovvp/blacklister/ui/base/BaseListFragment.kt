@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -25,7 +26,6 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
     var recyclerView: RecyclerView? = null
     var emptyStateContainer: IncludeEmptyStateBinding? = null
     protected var searchQuery: String? = ""
-    private var isBackToScreen = false
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun initView()
@@ -34,8 +34,20 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("adapterTAG", "BaseListFragment onViewCreated initView adapter $adapter")
+        Log.e("adapterTAG", "BaseListFragment onViewCreated initView adapter $adapter itemCount ${adapter?.itemCount}")
+        setSearchViewMenu()
         initView()
+        setRecyclerView()
+        if (adapter?.itemCount.orZero() == 0) {
+            getData()
+        }
+        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+            Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
+            this@BaseListFragment.getData()
+        }
+    }
+
+    private fun setRecyclerView() {
         recyclerView?.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             this.adapter = this@BaseListFragment.adapter
@@ -43,24 +55,20 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
         swipeRefresh?.setOnRefreshListener {
             getData()
         }
-        swipeRefresh?.isRefreshing = true
-        getData()
+    }
 
-        (activity as MainActivity).apply {
-            val searchView = SearchView(this)
-            toolbar?.menu?.findItem(R.id.search_menu_item)?.apply {
-                actionView = searchView
+    private fun setSearchViewMenu() {
+        context?.let { SearchView(it) }?.apply {
+            (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.let {
+                it.actionView = this
             }
-            searchView.queryHint = getString(R.string.enter_phone_number)
-            searchView.setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
+            queryHint = getString(R.string.enter_phone_number)
+            setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
                 searchQuery = it
                 searchDataList()
             })
-            mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
-                this@BaseListFragment.getData()
-            }
         }
+
     }
 
     protected open fun checkDataListEmptiness(newData: List<D>) {

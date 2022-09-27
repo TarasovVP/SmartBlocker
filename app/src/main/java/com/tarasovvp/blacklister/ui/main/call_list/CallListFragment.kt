@@ -55,11 +55,6 @@ class CallListFragment :
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding?.callListCheck?.isChecked = false
-    }
-
     override fun initView() {
         binding?.apply {
             swipeRefresh = callListRefresh

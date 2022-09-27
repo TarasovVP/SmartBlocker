@@ -59,13 +59,14 @@ open class BaseFilterListFragment :
     }
 
     override fun initView() {
-        findNavController().currentDestination?.label =
-            getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+        findNavController().currentDestination?.label = getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         selectedFilterItems = booleanArrayOf(false, false, false)
-        swipeRefresh = binding?.filterListRefresh
-        recyclerView = binding?.filterListRecyclerView
-        emptyStateContainer = binding?.filterListEmpty
+        binding?.apply {
+            swipeRefresh = filterListRefresh
+            recyclerView = filterListRecyclerView
+            emptyStateContainer = filterListEmpty
+        }
         setClickListeners()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
             viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
