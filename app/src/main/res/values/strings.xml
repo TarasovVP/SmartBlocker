@@ -152,4 +152,10 @@
     <string name="black_white_list_title">Со мной Вы сможете блокировать входящие не только по конкретному номеру, но даже по признаку(например по коду оператора)</string>
     <string name="authorized_user_title">Доступ к списку через облако для авторизованных пользователей в случае потери или смены телефона</string>
     <string name="access_permissions">"Для того чтобы начать просим дать необходимые разрешения"</string>
+    <string name="no_in_contact_list">Нет в списке контактов</string>
+    <string name="black_list_empty_state">В черном списке пока ничего нет. Для добавления нажмите кнопку с плюсом внизу</string>
+    <string name="white_list_empty_state">В белом списке пока ничего нет. Для добавления нажмите кнопку с плюсом внизу</string>
+    <string name="contact_list_empty_state">Список ваших контактов пуст. Для добавления перейдите в контакты вашего телефона</string>
+    <string name="call_list_empty_state">Список заблокированных звонков пуст</string>
+    <string name="invalid_phone_number">Невалидный номер</string>
 </resources>

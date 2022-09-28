@@ -88,9 +88,9 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
 
     private fun setContactInfo(contact: Contact) {
         binding?.apply {
+            contact.name = if (contact.name.orEmpty().isEmpty()) getString(R.string.no_in_contact_list) else contact.name
             this.contact = contact
-            contactDetailPriority.text = String.format(getString(R.string.prioritness),
-                if (SharedPreferencesUtil.whiteListPriority) getString(R.string.white_list) else getString(
+            contactDetailPriority.text = String.format(getString(R.string.prioritness), if (SharedPreferencesUtil.whiteListPriority) getString(R.string.white_list) else getString(
                     R.string.black_list))
             contactDetailAddFilter.setSafeOnClickListener {
                 findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(

@@ -20,7 +20,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class Filter(
-    @PrimaryKey var filter: String = "",
+    @PrimaryKey var filter: String = String.EMPTY,
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER
 ) : Parcelable, BaseAdapter.MainData {

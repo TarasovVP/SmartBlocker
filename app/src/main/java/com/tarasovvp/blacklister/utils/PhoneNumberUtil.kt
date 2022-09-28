@@ -36,8 +36,8 @@ object PhoneNumberUtil {
         null
     }
 
-    fun String?.isValidPhoneNumber(context: Context): Boolean {
-        return if (getPhoneNumber(context.getUserCountry().orEmpty()).isNotNull()) phoneNumberUtil?.isValidNumber(getPhoneNumber(context.getUserCountry().orEmpty())).isTrue() else false
+    fun String?.isValidPhoneNumber(context: Context?): Boolean {
+        return if (getPhoneNumber(context?.getUserCountry().orEmpty()).isNotNull()) phoneNumberUtil?.isValidNumber(getPhoneNumber(context?.getUserCountry().orEmpty())).isTrue() else false
     }
 
     fun countryCodeKey(filter: String?): String? {

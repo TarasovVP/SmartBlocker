@@ -30,7 +30,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
     var swipeRefresh: SwipeRefreshLayout? = null
     var recyclerView: RecyclerView? = null
     var emptyStateContainer: IncludeEmptyStateBinding? = null
-    protected var searchQuery: String? = ""
+    protected var searchQuery: String? = String.EMPTY
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun initView()
@@ -79,10 +79,10 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
     protected open fun checkDataListEmptiness(newData: List<D>) {
         emptyStateContainer?.root?.isVisible = newData.isEmpty()
         emptyStateContainer?.emptyStateTitle?.text = when (this) {
-            is BlackFilterListFragment -> "В черном списке пока ничего нет. Для добавления нажмите кнопку с плюсом внизу"
-            is WhiteFilterListFragment -> "В белом списке пока ничего нет. Для добавления нажмите кнопку с плюсом внизу"
-            is ContactListFragment -> "Список ваших контактов пуст. Для добавления перейдите в контакты вашего телефона"
-            is CallListFragment -> "Список заблокированных звонков пуст"
+            is BlackFilterListFragment -> getString(R.string.black_list_empty_state)
+            is WhiteFilterListFragment -> getString(R.string.white_list_empty_state)
+            is ContactListFragment -> getString(R.string.contact_list_empty_state)
+            is CallListFragment -> getString(R.string.call_list_empty_state)
             else -> String.EMPTY
         }
         emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)

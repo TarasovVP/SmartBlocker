@@ -7,6 +7,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.trimmed
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
@@ -14,10 +15,10 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class Contact(
-    var id: String = "",
-    var name: String? = "",
-    var photoUrl: String? = "",
-    @PrimaryKey var phone: String = "",
+    var id: String = String.EMPTY,
+    var name: String? = String.EMPTY,
+    var photoUrl: String? = String.EMPTY,
+    @PrimaryKey var phone: String = String.EMPTY,
     var filterType: Int = DEFAULT_FILTER
 ) : Parcelable, BaseAdapter.MainData {
     var trimmedPhone = phone.trimmed()

@@ -9,6 +9,7 @@ import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
 import com.tarasovvp.blacklister.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.blacklister.constants.Constants.PRESENTATION_UNKNOWN
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
@@ -16,15 +17,15 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 open class Call(
     open var id: Int = 0,
-    var callId: String? = "",
-    var name: String? = "",
-    var number: String? = "",
-    var normalizedNumber: String? = "",
-    var type: String? = "",
-    var time: String? = "",
-    var photoUrl: String? = "",
-    var countryIso: String? = "",
-    var numberPresentation: String? = ""
+    var callId: String? = String.EMPTY,
+    var name: String? = String.EMPTY,
+    var number: String? = String.EMPTY,
+    var normalizedNumber: String? = String.EMPTY,
+    var type: String? = String.EMPTY,
+    var time: String? = String.EMPTY,
+    var photoUrl: String? = String.EMPTY,
+    var countryIso: String? = String.EMPTY,
+    var numberPresentation: String? = String.EMPTY
 ) : Parcelable, BaseAdapter.MainData {
 
     var isCheckedForDelete = false

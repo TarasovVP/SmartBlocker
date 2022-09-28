@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.main.contact_detail
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
@@ -33,7 +34,7 @@ class ContactDetailViewModel(application: Application) : BaseViewModel(applicati
         showProgress()
         launch {
             val contact = contactRepository.getContactByPhone(phone)
-                ?: Contact(name = "Нет в списке контактов", phone = phone)
+                ?: Contact(name = String.EMPTY, phone = phone)
             contactDetailLiveData.postValue(contact)
             hideProgress()
         }
