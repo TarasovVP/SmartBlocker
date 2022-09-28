@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Blacklister</string>
+    <string name="app_name">BlockAssistant</string>
     <string name="app_id">ca-app-pub-8778007212154570~7562332036</string>
 
     <string name="log_list_">Log_list_</string>
@@ -20,7 +20,6 @@
     <string name="bg_work_on">Working in the background</string>
     <string name="avoid_call">"BlackLister will save you from intrusive calls"</string>
     <string name="receive_notifications">BlackLister will warn you about the severity of incoming calls</string>
-    <string name="access_permissions">"The app must ask you for permission to start. "</string>
     <string name="accept">Confirm</string>
     <string name="blacklister_is_on">Unwanted call protection enabled</string>
     <string name="search">Search</string>
@@ -80,9 +79,6 @@
     <string name="white_list">Whitelist</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="inner_data_access_title">Access to phone data - a list of calls and contacts for more convenient moderation</string>
-    <string name="black_white_list_title">Manage incoming calls via blacklist and whitelist</string>
-    <string name="authorized_user_title">Access your data through the cloud for authorized users</string>
     <string name="log_out">Do you want to log out of your account?</string>
     <string name="delete_account">Do you want to delete your account?</string>
     <string name="fill_data_press_button">For %s %s, fill in the input field and press the button</string>
@@ -151,5 +147,9 @@
     <string name="only_black_list">Только с признаками блокировки</string>
     <string name="empty_state_title">В %s ничего нет.</string>
     <string name="data_collecting">Сбор информации</string>
-    <string name="no_country_code">No code</string>
+    <string name="no_country_code">Без кода</string>
+    <string name="inner_data_access_title">Привет! Я Ваш помощник в блокировании нежелательных звонков</string>
+    <string name="black_white_list_title">Со мной Вы сможете блокировать входящие не только по конкретному номеру, но даже по признаку(например по коду оператора)</string>
+    <string name="authorized_user_title">Доступ к списку через облако для авторизованных пользователей в случае потери или смены телефона</string>
+    <string name="access_permissions">"Для того чтобы начать просим дать необходимые разрешения"</string>
 </resources>

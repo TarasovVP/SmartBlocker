@@ -19,8 +19,8 @@
         android:name="com.tarasovvp.blacklister.ui.start.login.LoginFragment"
         android:label="@string/log_in">
         <action
-            android:id="@+id/startCallLogList"
-            app:destination="@id/callListFragment"
+            android:id="@+id/startBlackFilterListFragment"
+            app:destination="@id/blackFilterListFragment"
             app:popUpTo="@+id/mainNavigation"
             app:popUpToInclusive="true" />
         <action

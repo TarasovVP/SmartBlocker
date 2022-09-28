@@ -73,6 +73,7 @@ class CallListFragment :
     }
 
     private fun setToolBarMenuClickListener() {
+        Log.e("callTAG", "CallListFragment setToolBarMenuClickListener")
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.delete_menu_item -> {
@@ -106,8 +107,7 @@ class CallListFragment :
         (activity as MainActivity).toolbar?.apply {
             Log.e("callTAG", "CallListFragment menu $menu")
             menu?.clear()
-            title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
+            title = if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
             inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
         }
     }

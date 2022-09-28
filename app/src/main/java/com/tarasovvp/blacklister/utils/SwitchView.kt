@@ -7,7 +7,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ViewSwitchBinding
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.showMessage
 import com.tarasovvp.blacklister.extensions.showPopUpWindow
 import com.tarasovvp.blacklister.model.Info
 
@@ -35,7 +34,7 @@ class SwitchView @JvmOverloads constructor(
                 recycle()
             }
             viewSwitchInfo.setSafeOnClickListener {
-                if (infoText.isNotEmpty() && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showPopUpWindow(Info(title = viewSwitchTitle.text.toString(), description = infoText, icon = R.drawable.ic_test))
+                if (infoText.isNotEmpty() && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showPopUpWindow(Info(title = viewSwitchTitle.text.toString(), description = infoText, icon = R.drawable.ic_logo))
             }
         }
     }

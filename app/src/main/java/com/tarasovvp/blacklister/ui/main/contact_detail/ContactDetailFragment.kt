@@ -79,7 +79,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     private fun setPriority() {
         binding?.contactDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(0,
             0,
-            if (SharedPreferencesUtil.whiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_black_filter,
+            if (SharedPreferencesUtil.whiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_block,
             0)
         binding?.contactDetailPriority?.setSafeOnClickListener {
             findNavController().navigate(ContactDetailFragmentDirections.startBlockSettingsFragment())

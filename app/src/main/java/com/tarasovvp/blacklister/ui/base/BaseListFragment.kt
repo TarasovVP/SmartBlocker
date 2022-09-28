@@ -11,10 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
+import com.tarasovvp.blacklister.ui.main.call_list.CallListFragment
+import com.tarasovvp.blacklister.ui.main.contact_list.ContactListFragment
+import com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment
+import com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment
 import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : BaseAdapter.MainData> :
@@ -73,9 +78,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
 
     protected open fun checkDataListEmptiness(newData: List<D>) {
         emptyStateContainer?.root?.isVisible = newData.isEmpty()
-        emptyStateContainer?.emptyStateTitle?.text =
-            String.format(getString(R.string.empty_state_title),
-                (activity as MainActivity).toolbar?.title)
+        emptyStateContainer?.emptyStateTitle?.text = when (this) {
+            is BlackFilterListFragment -> "В черном списке пока ничего нет. Для добавления нажмите кнопку с плюсом внизу"
+            is WhiteFilterListFragment -> "В белом списке пока ничего нет. Для добавления нажмите кнопку с плюсом внизу"
+            is ContactListFragment -> "Список ваших контактов пуст. Для добавления перейдите в контакты вашего телефона"
+            is CallListFragment -> "Список заблокированных звонков пуст"
+            else -> String.EMPTY
+        }
         emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)
         if (newData.isEmpty()) {
             adapter?.clearData()

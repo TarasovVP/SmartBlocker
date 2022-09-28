@@ -8,5 +8,5 @@ import kotlinx.android.parcel.Parcelize
 data class Info(
     var title: String = "",
     var description: String = "",
-    var icon: Int = R.drawable.ic_test,
+    var icon: Int = R.drawable.ic_logo,
 ) : Parcelable

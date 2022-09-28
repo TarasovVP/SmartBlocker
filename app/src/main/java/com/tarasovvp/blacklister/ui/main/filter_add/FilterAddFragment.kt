@@ -5,9 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.collection.arrayMapOf
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -69,7 +67,7 @@ open class FilterAddFragment :
                 inflateMenu(R.menu.toolbar_filter)
                 menu?.findItem(R.id.filter_menu_item)?.apply {
                     icon = ContextCompat.getDrawable(context,
-                        if (isBlackFilter) R.drawable.ic_white_filter else R.drawable.ic_black_filter)
+                        if (isBlackFilter) R.drawable.ic_white_filter else R.drawable.ic_block)
                     setOnMenuItemClickListener {
                         findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(
                             args.filter))
@@ -88,7 +86,7 @@ open class FilterAddFragment :
             } countryCodeKey ${PhoneNumberUtil.countryCodeKey(filter.filter)}")
         binding?.apply {
             this.filter = filter
-            filterAddIcon.setImageResource(if (isBlackFilter) R.drawable.ic_black_filter else R.drawable.ic_white_filter)
+            filterAddIcon.setImageResource(if (isBlackFilter) R.drawable.ic_block else R.drawable.ic_white_filter)
             filterAddTitle.text = if (filterAddInput.inputText().isEmpty()) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message), filterAddInput.text)
         }
         viewModel.checkContactListByFilter(filter)
@@ -121,7 +119,7 @@ open class FilterAddFragment :
             filterAddConditionsInfo.setSafeOnClickListener {
                 filterAddConditionsInfo.showPopUpWindow(Info(title = getString(R.string.add_conditions_title),
                     description = getString(R.string.add_conditions_info),
-                    icon = R.drawable.ic_test))
+                    icon = R.drawable.ic_logo))
             }
             filterAddSubmit.setSafeOnClickListener {
                 filter?.apply {

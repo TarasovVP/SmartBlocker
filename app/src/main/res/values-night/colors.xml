@@ -8,7 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#989595</color>
-    <color name="main_bg">#181A1D</color>
     <color name="blue">#267DFF</color>
     <color name="progress_bg">#80000000</color>
     <color name="disable_color">#32989595</color>
@@ -16,6 +15,6 @@
 
     //custom project colors
     <color name="main_color">@color/alice_blue</color>
-    <color name="bg">@color/tangaroa</color>
+    <color name="main_bg">@color/tangaroa</color>
     <color name="item_color">@color/midnight_blue</color>
 </resources>

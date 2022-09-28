@@ -24,16 +24,19 @@
         <entry key="app/src/main/res/drawable/ic_avatar.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_black_filter.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_black_number.xml" value="0.2833333333333333" />
+        <entry key="app/src/main/res/drawable/ic_black_white_list.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/ic_block.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/ic_call_log.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_contact_avatar.xml" value="0.2109375" />
         <entry key="app/src/main/res/drawable/ic_contact_list.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_contain.xml" value="0.234375" />
+        <entry key="app/src/main/res/drawable/ic_data_collectlng.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_drop_down.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_drop_up.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/ic_empty_state.xml" value="0.258" />
         <entry key="app/src/main/res/drawable/ic_end.xml" value="0.234375" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.122" />
         <entry key="app/src/main/res/drawable/ic_filter_list.xml" value="0.1695" />
@@ -98,7 +101,7 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.625" />
         <entry key="app/src/main/res/layout/fragment_settings_list.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.21145833333333333" />
-        <entry key="app/src/main/res/layout/fragment_single_onboarding.xml" value="0.19947916666666668" />
+        <entry key="app/src/main/res/layout/fragment_single_onboarding.xml" value="0.5" />
         <entry key="app/src/main/res/layout/include_empty_state.xml" value="0.2838541666666667" />
         <entry key="app/src/main/res/layout/include_no_account.xml" value="0.26403985507246375" />
         <entry key="app/src/main/res/layout/item_black_number.xml" value="0.2125" />

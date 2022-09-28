@@ -43,7 +43,7 @@
                 app:info="@string/change_priority_info"
                 app:layout_constraintTop_toBottomOf="@+id/block_settings_foreground"
                 app:title="@string/change_priority"
-                app:turnOffModeIcon="@drawable/ic_black_filter"
+                app:turnOffModeIcon="@drawable/ic_block"
                 app:turnOffModeText="@string/black_list"
                 app:turnOnModeIcon="@drawable/ic_white_filter"
                 app:turnOnModeText="@string/white_list" />

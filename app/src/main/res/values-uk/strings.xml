@@ -20,7 +20,6 @@
     <string name="bg_work_on">Робота у фоновому режимі</string>
     <string name="avoid_call">"BlackLister позбавить Вас нав'язливих дзвінків"</string>
     <string name="receive_notifications">BlackLister попереджатиме про ступінь небезпеки вхідних дзвінків</string>
-    <string name="access_permissions">"Для того, щоб почати програму має запросити у вас дозвіл."</string>
     <string name="accept">Підтвердити</string>
     <string name="blacklister_is_on">Захист небажаних дзвінків увімкнено</string>
     <string name="search">Пошук</string>
@@ -80,9 +79,6 @@
     <string name="white_list">Білий список</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="inner_data_access_title">Доступ до даних телефону - списку дзвінків та контактів для зручнішого їх модерування</string>
-    <string name="black_white_list_title">Керування вхідними дзвінками через чорний та білий список</string>
-    <string name="authorized_user_title">Доступ до своїх даних через хмару для авторизованих користувачів</string>
     <string name="log_out">Ви хочете вийти зі свого облікового запису?</string>
     <string name="delete_account">Ви хочете видалити свій обліковий запис?</string>
     <string name="fill_data_press_button">Для %s %s заповніть поле введення та натисніть кнопку</string>

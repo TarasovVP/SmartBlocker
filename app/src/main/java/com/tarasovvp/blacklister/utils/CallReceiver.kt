@@ -60,7 +60,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
                         blockedCallRepository.allBlockedCalls()?.size))
                 }
                 context.sendBroadcast(Intent(CALL_RECEIVE))
-            }, 1, TimeUnit.SECONDS)
+            }, 2, TimeUnit.SECONDS)
         }
     }
 

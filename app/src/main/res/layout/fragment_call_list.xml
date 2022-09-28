@@ -34,7 +34,11 @@
 
         <include
             android:id="@+id/call_list_empty"
-            layout="@layout/include_empty_state" />
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintTop_toBottomOf="@+id/call_list_check"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

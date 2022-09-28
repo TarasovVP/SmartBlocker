@@ -34,7 +34,7 @@ data class Filter(
 
     fun listTypeIcon(): Int {
         return when {
-            isBlackFilter() -> R.drawable.ic_black_filter
+            isBlackFilter() -> R.drawable.ic_block
             else -> R.drawable.ic_white_filter
         }
     }

@@ -38,6 +38,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
 import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
@@ -202,12 +203,9 @@ fun Context.deleteLastBlockedCall(number: String) {
                 try {
                     Log.e("blockTAG",
                         "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${blockedCall.name} time ${blockedCall.time} phone ${blockedCall.number} type ${blockedCall.type} id ${blockedCall.callId}")
-                    val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
-                        "${CALL_ID}'${blockedCall.callId}asdf'",
-                        null)
-                    if (result == 1) {
-                        BlockedCallRepository.insertBlockedCall(blockedCall)
-                    }
+                    val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${CALL_ID}'${blockedCall.callId}'", null)
+                    blockedCall.type = BLOCKED_CALL
+                    BlockedCallRepository.insertBlockedCall(blockedCall)
                     Log.e("blockTAG",
                         "Extensions delete callId ${blockedCall.callId} result $result")
                     break
