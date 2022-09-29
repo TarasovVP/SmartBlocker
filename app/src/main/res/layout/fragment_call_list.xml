@@ -5,17 +5,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_16"
+        android:paddingHorizontal="@dimen/padding_16"
         tools:context=".ui.main.call_list.CallListFragment">
 
         <CheckBox
             android:id="@+id/call_list_check"
-            android:layout_width="@dimen/size_0"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
             android:text="@string/all_call_log_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/margin_8"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

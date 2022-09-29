@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.hideKeyboard
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
@@ -66,25 +67,28 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
         context?.let { SearchView(it) }?.apply {
             (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.let {
                 it.actionView = this
+                it.isVisible = false
             }
             queryHint = getString(R.string.enter_phone_number)
             setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
                 searchQuery = it
                 searchDataList()
+                context?.hideKeyboard(this)
             })
         }
 
     }
 
-    protected open fun checkDataListEmptiness(newData: List<D>) {
+    protected open fun checkDataListEmptiness(newData: List<D>, isFiltered: Boolean) {
+        (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible = searchQuery.isNullOrEmpty().not() || newData.isNotEmpty()
         emptyStateContainer?.root?.isVisible = newData.isEmpty()
-        emptyStateContainer?.emptyStateTitle?.text = when (this) {
+        emptyStateContainer?.emptyStateTitle?.text = if (searchQuery.isNullOrEmpty()) when (this) {
             is BlackFilterListFragment -> getString(R.string.black_list_empty_state)
             is WhiteFilterListFragment -> getString(R.string.white_list_empty_state)
             is ContactListFragment -> getString(R.string.contact_list_empty_state)
             is CallListFragment -> getString(R.string.call_list_empty_state)
             else -> String.EMPTY
-        }
+        } else getString(R.string.no_ruslt_with_list_query)
         emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)
         if (newData.isEmpty()) {
             adapter?.clearData()

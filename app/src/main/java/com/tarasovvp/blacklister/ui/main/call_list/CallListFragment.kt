@@ -143,7 +143,7 @@ class CallListFragment :
         }.orEmpty()
         Log.e("callTAG",
             "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
-        checkDataListEmptiness(filteredCallList)
+        checkDataListEmptiness(filteredCallList, false)
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList)
         }

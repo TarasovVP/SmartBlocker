@@ -5,18 +5,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_16"
+        android:paddingHorizontal="@dimen/padding_16"
         tools:context=".ui.main.contact_list.ContactListFragment">
 
         <CheckBox
             android:id="@+id/contact_list_check"
-            android:layout_width="@dimen/size_0"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
+            android:visibility="gone"
             android:text="@string/only_black_list"
-            app:layout_constraintBottom_toTopOf="@+id/contact_list_refresh"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/margin_8"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -35,7 +34,11 @@
 
         <include
             android:id="@+id/contact_list_empty"
-            layout="@layout/include_empty_state" />
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintTop_toBottomOf="@+id/contact_list_check"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

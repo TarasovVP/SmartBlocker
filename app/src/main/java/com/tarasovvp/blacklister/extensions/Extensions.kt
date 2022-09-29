@@ -18,6 +18,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.appcompat.view.ContextThemeWrapper
@@ -433,4 +434,9 @@ fun Context.contactListMap(contactList: List<Contact>, isBlackFilter: Boolean): 
         contactListMap[nonAffectedContacts] = nonAffectedContactList
     }
     return contactListMap
+}
+
+fun Context.hideKeyboard(view: View) {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }

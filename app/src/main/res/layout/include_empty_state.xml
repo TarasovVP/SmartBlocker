@@ -8,23 +8,22 @@
         android:layout_height="match_parent"
         android:background="@color/main_bg">
 
-        <ImageView
-            android:id="@+id/empty_state_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/empty_state_title"/>
-
         <TextView
             android:id="@+id/empty_state_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_45"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/empty_state_icon"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/empty_state_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/empty_state_title"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

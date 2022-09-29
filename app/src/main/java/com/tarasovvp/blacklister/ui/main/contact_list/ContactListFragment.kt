@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.main.contact_list
 
 import android.content.Context
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
@@ -70,10 +71,10 @@ open class ContactListFragment :
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ).isTrue() || contact.phone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            )
-                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)
+            ).isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)
         }.orEmpty()
-        checkDataListEmptiness(filteredContactList)
+        binding?.contactListCheck?.isVisible = filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()
+        checkDataListEmptiness(filteredContactList, binding?.contactListCheck?.isChecked.isTrue())
         viewModel.getHashMapFromContactList(filteredContactList)
     }
 

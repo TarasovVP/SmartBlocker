@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.main.filter_list
 
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
@@ -184,7 +185,8 @@ open class BaseFilterListFragment :
                     || selectedFilterItems?.get(CONDITION_TYPE_START).isTrue() && filter.isTypeStart()
                     || selectedFilterItems?.get(CONDITION_TYPE_CONTAIN).isTrue() && filter.isTypeContain() || selectedFilterItems?.contains(true).isTrue().not())
         }.orEmpty()
-        checkDataListEmptiness(filteredList)
+        binding?.filterListFilter?.isVisible = filteredList.isNotEmpty() || selectedFilterItems?.contains(true).isTrue()
+        checkDataListEmptiness(filteredList, selectedFilterItems?.contains(true).isTrue())
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList)
         }

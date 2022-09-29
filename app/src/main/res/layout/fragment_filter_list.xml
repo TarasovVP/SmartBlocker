@@ -5,18 +5,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_16">
+        android:paddingHorizontal="@dimen/padding_16">
 
         <TextView
             android:id="@+id/filter_list_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/padding_10"
+            android:paddingVertical="@dimen/padding_5"
             android:text="@string/filter_no_filter"
+            android:layout_marginTop="@dimen/margin_8"
             app:drawableStartCompat="@drawable/ic_filter"
             android:drawablePadding="@dimen/padding_10"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/filter_list_refresh" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/filter_list_refresh"
@@ -34,7 +34,11 @@
 
         <include
             android:id="@+id/filter_list_empty"
-            layout="@layout/include_empty_state" />
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintTop_toBottomOf="@+id/filter_list_filter"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/filter_list_fab_new"
