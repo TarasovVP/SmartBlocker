@@ -100,4 +100,7 @@ dependencies {
 
     //Phone number
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.31'
+
+    //Lottie
+    implementation "com.airbnb.android:lottie:5.1.1"
 }

@@ -5,7 +5,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/padding_16">
+        android:paddingHorizontal="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_8">
 
         <TextView
             android:id="@+id/filter_list_filter"
@@ -13,7 +14,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
             android:text="@string/filter_no_filter"
-            android:layout_marginTop="@dimen/margin_8"
+            android:visibility="invisible"
             app:drawableStartCompat="@drawable/ic_filter"
             android:drawablePadding="@dimen/padding_10"
             app:layout_constraintTop_toTopOf="parent" />

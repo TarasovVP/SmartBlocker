@@ -30,6 +30,7 @@ import com.tarasovvp.blacklister.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import java.util.*
 
+
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
@@ -230,8 +231,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMainProgressVisibility(isVisible: Boolean) {
-        Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible $isVisible")
         binding?.mainProgressBarContainer?.isVisible = isVisible
+        Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible")
     }
 
     fun setProgressVisibility(isVisible: Boolean) {
