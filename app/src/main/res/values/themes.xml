@@ -55,10 +55,11 @@
         <item name="android:textColor">@color/main_color</item>
     </style>
 
-    <style name="MultiChoiceAlertDialog" parent="Theme.MaterialComponents.Dialog.Alert">
-        <item name="colorAccent">@color/blue</item>
-        <item name="android:textColorPrimary">@color/main_color</item>
-        <item name="android:background">@color/main_bg</item>
+    <style name="MultiChoiceAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="colorAccent">@color/main_color</item>
+        <item name="android:colorAccent">@color/main_color</item>
+        <item name="android:textColor">@color/main_color</item>
+
     </style>
 
     <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">

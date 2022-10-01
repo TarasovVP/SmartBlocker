@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.ACCEPT_PERMISSIONS_SCREEN
 import com.tarasovvp.blacklister.databinding.FragmentOnboardingBinding
-import com.tarasovvp.blacklister.enum.OnBoarding
+import com.tarasovvp.blacklister.enums.OnBoarding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil

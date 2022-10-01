@@ -41,7 +41,7 @@ import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
-import com.tarasovvp.blacklister.enum.Condition
+import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
@@ -394,14 +394,14 @@ private fun <T> ViewGroup.getViewsFromLayout(
 
 fun String?.trimmed() = this?.filter { it.isDigit() || it == Constants.PLUS_CHAR }.orEmpty()
 
-fun Context.filterDataList(selectedFilterItems: BooleanArray, result: (Array<String>) -> Unit): Boolean {
-    val filterItems = Condition.values().map { getString(it.title) }.toTypedArray()
+fun Context.filterDataList(conditionList: ArrayList<Condition>, result: () -> Unit): Boolean {
     val builder =
         AlertDialog.Builder(ContextThemeWrapper(this, R.style.MultiChoiceAlertDialog))
-    builder.setMultiChoiceItems(filterItems, selectedFilterItems) { _, position, isChecked -> selectedFilterItems[position] = isChecked }
+    builder.setTitle(R.string.condition_dialog_title)
+    builder.setMultiChoiceItems(conditionList.map { getString(it.title) }.toTypedArray(), conditionList.map { it.isSelected }.toBooleanArray()) { _, position, isChecked ->  conditionList[position].isSelected = isChecked}
     builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
     builder.setPositiveButton(R.string.ok) { _, _ ->
-        result.invoke(filterItems)
+        result.invoke()
     }
     builder.show()
     return true

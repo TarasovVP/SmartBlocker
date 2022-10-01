@@ -9,7 +9,7 @@ import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
-import com.tarasovvp.blacklister.enum.Condition
+import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.filterDataList
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -19,6 +19,7 @@ import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
+import kotlin.collections.ArrayList
 
 open class BaseFilterListFragment :
     BaseListFragment<FragmentFilterListBinding, FilterListViewModel, Filter>() {
@@ -28,7 +29,7 @@ open class BaseFilterListFragment :
 
     private var filterList: ArrayList<Filter>? = null
     private var isDeleteMode = false
-    private var selectedFilterItems: BooleanArray? = null
+    private var selectedFilterItems: ArrayList<Condition>? = null
 
     override fun createAdapter(): BaseAdapter<Filter>? {
         Log.e("adapterTAG", "FilterListFragment createAdapter filterList?.size ${filterList?.size}")
@@ -60,7 +61,9 @@ open class BaseFilterListFragment :
         findNavController().currentDestination?.label =
             getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
-        selectedFilterItems = selectedFilterItems ?: booleanArrayOf(false, false, false)
+        selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList())
+        binding?.filterListFilter?.text =
+            if (selectedFilterItems.orEmpty().any { it.isSelected }) selectedFilterItems?.filter { it.isSelected }?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
         binding?.apply {
             swipeRefresh = filterListRefresh
             recyclerView = filterListRecyclerView
@@ -74,16 +77,10 @@ open class BaseFilterListFragment :
 
     private fun setClickListeners() {
         binding?.filterListFilter?.setSafeOnClickListener {
-            selectedFilterItems?.let { selectedFilterItems ->
-                context?.filterDataList(selectedFilterItems) { selectedItems ->
-                    val itemsTitleList = arrayListOf<String>()
-                    selectedItems.forEachIndexed { index, title ->
-                        if (selectedFilterItems[index]) {
-                            itemsTitleList.add(title)
-                        }
-                    }
+            selectedFilterItems?.let { conditionList ->
+                context?.filterDataList(conditionList) {
                     binding?.filterListFilter?.text =
-                        if (itemsTitleList.isEmpty()) getString(R.string.filter_no_filter) else itemsTitleList.joinToString()
+                        if (selectedFilterItems.orEmpty().any { it.isSelected }) selectedFilterItems?.filter { it.isSelected }?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
                     searchDataList()
                 }
             }
@@ -180,19 +177,16 @@ open class BaseFilterListFragment :
         val filteredList = filterList?.filter { filter ->
             filter.filter.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (selectedFilterItems?.get(Condition.CONDITION_TYPE_FULL.index)
-                .isTrue() && filter.isTypeFull()
-                    || selectedFilterItems?.get(Condition.CONDITION_TYPE_START.index)
-                .isTrue() && filter.isTypeStart()
-                    || selectedFilterItems?.get(Condition.CONDITION_TYPE_CONTAIN.index)
-                .isTrue() && filter.isTypeContain() || selectedFilterItems?.contains(true).isTrue()
-                .not())
+            ) && (selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_FULL.title }?.isSelected.isTrue() && filter.isTypeFull()
+                    || selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_START.title }?.isSelected.isTrue() && filter.isTypeStart()
+                    || selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_CONTAIN.title }?.isSelected.isTrue() && filter.isTypeContain()
+                    || selectedFilterItems.orEmpty().any { it.isSelected }.not())
         }.orEmpty()
         Log.e("adapterTAG",
             "FilterList searchDataList filteredList.size ${filteredList.size} selectedFilterItems ${selectedFilterItems?.joinToString()}")
         binding?.filterListFilter?.isInvisible =
-            (filteredList.isNotEmpty() || selectedFilterItems?.contains(true).isTrue()).not()
-        checkDataListEmptiness(filteredList, selectedFilterItems?.contains(true).isTrue())
+            (filteredList.isEmpty() && selectedFilterItems.orEmpty().none { it.isSelected })
+        checkDataListEmptiness(filteredList, selectedFilterItems.orEmpty().any { it.isSelected })
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList)
         }

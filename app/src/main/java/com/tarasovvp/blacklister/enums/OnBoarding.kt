@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.enum
+package com.tarasovvp.blacklister.enums
 
 import com.tarasovvp.blacklister.R
 

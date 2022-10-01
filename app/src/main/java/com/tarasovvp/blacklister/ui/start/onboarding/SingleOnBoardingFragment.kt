@@ -2,11 +2,9 @@ package com.tarasovvp.blacklister.ui.start.onboarding
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentSingleOnboardingBinding
-import com.tarasovvp.blacklister.enum.OnBoarding
-import com.tarasovvp.blacklister.ui.MainActivity
+import com.tarasovvp.blacklister.enums.OnBoarding
 import com.tarasovvp.blacklister.ui.base.BaseBindingFragment
 
 class SingleOnBoardingFragment(private val onBoarding: OnBoarding) :

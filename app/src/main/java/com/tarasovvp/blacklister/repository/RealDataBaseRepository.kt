@@ -53,16 +53,6 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteFilter(whiteFilter: Filter, result: () -> Unit) {
-        currentUserDatabase.child(FILTER_LIST).child(whiteFilter.filter).removeValue()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                result.invoke()
-            }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
-            }
-    }
-
     fun deleteFilterList(whiteFilterList: List<Filter>, result: () -> Unit) {
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->

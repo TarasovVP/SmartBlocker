@@ -6,11 +6,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
-import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_CONTAIN
-import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_FULL
-import com.tarasovvp.blacklister.constants.Constants.CONDITION_TYPE_START
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
+import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil.extractedFilter
@@ -41,8 +39,8 @@ data class Filter(
 
     fun filterTypeIcon(): Int {
         return when (conditionType) {
-            CONDITION_TYPE_FULL -> R.drawable.ic_start
-            CONDITION_TYPE_START -> R.drawable.ic_contain
+            Condition.CONDITION_TYPE_FULL.index -> R.drawable.ic_start
+            Condition.CONDITION_TYPE_START.index -> R.drawable.ic_contain
             else -> R.drawable.ic_end
         }
     }
@@ -56,15 +54,15 @@ data class Filter(
     }
 
     fun isTypeStart(): Boolean {
-        return conditionType == CONDITION_TYPE_START
+        return conditionType == Condition.CONDITION_TYPE_START.index
     }
 
     fun isTypeFull(): Boolean {
-        return conditionType == CONDITION_TYPE_FULL
+        return conditionType == Condition.CONDITION_TYPE_FULL.index
     }
 
     fun isTypeContain(): Boolean {
-        return conditionType == CONDITION_TYPE_CONTAIN
+        return conditionType == Condition.CONDITION_TYPE_CONTAIN.index
     }
 
     fun isBlackFilter(): Boolean {

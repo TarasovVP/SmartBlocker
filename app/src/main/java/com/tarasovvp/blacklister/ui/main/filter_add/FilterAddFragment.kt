@@ -15,6 +15,7 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
+import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.ui.MainActivity
