@@ -45,8 +45,8 @@
     <string name="add_black_list">Add to blacklist</string>
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_filter">Enter number</string>
-    <string name="filter_contain">Contains</string>
-    <string name="filter_start">Begins</string>
+    <string name="condition_contain">Contains</string>
+    <string name="condition_start">Begins</string>
     <string name="filter_end">Ends</string>
     <string name="filter_no_filter">No filter</string>
     <string name="russian">Russian</string>
@@ -138,7 +138,7 @@
     <string name="call_deleting">Deleting a call</string>
     <string name="call_delete_info">Only numbers blocked by the application can be deleted. To edit the call list, go to the phone log</string>
     <string name="contact_by_filter_list_title">Эта комбинация будет иметь эффект на %s контактов</string>
-    <string name="full_number">Полный номер</string>
+    <string name="condition_full">Полный номер</string>
     <string name="filter">Фильтр</string>
     <string name="choose_least_one_filter">Выберите минимум один фильтр</string>
     <string name="delete_">Удалить?</string>

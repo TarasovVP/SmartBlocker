@@ -88,7 +88,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
     protected open fun checkDataListEmptiness(newData: List<D>, isFiltered: Boolean) {
         (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible = searchQuery.isNullOrEmpty().not() || newData.isNotEmpty()
         emptyStateContainer?.root?.isVisible = newData.isEmpty()
-        emptyStateContainer?.emptyStateTitle?.text = if (searchQuery.isNullOrEmpty()) when (this) {
+        emptyStateContainer?.emptyStateTitle?.text = if (searchQuery.isNullOrEmpty() && isFiltered.not()) when (this) {
             is BlackFilterListFragment -> getString(R.string.black_list_empty_state)
             is WhiteFilterListFragment -> getString(R.string.white_list_empty_state)
             is ContactListFragment -> getString(R.string.contact_list_empty_state)

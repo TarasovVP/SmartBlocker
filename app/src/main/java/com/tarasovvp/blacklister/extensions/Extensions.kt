@@ -12,7 +12,6 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
-import android.util.ArrayMap
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,10 +21,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.collection.arrayMapOf
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.text.isDigitsOnly
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -35,18 +32,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
-import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
 import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
+import com.tarasovvp.blacklister.enum.Condition
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
@@ -57,7 +52,6 @@ import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
 fun CoroutineScope.launchIO(
@@ -401,9 +395,7 @@ private fun <T> ViewGroup.getViewsFromLayout(
 fun String?.trimmed() = this?.filter { it.isDigit() || it == Constants.PLUS_CHAR }.orEmpty()
 
 fun Context.filterDataList(selectedFilterItems: BooleanArray, result: (Array<String>) -> Unit): Boolean {
-    val filterItems = arrayOf(getString(R.string.full_number),
-        getString(R.string.filter_start),
-        getString(R.string.filter_contain))
+    val filterItems = Condition.values().map { getString(it.title) }.toTypedArray()
     val builder =
         AlertDialog.Builder(ContextThemeWrapper(this, R.style.MultiChoiceAlertDialog))
     builder.setMultiChoiceItems(filterItems, selectedFilterItems) { _, position, isChecked -> selectedFilterItems[position] = isChecked }

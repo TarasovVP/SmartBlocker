@@ -55,7 +55,7 @@
                         android:background="@drawable/selector_radio_group"
                         android:drawablePadding="@dimen/padding_2"
                         android:layoutDirection="rtl"
-                        android:text="@string/full_number" />
+                        android:text="@string/condition_full" />
 
                     <RadioButton
                         android:id="@+id/filter_type_start"
@@ -71,7 +71,7 @@
                         android:background="@drawable/selector_radio_group"
                         android:drawablePadding="@dimen/padding_2"
                         android:layoutDirection="rtl"
-                        android:text="@string/filter_start" />
+                        android:text="@string/condition_start" />
 
                     <RadioButton
                         android:id="@+id/filter_type_contain"
@@ -87,7 +87,7 @@
                         android:background="@drawable/selector_radio_group"
                         android:drawablePadding="@dimen/padding_2"
                         android:layoutDirection="rtl"
-                        android:text="@string/filter_contain" />
+                        android:text="@string/condition_contain" />
                 </RadioGroup>
 
                 <TextView

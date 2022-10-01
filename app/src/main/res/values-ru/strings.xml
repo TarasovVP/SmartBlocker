@@ -45,8 +45,8 @@
     <string name="add_black_list">Добавить в черный список</string>
     <string name="enter_phone_number">Введите номер телефона</string>
     <string name="enter_filter">Введите номер</string>
-    <string name="filter_contain">Содержит</string>
-    <string name="filter_start">Начинается</string>
+    <string name="condition_contain">Содержит</string>
+    <string name="condition_start">Начинается</string>
     <string name="filter_end">Заканчивается</string>
     <string name="filter_no_filter">Без фильтра</string>
     <string name="russian">Русский</string>
