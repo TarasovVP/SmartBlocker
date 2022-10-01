@@ -61,10 +61,12 @@ class CallListFragment :
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
             setToolBarMenuClickListener()
-            callListCheck.setOnCheckedChangeListener { _, checked ->
-                getData()
-                (activity as MainActivity).toolbar?.title =
-                    getString(if (checked) R.string.log_list else R.string.blocked_call_log)
+            callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
+                if (compoundButton.isPressed) {
+                    getData()
+                    (activity as MainActivity).toolbar?.title =
+                        getString(if (checked) R.string.log_list else R.string.blocked_call_log)
+                }
             }
             setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())

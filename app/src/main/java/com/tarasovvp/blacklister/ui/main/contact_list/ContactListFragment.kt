@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui.main.contact_list
 import android.content.Context
 import android.util.Log
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
@@ -38,13 +37,21 @@ open class ContactListFragment :
         Log.e("adapterTAG", "ContactListFragment onAttach adapter $adapter")
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.e("adapterTAG", "ContactListFragment onResume adapter $adapter itemCount ${adapter?.itemCount}")
+    }
+
     override fun initView() {
         binding?.apply {
             swipeRefresh = contactListRefresh
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
-            contactListCheck.setOnCheckedChangeListener { _, _ ->
-                searchDataList()
+            contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
+                Log.e("adapterTAG", "ContactListFragment setOnCheckedChangeListener compoundButton.isPressed ${compoundButton.isPressed} checked $checked")
+                if (compoundButton.isPressed) {
+                    searchDataList()
+                }
             }
         }
     }
@@ -74,6 +81,7 @@ open class ContactListFragment :
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ).isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)
         }.orEmpty()
+        Log.e("adapterTAG", "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
         binding?.contactListCheck?.isInvisible = (filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()).not()
         checkDataListEmptiness(filteredContactList, binding?.contactListCheck?.isChecked.isTrue())
         viewModel.getHashMapFromContactList(filteredContactList)
