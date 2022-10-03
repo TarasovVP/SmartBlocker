@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
         if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser()
                 .isTrue() && savedInstanceState.isNotNull().not()
         ) {
+            if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
             getAllData()
         }
     }

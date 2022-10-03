@@ -20,6 +20,7 @@ import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.inputText
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -86,7 +87,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 Log.e("authTAG", "LoginFragment successSignInLiveData auth?.uid ${BlackListerApp.instance?.auth?.uid}")
-                (activity as MainActivity).getAllData()
+                (activity as MainActivity).apply {
+                    Log.e("blockerTAG", "LoginFragment this $this SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not() ${SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()}")
+                    getAllData()
+                    if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                }
                 findNavController().navigate(R.id.blackFilterListFragment)
                 Log.e("authTAG", "LoginFragment successSignInLiveData navigate(R.id.blackFilterListFragment) auth?.uid ${BlackListerApp.instance?.auth?.uid}")
             }

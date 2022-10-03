@@ -38,8 +38,7 @@ open class BaseFilterListFragment :
                 override fun onFilterClick(filter: Filter) {
                     Log.e("filterLifeCycleTAG",
                         "FilterListFragment onFilterClick startFilterAddFragment")
-                    findNavController().navigate(WhiteFilterListFragmentDirections.startFilterAddFragment(
-                        filter = filter))
+                    startFilterAddScreen(filter)
                 }
 
                 override fun onFilterLongClick() {
@@ -86,21 +85,23 @@ open class BaseFilterListFragment :
             }
         }
         binding?.filterListFabNew?.setSafeOnClickListener {
-            val direction = if (this is BlackFilterListFragment) {
-                BlackFilterListFragmentDirections.startFilterAddFragment(
-                    filter = Filter().apply {
-                        filterType = BLACK_FILTER
-                    })
-            } else {
-                WhiteFilterListFragmentDirections.startFilterAddFragment(
-                    filter = Filter().apply {
-                        filterType = WHITE_FILTER
-                    })
-            }
-            Log.e("filterLifeCycleTAG",
-                "FilterListFragment filterListFabNew startFilterAddFragment")
-            findNavController().navigate(direction)
+            startFilterAddScreen(Filter().apply {
+                filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+            })
         }
+    }
+
+    private fun startFilterAddScreen(filter: Filter) {
+        val direction = if (this is BlackFilterListFragment) {
+            BlackFilterListFragmentDirections.startFilterAddFragment(
+                filter = filter)
+        } else {
+            WhiteFilterListFragmentDirections.startFilterAddFragment(
+                filter = filter)
+        }
+        Log.e("filterLifeCycleTAG",
+            "FilterListFragment filterListFabNew startFilterAddFragment")
+        findNavController().navigate(direction)
     }
 
     private fun changeDeleteMode() {

@@ -125,8 +125,7 @@ open class FilterAddFragment :
             filterAddSubmit.setSafeOnClickListener {
                 filter?.apply {
                     if (isFromDb.isTrue()) {
-                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(
-                            filter = this))
+                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(filter = this))
                     } else {
                         viewModel.insertFilter(this)
                     }
