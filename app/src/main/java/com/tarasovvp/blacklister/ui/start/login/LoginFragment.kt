@@ -68,6 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             loginContinueWithoutAcc.setSafeOnClickListener {
                 (activity as MainActivity).apply {
                     getAllData()
+                    if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
                 findNavController().navigate(LoginFragmentDirections.startBlackFilterListFragment())
             }

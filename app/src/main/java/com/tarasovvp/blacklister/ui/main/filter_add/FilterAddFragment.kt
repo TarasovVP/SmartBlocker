@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -15,7 +16,6 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
-import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -44,7 +44,7 @@ open class FilterAddFragment :
         isBlackFilter = args.filter?.isBlackFilter().isTrue()
         setToolbar()
         setClickListeners()
-        setCountrySpinner()
+        viewModel.getCountryCodeMap()
         args.filter?.let { viewModel.checkFilterExist(it) }
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
             Log.e("filterAddTAG",
@@ -141,6 +141,10 @@ open class FilterAddFragment :
                     "BaseAddFragment observeLiveData existFilterLiveData filter $filter filter isFromDb ${filter.isFromDb}")
                 initViewsWithData(filter)
             }
+            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeMap ->
+                PhoneNumberUtil.initCountryCodeMap(countryCodeMap)
+                setCountrySpinner(countryCodeMap)
+            }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 setContactByFilterList(contactList)
             }
@@ -183,21 +187,22 @@ open class FilterAddFragment :
         }
     }
 
-    private fun setCountrySpinner() {
-        val countryCodeMap = PhoneNumberUtil.countryCodeMap
-        countryCodeMap?.put(getString(R.string.no_country_code), null)
+    private fun setCountrySpinner(countryCodeMap: ArrayMap<String, Int?>) {
+        countryCodeMap.put(getString(R.string.no_country_code), null)
         val countryAdapter = context?.let {
-            ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap?.keys.orEmpty().toTypedArray())
+            ArrayAdapter(it, android.R.layout.simple_spinner_item, countryCodeMap.keys.toTypedArray())
         }
         binding?.filterAddCountryCodeSpinner?.apply {
             adapter = countryAdapter
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long, ) {
-                        binding?.filterAddCountryCodeValue?.text = if (countryCodeMap?.valueAt(position).isNotNull()) String.format(COUNTRY_CODE_START, countryCodeMap?.valueAt(position)) else String.EMPTY
+                    override fun onItemSelected(spinner: AdapterView<*>?, tv: View?, position: Int, id: Long) {
+                        binding?.filterAddCountryCodeValue?.text = if (countryCodeMap.valueAt(position)
+                                .isNotNull()) String.format(COUNTRY_CODE_START,
+                            countryCodeMap.valueAt(position)) else String.EMPTY
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) = Unit
                 }
-            setSelection(countryCodeMap?.indexOfKey(if (PhoneNumberUtil.countryCodeKey(args.filter?.filter).isNotNull()) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language, context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()?.uppercase()).orZero())
+            setSelection(countryCodeMap.indexOfKey(if (PhoneNumberUtil.countryCodeKey(args.filter?.filter).isNotNull()) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language, context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()?.uppercase()).orZero())
         }
     }
 

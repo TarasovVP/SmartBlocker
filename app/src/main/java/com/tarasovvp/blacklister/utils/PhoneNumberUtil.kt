@@ -9,24 +9,31 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.extensions.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 
 object PhoneNumberUtil {
 
     private var phoneNumberUtil: PhoneNumberUtil? = null
-    var countryCodeMap: ArrayMap<String, Int?>? = null
+    private var countryCodeMap: ArrayMap<String, Int?>? = null
 
     init {
         phoneNumberUtil = PhoneNumberUtil.getInstance()
-        countryCodeMap = countryCodeMap()
-        Log.e("filterAddTAG",
-            "PhoneNumberUtil countryCodeMap?.size ${countryCodeMap?.size}")
     }
 
-    private fun countryCodeMap(): ArrayMap<String, Int?> {
+    suspend fun countryCodeMap(): ArrayMap<String, Int?> = withContext(
+        Dispatchers.Default
+    ) {
         val countryCodeMap = arrayMapOf<String, Int?>()
         Locale.getAvailableLocales().forEach { locale -> if (locale.country.isNotEmpty() && locale.country.isDigitsOnly().not()) countryCodeMap[locale.flagEmoji() + locale.country] = phoneNumberUtil?.getCountryCodeForRegion(locale.country) }
-        return countryCodeMap
+        countryCodeMap
+    }
+
+    fun initCountryCodeMap(countryCodeMap: ArrayMap<String, Int?>?) {
+        Log.e("filterAddTAG",
+            "PhoneNumberUtil initCountryCodeMap countryCodeMap?.size ${countryCodeMap?.size}")
+        this.countryCodeMap = countryCodeMap
     }
 
     private fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try {
@@ -41,12 +48,16 @@ object PhoneNumberUtil {
     }
 
     fun countryCodeKey(filter: String?): String? {
+        Log.e("filterAddTAG",
+            "PhoneNumberUtil countryCodeKey filter $filter countryCodeMap?.size ${countryCodeMap?.size}")
         return countryCodeMap?.keys?.firstOrNull {
             filter?.startsWith(String.format(Constants.COUNTRY_CODE_START, countryCodeMap?.get(it))).isTrue()
         }
     }
 
     fun Context.extractedFilter(filter: String?): String {
+        Log.e("filterAddTAG",
+            "PhoneNumberUtil extractedFilter filter $filter countryCodeMap?.size ${countryCodeMap?.size}")
         val countryCodeValue = countryCodeMap?.values?.firstOrNull { filter?.startsWith(String.format(Constants.COUNTRY_CODE_START, it.toString())).isTrue() }
         return when {
             filter.isValidPhoneNumber(this) -> filter?.getPhoneNumber(getUserCountry().orEmpty())?.nationalNumber.toString()

@@ -55,9 +55,11 @@ class AccountDetailsFragment :
             }
 
             accountDetailsLogOut.setSafeOnClickListener {
+                (activity as MainActivity).stopBlocker()
                 findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(isLogOut = true))
             }
             accountDetailsDeleteBtn.setSafeOnClickListener {
+                (activity as MainActivity).stopBlocker()
                 findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
             }
             accountDetailsNewPasswordBtn.setSafeOnClickListener {
