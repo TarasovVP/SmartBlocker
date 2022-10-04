@@ -21,6 +21,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             app:circleImageUrl="@{contact.photoUrl}"
+            app:nameInitial="@{contact.nameInitial}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_contact_name"
             app:layout_constraintStart_toStartOf="parent"

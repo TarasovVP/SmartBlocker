@@ -13,6 +13,7 @@ import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 @Parcelize
 open class Call(
@@ -61,7 +62,9 @@ open class Call(
         return type == BLOCKED_CALL
     }
 
-    fun isNumberUnknown(): Boolean {
-        return numberPresentation == PRESENTATION_UNKNOWN
+    fun nameInitial(): String {
+        return name?.split(Regex("\\W+"))?.take(2)
+            ?.mapNotNull { it.firstOrNull() }
+            ?.joinToString(String.EMPTY)?.uppercase(Locale.getDefault()).orEmpty()
     }
 }

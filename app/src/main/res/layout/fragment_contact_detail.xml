@@ -38,6 +38,7 @@
                 android:layout_height="@dimen/margin_100"
                 android:layout_marginTop="@dimen/margin_25"
                 app:circleImageUrl="@{contact.photoUrl}"
+                app:nameInitial="@{contact.nameInitial}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

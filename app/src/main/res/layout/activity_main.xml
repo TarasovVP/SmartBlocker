@@ -82,6 +82,7 @@
                 android:layout_height="wrap_content"
                 app:lottie_autoPlay="true"
                 app:lottie_rawRes="@raw/data"
+                app:lottie_loop="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

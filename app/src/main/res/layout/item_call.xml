@@ -22,6 +22,7 @@
             android:layout_height="56dp"
             android:src="@drawable/ic_avatar"
             app:circleImageUrl="@{call.photoUrl}"
+            app:nameInitial="@{call.nameInitial}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_call_time"
             app:layout_constraintStart_toStartOf="parent"

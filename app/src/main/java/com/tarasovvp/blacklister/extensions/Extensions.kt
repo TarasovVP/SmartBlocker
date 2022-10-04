@@ -5,14 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
-import android.graphics.Color
+import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +25,7 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -51,8 +54,8 @@ import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.LinkedHashMap
+import kotlin.math.max
+
 
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
@@ -198,7 +201,9 @@ fun Context.deleteLastBlockedCall(number: String) {
                 try {
                     Log.e("blockTAG",
                         "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${blockedCall.name} time ${blockedCall.time} phone ${blockedCall.number} type ${blockedCall.type} id ${blockedCall.callId}")
-                    val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${CALL_ID}'${blockedCall.callId}'", null)
+                    val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
+                        "${CALL_ID}'${blockedCall.callId}'",
+                        null)
                     blockedCall.type = BLOCKED_CALL
                     BlockedCallRepository.insertBlockedCall(blockedCall)
                     Log.e("blockTAG",
@@ -214,19 +219,20 @@ fun Context.deleteLastBlockedCall(number: String) {
     }
 }
 
-@BindingAdapter("bind:circleImageUrl")
-fun ImageView.loadCircleImage(photoUrl: String?) {
-    if (photoUrl.isNullOrEmpty()) {
-        this.setImageResource(R.drawable.ic_avatar)
-    } else {
-        Glide.with(this.context)
-            .load(photoUrl)
-            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-            .placeholder(R.drawable.ic_avatar)
-            .error(R.drawable.ic_avatar)
-            .circleCrop()
-            .into(this)
+@BindingAdapter(value = ["circleImageUrl", "nameInitial"], requireAll = false)
+fun ImageView.loadCircleImage(photoUrl: String?, nameInitial: String?) {
+    val placeHolder = if (nameInitial.isNullOrEmpty()) ContextCompat.getDrawable(context,
+        R.drawable.ic_avatar) else RoundedBitmapDrawableFactory.create(resources,
+        nameInitial.let { context.getInitialBitmap(it) }).apply {
+            isCircular = true
     }
+    Glide
+        .with(this.context)
+        .load(photoUrl)
+        .apply(RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(placeHolder)
+            .error(placeHolder))
+        .into(this)
 }
 
 fun Context.breakCallNougatAndLower() {
@@ -398,7 +404,10 @@ fun Context.filterDataList(conditionList: ArrayList<Condition>, result: () -> Un
     val builder =
         AlertDialog.Builder(ContextThemeWrapper(this, R.style.MultiChoiceAlertDialog))
     builder.setTitle(R.string.condition_dialog_title)
-    builder.setMultiChoiceItems(conditionList.map { getString(it.title) }.toTypedArray(), conditionList.map { it.isSelected }.toBooleanArray()) { _, position, isChecked ->  conditionList[position].isSelected = isChecked}
+    builder.setMultiChoiceItems(conditionList.map { getString(it.title) }.toTypedArray(),
+        conditionList.map { it.isSelected }.toBooleanArray()) { _, position, isChecked ->
+        conditionList[position].isSelected = isChecked
+    }
     builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
     builder.setPositiveButton(R.string.ok) { _, _ ->
         result.invoke()
@@ -407,14 +416,19 @@ fun Context.filterDataList(conditionList: ArrayList<Condition>, result: () -> Un
     return true
 }
 
-fun Context.contactListMap(contactList: List<Contact>, isBlackFilter: Boolean): LinkedHashMap<String, List<Contact>> {
+fun Context.contactListMap(
+    contactList: List<Contact>,
+    isBlackFilter: Boolean,
+): LinkedHashMap<String, List<Contact>> {
     val title = String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
     val contactListMap = linkedMapOf<String, List<Contact>>(title to listOf())
     val affectedContactList = contactList.filterNot {
         if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
     }
     if (affectedContactList.isNotEmpty()) {
-        val affectedContacts = String.format(getString(R.string.block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), affectedContactList.size)
+        val affectedContacts = String.format(getString(R.string.block_add_info),
+            if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock),
+            affectedContactList.size)
         contactListMap[affectedContacts] = affectedContactList
     }
 
@@ -422,7 +436,9 @@ fun Context.contactListMap(contactList: List<Contact>, isBlackFilter: Boolean): 
         if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
     }
     if (nonAffectedContactList.isNotEmpty()) {
-        val nonAffectedContacts = String.format(getString(R.string.not_block_add_info), if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock), nonAffectedContactList.size)
+        val nonAffectedContacts = String.format(getString(R.string.not_block_add_info),
+            if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock),
+            nonAffectedContactList.size)
         contactListMap[nonAffectedContacts] = nonAffectedContactList
     }
     return contactListMap
@@ -431,4 +447,45 @@ fun Context.contactListMap(contactList: List<Contact>, isBlackFilter: Boolean): 
 fun Context.hideKeyboard(view: View) {
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Context.getInitialBitmap(text: String): Bitmap? {
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.LTGRAY
+        textSize = spToPx(18F)
+        typeface = Typeface.DEFAULT
+        textAlign = Paint.Align.LEFT
+    }
+    val textBound = Rect()
+    paint.getTextBounds(text, 0, text.length, textBound)
+    val textHeight = textBound.height()
+    val textWidth = textBound.width()
+    val rectSize = max(textHeight + dpToPx(16f) * 2, textWidth + dpToPx(16f) * 2)
+
+    val initialBitmap = Bitmap.createBitmap(
+        rectSize.toInt(), rectSize.toInt(),
+        Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(initialBitmap)
+    val rectF = RectF(0f, 0f, rectSize, rectSize)
+    canvas.drawRect(rectF, paint)
+
+    paint.color = Color.WHITE
+    paint.strokeWidth = dpToPx(2F)
+    paint.style = Paint.Style.STROKE
+    canvas.drawCircle(rectSize / 2, rectSize / 2, rectSize / 2, paint)
+
+    paint.style = Paint.Style.FILL
+    canvas.drawText(
+        text, (rectSize - textWidth) / 2, (rectSize - textHeight) / 2 + textHeight, paint
+    )
+    return initialBitmap
+}
+
+fun Context.dpToPx(dp: Float): Float {
+    return dp * (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+}
+
+fun Context.spToPx(sp: Float): Float {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
 }
