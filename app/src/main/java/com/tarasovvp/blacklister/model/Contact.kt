@@ -16,11 +16,12 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class Contact(
-    var id: String = String.EMPTY,
+    @PrimaryKey var id: String = String.EMPTY,
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
-    @PrimaryKey var phone: String = String.EMPTY,
-    var filterType: Int = DEFAULT_FILTER
+    var phone: String = String.EMPTY,
+    var filterType: Int = DEFAULT_FILTER,
+    var phoneList: ArrayList<String> = arrayListOf()
 ) : Parcelable, BaseAdapter.MainData {
     var trimmedPhone = phone.trimmed()
     fun contactTypeIcon(): Int {
@@ -40,5 +41,9 @@ data class Contact(
 
     fun nameInitial(): String {
         return name.nameInitial()
+    }
+
+    fun phoneListSize(): String {
+        return phoneList.size.toString()
     }
 }
