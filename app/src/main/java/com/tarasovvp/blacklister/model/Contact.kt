@@ -8,10 +8,10 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.nameInitial
 import com.tarasovvp.blacklister.extensions.trimmed
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @Entity
 @Parcelize
@@ -39,8 +39,6 @@ data class Contact(
     }
 
     fun nameInitial(): String {
-        return name?.split(Regex("\\W+"))?.take(2)
-            ?.mapNotNull { it.firstOrNull() }
-            ?.joinToString(String.EMPTY)?.uppercase(Locale.getDefault()).orEmpty()
+        return name.nameInitial()
     }
 }

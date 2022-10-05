@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.ColorInt
+import androidx.annotation.StringRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -120,7 +121,6 @@ fun Context.contactList(): ArrayList<Contact> {
     val selection = "${ContactsContract.Data.MIMETYPE} in (?, ?)"
 
     val selectionArgs = arrayOf(
-        ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE,
         ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
     )
     val cursor: Cursor? = this
@@ -333,6 +333,10 @@ fun Int?.orZero() = this ?: 0
 val String.Companion.EMPTY: String
     get() = ""
 
+fun String?.nameInitial(): String =
+    this?.split(Regex(" "))?.take(2)?.filter { it.firstOrNull()?.isLetter().isTrue() }?.mapNotNull { it.firstOrNull() }
+        ?.joinToString(String.EMPTY)?.uppercase(Locale.getDefault()).orEmpty()
+
 fun EditText?.inputText(): String {
     return this?.text?.toString().orEmpty()
 }
@@ -450,36 +454,36 @@ fun Context.hideKeyboard(view: View) {
 }
 
 fun Context.getInitialBitmap(text: String): Bitmap? {
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.LTGRAY
         textSize = spToPx(18F)
         typeface = Typeface.DEFAULT
         textAlign = Paint.Align.LEFT
+        val textBound = Rect()
+        getTextBounds(text, 0, text.length, textBound)
+        val textHeight = textBound.height()
+        val textWidth = textBound.width()
+        val rectSize = max(textHeight + dpToPx(16f) * 2, textWidth + dpToPx(16f) * 2)
+
+        val initialBitmap = Bitmap.createBitmap(
+            rectSize.toInt(), rectSize.toInt(),
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(initialBitmap)
+        val rectF = RectF(0f, 0f, rectSize, rectSize)
+        canvas.drawRect(rectF, this)
+
+        color = Color.WHITE
+        strokeWidth = dpToPx(2F)
+        style = Paint.Style.STROKE
+        canvas.drawCircle(rectSize / 2, rectSize / 2, rectSize / 2, this)
+
+        style = Paint.Style.FILL
+        canvas.drawText(
+            text, (rectSize - textWidth) / 2, (rectSize - textHeight) / 2 + textHeight, this
+        )
+        return initialBitmap
     }
-    val textBound = Rect()
-    paint.getTextBounds(text, 0, text.length, textBound)
-    val textHeight = textBound.height()
-    val textWidth = textBound.width()
-    val rectSize = max(textHeight + dpToPx(16f) * 2, textWidth + dpToPx(16f) * 2)
-
-    val initialBitmap = Bitmap.createBitmap(
-        rectSize.toInt(), rectSize.toInt(),
-        Bitmap.Config.ARGB_8888
-    )
-    val canvas = Canvas(initialBitmap)
-    val rectF = RectF(0f, 0f, rectSize, rectSize)
-    canvas.drawRect(rectF, paint)
-
-    paint.color = Color.WHITE
-    paint.strokeWidth = dpToPx(2F)
-    paint.style = Paint.Style.STROKE
-    canvas.drawCircle(rectSize / 2, rectSize / 2, rectSize / 2, paint)
-
-    paint.style = Paint.Style.FILL
-    canvas.drawText(
-        text, (rectSize - textWidth) / 2, (rectSize - textHeight) / 2 + textHeight, paint
-    )
-    return initialBitmap
 }
 
 fun Context.dpToPx(dp: Float): Float {

@@ -7,13 +7,12 @@ import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.DATE_FORMAT
 import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
 import com.tarasovvp.blacklister.constants.Constants.OUT_COMING_CALL
-import com.tarasovvp.blacklister.constants.Constants.PRESENTATION_UNKNOWN
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.nameInitial
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @Parcelize
 open class Call(
@@ -63,8 +62,6 @@ open class Call(
     }
 
     fun nameInitial(): String {
-        return name?.split(Regex("\\W+"))?.take(2)
-            ?.mapNotNull { it.firstOrNull() }
-            ?.joinToString(String.EMPTY)?.uppercase(Locale.getDefault()).orEmpty()
+        return name.nameInitial()
     }
 }
