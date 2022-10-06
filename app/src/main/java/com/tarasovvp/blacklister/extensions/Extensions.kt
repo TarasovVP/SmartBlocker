@@ -22,7 +22,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.ColorInt
-import androidx.annotation.StringRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -109,36 +108,27 @@ fun View.showPopUpWindow(info: Info) {
     }
 }
 
-fun Context.contactList(): ArrayList<Contact> {
+fun Context.systemContactList(): ArrayList<Contact> {
     val projection = arrayOf(
-        ContactsContract.Data.MIMETYPE,
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Contacts.DISPLAY_NAME,
         ContactsContract.Contacts.PHOTO_URI,
         ContactsContract.CommonDataKinds.Contactables.DATA
 
     )
-    val selection = "${ContactsContract.Data.MIMETYPE} in (?, ?)"
-
-    val selectionArgs = arrayOf(
-        ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
-    )
+    val selection = "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'"
     val cursor: Cursor? = this
         .contentResolver
-        .query(ContactsContract.Data.CONTENT_URI, projection, selection, selectionArgs, null)
+        .query(ContactsContract.Data.CONTENT_URI, projection, selection, null, null)
     val contactList = arrayListOf<Contact>()
     cursor?.use { contactCursor ->
         while (contactCursor.moveToNext()) {
-            when (contactCursor.getString(0)) {
-                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE -> {
-                    contactList.add(Contact(
-                        id = contactCursor.getString(1),
-                        name = contactCursor.getString(2),
-                        photoUrl = contactCursor.getString(3),
-                        phone = contactCursor.getString(4)
-                    ))
-                }
-            }
+            contactList.add(Contact(
+                id = contactCursor.getString(0),
+                name = contactCursor.getString(1),
+                photoUrl = contactCursor.getString(2),
+                phone = contactCursor.getString(3)
+            ))
         }
     }
     contactList.sortBy { it.name }
@@ -224,7 +214,7 @@ fun ImageView.loadCircleImage(photoUrl: String?, nameInitial: String?) {
     val placeHolder = if (nameInitial.isNullOrEmpty()) ContextCompat.getDrawable(context,
         R.drawable.ic_avatar) else RoundedBitmapDrawableFactory.create(resources,
         nameInitial.let { context.getInitialBitmap(it) }).apply {
-            isCircular = true
+        isCircular = true
     }
     Glide
         .with(this.context)
@@ -334,7 +324,8 @@ val String.Companion.EMPTY: String
     get() = ""
 
 fun String?.nameInitial(): String =
-    this?.split(Regex(" "))?.take(2)?.filter { it.firstOrNull()?.isLetter().isTrue() }?.mapNotNull { it.firstOrNull() }
+    this?.split(Regex(" "))?.take(2)?.filter { it.firstOrNull()?.isLetter().isTrue() }
+        ?.mapNotNull { it.firstOrNull() }
         ?.joinToString(String.EMPTY)?.uppercase(Locale.getDefault()).orEmpty()
 
 fun EditText?.inputText(): String {
@@ -454,7 +445,7 @@ fun Context.hideKeyboard(view: View) {
 }
 
 fun Context.getInitialBitmap(text: String): Bitmap? {
-        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.LTGRAY
         textSize = spToPx(18F)
         typeface = Typeface.DEFAULT

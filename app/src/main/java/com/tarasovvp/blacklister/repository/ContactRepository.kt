@@ -3,7 +3,7 @@ package com.tarasovvp.blacklister.repository
 import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.contactList
+import com.tarasovvp.blacklister.extensions.systemContactList
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +36,7 @@ object ContactRepository {
         withContext(
             Dispatchers.Default
         ) {
-            context.contactList()
+            context.systemContactList()
         }
 
     suspend fun getHashMapFromContactList(contactList: List<Contact>): Map<String, List<Contact>> =
