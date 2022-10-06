@@ -84,10 +84,22 @@ open class BaseFilterListFragment :
                 }
             }
         }
-        binding?.filterListFabNew?.setSafeOnClickListener {
-            startFilterAddScreen(Filter().apply {
-                filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
-            })
+        binding?.filterListFabMenu?.setFabClickListener { conditionType ->
+            when(conditionType) {
+                Condition.CONDITION_TYPE_FULL.index -> startFilterAddScreen(Filter().apply {
+                    filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+                    this.conditionType = conditionType
+                })
+                Condition.CONDITION_TYPE_START.index -> startFilterAddScreen(Filter().apply {
+                    filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+                    this.conditionType = conditionType
+                })
+                Condition.CONDITION_TYPE_CONTAIN.index -> startFilterAddScreen(Filter().apply {
+                    filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+                    this.conditionType = conditionType
+                })
+            }
+
         }
     }
 

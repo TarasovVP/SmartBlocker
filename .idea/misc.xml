@@ -111,7 +111,7 @@
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.20462046204620463" />
         <entry key="app/src/main/res/layout/item_contact_small.xml" value="0.2271062271062271" />
         <entry key="app/src/main/res/layout/item_expandable_header.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_filter.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_filter.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_filter_small.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_header.xml" value="0.11734693877551021" />
         <entry key="app/src/main/res/layout/item_info_window.xml" value="0.1697061803444782" />
@@ -122,6 +122,7 @@
         <entry key="app/src/main/res/layout/number_list_fragment.xml" value="0.2318840579710145" />
         <entry key="app/src/main/res/layout/pop_up_window_info.xml" value="0.335" />
         <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.2318840579710145" />
+        <entry key="app/src/main/res/layout/view_floating_action_menu.xml" value="0.2994791666666667" />
         <entry key="app/src/main/res/layout/view_switch.xml" value="0.24909420289855072" />
         <entry key="app/src/main/res/menu/black_number_menu.xml" value="0.27239583333333334" />
         <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.34427083333333336" />
