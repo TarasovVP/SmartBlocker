@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.model
 
 import android.os.Parcelable
+import androidx.core.text.htmlEncode
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
@@ -62,6 +63,6 @@ open class Call(
     }
 
     fun nameInitial(): String {
-        return name.nameInitial()
+        return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
     }
 }

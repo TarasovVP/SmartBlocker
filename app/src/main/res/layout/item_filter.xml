@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -14,41 +16,65 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:background="@drawable/item_bg"
-        android:padding="@dimen/padding_16">
+        android:padding="@dimen/padding_8">
+
+        <ImageView
+            android:id="@+id/item_filter_avatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:circleImageUrl="@{filter.photoUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/item_filter_type_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:nameInitial="@{filter.nameInitial}" />
+
+        <ImageView
+            android:id="@+id/item_filter_icon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            app:imageResource="@{filter.filterTypeIcon()}"
+            app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+            app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
+
+        <TextView
+            android:id="@+id/item_filter_type_title"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:text="@{filter.typeStart ? @string/condition_start : filter.typeContain ? @string/condition_contain : filter.name.empty ? @string/condition_full : filter.name}"
+            app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
+            app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
+            app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/item_filter_value"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:gravity="top"
             android:maxLines="1"
             android:text="@{filter.filter}"
+            android:textSize="@dimen/text_size_16"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_type"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/item_filter_type"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_start"
-            android:visibility="@{!filter.deleteMode ? View.VISIBLE : View.GONE}"
-            app:imageResource="@{filter.filterTypeIcon()}"
-            app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
-            app:layout_constraintTop_toTopOf="@+id/item_filter_value" />
+            app:layout_constraintEnd_toEndOf="@+id/item_filter_type_title"
+            app:layout_constraintStart_toStartOf="@id/item_filter_type_title"
+            app:layout_constraintTop_toBottomOf="@+id/item_filter_type_title" />
 
         <CheckBox
             android:id="@+id/item_filter_delete"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE}"
             android:checked="@{filter.checkedForDelete}"
-            app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
+            android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/item_filter_value" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

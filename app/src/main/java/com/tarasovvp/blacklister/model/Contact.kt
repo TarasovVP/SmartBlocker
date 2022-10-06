@@ -39,6 +39,6 @@ data class Contact(
     }
 
     fun nameInitial(): String {
-        return name.nameInitial()
+        return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
     }
 }

@@ -10,6 +10,7 @@ import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.nameInitial
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil.extractedFilter
 import com.tarasovvp.blacklister.utils.PhoneNumberUtil.isValidPhoneNumber
@@ -20,7 +21,9 @@ import kotlinx.android.parcel.Parcelize
 data class Filter(
     @PrimaryKey var filter: String = String.EMPTY,
     var conditionType: Int = DEFAULT_FILTER,
-    var filterType: Int = DEFAULT_FILTER
+    var filterType: Int = DEFAULT_FILTER,
+    var name: String? = String.EMPTY,
+    var photoUrl: String? = String.EMPTY
 ) : Parcelable, BaseAdapter.MainData {
     var isCheckedForDelete = false
     var isDeleteMode = false
@@ -30,18 +33,11 @@ data class Filter(
         return filter.isEmpty()
     }
 
-    fun listTypeIcon(): Int {
-        return when {
-            isBlackFilter() -> R.drawable.ic_block
-            else -> R.drawable.ic_white_filter
-        }
-    }
-
     fun filterTypeIcon(): Int {
-        return when (conditionType) {
-            Condition.CONDITION_TYPE_FULL.index -> R.drawable.ic_start
-            Condition.CONDITION_TYPE_START.index -> R.drawable.ic_contain
-            else -> R.drawable.ic_end
+        return when(filterType) {
+            BLACK_FILTER -> R.drawable.ic_block
+            WHITE_FILTER -> R.drawable.ic_accepted
+            else -> 0
         }
     }
 
@@ -71,5 +67,14 @@ data class Filter(
 
     fun isWhiteFilter(): Boolean {
         return filterType == WHITE_FILTER
+    }
+
+    fun nameInitial(): String {
+        return when {
+            isTypeContain() -> String(Character.toChars(128269))
+            isTypeStart() -> String(Character.toChars(127987))
+            name.isNullOrEmpty() -> String(Character.toChars( 128222))
+            else -> name.nameInitial()
+        }
     }
 }

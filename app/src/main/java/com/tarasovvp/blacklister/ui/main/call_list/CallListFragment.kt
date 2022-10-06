@@ -60,7 +60,6 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
-            setToolBarMenuClickListener()
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 if (compoundButton.isPressed) {
                     getData()
@@ -74,7 +73,7 @@ class CallListFragment :
         }
     }
 
-    private fun setToolBarMenuClickListener() {
+    private fun setDeleteMenuClickListener() {
         Log.e("callTAG", "CallListFragment setToolBarMenuClickListener")
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -110,7 +109,12 @@ class CallListFragment :
             Log.e("callTAG", "CallListFragment menu $menu")
             menu?.clear()
             title = if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
-            inflateMenu(if (isDeleteMode) R.menu.toolbar_delete else R.menu.toolbar_search)
+            if (isDeleteMode) {
+                inflateMenu(R.menu.toolbar_delete)
+                setDeleteMenuClickListener()
+            } else {
+                inflateMenu(R.menu.toolbar_search)
+            }
         }
     }
 
