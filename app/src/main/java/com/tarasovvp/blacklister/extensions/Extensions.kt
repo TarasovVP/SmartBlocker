@@ -314,6 +314,8 @@ fun Snackbar.withColor(@ColorInt colorInt: Int): Snackbar {
     return this
 }
 
+fun Any?.isNull() = this == null
+
 fun Any?.isNotNull() = this != null
 
 fun Boolean?.isTrue() = this == true

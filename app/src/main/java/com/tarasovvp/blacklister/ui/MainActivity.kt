@@ -100,8 +100,8 @@ class MainActivity : AppCompatActivity() {
         Log.e("getAllDataTAG",
             "MainActivity isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen} isLoggedInUser ${
                 BlackListerApp.instance?.isLoggedInUser().isTrue()
-            } savedInstanceState ${savedInstanceState.isNotNull().not()}")
-        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNotNull().not()) {
+            } savedInstanceState ${savedInstanceState.isNull()}")
+        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNull()) {
             if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
             getAllData()
         }
