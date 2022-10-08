@@ -5,9 +5,8 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,21 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
-import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
-import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.HeaderDataItem
-import com.tarasovvp.blacklister.model.Info
+import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
-import com.tarasovvp.blacklister.utils.PhoneNumberUtil
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
-import java.util.*
 
 open class FilterAddFragment :
     BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
@@ -40,6 +33,7 @@ open class FilterAddFragment :
     private val args: FilterAddFragmentArgs by navArgs()
     private var contactAdapter: ContactFilterAdapter? = null
     private var contactList: List<Contact>? = null
+    private var countryCodeList: ArrayList<CountryCode>? = null
 
     private var isBlackFilter: Boolean = true
 
@@ -53,15 +47,14 @@ open class FilterAddFragment :
         setClickListeners()
         viewModel.getContactList()
         if (contactAdapter.isNull()) {
-            contactAdapter = ContactFilterAdapter { contact ->
+            contactAdapter = ContactFilterAdapter { phone ->
                 binding?.apply {
                     filter = filter.apply {
-                        this?.filter = contact.phone
+                        this?.filter = phone
                     }
-                    this.itemContact.contact = contact
                 }
                 Log.e("filterAddTAG",
-                    "BaseAddFragment ContactFilterAdapter contactClick contact $contact")
+                    "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
             }
             binding?.filterAddContactList?.apply {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -109,7 +102,7 @@ open class FilterAddFragment :
                 context?.let {
                     filter.filterToInput(it)
                 }
-            } countryCodeKey ${PhoneNumberUtil.countryCodeKey(filter.filter)}")
+            }")
         binding?.apply {
             this.filter = filter
             filterAddConditionsInfo.text = if (filterAddInput.inputText()
@@ -125,11 +118,12 @@ open class FilterAddFragment :
     private fun existNumberChecking() {
         binding?.apply {
             root.post {
-                filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) {
+                filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) { input ->
                     Log.e("filterAddTAG",
-                        "BaseAddFragment addTextChangedListener it $it filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
+                        "BaseAddFragment addTextChangedListener it $input filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
                     //viewModel.checkFilterExist(getFilterObject())
-                    filterContactList(it.toString())
+                    itemFilter.filter = getFilterObject()
+                    filterContactList(input.toString())
                 })
             }
         }
@@ -139,7 +133,14 @@ open class FilterAddFragment :
         return Filter(filter = String.format("%s%s",
             binding?.filterAddCountryCodeValue?.text,
             binding?.filterAddInput.inputText()),
-            filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER)
+            filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER,
+            name = if (binding?.filterAddInput.inputText().isValidPhoneNumber(context)) binding?.filterAddInput.inputText() else getString(R.string.invalid_phone_number)).apply {
+            contactList?.find { contact -> contact.trimmedPhone.getPhoneNumber(countryCodeList?.find { it.countryCode == binding?.filterAddCountryCodeValue?.text.toString().toInt() }?.country.orEmpty())?.nationalNumber.toString() == binding?.filterAddInput.inputText() }
+                ?.let {
+                    name = it.name
+                    photoUrl = it.photoUrl
+                }
+        }
     }
 
     private fun setClickListeners() {
@@ -169,9 +170,8 @@ open class FilterAddFragment :
                     "BaseAddFragment observeLiveData existFilterLiveData filter $filter filter isFromDb ${filter.isFromDb}")
                 initViewsWithData(filter)
             }
-            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeMap ->
-                PhoneNumberUtil.initCountryCodeMap(countryCodeMap)
-                setCountrySpinner(countryCodeMap)
+            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+                setCountrySpinner(ArrayList(countryCodeList))
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 //setContactByFilterList(contactList)
@@ -222,21 +222,31 @@ open class FilterAddFragment :
         }
     }
 
-    fun filterContactList(searchQuery: String) {
-         val filteredContactList = contactList?.filter { contact ->
-            (contact.phone).contains(searchQuery).isTrue() }
-        filteredContactList?.let {
+    private fun filterContactList(searchQuery: String) {
+        val filteredContactList = contactList?.filter { contact ->
+            (contact.phone).contains(searchQuery).isTrue()
+        }
+        filteredContactList?.let { contactList ->
             contactAdapter?.clearData()
-            contactAdapter?.setHeaderAndData(it, HeaderDataItem())
-        contactAdapter?.notifyDataSetChanged()}
+            contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
+            contactAdapter?.notifyDataSetChanged()
+        }
+        binding?.filterAddContactList?.isVisible = filteredContactList.isNullOrEmpty().not()
+        binding?.filterAddEmptyList?.emptyStateContainer?.isVisible =
+            filteredContactList.isNullOrEmpty()
+        binding?.filterAddEmptyList?.emptyStateTitle?.text =
+            getString(R.string.no_ruslt_with_list_query)
+        Log.e("filterAddTAG",
+            "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList?.size}")
     }
 
-    private fun setCountrySpinner(countryCodeMap: ArrayMap<String, Int?>) {
-        countryCodeMap[getString(R.string.no_country_code)] = null
+    private fun setCountrySpinner(countryCodeList: ArrayList<CountryCode>) {
+        this.countryCodeList = countryCodeList
+        countryCodeList.add(CountryCode(flagEmoji = null))
         val countryAdapter = context?.let {
             ArrayAdapter(it,
                 android.R.layout.simple_spinner_item,
-                countryCodeMap.keys.toTypedArray())
+                countryCodeList.map { countryCode -> countryCode.countryEmoji() })
         }
         binding?.filterAddCountryCodeSpinner?.apply {
             adapter = countryAdapter
@@ -247,19 +257,16 @@ open class FilterAddFragment :
                     position: Int,
                     id: Long,
                 ) {
-                    binding?.filterAddCountryCodeValue?.text = if (countryCodeMap.valueAt(position)
-                            .isNotNull()
-                    ) String.format(COUNTRY_CODE_START,
-                        countryCodeMap.valueAt(position)) else String.EMPTY
+                    binding?.filterAddCountryCodeValue?.text =
+                        countryCodeList[position].countryCode.toString()
+                    binding?.itemFilter?.filter = getFilterObject()
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
-            setSelection(countryCodeMap.indexOfKey(if (PhoneNumberUtil.countryCodeKey(args.filter?.filter)
-                    .isNotNull()
-            ) PhoneNumberUtil.countryCodeKey(args.filter?.filter) else Locale(Locale.getDefault().language,
-                context?.getUserCountry().orEmpty()).flagEmoji() + context?.getUserCountry()
-                ?.uppercase()).orZero())
+            setSelection(countryCodeList.indexOfFirst {
+                it.country == context.getUserCountry()?.uppercase()
+            })
         }
     }
 

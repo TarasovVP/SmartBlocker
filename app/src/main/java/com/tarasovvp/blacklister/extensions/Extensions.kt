@@ -26,6 +26,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -35,6 +36,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
@@ -108,6 +111,15 @@ fun View.showPopUpWindow(info: Info) {
     }
 }
 
+fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
+    val countryCodeMap = arrayListOf<CountryCode>()
+    Locale.getAvailableLocales().forEach { locale ->
+        if (locale.country.isNotEmpty() && locale.country.isDigitsOnly().not())
+            countryCodeMap.add(CountryCode(locale.country, getCountryCodeForRegion(locale.country), locale.flagEmoji()))
+    }
+    return countryCodeMap
+}
+
 fun Context.systemContactList(): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
@@ -116,7 +128,8 @@ fun Context.systemContactList(): ArrayList<Contact> {
         ContactsContract.CommonDataKinds.Contactables.DATA
 
     )
-    val selection = "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'"
+    val selection =
+        "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'"
     val cursor: Cursor? = this
         .contentResolver
         .query(ContactsContract.Data.CONTENT_URI, projection, selection, null, null)
@@ -369,6 +382,17 @@ fun Context.getUserCountry(): String? {
         return null
     }
     return null
+}
+
+fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try {
+    PhoneNumberUtil.getInstance().parse(this.trimmed(), countryCode.uppercase())
+} catch (e: Exception) {
+    e.printStackTrace()
+    null
+}
+
+fun String?.isValidPhoneNumber(context: Context?): Boolean {
+    return if (getPhoneNumber(context?.getUserCountry().orEmpty()).isNotNull()) PhoneNumberUtil.getInstance().isValidNumber(getPhoneNumber(context?.getUserCountry().orEmpty())).isTrue() else false
 }
 
 fun <T> ViewGroup.getViewsFromLayout(

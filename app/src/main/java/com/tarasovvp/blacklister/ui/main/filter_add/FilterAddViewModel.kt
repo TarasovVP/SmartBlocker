@@ -2,24 +2,25 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 
 import android.app.Application
 import android.util.Log
-import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.ContactRepository
+import com.tarasovvp.blacklister.repository.CountryCodeRepository
 import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
-import com.tarasovvp.blacklister.utils.PhoneNumberUtil
 
 class FilterAddViewModel(application: Application) : BaseViewModel(application) {
 
     private val filterRepository = FilterRepository
     private val contactRepository = ContactRepository
+    private val countryCodeRepository = CountryCodeRepository
 
     val existFilterLiveData = MutableLiveData<Filter>()
     val insertFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
-    val countryCodeLiveData = MutableLiveData<ArrayMap<String, Int?>>()
+    val countryCodeLiveData = MutableLiveData<List<CountryCode>>()
     val queryContactListLiveData = MutableLiveData<List<Contact>>()
     val contactLiveData = MutableLiveData<List<Contact>>()
 
@@ -37,9 +38,11 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun getCountryCodeMap() {
         showProgress()
         launch {
-            val countryCodeMap = PhoneNumberUtil.countryCodeMap()
-            Log.e("filterAddTAG", "AddViewModel getCountryCodeMap countryCodeMap.size ${countryCodeMap.size}")
-            countryCodeLiveData.postValue(countryCodeMap)
+            val countryCodeList = countryCodeRepository.getAllCountryCodes()
+            Log.e("filterAddTAG", "AddViewModel getCountryCodeMap countryCodeMap.size ${countryCodeList?.size}")
+            countryCodeList?.apply {
+                countryCodeLiveData.postValue(this)
+            }
             hideProgress()
         }
     }
@@ -57,7 +60,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun getContactList() {
         showProgress()
         launch {
-            val contactList = ContactRepository.getAllContacts()
+            val contactList = contactRepository.getAllContacts()
             Log.e("filterAddTAG", "AddViewModel getContactList contactList?.size ${contactList?.size}")
             contactList?.apply {
                 contactLiveData.postValue(this)

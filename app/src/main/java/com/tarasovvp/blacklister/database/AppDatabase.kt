@@ -5,8 +5,8 @@ import androidx.room.RoomDatabase
 import com.tarasovvp.blacklister.model.*
 
 @Database(
-    entities = [LogCall::class, BlockedCall::class, Contact::class, Filter::class],
-    version = 2,
+    entities = [LogCall::class, BlockedCall::class, Contact::class, Filter::class, CountryCode::class],
+    version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -14,4 +14,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun blockedCallDao(): BlockedCallDao
     abstract fun contactDao(): ContactDao
     abstract fun filterDao(): FilterDao
+    abstract fun countryCodeDao(): CountryCodeDao
 }

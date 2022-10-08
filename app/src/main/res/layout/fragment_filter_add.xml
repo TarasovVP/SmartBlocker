@@ -7,9 +7,11 @@
         <import type="android.view.View" />
 
         <import type="android.content.Context" />
+
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
+
         <variable
             name="isPreviewMode"
             type="Boolean" />
@@ -22,103 +24,103 @@
         android:animateLayoutChanges="true"
         android:padding="@dimen/padding_16">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent">
+        <include
+            android:id="@+id/item_filter"
+            layout="@layout/item_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:visibility="@{filter.isTypeStart() ? View.GONE : View.VISIBLE}" />
 
-                <include
-                    android:id="@+id/item_contact"
-                    layout="@layout/item_contact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:visibility="@{filter.isTypeStart() ? View.GONE : View.VISIBLE}" />
+        <TextView
+            android:id="@+id/filter_add_conditions_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:alpha="0.6"
+            android:drawablePadding="@dimen/padding_10"
+            android:text="@string/details_"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_info"
+            app:layout_constraintTop_toBottomOf="@+id/item_filter" />
 
-                <TextView
-                    android:id="@+id/filter_add_conditions_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:alpha="0.6"
-                    android:drawablePadding="@dimen/padding_10"
-                    android:text="@string/details_"
-                    android:visibility="gone"
-                    app:drawableStartCompat="@drawable/ic_info"
-                    app:layout_constraintTop_toBottomOf="@+id/item_contact" />
+        <Spinner
+            android:id="@+id/filter_add_country_code_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_0"
+            android:background="@drawable/bg_spinner"
+            android:enabled="@{!isPreviewMode}"
+            android:paddingEnd="@dimen/padding_10"
+            android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/filter_add_input"
+            tools:ignore="RtlSymmetry" />
 
-                <Spinner
-                    android:id="@+id/filter_add_country_code_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/size_0"
-                    android:background="@drawable/bg_spinner"
-                    android:paddingEnd="@dimen/padding_10"
-                    android:enabled="@{!isPreviewMode}"
-                    android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/filter_add_input"
-                    tools:ignore="RtlSymmetry" />
+        <TextView
+            android:id="@+id/filter_add_country_code_value"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_0"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
+            app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
+            app:layout_constraintTop_toTopOf="@+id/filter_add_input" />
 
-                <TextView
-                    android:id="@+id/filter_add_country_code_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/size_0"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_18"
-                    android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
-                    app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
-                    app:layout_constraintTop_toTopOf="@+id/filter_add_input" />
+        <EditText
+            android:id="@+id/filter_add_input"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_15"
+            android:digits="0123456789+"
+            android:enabled="@{!isPreviewMode}"
+            android:hint="@string/enter_filter"
+            android:inputType="phone"
+            android:text="@{filter.filterToInput(context)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
+            tools:ignore="Autofill,LabelFor,TextFields" />
 
-                <EditText
-                    android:id="@+id/filter_add_input"
-                    android:layout_width="@dimen/size_0"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:digits="0123456789+"
-                    android:hint="@string/enter_filter"
-                    android:inputType="phone"
-                    android:enabled="@{!isPreviewMode}"
-                    android:text="@{filter.filterToInput(context)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
-                    tools:ignore="Autofill,LabelFor,TextFields" />
-
-                <Button
-                    android:id="@+id/filter_add_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:text="@{filter.fromDb ? @string/delete_menu : @string/add}"
-                    android:visibility="@{filter.isFilterEmpty || (filter.typeFull &amp;&amp; !filter.isValidPhoneNumber(context)) ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filter_add_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:text="@{filter.fromDb ? @string/delete_menu : @string/add}"
+            android:enabled="@{!filter.isFilterEmpty || (filter.typeFull &amp;&amp; filter.isValidPhoneNumber(context))}"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filter_add_contact_list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             android:layout_marginTop="@dimen/margin_5"
-            app:layout_constraintTop_toBottomOf="@+id/container"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_submit" />
+
+        <include
+            android:id="@+id/filter_add_empty_list"
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_submit" />
 
         <ExpandableListView
             android:id="@+id/filter_add_contact_by_filter_list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             android:layout_marginTop="@dimen/margin_5"
+            android:childDivider="@android:color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="@dimen/margin_5"
             android:groupIndicator="@null"
             android:nestedScrollingEnabled="true"
-            android:dividerHeight="@dimen/margin_5"
             android:visibility="gone"
-            android:divider="@android:color/transparent"
-            android:childDivider="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_submit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -13,8 +13,9 @@ import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
-    private val logCallRepository = CallRepository
     private val filterRepository = FilterRepository
+    private val countryCodeRepository = CountryCodeRepository
+    private val logCallRepository = CallRepository
     private val contactRepository = ContactRepository
     private val realDataBaseRepository = RealDataBaseRepository
 
@@ -37,6 +38,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     private fun insertAllFilters(filterList: ArrayList<Filter>) {
         launch {
             Log.e("getAllDataTAG", "MainViewModel insertAllWhiteFilters")
+            progressStatusLiveData.postValue("Обновление фильтров")
             filterRepository.insertAllFilters(filterList)
             getAllData()
         }
@@ -45,6 +47,13 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     fun getAllData() {
         launch {
             Log.e("getAllDataTAG", "MainViewModel getAllData start")
+            // init country code data
+            Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
+            progressStatusLiveData.postValue("Обновление данных локализации")
+            val countryCodeList = countryCodeRepository.getSystemCountryCodeList()
+            Log.e("allDataTAG", "MainViewModel getSystemCountryCodeList countryCodeList.size ${countryCodeList.size}")
+            countryCodeRepository.insertAllCountryCodes(countryCodeList)
+            // init contacts data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
             progressStatusLiveData.postValue("Обновление контактов")
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
@@ -63,6 +72,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             contactRepository.insertContacts(contactList)
             Log.e("allDataTAG", "MainViewModel getAllData getSystemLogCallList")
             progressStatusLiveData.postValue("Обновление списка звонков")
+            // init calls data
             val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)

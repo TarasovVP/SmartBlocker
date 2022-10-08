@@ -3,7 +3,7 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
@@ -14,11 +14,11 @@ import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class ContactFilterAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<Contact>() {
+class ContactFilterAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<Contact>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int,
+        viewType: Int
     ): RecyclerView.ViewHolder {
         return if (viewType == HeaderDataItem.HEADER_TYPE) {
             HeaderViewHolder(
@@ -39,7 +39,7 @@ class ContactFilterAdapter(private val contactClick: (Contact) -> Unit) : BaseAd
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int,
+        position: Int
     ) {
         super.onBindViewHolder(holder, position)
         if (holder is ContactFilterAdapter.ViewHolder) {
@@ -47,7 +47,8 @@ class ContactFilterAdapter(private val contactClick: (Contact) -> Unit) : BaseAd
                 position
             )
         } else {
-            holder.itemView.isVisible = false
+            holder.itemView.layoutParams.height = 0
+            (holder.itemView.layoutParams as RecyclerView.LayoutParams).setMargins(0)
         }
     }
 
@@ -57,9 +58,9 @@ class ContactFilterAdapter(private val contactClick: (Contact) -> Unit) : BaseAd
         fun bindData(position: Int) {
             val contact = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactSmallBinding>(itemView)?.apply {
-               this.contact = contact
+                this.contact = contact
                 root.setSafeOnClickListener {
-                    contactClick.invoke(contact)
+                    contactClick.invoke(contact.phone)
                 }
             }
         }

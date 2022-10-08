@@ -11,25 +11,25 @@ import kotlinx.coroutines.withContext
 
 object ContactRepository {
 
-    private val dao = BlackListerApp.instance?.database?.contactDao()
+    private val contactDao = BlackListerApp.instance?.database?.contactDao()
 
     fun insertContacts(list: List<Contact>) {
-        dao?.insertAllContacts(list)
+        contactDao?.insertAllContacts(list)
     }
 
     suspend fun getAllContacts(): List<Contact>? =
         withContext(
             Dispatchers.Default
         ) {
-            dao?.getAllContacts()
+            contactDao?.getAllContacts()
         }
 
     fun getQueryContacts(filter: Filter): List<Contact>? {
-        return dao?.queryContactList(filter.filter, filter.conditionType)
+        return contactDao?.queryContactList(filter.filter, filter.conditionType)
     }
 
     fun getContactByPhone(phone: String): Contact? {
-        return dao?.getContactByPhone(phone)
+        return contactDao?.getContactByPhone(phone)
     }
 
     suspend fun getSystemContactList(context: Context): ArrayList<Contact> =
