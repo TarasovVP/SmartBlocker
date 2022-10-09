@@ -50,7 +50,7 @@
             android:background="@drawable/bg_spinner"
             android:enabled="@{!isPreviewMode}"
             android:paddingEnd="@dimen/padding_10"
-            android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
+            android:minWidth="@dimen/margin_45"
             app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/filter_add_input"
@@ -62,7 +62,6 @@
             android:layout_height="@dimen/size_0"
             android:gravity="center"
             android:textSize="@dimen/text_size_18"
-            android:visibility="@{filter.isTypeContain() ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
             app:layout_constraintTop_toTopOf="@+id/filter_add_input" />

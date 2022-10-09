@@ -229,7 +229,7 @@ class MainActivity : AppCompatActivity() {
         binding?.hostMainFragment?.showMessage(message, isError)
     }
 
-    private fun setMainProgressVisibility(isVisible: Boolean) {
+    fun setMainProgressVisibility(isVisible: Boolean) {
         binding?.mainProgressBarContainer?.isVisible = isVisible
         Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible")
     }

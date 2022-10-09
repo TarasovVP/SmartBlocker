@@ -34,8 +34,7 @@ object CountryCodeRepository {
 
     fun Context.extractedFilter(filter: String?): String {
         val countryCodeValue = countryCodeKey(filter)
-        return when {
-            filter.isValidPhoneNumber(this) -> filter?.getPhoneNumber(getUserCountry().orEmpty())?.nationalNumber.toString()
+        return when {filter.isValidPhoneNumber(this) -> filter?.getPhoneNumber(getUserCountry().orEmpty())?.nationalNumber.toString()
             countryCodeValue.isNotNull() -> filter?.replace(String.format(Constants.COUNTRY_CODE_START,
                 countryCodeValue), String.EMPTY).orEmpty()
             else -> filter.orEmpty()

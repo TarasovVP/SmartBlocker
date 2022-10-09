@@ -10,6 +10,8 @@ import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.CountryCodeRepository
 import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 
 class FilterAddViewModel(application: Application) : BaseViewModel(application) {
 
@@ -35,15 +37,20 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
-    fun getCountryCodeMap() {
-        showProgress()
+    fun getCountryCodeAndContactsData() {
         launch {
-            val countryCodeList = countryCodeRepository.getAllCountryCodes()
-            Log.e("filterAddTAG", "AddViewModel getCountryCodeMap countryCodeMap.size ${countryCodeList?.size}")
+            val countryCode = async { countryCodeRepository.getAllCountryCodes() }
+            val contacts = async { contactRepository.getAllContacts() }
+            awaitAll(countryCode, contacts)
+            val countryCodeList = countryCode.await()
+            val contactList = contacts.await()
+            Log.e("filterAddTAG", "AddViewModel getCountryCodeAndContactsData countryCodeList?.size ${countryCodeList?.size} contactList?.size ${contactList?.size}")
             countryCodeList?.apply {
                 countryCodeLiveData.postValue(this)
             }
-            hideProgress()
+            contactList?.apply {
+                contactLiveData.postValue(this)
+            }
         }
     }
 
@@ -53,18 +60,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         launch {
             queryContactListLiveData.postValue(contactRepository.getQueryContacts(filter).orEmpty())
             Log.e("filterAddTAG", "AddViewModel queryContactListLiveData $filter")
-            hideProgress()
-        }
-    }
-
-    fun getContactList() {
-        showProgress()
-        launch {
-            val contactList = contactRepository.getAllContacts()
-            Log.e("filterAddTAG", "AddViewModel getContactList contactList?.size ${contactList?.size}")
-            contactList?.apply {
-                contactLiveData.postValue(this)
-            }
             hideProgress()
         }
     }

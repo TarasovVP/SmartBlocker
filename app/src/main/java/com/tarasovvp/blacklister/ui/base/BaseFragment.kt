@@ -31,6 +31,9 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
         viewModel.isProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
             (activity as MainActivity).setProgressVisibility(isVisible)
         }
+        viewModel.isMainProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
+            (activity as MainActivity).setMainProgressVisibility(isVisible)
+        }
     }
 
     private fun getCurrentBackStackEntry() {

@@ -20,7 +20,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     private val realDataBaseRepository = RealDataBaseRepository
 
     val successAllDataLiveData = MutableLiveData<Boolean>()
-    val progressStatusLiveData = MutableLiveData<String>()
 
     fun getCurrentUser() {
         launch {
@@ -46,12 +45,13 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun getAllData() {
         launch {
-            Log.e("getAllDataTAG", "MainViewModel getAllData start")
+            Log.e("getAllDataTAG", "MainViewModel getAllData check time start")
             // init country code data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
             progressStatusLiveData.postValue("Обновление данных локализации")
             val countryCodeList = countryCodeRepository.getSystemCountryCodeList()
-            Log.e("allDataTAG", "MainViewModel getSystemCountryCodeList countryCodeList.size ${countryCodeList.size}")
+            Log.e("allDataTAG",
+                "MainViewModel getSystemCountryCodeList countryCodeList.size ${countryCodeList.size}")
             countryCodeRepository.insertAllCountryCodes(countryCodeList)
             // init contacts data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
@@ -78,6 +78,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             logCallRepository.insertAllLogCalls(callLogList)
             Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
+            progressStatusLiveData.postValue("Обновление данных")
+            Log.e("getAllDataTAG", "MainViewModel getAllData check time finish")
         }
     }
 }

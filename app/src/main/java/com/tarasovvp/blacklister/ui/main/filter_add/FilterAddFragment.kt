@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,6 +38,11 @@ open class FilterAddFragment :
 
     private var isBlackFilter: Boolean = true
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context as MainActivity).setMainProgressVisibility(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("filterLifeCycleTAG", "FilterAddFragment onViewCreated")
@@ -45,7 +51,10 @@ open class FilterAddFragment :
         isBlackFilter = args.filter?.isBlackFilter().isTrue()
         setToolbar()
         setClickListeners()
-        viewModel.getContactList()
+        if (args.filter?.isTypeFull().isTrue() || args.filter?.isTypeStart().isTrue()) {
+            args.filter?.let { initViewsWithData(it) }
+            viewModel.getCountryCodeAndContactsData()
+        }
         if (contactAdapter.isNull()) {
             contactAdapter = ContactFilterAdapter { phone ->
                 binding?.apply {
@@ -61,8 +70,6 @@ open class FilterAddFragment :
                 this.adapter = contactAdapter
             }
         }
-        viewModel.getCountryCodeMap()
-        args.filter?.let { viewModel.checkFilterExist(it) }
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
             Log.e("filterAddTAG",
                 "BaseAddFragment setFragmentResultListener getFilterObject() ${getFilterObject()}")
@@ -119,8 +126,8 @@ open class FilterAddFragment :
         binding?.apply {
             root.post {
                 filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) { input ->
-                    Log.e("filterAddTAG",
-                        "BaseAddFragment addTextChangedListener it $input filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
+                   // Log.e("filterAddTAG",
+                     //   "BaseAddFragment addTextChangedListener it $input filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
                     //viewModel.checkFilterExist(getFilterObject())
                     itemFilter.filter = getFilterObject()
                     checkSubmitEnable(itemFilter.filter?.name == getString(R.string.invalid_phone_number))
@@ -131,17 +138,22 @@ open class FilterAddFragment :
     }
 
     private fun getFilterObject(): Filter {
-        return Filter(filter = String.format("+%s%s",
+        Log.e("filterAddTAG",
+            "BaseAddFragment getFilterObject before")
+        val filter = Filter(filter = String.format("+%s%s",
             binding?.filterAddCountryCodeValue?.text,
             binding?.filterAddInput.inputText()),
             filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER,
-            name = if (binding?.filterAddInput.inputText().isValidPhoneNumber(context)) binding?.filterAddInput.inputText() else getString(R.string.invalid_phone_number)).apply {
+            name = if (binding?.filterAddInput.inputText().isValidPhoneNumber(context)) getString(R.string.condition_full) else getString(R.string.invalid_phone_number)).apply {
             contactList?.find { contact -> contact.trimmedPhone.getPhoneNumber(countryCodeList?.find { it.countryCode == binding?.filterAddCountryCodeValue?.text.toString().toInt() }?.country.orEmpty())?.nationalNumber.toString() == binding?.filterAddInput.inputText() }
                 ?.let {
                     name = it.name
                     photoUrl = it.photoUrl
                 }
         }
+        Log.e("filterAddTAG",
+            "BaseAddFragment getFilterObject after")
+        return filter
     }
 
     private fun setClickListeners() {
@@ -157,7 +169,7 @@ open class FilterAddFragment :
                         findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(
                             filter = this))
                     } else {
-                        viewModel.insertFilter(this)
+                        viewModel.insertFilter(getFilterObject())
                     }
                 }
             }
@@ -172,12 +184,16 @@ open class FilterAddFragment :
                 initViewsWithData(filter)
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+                Log.e("filterAddTAG",
+                    "BaseAddFragment observeLiveData countryCodeLiveData countryCodeList.size ${countryCodeList.size}")
                 setCountrySpinner(ArrayList(countryCodeList))
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 //setContactByFilterList(contactList)
             }
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+                Log.e("filterAddTAG",
+                    "BaseAddFragment observeLiveData contactLiveData contactList.size ${contactList.size}")
                 this@FilterAddFragment.contactList = contactList
                 contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
             }
@@ -269,6 +285,7 @@ open class FilterAddFragment :
             setSelection(countryCodeList.indexOfFirst {
                 it.country == context.getUserCountry()?.uppercase()
             })
+            viewModel.hideMainProgress()
         }
     }
 
