@@ -38,8 +38,8 @@
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="strokeWidth">@dimen/margin_2</item>
-        <item name="strokeColor">@color/main_color</item>
-        <item name="android:textColor">@color/main_color</item>
+        <item name="strokeColor">@color/enable_bg_selector</item>
+        <item name="android:textColor">@color/enable_bg_selector</item>
     </style>
 
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">

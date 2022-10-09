@@ -29,8 +29,7 @@
             layout="@layout/item_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:visibility="@{filter.isTypeStart() ? View.GONE : View.VISIBLE}" />
+            android:layout_marginTop="@dimen/margin_5" />
 
         <TextView
             android:id="@+id/filter_add_conditions_info"

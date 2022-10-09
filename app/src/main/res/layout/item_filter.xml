@@ -46,6 +46,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:layout_marginHorizontal="@dimen/margin_16"
+            android:textColor="@color/enable_bg_selector"
             android:text="@{filter.typeStart ? @string/condition_start : filter.typeContain ? @string/condition_contain : filter.name.empty ? @string/condition_full : filter.name}"
             app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
             app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"

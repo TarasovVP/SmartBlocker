@@ -123,6 +123,7 @@ open class FilterAddFragment :
                         "BaseAddFragment addTextChangedListener it $input filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
                     //viewModel.checkFilterExist(getFilterObject())
                     itemFilter.filter = getFilterObject()
+                    checkSubmitEnable(itemFilter.filter?.name == getString(R.string.invalid_phone_number))
                     filterContactList(input.toString())
                 })
             }
@@ -130,7 +131,7 @@ open class FilterAddFragment :
     }
 
     private fun getFilterObject(): Filter {
-        return Filter(filter = String.format("%s%s",
+        return Filter(filter = String.format("+%s%s",
             binding?.filterAddCountryCodeValue?.text,
             binding?.filterAddInput.inputText()),
             filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER,
@@ -260,6 +261,7 @@ open class FilterAddFragment :
                     binding?.filterAddCountryCodeValue?.text =
                         countryCodeList[position].countryCode.toString()
                     binding?.itemFilter?.filter = getFilterObject()
+                    checkSubmitEnable(binding?.itemFilter?.filter?.name == getString(R.string.invalid_phone_number))
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
@@ -268,6 +270,11 @@ open class FilterAddFragment :
                 it.country == context.getUserCountry()?.uppercase()
             })
         }
+    }
+
+    private fun checkSubmitEnable(isValid: Boolean) {
+        binding?.itemFilter?.itemFilterTypeTitle?.isEnabled = isValid.not()
+        binding?.filterAddSubmit?.isEnabled = isValid.not()
     }
 
     private fun handleSuccessFilterAction(message: String) {
