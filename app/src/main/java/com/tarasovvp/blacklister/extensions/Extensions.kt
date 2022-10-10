@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.*
-import android.net.Uri
+import android.net.*
 import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -509,4 +510,30 @@ fun Context.dpToPx(dp: Float): Float {
 
 fun Context.spToPx(sp: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
+}
+
+
+fun Context.registerForNetworkUpdates(isNetworkAvailable: (Boolean) -> Unit) {
+    val networkRequest = NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+        .build()
+    val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            isNetworkAvailable.invoke(true)
+        }
+
+        override fun onLost(network: Network) {
+            super.onLost(network)
+            isNetworkAvailable.invoke(false)
+        }
+    }
+    val connectivityManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+    } else {
+        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+    connectivityManager.requestNetwork(networkRequest, networkCallback)
 }

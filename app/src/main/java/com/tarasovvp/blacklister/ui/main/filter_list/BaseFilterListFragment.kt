@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.core.view.isInvisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
@@ -70,7 +71,11 @@ open class BaseFilterListFragment :
         }
         setClickListeners()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
-            viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
+            if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+                showMessage(getString(R.string.unavailable_network_repeat), true)
+            } else {
+                viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
+            }
         }
     }
 

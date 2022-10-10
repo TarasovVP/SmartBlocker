@@ -35,7 +35,6 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     fun deleteFilterList(filterList: List<Filter>) {
         showProgress()
         launch {

@@ -202,6 +202,14 @@
         app:destination="@id/appExitDialog" />
 
     <dialog
+        android:id="@+id/unavailableNetworkDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.UnavailableNetworkDialog" />
+
+    <action
+        android:id="@+id/startUnavailableNetworkDialog"
+        app:destination="@id/unavailableNetworkDialog" />
+
+    <dialog
         android:id="@+id/forgotPasswordDialog"
         android:name="com.tarasovvp.blacklister.ui.dialogs.ForgotPasswordDialog">
         <argument

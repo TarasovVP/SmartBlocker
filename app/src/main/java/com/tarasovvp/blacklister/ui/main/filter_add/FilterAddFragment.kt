@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
@@ -52,8 +53,9 @@ open class FilterAddFragment :
         setToolbar()
         setClickListeners()
         if (args.filter?.isTypeFull().isTrue() || args.filter?.isTypeStart().isTrue()) {
-            args.filter?.let { initViewsWithData(it) }
             viewModel.getCountryCodeAndContactsData()
+            binding?.itemFilter?.filter = getFilterObject()
+            existNumberChecking()
         }
         if (contactAdapter.isNull()) {
             contactAdapter = ContactFilterAdapter { phone ->
@@ -103,38 +105,15 @@ open class FilterAddFragment :
         }
     }
 
-    private fun initViewsWithData(filter: Filter) {
-        Log.e("filterAddTAG",
-            "BaseAddFragment initViewsWithData this $this filter $filter filterToInput ${
-                context?.let {
-                    filter.filterToInput(it)
-                }
-            }")
-        binding?.apply {
-            this.filter = filter
-            filterAddConditionsInfo.text = if (filterAddInput.inputText()
-                    .isEmpty()
-            ) getString(R.string.add_filter_message) else String.format(if (filter.isNotNull()) getString(
-                R.string.edit_filter_with_filter_message) else getString(R.string.add_filter_with_filter_message),
-                filterAddInput.text)
-            viewModel.checkContactListByFilter(filter)
-        }
-        existNumberChecking()
-    }
-
     private fun existNumberChecking() {
-        binding?.apply {
-            root.post {
-                filterAddInput.addTextChangedListener(DebouncingTextChangeListener(lifecycle) { input ->
-                   // Log.e("filterAddTAG",
-                     //   "BaseAddFragment addTextChangedListener it $input filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
-                    //viewModel.checkFilterExist(getFilterObject())
-                    itemFilter.filter = getFilterObject()
-                    checkSubmitEnable(itemFilter.filter?.name == getString(R.string.invalid_phone_number))
-                    filterContactList(input.toString())
-                })
-            }
-        }
+        binding?.filterAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) { input ->
+            Log.e("filterAddTAG",
+                "BaseAddFragment addTextChangedListener it $input filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
+            viewModel.checkFilterExist(getFilterObject())
+            binding?.itemFilter?.filter = getFilterObject()
+            checkSubmitEnable(binding?.itemFilter?.filter?.name == getString(R.string.invalid_phone_number))
+            filterContactList(input.toString())
+        })
     }
 
     private fun getFilterObject(): Filter {
@@ -144,15 +123,22 @@ open class FilterAddFragment :
             binding?.filterAddCountryCodeValue?.text,
             binding?.filterAddInput.inputText()),
             filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER,
-            name = if (binding?.filterAddInput.inputText().isValidPhoneNumber(context)) getString(R.string.condition_full) else getString(R.string.invalid_phone_number)).apply {
-            contactList?.find { contact -> contact.trimmedPhone.getPhoneNumber(countryCodeList?.find { it.countryCode == binding?.filterAddCountryCodeValue?.text.toString().toInt() }?.country.orEmpty())?.nationalNumber.toString() == binding?.filterAddInput.inputText() }
+            conditionType = args.filter?.conditionType.orZero(),
+            name = if(binding?.filterAddInput.inputText().isEmpty()) getString(R.string.invalid_phone_number) else if (binding?.filterAddInput.inputText()
+                    .isValidPhoneNumber(context)
+            ) getString(R.string.condition_full) else getString(R.string.invalid_phone_number)).apply {
+            contactList?.find { contact ->
+                contact.trimmedPhone.getPhoneNumber(countryCodeList?.find {
+                    it.countryCode == binding?.filterAddCountryCodeValue?.text.toString().toInt()
+                }?.country.orEmpty())?.nationalNumber.toString() == binding?.filterAddInput.inputText()
+            }
                 ?.let {
                     name = it.name
                     photoUrl = it.photoUrl
                 }
         }
         Log.e("filterAddTAG",
-            "BaseAddFragment getFilterObject after")
+            "BaseAddFragment getFilterObject after filter $filter")
         return filter
     }
 
@@ -164,13 +150,10 @@ open class FilterAddFragment :
                     icon = R.drawable.ic_logo))
             }
             filterAddSubmit.setSafeOnClickListener {
-                filter?.apply {
-                    if (isFromDb.isTrue()) {
-                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(
-                            filter = this))
-                    } else {
-                        viewModel.insertFilter(getFilterObject())
-                    }
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+                    showMessage(getString(R.string.unavailable_network_repeat), true)
+                } else {
+                    viewModel.insertFilter(getFilterObject())
                 }
             }
         }
@@ -178,10 +161,11 @@ open class FilterAddFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            existFilterLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
+            existFilterLiveData.safeSingleObserve(viewLifecycleOwner) { isExist ->
                 Log.e("filterAddTAG",
-                    "BaseAddFragment observeLiveData existFilterLiveData filter $filter filter isFromDb ${filter.isFromDb}")
-                initViewsWithData(filter)
+                    "BaseAddFragment observeLiveData existFilterLiveData isExist $isExist")
+                binding?.filterAddSubmit?.text =
+                    getString(if (isExist) R.string.delete_menu else R.string.add)
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
                 Log.e("filterAddTAG",

@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.EMAIL
@@ -109,7 +110,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 val account = task.getResult(ApiException::class.java)
                 account.idToken?.let { viewModel.firebaseAuthWithGoogle(it) }
             } catch (e: ApiException) {
-                showMessage(e.localizedMessage?.toString().toString(), false)
+                showMessage(CommonStatusCodes.getStatusCodeString(e.statusCode), true)
             }
         }
 

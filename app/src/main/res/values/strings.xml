@@ -160,4 +160,6 @@
     <string name="invalid_phone_number">Невалидный номер</string>
     <string name="no_ruslt_with_list_query">По данному запросу ничего не найдено</string>
     <string name="condition_dialog_title">Выберите условие</string>
+    <string name="unavailable_network">Отсутстует интернет соединение.\nДля продолжения подключите интернет и перезайдите в приложение.</string>
+    <string name="unavailable_network_repeat">Отсутстует интернет соединение.\nДля продолжения подключите интернет и повторите действие.</string>
 </resources>

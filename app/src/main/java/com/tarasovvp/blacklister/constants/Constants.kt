@@ -36,6 +36,7 @@ object Constants {
     const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
+    const val UNAVAILABLE_NETWORK = "unavailableNetwork"
     const val APP_LANG_RU = "ru"
     const val APP_LANG_UK = "uk"
     const val APP_LANG_EN = "en"

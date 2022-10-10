@@ -13,6 +13,7 @@ import com.tarasovvp.blacklister.database.AppDatabase
 import com.tarasovvp.blacklister.extensions.createNotificationChannel
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.registerForNetworkUpdates
 import com.tarasovvp.blacklister.local.Settings
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import java.util.*
@@ -21,6 +22,7 @@ class BlackListerApp : Application() {
 
     var database: AppDatabase? = null
     var auth: FirebaseAuth? = null
+    var isNetworkAvailable: Boolean? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -38,6 +40,9 @@ class BlackListerApp : Application() {
         if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang = Locale.getDefault().language
         SharedPreferencesUtil.appTheme.apply {
             AppCompatDelegate.setDefaultNightMode(this)
+        }
+        registerForNetworkUpdates { isAvailable ->
+            isNetworkAvailable = isAvailable
         }
     }
 

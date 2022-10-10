@@ -2,8 +2,10 @@ package com.tarasovvp.blacklister.ui.settings.block_settings
 
 import android.os.Bundle
 import android.view.View
+import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentBlockSettingsBinding
+import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -43,11 +45,19 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
             }
             blockSettingsHidden.setSwitchChange(SharedPreferencesUtil.blockHidden)
             blockSettingsHidden.setSwitchClickListener { isChecked ->
-                viewModel.changeBlockHidden(isChecked.not())
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+                    showMessage(getString(R.string.unavailable_network_repeat), true)
+                } else {
+                    viewModel.changeBlockHidden(isChecked.not())
+                }
             }
             blockSettingsPriority.setSwitchChange(SharedPreferencesUtil.whiteListPriority)
             blockSettingsPriority.setSwitchClickListener { isChecked ->
-                viewModel.changePriority(isChecked.not())
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+                    showMessage(getString(R.string.unavailable_network_repeat), true)
+                } else {
+                    viewModel.changePriority(isChecked.not())
+                }
             }
         }
     }

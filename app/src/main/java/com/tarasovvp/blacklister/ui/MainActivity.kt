@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(callHandleReceiver, IntentFilter(Constants.CALL_RECEIVE))
         exceptionReceiver = ExceptionReceiver { exception ->
             mainViewModel.exceptionLiveData.postValue(exception)
+            setProgressVisibility(false)
         }
         registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
     }
@@ -102,8 +103,12 @@ class MainActivity : AppCompatActivity() {
                 BlackListerApp.instance?.isLoggedInUser().isTrue()
             } savedInstanceState ${savedInstanceState.isNull()}")
         if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNull()) {
-            if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
-            getAllData()
+            if (BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+                navController?.navigate(R.id.startUnavailableNetworkDialog)
+            } else {
+                if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                getAllData()
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
@@ -19,7 +20,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     private val contactRepository = ContactRepository
     private val countryCodeRepository = CountryCodeRepository
 
-    val existFilterLiveData = MutableLiveData<Filter>()
+    val existFilterLiveData = MutableLiveData<Boolean>()
     val insertFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
     val countryCodeLiveData = MutableLiveData<List<CountryCode>>()
@@ -32,7 +33,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         launch {
             val existingFilter = filterRepository.getFilter(filter)
             Log.e("filterAddTAG", "AddViewModel checkFilterExist existingFilter $existingFilter")
-            existFilterLiveData.postValue(existingFilter ?: filter)
+            existFilterLiveData.postValue(existingFilter.isNotNull())
             hideProgress()
         }
     }
