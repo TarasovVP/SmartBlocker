@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
             android:text="@{filter.fromDb ? @string/delete_menu : @string/add}"
-            android:enabled="@{!filter.isFilterEmpty || (filter.typeFull &amp;&amp; filter.isValidPhoneNumber(context))}"
+            android:enabled="@{!filter.isFilterEmpty || (filter.typeFull &amp;&amp; filter.isValidPhoneNumber())}"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 
         <androidx.recyclerview.widget.RecyclerView

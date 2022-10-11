@@ -22,7 +22,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.ColorInt
-import androidx.annotation.RequiresApi
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -43,9 +42,11 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
+import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
 import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
+import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.enums.Condition
@@ -385,15 +386,16 @@ fun Context.getUserCountry(): String? {
     return null
 }
 
-fun String?.getPhoneNumber(countryCode: String): Phonenumber.PhoneNumber? = try {
-    PhoneNumberUtil.getInstance().parse(this.trimmed(), countryCode.uppercase())
+fun String?.getPhoneNumber(): Phonenumber.PhoneNumber? = try {
+    val phoneNumber = if (this.trimmed().startsWith(PLUS_CHAR)) this.trimmed() else String.format(COUNTRY_CODE_START, this.trimmed())
+    PhoneNumberUtil.getInstance().parse(phoneNumber, String.EMPTY)
 } catch (e: Exception) {
     e.printStackTrace()
     null
 }
 
-fun String?.isValidPhoneNumber(context: Context?): Boolean {
-    return if (getPhoneNumber(context?.getUserCountry().orEmpty()).isNotNull()) PhoneNumberUtil.getInstance().isValidNumber(getPhoneNumber(context?.getUserCountry().orEmpty())).isTrue() else false
+fun String?.isValidPhoneNumber(): Boolean {
+    return getPhoneNumber().isNotNull()
 }
 
 fun <T> ViewGroup.getViewsFromLayout(
@@ -420,7 +422,7 @@ private fun <T> ViewGroup.getViewsFromLayout(
     return views
 }
 
-fun String?.trimmed() = this?.filter { it.isDigit() || it == Constants.PLUS_CHAR }.orEmpty()
+fun String?.trimmed() = this?.filter { it.isDigit() || it == PLUS_CHAR }.orEmpty()
 
 fun Context.filterDataList(conditionList: ArrayList<Condition>, result: () -> Unit): Boolean {
     val builder =

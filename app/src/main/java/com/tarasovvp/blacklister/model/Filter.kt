@@ -45,8 +45,8 @@ data class Filter(
         return context.extractedFilter(filter)
     }
 
-    fun isValidPhoneNumber(context: Context): Boolean {
-        return filter.isValidPhoneNumber(context)
+    fun isValidPhoneNumber(): Boolean {
+        return filter.isValidPhoneNumber()
     }
 
     fun isTypeStart(): Boolean {

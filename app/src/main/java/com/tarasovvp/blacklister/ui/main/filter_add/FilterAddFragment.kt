@@ -37,8 +37,6 @@ open class FilterAddFragment :
     private var contactList: List<Contact>? = null
     private var countryCodeList: ArrayList<CountryCode>? = null
 
-    private var isBlackFilter: Boolean = true
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (context as MainActivity).setMainProgressVisibility(true)
@@ -49,19 +47,18 @@ open class FilterAddFragment :
         Log.e("filterLifeCycleTAG", "FilterAddFragment onViewCreated")
         Log.e("filterAddTAG",
             "BaseAddFragment onViewCreated filter ${args.filter?.filter} type ${args.filter?.conditionType} isFromDb ${args.filter?.isFromDb} ")
-        isBlackFilter = args.filter?.isBlackFilter().isTrue()
+        binding?.filter = args.filter
         setToolbar()
         setClickListeners()
+        existNumberChecking()
         if (args.filter?.isTypeFull().isTrue() || args.filter?.isTypeStart().isTrue()) {
             viewModel.getCountryCodeAndContactsData()
-            binding?.itemFilter?.filter = getFilterObject()
-            existNumberChecking()
         }
         if (contactAdapter.isNull()) {
             contactAdapter = ContactFilterAdapter { phone ->
                 binding?.apply {
                     filter = filter.apply {
-                        this?.filter = phone
+                        this?.filter = phone.trimmed()
                     }
                 }
                 Log.e("filterAddTAG",
@@ -75,7 +72,7 @@ open class FilterAddFragment :
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
             Log.e("filterAddTAG",
                 "BaseAddFragment setFragmentResultListener getFilterObject() ${getFilterObject()}")
-            isBlackFilter = isBlackFilter.not()
+            binding?.filter?.filterType = if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
             viewModel.checkFilterExist(getFilterObject())
             setToolbar()
         }
@@ -94,7 +91,7 @@ open class FilterAddFragment :
                 inflateMenu(R.menu.toolbar_filter)
                 menu?.findItem(R.id.filter_menu_item)?.apply {
                     icon = ContextCompat.getDrawable(context,
-                        if (isBlackFilter) R.drawable.ic_white_filter else R.drawable.ic_block)
+                        if (binding?.filter?.isBlackFilter().isTrue()) R.drawable.ic_white_filter else R.drawable.ic_block)
                     setOnMenuItemClickListener {
                         findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(
                             args.filter))
@@ -107,10 +104,11 @@ open class FilterAddFragment :
 
     private fun existNumberChecking() {
         binding?.filterAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) { input ->
+            val filter = getFilterObject()
             Log.e("filterAddTAG",
-                "BaseAddFragment addTextChangedListener it $input filter ${getFilterObject().filter} type ${getFilterObject().conditionType} isFromDb ${getFilterObject().isFromDb}")
-            viewModel.checkFilterExist(getFilterObject())
-            binding?.itemFilter?.filter = getFilterObject()
+                "BaseAddFragment addTextChangedListener it $input filter ${filter.filter} type ${filter.conditionType} isFromDb ${filter.isFromDb}")
+            viewModel.checkFilterExist(filter)
+            binding?.itemFilter?.filter = filter
             checkSubmitEnable(binding?.itemFilter?.filter?.name == getString(R.string.invalid_phone_number))
             filterContactList(input.toString())
         })
@@ -122,21 +120,11 @@ open class FilterAddFragment :
         val filter = Filter(filter = String.format("+%s%s",
             binding?.filterAddCountryCodeValue?.text,
             binding?.filterAddInput.inputText()),
-            filterType = if (isBlackFilter) BLACK_FILTER else WHITE_FILTER,
+            filterType = if (binding?.filter?.isBlackFilter().isTrue()) BLACK_FILTER else WHITE_FILTER,
             conditionType = args.filter?.conditionType.orZero(),
             name = if(binding?.filterAddInput.inputText().isEmpty()) getString(R.string.invalid_phone_number) else if (binding?.filterAddInput.inputText()
-                    .isValidPhoneNumber(context)
-            ) getString(R.string.condition_full) else getString(R.string.invalid_phone_number)).apply {
-            contactList?.find { contact ->
-                contact.trimmedPhone.getPhoneNumber(countryCodeList?.find {
-                    it.countryCode == binding?.filterAddCountryCodeValue?.text.toString().toInt()
-                }?.country.orEmpty())?.nationalNumber.toString() == binding?.filterAddInput.inputText()
-            }
-                ?.let {
-                    name = it.name
-                    photoUrl = it.photoUrl
-                }
-        }
+                    .isValidPhoneNumber()
+            ) getString(R.string.condition_full) else getString(R.string.invalid_phone_number))
         Log.e("filterAddTAG",
             "BaseAddFragment getFilterObject after filter $filter")
         return filter
@@ -197,7 +185,7 @@ open class FilterAddFragment :
             Log.e("filterAddTAG",
                 "BaseAddFragment setContactByFilterList contactList $contactList")
             val contactListMap =
-                context?.contactListMap(contactList, isBlackFilter) ?: linkedMapOf()
+                context?.contactListMap(contactList, binding?.filter?.isBlackFilter().isTrue()) ?: linkedMapOf()
             val contactByFilterAdapter =
                 ContactByFilterAdapter(arrayListOf(contactListMap.keys.toTypedArray()[0]),
                     contactListMap)
@@ -225,7 +213,7 @@ open class FilterAddFragment :
 
     private fun filterContactList(searchQuery: String) {
         val filteredContactList = contactList?.filter { contact ->
-            (contact.phone).contains(searchQuery).isTrue()
+            (contact.trimmedPhone).contains(searchQuery).isTrue()
         }
         filteredContactList?.let { contactList ->
             contactAdapter?.clearData()
