@@ -25,7 +25,6 @@ object Constants {
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
     const val BLOCKED_CALL = "6"
-    const val PRESENTATION_UNKNOWN = "3"
     const val TIME_FORMAT = "HH:mm:ss"
     const val DATE_FORMAT = "dd.MM.yyyy"
     const val NOTIFICATION_CHANNEL = "NOTIFICATION_CHANNEL"

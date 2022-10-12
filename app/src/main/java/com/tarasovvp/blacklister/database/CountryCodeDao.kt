@@ -6,11 +6,11 @@ import com.tarasovvp.blacklister.model.CountryCode
 @Dao
 interface CountryCodeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllCountryCode(countryCodes: List<CountryCode>?)
+    suspend fun insertAllCountryCode(countryCodes: List<CountryCode>?)
 
     @Query("SELECT * FROM countrycode")
-    fun getAllCountryCodes(): List<CountryCode>
+    suspend fun getAllCountryCodes(): List<CountryCode>
 
-    @Query("SELECT * FROM countrycode WHERE :filter LIKE countryCode || '%' ")
-    fun getCountryCode(filter: String): CountryCode?
+    @Query("SELECT * FROM countrycode WHERE :code = countryCode")
+    suspend fun getCountryCode(code: Int): CountryCode?
 }

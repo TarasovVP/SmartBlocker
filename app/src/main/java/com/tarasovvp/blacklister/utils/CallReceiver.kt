@@ -18,6 +18,10 @@ import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -27,9 +31,10 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
     private val blockedCallRepository = BlockedCallRepository
 
     init {
-        BlackListerApp.instance?.apply {
-            phoneListener.invoke(String.format(this.getString(R.string.blocked_calls),
-                blockedCallRepository.allBlockedCalls()?.size))
+        CoroutineScope(Dispatchers.IO).launch {
+            BlackListerApp.instance?.apply {
+                phoneListener.invoke(String.format(this.getString(R.string.blocked_calls), blockedCallRepository.allBlockedCalls()?.size))
+            }
         }
     }
 
@@ -39,28 +44,28 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number")
-        val filterList = filterRepository.getFilterList(number)
-        val isInWhiteList =
-            filterList?.any { it.isWhiteFilter() }.isTrue()
-        val isInBlackList =
-            filterList?.any { it.isBlackFilter() }.isTrue()
-        val isBlockNeeded =
-            (isInBlackList && SharedPreferencesUtil.whiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.whiteListPriority && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
-        Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
-        if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
-            Log.e("blockTAG", "CallReceiver onReceive breakCall")
-            breakCall(context)
-        } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
-            Log.e("blockTAG", "CallReceiver onReceive phone $number currentTimeMillis ${System.currentTimeMillis()}")
-            Executors.newSingleThreadScheduledExecutor().schedule({
+        CoroutineScope(Dispatchers.IO).launch {
+            val filterList = filterRepository.getFilterList(number)
+            val isInWhiteList =
+                filterList?.any { it.isWhiteFilter() }.isTrue()
+            val isInBlackList =
+                filterList?.any { it.isBlackFilter() }.isTrue()
+            val isBlockNeeded =
+                (isInBlackList && SharedPreferencesUtil.whiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.whiteListPriority && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
+            Log.e("blockTAG", "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
+            if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+                Log.e("blockTAG", "CallReceiver onReceive breakCall")
+                breakCall(context)
+            } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
+                Log.e("blockTAG", "CallReceiver onReceive phone $number currentTimeMillis ${System.currentTimeMillis()}")
+                delay(2000)
                 if (isBlockNeeded) {
                     Log.e("blockTAG", "CallReceiver newSingleThreadScheduledExecutor phone $number currentTimeMillis ${System.currentTimeMillis()}")
                     context.deleteLastBlockedCall(number)
-                    phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
-                        blockedCallRepository.allBlockedCalls()?.size))
+                    phoneListener.invoke(String.format(context.getString(R.string.blocked_calls), blockedCallRepository.allBlockedCalls()?.size))
                 }
                 context.sendBroadcast(Intent(CALL_RECEIVE))
-            }, 2, TimeUnit.SECONDS)
+            }
         }
     }
 

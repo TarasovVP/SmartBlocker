@@ -13,7 +13,7 @@ object ContactRepository {
 
     private val contactDao = BlackListerApp.instance?.database?.contactDao()
 
-    fun insertContacts(list: List<Contact>) {
+    suspend fun insertContacts(list: List<Contact>) {
         contactDao?.insertAllContacts(list)
     }
 
@@ -24,11 +24,11 @@ object ContactRepository {
             contactDao?.getAllContacts()
         }
 
-    fun getQueryContacts(filter: Filter): List<Contact>? {
+    suspend fun getQueryContacts(filter: Filter): List<Contact>? {
         return contactDao?.queryContactList(filter.filter, filter.conditionType)
     }
 
-    fun getContactByPhone(phone: String): Contact? {
+    suspend fun getContactByPhone(phone: String): Contact? {
         return contactDao?.getContactByPhone(phone)
     }
 

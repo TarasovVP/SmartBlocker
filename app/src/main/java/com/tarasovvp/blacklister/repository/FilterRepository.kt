@@ -17,16 +17,16 @@ object FilterRepository {
             filterList.groupBy { if (it.filter.isNotEmpty()) it.filter[0].toString() else String.EMPTY }
         }
 
-    fun insertAllFilters(filterList: ArrayList<Filter>) {
+    suspend fun insertAllFilters(filterList: ArrayList<Filter>) {
         filterDao?.deleteAllFilters()
         filterDao?.insertAllFilters(filterList)
     }
 
-    fun allFilters(filterType: Int): List<Filter>? {
+    suspend fun allFilters(filterType: Int): List<Filter>? {
         return filterDao?.allFilters(filterType)
     }
 
-    fun getFilter(filter: Filter): Filter? {
+    suspend fun getFilter(filter: Filter): Filter? {
         return filterDao?.getFilter(filter.filter, filter.conditionType, filter.filterType)
     }
 
@@ -58,7 +58,7 @@ object FilterRepository {
         }
     }
 
-    fun getFilterList(phone: String): List<Filter>? {
+    suspend fun getFilterList(phone: String): List<Filter>? {
         return filterDao?.queryFilterList(phone)
     }
 

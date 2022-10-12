@@ -26,7 +26,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-import androidx.core.text.isDigitsOnly
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -53,7 +52,6 @@ import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
-import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import kotlinx.coroutines.*
@@ -115,9 +113,8 @@ fun View.showPopUpWindow(info: Info) {
 
 fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
     val countryCodeMap = arrayListOf<CountryCode>()
-    Locale.getAvailableLocales().forEach { locale ->
-        if (locale.country.isNotEmpty() && locale.country.isDigitsOnly().not())
-            countryCodeMap.add(CountryCode(locale.country, getCountryCodeForRegion(locale.country), locale.flagEmoji()))
+    supportedRegions.forEach { region ->
+        countryCodeMap.add(CountryCode(region, getCountryCodeForRegion(region), region.flagEmoji()))
     }
     return countryCodeMap
 }
@@ -182,9 +179,9 @@ fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
     logCall.normalizedNumber = this.getString(5)
     logCall.countryIso = this.getString(6)
     logCall.numberPresentation = this.getString(7)
-    logCall.photoUrl =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) this.getString(7) else ContactRepository.getContactByPhone(
-            logCall.number.orEmpty())?.photoUrl
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        logCall.photoUrl = this.getString(7)
+    }
     return logCall
 }
 
@@ -210,13 +207,17 @@ fun Context.deleteLastBlockedCall(number: String) {
                         "${CALL_ID}'${blockedCall.callId}'",
                         null)
                     blockedCall.type = BLOCKED_CALL
-                    BlockedCallRepository.insertBlockedCall(blockedCall)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        BlockedCallRepository.insertBlockedCall(blockedCall)
+                    }
                     Log.e("blockTAG",
                         "Extensions delete callId ${blockedCall.callId} result $result")
                     break
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
-                    BlockedCallRepository.insertBlockedCall(blockedCall)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        BlockedCallRepository.insertBlockedCall(blockedCall)
+                    }
                     Log.e("blockTAG", "Extensions delete Exception ${e.localizedMessage}")
                 }
             }
@@ -349,10 +350,10 @@ fun EditText?.inputText(): String {
     return this?.text?.toString().orEmpty()
 }
 
-fun Locale.flagEmoji(): String {
-    if (country.isEmpty()) return String.EMPTY
-    val firstLetter = Character.codePointAt(country, 0) - 0x41 + 0x1F1E6
-    val secondLetter = Character.codePointAt(country, 1) - 0x41 + 0x1F1E6
+fun String.flagEmoji(): String {
+    if (this.isEmpty()) return String.EMPTY
+    val firstLetter = Character.codePointAt(this, 0) - 0x41 + 0x1F1E6
+    val secondLetter = Character.codePointAt(this, 1) - 0x41 + 0x1F1E6
     return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
 }
 
@@ -386,16 +387,17 @@ fun Context.getUserCountry(): String? {
     return null
 }
 
-fun String?.getPhoneNumber(): Phonenumber.PhoneNumber? = try {
-    val phoneNumber = if (this.trimmed().startsWith(PLUS_CHAR)) this.trimmed() else String.format(COUNTRY_CODE_START, this.trimmed())
-    PhoneNumberUtil.getInstance().parse(phoneNumber, String.EMPTY)
+fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
+    if (this.trimmed().startsWith(PLUS_CHAR))
+        PhoneNumberUtil.getInstance().parse(this.trimmed(), String.EMPTY)
+    else PhoneNumberUtil.getInstance().parse(this.trimmed(), country)
 } catch (e: Exception) {
     e.printStackTrace()
     null
 }
 
-fun String?.isValidPhoneNumber(): Boolean {
-    return getPhoneNumber().isNotNull()
+fun String?.isValidPhoneNumber(country: String): Boolean {
+    return if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance().isValidNumberForRegion(getPhoneNumber(country), country)
 }
 
 fun <T> ViewGroup.getViewsFromLayout(

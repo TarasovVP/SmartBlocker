@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
@@ -36,6 +37,7 @@ open class FilterAddFragment :
     private var contactAdapter: ContactFilterAdapter? = null
     private var contactList: List<Contact>? = null
     private var countryCodeList: ArrayList<CountryCode>? = null
+    private var countryCode: CountryCode? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,9 +59,12 @@ open class FilterAddFragment :
         if (contactAdapter.isNull()) {
             contactAdapter = ContactFilterAdapter { phone ->
                 binding?.apply {
-                    filter = filter.apply {
-                        this?.filter = phone.trimmed()
+                    val phoneNumber = phone.getPhoneNumber(countryCode?.country.orEmpty())
+                    filter = filter?.apply {
+                        this.filter = phoneNumber?.nationalNumber?.toString() ?: phone
                     }
+                    val codeCountry = phoneNumber?.countryCode ?: countryCode?.countryCode
+                    binding?.filterAddCountryCodeSpinner?.setSelection(countryCodeList?.indexOfFirst { it.countryCode == codeCountry }.orZero())
                 }
                 Log.e("filterAddTAG",
                     "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
@@ -70,8 +75,6 @@ open class FilterAddFragment :
             }
         }
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
-            Log.e("filterAddTAG",
-                "BaseAddFragment setFragmentResultListener getFilterObject() ${getFilterObject()}")
             binding?.filter?.filterType = if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
             viewModel.checkFilterExist(getFilterObject())
             setToolbar()
@@ -121,10 +124,9 @@ open class FilterAddFragment :
             binding?.filterAddCountryCodeValue?.text,
             binding?.filterAddInput.inputText()),
             filterType = if (binding?.filter?.isBlackFilter().isTrue()) BLACK_FILTER else WHITE_FILTER,
+            country = countryCode?.country.orEmpty(),
             conditionType = args.filter?.conditionType.orZero(),
-            name = if(binding?.filterAddInput.inputText().isEmpty()) getString(R.string.invalid_phone_number) else if (binding?.filterAddInput.inputText()
-                    .isValidPhoneNumber()
-            ) getString(R.string.condition_full) else getString(R.string.invalid_phone_number))
+            name = if(binding?.filterAddInput.inputText().isEmpty()) getString(R.string.invalid_phone_number) else if (binding?.filterAddInput.inputText().isValidPhoneNumber(countryCode?.country.orEmpty())) getString(R.string.condition_full) else getString(R.string.invalid_phone_number))
         Log.e("filterAddTAG",
             "BaseAddFragment getFilterObject after filter $filter")
         return filter
@@ -155,10 +157,11 @@ open class FilterAddFragment :
                 binding?.filterAddSubmit?.text =
                     getString(if (isExist) R.string.delete_menu else R.string.add)
             }
-            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+            countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData countryCodeLiveData countryCodeList.size ${countryCodeList.size}")
-                setCountrySpinner(ArrayList(countryCodeList))
+                this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
+                setCountrySpinner()
             }
             queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 //setContactByFilterList(contactList)
@@ -229,13 +232,12 @@ open class FilterAddFragment :
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList?.size}")
     }
 
-    private fun setCountrySpinner(countryCodeList: ArrayList<CountryCode>) {
-        this.countryCodeList = countryCodeList
-        countryCodeList.add(CountryCode(flagEmoji = null))
+    private fun setCountrySpinner() {
+        countryCodeList?.add(CountryCode(flagEmoji = null))
         val countryAdapter = context?.let {
             ArrayAdapter(it,
                 android.R.layout.simple_spinner_item,
-                countryCodeList.map { countryCode -> countryCode.countryEmoji() })
+                countryCodeList?.map { countryCode -> countryCode.countryEmoji() }.orEmpty())
         }
         binding?.filterAddCountryCodeSpinner?.apply {
             adapter = countryAdapter
@@ -246,17 +248,22 @@ open class FilterAddFragment :
                     position: Int,
                     id: Long,
                 ) {
+                    countryCode = countryCodeList?.get(position)
                     binding?.filterAddCountryCodeValue?.text =
-                        countryCodeList[position].countryCode.toString()
+                        countryCode?.countryCode.toString()
                     binding?.itemFilter?.filter = getFilterObject()
                     checkSubmitEnable(binding?.itemFilter?.filter?.name == getString(R.string.invalid_phone_number))
+                    Log.e("filterAddTAG",
+                        "BaseAddFragment OnItemSelectedListener countryCode $countryCode itemFilter?.filter ${binding?.itemFilter?.filter}")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
-            setSelection(countryCodeList.indexOfFirst {
+            val countryCodeIndex = countryCodeList?.indexOfFirst {
                 it.country == context.getUserCountry()?.uppercase()
-            })
+            }.orZero()
+            countryCode = countryCodeList?.get(countryCodeIndex)
+            setSelection(countryCodeIndex)
             viewModel.hideMainProgress()
         }
     }

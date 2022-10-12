@@ -8,19 +8,19 @@ object BlockedCallRepository {
 
     private val dao = BlackListerApp.instance?.database?.blockedCallDao()
 
-    fun insertBlockedCall(blockedCall: BlockedCall?) {
+    suspend fun insertBlockedCall(blockedCall: BlockedCall?) {
         dao?.insertBlockedCall(blockedCall)
     }
 
-    fun allBlockedCalls(): List<BlockedCall>? {
+    suspend fun allBlockedCalls(): List<BlockedCall>? {
         return dao?.allBlockedCalls()
     }
 
-    fun blockedCallsByPhone(phone: String): List<BlockedCall>? {
+    suspend fun blockedCallsByPhone(phone: String): List<BlockedCall>? {
         return dao?.blockedCallsByPhone(phone)
     }
 
-    fun deleteBlockedCalls(callList: List<Call>) {
+    suspend fun deleteBlockedCalls(callList: List<Call>) {
         dao?.deleteBlockCalls(callList.map { it.id })
     }
 

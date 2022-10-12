@@ -9,8 +9,8 @@ import com.tarasovvp.blacklister.model.LogCall
 @Dao
 interface LogCallDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllLogCalls(logCalls: List<LogCall>?)
+    suspend fun insertAllLogCalls(logCalls: List<LogCall>?)
 
     @Query("SELECT * FROM logCall")
-    fun allLogCalls(): List<LogCall>
+    suspend fun allLogCalls(): List<LogCall>
 }

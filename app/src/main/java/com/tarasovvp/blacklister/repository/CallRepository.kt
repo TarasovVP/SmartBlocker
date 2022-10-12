@@ -12,7 +12,7 @@ object CallRepository {
 
     private val dao = BlackListerApp.instance?.database?.logCallDao()
 
-    fun insertAllLogCalls(logCallList: List<LogCall>) {
+    suspend fun insertAllLogCalls(logCallList: List<LogCall>) {
         dao?.insertAllLogCalls(logCallList)
     }
 

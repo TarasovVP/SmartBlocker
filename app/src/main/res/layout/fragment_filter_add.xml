@@ -75,7 +75,7 @@
             android:enabled="@{!isPreviewMode}"
             android:hint="@string/enter_filter"
             android:inputType="phone"
-            android:text="@{filter.filterToInput(context)}"
+            android:text="@{filter.filterToInput()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"

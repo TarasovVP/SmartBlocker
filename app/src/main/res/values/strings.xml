@@ -162,4 +162,5 @@
     <string name="condition_dialog_title">Выберите условие</string>
     <string name="unavailable_network">Отсутстует интернет соединение.\nДля продолжения подключите интернет и перезайдите в приложение.</string>
     <string name="unavailable_network_repeat">Отсутстует интернет соединение.\nДля продолжения подключите интернет и повторите действие.</string>
+    <string name="country_code_filter_pattern">+%s%s</string>
 </resources>

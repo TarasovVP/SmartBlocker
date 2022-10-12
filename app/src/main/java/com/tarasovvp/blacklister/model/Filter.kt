@@ -1,6 +1,5 @@
 package com.tarasovvp.blacklister.model
 
-import android.content.Context
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,10 +8,7 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.enums.Condition
-import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.isValidPhoneNumber
-import com.tarasovvp.blacklister.extensions.nameInitial
-import com.tarasovvp.blacklister.repository.CountryCodeRepository.extractedFilter
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -23,7 +19,8 @@ data class Filter(
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
-    var photoUrl: String? = String.EMPTY
+    var photoUrl: String? = String.EMPTY,
+    var country: String = String.EMPTY
 ) : Parcelable, BaseAdapter.MainData {
     var isCheckedForDelete = false
     var isDeleteMode = false
@@ -41,12 +38,12 @@ data class Filter(
         }
     }
 
-    fun filterToInput(context: Context): String {
-        return context.extractedFilter(filter)
+    fun filterToInput(): String {
+        return filter.getPhoneNumber(country)?.nationalNumber?.toString() ?: filter.trimmed()
     }
 
     fun isValidPhoneNumber(): Boolean {
-        return filter.isValidPhoneNumber()
+        return filter.isValidPhoneNumber(country)
     }
 
     fun isTypeStart(): Boolean {

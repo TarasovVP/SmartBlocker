@@ -23,7 +23,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     val existFilterLiveData = MutableLiveData<Boolean>()
     val insertFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
-    val countryCodeLiveData = MutableLiveData<List<CountryCode>>()
+    val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val queryContactListLiveData = MutableLiveData<List<Contact>>()
     val contactLiveData = MutableLiveData<List<Contact>>()
 
@@ -47,7 +47,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             val contactList = contacts.await()
             Log.e("filterAddTAG", "AddViewModel getCountryCodeAndContactsData countryCodeList?.size ${countryCodeList?.size} contactList?.size ${contactList?.size}")
             countryCodeList?.apply {
-                countryCodeLiveData.postValue(this)
+                countryCodeListLiveData.postValue(this)
             }
             contactList?.apply {
                 contactLiveData.postValue(this)

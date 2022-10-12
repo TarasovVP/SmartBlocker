@@ -9,14 +9,14 @@ import com.tarasovvp.blacklister.model.Contact
 @Dao
 interface BlockedCallDao {
     @Insert
-    fun insertBlockedCall(blockedCall: BlockedCall?)
+    suspend fun insertBlockedCall(blockedCall: BlockedCall?)
 
     @Query("SELECT * FROM blockedCall")
-    fun allBlockedCalls(): List<BlockedCall>
+    suspend fun allBlockedCalls(): List<BlockedCall>
 
     @Query("SELECT * FROM blockedCall WHERE number = :number")
-    fun blockedCallsByPhone(number: String): List<BlockedCall>
+    suspend fun blockedCallsByPhone(number: String): List<BlockedCall>
 
     @Query("delete from blockedcall where id in (:callIdList)")
-    fun deleteBlockCalls(callIdList: List<Int>)
+    suspend fun deleteBlockCalls(callIdList: List<Int>)
 }
