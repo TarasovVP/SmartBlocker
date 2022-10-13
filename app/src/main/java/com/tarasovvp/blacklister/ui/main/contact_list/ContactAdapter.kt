@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<Contact>() {
+
+    var searchQuery = String.EMPTY
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -54,6 +57,7 @@ class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<C
         fun bindData(position: Int) {
             val contact = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
+                contact.searchText = searchQuery
                this.contact = contact
                 root.setSafeOnClickListener {
                     contact.phone.let { contactClick.invoke(it) }

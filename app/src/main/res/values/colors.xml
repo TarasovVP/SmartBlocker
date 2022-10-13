@@ -11,7 +11,6 @@
     <color name="blue">#267DFF</color>
     <color name="progress_bg">#80000000</color>
     <color name="disable_color">#32989595</color>
-    <color name="divider">#2C3AFA</color>
 
     //custom colors
     <color name="midnight_blue">#102B58</color>
@@ -24,4 +23,5 @@
     <color name="main_color">@color/midnight_blue</color>
     <color name="main_bg">@color/alice_blue</color>
     <color name="item_color">@color/white</color>
+    <color name="span_text">@color/neon_blue</color>
 </resources>

@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.extensions
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.*
@@ -12,6 +13,9 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.TextAppearanceSpan
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
@@ -41,7 +45,6 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
-import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.END_CALL
 import com.tarasovvp.blacklister.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
@@ -109,14 +112,6 @@ fun View.showPopUpWindow(info: Info) {
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }
-}
-
-fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
-    val countryCodeMap = arrayListOf<CountryCode>()
-    supportedRegions.forEach { region ->
-        countryCodeMap.add(CountryCode(region, getCountryCodeForRegion(region), region.flagEmoji()))
-    }
-    return countryCodeMap
 }
 
 fun Context.systemContactList(): ArrayList<Contact> {
@@ -350,6 +345,14 @@ fun EditText?.inputText(): String {
     return this?.text?.toString().orEmpty()
 }
 
+fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
+    val countryCodeMap = arrayListOf<CountryCode>()
+    supportedRegions.sorted().forEach { region ->
+        countryCodeMap.add(CountryCode(region, getCountryCodeForRegion(region), region.flagEmoji()))
+    }
+    return countryCodeMap
+}
+
 fun String.flagEmoji(): String {
     if (this.isEmpty()) return String.EMPTY
     val firstLetter = Character.codePointAt(this, 0) - 0x41 + 0x1F1E6
@@ -397,7 +400,8 @@ fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
 }
 
 fun String?.isValidPhoneNumber(country: String): Boolean {
-    return if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance().isValidNumberForRegion(getPhoneNumber(country), country)
+    return if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance()
+        .isValidNumberForRegion(getPhoneNumber(country), country)
 }
 
 fun <T> ViewGroup.getViewsFromLayout(
@@ -422,6 +426,26 @@ private fun <T> ViewGroup.getViewsFromLayout(
         }
     }
     return views
+}
+
+@BindingAdapter(value = ["searchText", "mainText"], requireAll = false)
+fun TextView.highlightText(searchText: String?, mainText: String?) {
+    if (searchText.isNullOrEmpty().not() && mainText.isNullOrEmpty().not() && mainText.orEmpty().lowercase().contains(
+            searchText.orEmpty().lowercase())) {
+        SpannableString(mainText).apply {
+            var index: Int = mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase())
+            while (index >= 0 && index < mainText?.length.orZero()) {
+                val highlightSpan = TextAppearanceSpan(null, Typeface.BOLD, -1,
+                    ColorStateList(arrayOf(intArrayOf()), intArrayOf(ContextCompat.getColor(context, R.color.span_text))), null)
+                setSpan(highlightSpan,
+                    index, index + searchText?.length.orZero(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                index = mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase(), index + 1)
+            }
+            text = this
+        }
+    } else {
+        text = mainText
+    }
 }
 
 fun String?.trimmed() = this?.filter { it.isDigit() || it == PLUS_CHAR }.orEmpty()

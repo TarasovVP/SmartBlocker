@@ -12,6 +12,7 @@ import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.call_list.CallAdapter
 import java.util.*
 
 open class ContactListFragment :
@@ -74,6 +75,7 @@ open class ContactListFragment :
     }
 
     override fun searchDataList() {
+        (adapter as? ContactAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredContactList = contactList?.filter { contact ->
             (contact.name?.lowercase(Locale.getDefault())?.contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()

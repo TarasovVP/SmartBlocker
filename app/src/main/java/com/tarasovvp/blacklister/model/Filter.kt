@@ -25,6 +25,7 @@ data class Filter(
     var isCheckedForDelete = false
     var isDeleteMode = false
     var isFromDb = false
+    var searchText = String.EMPTY
 
     fun isFilterEmpty(): Boolean {
         return filter.isEmpty()

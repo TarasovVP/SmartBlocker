@@ -60,11 +60,14 @@ open class FilterAddFragment :
             contactAdapter = ContactFilterAdapter { phone ->
                 binding?.apply {
                     val phoneNumber = phone.getPhoneNumber(countryCode?.country.orEmpty())
-                    filter = filter?.apply {
-                        this.filter = phoneNumber?.nationalNumber?.toString() ?: phone
+                    Log.e("filterAddTAG",
+                        "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
+                    if ((phoneNumber?.nationalNumber.toString() == filterAddInput.inputText() && phoneNumber?.countryCode.toString() == filterAddCountryCodeValue.text.toString()).not()) {
+                        filter = filter?.apply {
+                            this.filter = phoneNumber?.nationalNumber?.toString() ?: phone.trimmed()
+                        }
+                        filterAddCountryCodeSpinner.setSelection(countryCodeList?.indexOfFirst { it.countryCode == (phoneNumber?.countryCode ?: countryCode?.countryCode) }.orZero())
                     }
-                    val codeCountry = phoneNumber?.countryCode ?: countryCode?.countryCode
-                    binding?.filterAddCountryCodeSpinner?.setSelection(countryCodeList?.indexOfFirst { it.countryCode == codeCountry }.orZero())
                 }
                 Log.e("filterAddTAG",
                     "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
@@ -154,8 +157,7 @@ open class FilterAddFragment :
             existFilterLiveData.safeSingleObserve(viewLifecycleOwner) { isExist ->
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData existFilterLiveData isExist $isExist")
-                binding?.filterAddSubmit?.text =
-                    getString(if (isExist) R.string.delete_menu else R.string.add)
+                binding?.filterAddSubmit?.text = getString(if (isExist) R.string.delete_menu else R.string.add)
             }
             countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
                 Log.e("filterAddTAG",
@@ -218,14 +220,14 @@ open class FilterAddFragment :
         val filteredContactList = contactList?.filter { contact ->
             (contact.trimmedPhone).contains(searchQuery).isTrue()
         }
+        contactAdapter?.searchQuery = searchQuery
         filteredContactList?.let { contactList ->
             contactAdapter?.clearData()
             contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
             contactAdapter?.notifyDataSetChanged()
         }
         binding?.filterAddContactList?.isVisible = filteredContactList.isNullOrEmpty().not()
-        binding?.filterAddEmptyList?.emptyStateContainer?.isVisible =
-            filteredContactList.isNullOrEmpty()
+        binding?.filterAddEmptyList?.emptyStateContainer?.isVisible = filteredContactList.isNullOrEmpty()
         binding?.filterAddEmptyList?.emptyStateTitle?.text =
             getString(R.string.no_ruslt_with_list_query)
         Log.e("filterAddTAG",

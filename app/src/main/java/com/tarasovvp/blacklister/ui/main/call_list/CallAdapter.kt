@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemCallBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.HeaderDataItem
@@ -18,6 +19,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
     BaseAdapter<Call>() {
 
     var isDeleteMode: Boolean = false
+    var searchQuery = String.EMPTY
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -59,6 +61,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
             val call = getDataInPosition(position)
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 call.isDeleteMode = isDeleteMode
+                call.searchText = searchQuery
                 itemCallDeleteInfo.setSafeOnClickListener {
                     callClickListener.onCallDeleteInfoClick(it)
                 }

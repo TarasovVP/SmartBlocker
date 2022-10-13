@@ -141,6 +141,7 @@ class CallListFragment :
 
     override fun searchDataList() {
         Log.e("callTAG", "CallListFragment searchDataList() start")
+        (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredCallList = callList?.filter { call ->
             (call.name?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()

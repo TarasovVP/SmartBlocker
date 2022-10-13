@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.model
 
 import android.os.Parcelable
-import androidx.core.text.htmlEncode
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
@@ -31,6 +30,7 @@ open class Call(
 
     var isCheckedForDelete = false
     var isDeleteMode = false
+    var searchText = String.EMPTY
 
     fun isNumberEmpty(): Boolean {
         return number.isNullOrEmpty()

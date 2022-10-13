@@ -18,6 +18,7 @@ import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.main.call_list.CallAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 import kotlin.collections.ArrayList
@@ -192,6 +193,7 @@ open class BaseFilterListFragment :
     }
 
     override fun searchDataList() {
+        (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredList = filterList?.filter { filter ->
             filter.filter.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()

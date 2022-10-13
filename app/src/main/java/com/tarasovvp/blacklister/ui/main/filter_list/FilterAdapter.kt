@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.model.HeaderDataItem
@@ -18,6 +19,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
     BaseAdapter<Filter>() {
 
     var isDeleteMode: Boolean = false
+    var searchQuery = String.EMPTY
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -57,6 +59,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
             val filter = getDataInPosition(position)
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
                 filter.isDeleteMode = isDeleteMode
+                filter.searchText = searchQuery
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
                         itemFilterDelete.isChecked = itemFilterDelete.isChecked.isTrue().not()

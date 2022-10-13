@@ -23,6 +23,8 @@ data class Contact(
     var filterType: Int = DEFAULT_FILTER
 ) : Parcelable, BaseAdapter.MainData {
     var trimmedPhone = phone.trimmed()
+    var searchText = String.EMPTY
+
     fun contactTypeIcon(): Int {
         return when(filterType) {
             BLACK_FILTER -> R.drawable.ic_block
@@ -35,6 +37,10 @@ data class Contact(
     }
 
     fun isWhiteFilter(): Boolean {
+        return filterType == WHITE_FILTER
+    }
+
+    fun highLightedSearchedText(): Boolean {
         return filterType == WHITE_FILTER
     }
 
