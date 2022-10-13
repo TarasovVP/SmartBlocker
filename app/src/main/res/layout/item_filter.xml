@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -18,24 +16,24 @@
         android:background="@drawable/item_bg"
         android:padding="@dimen/padding_8">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/item_filter_avatar"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            app:circleImageUrl="@{filter.photoUrl}"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:imageResource="@{filter.conditionTypeIcon}"
+            android:background="#80989595"
+            android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_filter_type_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:nameInitial="@{filter.nameInitial}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/item_filter_icon"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            app:imageResource="@{filter.filterTypeIcon()}"
+            app:imageResource="@{filter.filterTypeIcon}"
             app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
             app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
 
@@ -47,8 +45,7 @@
             android:maxLines="1"
             android:layout_marginHorizontal="@dimen/margin_16"
             android:textColor="@color/enable_bg_selector"
-            app:mainText="@{filter.typeStart ? @string/condition_start : filter.typeContain ? @string/condition_contain : filter.name.empty ? @string/condition_full : filter.name}"
-            app:searchText="@{filter.searchText}"
+            android:text="@{filter.conditionTypeName(context)}"
             app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
             app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
             app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"

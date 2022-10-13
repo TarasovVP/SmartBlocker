@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.model
 
+import android.content.Context
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -19,7 +20,6 @@ data class Filter(
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
-    var photoUrl: String? = String.EMPTY,
     var country: String = String.EMPTY,
 ) : Parcelable, BaseAdapter.MainData {
     var isCheckedForDelete = false
@@ -31,11 +31,24 @@ data class Filter(
         return filter.isEmpty()
     }
 
+    fun conditionTypeName(context: Context): String {
+        return context.getString(if (isTypeFull() && isValidPhoneNumber().not()) R.string.invalid_phone_number else Condition.getTitleByIndex(
+            conditionType))
+    }
+
     fun filterTypeIcon(): Int {
         return when (filterType) {
             BLACK_FILTER -> R.drawable.ic_block
             WHITE_FILTER -> R.drawable.ic_accepted
             else -> 0
+        }
+    }
+
+    fun conditionTypeIcon(): Int {
+        return when (conditionType) {
+            Condition.CONDITION_TYPE_START.index -> R.drawable.ic_flag
+            Condition.CONDITION_TYPE_CONTAIN.index -> R.drawable.ic_filter
+            else -> R.drawable.ic_phone
         }
     }
 

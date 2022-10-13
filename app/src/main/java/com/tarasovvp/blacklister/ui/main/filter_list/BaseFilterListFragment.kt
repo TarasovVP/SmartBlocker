@@ -97,24 +97,11 @@ open class BaseFilterListFragment :
             }
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
-            when (conditionType) {
-                Condition.CONDITION_TYPE_FULL.index -> startFilterAddScreen(Filter().apply {
-                    filterType =
-                        if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
-                    this.conditionType = conditionType
-                })
-                Condition.CONDITION_TYPE_START.index -> startFilterAddScreen(Filter().apply {
-                    filterType =
-                        if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
-                    this.conditionType = conditionType
-                })
-                Condition.CONDITION_TYPE_CONTAIN.index -> startFilterAddScreen(Filter().apply {
-                    filterType =
-                        if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
-                    this.conditionType = conditionType
-                })
-            }
-
+            startFilterAddScreen(Filter().apply {
+                filterType =
+                    if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+                this.conditionType = conditionType
+            })
         }
     }
 
@@ -126,8 +113,6 @@ open class BaseFilterListFragment :
             WhiteFilterListFragmentDirections.startFilterAddFragment(
                 filter = filter)
         }
-        Log.e("filterLifeCycleTAG",
-            "FilterListFragment filterListFabNew startFilterAddFragment")
         findNavController().navigate(direction)
     }
 
