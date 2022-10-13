@@ -6,8 +6,8 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.EXCEPTION
-import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.constants.Constants.FILTER_LIST
+import com.tarasovvp.blacklister.constants.Constants.USERS
 import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.CurrentUser
@@ -20,7 +20,8 @@ object RealDataBaseRepository {
         database.child(USERS).child(BlackListerApp.instance?.auth?.currentUser?.uid.orEmpty())
 
     fun getCurrentUser(result: (CurrentUser?) -> Unit) {
-        if (currentUserDatabase.key == USERS) currentUserDatabase = currentUserDatabase.child(BlackListerApp.instance?.auth?.currentUser?.uid.orEmpty())
+        if (currentUserDatabase.key == USERS) currentUserDatabase =
+            currentUserDatabase.child(BlackListerApp.instance?.auth?.currentUser?.uid.orEmpty())
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener

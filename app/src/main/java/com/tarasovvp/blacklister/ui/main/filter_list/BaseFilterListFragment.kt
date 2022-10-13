@@ -18,10 +18,8 @@ import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.call_list.CallAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 open class BaseFilterListFragment :
     BaseListFragment<FragmentFilterListBinding, FilterListViewModel, Filter>() {
@@ -64,7 +62,10 @@ open class BaseFilterListFragment :
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList())
         binding?.filterListFilter?.text =
-            if (selectedFilterItems.orEmpty().any { it.isSelected }) selectedFilterItems?.filter { it.isSelected }?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
+            if (selectedFilterItems.orEmpty()
+                    .any { it.isSelected }
+            ) selectedFilterItems?.filter { it.isSelected }
+                ?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
         binding?.apply {
             swipeRefresh = filterListRefresh
             recyclerView = filterListRecyclerView
@@ -72,7 +73,9 @@ open class BaseFilterListFragment :
         }
         setClickListeners()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
-            if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+            if (BlackListerApp.instance?.isLoggedInUser()
+                    .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+            ) {
                 showMessage(getString(R.string.unavailable_network_repeat), true)
             } else {
                 viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
@@ -85,23 +88,29 @@ open class BaseFilterListFragment :
             selectedFilterItems?.let { conditionList ->
                 context?.filterDataList(conditionList) {
                     binding?.filterListFilter?.text =
-                        if (selectedFilterItems.orEmpty().any { it.isSelected }) selectedFilterItems?.filter { it.isSelected }?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
+                        if (selectedFilterItems.orEmpty()
+                                .any { it.isSelected }
+                        ) selectedFilterItems?.filter { it.isSelected }
+                            ?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
                     searchDataList()
                 }
             }
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
-            when(conditionType) {
+            when (conditionType) {
                 Condition.CONDITION_TYPE_FULL.index -> startFilterAddScreen(Filter().apply {
-                    filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+                    filterType =
+                        if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
                     this.conditionType = conditionType
                 })
                 Condition.CONDITION_TYPE_START.index -> startFilterAddScreen(Filter().apply {
-                    filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+                    filterType =
+                        if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
                     this.conditionType = conditionType
                 })
                 Condition.CONDITION_TYPE_CONTAIN.index -> startFilterAddScreen(Filter().apply {
-                    filterType = if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
+                    filterType =
+                        if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
                     this.conditionType = conditionType
                 })
             }

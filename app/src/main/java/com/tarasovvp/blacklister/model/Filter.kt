@@ -20,7 +20,7 @@ data class Filter(
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
-    var country: String = String.EMPTY
+    var country: String = String.EMPTY,
 ) : Parcelable, BaseAdapter.MainData {
     var isCheckedForDelete = false
     var isDeleteMode = false
@@ -32,7 +32,7 @@ data class Filter(
     }
 
     fun filterTypeIcon(): Int {
-        return when(filterType) {
+        return when (filterType) {
             BLACK_FILTER -> R.drawable.ic_block
             WHITE_FILTER -> R.drawable.ic_accepted
             else -> 0
@@ -40,7 +40,7 @@ data class Filter(
     }
 
     fun filterToInput(): String {
-        return filter.getPhoneNumber(country)?.nationalNumber?.toString() ?: filter.trimmed()
+        return filter.getPhoneNumber(country)?.nationalNumber?.toString() ?: filter.digitsTrimmed()
     }
 
     fun isValidPhoneNumber(): Boolean {
@@ -71,7 +71,7 @@ data class Filter(
         return when {
             isTypeContain() -> String(Character.toChars(128269))
             isTypeStart() -> String(Character.toChars(127987))
-            name.isNullOrEmpty() -> String(Character.toChars( 128222))
+            name.isNullOrEmpty() -> String(Character.toChars(128222))
             else -> name.nameInitial()
         }
     }

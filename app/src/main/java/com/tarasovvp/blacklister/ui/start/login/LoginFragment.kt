@@ -59,7 +59,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     private fun setOnButtonsClick() {
         binding?.apply {
             loginContinue.setSafeOnClickListener {
-                if (loginEmailInput.inputText().isEmpty() || loginPasswordInput.inputText().isEmpty()) {
+                if (loginEmailInput.inputText().isEmpty() || loginPasswordInput.inputText()
+                        .isEmpty()
+                ) {
                     showMessage(getString(R.string.enter_login_password), true)
                 } else {
                     viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
@@ -88,14 +90,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
-                Log.e("authTAG", "LoginFragment successSignInLiveData auth?.uid ${BlackListerApp.instance?.auth?.uid}")
+                Log.e("authTAG",
+                    "LoginFragment successSignInLiveData auth?.uid ${BlackListerApp.instance?.auth?.uid}")
                 (activity as MainActivity).apply {
-                    Log.e("blockerTAG", "LoginFragment this $this SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not() ${SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()}")
+                    Log.e("blockerTAG",
+                        "LoginFragment this $this SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not() ${SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()}")
                     getAllData()
                     if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
                 findNavController().navigate(R.id.blackFilterListFragment)
-                Log.e("authTAG", "LoginFragment successSignInLiveData navigate(R.id.blackFilterListFragment) auth?.uid ${BlackListerApp.instance?.auth?.uid}")
+                Log.e("authTAG",
+                    "LoginFragment successSignInLiveData navigate(R.id.blackFilterListFragment) auth?.uid ${BlackListerApp.instance?.auth?.uid}")
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.password_reset_text), false)

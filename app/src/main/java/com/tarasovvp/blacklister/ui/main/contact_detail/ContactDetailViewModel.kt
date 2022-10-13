@@ -6,7 +6,9 @@ import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.repository.*
+import com.tarasovvp.blacklister.repository.BlockedCallRepository
+import com.tarasovvp.blacklister.repository.ContactRepository
+import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class ContactDetailViewModel(application: Application) : BaseViewModel(application) {

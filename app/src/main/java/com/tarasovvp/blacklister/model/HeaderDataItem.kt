@@ -5,7 +5,7 @@ import com.tarasovvp.blacklister.ui.base.BaseAdapter
 
 data class HeaderDataItem(
     override val headerType: Int = HEADER_TYPE,
-    val header: String = String.EMPTY
+    val header: String = String.EMPTY,
 ) : BaseAdapter.HeaderData {
 
     companion object {

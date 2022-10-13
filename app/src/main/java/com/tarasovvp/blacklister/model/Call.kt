@@ -25,7 +25,7 @@ open class Call(
     var time: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
-    var numberPresentation: String? = String.EMPTY
+    var numberPresentation: String? = String.EMPTY,
 ) : Parcelable, BaseAdapter.MainData {
 
     var isCheckedForDelete = false

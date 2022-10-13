@@ -102,7 +102,9 @@ class MainActivity : AppCompatActivity() {
             "MainActivity isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen} isLoggedInUser ${
                 BlackListerApp.instance?.isLoggedInUser().isTrue()
             } savedInstanceState ${savedInstanceState.isNull()}")
-        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser().isTrue() && savedInstanceState.isNull()) {
+        if (SharedPreferencesUtil.isOnBoardingSeen && BlackListerApp.instance?.isLoggedInUser()
+                .isTrue() && savedInstanceState.isNull()
+        ) {
             if (BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
                 navController?.navigate(R.id.startUnavailableNetworkDialog)
             } else {

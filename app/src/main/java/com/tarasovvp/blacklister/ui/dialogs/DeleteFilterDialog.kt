@@ -16,7 +16,8 @@ class DeleteFilterDialog : BaseDialog<DialogInfoBinding>() {
     private val args: DeleteFilterDialogArgs by navArgs()
 
     override fun initUI() {
-        binding?.dialogInfoTitle?.text = String.format(getString(R.string.delete), args.filter?.filter.orEmpty())
+        binding?.dialogInfoTitle?.text =
+            String.format(getString(R.string.delete), args.filter?.filter.orEmpty())
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }

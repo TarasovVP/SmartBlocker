@@ -22,7 +22,8 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
         showProgress()
         launch {
             val blockedCallList = blockedCallRepository.allBlockedCalls()
-            Log.e("callTAG", "CallListViewModel getBlockedCallList allBlockedCalls() size ${blockedCallList?.size}")
+            Log.e("callTAG",
+                "CallListViewModel getBlockedCallList allBlockedCalls() size ${blockedCallList?.size}")
             blockedCallList?.apply {
                 callLiveData.postValue(this)
             }
@@ -35,7 +36,8 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
         launch {
             Log.e("callTAG", "CallListViewModel getLogCallList() start")
             val allLogCalls = callRepository.getAllLogCalls()
-            Log.e("callTAG", "CallListViewModel getLogCallList() getAllLogCalls size ${allLogCalls?.size}")
+            Log.e("callTAG",
+                "CallListViewModel getLogCallList() getAllLogCalls size ${allLogCalls?.size}")
             allLogCalls?.apply {
                 callLiveData.postValue(this)
             }
@@ -51,7 +53,8 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
                 callRepository.getHashMapFromCallList(callList.sortedByDescending {
                     it.time
                 })
-            Log.e("callTAG", "CallListViewModel getHashMapFromCallList() getHashMapFromCallList hashMapList $hashMapList")
+            Log.e("callTAG",
+                "CallListViewModel getHashMapFromCallList() getHashMapFromCallList hashMapList $hashMapList")
             callHashMapLiveData.postValue(hashMapList)
             hideProgress()
         }

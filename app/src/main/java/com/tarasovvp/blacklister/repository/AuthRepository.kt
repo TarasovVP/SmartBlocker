@@ -41,7 +41,8 @@ object AuthRepository {
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.e("authTAG", "AuthRepository firebaseAuthWithGoogle auth?.uid ${BlackListerApp.instance?.auth?.uid}")
+                    Log.e("authTAG",
+                        "AuthRepository firebaseAuthWithGoogle auth?.uid ${BlackListerApp.instance?.auth?.uid}")
                     result.invoke()
                 } else {
                     sendExceptionBroadCast(task.exception?.localizedMessage.orEmpty())

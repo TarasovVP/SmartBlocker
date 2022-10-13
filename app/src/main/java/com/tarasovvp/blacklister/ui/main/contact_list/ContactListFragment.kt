@@ -12,7 +12,6 @@ import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
-import com.tarasovvp.blacklister.ui.main.call_list.CallAdapter
 import java.util.*
 
 open class ContactListFragment :
@@ -24,7 +23,8 @@ open class ContactListFragment :
     private var contactList: List<Contact>? = null
 
     override fun createAdapter(): BaseAdapter<Contact>? {
-        Log.e("adapterTAG", "ContactListFragment createAdapter  contactList?.size ${contactList?.size}")
+        Log.e("adapterTAG",
+            "ContactListFragment createAdapter  contactList?.size ${contactList?.size}")
         return context?.let {
             ContactAdapter { phone ->
                 findNavController().navigate(ContactListFragmentDirections.startContactDetailFragment(
@@ -40,7 +40,8 @@ open class ContactListFragment :
 
     override fun onResume() {
         super.onResume()
-        Log.e("adapterTAG", "ContactListFragment onResume adapter $adapter itemCount ${adapter?.itemCount}")
+        Log.e("adapterTAG",
+            "ContactListFragment onResume adapter $adapter itemCount ${adapter?.itemCount}")
     }
 
     override fun initView() {
@@ -49,7 +50,8 @@ open class ContactListFragment :
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
             contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
-                Log.e("adapterTAG", "ContactListFragment setOnCheckedChangeListener compoundButton.isPressed ${compoundButton.isPressed} checked $checked")
+                Log.e("adapterTAG",
+                    "ContactListFragment setOnCheckedChangeListener compoundButton.isPressed ${compoundButton.isPressed} checked $checked")
                 if (compoundButton.isPressed) {
                     searchDataList()
                 }
@@ -81,10 +83,13 @@ open class ContactListFragment :
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ).isTrue() || contact.phone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ).isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)
+            )
+                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)
         }.orEmpty()
-        Log.e("adapterTAG", "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
-        binding?.contactListCheck?.isInvisible = (filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()).not()
+        Log.e("adapterTAG",
+            "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
+        binding?.contactListCheck?.isInvisible =
+            (filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()).not()
         checkDataListEmptiness(filteredContactList, binding?.contactListCheck?.isChecked.isTrue())
         viewModel.getHashMapFromContactList(filteredContactList)
     }

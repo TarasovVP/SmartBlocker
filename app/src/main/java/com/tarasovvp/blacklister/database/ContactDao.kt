@@ -1,6 +1,9 @@
 package com.tarasovvp.blacklister.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.tarasovvp.blacklister.model.Contact
 
 @Dao
@@ -17,6 +20,6 @@ interface ContactDao {
     @Query("SELECT * FROM contact WHERE (trimmedPhone = :filter) OR (trimmedPhone LIKE :filter || '%' AND :type = 1) OR (trimmedPhone LIKE '%' || :filter || '%' AND :type = 2)")
     suspend fun queryContactList(
         filter: String,
-        type: Int
+        type: Int,
     ): List<Contact>
 }

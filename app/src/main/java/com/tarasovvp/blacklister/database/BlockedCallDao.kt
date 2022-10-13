@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.tarasovvp.blacklister.model.BlockedCall
-import com.tarasovvp.blacklister.model.Contact
 
 @Dao
 interface BlockedCallDao {

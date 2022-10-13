@@ -40,7 +40,7 @@ class CallListFragment :
                 }
 
                 override fun onCallDeleteCheckChange(call: Call) {
-                    callList?.find { it.time == call.time}?.isCheckedForDelete =
+                    callList?.find { it.time == call.time }?.isCheckedForDelete =
                         call.isCheckedForDelete
                     if (callList?.none { it.isCheckedForDelete }.isTrue() && isDeleteMode) {
                         changeDeleteMode()
@@ -108,7 +108,8 @@ class CallListFragment :
         (activity as MainActivity).toolbar?.apply {
             Log.e("callTAG", "CallListFragment menu $menu")
             menu?.clear()
-            title = if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
+            title =
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
                 setDeleteMenuClickListener()

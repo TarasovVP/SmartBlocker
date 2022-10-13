@@ -45,7 +45,9 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
             }
             blockSettingsHidden.setSwitchChange(SharedPreferencesUtil.blockHidden)
             blockSettingsHidden.setSwitchClickListener { isChecked ->
-                if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+                if (BlackListerApp.instance?.isLoggedInUser()
+                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+                ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
                     viewModel.changeBlockHidden(isChecked.not())
@@ -53,7 +55,9 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
             }
             blockSettingsPriority.setSwitchChange(SharedPreferencesUtil.whiteListPriority)
             blockSettingsPriority.setSwitchClickListener { isChecked ->
-                if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+                if (BlackListerApp.instance?.isLoggedInUser()
+                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+                ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
                     viewModel.changePriority(isChecked.not())

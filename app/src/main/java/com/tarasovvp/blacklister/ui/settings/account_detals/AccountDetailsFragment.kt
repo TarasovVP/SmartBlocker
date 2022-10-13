@@ -42,21 +42,25 @@ class AccountDetailsFragment :
 
     private fun initViews() {
         binding?.apply {
-            includeNoAccount.root.isVisible = BlackListerApp.instance?.isLoggedInUser().isTrue().not()
-            accountDetailsMainTitle.text = String.format(getString(R.string.welcome), BlackListerApp.instance?.auth?.currentUser?.email)
+            includeNoAccount.root.isVisible =
+                BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+            accountDetailsMainTitle.text = String.format(getString(R.string.welcome),
+                BlackListerApp.instance?.auth?.currentUser?.email)
 
             accountDetailsNewPasswordCheck.setOnCheckedChangeListener { _, isChecked ->
                 accountDetailsChangePasswordContainer.isVisible = isChecked
                 if (isChecked) {
-                    accountDetailsChangePasswordContainer.getViewsFromLayout(EditText::class.java).apply {
-                        this.forEach { it.text.clear() }
-                    }
+                    accountDetailsChangePasswordContainer.getViewsFromLayout(EditText::class.java)
+                        .apply {
+                            this.forEach { it.text.clear() }
+                        }
                 }
             }
 
             accountDetailsLogOut.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
-                findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(isLogOut = true))
+                findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(
+                    isLogOut = true))
             }
             accountDetailsDeleteBtn.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
@@ -64,7 +68,8 @@ class AccountDetailsFragment :
             }
             accountDetailsNewPasswordBtn.setSafeOnClickListener {
                 if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.text.toString()) {
-                    viewModel.changePassword(accountDetailsCurrentPassword.inputText(), accountDetailsNewPasswordConfirm.text.toString())
+                    viewModel.changePassword(accountDetailsCurrentPassword.inputText(),
+                        accountDetailsNewPasswordConfirm.text.toString())
                 } else {
                     showMessage(getString(R.string.passwords_different), true)
                 }

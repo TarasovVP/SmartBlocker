@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.extensions.isNotNull
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
@@ -20,7 +21,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     private val contactRepository = ContactRepository
     private val countryCodeRepository = CountryCodeRepository
 
-    val existFilterLiveData = MutableLiveData<Boolean>()
+    val existFilterLiveData = MutableLiveData<Int>()
     val insertFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
@@ -33,7 +34,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         launch {
             val existingFilter = filterRepository.getFilter(filter)
             Log.e("filterAddTAG", "AddViewModel checkFilterExist existingFilter $existingFilter")
-            existFilterLiveData.postValue(existingFilter.isNotNull())
+            existFilterLiveData.postValue(existingFilter?.filterType)
             hideProgress()
         }
     }
@@ -45,7 +46,8 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             awaitAll(countryCode, contacts)
             val countryCodeList = countryCode.await()
             val contactList = contacts.await()
-            Log.e("filterAddTAG", "AddViewModel getCountryCodeAndContactsData countryCodeList?.size ${countryCodeList?.size} contactList?.size ${contactList?.size}")
+            Log.e("filterAddTAG",
+                "AddViewModel getCountryCodeAndContactsData countryCodeList?.size ${countryCodeList?.size} contactList?.size ${contactList?.size}")
             countryCodeList?.apply {
                 countryCodeListLiveData.postValue(this)
             }

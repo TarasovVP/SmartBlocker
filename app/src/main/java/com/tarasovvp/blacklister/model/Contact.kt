@@ -8,8 +8,8 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.digitsTrimmed
 import com.tarasovvp.blacklister.extensions.nameInitial
-import com.tarasovvp.blacklister.extensions.trimmed
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -20,18 +20,19 @@ data class Contact(
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     @PrimaryKey var phone: String = String.EMPTY,
-    var filterType: Int = DEFAULT_FILTER
+    var filterType: Int = DEFAULT_FILTER,
 ) : Parcelable, BaseAdapter.MainData {
-    var trimmedPhone = phone.trimmed()
+    var trimmedPhone = phone.digitsTrimmed()
     var searchText = String.EMPTY
 
     fun contactTypeIcon(): Int {
-        return when(filterType) {
+        return when (filterType) {
             BLACK_FILTER -> R.drawable.ic_block
             WHITE_FILTER -> R.drawable.ic_accepted
             else -> 0
         }
     }
+
     fun isBlackFilter(): Boolean {
         return filterType == BLACK_FILTER
     }

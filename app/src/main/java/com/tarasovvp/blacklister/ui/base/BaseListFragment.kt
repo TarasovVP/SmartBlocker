@@ -40,11 +40,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("adapterTAG", "BaseListFragment onViewCreated initView adapter $adapter itemCount ${adapter?.itemCount}")
+        Log.e("adapterTAG",
+            "BaseListFragment onViewCreated initView adapter $adapter itemCount ${adapter?.itemCount}")
         setSearchViewMenu()
         initView()
         setRecyclerView()
-        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
+            viewLifecycleOwner) {
             Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
             this@BaseListFragment.getData()
         }
@@ -86,15 +88,17 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
     }
 
     protected open fun checkDataListEmptiness(newData: List<D>, isFiltered: Boolean) {
-        (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible = searchQuery.isNullOrEmpty().not() || newData.isNotEmpty()
+        (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible =
+            searchQuery.isNullOrEmpty().not() || newData.isNotEmpty()
         emptyStateContainer?.root?.isVisible = newData.isEmpty()
-        emptyStateContainer?.emptyStateTitle?.text = if (searchQuery.isNullOrEmpty() && isFiltered.not()) when (this) {
-            is BlackFilterListFragment -> getString(R.string.black_list_empty_state)
-            is WhiteFilterListFragment -> getString(R.string.white_list_empty_state)
-            is ContactListFragment -> getString(R.string.contact_list_empty_state)
-            is CallListFragment -> getString(R.string.call_list_empty_state)
-            else -> String.EMPTY
-        } else getString(R.string.no_ruslt_with_list_query)
+        emptyStateContainer?.emptyStateTitle?.text =
+            if (searchQuery.isNullOrEmpty() && isFiltered.not()) when (this) {
+                is BlackFilterListFragment -> getString(R.string.black_list_empty_state)
+                is WhiteFilterListFragment -> getString(R.string.white_list_empty_state)
+                is ContactListFragment -> getString(R.string.contact_list_empty_state)
+                is CallListFragment -> getString(R.string.call_list_empty_state)
+                else -> String.EMPTY
+            } else getString(R.string.no_ruslt_with_list_query)
         emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)
         if (newData.isEmpty()) {
             adapter?.clearData()

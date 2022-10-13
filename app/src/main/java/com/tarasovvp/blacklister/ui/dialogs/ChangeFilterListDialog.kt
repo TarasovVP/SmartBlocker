@@ -18,7 +18,9 @@ class ChangeFilterListDialog : BaseDialog<DialogInfoBinding>() {
 
     override fun initUI() {
         binding?.dialogInfoTitle?.text = String.format(getString(R.string.change_filter),
-            getString(if (args.filter?.isBlackFilter().isTrue()) R.string.white_list else R.string.black_list))
+            getString(if (args.filter?.isBlackFilter()
+                    .isTrue()
+            ) R.string.white_list else R.string.black_list))
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }

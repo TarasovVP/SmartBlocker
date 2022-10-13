@@ -27,7 +27,7 @@ object FilterRepository {
     }
 
     suspend fun getFilter(filter: Filter): Filter? {
-        return filterDao?.getFilter(filter.filter, filter.conditionType, filter.filterType)
+        return filterDao?.getFilter(filter.filter, filter.conditionType)
     }
 
     fun insertFilter(filter: Filter, result: () -> Unit) {

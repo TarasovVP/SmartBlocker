@@ -21,7 +21,7 @@ class ContactFilterAdapter(private val contactClick: (String) -> Unit) : BaseAda
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): RecyclerView.ViewHolder {
         return if (viewType == HeaderDataItem.HEADER_TYPE) {
             HeaderViewHolder(
@@ -42,7 +42,7 @@ class ContactFilterAdapter(private val contactClick: (String) -> Unit) : BaseAda
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int
+        position: Int,
     ) {
         super.onBindViewHolder(holder, position)
         if (holder is ContactFilterAdapter.ViewHolder) {

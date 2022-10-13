@@ -43,6 +43,8 @@ object ContactRepository {
         withContext(
             Dispatchers.Default
         ) {
-            contactList.groupBy { if (it.name.isNullOrEmpty()) String.EMPTY else it.name?.get(0).toString() }
+            contactList.groupBy {
+                if (it.name.isNullOrEmpty()) String.EMPTY else it.name?.get(0).toString()
+            }
         }
 }

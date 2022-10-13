@@ -13,7 +13,7 @@ import com.tarasovvp.blacklister.model.Info
 class SwitchView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var binding: ViewSwitchBinding? = null
@@ -34,7 +34,10 @@ class SwitchView @JvmOverloads constructor(
                 recycle()
             }
             viewSwitchInfo.setSafeOnClickListener {
-                if (infoText.isNotEmpty() && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showPopUpWindow(Info(title = viewSwitchTitle.text.toString(), description = infoText, icon = R.drawable.ic_logo))
+                if (infoText.isNotEmpty() && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showPopUpWindow(
+                    Info(title = viewSwitchTitle.text.toString(),
+                        description = infoText,
+                        icon = R.drawable.ic_logo))
             }
         }
     }

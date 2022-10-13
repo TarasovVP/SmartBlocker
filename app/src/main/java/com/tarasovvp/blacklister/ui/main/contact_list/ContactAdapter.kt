@@ -58,7 +58,7 @@ class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<C
             val contact = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
                 contact.searchText = searchQuery
-               this.contact = contact
+                this.contact = contact
                 root.setSafeOnClickListener {
                     contact.phone.let { contactClick.invoke(it) }
                 }

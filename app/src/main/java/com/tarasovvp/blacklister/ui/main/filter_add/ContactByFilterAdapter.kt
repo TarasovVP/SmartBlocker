@@ -15,7 +15,7 @@ import com.tarasovvp.blacklister.model.Contact
 
 class ContactByFilterAdapter(
     var titleList: ArrayList<String>,
-    var contactListMap: LinkedHashMap<String, List<Contact>>
+    var contactListMap: LinkedHashMap<String, List<Contact>>,
 ) :
     BaseExpandableListAdapter() {
 
