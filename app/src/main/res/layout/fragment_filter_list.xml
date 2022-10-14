@@ -15,7 +15,7 @@
             android:paddingVertical="@dimen/padding_5"
             android:text="@string/filter_no_filter"
             android:visibility="invisible"
-            app:drawableStartCompat="@drawable/ic_filter"
+            app:drawableStartCompat="@drawable/ic_filter_list"
             android:drawablePadding="@dimen/padding_10"
             app:layout_constraintTop_toTopOf="parent" />
 

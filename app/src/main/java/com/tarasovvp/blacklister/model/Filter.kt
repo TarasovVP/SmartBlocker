@@ -48,11 +48,7 @@ data class Filter(
     }
 
     fun conditionTypeIcon(): Int {
-        return when (conditionType) {
-            Condition.CONDITION_TYPE_START.index -> R.drawable.ic_flag
-            Condition.CONDITION_TYPE_CONTAIN.index -> R.drawable.ic_filter
-            else -> R.drawable.ic_phone
-        }
+        return Condition.getIconByIndex(conditionType)
     }
 
     fun filterToInput(): String {
