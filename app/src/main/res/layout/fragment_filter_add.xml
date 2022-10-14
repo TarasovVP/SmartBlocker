@@ -29,6 +29,7 @@
             layout="@layout/item_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:filter="@{filter}"
             android:layout_marginTop="@dimen/margin_5" />
 
         <TextView
@@ -61,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_0"
             android:gravity="center"
+            android:text="@{filter.countryCode.countryCode}"
             android:textSize="@dimen/text_size_18"
             app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
@@ -87,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
             android:text="@{filter.fromDb ? @string/delete_menu : @string/add}"
-            android:enabled="@{!filter.isFilterEmpty || (filter.typeFull &amp;&amp; filter.isValidPhoneNumber())}"
+            android:enabled="@{!filter.inValidPhoneNumber}"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -95,6 +97,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             android:layout_marginTop="@dimen/margin_5"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_submit" />
 

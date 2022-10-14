@@ -10,8 +10,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 open class CountryCode(
     @PrimaryKey var country: String = String.EMPTY,
-    var countryCode: Int? = 0,
-    var flagEmoji: String? = String.EMPTY,
+    var countryCode: String = String.EMPTY,
+    var flagEmoji: String = String.EMPTY,
 ) : Parcelable {
     fun countryEmoji(): String = String.format("%s %s", flagEmoji, country)
 }

@@ -1,15 +1,20 @@
 package com.tarasovvp.blacklister.model
 
-import android.content.Context
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
+import com.tarasovvp.blacklister.database.CountryCodeConverter
 import com.tarasovvp.blacklister.enums.Condition
-import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.digitsTrimmed
+import com.tarasovvp.blacklister.extensions.getPhoneNumber
+import com.tarasovvp.blacklister.extensions.isValidPhoneNumber
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -20,20 +25,18 @@ data class Filter(
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
-    var country: String = String.EMPTY,
+    var countryCode: CountryCode = CountryCode()
 ) : Parcelable, BaseAdapter.MainData {
     var isCheckedForDelete = false
     var isDeleteMode = false
     var isFromDb = false
     var searchText = String.EMPTY
 
-    fun isFilterEmpty(): Boolean {
-        return filter.isEmpty()
-    }
-
-    fun conditionTypeName(context: Context): String {
-        return context.getString(if (isTypeFull() && isValidPhoneNumber().not()) R.string.invalid_phone_number else Condition.getTitleByIndex(
-            conditionType))
+    fun fullFilter(): String {
+        return when {
+            isTypeContain() -> filter
+            else -> String.format(COUNTRY_CODE_START, countryCode.countryCode, filter)
+        }
     }
 
     fun filterTypeIcon(): Int {
@@ -53,11 +56,11 @@ data class Filter(
     }
 
     fun filterToInput(): String {
-        return filter.getPhoneNumber(country)?.nationalNumber?.toString() ?: filter.digitsTrimmed()
+        return filter.getPhoneNumber(countryCode.country)?.nationalNumber?.toString() ?: filter.digitsTrimmed()
     }
 
-    fun isValidPhoneNumber(): Boolean {
-        return filter.isValidPhoneNumber(country)
+    fun isInValidPhoneNumber(): Boolean {
+        return (isTypeFull() && filter.isValidPhoneNumber(countryCode.country).not()) || (isTypeStart().not() && filter.isEmpty())
     }
 
     fun isTypeStart(): Boolean {
@@ -78,14 +81,5 @@ data class Filter(
 
     fun isWhiteFilter(): Boolean {
         return filterType == WHITE_FILTER
-    }
-
-    fun nameInitial(): String {
-        return when {
-            isTypeContain() -> String(Character.toChars(128269))
-            isTypeStart() -> String(Character.toChars(127987))
-            name.isNullOrEmpty() -> String(Character.toChars(128222))
-            else -> name.nameInitial()
-        }
     }
 }

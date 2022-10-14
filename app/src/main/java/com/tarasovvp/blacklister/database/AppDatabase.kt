@@ -2,6 +2,8 @@ package com.tarasovvp.blacklister.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.tarasovvp.blacklister.database.dao.*
 import com.tarasovvp.blacklister.model.*
 
 @Database(
@@ -9,6 +11,7 @@ import com.tarasovvp.blacklister.model.*
     version = 1,
     exportSchema = false
 )
+@TypeConverters(CountryCodeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun logCallDao(): LogCallDao
     abstract fun blockedCallDao(): BlockedCallDao

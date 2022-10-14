@@ -13,6 +13,7 @@ import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.filterDataList
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -101,6 +102,7 @@ open class BaseFilterListFragment :
                 filterType =
                     if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
                 this.conditionType = conditionType
+                name = getString(Condition.getTitleByIndex(conditionType))
             })
         }
     }

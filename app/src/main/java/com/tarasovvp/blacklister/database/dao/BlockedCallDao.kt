@@ -1,4 +1,4 @@
-package com.tarasovvp.blacklister.database
+package com.tarasovvp.blacklister.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -34,10 +34,10 @@ open class FilterAddFragment :
     override var layoutId = R.layout.fragment_filter_add
     override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
+
     private var contactAdapter: ContactFilterAdapter? = null
     private var contactList: List<Contact>? = null
     private var countryCodeList: ArrayList<CountryCode>? = null
-    private var countryCode: CountryCode? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,20 +46,22 @@ open class FilterAddFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("filterLifeCycleTAG", "FilterAddFragment onViewCreated")
-        Log.e("filterAddTAG",
-            "BaseAddFragment onViewCreated filter ${args.filter?.filter} type ${args.filter?.conditionType} isFromDb ${args.filter?.isFromDb} ")
         binding?.filter = args.filter
         setToolbar()
         setClickListeners()
-        existNumberChecking()
+        setFilterTextChangeListener()
+        setFragmentResultListeners()
+        setContactAdapter()
         if (binding?.filter?.isTypeFull().isTrue() || binding?.filter?.isTypeStart().isTrue()) {
             viewModel.getCountryCodeAndContactsData()
         }
+    }
+
+    private fun setContactAdapter() {
         if (contactAdapter.isNull()) {
             contactAdapter = ContactFilterAdapter { phone ->
                 binding?.apply {
-                    val phoneNumber = phone.getPhoneNumber(countryCode?.country.orEmpty())
+                    val phoneNumber = phone.getPhoneNumber(binding?.filter?.countryCode?.country.orEmpty())
                     Log.e("filterAddTAG",
                         "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
                     if ((phoneNumber?.nationalNumber.toString() == filterAddInput.inputText() && phoneNumber?.countryCode.toString() == filterAddCountryCodeValue.text.toString()).not()) {
@@ -68,7 +70,7 @@ open class FilterAddFragment :
                                 phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
                         }
                         filterAddCountryCodeSpinner.setSelection(countryCodeList?.indexOfFirst {
-                            it.countryCode == (phoneNumber?.countryCode ?: countryCode?.countryCode)
+                            it.countryCode == (phoneNumber?.countryCode ?: binding?.filter?.countryCode?.countryCode)
                         }.orZero())
                     }
                 }
@@ -76,16 +78,16 @@ open class FilterAddFragment :
                     "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
             }
             binding?.filterAddContactList?.apply {
-                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 this.adapter = contactAdapter
             }
         }
+    }
+
+    private fun setFragmentResultListeners() {
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
-            binding?.filter?.filterType = if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
-            binding?.itemFilter?.filter = binding?.itemFilter?.filter?.apply {
-                filterType = if ( binding?.filter?.isBlackFilter().isTrue()) BLACK_FILTER else WHITE_FILTER
-            }
-            viewModel.checkFilterExist(getFilterObject())
+            binding?.filter?.filterType =
+                if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
+            binding?.filter?.let { viewModel.checkFilterExist(it) }
             setToolbar()
         }
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
@@ -98,14 +100,18 @@ open class FilterAddFragment :
     private fun setToolbar() {
         (activity as MainActivity).apply {
             toolbar?.apply {
-                title = getString(Condition.getTitleByIndex(binding?.filter?.conditionType.orZero()))
+                title =
+                    getString(Condition.getTitleByIndex(binding?.filter?.conditionType.orZero()))
                 menu?.clear()
                 inflateMenu(R.menu.toolbar_filter)
                 menu?.findItem(R.id.filter_menu_item)?.apply {
                     icon = ContextCompat.getDrawable(context,
-                        if (binding?.filter?.isBlackFilter().isTrue()) R.drawable.ic_white_filter else R.drawable.ic_block)
+                        if (binding?.filter?.isBlackFilter()
+                                .isTrue()
+                        ) R.drawable.ic_white_filter else R.drawable.ic_block)
                     setOnMenuItemClickListener {
-                        findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(binding?.filter))
+                        findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(
+                            binding?.filter))
                         return@setOnMenuItemClickListener true
                     }
                 }
@@ -113,37 +119,16 @@ open class FilterAddFragment :
         }
     }
 
-    private fun existNumberChecking() {
+    private fun setFilterTextChangeListener() {
         binding?.filterAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) { input ->
-            val filter = getFilterObject()
-            Log.e("filterAddTAG",
-                "BaseAddFragment addTextChangedListener it $input filter ${filter.filter} type ${filter.conditionType} isFromDb ${filter.isFromDb}")
-            viewModel.checkFilterExist(filter)
-            binding?.itemFilter?.filter = filter
-            checkSubmitEnable(binding?.itemFilter?.filter?.name == getString(R.string.invalid_phone_number))
+            binding?.filter = binding?.filter?.apply {
+                filter = input.orEmpty()
+            }
+            binding?.filter?.let { viewModel.checkFilterExist(it) }
             filterContactList(input.toString())
+            Log.e("filterAddTAG",
+                "BaseAddFragment addTextChangedListener it $input filter ${binding?.filter?.filter} type ${binding?.filter?.conditionType} isFromDb ${binding?.filter?.isFromDb}")
         })
-    }
-
-    private fun getFilterObject(): Filter {
-        Log.e("filterAddTAG",
-            "BaseAddFragment getFilterObject before")
-        val filter = Filter(filter = String.format("+%s%s",
-            binding?.filterAddCountryCodeValue?.text,
-            binding?.filterAddInput.inputText()),
-            filterType = if (binding?.filter?.isBlackFilter()
-                    .isTrue()
-            ) BLACK_FILTER else WHITE_FILTER,
-            country = countryCode?.country.orEmpty(),
-            conditionType = binding?.filter?.conditionType.orZero(),
-            name = if (binding?.filterAddInput.inputText()
-                    .isEmpty()
-            ) getString(R.string.invalid_phone_number) else if (binding?.filterAddInput.inputText()
-                    .isValidPhoneNumber(countryCode?.country.orEmpty())
-            ) getString(R.string.condition_full) else getString(R.string.invalid_phone_number))
-        Log.e("filterAddTAG",
-            "BaseAddFragment getFilterObject after filter $filter")
-        return filter
     }
 
     private fun setClickListeners() {
@@ -160,9 +145,9 @@ open class FilterAddFragment :
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
                     if (filterAddSubmit.text == getString(R.string.delete_menu)) {
-                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(binding?.filter))
+                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(filter))
                     } else {
-                        viewModel.insertFilter(getFilterObject())
+                        filter?.let {  viewModel.insertFilter(it) }
                     }
                 }
             }
@@ -260,7 +245,6 @@ open class FilterAddFragment :
     }
 
     private fun setCountrySpinner() {
-        countryCodeList?.add(CountryCode(flagEmoji = null))
         val countryAdapter = context?.let {
             ArrayAdapter(it,
                 android.R.layout.simple_spinner_item,
@@ -275,13 +259,13 @@ open class FilterAddFragment :
                     position: Int,
                     id: Long,
                 ) {
-                    countryCode = countryCodeList?.get(position)
-                    binding?.filterAddCountryCodeValue?.text =
-                        countryCode?.countryCode.toString()
-                    binding?.itemFilter?.filter = getFilterObject()
-                    checkSubmitEnable(binding?.itemFilter?.filter?.name == getString(R.string.invalid_phone_number))
+                    countryCodeList?.get(position)?.let { selectedCountryCode ->
+                        binding?.filter = binding?.filter?.apply {
+                            countryCode = selectedCountryCode
+                        }
+                    }
                     Log.e("filterAddTAG",
-                        "BaseAddFragment OnItemSelectedListener countryCode $countryCode itemFilter?.filter ${binding?.itemFilter?.filter}")
+                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode} itemFilter?.filter ${binding?.itemFilter?.filter}")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
@@ -289,15 +273,9 @@ open class FilterAddFragment :
             val countryCodeIndex = countryCodeList?.indexOfFirst {
                 it.country == context.getUserCountry()?.uppercase()
             }.orZero()
-            countryCode = countryCodeList?.get(countryCodeIndex)
             setSelection(countryCodeIndex)
             viewModel.hideMainProgress()
         }
-    }
-
-    private fun checkSubmitEnable(isValid: Boolean) {
-        binding?.itemFilter?.itemFilterTypeTitle?.isEnabled = isValid.not()
-        binding?.filterAddSubmit?.isEnabled = isValid.not()
     }
 
     private fun handleSuccessFilterAction(message: String) {

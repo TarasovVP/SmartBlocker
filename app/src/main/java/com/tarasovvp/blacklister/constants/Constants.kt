@@ -8,7 +8,7 @@ object Constants {
         "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com"
     const val USERS = "users"
     const val PLUS_CHAR = '+'
-    const val COUNTRY_CODE_START = "+%s"
+    const val COUNTRY_CODE_START = "+%s%s"
     const val WHITE_LIST_PRIORITY = "whiteListPriority"
     const val BLOCK_HIDDEN = "blockHidden"
     const val FILTER_LIST = "filterList"
