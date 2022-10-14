@@ -157,7 +157,7 @@
     <string name="contact_list_empty_state">Your contact list is empty. To add, go to your phone contacts</string>
     <string name="call_list_empty_state">Blocked calls list is empty</string>
     <string name="invalid_phone_number">Invalid phone number</string>
-    <string name="no_ruslt_with_list_query">No results found for this query</string>
+    <string name="no_result_with_list_query">No results found for this query</string>
     <string name="condition_dialog_title">Select a condition</string>
     <string name="unavailable_network">No internet connection.\nTo continue, connect to the internet and re-login to the app.</string>
     <string name="unavailable_network_repeat">No internet connection.\nTo continue, please connect to the internet and try again.</string>

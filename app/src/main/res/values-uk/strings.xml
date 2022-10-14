@@ -157,7 +157,7 @@
     <string name="contact_list_empty_state">Список ваших контактів порожній. Щоб додати, перейдіть до контактів телефону</string>
     <string name="call_list_empty_state">Список заблокованих дзвінків порожній</string>
     <string name="invalid_phone_number">Невалідний номер</string>
-    <string name="no_ruslt_with_list_query">За цим запитом нічого не знайдено</string>
+    <string name="no_result_with_list_query">За цим запитом нічого не знайдено</string>
     <string name="condition_dialog_title">Виберіть умову</string>
     <string name="unavailable_network">Відсутнє інтернет-з\'єднання.\nДля продовження підключіть інтернет і перезайдіть до програми.</string>
     <string name="unavailable_network_repeat">Відсутнє з\'єднання з Інтернетом.\nДля продовження підключіть інтернет і повторіть дію.</string>

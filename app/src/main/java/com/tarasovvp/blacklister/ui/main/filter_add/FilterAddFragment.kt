@@ -11,8 +11,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
@@ -70,7 +68,7 @@ open class FilterAddFragment :
                                 phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
                         }
                         filterAddCountryCodeSpinner.setSelection(countryCodeList?.indexOfFirst {
-                            it.countryCode == (phoneNumber?.countryCode ?: binding?.filter?.countryCode?.countryCode)
+                            it.countryCode == if(phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else phoneNumber?.countryCode.toString()
                         }.orZero())
                     }
                 }
@@ -239,7 +237,7 @@ open class FilterAddFragment :
         binding?.filterAddEmptyList?.emptyStateContainer?.isVisible =
             filteredContactList.isNullOrEmpty()
         binding?.filterAddEmptyList?.emptyStateTitle?.text =
-            getString(R.string.no_ruslt_with_list_query)
+            getString(R.string.no_result_with_list_query)
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList?.size}")
     }

@@ -9,73 +9,73 @@
             type="com.tarasovvp.blacklister.model.Filter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8"
-        android:background="@drawable/item_bg"
-        android:padding="@dimen/padding_8">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/item_filter_avatar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-            app:imageResource="@{filter.conditionTypeIcon}"
-            android:background="#80989595"
-            android:scaleType="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_type_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/item_filter_icon"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            app:imageResource="@{filter.filterTypeIcon}"
-            app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
-            app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
-
-        <TextView
-            android:id="@+id/item_filter_type_title"
-            android:layout_width="@dimen/size_0"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            android:textColor="@color/enable_bg_selector"
-            android:text="@{filter.inValidPhoneNumber ? @string/invalid_phone_number : filter.name}"
-            android:enabled="@{!filter.inValidPhoneNumber}"
-            app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
-            app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/item_bg"
+            android:padding="@dimen/padding_8">
 
-        <TextView
-            android:id="@+id/item_filter_value"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            app:mainText="@{filter.fullFilter}"
-            app:searchText="@{filter.searchText}"
-            android:textSize="@dimen/text_size_16"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/item_filter_type_title"
-            app:layout_constraintStart_toStartOf="@id/item_filter_type_title"
-            app:layout_constraintTop_toBottomOf="@+id/item_filter_type_title" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/item_filter_avatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                android:background="#80989595"
+                android:scaleType="center"
+                app:imageResource="@{filter.conditionTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_type_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/item_filter_delete"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:checked="@{filter.checkedForDelete}"
-            android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/item_filter_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:imageResource="@{filter.filterTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/item_filter_type_title"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:ellipsize="end"
+                android:enabled="@{!filter.inValidPhoneNumber}"
+                android:maxLines="1"
+                android:text="@{filter.inValidPhoneNumber ? @string/invalid_phone_number : filter.name}"
+                android:textColor="@color/enable_bg_selector"
+                app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
+                app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_filter_value"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/item_filter_type_title"
+                app:layout_constraintStart_toStartOf="@id/item_filter_type_title"
+                app:layout_constraintTop_toBottomOf="@+id/item_filter_type_title"
+                app:mainText="@{filter.fullFilter}"
+                app:searchText="@{filter.searchText}" />
+
+            <CheckBox
+                android:id="@+id/item_filter_delete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:checked="@{filter.checkedForDelete}"
+                android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

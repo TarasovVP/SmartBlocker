@@ -99,6 +99,8 @@
             android:layout_marginTop="@dimen/margin_5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_8"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_submit" />
 

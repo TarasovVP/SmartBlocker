@@ -98,7 +98,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
                 is ContactListFragment -> getString(R.string.contact_list_empty_state)
                 is CallListFragment -> getString(R.string.call_list_empty_state)
                 else -> String.EMPTY
-            } else getString(R.string.no_ruslt_with_list_query)
+            } else getString(R.string.no_result_with_list_query)
         emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)
         if (newData.isEmpty()) {
             adapter?.clearData()

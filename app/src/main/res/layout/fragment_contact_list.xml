@@ -29,6 +29,8 @@
                 android:id="@+id/contact_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="@dimen/padding_8"
+                android:clipToPadding="false"
                 android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

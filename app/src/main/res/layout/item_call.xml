@@ -86,7 +86,7 @@
             android:id="@+id/item_call_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.VISIBLE : View.GONE}"
+            android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.VISIBLE : View.GONE, default=gone}"
             android:checked="@{call.checkedForDelete}"
             app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
             app:layout_constraintEnd_toStartOf="@+id/item_call_delete_info"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_info"
-            android:visibility="@{call.deleteMode &amp;&amp; !call.isBlockedType() ? View.VISIBLE : View.GONE}"
+            android:visibility="@{call.deleteMode &amp;&amp; !call.isBlockedType() ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
