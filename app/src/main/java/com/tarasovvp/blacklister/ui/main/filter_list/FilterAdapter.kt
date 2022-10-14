@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.filter_list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
                 filter.isDeleteMode = isDeleteMode
                 filter.searchText = searchQuery
+                this.filter = filter
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
                         itemFilterDelete.isChecked = itemFilterDelete.isChecked.isTrue().not()
@@ -78,7 +80,8 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                     filter.isCheckedForDelete = checked
                     filterClickListener.onFilterDeleteCheckChange(filter)
                 }
-                this.filter = filter
+                Log.e("adapterTAG",
+                    "FilterAdapter bindData position $position itemView $itemView")
             }
         }
     }

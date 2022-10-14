@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.main.contact_list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,6 +63,8 @@ class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<C
                 root.setSafeOnClickListener {
                     contact.phone.let { contactClick.invoke(it) }
                 }
+                Log.e("adapterTAG",
+                    "ContactAdapter bindData itemView $itemView contact $contact")
             }
         }
     }

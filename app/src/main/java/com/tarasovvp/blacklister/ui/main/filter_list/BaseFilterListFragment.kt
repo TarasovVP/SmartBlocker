@@ -13,7 +13,6 @@ import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.filterDataList
 import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -191,8 +190,7 @@ open class BaseFilterListFragment :
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredList = filterList?.filter { filter ->
-            filter.filter.lowercase(Locale.getDefault()).contains(
-                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
+            filter.filter.lowercase(Locale.getDefault()).contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             ) && (selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_FULL.title }?.isSelected.isTrue() && filter.isTypeFull()
                     || selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_START.title }?.isSelected.isTrue() && filter.isTypeStart()
                     || selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_CONTAIN.title }?.isSelected.isTrue() && filter.isTypeContain()
@@ -209,6 +207,8 @@ open class BaseFilterListFragment :
     }
 
     override fun getData() {
+        Log.e("adapterTAG",
+            "FilterList getData() filterList.size ${filterList?.size} selectedFilterItems ${selectedFilterItems?.joinToString()}")
         viewModel.getFilterList(this is BlackFilterListFragment)
     }
 }

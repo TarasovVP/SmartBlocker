@@ -1,7 +1,9 @@
 package com.tarasovvp.blacklister.ui.base
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.model.HeaderDataItem
@@ -32,6 +34,7 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
         RecyclerView.ViewHolder(itemView) {
 
         fun bindData(position: Int) {
+            Log.e("adapterTAG", "BaseAdapter bindData position $position itemView $itemView")
             DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.headerDataItem =
                 getHeaderDataInPosition(position)
         }

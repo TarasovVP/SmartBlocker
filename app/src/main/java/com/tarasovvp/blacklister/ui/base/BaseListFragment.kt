@@ -67,6 +67,8 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
             this.adapter = this@BaseListFragment.adapter
         }
         swipeRefresh?.setOnRefreshListener {
+            Log.e("adapterTAG",
+                "BaseListFragment setOnRefreshListener this $this itemCount ${adapter?.itemCount}")
             getData()
         }
     }
