@@ -193,9 +193,15 @@ fun Context.getUserCountry(): String? {
 fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
     val countryCodeMap = arrayListOf<CountryCode>()
     supportedRegions.sorted().forEach { region ->
-        countryCodeMap.add(CountryCode(region,
-            String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString()),
-            region.flagEmoji(), getExampleNumber(region).nationalNumber.toString()))
+        val countryCode =
+            String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString())
+        val numberFormat = try {
+            format(getExampleNumberForType(region, PhoneNumberUtil.PhoneNumberType.MOBILE),
+                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace("$countryCode ", String.EMPTY)
+        } catch (e: Exception) {
+            String.EMPTY
+        }
+        countryCodeMap.add(CountryCode(region, countryCode, region.flagEmoji(), numberFormat))
     }
     return countryCodeMap
 }

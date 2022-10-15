@@ -42,12 +42,7 @@ data class Filter(
     }
 
     fun conditionTypeFullHint(): String {
-        var hint = ""
-        countryCode.numberExample.forEachIndexed { index, char ->
-            if (index % 2 == 0 && index != 0 && index != countryCode.numberExample.lastIndex)
-                hint += "$char-" else hint += char
-        }
-        return hint
+        return countryCode.numberFormat.replace(Regex("[0-9]"), "#")
     }
 
     fun conditionTypeIcon(): Int {

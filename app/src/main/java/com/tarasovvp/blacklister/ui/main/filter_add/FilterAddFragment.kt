@@ -34,6 +34,7 @@ open class FilterAddFragment :
     override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
 
+    private var debouncingTextChangeListener: DebouncingTextChangeListener? = null
     private var contactAdapter: ContactFilterAdapter? = null
     private var contactList: List<Contact>? = null
     private var countryCodeList: ArrayList<CountryCode>? = null
@@ -115,7 +116,7 @@ open class FilterAddFragment :
     }
 
     private fun setFilterTextChangeListener() {
-        binding?.filterAddInput?.addTextChangedListener(DebouncingTextChangeListener(lifecycle) { input ->
+        debouncingTextChangeListener = DebouncingTextChangeListener(lifecycle, binding?.filter?.conditionTypeFullHint().orEmpty()) { input ->
             binding?.filter = binding?.filter?.apply {
                 filter = input.orEmpty()
             }
@@ -123,7 +124,8 @@ open class FilterAddFragment :
             filterContactList(input.toString())
             Log.e("filterAddTAG",
                 "BaseAddFragment addTextChangedListener it $input filter ${binding?.filter?.filter} type ${binding?.filter?.conditionType} isFromDb ${binding?.filter?.isFromDb}")
-        })
+        }
+        binding?.filterAddInput?.addTextChangedListener(debouncingTextChangeListener)
     }
 
     private fun setClickListeners() {
@@ -225,6 +227,7 @@ open class FilterAddFragment :
                             countryCode = selectedCountryCode
                         }
                     }
+                    debouncingTextChangeListener?.mask = binding?.filter?.conditionTypeFullHint().orEmpty()
                     Log.e("filterAddTAG",
                         "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode} itemFilter?.filter ${binding?.itemFilter?.filter}")
                 }
