@@ -74,9 +74,25 @@
             android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : @string/enter_filter}"
             android:inputType="phone"
             android:text="@{filter.filterToInput()}"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
+            tools:ignore="Autofill,LabelFor,TextFields" />
+
+        <com.tarasovvp.blacklister.utils.mask.MaskedEditText
+            android:id="@+id/filter_add_masked_input"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_15"
+            android:digits="0123456789+"
+            android:hint="##-##-###"
+            android:inputType="phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
+            app:keep_hint="true"
+            app:mask="(##) ##-##-###"
             tools:ignore="Autofill,LabelFor,TextFields" />
 
         <com.google.android.material.button.MaterialButton

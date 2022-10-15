@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.database.Exclude
 import com.tarasovvp.blacklister.extensions.EMPTY
 import kotlinx.android.parcel.Parcelize
 
@@ -14,5 +15,5 @@ open class CountryCode(
     var flagEmoji: String = String.EMPTY,
     var numberFormat: String = String.EMPTY
 ) : Parcelable {
-    fun countryEmoji(): String = String.format("%s %s", flagEmoji, country)
+    @Exclude fun countryEmoji(): String = String.format("%s %s", flagEmoji, country)
 }
