@@ -12,10 +12,6 @@
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
 
-        <variable
-            name="isPreviewMode"
-            type="Boolean" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
@@ -30,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:filter="@{filter}"
+            app:isAddFilter="@{true}"
             android:layout_marginTop="@dimen/margin_5" />
 
         <TextView
@@ -49,9 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_0"
             android:background="@drawable/bg_spinner"
-            android:enabled="@{!isPreviewMode}"
             android:paddingEnd="@dimen/padding_10"
             android:minWidth="@dimen/margin_45"
+            android:visibility="@{filter.typeContain ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/filter_add_input"
@@ -74,8 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_15"
             android:digits="0123456789+"
-            android:enabled="@{!isPreviewMode}"
-            android:hint="@string/enter_filter"
+            android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : @string/enter_filter}"
             android:inputType="phone"
             android:text="@{filter.filterToInput()}"
             app:layout_constraintEnd_toEndOf="parent"

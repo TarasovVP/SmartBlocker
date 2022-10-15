@@ -5,7 +5,9 @@
     <data>
 
         <import type="android.view.View" />
-
+        <variable
+            name="isAddFilter"
+            type="Boolean" />
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -66,7 +68,7 @@
             app:layout_constraintEnd_toEndOf="@+id/item_filter_type_title"
             app:layout_constraintStart_toStartOf="@id/item_filter_type_title"
             app:layout_constraintTop_toBottomOf="@+id/item_filter_type_title"
-            app:mainText="@{filter.fullFilter}"
+            app:mainText="@{isAddFilter ? filter.addFilter : filter.filter}"
             app:searchText="@{filter.searchText}" />
 
         <CheckBox

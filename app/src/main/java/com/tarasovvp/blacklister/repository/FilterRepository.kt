@@ -14,7 +14,7 @@ object FilterRepository {
 
     suspend fun getHashMapFromFilterList(filterList: List<Filter>): Map<String, List<Filter>> =
         withContext(Dispatchers.Default) {
-            filterList.groupBy { filter -> if (filter.fullFilter().any { it.isLetter() || it.isDigit() }) filter.fullFilter().filter { it.isLetter() || it.isDigit() }[0].toString() else String.EMPTY }
+            filterList.groupBy { filter -> if (filter.addFilter().any { it.isLetter() || it.isDigit() }) filter.addFilter().filter { it.isLetter() || it.isDigit() }[0].toString() else String.EMPTY }
         }
 
     suspend fun insertAllFilters(filterList: ArrayList<Filter>) {
@@ -27,7 +27,7 @@ object FilterRepository {
     }
 
     suspend fun getFilter(filter: Filter): Filter? {
-        return filterDao?.getFilter(filter.filter, filter.conditionType)
+        return filterDao?.getFilter(filter.addFilter(), filter.conditionType)
     }
 
     fun insertFilter(filter: Filter, result: () -> Unit) {

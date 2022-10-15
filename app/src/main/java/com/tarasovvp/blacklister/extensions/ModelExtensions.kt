@@ -16,11 +16,11 @@ import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
+import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.enums.Condition
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import kotlinx.coroutines.CoroutineScope
@@ -193,13 +193,16 @@ fun Context.getUserCountry(): String? {
 fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
     val countryCodeMap = arrayListOf<CountryCode>()
     supportedRegions.sorted().forEach { region ->
-        countryCodeMap.add(CountryCode(region, getCountryCodeForRegion(region).toString(), region.flagEmoji()))
+        countryCodeMap.add(CountryCode(region,
+            String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString()),
+            region.flagEmoji(), getExampleNumber(region).nationalNumber.toString()))
     }
     return countryCodeMap
 }
 
 fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
-    if (this.digitsTrimmed().startsWith(PLUS_CHAR))
+    if (this.isNullOrEmpty()) null
+    else if (this.digitsTrimmed().startsWith(PLUS_CHAR))
         PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), String.EMPTY)
     else PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), country)
 } catch (e: Exception) {
@@ -226,32 +229,4 @@ fun Context.filterDataList(conditionList: ArrayList<Condition>, result: () -> Un
     }
     builder.show()
     return true
-}
-
-fun Context.contactListMap(
-    contactList: List<Contact>,
-    isBlackFilter: Boolean,
-): LinkedHashMap<String, List<Contact>> {
-    val title = String.format(getString(R.string.contact_by_filter_list_title), contactList.size)
-    val contactListMap = linkedMapOf<String, List<Contact>>(title to listOf())
-    val affectedContactList = contactList.filterNot {
-        if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
-    }
-    if (affectedContactList.isNotEmpty()) {
-        val affectedContacts = String.format(getString(R.string.block_add_info),
-            if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock),
-            affectedContactList.size)
-        contactListMap[affectedContacts] = affectedContactList
-    }
-
-    val nonAffectedContactList = contactList.filter {
-        if (isBlackFilter) it.isWhiteFilter() && SharedPreferencesUtil.whiteListPriority else it.isBlackFilter() && SharedPreferencesUtil.whiteListPriority.not()
-    }
-    if (nonAffectedContactList.isNotEmpty()) {
-        val nonAffectedContacts = String.format(getString(R.string.not_block_add_info),
-            if (isBlackFilter) getString(R.string.can_block) else getString(R.string.can_unblock),
-            nonAffectedContactList.size)
-        contactListMap[nonAffectedContacts] = nonAffectedContactList
-    }
-    return contactListMap
 }

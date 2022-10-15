@@ -25,7 +25,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     val insertFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
-    val queryContactListLiveData = MutableLiveData<List<Contact>>()
     val contactLiveData = MutableLiveData<List<Contact>>()
 
     fun checkFilterExist(filter: Filter) {
@@ -54,16 +53,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             contactList?.apply {
                 contactLiveData.postValue(this)
             }
-        }
-    }
-
-    fun checkContactListByFilter(filter: Filter) {
-        Log.e("filterAddTAG", "AddViewModel checkContactListByFilter filter $filter")
-        showProgress()
-        launch {
-            queryContactListLiveData.postValue(contactRepository.getQueryContacts(filter).orEmpty())
-            Log.e("filterAddTAG", "AddViewModel queryContactListLiveData $filter")
-            hideProgress()
         }
     }
 

@@ -15,6 +15,7 @@ import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
@@ -50,9 +51,7 @@ open class FilterAddFragment :
         setFilterTextChangeListener()
         setFragmentResultListeners()
         setContactAdapter()
-        if (binding?.filter?.isTypeFull().isTrue() || binding?.filter?.isTypeStart().isTrue()) {
-            viewModel.getCountryCodeAndContactsData()
-        }
+        viewModel.getCountryCodeAndContactsData()
     }
 
     private fun setContactAdapter() {
@@ -62,10 +61,10 @@ open class FilterAddFragment :
                     val phoneNumber = phone.getPhoneNumber(binding?.filter?.countryCode?.country.orEmpty())
                     Log.e("filterAddTAG",
                         "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
-                    if ((phoneNumber?.nationalNumber.toString() == filterAddInput.inputText() && phoneNumber?.countryCode.toString() == filterAddCountryCodeValue.text.toString()).not()) {
+                    if ((phoneNumber?.nationalNumber.toString() == filterAddInput.inputText() && String.format(
+                            COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == filterAddCountryCodeValue.text.toString()).not()) {
                         filter = filter?.apply {
-                            this.filter =
-                                phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
+                            this.filter = phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
                         }
                         filterAddCountryCodeSpinner.setSelection(countryCodeList?.indexOfFirst {
                             it.countryCode == if(phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else phoneNumber?.countryCode.toString()
@@ -75,9 +74,7 @@ open class FilterAddFragment :
                 Log.e("filterAddTAG",
                     "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
             }
-            binding?.filterAddContactList?.apply {
-                this.adapter = contactAdapter
-            }
+            binding?.filterAddContactList?.adapter = contactAdapter
         }
     }
 
@@ -137,14 +134,14 @@ open class FilterAddFragment :
                     icon = R.drawable.ic_logo))
             }
             filterAddSubmit.setSafeOnClickListener {
-                if (BlackListerApp.instance?.isLoggedInUser()
-                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
                 ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
                     if (filterAddSubmit.text == getString(R.string.delete_menu)) {
                         findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(filter))
                     } else {
+                        filter?.filter = filter?.addFilter().orEmpty()
                         filter?.let {  viewModel.insertFilter(it) }
                     }
                 }
@@ -171,14 +168,12 @@ open class FilterAddFragment :
                 this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
                 setCountrySpinner()
             }
-            queryContactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                //setContactByFilterList(contactList)
-            }
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData contactLiveData contactList.size ${contactList.size}")
                 this@FilterAddFragment.contactList = contactList
                 contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
+                viewModel.hideMainProgress()
             }
             insertFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
                 handleSuccessFilterAction(String.format(getString(R.string.filter_added), number))
@@ -186,39 +181,6 @@ open class FilterAddFragment :
             deleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
                 handleSuccessFilterAction(String.format(getString(R.string.delete_filter_from_list),
                     binding?.filter?.filter.orEmpty()))
-            }
-        }
-    }
-
-    private fun setContactByFilterList(contactList: List<Contact>) {
-        binding?.filterAddContactByFilterList?.apply {
-            isEnabled = contactList.isNotEmpty()
-            Log.e("filterAddTAG",
-                "BaseAddFragment setContactByFilterList contactList $contactList")
-            val contactListMap =
-                context?.contactListMap(contactList, binding?.filter?.isBlackFilter().isTrue())
-                    ?: linkedMapOf()
-            val contactByFilterAdapter =
-                ContactByFilterAdapter(arrayListOf(contactListMap.keys.toTypedArray()[0]),
-                    contactListMap)
-            setAdapter(contactByFilterAdapter)
-            setOnGroupClickListener { expandableListView, _, groupPosition, _ ->
-                if (groupPosition == 0 && contactList.isNotEmpty()) {
-                    binding?.isPreviewMode = expandableListView.isGroupExpanded(0).not()
-                    contactByFilterAdapter.titleList =
-                        if (expandableListView.isGroupExpanded(0)) arrayListOf(contactListMap.keys.toTypedArray()[0]) else ArrayList(
-                            contactListMap.keys)
-                    contactByFilterAdapter.contactListMap =
-                        if (expandableListView.isGroupExpanded(0)) linkedMapOf() else contactListMap
-                    contactByFilterAdapter.notifyDataSetInvalidated()
-                }
-                return@setOnGroupClickListener false
-            }
-            setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-                findNavController().navigate(FilterAddFragmentDirections.startContactDetailFragment(
-                    number = contactListMap[ArrayList(contactListMap.keys)[groupPosition]]?.get(
-                        childPosition)?.phone))
-                return@setOnChildClickListener contactList.isEmpty()
             }
         }
     }
@@ -243,6 +205,7 @@ open class FilterAddFragment :
     }
 
     private fun setCountrySpinner() {
+        countryCodeList?.add(CountryCode())
         val countryAdapter = context?.let {
             ArrayAdapter(it,
                 android.R.layout.simple_spinner_item,
@@ -269,10 +232,9 @@ open class FilterAddFragment :
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
             val countryCodeIndex = countryCodeList?.indexOfFirst {
-                it.country == context.getUserCountry()?.uppercase()
+                it.country == if (binding?.filter?.isTypeContain().isTrue()) String.EMPTY else context.getUserCountry()?.uppercase()
             }.orZero()
             setSelection(countryCodeIndex)
-            viewModel.hideMainProgress()
         }
     }
 
