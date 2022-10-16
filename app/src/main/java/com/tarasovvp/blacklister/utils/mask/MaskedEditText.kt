@@ -61,7 +61,7 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     fun getRawText(): String {
-        return String.format("%s%s", String.EMPTY, rawText?.text)
+        return String.format("%s%s", String.EMPTY, rawText?.text.orEmpty())
     }
 
     private fun cleanUp() {

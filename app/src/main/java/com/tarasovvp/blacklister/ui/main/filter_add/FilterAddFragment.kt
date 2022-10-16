@@ -25,7 +25,6 @@ import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.utils.DebouncingTextChangeListener
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 open class FilterAddFragment :
@@ -74,7 +73,7 @@ open class FilterAddFragment :
                             this.filter = phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
                         }
                         filterAddCountryCodeSpinner.setSelection(countryCodeList?.indexOfFirst {
-                            it.countryCode == if(phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else phoneNumber?.countryCode.toString()
+                            it.countryCode == if(phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString())
                         }.orZero())
                     }
                 }
@@ -125,10 +124,10 @@ open class FilterAddFragment :
         binding?.filterAddInput?.doAfterTextChanged {
             binding?.filterToInput = false
             binding?.filter = binding?.filter?.apply {
-                filter = binding?.filterAddInput?.getRawText().orEmpty()
+                filter = if (this.isTypeFull()) binding?.filterAddInput?.getRawText().orEmpty() else binding?.filterAddInput.inputText()
+                viewModel.checkFilterExist(this)
+                filterContactList(this.filter)
             }
-            binding?.filter?.let { filter -> viewModel.checkFilterExist(filter) }
-            filterContactList(binding?.filterAddInput?.getRawText().orEmpty())
             Log.e("filterAddTAG",
                 "BaseAddFragment MaskedEditText addTextChangedListener it $it getRawText ${binding?.filterAddInput?.getRawText().orEmpty()} filter ${binding?.filter?.filter} type ${binding?.filter?.conditionType} isFromDb ${binding?.filter?.isFromDb}")
         }
