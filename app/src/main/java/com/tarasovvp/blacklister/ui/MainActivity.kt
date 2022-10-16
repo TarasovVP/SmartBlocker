@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
     private var navController: NavController? = null
-    private var bottomNavigationView: BottomNavigationView? = null
+    var bottomNavigationView: BottomNavigationView? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
 
     val mainViewModel: MainViewModel by viewModels()
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var callReceiver: CallReceiver? = null
     private var isDialog: Boolean = false
 
-    private var navigationScreens = arrayListOf(
+    var navigationScreens = arrayListOf(
         R.id.callListFragment,
         R.id.contactListFragment,
         R.id.blackFilterListFragment,
@@ -166,7 +166,6 @@ class MainActivity : AppCompatActivity() {
                 return@addOnDestinationChangedListener
             }
             Log.e("destinationTAG", "MainActivity return@addOnDestinationChangedListener after")
-            bottomNavigationView?.isVisible = navigationScreens.contains(destination.id)
             toolbar?.menu?.clear()
             if (navigationScreens.contains(destination.id)) {
                 toolbar?.inflateMenu(R.menu.toolbar_search)
