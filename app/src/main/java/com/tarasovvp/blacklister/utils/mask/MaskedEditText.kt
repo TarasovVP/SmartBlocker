@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.TextView
@@ -25,7 +26,7 @@ class MaskedEditText @JvmOverloads constructor(
         OnEditorActionListener { _: TextView?, _: Int, _: KeyEvent? -> true }
     private var focusChangeListener: OnFocusChangeListener? = null
 
-    private var mask = String.EMPTY
+    private var mask: String? = String.EMPTY
     private var rawToMask: IntArray? = null
     private var rawText: RawText? = null
     private var editingBefore = false
@@ -65,7 +66,7 @@ class MaskedEditText @JvmOverloads constructor(
 
     private fun cleanUp() {
         initialized = false
-        if (mask.isEmpty()) {
+        if (mask.isNullOrEmpty()) {
             return
         }
         generatePositionArrays()
@@ -84,7 +85,7 @@ class MaskedEditText @JvmOverloads constructor(
         editingBefore = false
         editingOnChanged = false
         editingAfter = false
-        maxRawLength = maskToRaw?.get(previousValidPosition(mask.length.orZero() - 1)).orZero() + 1
+        maxRawLength = maskToRaw?.get(previousValidPosition(mask?.length.orZero() - 1)).orZero() + 1
         lastValidMaskPosition = findLastValidMaskPosition()
         initialized = true
         super.setOnFocusChangeListener { v: View?, hasFocus: Boolean ->
@@ -108,12 +109,12 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     private fun generatePositionArrays() {
-        val aux = IntArray(mask.length)
-        maskToRaw = IntArray(mask.length)
+        val aux = IntArray(mask?.length.orZero())
+        maskToRaw = IntArray(mask?.length.orZero())
         var charsInMaskAux = String.EMPTY
         var charIndex = 0
-        for (i in mask.indices) {
-            val currentChar = mask[i]
+        for (i in mask.orEmpty().indices) {
+            val currentChar = mask?.get(i)
             if (currentChar == HASH_CHAR) {
                 aux[charIndex] = i
                 maskToRaw?.let {
@@ -136,10 +137,20 @@ class MaskedEditText @JvmOverloads constructor(
         System.arraycopy(aux, 0, rawToMask, 0, charIndex)
     }
 
+    private fun erasingStart(start1: Int): Int {
+        var start = start1
+        while (start > 0 && maskToRaw?.get(start) == -1) {
+            start--
+        }
+        return start
+    }
+
     override fun beforeTextChanged(
         s: CharSequence, start: Int, count: Int,
         after: Int,
     ) {
+        Log.e("filterAddTAG", "MaskedEditText beforeTextChanged s $s")
+        if (mask.isNullOrEmpty().not())  {
         if (editingBefore.not()) {
             editingBefore = true
             if (start > lastValidMaskPosition) {
@@ -157,17 +168,12 @@ class MaskedEditText @JvmOverloads constructor(
                 selection1 = previousValidPosition(start)
             }
         }
-    }
-
-    private fun erasingStart(start1: Int): Int {
-        var start = start1
-        while (start > 0 && maskToRaw?.get(start) == -1) {
-            start--
         }
-        return start
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count1: Int) {
+        Log.e("filterAddTAG", "MaskedEditText onTextChanged s $s start $start before $before count1 $count1")
+        if (mask.isNullOrEmpty().not()) {
         var count = count1
         if (editingOnChanged.not() && editingBefore) {
             editingOnChanged = true
@@ -187,9 +193,12 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
+        }
     }
 
     override fun afterTextChanged(s: Editable) {
+        Log.e("filterAddTAG", "MaskedEditText afterTextChanged s $s")
+        if (mask.isNullOrEmpty().not()) {
         if (editingAfter.not() && editingBefore && editingOnChanged) {
             editingAfter = true
             if (hint.isNotNull()) {
@@ -203,6 +212,7 @@ class MaskedEditText @JvmOverloads constructor(
             editingOnChanged = false
             editingAfter = false
             ignore = false
+        }
         }
     }
 
@@ -269,13 +279,13 @@ class MaskedEditText @JvmOverloads constructor(
         val maskedTextLength: Int = if (rawText?.length().orZero() < rawToMask?.size.orZero()) {
             rawToMask?.get(rawText?.length().orZero()).orZero()
         } else {
-            mask.length
+            mask?.length.orZero()
         }
         val maskedText = CharArray(maskedTextLength)
         for (i in maskedText.indices) {
             val rawIndex = maskToRaw?.get(i).orZero()
             if (rawIndex == -1) {
-                maskedText[i] = mask[i]
+                mask?.get(i)?.let { maskedText[i] = it }
             } else {
                 rawText?.charAt(rawIndex)?.let {
                     maskedText[i] = it
@@ -288,7 +298,7 @@ class MaskedEditText @JvmOverloads constructor(
     private fun makeMaskedTextWithHint(): CharSequence {
         val ssb = SpannableStringBuilder()
         var mtrv: Int
-        for (i in mask.indices) {
+        for (i in mask.orEmpty().indices) {
             mtrv = maskToRaw?.get(i).orZero()
             if (mtrv != -1) {
                 if (mtrv < rawText?.length().orZero()) {
@@ -297,7 +307,7 @@ class MaskedEditText @JvmOverloads constructor(
                     ssb.append(hint[maskToRaw?.get(i).orZero()])
                 }
             } else {
-                ssb.append(mask[i])
+                mask?.get(i)?.let { ssb.append(it) }
             }
             if (rawText?.length()
                     .orZero() < rawToMask?.size.orZero() && i >= rawToMask?.get(rawText?.length()
@@ -312,7 +322,7 @@ class MaskedEditText @JvmOverloads constructor(
     private fun calculateRange(start: Int, end: Int): Range {
         val range = Range()
         var i = start
-        while (i <= end && i < mask.length) {
+        while (i <= end && i < mask?.length.orZero()) {
             if (maskToRaw?.get(i) != -1) {
                 if (range.start == -1) {
                     range.start = maskToRaw?.get(i).orZero()
@@ -321,7 +331,7 @@ class MaskedEditText @JvmOverloads constructor(
             }
             i++
         }
-        if (end == mask.length) {
+        if (end == mask?.length.orZero()) {
             range.end = rawText?.length().orZero()
         }
         if (range.start == range.end && start < end) {

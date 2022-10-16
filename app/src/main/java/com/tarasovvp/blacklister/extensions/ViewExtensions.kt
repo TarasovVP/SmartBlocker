@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.extensions
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Typeface
+import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
@@ -96,6 +97,11 @@ private fun <T> ViewGroup.getViewsFromLayout(
 
 fun EditText?.inputText(): String {
     return this?.text?.toString().orEmpty()
+}
+
+@BindingAdapter(value = ["text", "filterToInput"], requireAll = false)
+fun EditText.setTextToInput(inputText: String?, filterToInput: Boolean) {
+    if (filterToInput) setText(inputText)
 }
 
 @BindingAdapter(value = ["circleImageUrl", "nameInitial"], requireAll = false)

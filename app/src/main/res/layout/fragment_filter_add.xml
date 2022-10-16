@@ -5,9 +5,10 @@
     <data>
 
         <import type="android.view.View" />
-
         <import type="android.content.Context" />
-
+        <variable
+            name="filterToInput"
+            type="Boolean" />
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -65,34 +66,19 @@
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
             app:layout_constraintTop_toTopOf="@+id/filter_add_input" />
 
-        <EditText
+        <com.tarasovvp.blacklister.utils.mask.MaskedEditText
             android:id="@+id/filter_add_input"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_15"
             android:digits="0123456789+"
+            android:inputType="phone"
             android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : @string/enter_filter}"
-            android:inputType="phone"
-            android:text="@{filter.filterToInput()}"
-            android:visibility="@{filter.typeFull ? View.INVISIBLE : View.VISIBLE}"
+            app:text="@{filter.filterToInput()}"
+            app:filterToInput="@{filterToInput}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
-            tools:ignore="Autofill,LabelFor,TextFields" />
-
-        <com.tarasovvp.blacklister.utils.mask.MaskedEditText
-            android:id="@+id/filter_add_masked_input"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15"
-            android:digits="0123456789+"
-            android:inputType="phone"
-            android:text="@{filter.filterToInput()}"
-            android:visibility="@{filter.typeFull ? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
-            tools:ignore="Autofill,LabelFor,TextFields" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"  />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/filter_add_submit"

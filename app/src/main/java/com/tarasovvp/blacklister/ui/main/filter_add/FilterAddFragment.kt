@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -34,7 +35,6 @@ open class FilterAddFragment :
     override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
 
-    private var debouncingTextChangeListener: DebouncingTextChangeListener? = null
     private var contactAdapter: ContactFilterAdapter? = null
     private var contactList: List<Contact>? = null
     private var countryCodeList: ArrayList<CountryCode>? = null
@@ -52,7 +52,12 @@ open class FilterAddFragment :
         setFilterTextChangeListener()
         setFragmentResultListeners()
         setContactAdapter()
-        viewModel.getCountryCodeAndContactsData()
+        if (binding?.filter?.isTypeContain().isTrue()) {
+            viewModel.getContactsData()
+        } else {
+            viewModel.getCountryCodeAndContactsData()
+        }
+
     }
 
     private fun setContactAdapter() {
@@ -60,9 +65,10 @@ open class FilterAddFragment :
             contactAdapter = ContactFilterAdapter { phone ->
                 binding?.apply {
                     val phoneNumber = phone.getPhoneNumber(binding?.filter?.countryCode?.country.orEmpty())
+                    binding?.filterToInput = true
                     Log.e("filterAddTAG",
-                        "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
-                    if ((phoneNumber?.nationalNumber.toString() == filterAddInput.inputText() && String.format(
+                        "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber filterToInput ${binding?.filterToInput}")
+                    if ((phoneNumber?.nationalNumber.toString() == filterAddInput.getRawText() && String.format(
                             COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == filterAddCountryCodeValue.text.toString()).not()) {
                         filter = filter?.apply {
                             this.filter = phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
@@ -73,7 +79,7 @@ open class FilterAddFragment :
                     }
                 }
                 Log.e("filterAddTAG",
-                    "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
+                    "BaseAddFragment ContactFilterAdapter contactClick contact $phone filterToInput ${binding?.filterToInput}")
             }
             binding?.filterAddContactList?.adapter = contactAdapter
         }
@@ -116,16 +122,16 @@ open class FilterAddFragment :
     }
 
     private fun setFilterTextChangeListener() {
-        debouncingTextChangeListener = DebouncingTextChangeListener(lifecycle, binding?.filter?.conditionTypeFullHint().orEmpty()) { input ->
+        binding?.filterAddInput?.doAfterTextChanged {
+            binding?.filterToInput = false
             binding?.filter = binding?.filter?.apply {
-                filter = input.orEmpty()
+                filter = binding?.filterAddInput?.getRawText().orEmpty()
             }
-            binding?.filter?.let { viewModel.checkFilterExist(it) }
-            filterContactList(input.toString())
+            binding?.filter?.let { filter -> viewModel.checkFilterExist(filter) }
+            filterContactList(binding?.filterAddInput?.getRawText().orEmpty())
             Log.e("filterAddTAG",
-                "BaseAddFragment addTextChangedListener it $input filter ${binding?.filter?.filter} type ${binding?.filter?.conditionType} isFromDb ${binding?.filter?.isFromDb}")
+                "BaseAddFragment MaskedEditText addTextChangedListener it $it getRawText ${binding?.filterAddInput?.getRawText().orEmpty()} filter ${binding?.filter?.filter} type ${binding?.filter?.conditionType} isFromDb ${binding?.filter?.isFromDb}")
         }
-        binding?.filterAddInput?.addTextChangedListener(debouncingTextChangeListener)
     }
 
     private fun setClickListeners() {
@@ -227,8 +233,9 @@ open class FilterAddFragment :
                             countryCode = selectedCountryCode
                         }
                     }
-                    debouncingTextChangeListener?.mask = binding?.filter?.conditionTypeFullHint().orEmpty()
-                    binding?.filterAddMaskedInput?.setNumberMask(binding?.filter?.conditionTypeFullHint().orEmpty())
+                    if (binding?.filter?.isTypeFull().isTrue()) {
+                        binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeFullHint().orEmpty())
+                    }
                     Log.e("filterAddTAG",
                         "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode} itemFilter?.filter ${binding?.itemFilter?.filter}")
                 }

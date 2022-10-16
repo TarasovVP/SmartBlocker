@@ -3,8 +3,6 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
@@ -50,6 +48,17 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             countryCodeList?.apply {
                 countryCodeListLiveData.postValue(this)
             }
+            contactList?.apply {
+                contactLiveData.postValue(this)
+            }
+        }
+    }
+
+    fun getContactsData() {
+        launch {
+            val contactList = contactRepository.getAllContacts()
+            Log.e("filterAddTAG",
+                "AddViewModel getContactsData contactList?.size ${contactList?.size}")
             contactList?.apply {
                 contactLiveData.postValue(this)
             }
