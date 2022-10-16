@@ -74,7 +74,7 @@
             android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : @string/enter_filter}"
             android:inputType="phone"
             android:text="@{filter.filterToInput()}"
-            android:visibility="invisible"
+            android:visibility="@{filter.typeFull ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
@@ -86,13 +86,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_15"
             android:digits="0123456789+"
-            android:hint="##-##-###"
             android:inputType="phone"
+            android:text="@{filter.filterToInput()}"
+            android:visibility="@{filter.typeFull ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info"
-            app:keep_hint="true"
-            app:mask="(##) ##-##-###"
             tools:ignore="Autofill,LabelFor,TextFields" />
 
         <com.google.android.material.button.MaterialButton

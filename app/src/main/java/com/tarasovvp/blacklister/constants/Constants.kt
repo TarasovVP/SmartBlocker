@@ -8,6 +8,7 @@ object Constants {
         "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com"
     const val USERS = "users"
     const val PLUS_CHAR = '+'
+    const val HASH_CHAR = '#'
     const val COUNTRY_CODE_START = "+%s"
     const val WHITE_LIST_PRIORITY = "whiteListPriority"
     const val BLOCK_HIDDEN = "blockHidden"
@@ -35,7 +36,6 @@ object Constants {
     const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
-    const val UNAVAILABLE_NETWORK = "unavailableNetwork"
     const val APP_LANG_RU = "ru"
     const val APP_LANG_UK = "uk"
     const val APP_LANG_EN = "en"

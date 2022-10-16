@@ -8,6 +8,7 @@ import com.google.firebase.database.Exclude
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
+import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
@@ -44,7 +45,7 @@ data class Filter(
     }
 
     @Exclude fun conditionTypeFullHint(): String {
-        return countryCode.numberFormat.replace(Regex("[0-9]"), "#")
+        return countryCode.numberFormat.replace(Regex("[0-9]"), HASH_CHAR.toString())
     }
 
     @Exclude fun conditionTypeIcon(): Int {

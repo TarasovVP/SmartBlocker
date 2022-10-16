@@ -228,6 +228,7 @@ open class FilterAddFragment :
                         }
                     }
                     debouncingTextChangeListener?.mask = binding?.filter?.conditionTypeFullHint().orEmpty()
+                    binding?.filterAddMaskedInput?.setNumberMask(binding?.filter?.conditionTypeFullHint().orEmpty())
                     Log.e("filterAddTAG",
                         "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode} itemFilter?.filter ${binding?.itemFilter?.filter}")
                 }
