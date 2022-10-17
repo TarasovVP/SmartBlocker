@@ -73,7 +73,7 @@
             android:layout_marginTop="@dimen/margin_15"
             android:digits="0123456789+"
             android:inputType="phone"
-            android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : @string/enter_filter}"
+            android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : filter.typeStart ? filter.conditionTypeStartHint() : @string/enter_filter}"
             app:text="@{filter.filterToInput()}"
             app:filterToInput="@{filterToInput}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -106,20 +106,6 @@
             layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_submit" />
-
-        <ExpandableListView
-            android:id="@+id/filter_add_contact_by_filter_list"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
-            android:layout_marginTop="@dimen/margin_5"
-            android:childDivider="@android:color/transparent"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="@dimen/margin_5"
-            android:groupIndicator="@null"
-            android:nestedScrollingEnabled="true"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_submit" />
 

@@ -124,10 +124,13 @@ open class FilterAddFragment :
         binding?.filterAddInput?.doAfterTextChanged {
             binding?.filterToInput = false
             binding?.filter = binding?.filter?.apply {
-                filter = if (this.isTypeFull()) binding?.filterAddInput?.getRawText().orEmpty() else binding?.filterAddInput.inputText()
+                filter = if (this.isTypeFull() || this.isTypeStart()) binding?.filterAddInput?.getRawText().orEmpty() else binding?.filterAddInput.inputText()
                 viewModel.checkFilterExist(this)
                 filterContactList(this.filter)
             }
+            binding?.filterAddInput?.setSelection(it?.lastIndex.orZero())
+            Log.e("filterAddTAG",
+                "BaseAddFragment addTextChangedListener it $it it?.length ${it?.length} it?.lastIndex ${it?.lastIndex} getRawText ${binding?.filterAddInput?.getRawText().orEmpty()} filter ${binding?.filter?.filter} type ${binding?.filter?.conditionType} isFromDb ${binding?.filter?.isFromDb}")
             Log.e("filterAddTAG",
                 "BaseAddFragment MaskedEditText addTextChangedListener it $it getRawText ${binding?.filterAddInput?.getRawText().orEmpty()} filter ${binding?.filter?.filter} type ${binding?.filter?.conditionType} isFromDb ${binding?.filter?.isFromDb}")
         }
@@ -180,6 +183,9 @@ open class FilterAddFragment :
                     "BaseAddFragment observeLiveData contactLiveData contactList.size ${contactList.size}")
                 this@FilterAddFragment.contactList = contactList
                 contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
+                if (binding?.filter?.isTypeContain().isTrue()) {
+                    binding?.filterAddInput?.setText(String.EMPTY)
+                }
                 viewModel.hideMainProgress()
             }
             insertFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
@@ -234,6 +240,8 @@ open class FilterAddFragment :
                     }
                     if (binding?.filter?.isTypeFull().isTrue()) {
                         binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeFullHint().orEmpty())
+                    } else if (binding?.filter?.isTypeStart().isTrue()) {
+                        binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeStartHint().orEmpty())
                     }
                     Log.e("filterAddTAG",
                         "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode} itemFilter?.filter ${binding?.itemFilter?.filter}")

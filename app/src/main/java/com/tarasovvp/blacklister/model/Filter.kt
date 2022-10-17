@@ -26,8 +26,10 @@ data class Filter(
 ) : Parcelable, BaseAdapter.MainData {
     @get:Exclude
     var isCheckedForDelete = false
+
     @get:Exclude
     var isDeleteMode = false
+
     @get:Exclude
     var searchText = String.EMPTY
 
@@ -51,6 +53,13 @@ data class Filter(
     @Exclude
     fun conditionTypeFullHint(): String {
         return countryCode.numberFormat.replace(Regex("[0-9]"), HASH_CHAR.toString())
+    }
+
+    @Exclude
+    fun conditionTypeStartHint(): String {
+        return countryCode.numberFormat.filter { it.isDigit() }
+            .replace(Regex("[0-9]"), HASH_CHAR.toString())
+            .replaceFirst(HASH_CHAR.toString(), String.EMPTY)
     }
 
     @Exclude

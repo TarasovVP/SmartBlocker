@@ -49,7 +49,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:enabled="@{!filter.inValidPhoneNumber}"
-            android:text="@{filter.inValidPhoneNumber ? @string/invalid_phone_number : filter.name}"
+            android:text="@{isAddFilter &amp;&amp; filter.typeFull  &amp;&amp; filter.inValidPhoneNumber ? @string/invalid_phone_number : filter.name}"
             android:textColor="@color/enable_bg_selector"
             app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
             app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"

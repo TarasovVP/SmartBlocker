@@ -175,7 +175,7 @@ open class BaseFilterListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                if(filterList == this@BaseFilterListFragment.filterList) {
+                if(this@BaseFilterListFragment.filterList.isNullOrEmpty().not() && filterList == this@BaseFilterListFragment.filterList) {
                     swipeRefresh?.isRefreshing = false
                     return@safeSingleObserve
                 }

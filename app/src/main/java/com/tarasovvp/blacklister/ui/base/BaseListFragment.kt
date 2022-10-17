@@ -47,16 +47,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
         initView()
         setRecyclerView()
         setSearchViewMenu()
-        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-            Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
-            this@BaseListFragment.getData()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
         if (adapter?.itemCount.orZero() == 0) {
             getData()
+        }
+        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
+            viewLifecycleOwner) {
+            Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
+            this@BaseListFragment.getData()
         }
     }
 
