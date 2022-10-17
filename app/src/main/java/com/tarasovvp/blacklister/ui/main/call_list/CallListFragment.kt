@@ -61,10 +61,10 @@ class CallListFragment :
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
+                (activity as MainActivity).toolbar?.title =
+                    getString(if (checked) R.string.log_list else R.string.blocked_call_log)
                 if (compoundButton.isPressed) {
                     getData()
-                    (activity as MainActivity).toolbar?.title =
-                        getString(if (checked) R.string.log_list else R.string.blocked_call_log)
                 }
             }
             setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
@@ -122,6 +122,10 @@ class CallListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
+                if (callListData == callList) {
+                    swipeRefresh?.isRefreshing = false
+                    return@safeSingleObserve
+                }
                 callList = if (binding?.callListCheck?.isChecked.isTrue()) {
                     callList.orEmpty().plus(callListData).distinct()
                 } else {
@@ -140,6 +144,10 @@ class CallListFragment :
         }
     }
 
+    override fun isFiltered(): Boolean {
+        return false
+    }
+
     override fun searchDataList() {
         Log.e("callTAG", "CallListFragment searchDataList() start")
         (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
@@ -151,7 +159,7 @@ class CallListFragment :
         }.orEmpty()
         Log.e("callTAG",
             "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
-        checkDataListEmptiness(filteredCallList, false)
+        checkDataListEmptiness(filteredCallList.isEmpty())
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList)
         }

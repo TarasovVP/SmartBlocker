@@ -10,7 +10,7 @@ import com.tarasovvp.blacklister.ui.base.BaseViewModel
 
 class FilterListViewModel(application: Application) : BaseViewModel(application) {
 
-    val filterListLiveData = MutableLiveData<List<Filter>?>()
+    val filterListLiveData = MutableLiveData<ArrayList<Filter>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
 
     private val filterRepository = FilterRepository
@@ -20,7 +20,8 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
     fun getFilterList(isBlackList: Boolean) {
         showProgress()
         launch {
-            filterListLiveData.postValue(filterRepository.allFilters(if (isBlackList) BLACK_FILTER else WHITE_FILTER))
+            val filterArrayList = filterRepository.allFilters(if (isBlackList) BLACK_FILTER else WHITE_FILTER) as ArrayList
+            filterListLiveData.postValue(filterArrayList)
             hideProgress()
         }
     }

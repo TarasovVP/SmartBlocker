@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.main.filter_list
 
 import android.util.Log
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.BlackListerApp
@@ -13,6 +14,7 @@ import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.filterDataList
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -71,6 +73,7 @@ open class BaseFilterListFragment :
             recyclerView = filterListRecyclerView
             emptyStateContainer = filterListEmpty
         }
+        binding?.filterListFilter?.isVisible = adapter?.itemCount.orZero() > 0
         setClickListeners()
         setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
             if (BlackListerApp.instance?.isLoggedInUser()
@@ -172,6 +175,10 @@ open class BaseFilterListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
+                if(filterList == this@BaseFilterListFragment.filterList) {
+                    swipeRefresh?.isRefreshing = false
+                    return@safeSingleObserve
+                }
                 this@BaseFilterListFragment.filterList = filterList as ArrayList<Filter>
                 searchDataList()
             }
@@ -187,6 +194,10 @@ open class BaseFilterListFragment :
         }
     }
 
+    override fun isFiltered(): Boolean {
+        return selectedFilterItems.orEmpty().any { it.isSelected }
+    }
+
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredList = filterList?.filter { filter ->
@@ -200,7 +211,7 @@ open class BaseFilterListFragment :
             "FilterList searchDataList filteredList.size ${filteredList.size} selectedFilterItems ${selectedFilterItems?.joinToString()}")
         binding?.filterListFilter?.isInvisible =
             (filteredList.isEmpty() && selectedFilterItems.orEmpty().none { it.isSelected })
-        checkDataListEmptiness(filteredList, selectedFilterItems.orEmpty().any { it.isSelected })
+        checkDataListEmptiness(filteredList.isEmpty())
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList)
         }

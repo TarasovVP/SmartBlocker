@@ -45,12 +45,12 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int,
+        position: Int
     ) {
-        super.onBindViewHolder(holder, position)
         if (holder is FilterAdapter.ViewHolder) {
             holder.bindData(position)
         }
+        super.onBindViewHolder(holder, position)
     }
 
     internal inner class ViewHolder(itemView: View) :

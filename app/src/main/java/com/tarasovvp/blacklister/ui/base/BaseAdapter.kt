@@ -6,12 +6,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
+import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.model.HeaderDataItem
 
 abstract class BaseAdapter<D : BaseAdapter.MainData> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var mData: ArrayList<MainData>? = null
+    var mData: ArrayList<MainData>? = null
 
     override fun getItemViewType(position: Int): Int {
         return if (mData?.get(position) is HeaderData) {
@@ -21,7 +22,7 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int,
+        position: Int
     ) {
         if (holder is BaseAdapter<*>.HeaderViewHolder) {
             holder.bindData(
@@ -42,9 +43,7 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
     }
 
     override fun getItemCount(): Int {
-        return if (mData == null) {
-            0
-        } else {
+        return if (mData.isNull()) { 0 } else {
             mData?.size ?: 0
         }
     }

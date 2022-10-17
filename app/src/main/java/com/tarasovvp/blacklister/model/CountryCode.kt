@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity
 @Parcelize
-open class CountryCode(
+class CountryCode(
     @PrimaryKey var country: String = String.EMPTY,
     var countryCode: String = String.EMPTY,
     var flagEmoji: String = String.EMPTY,

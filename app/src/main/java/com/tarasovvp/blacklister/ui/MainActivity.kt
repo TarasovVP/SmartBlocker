@@ -167,15 +167,6 @@ class MainActivity : AppCompatActivity() {
             }
             Log.e("destinationTAG", "MainActivity return@addOnDestinationChangedListener after")
             toolbar?.menu?.clear()
-            if (navigationScreens.contains(destination.id)) {
-                toolbar?.inflateMenu(R.menu.toolbar_search)
-                toolbar?.setOnMenuItemClickListener { menuItem ->
-                    when (menuItem?.itemId) {
-                        R.id.settings_menu_item -> navController?.navigate(R.id.startSettingsListFragment)
-                    }
-                    return@setOnMenuItemClickListener true
-                }
-            }
             toolbar?.isVisible = destination.id != R.id.onBoardingFragment
         }
     }

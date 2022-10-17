@@ -3,10 +3,12 @@ package com.tarasovvp.blacklister.ui.main.contact_list
 import android.content.Context
 import android.util.Log
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -49,6 +51,7 @@ open class ContactListFragment :
             swipeRefresh = contactListRefresh
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
+            contactListCheck.isVisible = adapter?.itemCount.orZero() > 0
             contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 Log.e("adapterTAG",
                     "ContactListFragment setOnCheckedChangeListener compoundButton.isPressed ${compoundButton.isPressed} checked $checked")
@@ -62,6 +65,10 @@ open class ContactListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+                if(contactList == this@ContactListFragment.contactList) {
+                    swipeRefresh?.isRefreshing = false
+                    return@safeSingleObserve
+                }
                 this@ContactListFragment.contactList = contactList
                 searchDataList()
             }
@@ -74,6 +81,10 @@ open class ContactListFragment :
                 viewModel.getContactList()
             }
         }
+    }
+
+    override fun isFiltered(): Boolean {
+        return binding?.contactListCheck?.isChecked.isTrue()
     }
 
     override fun searchDataList() {
@@ -90,7 +101,7 @@ open class ContactListFragment :
             "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
         binding?.contactListCheck?.isInvisible =
             (filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()).not()
-        checkDataListEmptiness(filteredContactList, binding?.contactListCheck?.isChecked.isTrue())
+        checkDataListEmptiness(filteredContactList.isEmpty())
         viewModel.getHashMapFromContactList(filteredContactList)
     }
 

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -26,27 +27,27 @@ import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : BaseAdapter.MainData> :
     BaseFragment<B, T>() {
 
-    val adapter: BaseAdapter<D>? by lazy { createAdapter() }
+    protected val adapter: BaseAdapter<D>? by lazy { createAdapter() }
 
-    var swipeRefresh: SwipeRefreshLayout? = null
-    var recyclerView: RecyclerView? = null
-    var emptyStateContainer: IncludeEmptyStateBinding? = null
+    protected var swipeRefresh: SwipeRefreshLayout? = null
+    protected var recyclerView: RecyclerView? = null
+    protected var emptyStateContainer: IncludeEmptyStateBinding? = null
     protected var searchQuery: String? = String.EMPTY
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun initView()
     abstract fun searchDataList()
     abstract fun getData()
+    abstract fun isFiltered(): Boolean
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("adapterTAG",
             "BaseListFragment onViewCreated initView adapter $adapter itemCount ${adapter?.itemCount}")
-        setSearchViewMenu()
         initView()
         setRecyclerView()
-        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
-            viewLifecycleOwner) {
+        setSearchViewMenu()
+        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
             Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
             this@BaseListFragment.getData()
         }
@@ -56,14 +57,18 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
         super.onResume()
         if (adapter?.itemCount.orZero() == 0) {
             getData()
-        } else {
-            searchDataList()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding?.root?.hideKeyboard()
     }
 
     private fun setRecyclerView() {
         recyclerView?.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            setHasFixedSize(true)
             this.adapter = this@BaseListFragment.adapter
         }
         swipeRefresh?.setOnRefreshListener {
@@ -74,27 +79,36 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
     }
 
     private fun setSearchViewMenu() {
-        context?.let { SearchView(it) }?.apply {
-            (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.let {
-                it.actionView = this
-                it.isVisible = false
+        (activity as MainActivity).apply {
+            toolbar?.inflateMenu(R.menu.toolbar_search)
+            context?.let { SearchView(it) }?.apply {
+                toolbar?.menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
+                    setQuery(searchQuery, false)
+                    menuItem.actionView = this
+                    menuItem.isVisible = adapter?.itemCount.orZero() > 0
+                    isIconified = searchQuery.isNullOrEmpty()
+                }
+                queryHint = getString(R.string.enter_phone_number)
+                setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
+                    searchQuery = it
+                    searchDataList()
+                })
             }
-            queryHint = getString(R.string.enter_phone_number)
-            setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
-                searchQuery = it
-                searchDataList()
-                context?.hideKeyboard(this)
-            })
+            toolbar?.setOnMenuItemClickListener { menuItem ->
+                when (menuItem?.itemId) {
+                    R.id.settings_menu_item -> findNavController().navigate(R.id.startSettingsListFragment)
+                }
+                return@setOnMenuItemClickListener true
+            }
         }
-
     }
 
-    protected open fun checkDataListEmptiness(newData: List<D>, isFiltered: Boolean) {
+    protected open fun checkDataListEmptiness(isEmpty: Boolean) {
         (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible =
-            searchQuery.isNullOrEmpty().not() || newData.isNotEmpty()
-        emptyStateContainer?.root?.isVisible = newData.isEmpty()
+            searchQuery.isNullOrEmpty().not() || isEmpty.not()
+        emptyStateContainer?.root?.isVisible = isEmpty
         emptyStateContainer?.emptyStateTitle?.text =
-            if (searchQuery.isNullOrEmpty() && isFiltered.not()) when (this) {
+            if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
                 is BlackFilterListFragment -> getString(R.string.black_list_empty_state)
                 is WhiteFilterListFragment -> getString(R.string.white_list_empty_state)
                 is ContactListFragment -> getString(R.string.contact_list_empty_state)
@@ -102,7 +116,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Base
                 else -> String.EMPTY
             } else getString(R.string.no_result_with_list_query)
         emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)
-        if (newData.isEmpty()) {
+        if (isEmpty) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()
         }

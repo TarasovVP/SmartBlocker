@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.model
 
 import android.os.Parcelable
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.blacklister.R
@@ -25,18 +24,23 @@ data class Filter(
     var countryCode: CountryCode = CountryCode(),
     var isFromDb: Boolean = false,
 ) : Parcelable, BaseAdapter.MainData {
-    @get:Exclude var isCheckedForDelete = false
-    @get:Exclude var isDeleteMode = false
-    @get:Exclude var searchText = String.EMPTY
+    @get:Exclude
+    var isCheckedForDelete = false
+    @get:Exclude
+    var isDeleteMode = false
+    @get:Exclude
+    var searchText = String.EMPTY
 
-    @Exclude fun addFilter(): String {
+    @Exclude
+    fun addFilter(): String {
         return when {
             isTypeContain() -> filter
             else -> String.format("%s%s", countryCode.countryCode, filter)
         }
     }
 
-    @Exclude fun filterTypeIcon(): Int {
+    @Exclude
+    fun filterTypeIcon(): Int {
         return when (filterType) {
             BLACK_FILTER -> R.drawable.ic_block
             WHITE_FILTER -> R.drawable.ic_accepted
@@ -44,42 +48,59 @@ data class Filter(
         }
     }
 
-    @Exclude fun conditionTypeFullHint(): String {
+    @Exclude
+    fun conditionTypeFullHint(): String {
         return countryCode.numberFormat.replace(Regex("[0-9]"), HASH_CHAR.toString())
     }
 
-    @Exclude fun conditionTypeIcon(): Int {
+    @Exclude
+    fun conditionTypeIcon(): Int {
         return Condition.getIconByIndex(conditionType)
     }
 
-    @Exclude fun filterToInput(): String {
+    @Exclude
+    fun filterToInput(): String {
         return if (filter.getPhoneNumber(countryCode.country)
                 .isNull()
         ) filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
     }
 
-    @Exclude fun isInValidPhoneNumber(): Boolean {
+    @Exclude
+    fun isInValidPhoneNumber(): Boolean {
         return (isTypeFull() && filter.isValidPhoneNumber(countryCode.country)
             .not()) || (isTypeStart().not() && filter.isEmpty())
     }
 
-    @Exclude fun isTypeStart(): Boolean {
+    @Exclude
+    fun isTypeStart(): Boolean {
         return conditionType == Condition.CONDITION_TYPE_START.index
     }
 
-    @Exclude fun isTypeFull(): Boolean {
+    @Exclude
+    fun isTypeFull(): Boolean {
         return conditionType == Condition.CONDITION_TYPE_FULL.index
     }
 
-    @Exclude fun isTypeContain(): Boolean {
+    @Exclude
+    fun isTypeContain(): Boolean {
         return conditionType == Condition.CONDITION_TYPE_CONTAIN.index
     }
 
-    @Exclude fun isBlackFilter(): Boolean {
+    @Exclude
+    fun isBlackFilter(): Boolean {
         return filterType == BLACK_FILTER
     }
 
-    @Exclude fun isWhiteFilter(): Boolean {
+    @Exclude
+    fun isWhiteFilter(): Boolean {
         return filterType == WHITE_FILTER
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is Filter) {
+            this.filter == other.filter && this.conditionType == other.conditionType && this.filterType == other.filterType
+        } else {
+            false
+        }
     }
 }
