@@ -3,12 +3,15 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
+import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.CountryCodeRepository
 import com.tarasovvp.blacklister.repository.FilterRepository
+import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -19,49 +22,55 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     private val contactRepository = ContactRepository
     private val countryCodeRepository = CountryCodeRepository
 
-    val existFilterLiveData = MutableLiveData<Int>()
+    val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
+    val mainDataListLiveData = MutableLiveData<List<BaseAdapter.MainData>>()
     val insertFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
-    val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
-    val contactLiveData = MutableLiveData<List<Contact>>()
-
-    fun checkFilterExist(filter: Filter) {
-        Log.e("filterAddTAG", "AddViewModel checkFilterExist filter $filter")
-        showProgress()
-        launch {
-            val existingFilter = filterRepository.getFilter(filter)
-            Log.e("filterAddTAG", "AddViewModel checkFilterExist existingFilter $existingFilter")
-            existFilterLiveData.postValue(existingFilter?.filterType)
-            hideProgress()
-        }
-    }
 
     fun getCountryCodeAndContactsData() {
         launch {
             val countryCode = async { countryCodeRepository.getAllCountryCodes() }
             val contacts = async { contactRepository.getAllContacts() }
-            awaitAll(countryCode, contacts)
-            val countryCodeList = countryCode.await()
-            val contactList = contacts.await()
+            val filters = async { filterRepository.allFilters() }
+            awaitAll(countryCode, contacts, filters)
+            val countryCodeList = countryCode.await().orEmpty()
+            val contactList = contacts.await().orEmpty()
+            val filterList = filters.await().orEmpty()
             Log.e("filterAddTAG",
-                "AddViewModel getCountryCodeAndContactsData countryCodeList?.size ${countryCodeList?.size} contactList?.size ${contactList?.size}")
-            countryCodeList?.apply {
-                countryCodeListLiveData.postValue(this)
+                "AddViewModel getCountryCodeAndContactsData countryCodeList?.size ${countryCodeList.size} contactList?.size ${contactList?.size}")
+            countryCodeListLiveData.postValue(countryCodeList)
+            val mainDataList = ArrayList<BaseAdapter.MainData>().apply {
+                addAll(contactList)
+                addAll(filterList)
             }
-            contactList?.apply {
-                contactLiveData.postValue(this)
-            }
+            mainDataList.sortBy { when (it) {
+                is Contact -> it.trimmedPhone.replace(PLUS_CHAR.toString(), String.EMPTY)
+                is Filter -> it.filter.replace(PLUS_CHAR.toString(), String.EMPTY)
+                else -> String.EMPTY
+            } }
+            mainDataListLiveData.postValue(mainDataList)
         }
     }
 
     fun getContactsData() {
         launch {
-            val contactList = contactRepository.getAllContacts()
-            Log.e("filterAddTAG",
-                "AddViewModel getContactsData contactList?.size ${contactList?.size}")
-            contactList?.apply {
-                contactLiveData.postValue(this)
+            val contacts = async { contactRepository.getAllContacts() }
+            val filters = async { filterRepository.allFilters() }
+            awaitAll(contacts, filters)
+            val contactList = contacts.await().orEmpty()
+            val filterList = filters.await().orEmpty()
+            val mainDataList = ArrayList<BaseAdapter.MainData>().apply {
+                addAll(contactList)
+                addAll(filterList)
             }
+            mainDataList.sortBy { when (it) {
+                is Contact -> it.trimmedPhone.replace(PLUS_CHAR.toString(), String.EMPTY)
+                is Filter -> it.filter.replace(PLUS_CHAR.toString(), String.EMPTY)
+                else -> String.EMPTY
+            } }
+            Log.e("filterAddTAG",
+                "AddViewModel getContactsData contactList?.size ${mainDataList.size}")
+            mainDataListLiveData.postValue(mainDataList)
         }
     }
 

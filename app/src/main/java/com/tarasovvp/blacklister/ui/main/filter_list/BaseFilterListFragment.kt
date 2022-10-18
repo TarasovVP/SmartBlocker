@@ -59,10 +59,13 @@ open class BaseFilterListFragment :
     }
 
     override fun initView() {
+        Log.e("adapterTAG", "FilterListFragment initView selectedFilterItems $selectedFilterItems")
         findNavController().currentDestination?.label =
             getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
-        selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList())
+        selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList().apply {
+            forEach { it.isSelected = false }
+        })
         binding?.filterListFilter?.text =
             if (selectedFilterItems.orEmpty()
                     .any { it.isSelected }

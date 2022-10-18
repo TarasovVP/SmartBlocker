@@ -33,16 +33,12 @@ data class Contact(
         }
     }
 
+    fun avatar(): Int {
+        return R.drawable.ic_avatar
+    }
+
     fun isBlackFilter(): Boolean {
         return filterType == BLACK_FILTER
-    }
-
-    fun isWhiteFilter(): Boolean {
-        return filterType == WHITE_FILTER
-    }
-
-    fun highLightedSearchedText(): Boolean {
-        return filterType == WHITE_FILTER
     }
 
     fun nameInitial(): String {

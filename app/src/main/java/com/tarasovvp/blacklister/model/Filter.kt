@@ -37,7 +37,7 @@ data class Filter(
     fun addFilter(): String {
         return when {
             isTypeContain() -> filter
-            else -> String.format("%s%s", countryCode.countryCode, filter)
+            else -> String.format("%s%s", countryCode.countryCode, filterToInput())
         }
     }
 
@@ -69,9 +69,7 @@ data class Filter(
 
     @Exclude
     fun filterToInput(): String {
-        return if (filter.getPhoneNumber(countryCode.country)
-                .isNull()
-        ) filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
+        return if (filter.getPhoneNumber(countryCode.country).isNull()) filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
     }
 
     @Exclude
@@ -111,5 +109,12 @@ data class Filter(
         } else {
             false
         }
+    }
+
+    override fun hashCode(): Int {
+        var result = filter.hashCode()
+        result = 31 * result + conditionType
+        result = 31 * result + filterType
+        return result
     }
 }

@@ -11,8 +11,11 @@ interface FilterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFilter(filter: Filter)
 
+    @Query("SELECT * FROM filter")
+    suspend fun allFilters(): List<Filter>
+
     @Query("SELECT * FROM filter WHERE filterType = :filterType")
-    suspend fun allFilters(filterType: Int): List<Filter>
+    suspend fun allFiltersByType(filterType: Int): List<Filter>
 
     @Query("SELECT * FROM filter WHERE filter = :filter AND conditionType = :type")
     suspend fun getFilter(filter: String, type: Int): Filter?

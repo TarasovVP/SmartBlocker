@@ -71,8 +71,8 @@
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_15"
-            android:digits="0123456789+"
-            android:inputType="phone"
+            android:digits="0123456789"
+            android:inputType="numberDecimal"
             android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : filter.typeStart ? filter.conditionTypeStartHint() : @string/enter_filter}"
             app:text="@{filter.filterToInput()}"
             app:filterToInput="@{filterToInput}"
@@ -85,7 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
-            android:text="@{filter.fromDb ? @string/delete_menu : @string/add}"
             android:enabled="@{!filter.inValidPhoneNumber}"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 

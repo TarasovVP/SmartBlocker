@@ -22,8 +22,12 @@ object FilterRepository {
         filterDao?.insertAllFilters(filterList)
     }
 
-    suspend fun allFilters(filterType: Int): List<Filter>? {
-        return filterDao?.allFilters(filterType)
+    suspend fun allFilters(): List<Filter>? {
+        return filterDao?.allFilters()
+    }
+
+    suspend fun allFiltersByType(filterType: Int): List<Filter>? {
+        return filterDao?.allFiltersByType(filterType)
     }
 
     suspend fun getFilter(filter: Filter): Filter? {
