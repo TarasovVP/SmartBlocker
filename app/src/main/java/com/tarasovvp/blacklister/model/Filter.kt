@@ -44,8 +44,8 @@ data class Filter(
     @Exclude
     fun filterTypeIcon(): Int {
         return when (filterType) {
-            BLACK_FILTER -> R.drawable.ic_block
-            WHITE_FILTER -> R.drawable.ic_accepted
+            BLACK_FILTER -> R.drawable.ic_black_filter
+            WHITE_FILTER -> R.drawable.ic_white_filter
             else -> 0
         }
     }

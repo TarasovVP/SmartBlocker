@@ -162,4 +162,5 @@
     <string name="unavailable_network">Отсутстует интернет соединение.\nДля продолжения подключите интернет и перезайдите в приложение.</string>
     <string name="unavailable_network_repeat">Отсутстует интернет соединение.\nДля продолжения подключите интернет и повторите действие.</string>
     <string name="blocked_call_log">Заблокированные</string>
+    <string name="invalid">Невалидный</string>
 </resources>

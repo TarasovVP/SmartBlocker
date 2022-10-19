@@ -19,6 +19,7 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
+import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.*
@@ -115,7 +116,7 @@ open class FilterAddFragment :
                     icon = ContextCompat.getDrawable(context,
                         if (binding?.filter?.isBlackFilter()
                                 .isTrue()
-                        ) R.drawable.ic_white_filter else R.drawable.ic_block)
+                        ) R.drawable.ic_black_to_white_filter else R.drawable.ic_white_to_black_filter)
                     setOnMenuItemClickListener {
                         findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(
                             binding?.filter))
@@ -197,24 +198,23 @@ open class FilterAddFragment :
                 else -> false
             })
         }
-        contactAdapter?.searchQueryMap =
-            searchQuery to binding?.filter?.countryCode?.countryCode.orEmpty()
-        filteredContactList?.let { contactList ->
+        contactAdapter?.searchQueryMap = searchQuery to binding?.filter?.countryCode?.countryCode.orEmpty()
+        val existingFilter = filteredContactList?.find { (it is Filter) && it.filter == binding?.filter?.addFilter() && it.conditionType == binding?.filter?.conditionType } as? Filter
+        val addFilterState = when (existingFilter?.filterType) {
+            null -> if (binding?.filter?.isInValidPhoneNumber().isTrue()) AddFilterState.ADD_FILTER_INVALID else AddFilterState.ADD_FILTER_ADD
+            binding?.filter?.filterType -> AddFilterState.ADD_FILTER_DELETE
+            else -> AddFilterState.ADD_FILTER_CHANGE
+        }
+        binding?.filterAddSubmit?.text = getString(addFilterState.title)
+        binding?.filterAddSubmit?.setTextColor(context?.let { ContextCompat.getColorStateList(it, addFilterState.color) })
+        binding?.filterAddSubmit?.strokeColor = context?.let { ContextCompat.getColorStateList(it, addFilterState.color) }
+        filteredContactList?.toMutableList()?.moveToFirst(existingFilter)?.let { contactList ->
             contactAdapter?.clearData()
             contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
             contactAdapter?.notifyDataSetChanged()
         }
-        val existingFilter =
-            filteredContactList?.find { (it is Filter) && it.filter == binding?.filter?.addFilter() && it.conditionType == binding?.filter?.conditionType } as? Filter
-        val buttonText = when (existingFilter?.filterType) {
-            null -> R.string.add
-            binding?.filter?.filterType -> R.string.delete_menu
-            else -> R.string.change
-        }
-        binding?.filterAddSubmit?.text = getString(buttonText)
         binding?.filterAddContactList?.isVisible = filteredContactList.isNullOrEmpty().not()
-        binding?.filterAddEmptyList?.emptyStateContainer?.isVisible =
-            filteredContactList.isNullOrEmpty()
+        binding?.filterAddEmptyList?.emptyStateContainer?.isVisible = filteredContactList.isNullOrEmpty()
         binding?.filterAddEmptyList?.emptyStateTitle?.text =
             getString(R.string.no_result_with_list_query)
         Log.e("filterAddTAG",

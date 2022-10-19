@@ -11,7 +11,6 @@ import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
     block: suspend CoroutineScope.() -> Unit,
@@ -81,4 +80,13 @@ fun Context.dpToPx(dp: Float): Float {
 
 fun Context.spToPx(sp: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
+}
+
+fun <T> MutableList<T>.moveToFirst(item: T?): MutableList<T>  {
+    if (item == null) return this
+    val currentIndex = indexOf(item)
+    if (currentIndex < 0) return this
+    removeAt(currentIndex)
+    add(0, item)
+    return this
 }
