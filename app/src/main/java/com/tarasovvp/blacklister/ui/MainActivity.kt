@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui
 
+import android.animation.Animator
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -90,9 +92,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Blacklister)
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding?.mainSplash?.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(p0: Animator?) {
+            }
+            override fun onAnimationEnd(p0: Animator?) {
+                binding?.mainSplash?.isVisible = false
+                binding?.mainContainer?.isVisible = true
+            }
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+            override fun onAnimationRepeat(p0: Animator?) {
+            }
+        })
         setNavController()
         setToolBar()
         setBottomNavigationView()

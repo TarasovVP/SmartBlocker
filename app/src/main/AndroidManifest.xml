@@ -20,9 +20,8 @@
         android:name="com.tarasovvp.blacklister.BlackListerApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Blacklister.Launcher"
+        android:theme="@style/Theme.Blacklister"
         tools:ignore="AllowBackup"
-
         android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
             android:name="com.tarasovvp.blacklister.ui.MainActivity"

@@ -30,7 +30,11 @@ abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
 
     private fun checkBottomBarVisibility() {
         (activity as MainActivity).apply {
-            bottomNavigationView?.isVisible = navigationScreens.contains(findNavController().currentDestination?.id)
+            bottomNavigationView?.isVisible = try {
+                navigationScreens.contains(findNavController().currentDestination?.id)
+            } catch (e: Exception) {
+                false
+            }
         }
     }
 
