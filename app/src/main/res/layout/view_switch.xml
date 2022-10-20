@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="@dimen/margin_10"
-            android:background="@color/grey"
+            android:background="@color/nobel"
             app:layout_constraintTop_toBottomOf="@+id/view_switch_info" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

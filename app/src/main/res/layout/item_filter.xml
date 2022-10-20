@@ -4,10 +4,8 @@
 
     <data>
 
+        <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
-        <variable
-            name="isAddFilter"
-            type="Boolean" />
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -48,9 +46,8 @@
             android:layout_marginHorizontal="@dimen/margin_16"
             android:ellipsize="end"
             android:maxLines="1"
-            android:enabled="@{!filter.inValidPhoneNumber}"
-            android:text="@{isAddFilter &amp;&amp; filter.typeFull  &amp;&amp; filter.inValidPhoneNumber ? @string/invalid_phone_number : filter.name}"
-            android:textColor="@color/enable_bg_selector"
+            android:text="@{filter.name}"
+            android:textColor="@{filter.addFilterState == null ? @color/main_color : ContextCompat.getColor(context, filter.addFilterState.color)}"
             app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
             app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
             app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
@@ -68,7 +65,8 @@
             app:layout_constraintEnd_toEndOf="@+id/item_filter_type_title"
             app:layout_constraintStart_toStartOf="@id/item_filter_type_title"
             app:layout_constraintTop_toBottomOf="@+id/item_filter_type_title"
-            app:mainText="@{isAddFilter ? filter.addFilter : filter.filter}"
+            android:textColor="@{filter.addFilterState == null ? @color/main_color : ContextCompat.getColor(context, filter.addFilterState.color)}"
+            app:mainText="@{filter.addFilterState == null  ? filter.filter : filter.addFilter}"
             app:searchText="@{filter.searchText}" />
 
         <CheckBox

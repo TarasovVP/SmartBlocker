@@ -1,6 +1,5 @@
 package com.tarasovvp.blacklister.ui.main.filter_add
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -39,14 +38,11 @@ open class FilterAddFragment :
     private var mainDataList: List<BaseAdapter.MainData>? = null
     private var countryCodeList: ArrayList<CountryCode>? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (context as MainActivity).setMainProgressVisibility(true)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.filter = args.filter
+        binding?.filter = args.filter?.apply {
+            addFilterState = AddFilterState.ADD_FILTER_INVALID
+        }
         setToolbar()
         setClickListeners()
         setFilterTextChangeListener()
@@ -68,7 +64,7 @@ open class FilterAddFragment :
                         phone.getPhoneNumber(binding?.filter?.countryCode?.country.orEmpty())
                     binding?.filterToInput = true
                     Log.e("filterAddTAG",
-                        "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber filterToInput ${binding?.filterToInput}")
+                        "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
                     if ((phoneNumber?.nationalNumber.toString() == filterAddInput.getRawText() && String.format(
                             COUNTRY_CODE_START,
                             phoneNumber?.countryCode.toString()) == filterAddCountryCodeValue.text.toString()).not()
@@ -85,7 +81,7 @@ open class FilterAddFragment :
                     }
                 }
                 Log.e("filterAddTAG",
-                    "BaseAddFragment ContactFilterAdapter contactClick contact $phone filterToInput ${binding?.filterToInput}")
+                    "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
             }
             binding?.filterAddContactList?.adapter = contactAdapter
         }
@@ -93,8 +89,9 @@ open class FilterAddFragment :
 
     private fun setFragmentResultListeners() {
         setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
-            binding?.filter?.filterType =
-                if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
+            binding?.filter = binding?.filter?.apply {
+                filterType = if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
+            }
             filterContactList(binding?.filter?.filter.orEmpty())
             setToolbar()
         }
@@ -198,25 +195,26 @@ open class FilterAddFragment :
                 else -> false
             })
         }
-        contactAdapter?.searchQueryMap = searchQuery to binding?.filter?.countryCode?.countryCode.orEmpty()
-        val existingFilter = filteredContactList?.find { (it is Filter) && it.filter == binding?.filter?.addFilter() && it.conditionType == binding?.filter?.conditionType } as? Filter
-        val addFilterState = when (existingFilter?.filterType) {
-            null -> if (binding?.filter?.isInValidPhoneNumber().isTrue()) AddFilterState.ADD_FILTER_INVALID else AddFilterState.ADD_FILTER_ADD
-            binding?.filter?.filterType -> AddFilterState.ADD_FILTER_DELETE
-            else -> AddFilterState.ADD_FILTER_CHANGE
+        binding?.apply {
+            contactAdapter?.searchQueryMap = searchQuery to filter?.countryCode?.countryCode.orEmpty()
+            val existingFilter = filteredContactList?.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
+            filter?.addFilterState = when (existingFilter?.filterType) {
+                null -> if (filter?.isInValidPhoneNumber().isTrue()) AddFilterState.ADD_FILTER_INVALID else AddFilterState.ADD_FILTER_ADD
+                filter?.filterType -> AddFilterState.ADD_FILTER_DELETE
+                else -> AddFilterState.ADD_FILTER_CHANGE
+            }
+            filteredContactList?.toMutableList()?.moveToFirst(existingFilter?.apply {
+                addFilterState = binding?.filter?.addFilterState
+            })?.let { contactList ->
+                contactAdapter?.clearData()
+                contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
+                contactAdapter?.notifyDataSetChanged()
+            }
+            filterAddContactList.isVisible = filteredContactList.isNullOrEmpty().not()
+            filterAddEmptyList.emptyStateContainer.isVisible = filteredContactList.isNullOrEmpty()
+            filterAddEmptyList.emptyStateTitle.text =
+                getString(R.string.no_result_with_list_query)
         }
-        binding?.filterAddSubmit?.text = getString(addFilterState.title)
-        binding?.filterAddSubmit?.setTextColor(context?.let { ContextCompat.getColorStateList(it, addFilterState.color) })
-        binding?.filterAddSubmit?.strokeColor = context?.let { ContextCompat.getColorStateList(it, addFilterState.color) }
-        filteredContactList?.toMutableList()?.moveToFirst(existingFilter)?.let { contactList ->
-            contactAdapter?.clearData()
-            contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
-            contactAdapter?.notifyDataSetChanged()
-        }
-        binding?.filterAddContactList?.isVisible = filteredContactList.isNullOrEmpty().not()
-        binding?.filterAddEmptyList?.emptyStateContainer?.isVisible = filteredContactList.isNullOrEmpty()
-        binding?.filterAddEmptyList?.emptyStateTitle?.text =
-            getString(R.string.no_result_with_list_query)
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList?.size}")
     }

@@ -15,7 +15,7 @@
         <item name="android:windowBackground">@drawable/ic_splash</item>
         <item name="android:textColor">@color/main_color</item>
         <item name="android:editTextColor">@color/main_color</item>
-        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColorHint">@color/nobel</item>
         <item name="colorControlNormal">@color/main_color</item>
         <item name="colorOnSurface">@color/main_color</item>
         <!-- Customize your theme here. -->
@@ -34,8 +34,8 @@
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="strokeWidth">@dimen/margin_2</item>
-        <item name="strokeColor">@color/enable_bg_selector</item>
-        <item name="android:textColor">@color/enable_bg_selector</item>
+        <item name="strokeColor">@color/main_color</item>
+        <item name="android:textColor">@color/main_color</item>
     </style>
 
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">

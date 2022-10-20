@@ -62,40 +62,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/main_progress_bar_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/progress_bg"
-                android:clickable="true"
-                android:elevation="@dimen/margin_10"
-                android:focusable="true"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/main_progress_bar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_16"
-                    android:text="@string/progress_title"
-                    app:layout_constraintBottom_toTopOf="@+id/main_progress_bar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/main_progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/progress" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/main_progress_bar"
+                layout="@layout/include_main_progress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

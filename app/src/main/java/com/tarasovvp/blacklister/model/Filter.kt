@@ -9,6 +9,7 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
+import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -33,13 +34,8 @@ data class Filter(
     @get:Exclude
     var searchText = String.EMPTY
 
-    @Exclude
-    fun addFilter(): String {
-        return when {
-            isTypeContain() -> filter
-            else -> String.format("%s%s", countryCode.countryCode, filterToInput())
-        }
-    }
+    @get:Exclude
+    var addFilterState: AddFilterState? = null
 
     @Exclude
     fun filterTypeIcon(): Int {
@@ -65,6 +61,21 @@ data class Filter(
     @Exclude
     fun conditionTypeIcon(): Int {
         return Condition.getIconByIndex(conditionType)
+    }
+
+    @Exclude
+    fun addFilter(): String {
+        return when {
+            isTypeContain() -> filter
+            else -> String.format("%s%s", countryCode.countryCode, filterToInput())
+        }
+    }
+
+    @Exclude
+    fun addFilterStateIcon() = when (addFilterState) {
+        AddFilterState.ADD_FILTER_INVALID -> if (isBlackFilter()) R.drawable.ic_black_filter_inactive else R.drawable.ic_white_filter_inactive
+        AddFilterState.ADD_FILTER_CHANGE -> if (isBlackFilter()) R.drawable.ic_black_to_white_filter else R.drawable.ic_white_to_black_filter
+        else -> filterTypeIcon()
     }
 
     @Exclude

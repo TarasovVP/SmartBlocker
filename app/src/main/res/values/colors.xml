@@ -7,7 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="grey">#989595</color>
     <color name="blue">#267DFF</color>
     <color name="progress_bg">#80000000</color>
     <color name="disable_color">#32989595</color>
@@ -18,6 +17,8 @@
     <color name="tangaroa">#1C2739</color>
     <color name="neon_blue">#2C3AFA</color>
     <color name="lavender">#F7F8FD</color>
+    <color name="haiti_50">#80211F2E</color>
+    <color name="nobel">#989595</color>
 
     //custom project colors
     <color name="main_color">@color/midnight_blue</color>

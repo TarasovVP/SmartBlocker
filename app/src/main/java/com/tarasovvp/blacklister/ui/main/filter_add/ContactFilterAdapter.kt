@@ -63,6 +63,10 @@ class ContactFilterAdapter(private val contactClick: (String) -> Unit) : BaseAda
 
         fun bindData(position: Int) {
             val mainData = getDataInPosition(position)
+            if (mainData is Filter) {
+                Log.e("filterAddTAG",
+                    "ContactFilterAdapter filter ${mainData.filter} addFilterState ${mainData.addFilterState}")
+            }
             Log.e("filterAddTAG",
                 "ContactFilterAdapter bindData mainData is Contact ${mainData is Contact} mainData is Filter ${mainData is Filter} mainData $mainData searchQuery $searchQueryMap")
             DataBindingUtil.bind<ItemContactFilterBinding>(itemView)?.apply {
