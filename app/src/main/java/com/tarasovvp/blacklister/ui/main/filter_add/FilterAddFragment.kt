@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
@@ -125,14 +126,16 @@ open class FilterAddFragment :
     }
 
     private fun setFilterTextChangeListener() {
-        binding?.filterAddInput?.doAfterTextChanged {
-            binding?.filterToInput = false
-            binding?.filter = binding?.filter?.apply {
-                filter =
-                    if (this.isTypeFull() || this.isTypeStart()) binding?.filterAddInput?.getRawText()
-                        .orEmpty()
-                    else binding?.filterAddInput.inputText()
-                filterContactList(this.filter)
+        binding?.apply {
+            this.root.context.hideKeyboardWithLayoutTouch(container)
+            this.root.context.hideKeyboardWithLayoutTouch(filterAddContactList)
+            this.root.context.hideKeyboardWithLayoutTouch(filterAddCountryCodeSpinner)
+            filterAddInput.doAfterTextChanged {
+                filterToInput = false
+                filter = filter?.apply {
+                    filter = if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
+                    filterContactList(this.filter)
+                }
             }
         }
     }
@@ -145,14 +148,11 @@ open class FilterAddFragment :
                     icon = R.drawable.ic_logo))
             }
             filterAddSubmit.setSafeOnClickListener {
-                if (BlackListerApp.instance?.isLoggedInUser()
-                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
-                ) {
+                if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
-                    if (filterAddSubmit.text == getString(R.string.delete_menu)) {
-                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(
-                            filter))
+                    if (filter?.addFilterState == AddFilterState.ADD_FILTER_DELETE) {
+                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(filter))
                     } else {
                         filter?.filter = filter?.addFilter().orEmpty()
                         filter?.let { viewModel.insertFilter(it) }

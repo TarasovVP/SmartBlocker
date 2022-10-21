@@ -9,21 +9,17 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.widget.AppCompatEditText
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
-import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.isNull
-import com.tarasovvp.blacklister.extensions.orZero
+import com.tarasovvp.blacklister.extensions.*
 
 class MaskedEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
 ) : AppCompatEditText(context, attrs), TextWatcher {
 
-    private val onEditorActionListener =
-        OnEditorActionListener { _: TextView?, _: Int, _: KeyEvent? -> true }
     private var focusChangeListener: OnFocusChangeListener? = null
 
     private var mask: String? = String.EMPTY
@@ -42,7 +38,13 @@ class MaskedEditText @JvmOverloads constructor(
     private var allowedChars: String? = null
 
     init {
-        setOnEditorActionListener(onEditorActionListener)
+        setOnEditorActionListener(OnEditorActionListener{ _: TextView?, action: Int, _: KeyEvent? ->
+            if (action == EditorInfo.IME_ACTION_DONE) {
+                this.hideKeyboard()
+                return@OnEditorActionListener true
+            }
+            false
+        })
         addTextChangedListener(this)
     }
 

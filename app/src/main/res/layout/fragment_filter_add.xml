@@ -18,6 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/container"
         android:animateLayoutChanges="true"
         android:padding="@dimen/padding_16">
 
@@ -72,6 +73,7 @@
             android:layout_marginTop="@dimen/margin_15"
             android:digits="0123456789"
             android:inputType="numberDecimal"
+            android:imeOptions="actionDone"
             android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : filter.typeStart ? filter.conditionTypeStartHint() : @string/enter_filter}"
             app:text="@{filter.filterToInput()}"
             app:filterToInput="@{filterToInput}"
@@ -84,6 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
+            android:enabled="@{!filter.inValidAddFilterState}"
             android:text="@{filter.addFilterState.title}"
             android:textColor="@{ContextCompat.getColor(context, filter.addFilterState.color)}"
             app:strokeColor="@{ContextCompat.getColor(context, filter.addFilterState.color)}"

@@ -3,8 +3,11 @@ package com.tarasovvp.blacklister.ui.start.login
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -18,9 +21,7 @@ import com.tarasovvp.blacklister.constants.Constants.EMAIL
 import com.tarasovvp.blacklister.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.blacklister.constants.Constants.SERVER_CLIENT_ID
 import com.tarasovvp.blacklister.databinding.FragmentLoginBinding
-import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.inputText
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
@@ -45,7 +46,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setOnButtonsClick()
+        setOnClickListeners()
+        setLoginButton(binding?.container?.getViewsFromLayout(EditText::class.java))
+        (binding?.root as? ViewGroup)?.let { context?.hideKeyboardWithLayoutTouch(it) }
         setFragmentResultListener(FORGOT_PASSWORD) { _, bundle ->
             val email = bundle.getString(EMAIL, String.EMPTY)
             if (email.isNotEmpty()) {
@@ -56,18 +59,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         }
     }
 
-    private fun setOnButtonsClick() {
+    private fun setOnClickListeners() {
         binding?.apply {
-            loginContinue.setSafeOnClickListener {
-                if (loginEmailInput.inputText().isEmpty() || loginPasswordInput.inputText()
-                        .isEmpty()
-                ) {
-                    showMessage(getString(R.string.enter_login_password), true)
-                } else {
-                    viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
-                        loginPasswordInput.inputText())
-                }
-            }
             loginContinueWithoutAcc.setSafeOnClickListener {
                 (activity as MainActivity).apply {
                     getAllData()
@@ -83,6 +76,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             }
             loginGoogleAuth.setSafeOnClickListener {
                 googleSignInLauncher.launch(googleSignInClient?.signInIntent)
+            }
+        }
+    }
+
+    private fun setLoginButton(editTextList: ArrayList<EditText>?) {
+        binding?.apply {
+            loginContinue.isEnabled = editTextList?.none { it.text.isNullOrEmpty() }.isTrue()
+            editTextList?.onEach { editText ->
+                editText.doAfterTextChanged {
+                    loginContinue.isEnabled = editTextList.none { it.text.isNullOrEmpty() }.isTrue()
+                } }
+            loginContinue.setSafeOnClickListener {
+                viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
+                    loginPasswordInput.inputText())
             }
         }
     }

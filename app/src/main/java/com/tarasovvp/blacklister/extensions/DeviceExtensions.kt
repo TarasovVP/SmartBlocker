@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.extensions
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -118,4 +120,12 @@ fun Context.setAppLocale(language: String): Context {
 fun View.hideKeyboard() {
     val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)
+}
+
+@SuppressLint("ClickableViewAccessibility")
+fun Context.hideKeyboardWithLayoutTouch(view: ViewGroup) {
+    view.setOnTouchListener { v, event ->
+        view.hideKeyboard()
+        v?.onTouchEvent(event) ?: true
+    }
 }

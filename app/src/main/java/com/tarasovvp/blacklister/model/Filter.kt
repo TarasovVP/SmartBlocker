@@ -90,6 +90,11 @@ data class Filter(
     }
 
     @Exclude
+    fun isInValidAddFilterState(): Boolean {
+        return addFilterState == AddFilterState.ADD_FILTER_INVALID
+    }
+
+    @Exclude
     fun isTypeStart(): Boolean {
         return conditionType == Condition.CONDITION_TYPE_START.index
     }
