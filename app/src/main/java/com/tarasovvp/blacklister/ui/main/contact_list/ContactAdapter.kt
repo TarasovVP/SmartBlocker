@@ -63,6 +63,7 @@ class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<C
                 root.setSafeOnClickListener {
                     contact.phone.let { contactClick.invoke(it) }
                 }
+                executePendingBindings()
                 Log.e("adapterTAG",
                     "ContactAdapter bindData itemView $itemView contact $contact")
             }

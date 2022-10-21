@@ -84,6 +84,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                     callClickListener.onCallDeleteCheckChange(call)
                 }
                 this.call = call
+                executePendingBindings()
             }
         }
     }

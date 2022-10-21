@@ -80,6 +80,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                     filter.isCheckedForDelete = checked
                     filterClickListener.onFilterDeleteCheckChange(filter)
                 }
+                executePendingBindings()
                 Log.e("adapterTAG",
                     "FilterAdapter bindData position $position itemView $itemView")
             }

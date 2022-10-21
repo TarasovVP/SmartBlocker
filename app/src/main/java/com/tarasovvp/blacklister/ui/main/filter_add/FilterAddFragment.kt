@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
@@ -35,8 +34,8 @@ open class FilterAddFragment :
     override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
 
-    private var contactAdapter: ContactFilterAdapter? = null
-    private var mainDataList: List<BaseAdapter.MainData>? = null
+    private var contactFilterAdapter: ContactFilterAdapter? = null
+    private var contactFilterList: ArrayList<BaseAdapter.MainData> = ArrayList()
     private var countryCodeList: ArrayList<CountryCode>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,8 +57,8 @@ open class FilterAddFragment :
     }
 
     private fun setContactAdapter() {
-        if (contactAdapter.isNull()) {
-            contactAdapter = ContactFilterAdapter { phone ->
+        if (contactFilterAdapter.isNull()) {
+            contactFilterAdapter = ContactFilterAdapter(contactFilterList) { phone ->
                 binding?.apply {
                     val phoneNumber =
                         phone.getPhoneNumber(binding?.filter?.countryCode?.country.orEmpty())
@@ -84,7 +83,7 @@ open class FilterAddFragment :
                 Log.e("filterAddTAG",
                     "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
             }
-            binding?.filterAddContactList?.adapter = contactAdapter
+            binding?.filterAddContactList?.adapter = contactFilterAdapter
         }
     }
 
@@ -173,8 +172,8 @@ open class FilterAddFragment :
             mainDataListLiveData.safeSingleObserve(viewLifecycleOwner) { mainDataList ->
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData filterListLiveData filterList.size ${mainDataList.size}")
-                this@FilterAddFragment.mainDataList = mainDataList
-                contactAdapter?.setHeaderAndData(mainDataList, HeaderDataItem())
+                this@FilterAddFragment.contactFilterList = ArrayList(mainDataList)
+                contactFilterAdapter?.contactFilterList = this@FilterAddFragment.contactFilterList
                 viewModel.hideMainProgress()
             }
             insertFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
@@ -188,7 +187,7 @@ open class FilterAddFragment :
     }
 
     private fun filterContactList(searchQuery: String) {
-        val filteredContactList = mainDataList?.filter { mainData ->
+        val filteredContactList = contactFilterList?.filter { mainData ->
             (when (mainData) {
                 is Contact -> mainData.trimmedPhone.contains(searchQuery).isTrue()
                 is Filter -> mainData.filter.contains(searchQuery).isTrue()
@@ -196,27 +195,26 @@ open class FilterAddFragment :
             })
         }
         binding?.apply {
-            contactAdapter?.searchQueryMap = searchQuery to filter?.countryCode?.countryCode.orEmpty()
-            val existingFilter = filteredContactList?.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
+            contactFilterAdapter?.searchQueryMap = searchQuery to filter?.countryCode?.countryCode.orEmpty()
+            val existingFilter = filteredContactList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
             filter?.addFilterState = when (existingFilter?.filterType) {
                 null -> if (filter?.isInValidPhoneNumber().isTrue()) AddFilterState.ADD_FILTER_INVALID else AddFilterState.ADD_FILTER_ADD
                 filter?.filterType -> AddFilterState.ADD_FILTER_DELETE
                 else -> AddFilterState.ADD_FILTER_CHANGE
             }
-            filteredContactList?.toMutableList()?.moveToFirst(existingFilter?.apply {
+            filteredContactList.toMutableList().moveToFirst(existingFilter?.apply {
                 addFilterState = binding?.filter?.addFilterState
-            })?.let { contactList ->
-                contactAdapter?.clearData()
-                contactAdapter?.setHeaderAndData(contactList, HeaderDataItem())
-                contactAdapter?.notifyDataSetChanged()
+            }).let { contactList ->
+                contactFilterAdapter?.contactFilterList = ArrayList(contactList)
+                contactFilterAdapter?.notifyDataSetChanged()
             }
-            filterAddContactList.isVisible = filteredContactList.isNullOrEmpty().not()
-            filterAddEmptyList.emptyStateContainer.isVisible = filteredContactList.isNullOrEmpty()
+            filterAddContactList.isVisible = filteredContactList.isEmpty().not()
+            filterAddEmptyList.emptyStateContainer.isVisible = filteredContactList.isEmpty()
             filterAddEmptyList.emptyStateTitle.text =
                 getString(R.string.no_result_with_list_query)
         }
         Log.e("filterAddTAG",
-            "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList?.size}")
+            "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")
     }
 
     private fun setCountrySpinner() {
