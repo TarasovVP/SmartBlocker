@@ -11,6 +11,9 @@ interface FilterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFilter(filter: Filter)
 
+    @Update
+    fun updateFilter(filter: Filter)
+
     @Query("SELECT * FROM filter")
     suspend fun allFilters(): List<Filter>
 

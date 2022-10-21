@@ -25,6 +25,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val mainDataListLiveData = MutableLiveData<List<BaseAdapter.MainData>>()
     val insertFilterLiveData = MutableLiveData<String>()
+    val updateFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
 
     fun getCountryCodeAndContactsData() {
@@ -80,6 +81,17 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             filter.isFromDb = true
             filterRepository.insertFilter(filter) {
                 insertFilterLiveData.postValue(filter.filter)
+            }
+            hideProgress()
+        }
+    }
+
+    fun updateFilter(filter: Filter) {
+        showProgress()
+        launch {
+            filter.isFromDb = true
+            filterRepository.updateFilter(filter) {
+                updateFilterLiveData.postValue(filter.filter)
             }
             hideProgress()
         }

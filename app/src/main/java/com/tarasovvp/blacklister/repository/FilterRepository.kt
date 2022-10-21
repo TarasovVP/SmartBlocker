@@ -34,6 +34,18 @@ object FilterRepository {
         return filterDao?.getFilter(filter.addFilter(), filter.conditionType)
     }
 
+    fun updateFilter(filter: Filter, result: () -> Unit) {
+        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            realDataBaseRepository.insertFilter(filter) {
+                filterDao?.updateFilter(filter)
+                result.invoke()
+            }
+        } else {
+            filterDao?.updateFilter(filter)
+            result.invoke()
+        }
+    }
+
     fun insertFilter(filter: Filter, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilter(filter) {

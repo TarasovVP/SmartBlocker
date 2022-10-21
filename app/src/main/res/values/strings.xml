@@ -163,4 +163,5 @@
     <string name="unavailable_network_repeat">No internet connection.\nTo continue, please connect to the internet and try again.</string>
     <string name="blocked_call_log">Blocked</string>
     <string name="invalid">Invalid</string>
+    <string name="filter_update">Number %s is updated</string>
 </resources>

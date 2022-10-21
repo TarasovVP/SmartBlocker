@@ -99,10 +99,9 @@ open class FilterAddFragment :
                 viewModel.insertFilter(it)
             }
         }
-        //TODO implement updating
         setFragmentResultListener(AddFilterState.ADD_FILTER_CHANGE.name) { _, _ ->
             binding?.filter?.let {
-                viewModel.insertFilter(it)
+                viewModel.updateFilter(it)
             }
         }
         setFragmentResultListener(AddFilterState.ADD_FILTER_DELETE.name) { _, _ ->
@@ -183,9 +182,11 @@ open class FilterAddFragment :
             insertFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
                 handleSuccessFilterAction(String.format(getString(R.string.filter_added), number))
             }
+            updateFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
+                handleSuccessFilterAction(String.format(getString(R.string.filter_update), number))
+            }
             deleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                handleSuccessFilterAction(String.format(getString(R.string.delete_filter_from_list),
-                    binding?.filter?.filter.orEmpty()))
+                handleSuccessFilterAction(String.format(getString(R.string.delete_filter_from_list), binding?.filter?.filter.orEmpty()))
             }
         }
     }
