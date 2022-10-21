@@ -75,8 +75,8 @@
     <string name="spam">Spam</string>
     <string name="fraud">Fraud</string>
     <string name="privates">Private</string>
-    <string name="black_list">Blacklist</string>
-    <string name="white_list">Whitelist</string>
+    <string name="black_list">Blockers</string>
+    <string name="white_list">Exceptions</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="log_out">Do you want to log out of your account?</string>

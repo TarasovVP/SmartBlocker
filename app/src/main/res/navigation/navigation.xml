@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.tarasovvp.blacklister.ui.start.sign_up.SignUpFragment"
-        android:label="@string/sign_up"/>
+        android:label="@string/sign_up" />
 
     <fragment
         android:id="@+id/callListFragment"
@@ -47,8 +47,8 @@
             android:id="@+id/startContactDetailFragment"
             app:destination="@id/contactDetailFragment" />
         <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
     </fragment>
 
     <fragment
@@ -90,8 +90,8 @@
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
         <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
     </fragment>
 
     <fragment
@@ -102,8 +102,8 @@
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
         <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
     </fragment>
 
     <action
@@ -165,18 +165,13 @@
         android:label="@string/app_theme" />
 
     <dialog
-        android:id="@+id/deleteFilterDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.DeleteFilterDialog">
+        android:id="@+id/filterActionDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.FilterActionDialog">
         <argument
-            android:name="filter"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            android:name="filterAction"
+            android:defaultValue=""
+            app:argType="string"
             app:nullable="true" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/changeFilterDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.ChangeFilterListDialog">
         <argument
             android:name="filter"
             android:defaultValue="@null"
@@ -221,18 +216,15 @@
 
     <fragment
         android:id="@+id/filterAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.filter_add.FilterAddFragment" >
+        android:name="com.tarasovvp.blacklister.ui.main.filter_add.FilterAddFragment">
         <argument
             android:name="filter"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />
         <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
-        <action
-            android:id="@+id/startChangeFilterDialog"
-            app:destination="@id/changeFilterDialog" />
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
         <action
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />

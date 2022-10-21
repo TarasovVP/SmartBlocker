@@ -16,7 +16,6 @@ object Constants {
     const val DEFAULT_FILTER = 0
     const val BLACK_FILTER = 1
     const val WHITE_FILTER = 2
-    const val DELETE_FILTER = "deleteFilter"
     const val CHANGE_FILTER = "changeFilter"
     const val EMAIL = "email"
     const val LOG_CALL_CALL = "content://call_log/calls"

@@ -13,8 +13,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.CHANGE_FILTER
 import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
@@ -53,7 +53,6 @@ open class FilterAddFragment :
         } else {
             viewModel.getCountryCodeAndContactsData()
         }
-
     }
 
     private fun setContactAdapter() {
@@ -88,14 +87,25 @@ open class FilterAddFragment :
     }
 
     private fun setFragmentResultListeners() {
-        setFragmentResultListener(Constants.CHANGE_FILTER) { _, _ ->
+        setFragmentResultListener(CHANGE_FILTER) { _, _ ->
             binding?.filter = binding?.filter?.apply {
                 filterType = if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
             }
             filterContactList(binding?.filter?.filter.orEmpty())
             setToolbar()
         }
-        setFragmentResultListener(Constants.DELETE_FILTER) { _, _ ->
+        setFragmentResultListener(AddFilterState.ADD_FILTER_ADD.name) { _, _ ->
+            binding?.filter?.let {
+                viewModel.insertFilter(it)
+            }
+        }
+        //TODO implement updating
+        setFragmentResultListener(AddFilterState.ADD_FILTER_CHANGE.name) { _, _ ->
+            binding?.filter?.let {
+                viewModel.insertFilter(it)
+            }
+        }
+        setFragmentResultListener(AddFilterState.ADD_FILTER_DELETE.name) { _, _ ->
             binding?.filter?.let {
                 viewModel.deleteFilter(it)
             }
@@ -115,8 +125,7 @@ open class FilterAddFragment :
                                 .isTrue()
                         ) R.drawable.ic_black_to_white_filter else R.drawable.ic_white_to_black_filter)
                     setOnMenuItemClickListener {
-                        findNavController().navigate(FilterAddFragmentDirections.startChangeFilterDialog(
-                            binding?.filter))
+                        findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(filter = binding?.filter, filterAction = CHANGE_FILTER))
                         return@setOnMenuItemClickListener true
                     }
                 }
@@ -150,12 +159,7 @@ open class FilterAddFragment :
                 if (BlackListerApp.instance?.isLoggedInUser().isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
-                    if (filter?.addFilterState == AddFilterState.ADD_FILTER_DELETE) {
-                        findNavController().navigate(FilterAddFragmentDirections.startDeleteFilterDialog(filter))
-                    } else {
-                        filter?.filter = filter?.addFilter().orEmpty()
-                        filter?.let { viewModel.insertFilter(it) }
-                    }
+                    findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(filter = filter?.apply { filter = addFilter() }, filterAction = filter?.addFilterState?.name))
                 }
             }
         }
@@ -264,7 +268,13 @@ open class FilterAddFragment :
         (activity as MainActivity).apply {
             showMessage(message, false)
             getAllData()
+            mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+                if (binding?.filter?.isTypeContain().isTrue()) {
+                    viewModel.getContactsData()
+                } else {
+                    viewModel.getCountryCodeAndContactsData()
+                }
+            }
         }
-        findNavController().popBackStack()
     }
 }

@@ -75,8 +75,8 @@
     <string name="spam">Спам</string>
     <string name="fraud">Шахрайство</string>
     <string name="privates">Особисте</string>
-    <string name="black_list">Чорний список</string>
-    <string name="white_list">Білий список</string>
+    <string name="black_list">Блокувальники</string>
+    <string name="white_list">Винятки</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="log_out">Ви хочете вийти зі свого облікового запису?</string>
