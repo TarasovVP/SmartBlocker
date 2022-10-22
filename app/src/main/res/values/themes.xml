@@ -72,6 +72,7 @@
 
     <style name="OutlinedBoxTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="materialThemeOverlay">@style/CommonThemeOverlayFilledDense</item>
+        <item name="hintEnabled">false</item>
     </style>
 
     <style name="CommonThemeOverlayFilledDense">
