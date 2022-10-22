@@ -20,15 +20,17 @@
         android:layout_height="match_parent"
         android:id="@+id/container"
         android:animateLayoutChanges="true"
-        android:padding="@dimen/padding_16">
+        android:paddingHorizontal="@dimen/padding_16">
 
         <include
             android:id="@+id/item_filter"
             layout="@layout/item_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_2"
             app:filter="@{filter}"
-            android:layout_marginTop="@dimen/margin_5" />
+            android:layout_marginTop="@dimen/margin_16"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/filter_add_conditions_info"
@@ -74,6 +76,7 @@
             android:digits="0123456789"
             android:inputType="numberDecimal"
             android:imeOptions="actionDone"
+            android:backgroundTint="@{ContextCompat.getColor(context, filter.addFilterState.color)}"
             android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : filter.typeStart ? filter.conditionTypeStartHint() : @string/enter_filter}"
             app:text="@{filter.filterToInput()}"
             app:filterToInput="@{filterToInput}"

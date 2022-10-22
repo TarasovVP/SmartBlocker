@@ -19,6 +19,8 @@
     <color name="lavender">#F7F8FD</color>
     <color name="haiti_50">#80211F2E</color>
     <color name="nobel">#989595</color>
+    <color name="change_bg">#0DFFC108</color>
+    <color name="delete_bg">#0DFF4545</color>
 
     //custom project colors
     <color name="main_color">@color/midnight_blue</color>

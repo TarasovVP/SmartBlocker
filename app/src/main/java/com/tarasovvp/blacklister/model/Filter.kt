@@ -74,19 +74,20 @@ data class Filter(
     @Exclude
     fun addFilterStateIcon() = when (addFilterState) {
         AddFilterState.ADD_FILTER_INVALID -> if (isBlackFilter()) R.drawable.ic_black_filter_inactive else R.drawable.ic_white_filter_inactive
-        AddFilterState.ADD_FILTER_CHANGE -> if (isBlackFilter()) R.drawable.ic_black_to_white_filter else R.drawable.ic_white_to_black_filter
+        AddFilterState.ADD_FILTER_CHANGE -> if (isBlackFilter()) R.drawable.ic_white_to_black_filter else R.drawable.ic_black_to_white_filter
         else -> filterTypeIcon()
     }
 
     @Exclude
     fun filterToInput(): String {
-        return if (filter.getPhoneNumber(countryCode.country).isNull()) filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
+        return if (filter.getPhoneNumber(countryCode.country).isNull())
+            filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
     }
 
     @Exclude
     fun isInValidPhoneNumber(): Boolean {
-        return (isTypeFull() && filter.isValidPhoneNumber(countryCode.country)
-            .not()) || (isTypeStart().not() && filter.isEmpty())
+        return (isTypeFull() && filter.isValidPhoneNumber(countryCode.country).not())
+                || (isTypeStart().not() && filter.isEmpty())
     }
 
     @Exclude

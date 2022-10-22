@@ -3,10 +3,12 @@ package com.tarasovvp.blacklister.ui.main.filter_add
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemContactFilterBinding
+import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.Contact
@@ -40,6 +42,16 @@ class ContactFilterAdapter(
             } else if (mainData is Filter) {
                 contact = null
                 this.filter = mainData
+                when {
+                    filter?.addFilterState == AddFilterState.ADD_FILTER_CHANGE && position == 0 ->
+                        itemContactFilterContainer.setBackgroundColor(ContextCompat.getColor(
+                            root.context,
+                            R.color.change_bg))
+                    filter?.addFilterState == AddFilterState.ADD_FILTER_DELETE && position == 0 ->
+                        itemContactFilterContainer.setBackgroundColor(ContextCompat.getColor(
+                            root.context,
+                            R.color.delete_bg))
+                }
                 filter?.searchText = if (filter?.isTypeContain().isTrue())
                     searchQueryMap.first else String.format("%s%s",
                     searchQueryMap.second,
@@ -54,6 +66,7 @@ class ContactFilterAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var binding: ItemContactFilterBinding? = null
+
         init {
             DataBindingUtil.bind<ItemContactFilterBinding>(itemView)?.let { binding = it }
         }

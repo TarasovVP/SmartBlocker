@@ -3,65 +3,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="contact"
             type="com.tarasovvp.blacklister.model.Contact" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_2"
         android:layout_marginTop="@dimen/margin_8"
-        android:background="@drawable/item_bg"
-        android:padding="@dimen/padding_8">
+        app:cardCornerRadius="@dimen/padding_12"
+        app:cardElevation="@dimen/padding_1">
 
-        <ImageView
-            android:id="@+id/item_contact_avatar"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            app:circleImageUrl="@{contact.photoUrl}"
-            app:nameInitial="@{contact.nameInitial}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/item_contact_filter_name"
-            android:layout_width="@dimen/size_0"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            android:ellipsize="end"
-            android:gravity="top"
-            android:maxLines="1"
-            app:mainText="@{contact.name}"
-            app:searchText="@{contact.searchText}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="@dimen/padding_8">
 
-        <TextView
-            android:id="@+id/item_contact_filter_number"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            android:layout_marginTop="@dimen/margin_8"
-            app:mainText="@{contact.phone}"
-            app:searchText="@{contact.searchText}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_type"
-            app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/item_contact_filter_name" />
+            <ImageView
+                android:id="@+id/item_contact_avatar"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:circleImageUrl="@{contact.photoUrl}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:nameInitial="@{contact.nameInitial}" />
 
-        <ImageView
-            android:id="@+id/item_contact_filter_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:imageResource="@{contact.contactTypeIcon()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/item_contact_filter_name"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:maxLines="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:mainText="@{contact.name}"
+                app:searchText="@{contact.searchText}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/item_contact_filter_number"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_type"
+                app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_filter_name"
+                app:mainText="@{contact.phone}"
+                app:searchText="@{contact.searchText}" />
+
+            <ImageView
+                android:id="@+id/item_contact_filter_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:imageResource="@{contact.contactTypeIcon()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>
