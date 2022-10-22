@@ -78,42 +78,67 @@
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_check">
 
-                <EditText
-                    android:id="@+id/account_details_current_password"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/account_details_current_password_container"
+                    style="@style/OutlinedBoxTextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/margin_15"
-                    android:hint="@string/enter_current_password"
-                    android:inputType="textPassword"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="@dimen/margin_8"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:passwordToggleEnabled="true">
 
-                <EditText
-                    android:id="@+id/account_details_new_password_create"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/margin_15"
-                    android:hint="@string/enter_new_password"
-                    android:inputType="textPassword"
-                    app:layout_constraintTop_toBottomOf="@+id/account_details_current_password" />
+                    <EditText
+                        android:id="@+id/account_details_current_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_current_password"
+                        android:inputType="textPassword"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/account_details_new_password_confirm"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/account_details_new_password_create_container"
+                    style="@style/OutlinedBoxTextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/margin_15"
-                    android:hint="@string/confirm_new_password"
-                    android:inputType="textPassword"
-                    app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_create" />
+                    android:layout_marginTop="@dimen/margin_8"
+                    app:layout_constraintTop_toBottomOf="@+id/account_details_current_password_container"
+                    app:passwordToggleEnabled="true">
+
+                    <EditText
+                        android:id="@+id/account_details_new_password_create"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_new_password"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/account_details_new_password_confirm_container"
+                    style="@style/OutlinedBoxTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_create_container"
+                    app:passwordToggleEnabled="true">
+
+                    <EditText
+                        android:id="@+id/account_details_new_password_confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/confirm_new_password"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/account_details_new_password_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:text="@string/ok"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_confirm" />
+                    app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_confirm_container" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

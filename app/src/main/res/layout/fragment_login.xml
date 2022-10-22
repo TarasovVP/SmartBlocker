@@ -42,23 +42,38 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_google_auth" />
 
-            <EditText
-                android:id="@+id/login_email_input"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_email_input_container"
+                style="@style/OutlinedBoxTextInputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                app:layout_constraintTop_toBottomOf="@+id/login_email_title" />
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/login_email_title">
 
-            <EditText
-                android:id="@+id/login_password_input"
+                <EditText
+                    android:id="@+id/login_email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_password_input_container"
+                style="@style/OutlinedBoxTextInputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@+id/login_email_input" />
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/login_email_input_container"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/login_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/login_forgot_password"
@@ -69,7 +84,7 @@
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/forgot_password"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_password_input" />
+                app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
 
             <TextView
                 android:id="@+id/login_sign_up"
@@ -79,7 +94,7 @@
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/sign_up"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_password_input" />
+                app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
 
             <Button
                 android:id="@+id/login_continue"

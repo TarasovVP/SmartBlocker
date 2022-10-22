@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:ns2="http://schemas.android.com/apk/res-auto">
     <!-- Base application theme. -->
     <style name="Theme.Blacklister" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -68,5 +68,14 @@
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="OutlinedBoxTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/CommonThemeOverlayFilledDense</item>
+    </style>
+
+    <style name="CommonThemeOverlayFilledDense">
+        <item name="editTextStyle">@style/Widget.AppCompat.EditText
+        </item>
     </style>
 </resources>
