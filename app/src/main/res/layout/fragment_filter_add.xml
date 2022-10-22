@@ -19,30 +19,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/container"
-        android:animateLayoutChanges="true"
         android:paddingHorizontal="@dimen/padding_16">
 
         <include
-            android:id="@+id/item_filter"
+            android:id="@+id/filter_add_item_filter"
             layout="@layout/item_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_2"
             app:filter="@{filter}"
-            android:layout_marginTop="@dimen/margin_16"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginTop="@dimen/margin_8"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/filter_add_conditions_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:alpha="0.6"
+            android:layout_marginTop="@dimen/margin_8"
             android:drawablePadding="@dimen/padding_10"
-            android:text="@string/details_"
-            android:visibility="gone"
-            app:drawableStartCompat="@drawable/ic_info"
-            app:layout_constraintTop_toBottomOf="@+id/item_filter" />
+            android:padding="@dimen/padding_2"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@{filter.addFilterStateDescription}"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_item_filter"
+            app:drawableEndCompat="@drawable/ic_info" />
 
         <Spinner
             android:id="@+id/filter_add_country_code_spinner"
@@ -72,7 +72,6 @@
             android:id="@+id/filter_add_input"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15"
             android:digits="0123456789"
             android:inputType="numberDecimal"
             android:imeOptions="actionDone"
@@ -101,7 +100,6 @@
             android:id="@+id/filter_add_contact_list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
-            android:layout_marginTop="@dimen/margin_5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             android:paddingBottom="@dimen/padding_8"

@@ -42,16 +42,12 @@ class ContactFilterAdapter(
             } else if (mainData is Filter) {
                 contact = null
                 this.filter = mainData
-                when {
-                    filter?.addFilterState == AddFilterState.ADD_FILTER_CHANGE && position == 0 ->
-                        itemContactFilterContainer.setBackgroundColor(ContextCompat.getColor(
-                            root.context,
-                            R.color.change_bg))
-                    filter?.addFilterState == AddFilterState.ADD_FILTER_DELETE && position == 0 ->
-                        itemContactFilterContainer.setBackgroundColor(ContextCompat.getColor(
-                            root.context,
-                            R.color.delete_bg))
-                }
+                itemContactFilterContainer.setBackgroundColor(ContextCompat.getColor(
+                    root.context, when {
+                    filter?.addFilterState == AddFilterState.ADD_FILTER_CHANGE && position == 0 -> R.color.change_bg
+                    filter?.addFilterState == AddFilterState.ADD_FILTER_DELETE && position == 0 -> R.color.delete_bg
+                        else -> R.color.white
+                    }))
                 filter?.searchText = if (filter?.isTypeContain().isTrue())
                     searchQueryMap.first else String.format("%s%s",
                     searchQueryMap.second,

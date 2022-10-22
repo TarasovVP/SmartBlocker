@@ -28,32 +28,19 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     val updateFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
 
-    fun getCountryCodeAndContactsData() {
+    fun getCountryCodeList() {
+        showProgress()
         launch {
-            val countryCode = async { countryCodeRepository.getAllCountryCodes() }
-            val contacts = async { contactRepository.getAllContacts() }
-            val filters = async { filterRepository.allFilters() }
-            awaitAll(countryCode, contacts, filters)
-            val countryCodeList = countryCode.await().orEmpty()
-            val contactList = contacts.await().orEmpty()
-            val filterList = filters.await().orEmpty()
-            Log.e("filterAddTAG",
-                "AddViewModel getCountryCodeAndContactsData countryCodeList?.size ${countryCodeList.size} contactList?.size ${contactList?.size}")
-            countryCodeListLiveData.postValue(countryCodeList)
-            val mainDataList = ArrayList<BaseAdapter.MainData>().apply {
-                addAll(contactList)
-                addAll(filterList)
+            val countryCodeList = countryCodeRepository.getAllCountryCodes()
+            Log.e("filterAddTAG", "AddViewModel getCountryCodeMap countryCodeMap.size ${countryCodeList?.size}")
+            countryCodeList?.apply {
+                countryCodeListLiveData.postValue(this)
             }
-            mainDataList.sortBy { when (it) {
-                is Contact -> it.trimmedPhone.replace(PLUS_CHAR.toString(), String.EMPTY)
-                is Filter -> it.filter.replace(PLUS_CHAR.toString(), String.EMPTY)
-                else -> String.EMPTY
-            } }
-            mainDataListLiveData.postValue(mainDataList)
+            hideProgress()
         }
     }
 
-    fun getContactsData() {
+    fun getContactFilterList() {
         launch {
             val contacts = async { contactRepository.getAllContacts() }
             val filters = async { filterRepository.allFilters() }
@@ -70,7 +57,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
                 else -> String.EMPTY
             } }
             Log.e("filterAddTAG",
-                "AddViewModel getContactsData contactList?.size ${mainDataList.size}")
+                "AddViewModel getContactFilterList mainDataList?.size ${mainDataList.size}")
             mainDataListLiveData.postValue(mainDataList)
         }
     }
@@ -78,7 +65,8 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun insertFilter(filter: Filter) {
         showProgress()
         launch {
-            filter.isFromDb = true
+            Log.e("filterAddTAG",
+                "AddViewModel getContactFilterList filter $filter")
             filterRepository.insertFilter(filter) {
                 insertFilterLiveData.postValue(filter.filter)
             }
@@ -89,7 +77,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun updateFilter(filter: Filter) {
         showProgress()
         launch {
-            filter.isFromDb = true
             filterRepository.updateFilter(filter) {
                 updateFilterLiveData.postValue(filter.filter)
             }
@@ -100,6 +87,8 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun deleteFilter(filter: Filter) {
         showProgress()
         launch {
+            Log.e("filterAddTAG",
+                "AddViewModel deleteFilter filter $filter")
             filterRepository.deleteFilterList(listOf(filter)) {
                 deleteFilterLiveData.postValue(filter.filter)
             }

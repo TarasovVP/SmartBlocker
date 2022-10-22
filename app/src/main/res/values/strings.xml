@@ -164,4 +164,13 @@
     <string name="blocked_call_log">Blocked</string>
     <string name="invalid">Invalid</string>
     <string name="filter_update">Number %s is updated</string>
+    <string name="blocker">Блокировщик</string>
+    <string name="allow">Разрешение</string>
+    <string name="filter_description_change_blocker">Сделать блокировщик разрешением?</string>
+    <string name="filter_description_change_allow">Сделать разрешение блокировщиком?</string>
+    <string name="filter_description_delete_blocker">Удалить существующий блокировщик?</string>
+    <string name="filter_description_delete_allow">Удалить существующее разрешение?</string>
+    <string name="filter_description_invalid">Номер не валидный</string>
+    <string name="filter_description_add_blocker">Добавить номер в блокировщики?</string>
+    <string name="filter_description_add_allow">Добавить номер в разрешения?</string>
 </resources>

@@ -22,8 +22,7 @@ data class Filter(
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
-    var countryCode: CountryCode = CountryCode(),
-    var isFromDb: Boolean = false,
+    var countryCode: CountryCode = CountryCode()
 ) : Parcelable, BaseAdapter.MainData {
     @get:Exclude
     var isCheckedForDelete = false
@@ -79,9 +78,21 @@ data class Filter(
     }
 
     @Exclude
+    fun addFilterStateDescription() = when (addFilterState) {
+        AddFilterState.ADD_FILTER_CHANGE -> if (isBlackFilter()) R.string.filter_description_change_blocker else R.string.filter_description_change_allow
+        AddFilterState.ADD_FILTER_DELETE -> if (isBlackFilter()) R.string.filter_description_delete_blocker else R.string.filter_description_delete_allow
+        AddFilterState.ADD_FILTER_INVALID -> R.string.filter_description_invalid
+        else ->  if (isBlackFilter()) R.string.filter_description_add_blocker else R.string.filter_description_add_allow
+    }
+
+    @Exclude
     fun filterToInput(): String {
-        return if (filter.getPhoneNumber(countryCode.country).isNull())
-            filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
+        return when(conditionType) {
+            Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
+                filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
+            Condition.CONDITION_TYPE_START.index -> filter.replace(countryCode.countryCode, String.EMPTY)
+            else -> filter.digitsTrimmed()
+        }
     }
 
     @Exclude

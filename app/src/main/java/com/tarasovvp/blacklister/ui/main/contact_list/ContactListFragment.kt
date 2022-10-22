@@ -11,7 +11,6 @@ import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import java.util.*
@@ -74,11 +73,6 @@ open class ContactListFragment :
             }
             contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { contactHashMap ->
                 contactHashMap?.let { setDataList(it) }
-            }
-        }
-        (activity as MainActivity).apply {
-            mainViewModel.successAllDataLiveData.safeSingleObserve(this) {
-                viewModel.getContactList()
             }
         }
     }
