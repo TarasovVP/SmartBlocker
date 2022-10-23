@@ -68,7 +68,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
             }
             filterLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 setFilterList(filterList.filter { it.isBlackFilter() }, true)
-                setFilterList(filterList.filter { it.isWhiteFilter() }, false)
+                setFilterList(filterList.filter { it.isBlackFilter().not() }, false)
             }
             blockedCallLiveData.safeSingleObserve(viewLifecycleOwner) { blockedCallList ->
                 setBlockedCallList(blockedCallList)

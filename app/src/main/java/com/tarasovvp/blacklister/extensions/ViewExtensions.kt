@@ -2,8 +2,9 @@ package com.tarasovvp.blacklister.extensions
 
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Typeface
-import android.text.Editable
+import android.graphics.drawable.ColorDrawable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
@@ -45,7 +46,6 @@ fun View.showPopUpWindow(info: Info) {
     val popupView = PopUpWindowInfoBinding.inflate(LayoutInflater.from(context))
     popupView.popUpWindowTitle.text = info.title
     popupView.popUpWindowDescription.text = info.description
-    popupView.popUpWindowIcon.setImageResource(info.icon)
     popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
     val popupWindow = PopupWindow(
         popupView.root,
@@ -57,9 +57,11 @@ fun View.showPopUpWindow(info: Info) {
     this.getLocationOnScreen(locationScreen)
     val isBelowScreenMiddle =
         locationScreen[1] > Resources.getSystem().displayMetrics.heightPixels / 2
+    popupWindow.setBackgroundDrawable(null)
+    popupWindow.elevation = 5f
     popupWindow.showAsDropDown(this,
-        this.measuredWidth,
-        if (isBelowScreenMiddle) -popupView.root.measuredHeight else 0)
+        0,
+        if (isBelowScreenMiddle) - popupView.root.measuredHeight else 0)
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }

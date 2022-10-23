@@ -86,6 +86,13 @@ data class Filter(
     }
 
     @Exclude
+    fun conditionTypeDescription() = when (conditionType) {
+        Condition.CONDITION_TYPE_FULL.index -> R.string.filter_full_number_description
+        Condition.CONDITION_TYPE_START.index -> R.string.filter_start_description
+        else ->  R.string.filter_contain_description
+    }
+
+    @Exclude
     fun filterToInput(): String {
         return when(conditionType) {
             Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
@@ -124,11 +131,6 @@ data class Filter(
     @Exclude
     fun isBlackFilter(): Boolean {
         return filterType == BLACK_FILTER
-    }
-
-    @Exclude
-    fun isWhiteFilter(): Boolean {
-        return filterType == WHITE_FILTER
     }
 
     override fun equals(other: Any?): Boolean {

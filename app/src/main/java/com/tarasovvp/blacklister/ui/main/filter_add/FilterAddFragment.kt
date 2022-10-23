@@ -20,6 +20,7 @@ import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.enums.AddFilterState
+import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
@@ -61,7 +62,9 @@ open class FilterAddFragment :
         (activity as MainActivity).apply {
             toolbar?.apply {
                 title =
-                    getString(if (binding?.filter?.isBlackFilter().isTrue()) R.string.blocker else R.string.allow)
+                    getString(if (binding?.filter?.isBlackFilter()
+                            .isTrue()
+                    ) R.string.blocker else R.string.allow)
                 menu?.clear()
                 inflateMenu(R.menu.toolbar_filter)
                 menu?.findItem(R.id.filter_menu_item)?.apply {
@@ -124,10 +127,11 @@ open class FilterAddFragment :
 
     private fun setClickListeners() {
         binding?.apply {
-            //TODO remove or implement
-            filterAddConditionsInfo.setSafeOnClickListener {
-                filterAddConditionsInfo.showPopUpWindow(Info(title = "Титулка инструкции",
-                    description = "Сама инструкция",
+            filterAddConditionsDescription.setSafeOnClickListener {
+                filterAddConditionsDescription.showPopUpWindow(Info(title = String.format(getString(R.string.filter_description_title),
+                    getString(if (filter?.isBlackFilter().isTrue()) R.string.blocker else R.string.allow),
+                    getString(Condition.getTitleByIndex(filter?.conditionType.orZero()))),
+                    description = getString(filter?.conditionTypeDescription().orZero()),
                     icon = R.drawable.ic_logo))
             }
             filterAddSubmit.setSafeOnClickListener {
@@ -151,19 +155,27 @@ open class FilterAddFragment :
                     binding?.filterToInput = true
                     if (filter?.isTypeContain().isTrue()) {
                         filter = filter?.apply {
-                            this.filter = phone.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
+                            this.filter =
+                                phone.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                         }
                     } else {
-                        val phoneNumber = phone.getPhoneNumber(binding?.filter?.countryCode?.country.orEmpty())
+                        val phoneNumber =
+                            phone.getPhoneNumber(filter?.countryCode?.country.orEmpty())
                         Log.e("filterAddTAG",
                             "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
                         if ((phoneNumber?.nationalNumber.toString() == filterAddInput.getRawText() &&
-                                    String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == filterAddCountryCodeValue.text.toString()).not()) {
+                                    String.format(COUNTRY_CODE_START,
+                                        phoneNumber?.countryCode.toString()) == filterAddCountryCodeValue.text.toString()).not()
+                        ) {
                             filter = filter?.apply {
                                 this.filter =
                                     phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
                             }
-                            filterAddCountryCodeSpinner.setSelection(countryCodeList.indexOfFirst { it.countryCode == if (phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) }.orZero())
+                            filterAddCountryCodeSpinner.setSelection(countryCodeList.indexOfFirst {
+                                it.countryCode == if (phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(
+                                    COUNTRY_CODE_START,
+                                    phoneNumber?.countryCode.toString())
+                            }.orZero())
                         }
                     }
                 }

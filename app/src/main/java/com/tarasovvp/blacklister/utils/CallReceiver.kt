@@ -47,7 +47,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         CoroutineScope(Dispatchers.IO).launch {
             val filterList = filterRepository.getFilterList(number)
             val isInWhiteList =
-                filterList?.any { it.isWhiteFilter() }.isTrue()
+                filterList?.any { it.isBlackFilter().not() }.isTrue()
             val isInBlackList =
                 filterList?.any { it.isBlackFilter() }.isTrue()
             val isBlockNeeded =

@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/filter_add_conditions_info"
+            android:id="@+id/filter_add_conditions_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
@@ -75,9 +75,10 @@
             android:layout_height="wrap_content"
             style="@style/OutlinedBoxTextInputLayoutStyle"
             app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/ic_close_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_info">
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_description">
 
             <com.tarasovvp.blacklister.utils.mask.MaskedEditText
                 android:id="@+id/filter_add_input"
@@ -86,6 +87,9 @@
                 android:digits="0123456789"
                 android:inputType="numberDecimal"
                 android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
                 android:backgroundTint="@{ContextCompat.getColor(context, filter.addFilterState.color)}"
                 android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : filter.typeStart ? filter.conditionTypeStartHint() : @string/enter_filter}"
                 app:text="@{filter.filterToInput()}"

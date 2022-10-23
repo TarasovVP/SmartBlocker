@@ -35,6 +35,7 @@
         <entry key="app/src/main/res/drawable/ic_boy.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_call_log.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.1695" />
+        <entry key="app/src/main/res/drawable/ic_close_small.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/ic_contact_avatar.xml" value="0.2109375" />
         <entry key="app/src/main/res/drawable/ic_contact_list.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_contain.xml" value="0.234375" />
@@ -98,7 +99,7 @@
         <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.291213768115942" />
-        <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.3800947867298578" />
+        <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.4570815450643777" />
         <entry key="app/src/main/res/layout/fragment_filter_full_add.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_filter_list.xml" value="0.1717171717171717" />
         <entry key="app/src/main/res/layout/fragment_full_number_add.xml" value="0.26856884057971014" />

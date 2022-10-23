@@ -60,7 +60,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
                 val filterList = filterRepository.getFilterList(contact.trimmedPhone)
-                val isInWhiteList = filterList?.any { it.isWhiteFilter() }.isTrue()
+                val isInWhiteList = filterList?.any { it.isBlackFilter().not() }.isTrue()
                 val isInBlackList = filterList?.any { it.isBlackFilter() }.isTrue()
                 contact.filterType = when {
                     (isInBlackList && SharedPreferencesUtil.whiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.whiteListPriority && isInWhiteList.not()) -> BLACK_FILTER

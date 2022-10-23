@@ -173,4 +173,8 @@
     <string name="filter_description_invalid">Номер не валидный</string>
     <string name="filter_description_add_blocker">Добавить номер в блокировщики?</string>
     <string name="filter_description_add_allow">Добавить номер в разрешения?</string>
+    <string name="filter_description_title">%s (%s)</string>
+    <string name="filter_full_number_description">Для добавления полного номера выберите код страны, введите номер согласно маски, нажмите кнопку "Добавить"</string>
+    <string name="filter_start_description">Для добавления старта номера выберите код страны и/или введите номер не более предложеного маской, нажмите кнопку "Добавить"</string>
+    <string name="filter_contain_description">Для добавления номера "Содержит" введите любой номер, нажмите кнопку "Добавить"</string>
 </resources>
