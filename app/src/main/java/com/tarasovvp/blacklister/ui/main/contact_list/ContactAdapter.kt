@@ -15,7 +15,7 @@ import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<Contact>() {
+class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<Contact>() {
 
     var searchQuery = String.EMPTY
 
@@ -61,7 +61,7 @@ class ContactAdapter(private val contactClick: (String) -> Unit) : BaseAdapter<C
                 contact.searchText = searchQuery
                 this.contact = contact
                 root.setSafeOnClickListener {
-                    contact.phone.let { contactClick.invoke(it) }
+                     contactClick.invoke(contact)
                 }
                 executePendingBindings()
                 Log.e("adapterTAG",

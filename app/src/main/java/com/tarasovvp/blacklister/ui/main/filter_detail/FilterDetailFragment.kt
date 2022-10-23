@@ -1,51 +1,50 @@
-package com.tarasovvp.blacklister.ui.main.contact_detail
+package com.tarasovvp.blacklister.ui.main.filter_detail
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
-import com.tarasovvp.blacklister.databinding.FragmentContactDetailBinding
+import com.tarasovvp.blacklister.databinding.FragmentFilterDetailBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.base.BaseFragment
+import com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, ContactDetailViewModel>() {
+class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDetailViewModel>() {
 
-    override var layoutId = R.layout.fragment_contact_detail
-    override val viewModelClass = ContactDetailViewModel::class.java
+    override var layoutId = R.layout.fragment_filter_detail
+    override val viewModelClass = FilterDetailViewModel::class.java
 
-    private val args: ContactDetailFragmentArgs by navArgs()
+    private val args: FilterDetailFragmentArgs by navArgs()
 
     private var expandableFilterAdapter: ContactDetailAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.contact = args.contact
+        binding?.filter = args.filter
+
     }
 
     private fun setFilterListView(phone: String) {
         if (expandableFilterAdapter.isNotNull()) {
-            binding?.contactDetailFilterList?.setAdapter(expandableFilterAdapter)
+            binding?.filterDetailFilterList?.setAdapter(expandableFilterAdapter)
         } else {
             viewModel.filterList(phone)
         }
-        binding?.contactDetailFilterList?.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
+        binding?.filterDetailFilterList?.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
             Log.e("contactTAG",
                 "ContactDetailFragment setNumberList setOnChildClickListener groupPosition $groupPosition childPosition $childPosition")
-            findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
-                filter = expandableFilterAdapter?.getChild(groupPosition, childPosition)))
+            //TODO implement click listeners
             return@setOnChildClickListener true
         }
-        binding?.contactDetailFilterList?.setOnGroupClickListener { _, _, groupPosition, _ ->
+        binding?.filterDetailFilterList?.setOnGroupClickListener { _, _, groupPosition, _ ->
             return@setOnGroupClickListener expandableFilterAdapter?.getChildrenCount(groupPosition) == 0
         }
     }
@@ -70,12 +69,8 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
             contact.name = if (contact.name.orEmpty()
                     .isEmpty()
             ) getString(R.string.no_in_contact_list) else contact.name
-            this.contact = contact
-            contactDetailAddFilter.setSafeOnClickListener {
-                findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
-                    filter = Filter(filter = contact.trimmedPhone).apply {
-                        filterType = BLACK_FILTER
-                    }))
+            filterDetailAddFilter.setSafeOnClickListener {
+                //TODO implement click listener
             }
         }
     }
@@ -92,7 +87,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
         } else {
             expandableFilterAdapter =
                 ContactDetailAdapter(arrayListOf(title), hashMapOf(title to filterList))
-            binding?.contactDetailFilterList?.setAdapter(expandableFilterAdapter)
+            binding?.filterDetailFilterList?.setAdapter(expandableFilterAdapter)
         }
         Log.e("contactTAG",
             "ContactDetailFragment setNumberList expandableNumberAdapter titleList ${expandableFilterAdapter?.titleList} filterListMap ${expandableFilterAdapter?.filterListMap}")
@@ -101,12 +96,12 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     private fun setBlockedCallList(blockedCallList: List<BlockedCall>) {
         Log.e("contactTAG",
             "ContactDetailFragment setBlockedCallList blockedCallList $blockedCallList")
-        binding?.contactDetailBlockedList?.removeAllViews()
-        binding?.contactDetailBlockedTitle?.isVisible = blockedCallList.isNotEmpty()
+        binding?.filterDetailBlockedList?.removeAllViews()
+        binding?.filterDetailBlockedTitle?.isVisible = blockedCallList.isNotEmpty()
         blockedCallList.sortedByDescending { it.time }.forEach {
             val textView = TextView(context)
             textView.text = String.format("%s %s", it.dateFromTime(), it.dateTimeFromTime())
-            binding?.contactDetailBlockedList?.addView(textView)
+            binding?.filterDetailBlockedList?.addView(textView)
         }
     }
 }

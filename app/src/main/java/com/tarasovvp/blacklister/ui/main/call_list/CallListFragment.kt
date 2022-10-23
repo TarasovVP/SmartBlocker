@@ -30,9 +30,9 @@ class CallListFragment :
         Log.e("adapterTAG", "CallListFragment createAdapter callList?.size ${callList?.size}")
         return context?.let {
             CallAdapter(object : CallClickListener {
-                override fun onCallClick(number: String) {
-                    findNavController().navigate(CallListFragmentDirections.startContactDetailFragment(
-                        number = number))
+                override fun onCallClick(call: Call) {
+                    findNavController().navigate(CallListFragmentDirections.startCallDetailFragment(
+                        call = call))
                 }
 
                 override fun onCallLongClick() {

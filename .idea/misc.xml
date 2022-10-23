@@ -94,12 +94,14 @@
         <entry key="app/src/main/res/layout/fragment_black_number_new.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_black_numebr_list.xml" value="0.291213768115942" />
         <entry key="app/src/main/res/layout/fragment_block_settings.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_call_detail.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_call_list.xml" value="0.21784420289855072" />
         <entry key="app/src/main/res/layout/fragment_call_log_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.291213768115942" />
         <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.4570815450643777" />
+        <entry key="app/src/main/res/layout/fragment_filter_detail.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_filter_full_add.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_filter_list.xml" value="0.1717171717171717" />
         <entry key="app/src/main/res/layout/fragment_full_number_add.xml" value="0.26856884057971014" />

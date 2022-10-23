@@ -37,18 +37,44 @@
         android:label="@string/sign_up" />
 
     <fragment
-        android:id="@+id/callListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.call_list.CallListFragment"
-        android:label="@string/blocked_call_log">
+        android:id="@+id/blackFilterListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment"
+        android:label="@string/black_list">
         <action
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
         <action
-            android:id="@+id/startContactDetailFragment"
-            app:destination="@id/contactDetailFragment" />
+            android:id="@+id/startFilterDetailFragment"
+            app:destination="@id/filterDetailFragment" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/whiteFilterListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment"
+        android:label="@string/white_list">
+        <action
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
+        <action
+            android:id="@+id/startFilterDetailFragment"
+            app:destination="@id/filterDetailFragment" />
+        <action
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/filterDetailFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.filter_detail.FilterDetailFragment"
+        android:label="@string/details">
+        <argument
+            android:name="filter"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -66,50 +92,43 @@
     </fragment>
 
     <fragment
+        android:id="@+id/callListFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.call_list.CallListFragment"
+        android:label="@string/blocked_call_log">
+        <action
+            android:id="@+id/startCallDetailFragment"
+            app:destination="@id/callDetailFragment" />
+        <action
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
+    </fragment>
+
+    <fragment
         android:id="@+id/contactDetailFragment"
         android:name="com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragment"
         android:label="@string/details">
         <argument
-            android:name="number"
+            android:name="contact"
             android:defaultValue="@null"
-            app:argType="string"
+            app:argType="com.tarasovvp.blacklister.model.Contact"
             app:nullable="true" />
         <action
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
-        <action
-            android:id="@+id/startBlockSettingsFragment"
-            app:destination="@id/blockSettingsFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/blackFilterListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment"
-        android:label="@string/black_list">
+        android:id="@+id/callDetailFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.call_detail.CallDetailFragment"
+        android:label="@string/details">
+        <argument
+            android:name="call"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Call"
+            app:nullable="true" />
         <action
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
-        <action
-            android:id="@+id/startContactDetailFragment"
-            app:destination="@id/contactDetailFragment" />
-        <action
-            android:id="@+id/startFilterActionDialog"
-            app:destination="@id/filterActionDialog" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/whiteFilterListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment"
-        android:label="@string/white_list">
-        <action
-            android:id="@+id/startFilterAddFragment"
-            app:destination="@id/filterAddFragment" />
-        <action
-            android:id="@+id/startContactDetailFragment"
-            app:destination="@id/contactDetailFragment" />
-        <action
-            android:id="@+id/startFilterActionDialog"
-            app:destination="@id/filterActionDialog" />
     </fragment>
 
     <action

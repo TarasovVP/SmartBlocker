@@ -29,7 +29,7 @@ open class ContactListFragment :
         return context?.let {
             ContactAdapter { phone ->
                 findNavController().navigate(ContactListFragmentDirections.startContactDetailFragment(
-                    number = phone))
+                    contact = phone))
             }
         }
     }

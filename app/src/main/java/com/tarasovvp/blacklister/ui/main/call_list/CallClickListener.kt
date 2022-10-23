@@ -4,7 +4,7 @@ import android.view.View
 import com.tarasovvp.blacklister.model.Call
 
 interface CallClickListener {
-    fun onCallClick(number: String)
+    fun onCallClick(call: Call)
     fun onCallLongClick()
     fun onCallDeleteCheckChange(call: Call)
     fun onCallDeleteInfoClick(view: View)

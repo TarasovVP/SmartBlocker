@@ -118,16 +118,16 @@ open class BaseFilterListFragment :
                 BlackFilterListFragmentDirections.startFilterAddFragment(
                     filter = filter)
             } else {
-                BlackFilterListFragmentDirections.startContactDetailFragment(
-                    number = filter.filter)
+                BlackFilterListFragmentDirections.startFilterDetailFragment(
+                    filter = filter)
             }
         } else {
             if (filter.filter.isEmpty()) {
                 WhiteFilterListFragmentDirections.startFilterAddFragment(
                     filter = filter)
             }else{
-                WhiteFilterListFragmentDirections.startContactDetailFragment(
-                    number = filter.filter)
+                WhiteFilterListFragmentDirections.startFilterDetailFragment(
+                    filter = filter)
             }
         }
         findNavController().navigate(direction)
