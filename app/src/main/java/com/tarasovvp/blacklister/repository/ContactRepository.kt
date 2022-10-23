@@ -24,7 +24,7 @@ object ContactRepository {
             contactDao?.getAllContacts()
         }
 
-    suspend fun getQueryContacts(filter: Filter): List<Contact>? {
+    suspend fun getQueryContactList(filter: Filter): List<Contact>? {
         return contactDao?.queryContactList(filter.filter, filter.conditionType)
     }
 

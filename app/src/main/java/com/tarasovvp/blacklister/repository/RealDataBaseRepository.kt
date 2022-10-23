@@ -40,8 +40,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun insertFilter(whiteFilter: Filter, result: () -> Unit) {
-        currentUserDatabase.child(FILTER_LIST).child(whiteFilter.filter).setValue(whiteFilter)
+    fun insertFilter(filter: Filter, result: () -> Unit) {
+        currentUserDatabase.child(FILTER_LIST).child(filter.filter).setValue(filter)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -50,12 +50,12 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteFilterList(whiteFilterList: List<Filter>, result: () -> Unit) {
+    fun deleteFilterList(filterList: List<Filter>, result: () -> Unit) {
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
-                    if (whiteFilterList.map { it.filter }
+                    if (filterList.map { it.filter }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()

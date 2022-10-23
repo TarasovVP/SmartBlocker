@@ -11,93 +11,71 @@
             type="com.tarasovvp.blacklister.model.Filter" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/container"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:padding="@dimen/padding_16"
-        app:layout_constraintBottom_toTopOf="@+id/filter_detail_add_filter"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingHorizontal="@dimen/padding_16">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/filter_detail_avatar"
+            android:layout_width="@dimen/margin_65"
+            android:layout_height="@dimen/margin_65"
+            android:layout_marginTop="@dimen/margin_8"
+            app:imageResource="@{filter.conditionTypeIcon}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/filter_detail_type"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:imageResource="@{filter.filterTypeIcon}"
+            app:layout_constraintBottom_toBottomOf="@+id/filter_detail_avatar"
+            app:layout_constraintEnd_toEndOf="@+id/filter_detail_avatar" />
+
+        <TextView
+            android:id="@+id/filter_detail_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:gravity="center"
+            android:text="@{filter.name}"
+            android:textSize="@dimen/text_size_24"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_avatar" />
 
-            <ImageView
-                android:id="@+id/filter_detail_avatar"
-                android:layout_width="@dimen/margin_65"
-                android:layout_height="@dimen/margin_65"
-                android:layout_marginTop="@dimen/margin_16"
-                app:imageResource="@{filter.conditionTypeIcon}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/filter_detail_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:gravity="center"
+            android:text="@{filter.filter}"
+            android:textSize="@dimen/text_size_24"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_name" />
 
-            <ImageView
-                android:id="@+id/filter_detail_type"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                app:imageResource="@{filter.filterTypeIcon}"
-                app:layout_constraintBottom_toBottomOf="@+id/filter_detail_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/filter_detail_avatar" />
+        <Button
+            android:id="@+id/filter_detail_add_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:text="@string/add_filter"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_phone" />
 
-            <TextView
-                android:id="@+id/filter_detail_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:gravity="center"
-                android:text="@{filter.name}"
-                android:textSize="@dimen/text_size_24"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/filter_detail_avatar" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filter_detail_filter_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginTop="@dimen/margin_15"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_8"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_add_filter"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <TextView
-                android:id="@+id/filter_detail_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:gravity="center"
-                android:text="@{filter.filter}"
-                android:textSize="@dimen/text_size_24"
-                app:layout_constraintTop_toBottomOf="@+id/filter_detail_name" />
-
-            <Button
-                android:id="@+id/filter_detail_add_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:text="@string/add_filter"
-                app:layout_constraintTop_toBottomOf="@+id/filter_detail_phone" />
-
-            <ExpandableListView
-                android:id="@+id/filter_detail_filter_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                android:groupIndicator="@null"
-                android:listSelector="@android:color/transparent"
-                app:layout_constraintTop_toBottomOf="@+id/filter_detail_add_filter" />
-
-            <TextView
-                android:id="@+id/filter_detail_blocked_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                android:text="@string/blocked_calls_history"
-                app:layout_constraintTop_toBottomOf="@+id/filter_detail_filter_list" />
-
-            <LinearLayout
-                android:id="@+id/filter_detail_blocked_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/filter_detail_blocked_title" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
 
