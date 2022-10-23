@@ -37,6 +37,14 @@ data class Filter(
     var addFilterState: AddFilterState? = null
 
     @Exclude
+    fun filterTypeTitle(): Int {
+        return when (filterType) {
+            WHITE_FILTER -> R.string.allow
+            else -> R.string.blocker
+        }
+    }
+
+    @Exclude
     fun filterTypeIcon(): Int {
         return when (filterType) {
             BLACK_FILTER -> R.drawable.ic_black_filter

@@ -5,7 +5,7 @@
     <data>
 
         <import type="android.view.View" />
-
+        <import type="androidx.core.content.ContextCompat" />
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -16,52 +16,36 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/padding_16">
 
-        <ImageView
-            android:id="@+id/filter_detail_avatar"
-            android:layout_width="@dimen/margin_65"
-            android:layout_height="@dimen/margin_65"
+        <include
+            android:id="@+id/filter_detail_item_filter"
+            layout="@layout/item_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_2"
             android:layout_marginTop="@dimen/margin_8"
-            app:imageResource="@{filter.conditionTypeIcon}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:filter="@{filter}"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/filter_detail_type"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:imageResource="@{filter.filterTypeIcon}"
-            app:layout_constraintBottom_toBottomOf="@+id/filter_detail_avatar"
-            app:layout_constraintEnd_toEndOf="@+id/filter_detail_avatar" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filter_detail_delete_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:text="@string/delete_menu"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
 
         <TextView
-            android:id="@+id/filter_detail_name"
+            android:id="@+id/filter_detail_conditions_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
-            android:gravity="center"
-            android:text="@{filter.name}"
-            android:textSize="@dimen/text_size_24"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_avatar" />
-
-        <TextView
-            android:id="@+id/filter_detail_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:gravity="center"
-            android:text="@{filter.filter}"
-            android:textSize="@dimen/text_size_24"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_name" />
-
-        <Button
-            android:id="@+id/filter_detail_add_filter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:text="@string/add_filter"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_phone" />
+            android:drawablePadding="@dimen/padding_10"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/padding_2"
+            android:text="@{filter.addFilterStateDescription}"
+            app:drawableEndCompat="@drawable/ic_info"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_delete_filter" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filter_detail_filter_list"
@@ -72,8 +56,8 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/padding_8"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_add_filter"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_conditions_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

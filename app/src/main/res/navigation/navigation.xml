@@ -68,8 +68,7 @@
 
     <fragment
         android:id="@+id/filterDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.filter_detail.FilterDetailFragment"
-        android:label="@string/details">
+        android:name="com.tarasovvp.blacklister.ui.main.filter_detail.FilterDetailFragment" >
         <argument
             android:name="filter"
             android:defaultValue="@null"

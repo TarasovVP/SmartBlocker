@@ -5,8 +5,10 @@ import android.view.View
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentFilterDetailBinding
+import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.main.filter_add.ContactFilterAdapter
@@ -25,13 +27,14 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
         args.filter?.apply {
             binding?.filter = this
             viewModel.getQueryContactList(this)
+            (activity as MainActivity).toolbar?.title = getString(filterTypeTitle())
         }
         setContactAdapter()
     }
 
     private fun setContactAdapter() {
         if (contactFilterAdapter.isNull()) {
-            contactFilterAdapter = ContactFilterAdapter(contactFilterList) { phone ->
+            contactFilterAdapter = ContactFilterAdapter(contactFilterList) { contact ->
 
             }
             binding?.filterDetailFilterList?.adapter = contactFilterAdapter
