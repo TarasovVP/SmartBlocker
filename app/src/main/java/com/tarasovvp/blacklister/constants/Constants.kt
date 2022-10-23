@@ -10,7 +10,6 @@ object Constants {
     const val PLUS_CHAR = '+'
     const val HASH_CHAR = '#'
     const val COUNTRY_CODE_START = "+%s"
-    const val WHITE_LIST_PRIORITY = "whiteListPriority"
     const val BLOCK_HIDDEN = "blockHidden"
     const val FILTER_LIST = "filterList"
     const val DEFAULT_FILTER = 0

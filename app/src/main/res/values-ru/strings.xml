@@ -85,8 +85,6 @@
     <string name="edit_filter">редактирования номера</string>
     <string name="black">черный</string>
     <string name="filter_added">Number %s is added</string>
-    <string name="change_priority">Выберите приоритетность</string>
-    <string name="change_priority_info">При взаимоисключающем совпадении фильтра и условий применения из черного и белого списка будет выбран приоритет согласно этому параметру</string>
     <string name="prioritness">Приоритетность: </string>
     <string name="black_list_criteria">Критерии совпадения из черного списка</string>
     <string name="white_list_criteria">Критерии совпадения из белого списка</string>

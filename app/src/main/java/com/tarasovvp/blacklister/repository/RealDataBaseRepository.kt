@@ -8,8 +8,6 @@ import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.EXCEPTION
 import com.tarasovvp.blacklister.constants.Constants.FILTER_LIST
 import com.tarasovvp.blacklister.constants.Constants.USERS
-import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
-import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.CurrentUser
 import com.tarasovvp.blacklister.model.Filter
 
@@ -28,8 +26,6 @@ object RealDataBaseRepository {
                 val currentUser = CurrentUser()
                 task.result.children.forEach { snapshot ->
                     when (snapshot.key) {
-                        WHITE_LIST_PRIORITY -> currentUser.whiteListPriority =
-                            snapshot.getValue(Boolean::class.java).isTrue()
                         FILTER_LIST -> {
                             snapshot.children.forEach { child ->
                                 child.getValue(Filter::class.java)
@@ -62,16 +58,6 @@ object RealDataBaseRepository {
                     if (whiteFilterList.map { it.filter }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
-                result.invoke()
-            }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
-            }
-    }
-
-    fun changeWhiteListPriority(whiteListPriority: Boolean, result: () -> Unit) {
-        currentUserDatabase.child(WHITE_LIST_PRIORITY).setValue(whiteListPriority)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
                 sendExceptionBroadCast(it.localizedMessage.orEmpty())

@@ -85,9 +85,6 @@
     <string name="edit_filter">edit number</string>
     <string name="black">black</string>
     <string name="filter_added">Number %s is added</string>
-    <string name="change_priority">Select a priority</string>
-    <string name="change_priority_info">If the filter and application conditions match mutually, from the black and white lists, the priority will be selected according to this parameter</string>
-    <string name="prioritness">Priority: </string>
     <string name="black_list_criteria">Blacklist match criteria</string>
     <string name="white_list_criteria">Whitelist match criteria</string>
     <string name="add_filter">Add to filter</string>
@@ -100,7 +97,6 @@
     <string name="black_list_empty">No blacklist matches</string>
     <string name="white_list_empty">No whitelist matches</string>
     <string name="block_add_info">May be %s %s numbers from your contact list</string>
-    <string name="not_block_add_info">Due to a different priority, there cannot be %s %s numbers from your contact list</string>
     <string name="progress_title">Please wait. Data is being updated.</string>
     <string name="log_in">Log in</string>
     <string name="with_google_account">With google account</string>

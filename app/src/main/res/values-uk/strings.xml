@@ -85,9 +85,6 @@
     <string name="edit_filter">редагування номера</string>
     <string name="black">чорний</string>
     <string name="filter_added">Number %s is added</string>
-    <string name="change_priority">Виберіть пріоритетність</string>
-    <string name="change_priority_info">При взаємовиключному збігу фільтра та умов застосування з чорного та білого списку буде обрано пріоритет згідно з цим параметром</string>
-    <string name="prioritness">Пріоритетність: </string>
     <string name="black_list_criteria">Критерії збігу із чорного списку</string>
     <string name="white_list_criteria">Критерії збігу з білого списку</string>
     <string name="add_filter">Додати до фільтру</string>

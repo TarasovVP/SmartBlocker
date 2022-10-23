@@ -12,22 +12,7 @@ class BlockSettingsViewModel(application: Application) : BaseViewModel(applicati
 
     private val realDataBaseRepository = RealDataBaseRepository
 
-    val successPriorityLiveData = MutableLiveData<Boolean>()
     val successBlockHiddenLiveData = MutableLiveData<Boolean>()
-
-    fun changePriority(whiteListPriority: Boolean) {
-        showProgress()
-        launch {
-            if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-                realDataBaseRepository.changeWhiteListPriority(whiteListPriority) {
-                    successPriorityLiveData.postValue(whiteListPriority)
-                }
-            } else {
-                SharedPreferencesUtil.whiteListPriority = whiteListPriority
-            }
-            hideProgress()
-        }
-    }
 
     fun changeBlockHidden(blockHidden: Boolean) {
         showProgress()

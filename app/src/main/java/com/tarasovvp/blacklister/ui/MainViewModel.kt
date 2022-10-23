@@ -27,8 +27,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             showProgress()
             progressStatusLiveData.postValue("Сбор информацию")
             realDataBaseRepository.getCurrentUser { currentUser ->
-                SharedPreferencesUtil.whiteListPriority =
-                    currentUser?.whiteListPriority.isTrue()
                 currentUser?.let { insertAllFilters(it.filterList) }
             }
         }
@@ -63,8 +61,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 val isInWhiteList = filterList?.any { it.isBlackFilter().not() }.isTrue()
                 val isInBlackList = filterList?.any { it.isBlackFilter() }.isTrue()
                 contact.filterType = when {
-                    (isInBlackList && SharedPreferencesUtil.whiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.whiteListPriority && isInWhiteList.not()) -> BLACK_FILTER
-                    (isInWhiteList && SharedPreferencesUtil.whiteListPriority) || (isInWhiteList && SharedPreferencesUtil.whiteListPriority.not() && isInBlackList.not()) -> WHITE_FILTER
+                    (isInBlackList ) || (isInBlackList && isInWhiteList.not()) -> BLACK_FILTER
+                    (isInWhiteList ) || (isInWhiteList && isInBlackList.not()) -> WHITE_FILTER
                     else -> DEFAULT_FILTER
                 }
             }

@@ -13,7 +13,6 @@ import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.databinding.FragmentContactDetailBinding
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
@@ -31,7 +30,6 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setPriority()
         args.number?.filter { it.isDigit() || it == PLUS_CHAR }?.let { phone ->
             if (phone.isEmpty()) {
                 viewModel.contactDetailLiveData.postValue(Contact(name = getString(R.string.hidden)))
@@ -76,25 +74,12 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
         }
     }
 
-    private fun setPriority() {
-        binding?.contactDetailPriority?.setCompoundDrawablesWithIntrinsicBounds(0,
-            0,
-            if (SharedPreferencesUtil.whiteListPriority) R.drawable.ic_white_filter else R.drawable.ic_block,
-            0)
-        binding?.contactDetailPriority?.setSafeOnClickListener {
-            findNavController().navigate(ContactDetailFragmentDirections.startBlockSettingsFragment())
-        }
-    }
-
     private fun setContactInfo(contact: Contact) {
         binding?.apply {
             contact.name = if (contact.name.orEmpty()
                     .isEmpty()
             ) getString(R.string.no_in_contact_list) else contact.name
             this.contact = contact
-            contactDetailPriority.text = String.format(getString(R.string.prioritness),
-                if (SharedPreferencesUtil.whiteListPriority) getString(R.string.white_list) else getString(
-                    R.string.black_list))
             contactDetailAddFilter.setSafeOnClickListener {
                 findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
                     filter = Filter(filter = contact.trimmedPhone).apply {

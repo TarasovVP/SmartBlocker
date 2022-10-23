@@ -51,7 +51,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
             val isInBlackList =
                 filterList?.any { it.isBlackFilter() }.isTrue()
             val isBlockNeeded =
-                (isInBlackList && SharedPreferencesUtil.whiteListPriority.not()) || (isInBlackList && SharedPreferencesUtil.whiteListPriority && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
+                (isInBlackList ) || (isInBlackList && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
             Log.e("blockTAG",
                 "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
             if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {

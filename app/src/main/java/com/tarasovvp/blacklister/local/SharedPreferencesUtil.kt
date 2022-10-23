@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.local
 
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
-import com.tarasovvp.blacklister.constants.Constants.WHITE_LIST_PRIORITY
 import com.tarasovvp.blacklister.local.Settings.APP_LANG
 import com.tarasovvp.blacklister.local.Settings.APP_THEME
 import com.tarasovvp.blacklister.local.Settings.BLOCK_TURN_OFF
@@ -42,15 +41,6 @@ object SharedPreferencesUtil {
             saveInt(
                 APP_THEME,
                 appLang
-            )
-        }
-
-    var whiteListPriority: Boolean
-        get() = loadBoolean(WHITE_LIST_PRIORITY)
-        set(priority) {
-            saveBoolean(
-                WHITE_LIST_PRIORITY,
-                priority
             )
         }
 

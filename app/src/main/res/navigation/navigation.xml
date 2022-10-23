@@ -90,6 +90,9 @@
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
         <action
+            android:id="@+id/startContactDetailFragment"
+            app:destination="@id/contactDetailFragment" />
+        <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
     </fragment>
@@ -101,6 +104,9 @@
         <action
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
+        <action
+            android:id="@+id/startContactDetailFragment"
+            app:destination="@id/contactDetailFragment" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />

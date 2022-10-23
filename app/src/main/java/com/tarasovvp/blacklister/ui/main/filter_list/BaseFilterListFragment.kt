@@ -40,7 +40,7 @@ open class BaseFilterListFragment :
                 override fun onFilterClick(filter: Filter) {
                     Log.e("filterLifeCycleTAG",
                         "FilterListFragment onFilterClick startFilterAddFragment")
-                    startFilterAddScreen(filter)
+                    startNextScreen(filter)
                 }
 
                 override fun onFilterLongClick() {
@@ -103,7 +103,7 @@ open class BaseFilterListFragment :
             }
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
-            startFilterAddScreen(Filter().apply {
+            startNextScreen(Filter().apply {
                 filterType =
                     if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
                 this.conditionType = conditionType
@@ -112,13 +112,23 @@ open class BaseFilterListFragment :
         }
     }
 
-    private fun startFilterAddScreen(filter: Filter) {
+    private fun startNextScreen(filter: Filter) {
         val direction = if (this is BlackFilterListFragment) {
-            BlackFilterListFragmentDirections.startFilterAddFragment(
-                filter = filter)
+            if (filter.filter.isEmpty()) {
+                BlackFilterListFragmentDirections.startFilterAddFragment(
+                    filter = filter)
+            } else {
+                BlackFilterListFragmentDirections.startContactDetailFragment(
+                    number = filter.filter)
+            }
         } else {
-            WhiteFilterListFragmentDirections.startFilterAddFragment(
-                filter = filter)
+            if (filter.filter.isEmpty()) {
+                WhiteFilterListFragmentDirections.startFilterAddFragment(
+                    filter = filter)
+            }else{
+                WhiteFilterListFragmentDirections.startContactDetailFragment(
+                    number = filter.filter)
+            }
         }
         findNavController().navigate(direction)
     }

@@ -36,25 +36,12 @@
                 app:turnOnModeText="@string/fore_ground" />
 
             <com.tarasovvp.blacklister.utils.SwitchView
-                android:id="@+id/block_settings_priority"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
-                app:info="@string/change_priority_info"
-                app:layout_constraintTop_toBottomOf="@+id/block_settings_foreground"
-                app:title="@string/change_priority"
-                app:turnOffModeIcon="@drawable/ic_block"
-                app:turnOffModeText="@string/black_list"
-                app:turnOnModeIcon="@drawable/ic_white_filter"
-                app:turnOnModeText="@string/white_list" />
-
-            <com.tarasovvp.blacklister.utils.SwitchView
                 android:id="@+id/block_settings_hidden"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_25"
                 app:info="@string/change_back_ground"
-                app:layout_constraintTop_toBottomOf="@+id/block_settings_priority"
+                app:layout_constraintTop_toBottomOf="@+id/block_settings_foreground"
                 app:title="@string/block_hidden"
                 app:turnOffModeIcon="@drawable/ic_block"
                 app:turnOffModeText="@string/turn_off"

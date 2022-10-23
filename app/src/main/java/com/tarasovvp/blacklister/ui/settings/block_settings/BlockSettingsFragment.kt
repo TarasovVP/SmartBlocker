@@ -53,16 +53,6 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
                     viewModel.changeBlockHidden(isChecked.not())
                 }
             }
-            blockSettingsPriority.setSwitchChange(SharedPreferencesUtil.whiteListPriority)
-            blockSettingsPriority.setSwitchClickListener { isChecked ->
-                if (BlackListerApp.instance?.isLoggedInUser()
-                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
-                ) {
-                    showMessage(getString(R.string.unavailable_network_repeat), true)
-                } else {
-                    viewModel.changePriority(isChecked.not())
-                }
-            }
         }
     }
 
@@ -70,17 +60,11 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
         binding?.apply {
             blockSettingsForeground.setEnableChange(isChecked)
             blockSettingsHidden.setEnableChange(isChecked)
-            blockSettingsPriority.setEnableChange(isChecked)
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            successPriorityLiveData.safeSingleObserve(viewLifecycleOwner) { whiteListPriority ->
-                binding?.blockSettingsPriority?.setSwitchChange(whiteListPriority)
-                SharedPreferencesUtil.whiteListPriority = whiteListPriority
-                (activity as MainActivity).getAllData()
-            }
             successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
                 binding?.blockSettingsHidden?.setSwitchChange(blockHidden)
                 SharedPreferencesUtil.blockHidden = blockHidden
