@@ -21,7 +21,7 @@ data class Contact(
     var photoUrl: String? = String.EMPTY,
     @PrimaryKey var phone: String = String.EMPTY,
     var filterType: Int = DEFAULT_FILTER,
-) : Parcelable, BaseAdapter.MainData {
+) : Parcelable, BaseAdapter.NumberData {
     var trimmedPhone = phone.digitsTrimmed()
     var searchText = String.EMPTY
 

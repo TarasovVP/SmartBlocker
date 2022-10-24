@@ -12,7 +12,7 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
 
     private val contactRepository = ContactRepository
 
-    val contactListLiveData = MutableLiveData<ArrayList<BaseAdapter.MainData>>()
+    val contactListLiveData = MutableLiveData<ArrayList<BaseAdapter.NumberData>>()
 
     fun getQueryContactList(filter: Filter) {
         Log.e("filterAddTAG", "AddViewModel checkContactListByFilter filter $filter")

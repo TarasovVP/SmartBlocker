@@ -23,7 +23,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     private val countryCodeRepository = CountryCodeRepository
 
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
-    val mainDataListLiveData = MutableLiveData<List<BaseAdapter.MainData>>()
+    val numberDataListLiveData = MutableLiveData<List<BaseAdapter.NumberData>>()
     val insertFilterLiveData = MutableLiveData<String>()
     val updateFilterLiveData = MutableLiveData<String>()
     val deleteFilterLiveData = MutableLiveData<String>()
@@ -47,18 +47,18 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             awaitAll(contacts, filters)
             val contactList = contacts.await().orEmpty()
             val filterList = filters.await().orEmpty()
-            val mainDataList = ArrayList<BaseAdapter.MainData>().apply {
+            val numberDataList = ArrayList<BaseAdapter.NumberData>().apply {
                 addAll(contactList)
                 addAll(filterList)
             }
-            mainDataList.sortBy { when (it) {
+            numberDataList.sortBy { when (it) {
                 is Contact -> it.trimmedPhone.replace(PLUS_CHAR.toString(), String.EMPTY)
                 is Filter -> it.filter.replace(PLUS_CHAR.toString(), String.EMPTY)
                 else -> String.EMPTY
             } }
             Log.e("filterAddTAG",
-                "AddViewModel getContactFilterList mainDataList?.size ${mainDataList.size}")
-            mainDataListLiveData.postValue(mainDataList)
+                "AddViewModel getContactFilterList mainDataList?.size ${numberDataList.size}")
+            numberDataListLiveData.postValue(numberDataList)
         }
     }
 

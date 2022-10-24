@@ -18,8 +18,8 @@ import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ContactFilterAdapter(
-    var contactFilterList: ArrayList<BaseAdapter.MainData>? = null,
-    private val contactClick: (BaseAdapter.MainData) -> Unit,
+    var contactFilterList: ArrayList<BaseAdapter.NumberData>? = null,
+    private val contactClick: (BaseAdapter.NumberData) -> Unit,
 ) :
     RecyclerView.Adapter<ContactFilterAdapter.ViewHolder>() {
 

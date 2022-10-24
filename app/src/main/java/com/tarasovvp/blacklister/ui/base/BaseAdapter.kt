@@ -3,16 +3,15 @@ package com.tarasovvp.blacklister.ui.base
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.model.HeaderDataItem
 
-abstract class BaseAdapter<D : BaseAdapter.MainData> :
+abstract class BaseAdapter<D : BaseAdapter.NumberData> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var mData: ArrayList<MainData>? = null
+    var mData: ArrayList<NumberData>? = null
 
     override fun getItemViewType(position: Int): Int {
         return if (mData?.get(position) is HeaderData) {
@@ -51,7 +50,7 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
     fun setHeaderAndData(dataList: List<D>, header: HeaderData) {
         mData = mData ?: ArrayList()
         mData?.add(header)
-        mData?.addAll(dataList as Collection<MainData>)
+        mData?.addAll(dataList as Collection<NumberData>)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -67,9 +66,9 @@ abstract class BaseAdapter<D : BaseAdapter.MainData> :
         mData?.clear()
     }
 
-    interface HeaderData : MainData {
+    interface HeaderData : NumberData {
         val headerType: Int
     }
 
-    interface MainData
+    interface NumberData
 }

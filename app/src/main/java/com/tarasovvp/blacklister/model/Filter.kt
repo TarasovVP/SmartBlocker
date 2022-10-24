@@ -23,7 +23,7 @@ data class Filter(
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
     var countryCode: CountryCode = CountryCode()
-) : Parcelable, BaseAdapter.MainData {
+) : Parcelable, BaseAdapter.NumberData {
     @get:Exclude
     var isCheckedForDelete = false
 

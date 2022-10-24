@@ -24,78 +24,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/call_detail_avatar"
-                android:layout_width="@dimen/margin_65"
-                android:layout_height="@dimen/margin_65"
-                android:layout_marginTop="@dimen/margin_16"
-                app:circleImageUrl="@{call.photoUrl}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:nameInitial="@{call.nameInitial}" />
-
-            <ImageView
-                android:id="@+id/call_detail_type"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-
-                app:layout_constraintBottom_toBottomOf="@+id/call_detail_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/call_detail_avatar" />
-
-            <TextView
-                android:id="@+id/call_detail_name"
+            <include
+                android:id="@+id/call_detail_item_contact"
+                layout="@layout/item_call"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
-                android:gravity="center"
-                android:text="@{call.name}"
-                android:textSize="@dimen/text_size_24"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/call_detail_avatar" />
+                app:call="@{call}"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/call_detail_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:gravity="center"
-                android:text="@{call.number}"
-                android:textSize="@dimen/text_size_24"
-                app:layout_constraintTop_toBottomOf="@+id/call_detail_name" />
-
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/call_detail_add_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:text="@string/add_filter"
-                app:layout_constraintTop_toBottomOf="@+id/call_detail_phone" />
-
-            <ExpandableListView
-                android:id="@+id/call_detail_filter_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                android:groupIndicator="@null"
-                android:listSelector="@android:color/transparent"
-                app:layout_constraintTop_toBottomOf="@+id/call_detail_add_filter" />
+                app:layout_constraintTop_toBottomOf="@+id/call_detail_item_contact" />
 
             <TextView
-                android:id="@+id/call_detail_blocked_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                android:text="@string/blocked_calls_history"
-                app:layout_constraintTop_toBottomOf="@+id/call_detail_filter_list" />
-
-            <LinearLayout
-                android:id="@+id/call_detail_blocked_list"
+                android:id="@+id/call_detail_filter_list_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
+                android:text="@string/contact_list_with_contact"
+                app:layout_constraintTop_toBottomOf="@+id/call_detail_add_filter" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/call_detail_filter_list"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0"
+                android:layout_marginTop="@dimen/margin_8"
+                android:clipToPadding="false"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/call_detail_blocked_title" />
+                android:paddingBottom="@dimen/padding_8"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/call_detail_filter_list_description" />
+
+            <include
+                android:id="@+id/call_detail_filter_list_empty"
+                layout="@layout/include_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/call_detail_filter_list_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

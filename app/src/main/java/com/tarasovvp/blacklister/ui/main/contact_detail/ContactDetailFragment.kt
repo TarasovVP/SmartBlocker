@@ -21,7 +21,7 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     private val args: ContactDetailFragmentArgs by navArgs()
 
     private var contactFilterAdapter: ContactFilterAdapter? = null
-    private var contactFilterList: ArrayList<BaseAdapter.MainData> = ArrayList()
+    private var contactFilterList: ArrayList<BaseAdapter.NumberData> = ArrayList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,16 +44,14 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
     }
 
     override fun observeLiveData() {
-        with(viewModel) {
-            filterListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                binding?.contactDetailFilterListEmpty?.emptyStateTitle?.text =
-                    getString(R.string.filter_by_contact_empty_state)
-                binding?.contactDetailFilterListDescription?.isVisible = contactList.isNotEmpty()
-                binding?.contactDetailFilterListEmpty?.emptyStateContainer?.isVisible =
-                    contactList.isEmpty()
-                contactFilterAdapter?.contactFilterList = contactList
-                contactFilterAdapter?.notifyDataSetChanged()
-            }
+        viewModel.filterListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+            binding?.contactDetailFilterListEmpty?.emptyStateTitle?.text =
+                getString(R.string.filter_by_contact_empty_state)
+            binding?.contactDetailFilterListDescription?.isVisible = contactList.isNotEmpty()
+            binding?.contactDetailFilterListEmpty?.emptyStateContainer?.isVisible =
+                contactList.isEmpty()
+            contactFilterAdapter?.contactFilterList = contactList
+            contactFilterAdapter?.notifyDataSetChanged()
         }
     }
 

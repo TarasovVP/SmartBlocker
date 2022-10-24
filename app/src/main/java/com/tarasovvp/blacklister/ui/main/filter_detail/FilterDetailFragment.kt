@@ -23,7 +23,7 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
     private val args: FilterDetailFragmentArgs by navArgs()
 
     private var contactFilterAdapter: ContactFilterAdapter? = null
-    private var contactFilterList: ArrayList<BaseAdapter.MainData>? = null
+    private var contactFilterList: ArrayList<BaseAdapter.NumberData>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,25 +41,24 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
     }
 
     private fun setContactAdapter() {
-        contactFilterAdapter = contactFilterAdapter ?: ContactFilterAdapter(contactFilterList) { contact ->
-            findNavController().navigate(FilterDetailFragmentDirections.startContactDetailFragment(
-                contact as Contact))
-        }
+        contactFilterAdapter =
+            contactFilterAdapter ?: ContactFilterAdapter(contactFilterList) { contact ->
+                findNavController().navigate(FilterDetailFragmentDirections.startContactDetailFragment(
+                    contact as Contact))
+            }
         binding?.filterDetailContactList?.adapter = contactFilterAdapter
     }
 
     override fun observeLiveData() {
-        with(viewModel) {
-            contactListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                binding?.filterDetailContactListEmpty?.emptyStateTitle?.text =
-                    if (binding?.filter?.isBlackFilter().isTrue()) getString(
-                        R.string.contact_by_blocker_empty_state) else getString(R.string.contact_by_allowing_empty_state)
-                binding?.filterDetailContactListDescription?.isVisible = filterList.isNotEmpty()
-                binding?.filterDetailContactListEmpty?.emptyStateContainer?.isVisible =
-                    filterList.isEmpty()
-                contactFilterAdapter?.contactFilterList = filterList
-                contactFilterAdapter?.notifyDataSetChanged()
-            }
+        viewModel.contactListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
+            binding?.filterDetailContactListEmpty?.emptyStateTitle?.text =
+                if (binding?.filter?.isBlackFilter().isTrue()) getString(
+                    R.string.contact_by_blocker_empty_state) else getString(R.string.contact_by_allowing_empty_state)
+            binding?.filterDetailContactListDescription?.isVisible = filterList.isNotEmpty()
+            binding?.filterDetailContactListEmpty?.emptyStateContainer?.isVisible =
+                filterList.isEmpty()
+            contactFilterAdapter?.contactFilterList = filterList
+            contactFilterAdapter?.notifyDataSetChanged()
         }
     }
 }

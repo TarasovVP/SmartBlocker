@@ -39,7 +39,7 @@ open class FilterAddFragment :
     private val args: FilterAddFragmentArgs by navArgs()
 
     private var contactFilterAdapter: ContactFilterAdapter? = null
-    private var contactFilterList: ArrayList<BaseAdapter.MainData> = ArrayList()
+    private var contactFilterList: ArrayList<BaseAdapter.NumberData> = ArrayList()
     private var countryCodeList: ArrayList<CountryCode> = arrayListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -286,7 +286,7 @@ open class FilterAddFragment :
                 this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
                 setCountrySpinner()
             }
-            mainDataListLiveData.safeSingleObserve(viewLifecycleOwner) { mainDataList ->
+            numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { mainDataList ->
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData filterListLiveData filterList.size ${mainDataList.size}")
                 this@FilterAddFragment.contactFilterList = ArrayList(mainDataList)

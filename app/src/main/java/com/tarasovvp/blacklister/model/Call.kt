@@ -19,14 +19,14 @@ open class Call(
     open var id: Int = 0,
     var callId: String? = String.EMPTY,
     var name: String? = String.EMPTY,
-    var number: String? = String.EMPTY,
+    var number: String = String.EMPTY,
     var normalizedNumber: String? = String.EMPTY,
     var type: String? = String.EMPTY,
     var time: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
     var numberPresentation: String? = String.EMPTY,
-) : Parcelable, BaseAdapter.MainData {
+) : Parcelable, BaseAdapter.NumberData {
 
     var isCheckedForDelete = false
     var isDeleteMode = false

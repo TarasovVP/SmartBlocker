@@ -181,4 +181,5 @@
     <string name="contact_by_blocker_empty_state">По данному блокировщику не найдены совпадения в списке контактов</string>
     <string name="contact_by_allowing_empty_state">По данному разрешению не найдены совпадения в списке контактов</string>
     <string name="filter_by_contact_empty_state">По данному номеру из списка контактов не найдены блокировщики и разрешения</string>
+    <string name="filter_by_call_empty_state">По данному номеру из списка вызовов не найдены блокировщики и разрешения</string>
 </resources>

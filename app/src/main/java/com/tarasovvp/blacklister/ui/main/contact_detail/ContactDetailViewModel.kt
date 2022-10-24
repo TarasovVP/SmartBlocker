@@ -2,7 +2,6 @@ package com.tarasovvp.blacklister.ui.main.contact_detail
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
@@ -11,7 +10,7 @@ class ContactDetailViewModel(application: Application) : BaseViewModel(applicati
 
     private val filterRepository = FilterRepository
 
-    val filterListLiveData = MutableLiveData<ArrayList<BaseAdapter.MainData>>()
+    val filterListLiveData = MutableLiveData<ArrayList<BaseAdapter.NumberData>>()
 
     fun filterListWithContact(phone: String) {
         showProgress()

@@ -3,8 +3,6 @@ package com.tarasovvp.blacklister.ui.base
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
@@ -23,7 +21,7 @@ import com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment
 import com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment
 import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 
-abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : BaseAdapter.MainData> :
+abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : BaseAdapter.NumberData> :
     BaseFragment<B, T>() {
 
     protected val adapter: BaseAdapter<D>? by lazy { createAdapter() }
