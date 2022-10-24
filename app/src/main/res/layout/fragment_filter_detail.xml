@@ -5,7 +5,9 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="androidx.core.content.ContextCompat" />
+
         <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
@@ -35,29 +37,35 @@
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
 
         <TextView
-            android:id="@+id/filter_detail_conditions_description"
+            android:id="@+id/filter_detail_contact_list_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
             android:drawablePadding="@dimen/padding_10"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:padding="@dimen/padding_2"
-            android:text="@{filter.addFilterStateDescription}"
-            app:drawableEndCompat="@drawable/ic_info"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_delete_filter" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/filter_detail_filter_list"
+            android:id="@+id/filter_detail_contact_list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
-            android:layout_marginTop="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_8"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="@dimen/padding_8"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_conditions_description" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_contact_list_description" />
+
+        <include
+            android:id="@+id/filter_detail_contact_list_empty"
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_contact_list_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -76,7 +76,7 @@
     <string name="fraud">Мошенничество</string>
     <string name="privates">Личное</string>
     <string name="black_list">Блокировщики</string>
-    <string name="white_list">Исключения</string>
+    <string name="white_list">Разрешения</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="log_out">Вы хотите выйти из своего аккаунта?</string>
@@ -85,7 +85,6 @@
     <string name="edit_filter">редактирования номера</string>
     <string name="black">черный</string>
     <string name="filter_added">Number %s is added</string>
-    <string name="prioritness">Приоритетность: </string>
     <string name="black_list_criteria">Критерии совпадения из черного списка</string>
     <string name="white_list_criteria">Критерии совпадения из белого списка</string>
     <string name="add_filter">Добавить в фильтр</string>
@@ -98,7 +97,6 @@
     <string name="black_list_empty">Нет совпадений из черного списка</string>
     <string name="white_list_empty">Нет совпадений из белого списка</string>
     <string name="block_add_info">Могут быть %s %s номеров из списка ваших контактов</string>
-    <string name="not_block_add_info">Из-за другой приоритетности не могут быть %s %s номеров из списка ваших контактов</string>
     <string name="progress_title">Подождите. Идет обновление данных.</string>
     <string name="log_in">Log in</string>
     <string name="with_google_account">With google account</string>

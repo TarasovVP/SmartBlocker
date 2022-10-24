@@ -11,14 +11,15 @@ import com.tarasovvp.blacklister.databinding.ItemContactFilterBinding
 import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ContactFilterAdapter(
-    var contactFilterList: ArrayList<BaseAdapter.MainData>,
-    private val contactClick: (String) -> Unit,
+    var contactFilterList: ArrayList<BaseAdapter.MainData>? = null,
+    private val contactClick: (BaseAdapter.MainData) -> Unit,
 ) :
     RecyclerView.Adapter<ContactFilterAdapter.ViewHolder>() {
 
@@ -30,14 +31,14 @@ class ContactFilterAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val mainData = contactFilterList[position]
+        val mainData = contactFilterList?.get(position)
         viewHolder.binding?.apply {
             if (mainData is Contact) {
                 filter = null
                 this.contact = mainData
                 contact?.searchText = searchQueryMap.first
                 root.setSafeOnClickListener {
-                    contactClick.invoke(mainData.phone)
+                    contactClick.invoke(mainData)
                 }
             } else if (mainData is Filter) {
                 contact = null
@@ -53,7 +54,7 @@ class ContactFilterAdapter(
                     searchQueryMap.second,
                     searchQueryMap.first)
                 root.setSafeOnClickListener {
-                    contactClick.invoke(mainData.filter)
+                    contactClick.invoke(mainData)
                 }
             }
             executePendingBindings()
@@ -68,6 +69,6 @@ class ContactFilterAdapter(
         }
     }
 
-    override fun getItemCount() = contactFilterList.size
+    override fun getItemCount() = contactFilterList?.size.orZero()
 
 }

@@ -76,7 +76,7 @@
     <string name="fraud">Fraud</string>
     <string name="privates">Private</string>
     <string name="black_list">Blockers</string>
-    <string name="white_list">Exceptions</string>
+    <string name="white_list">Allowings</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="log_out">Do you want to log out of your account?</string>
@@ -173,4 +173,12 @@
     <string name="filter_full_number_description">Для добавления полного номера выберите код страны, введите номер согласно маски, нажмите кнопку "Добавить"</string>
     <string name="filter_start_description">Для добавления старта номера выберите код страны и/или введите номер не более предложеного маской, нажмите кнопку "Добавить"</string>
     <string name="filter_contain_description">Для добавления номера "Содержит" введите любой номер, нажмите кнопку "Добавить"</string>
+    <string name="contact_list_with_blocker">Конакты, которым будет запрещен входящий вызов этим блокировщиком</string>
+    <string name="contact_list_with_allow">Конакты, которым будет разрешен входящий вызов этим разрешением</string>
+    <string name="contact">Контакт</string>
+    <string name="call">Вызов</string>
+    <string name="contact_list_with_contact">Список фильтров и блокировщиков, которые повлияли на статус контакта</string>
+    <string name="contact_by_blocker_empty_state">По данному блокировщику не найдены совпадения в списке контактов</string>
+    <string name="contact_by_allowing_empty_state">По данному разрешению не найдены совпадения в списке контактов</string>
+    <string name="filter_by_contact_empty_state">По данному номеру из списка контактов не найдены блокировщики и разрешения</string>
 </resources>

@@ -151,16 +151,17 @@ open class FilterAddFragment :
     private fun setContactAdapter() {
         if (contactFilterAdapter.isNull()) {
             contactFilterAdapter = ContactFilterAdapter(contactFilterList) { phone ->
+                val number = if (phone is Filter) phone.filter else if (phone is Contact) phone.phone else String.EMPTY
                 binding?.apply {
                     binding?.filterToInput = true
                     if (filter?.isTypeContain().isTrue()) {
                         filter = filter?.apply {
                             this.filter =
-                                phone.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
+                                number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                         }
                     } else {
                         val phoneNumber =
-                            phone.getPhoneNumber(filter?.countryCode?.country.orEmpty())
+                            number.getPhoneNumber(filter?.countryCode?.country.orEmpty())
                         Log.e("filterAddTAG",
                             "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
                         if ((phoneNumber?.nationalNumber.toString() == filterAddInput.getRawText() &&
@@ -169,7 +170,7 @@ open class FilterAddFragment :
                         ) {
                             filter = filter?.apply {
                                 this.filter =
-                                    phoneNumber?.nationalNumber?.toString() ?: phone.digitsTrimmed()
+                                    phoneNumber?.nationalNumber?.toString() ?: number.digitsTrimmed()
                             }
                             filterAddCountryCodeSpinner.setSelection(countryCodeList.indexOfFirst {
                                 it.countryCode == if (phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(

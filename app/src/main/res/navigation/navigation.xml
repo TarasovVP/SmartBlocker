@@ -74,6 +74,9 @@
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />
+        <action
+            android:id="@+id/startContactDetailFragment"
+            app:destination="@id/contactDetailFragment" />
     </fragment>
 
     <fragment
@@ -91,6 +94,23 @@
     </fragment>
 
     <fragment
+        android:id="@+id/contactDetailFragment"
+        android:name="com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragment"
+        android:label="@string/contact">
+        <argument
+            android:name="contact"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.blacklister.model.Contact"
+            app:nullable="true" />
+        <action
+            android:id="@+id/startFilterAddFragment"
+            app:destination="@id/filterAddFragment" />
+        <action
+            android:id="@+id/startFilterDetailFragment"
+            app:destination="@id/filterDetailFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/callListFragment"
         android:name="com.tarasovvp.blacklister.ui.main.call_list.CallListFragment"
         android:label="@string/blocked_call_log">
@@ -103,23 +123,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/contactDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragment"
-        android:label="@string/details">
-        <argument
-            android:name="contact"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Contact"
-            app:nullable="true" />
-        <action
-            android:id="@+id/startFilterAddFragment"
-            app:destination="@id/filterAddFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/callDetailFragment"
         android:name="com.tarasovvp.blacklister.ui.main.call_detail.CallDetailFragment"
-        android:label="@string/details">
+        android:label="@string/call">
         <argument
             android:name="call"
             android:defaultValue="@null"
