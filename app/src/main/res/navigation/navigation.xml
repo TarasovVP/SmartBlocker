@@ -134,6 +134,9 @@
         <action
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
+        <action
+            android:id="@+id/startFilterDetailFragment"
+            app:destination="@id/filterDetailFragment" />
     </fragment>
 
     <action

@@ -177,6 +177,8 @@ open class FilterAddFragment :
                                     COUNTRY_CODE_START,
                                     phoneNumber?.countryCode.toString())
                             }.orZero())
+                            Log.e("filterAddTAG",
+                                "BaseAddFragment ContactFilterAdapter filterAddCountryCodeSpinner filter ${filter?.filter} countryCode ${filter?.countryCode?.countryCode}")
                         }
                     }
                 }
@@ -209,7 +211,7 @@ open class FilterAddFragment :
                             .orEmpty())
                     }
                     Log.e("filterAddTAG",
-                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode} ")
+                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${args.filter?.filter}")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit

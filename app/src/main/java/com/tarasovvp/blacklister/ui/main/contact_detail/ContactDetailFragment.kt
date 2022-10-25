@@ -6,13 +6,16 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentContactDetailBinding
+import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.main.filter_add.ContactFilterAdapter
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, ContactDetailViewModel>() {
 
@@ -28,7 +31,13 @@ class ContactDetailFragment : BaseFragment<FragmentContactDetailBinding, Contact
         args.contact?.apply {
             binding?.contact = this
             if (contactFilterAdapter?.contactFilterList.isNull()) {
-                viewModel.filterListWithContact(this.phone)
+                viewModel.filterListWithContact(this.trimmedPhone)
+            }
+            binding?.contactDetailAddFilter?.setSafeOnClickListener {
+                findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
+                    filter = Filter(filter = trimmedPhone,
+                        conditionType = Condition.CONDITION_TYPE_FULL.index,
+                        filterType = Constants.BLACK_FILTER)))
             }
         }
         setContactAdapter()

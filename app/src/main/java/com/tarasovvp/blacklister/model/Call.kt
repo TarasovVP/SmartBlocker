@@ -26,14 +26,23 @@ open class Call(
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
     var numberPresentation: String? = String.EMPTY,
+    var filterType: Int = Constants.DEFAULT_FILTER
 ) : Parcelable, BaseAdapter.NumberData {
 
     var isCheckedForDelete = false
     var isDeleteMode = false
     var searchText = String.EMPTY
 
+    fun filterTypeIcon(): Int {
+        return when (filterType) {
+            Constants.BLACK_FILTER -> R.drawable.ic_block
+            Constants.WHITE_FILTER -> R.drawable.ic_accepted
+            else -> 0
+        }
+    }
+
     fun isNumberEmpty(): Boolean {
-        return number.isNullOrEmpty()
+        return number.isEmpty()
     }
 
     fun isNameEmpty(): Boolean {

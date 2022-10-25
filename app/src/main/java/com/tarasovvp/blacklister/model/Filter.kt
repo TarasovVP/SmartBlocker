@@ -54,6 +54,11 @@ data class Filter(
     }
 
     @Exclude
+    fun conditionTypeName(): Int {
+        return Condition.getTitleByIndex(conditionType)
+    }
+
+    @Exclude
     fun conditionTypeFullHint(): String {
         return countryCode.numberFormat.replace(Regex("[0-9]"), HASH_CHAR.toString())
     }

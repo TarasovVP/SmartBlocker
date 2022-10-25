@@ -15,7 +15,7 @@ class ContactDetailViewModel(application: Application) : BaseViewModel(applicati
     fun filterListWithContact(phone: String) {
         showProgress()
         launch {
-            val blackNumberList = filterRepository.getFilterList(phone)
+            val blackNumberList = filterRepository.queryFilterList(phone)
             blackNumberList?.let {
                 filterListLiveData.postValue(ArrayList(it))
             }

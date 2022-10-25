@@ -54,7 +54,7 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{filter.name}"
+                android:text="@{filter.conditionTypeName}"
                 android:textColor="@{filter.addFilterState == null ? @color/main_color : ContextCompat.getColor(context, filter.addFilterState.color)}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"

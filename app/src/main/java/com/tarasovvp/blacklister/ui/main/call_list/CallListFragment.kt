@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.main.call_list
 
 import android.util.Log
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
@@ -10,6 +11,7 @@ import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.extensions.showPopUpWindow
+import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -62,9 +64,9 @@ class CallListFragment :
             emptyStateContainer = callListEmpty
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 (activity as MainActivity).toolbar?.title =
-                    getString(if (checked) R.string.log_list else R.string.blocked_call_log)
+                    getString(if (checked) R.string.blocked_call_log else R.string.log_list)
                 if (compoundButton.isPressed) {
-                    getData()
+                    searchDataList()
                 }
             }
             setFragmentResultListener(AddFilterState.ADD_FILTER_DELETE.name) { _, _ ->
@@ -121,16 +123,12 @@ class CallListFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            callLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
+            callListLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
                 if (callListData == callList) {
                     swipeRefresh?.isRefreshing = false
                     return@safeSingleObserve
                 }
-                callList = if (binding?.callListCheck?.isChecked.isTrue()) {
-                    callList.orEmpty().plus(callListData).distinct()
-                } else {
-                    callListData
-                }
+                callList = callListData
                 searchDataList()
             }
             callHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { callHashMap ->
@@ -145,7 +143,7 @@ class CallListFragment :
     }
 
     override fun isFiltered(): Boolean {
-        return false
+        return binding?.callListCheck?.isChecked.isTrue()
     }
 
     override fun searchDataList() {
@@ -154,11 +152,14 @@ class CallListFragment :
         val filteredCallList = callList?.filter { call ->
             (call.name?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
-                    || call.number?.lowercase(Locale.getDefault())
-                ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
+                    || call.number.lowercase(Locale.getDefault())
+                        .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
+                    && if (binding?.callListCheck?.isChecked.isTrue()) call is BlockedCall else true
         }.orEmpty()
         Log.e("callTAG",
             "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
+        binding?.callListCheck?.isInvisible =
+            (filteredCallList.isNotEmpty() || binding?.callListCheck?.isChecked.isTrue()).not()
         checkDataListEmptiness(filteredCallList.isEmpty())
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList)
@@ -166,10 +167,6 @@ class CallListFragment :
     }
 
     override fun getData() {
-        if (binding?.callListCheck?.isChecked.isTrue()) {
-            viewModel.getLogCallList()
-        } else {
-            viewModel.getBlockedCallList()
-        }
+        viewModel.getCallList()
     }
 }

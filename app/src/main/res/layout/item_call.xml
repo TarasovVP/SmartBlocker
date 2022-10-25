@@ -36,6 +36,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:nameInitial="@{call.nameInitial}" />
 
+            <ImageView
+                android:id="@+id/item_call_filter_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:imageResource="@{call.filterTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
+
             <TextView
                 android:id="@+id/item_call_name"
                 android:layout_width="@dimen/size_0"

@@ -107,7 +107,6 @@ open class BaseFilterListFragment :
                 filterType =
                     if (this@BaseFilterListFragment is BlackFilterListFragment) BLACK_FILTER else WHITE_FILTER
                 this.conditionType = conditionType
-                name = getString(Condition.getTitleByIndex(conditionType))
             })
         }
     }

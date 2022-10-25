@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
-            android:text="@string/all_call_log_list"
+            android:visibility="invisible"
+            android:text="@string/blocked_call_log"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

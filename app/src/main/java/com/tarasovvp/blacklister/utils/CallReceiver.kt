@@ -45,13 +45,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         Log.e("blockTAG",
             "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number")
         CoroutineScope(Dispatchers.IO).launch {
-            val filterList = filterRepository.getFilterList(number)
-            val isInWhiteList =
-                filterList?.any { it.isBlackFilter().not() }.isTrue()
-            val isInBlackList =
-                filterList?.any { it.isBlackFilter() }.isTrue()
-            val isBlockNeeded =
-                (isInBlackList ) || (isInBlackList && isInWhiteList.not()) || (number.isEmpty() && SharedPreferencesUtil.blockHidden)
+            val isBlockNeeded = filterRepository.queryFilterList(number)?.firstOrNull()?.isBlackFilter().isTrue()
             Log.e("blockTAG",
                 "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded $isBlockNeeded blockHidden ${SharedPreferencesUtil.blockHidden}")
             if (isBlockNeeded && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {

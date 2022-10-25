@@ -3,45 +3,41 @@ package com.tarasovvp.blacklister.ui.main.call_list
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.repository.CallRepository
+import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 
 class CallListViewModel(application: Application) : BaseViewModel(application) {
 
     private val callRepository = CallRepository
     private val blockedCallRepository = BlockedCallRepository
+    private val filterRepository = FilterRepository
 
-    val callLiveData = MutableLiveData<List<Call>>()
+    val callListLiveData = MutableLiveData<List<Call>>()
     val callHashMapLiveData = MutableLiveData<Map<String, List<Call>>?>()
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
-    fun getBlockedCallList() {
-        Log.e("callTAG", "CallListViewModel getBlockedCallList start")
-        showProgress()
+    fun getCallList() {
         launch {
-            val blockedCallList = blockedCallRepository.allBlockedCalls()
-            Log.e("callTAG",
-                "CallListViewModel getBlockedCallList allBlockedCalls() size ${blockedCallList?.size}")
-            blockedCallList?.apply {
-                callLiveData.postValue(this)
+            val logCalls = async { callRepository.getAllLogCalls() }
+            val blockedCalls = async { blockedCallRepository.allBlockedCalls() }
+            awaitAll(logCalls, blockedCalls)
+            val logCallList = logCalls.await().orEmpty()
+            val blockedCallList = blockedCalls.await().orEmpty()
+            blockedCallList.forEach { logCall ->
+                logCall.filterType = filterRepository.queryFilterList(logCall.number)
+                    ?.firstOrNull()?.filterType ?: Constants.DEFAULT_FILTER
             }
-            hideProgress()
-        }
-    }
-
-    fun getLogCallList() {
-        showProgress()
-        launch {
-            Log.e("callTAG", "CallListViewModel getLogCallList() start")
-            val allLogCalls = callRepository.getAllLogCalls()
-            Log.e("callTAG",
-                "CallListViewModel getLogCallList() getAllLogCalls size ${allLogCalls?.size}")
-            allLogCalls?.apply {
-                callLiveData.postValue(this)
+            val callList = ArrayList<Call>().apply {
+                addAll(logCallList)
+                addAll(blockedCallList)
             }
-            hideProgress()
+            callListLiveData.postValue(callList)
         }
     }
 

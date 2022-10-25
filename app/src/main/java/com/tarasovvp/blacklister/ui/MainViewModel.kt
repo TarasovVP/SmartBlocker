@@ -3,11 +3,7 @@ package com.tarasovvp.blacklister.ui
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
-import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
@@ -57,14 +53,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
-                val filterList = filterRepository.getFilterList(contact.trimmedPhone)
-                val isInWhiteList = filterList?.any { it.isBlackFilter().not() }.isTrue()
-                val isInBlackList = filterList?.any { it.isBlackFilter() }.isTrue()
-                contact.filterType = when {
-                    (isInBlackList ) || (isInBlackList && isInWhiteList.not()) -> BLACK_FILTER
-                    (isInWhiteList ) || (isInWhiteList && isInBlackList.not()) -> WHITE_FILTER
-                    else -> DEFAULT_FILTER
-                }
+                contact.filterType = filterRepository.queryFilterList(contact.trimmedPhone)
+                    ?.firstOrNull()?.filterType ?: DEFAULT_FILTER
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
@@ -72,6 +62,10 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             progressStatusLiveData.postValue("Обновление списка звонков")
             // init calls data
             val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>())
+            callLogList.forEach { logCall ->
+                logCall.filterType = filterRepository.queryFilterList(logCall.number)
+                    ?.firstOrNull()?.filterType ?: DEFAULT_FILTER
+            }
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)
             Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
