@@ -24,13 +24,13 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_8">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_contact_avatar"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 app:circleImageUrl="@{contact.photoUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_name"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:nameInitial="@{contact.nameInitial}" />
@@ -44,12 +44,11 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
 
             <TextView
-                android:id="@+id/item_contact_filter_name"
+                android:id="@+id/item_contact_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_8"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 android:ellipsize="end"
-                android:gravity="top"
                 android:maxLines="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
@@ -61,13 +60,13 @@
                 android:id="@+id/item_contact_filter_number"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_8"
-                android:layout_marginTop="@dimen/margin_8"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_type"
-                app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/item_contact_filter_name"
-                app:mainText="@{contact.phone}"
+                app:layout_constraintEnd_toEndOf="@+id/item_contact_name"
+                app:layout_constraintStart_toStartOf="@+id/item_contact_name"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_name"
+                app:mainText="@{contact.number}"
                 app:searchText="@{contact.searchText}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

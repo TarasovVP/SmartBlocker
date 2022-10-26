@@ -14,7 +14,6 @@ import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragmentDirections
 import com.tarasovvp.blacklister.ui.main.filter_add.ContactFilterAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -34,18 +33,15 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
             binding?.call = this
             if (contactFilterAdapter?.contactFilterList.isNull()) {
                 viewModel.filterListWithCall(this.number)
-            } else {
-                contactFilterList = ArrayList(contactFilterAdapter?.contactFilterList.orEmpty())
             }
             binding?.callDetailAddFilter?.setSafeOnClickListener {
-                findNavController().navigate(ContactDetailFragmentDirections.startFilterAddFragment(
+                findNavController().navigate(CallDetailFragmentDirections.startFilterAddFragment(
                     filter = Filter(filter = this.number,
                         conditionType = Condition.CONDITION_TYPE_FULL.index,
                         filterType = Constants.BLACK_FILTER)))
             }
         }
         setContactAdapter()
-        checkFilterListEmptiness()
     }
 
     private fun setContactAdapter() {

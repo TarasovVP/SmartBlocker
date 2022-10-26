@@ -42,4 +42,6 @@ object Constants {
     const val LOG_OUT = "logOut"
     const val EXCEPTION = "exception"
     const val DIALOG = "dialog"
+    const val DESC = "DESC"
+    const val ASC = "ASC"
 }

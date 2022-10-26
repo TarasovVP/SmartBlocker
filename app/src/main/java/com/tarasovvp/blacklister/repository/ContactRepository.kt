@@ -28,10 +28,6 @@ object ContactRepository {
         return contactDao?.queryContactList(filter.filter, filter.conditionType)
     }
 
-    suspend fun getContactByPhone(phone: String): Contact? {
-        return contactDao?.getContactByPhone(phone)
-    }
-
     suspend fun getSystemContactList(context: Context): ArrayList<Contact> =
         withContext(
             Dispatchers.Default

@@ -1,19 +1,19 @@
 package com.tarasovvp.blacklister.ui.main.call_list
 
 import android.util.Log
-import android.view.View
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
 import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.extensions.showPopUpWindow
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Call
-import com.tarasovvp.blacklister.model.Info
+import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -33,8 +33,11 @@ class CallListFragment :
         return context?.let {
             CallAdapter(object : CallClickListener {
                 override fun onCallClick(call: Call) {
-                    findNavController().navigate(CallListFragmentDirections.startCallDetailFragment(
-                        call = call))
+                    findNavController().navigate(CallListFragmentDirections.startNumberDetailFragment(
+                        Contact(name = call.name,
+                            photoUrl = call.photoUrl,
+                            number = call.number,
+                            filterType = call.filterType)))
                 }
 
                 override fun onCallLongClick() {
@@ -44,14 +47,13 @@ class CallListFragment :
                 override fun onCallDeleteCheckChange(call: Call) {
                     callList?.find { it.time == call.time }?.isCheckedForDelete =
                         call.isCheckedForDelete
-                    if (callList?.none { it.isCheckedForDelete }.isTrue() && isDeleteMode) {
+                    if (callList?.any { it.isCheckedForDelete }.isTrue().not() && isDeleteMode) {
                         changeDeleteMode()
                     }
                 }
 
-                override fun onCallDeleteInfoClick(view: View) {
-                    view.showPopUpWindow(Info(title = getString(R.string.call_deleting),
-                        description = getString(R.string.call_delete_info)))
+                override fun onCallDeleteInfoClick() {
+                    showMessage(getString(R.string.call_delete_info), true)
                 }
             })
         }
@@ -62,6 +64,7 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
+            callListCheck.isVisible = adapter?.itemCount.orZero() > 0
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 (activity as MainActivity).toolbar?.title =
                     getString(if (checked) R.string.blocked_call_log else R.string.log_list)
@@ -71,6 +74,29 @@ class CallListFragment :
             }
             setFragmentResultListener(AddFilterState.ADD_FILTER_DELETE.name) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
+            }
+        }
+    }
+
+    private fun changeDeleteMode() {
+        Log.e("destinationTAG", "CallListFragment changeDeleteMode isDeleteMode $isDeleteMode")
+        isDeleteMode = isDeleteMode.not()
+        (adapter as CallAdapter).apply {
+            isDeleteMode = this@CallListFragment.isDeleteMode
+            recyclerView?.post {
+                adapter?.notifyDataSetChanged()
+            }
+        }
+        (activity as MainActivity).toolbar?.apply {
+            Log.e("callTAG", "CallListFragment menu $menu")
+            title =
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
+            menu?.clear()
+            if (isDeleteMode) {
+                inflateMenu(R.menu.toolbar_delete)
+                setDeleteMenuClickListener()
+            } else {
+                inflateMenu(R.menu.toolbar_search)
             }
         }
     }
@@ -90,33 +116,12 @@ class CallListFragment :
                         callList?.forEach {
                             it.isCheckedForDelete = false
                         }
+                        changeDeleteMode()
                         notifyDataSetChanged()
                     }
                     true
                 }
                 else -> return@setOnMenuItemClickListener true
-            }
-        }
-    }
-
-    private fun changeDeleteMode() {
-        isDeleteMode = isDeleteMode.not()
-        (adapter as CallAdapter).apply {
-            isDeleteMode = this@CallListFragment.isDeleteMode
-            recyclerView?.post {
-                adapter?.notifyDataSetChanged()
-            }
-        }
-        (activity as MainActivity).toolbar?.apply {
-            Log.e("callTAG", "CallListFragment menu $menu")
-            menu?.clear()
-            title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
-            if (isDeleteMode) {
-                inflateMenu(R.menu.toolbar_delete)
-                setDeleteMenuClickListener()
-            } else {
-                inflateMenu(R.menu.toolbar_search)
             }
         }
     }
@@ -153,7 +158,7 @@ class CallListFragment :
             (call.name?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.number.lowercase(Locale.getDefault())
-                        .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
+                .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
                     && if (binding?.callListCheck?.isChecked.isTrue()) call is BlockedCall else true
         }.orEmpty()
         Log.e("callTAG",

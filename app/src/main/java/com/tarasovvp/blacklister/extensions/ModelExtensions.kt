@@ -14,9 +14,11 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.ASC
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.blacklister.constants.Constants.CALL_ID
 import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
+import com.tarasovvp.blacklister.constants.Constants.DESC
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
@@ -42,7 +44,11 @@ fun Context.systemContactList(): ArrayList<Contact> {
         "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'"
     val cursor: Cursor? = this
         .contentResolver
-        .query(ContactsContract.Data.CONTENT_URI, projection, selection, null, null)
+        .query(ContactsContract.Data.CONTENT_URI,
+            projection,
+            selection,
+            null,
+            "${ContactsContract.Contacts.DISPLAY_NAME} $ASC")
     val contactList = arrayListOf<Contact>()
     cursor?.use { contactCursor ->
         while (contactCursor.moveToNext()) {
@@ -50,11 +56,10 @@ fun Context.systemContactList(): ArrayList<Contact> {
                 id = contactCursor.getString(0),
                 name = contactCursor.getString(1),
                 photoUrl = contactCursor.getString(2),
-                phone = contactCursor.getString(3)
+                number = contactCursor.getString(3)
             ))
         }
     }
-    contactList.sortBy { it.name }
     return contactList
 }
 
@@ -76,7 +81,7 @@ fun Context.systemCallLogCursor(): Cursor? {
         projection.toTypedArray(),
         null,
         null,
-        null
+        "${CallLog.Calls.DATE} $DESC"
     )
 }
 
@@ -100,16 +105,20 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
-            logCallList.add(callLogCursor.createCallObject(false) as LogCall)
+            logCallList.add((callLogCursor.createCallObject(false) as LogCall).apply {
+                name = if (name.isNullOrEmpty()) getString(R.string.number_from_call_log) else name
+            })
         }
     }
     return logCallList
 }
 
-fun Context.deleteLastBlockedCall(number: String) {
+fun Context.deleteLastBlockedCall(number: String, filter: String, conditionType: Int) {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
             val blockedCall = cursor.createCallObject(true) as BlockedCall
+            Log.e("blockTAG",
+                "Extensions deleteLastMissedCall id ${blockedCall.id} number ${blockedCall.number} type ${blockedCall.type} time ${blockedCall.time} currentTimeMillis ${System.currentTimeMillis()}")
             if (number == blockedCall.number && REJECTED_CALL == blockedCall.type) {
                 try {
                     Log.e("blockTAG",
@@ -117,9 +126,13 @@ fun Context.deleteLastBlockedCall(number: String) {
                     val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
                         "${CALL_ID}'${blockedCall.callId}'",
                         null)
-                    blockedCall.type = BLOCKED_CALL
                     CoroutineScope(Dispatchers.IO).launch {
-                        BlockedCallRepository.insertBlockedCall(blockedCall)
+                        BlockedCallRepository.insertBlockedCall(blockedCall.apply {
+                            type = BLOCKED_CALL
+                            blockFilter = filter
+                            blockFilterCondition = conditionType
+                            if (name.isNullOrEmpty()) getString(R.string.number_from_call_log) else name
+                        })
                     }
                     Log.e("blockTAG",
                         "Extensions delete callId ${blockedCall.callId} result $result")
@@ -197,7 +210,8 @@ fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
             String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString())
         val numberFormat = try {
             format(getExampleNumberForType(region, PhoneNumberUtil.PhoneNumberType.MOBILE),
-                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace("$countryCode ", String.EMPTY)
+                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace("$countryCode ",
+                String.EMPTY)
         } catch (e: Exception) {
             String.EMPTY
         }

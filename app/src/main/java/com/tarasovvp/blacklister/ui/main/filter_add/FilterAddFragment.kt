@@ -151,7 +151,7 @@ open class FilterAddFragment :
     private fun setContactAdapter() {
         if (contactFilterAdapter.isNull()) {
             contactFilterAdapter = ContactFilterAdapter(contactFilterList) { phone ->
-                val number = if (phone is Filter) phone.filter else if (phone is Contact) phone.phone else String.EMPTY
+                val number = if (phone is Filter) phone.filter else if (phone is Contact) phone.number else String.EMPTY
                 binding?.apply {
                     binding?.filterToInput = true
                     if (filter?.isTypeContain().isTrue()) {
@@ -211,7 +211,7 @@ open class FilterAddFragment :
                             .orEmpty())
                     }
                     Log.e("filterAddTAG",
-                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${args.filter?.filter}")
+                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filter?.filter}")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit

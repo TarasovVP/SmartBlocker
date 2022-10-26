@@ -27,9 +27,9 @@ open class ContactListFragment :
         Log.e("adapterTAG",
             "ContactListFragment createAdapter  contactList?.size ${contactList?.size}")
         return context?.let {
-            ContactAdapter { phone ->
-                findNavController().navigate(ContactListFragmentDirections.startContactDetailFragment(
-                    contact = phone))
+            ContactAdapter { contact ->
+                findNavController().navigate(ContactListFragmentDirections.startNumberDetailFragment(
+                    contact = contact))
             }
         }
     }
@@ -86,7 +86,7 @@ open class ContactListFragment :
         val filteredContactList = contactList?.filter { contact ->
             (contact.name?.lowercase(Locale.getDefault())?.contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ).isTrue() || contact.phone.lowercase(Locale.getDefault()).contains(
+            ).isTrue() || contact.number.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
                 .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)

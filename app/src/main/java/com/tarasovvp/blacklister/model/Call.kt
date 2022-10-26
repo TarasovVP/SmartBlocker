@@ -74,4 +74,8 @@ open class Call(
     fun nameInitial(): String {
         return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
     }
+
+    fun getBlockedCall(): BlockedCall? {
+        return if (this is BlockedCall) this else null
+    }
 }

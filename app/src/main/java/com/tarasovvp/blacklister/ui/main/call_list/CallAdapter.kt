@@ -62,20 +62,26 @@ class CallAdapter(val callClickListener: CallClickListener) :
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 call.isDeleteMode = isDeleteMode
                 call.searchText = searchQuery
-                itemCallDeleteInfo.setSafeOnClickListener {
-                    callClickListener.onCallDeleteInfoClick(it)
-                }
+                this.call = call
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
+                        if (call.isBlockedType()) {
+                            itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
+                        } else {
+                            callClickListener.onCallDeleteInfoClick()
+                        }
                     } else {
                         callClickListener.onCallClick(call)
                     }
                 }
                 root.setOnLongClickListener {
                     if (call.isDeleteMode.not()) {
-                        call.isCheckedForDelete = true
-                        callClickListener.onCallLongClick()
+                        if (call.isBlockedType()) {
+                            call.isCheckedForDelete = call.isBlockedType()
+                            callClickListener.onCallLongClick()
+                        } else {
+                            callClickListener.onCallDeleteInfoClick()
+                        }
                     }
                     return@setOnLongClickListener call.isDeleteMode.not()
                 }
@@ -83,7 +89,6 @@ class CallAdapter(val callClickListener: CallClickListener) :
                     call.isCheckedForDelete = checked
                     callClickListener.onCallDeleteCheckChange(call)
                 }
-                this.call = call
                 executePendingBindings()
             }
         }

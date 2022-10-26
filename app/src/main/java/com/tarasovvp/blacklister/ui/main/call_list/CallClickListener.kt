@@ -7,5 +7,5 @@ interface CallClickListener {
     fun onCallClick(call: Call)
     fun onCallLongClick()
     fun onCallDeleteCheckChange(call: Call)
-    fun onCallDeleteInfoClick(view: View)
+    fun onCallDeleteInfoClick()
 }

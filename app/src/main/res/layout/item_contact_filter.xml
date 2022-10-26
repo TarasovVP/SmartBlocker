@@ -37,7 +37,7 @@
                 android:scaleType="center"
                 app:imageResource="@{contact == null ? filter.conditionTypeIcon : contact.avatar()}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_name"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
@@ -51,7 +51,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_contact_filter_avatar" />
 
             <TextView
-                android:id="@+id/item_contact_filter_name"
+                android:id="@+id/item_contact_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_8"
@@ -69,10 +69,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_4"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/item_contact_filter_name"
-                app:layout_constraintStart_toStartOf="@+id/item_contact_filter_name"
-                app:layout_constraintTop_toBottomOf="@+id/item_contact_filter_name"
-                app:mainText="@{contact == null ? filter.filter : contact.phone}"
+                app:layout_constraintEnd_toEndOf="@+id/item_contact_name"
+                app:layout_constraintStart_toStartOf="@+id/item_contact_name"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_name"
+                app:mainText="@{contact == null ? filter.filter : contact.number}"
                 app:searchText="@{contact == null ? filter.searchText : contact.searchText}" />
 
             <ImageView

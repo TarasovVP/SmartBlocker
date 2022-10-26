@@ -22,16 +22,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:alpha="@{call.deleteMode &amp;&amp; !call.isBlockedType() ? 0.5f : 1f}"
             android:padding="@dimen/padding_8">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_call_avatar"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:src="@drawable/ic_avatar"
                 app:circleImageUrl="@{call.photoUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_time"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:nameInitial="@{call.nameInitial}" />
@@ -48,14 +49,12 @@
                 android:id="@+id/item_call_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_8"
                 android:ellipsize="end"
-                android:gravity="top"
                 android:maxLines="1"
                 android:visibility="@{call.nameEmpty &amp;&amp; !call.numberEmpty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_number"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
-                app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
+                app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
                 app:mainText="@{call.numberEmpty ? @string/hidden : call.name}"
                 app:searchText="@{call.searchText}" />
@@ -64,8 +63,9 @@
                 android:id="@+id/item_call_number"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_8"
-                android:layout_marginTop="@dimen/margin_4"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 android:visibility="@{call.numberEmpty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_time"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
@@ -78,20 +78,18 @@
                 android:id="@+id/item_call_time"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_8"
-                android:layout_marginTop="@dimen/margin_4"
                 android:text="@{call.dateTimeFromTime()}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
-                app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
+                app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number" />
 
             <ImageView
                 android:id="@+id/item_call_type_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{!call.deleteMode ? View.VISIBLE : View.GONE}"
+                android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,18 +101,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@{call.checkedForDelete}"
+                android:padding="@dimen/padding_8"
                 android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.VISIBLE : View.GONE, default=gone}"
-                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_delete_info"
-                app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
-
-            <ImageButton
-                android:id="@+id/item_call_delete_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_info"
-                android:visibility="@{call.deleteMode &amp;&amp; !call.isBlockedType() ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />

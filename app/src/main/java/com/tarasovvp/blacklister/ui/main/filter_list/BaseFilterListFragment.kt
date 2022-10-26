@@ -111,33 +111,14 @@ open class BaseFilterListFragment :
         }
     }
 
-    private fun startNextScreen(filter: Filter) {
-        val direction = if (this is BlackFilterListFragment) {
-            if (filter.filter.isEmpty()) {
-                BlackFilterListFragmentDirections.startFilterAddFragment(
-                    filter = filter)
-            } else {
-                BlackFilterListFragmentDirections.startFilterDetailFragment(
-                    filter = filter)
-            }
-        } else {
-            if (filter.filter.isEmpty()) {
-                WhiteFilterListFragmentDirections.startFilterAddFragment(
-                    filter = filter)
-            }else{
-                WhiteFilterListFragmentDirections.startFilterDetailFragment(
-                    filter = filter)
-            }
-        }
-        findNavController().navigate(direction)
-    }
-
     private fun changeDeleteMode() {
         Log.e("destinationTAG", "FilterList changeDeleteMode isDeleteMode $isDeleteMode")
         isDeleteMode = isDeleteMode.not()
         (adapter as FilterAdapter).apply {
             isDeleteMode = this@BaseFilterListFragment.isDeleteMode
-            notifyDataSetChanged()
+            recyclerView?.post {
+                adapter?.notifyDataSetChanged()
+            }
         }
         findNavController().currentDestination?.label =
             if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
@@ -182,6 +163,27 @@ open class BaseFilterListFragment :
                 }
             }
         }
+    }
+
+    private fun startNextScreen(filter: Filter) {
+        val direction = if (this is BlackFilterListFragment) {
+            if (filter.filter.isEmpty()) {
+                BlackFilterListFragmentDirections.startFilterAddFragment(
+                    filter = filter)
+            } else {
+                BlackFilterListFragmentDirections.startFilterDetailFragment(
+                    filter = filter)
+            }
+        } else {
+            if (filter.filter.isEmpty()) {
+                WhiteFilterListFragmentDirections.startFilterAddFragment(
+                    filter = filter)
+            }else{
+                WhiteFilterListFragmentDirections.startFilterDetailFragment(
+                    filter = filter)
+            }
+        }
+        findNavController().navigate(direction)
     }
 
     override fun observeLiveData() {
