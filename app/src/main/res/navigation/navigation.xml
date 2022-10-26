@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/numberDetailFragment"
         android:name="com.tarasovvp.blacklister.ui.main.number_detail.NumberDetailFragment"
-        android:label="@string/contact">
+        android:label="@string/number">
         <argument
             android:name="contact"
             android:defaultValue="@null"

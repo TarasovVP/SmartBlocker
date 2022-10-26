@@ -183,4 +183,5 @@
     <string name="filter_by_contact_empty_state">По данному номеру из списка контактов не найдены блокировщики и разрешения</string>
     <string name="filter_by_call_empty_state">По данному номеру из списка вызовов не найдены блокировщики и разрешения</string>
     <string name="number_from_call_log">Номер из списка звонков</string>
+    <string name="number">Номер</string>
 </resources>

@@ -8,6 +8,7 @@ import com.tarasovvp.blacklister.constants.Constants.DATE_FORMAT
 import com.tarasovvp.blacklister.constants.Constants.MISSED_CALL
 import com.tarasovvp.blacklister.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
+import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.nameInitial
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds

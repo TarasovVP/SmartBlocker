@@ -46,20 +46,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
 
             <TextView
-                android:id="@+id/item_call_name"
-                android:layout_width="@dimen/size_0"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:visibility="@{call.nameEmpty &amp;&amp; !call.numberEmpty ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toTopOf="@+id/item_call_number"
-                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
-                app:layout_constraintStart_toStartOf="@+id/item_call_number"
-                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
-                app:mainText="@{call.numberEmpty ? @string/hidden : call.name}"
-                app:searchText="@{call.searchText}" />
-
-            <TextView
                 android:id="@+id/item_call_number"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
@@ -67,11 +53,25 @@
                 android:textStyle="bold"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:visibility="@{call.numberEmpty ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toTopOf="@+id/item_call_time"
+                app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/item_call_name"
+                app:layout_constraintTop_toTopOf="@id/item_call_avatar"
                 app:mainText="@{call.number}"
+                app:searchText="@{call.searchText}" />
+
+            <TextView
+                android:id="@+id/item_call_name"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:visibility="@{call.nameEmpty &amp;&amp; !call.numberEmpty ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toTopOf="@+id/item_call_time"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
+                app:layout_constraintStart_toStartOf="@+id/item_call_number"
+                app:layout_constraintTop_toBottomOf="@+id/item_call_number"
+                app:mainText="@{call.numberEmpty ? @string/hidden : call.name}"
                 app:searchText="@{call.searchText}" />
 
             <TextView
@@ -81,9 +81,9 @@
                 android:text="@{call.dateTimeFromTime()}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_block_condition"
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
-                app:layout_constraintTop_toBottomOf="@+id/item_call_number" />
+                app:layout_constraintTop_toBottomOf="@+id/item_call_name" />
 
             <ImageView
                 android:id="@+id/item_call_type_icon"
@@ -93,8 +93,21 @@
                 app:imageResource="@{call.callIcon()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_call_time"
+                app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_call_block_condition"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                android:text="@{call.blockedCall.blockFilter}"
+                android:textSize="@dimen/text_size_10"
+                android:textColor="@color/sunset"
+                android:gravity="center_vertical|end"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_call_time"
+                app:layout_constraintTop_toTopOf="@+id/item_call_time" />
 
             <CheckBox
                 android:id="@+id/item_call_delete"

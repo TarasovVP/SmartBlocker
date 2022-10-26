@@ -34,7 +34,7 @@
                 android:scaleType="center"
                 app:imageResource="@{filter.conditionTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_type_title"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
@@ -48,20 +48,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
 
             <TextView
-                android:id="@+id/item_filter_type_title"
-                android:layout_width="@dimen/size_0"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_16"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{filter.conditionTypeName}"
-                android:textColor="@{filter.addFilterState == null ? @color/main_color : ContextCompat.getColor(context, filter.addFilterState.color)}"
-                app:layout_constraintBottom_toTopOf="@+id/item_filter_value"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
-                app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/item_filter_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
@@ -69,13 +55,27 @@
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_16"
                 android:textStyle="bold"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 android:textColor="@{filter.addFilterState == null ? @color/main_color : ContextCompat.getColor(context, filter.addFilterState.color)}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/item_filter_type_title"
-                app:layout_constraintStart_toStartOf="@id/item_filter_type_title"
-                app:layout_constraintTop_toBottomOf="@+id/item_filter_type_title"
+                app:layout_constraintBottom_toTopOf="@+id/item_filter_type_title"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
+                app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
+                app:layout_constraintTop_toTopOf="parent"
                 app:mainText="@{filter.addFilterState == null  ? filter.filter : filter.addFilter}"
                 app:searchText="@{filter.searchText}" />
+
+            <TextView
+                android:id="@+id/item_filter_type_title"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{filter.conditionTypeName}"
+                android:textColor="@{filter.addFilterState == null ? @color/main_color : ContextCompat.getColor(context, filter.addFilterState.color)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
+                app:layout_constraintStart_toStartOf="@id/item_filter_value"
+                app:layout_constraintTop_toBottomOf="@+id/item_filter_value" />
 
             <CheckBox
                 android:id="@+id/item_filter_delete"
