@@ -19,8 +19,8 @@ import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
-import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
@@ -46,12 +46,12 @@ open class FilterAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.filter = args.filter?.apply {
-            addFilterState = AddFilterState.ADD_FILTER_INVALID
+            filterAction = FilterAction.FILTER_ACTION_INVALID
         }
         setToolbar()
+        setClickListeners()
         setFragmentResultListeners()
         setFilterTextChangeListener()
-        setClickListeners()
         setContactAdapter()
         if (binding?.filter?.isTypeContain().isTrue().not()) {
             viewModel.getCountryCodeList()
@@ -84,48 +84,6 @@ open class FilterAddFragment :
         }
     }
 
-    private fun setFragmentResultListeners() {
-        setFragmentResultListener(CHANGE_FILTER) { _, _ ->
-            binding?.filter = binding?.filter?.apply {
-                filterType =
-                    if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
-            }
-            filterContactFilterList(binding?.filter?.filter.orEmpty())
-            setToolbar()
-        }
-        setFragmentResultListener(AddFilterState.ADD_FILTER_ADD.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.insertFilter(it)
-            }
-        }
-        setFragmentResultListener(AddFilterState.ADD_FILTER_CHANGE.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.updateFilter(it)
-            }
-        }
-        setFragmentResultListener(AddFilterState.ADD_FILTER_DELETE.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.deleteFilter(it)
-            }
-        }
-    }
-
-    private fun setFilterTextChangeListener() {
-        binding?.apply {
-            this.root.context.hideKeyboardWithLayoutTouch(container)
-            this.root.context.hideKeyboardWithLayoutTouch(filterAddContactList)
-            this.root.context.hideKeyboardWithLayoutTouch(filterAddCountryCodeSpinner)
-            filterAddInput.doAfterTextChanged {
-                filterToInput = false
-                filter = filter?.apply {
-                    filter =
-                        if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
-                    filterContactFilterList(this.filter)
-                }
-            }
-        }
-    }
-
     private fun setClickListeners() {
         binding?.apply {
             filterAddConditionsDescription.setSafeOnClickListener {
@@ -146,7 +104,49 @@ open class FilterAddFragment :
                 } else {
                     findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
                         filter = filter?.apply { filter = addFilter() },
-                        filterAction = filter?.addFilterState?.name))
+                        filterAction = filter?.filterAction?.name))
+                }
+            }
+        }
+    }
+
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(CHANGE_FILTER) { _, _ ->
+            binding?.filter = binding?.filter?.apply {
+                filterType =
+                    if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
+            }
+            filterContactFilterList(binding?.filter?.filter.orEmpty())
+            setToolbar()
+        }
+        setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
+            binding?.filter?.let {
+                viewModel.insertFilter(it)
+            }
+        }
+        setFragmentResultListener(FilterAction.FILTER_ACTION_CHANGE.name) { _, _ ->
+            binding?.filter?.let {
+                viewModel.updateFilter(it)
+            }
+        }
+        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
+            binding?.filter?.let {
+                viewModel.deleteFilter(it)
+            }
+        }
+    }
+
+    private fun setFilterTextChangeListener() {
+        binding?.apply {
+            this.root.context.hideKeyboardWithLayoutTouch(container)
+            this.root.context.hideKeyboardWithLayoutTouch(filterAddContactList)
+            this.root.context.hideKeyboardWithLayoutTouch(filterAddCountryCodeSpinner)
+            filterAddInput.doAfterTextChanged {
+                filterToInput = false
+                filter = filter?.apply {
+                    filter =
+                        if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
+                    filterContactFilterList(this.filter)
                 }
             }
         }
@@ -250,17 +250,17 @@ open class FilterAddFragment :
                 searchQuery to filter?.countryCode?.countryCode.orEmpty()
             val existingFilter =
                 filteredContactList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
-            filter?.addFilterState = when (existingFilter?.filterType) {
+            filter?.filterAction = when (existingFilter?.filterType) {
                 null -> if (filter?.isInValidPhoneNumber()
                         .isTrue()
-                ) AddFilterState.ADD_FILTER_INVALID else AddFilterState.ADD_FILTER_ADD
-                filter?.filterType -> AddFilterState.ADD_FILTER_DELETE
-                else -> AddFilterState.ADD_FILTER_CHANGE
+                ) FilterAction.FILTER_ACTION_INVALID else FilterAction.FILTER_ACTION_ADD
+                filter?.filterType -> FilterAction.FILTER_ACTION_DELETE
+                else -> FilterAction.FILTER_ACTION_CHANGE
             }
             filteredContactList.toMutableList().moveToFirst(existingFilter?.apply {
-                addFilterState = binding?.filter?.addFilterState
+                filterAction = binding?.filter?.filterAction
             }).let { contactList ->
-                contactFilterAdapter?.contactFilterList = ArrayList(contactList)
+                contactFilterAdapter?.numberDataList = ArrayList(contactList)
                 contactFilterAdapter?.notifyDataSetChanged()
             }
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
@@ -272,12 +272,13 @@ open class FilterAddFragment :
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")
     }
 
-    private fun handleSuccessFilterAction(message: String) {
+    private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showMessage(message, false)
+            showMessage(String.format(getString(filter.filterActionDescription()),
+                filter.filter), false)
             getAllData()
             Log.e("filterAddTAG",
-                "BaseAddFragment handleSuccessFilterAction message $message")
+                "BaseAddFragment handleSuccessFilterAction message ${String.format(getString(filter.filterActionDescription()), filter.filter)}")
             mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                 Log.e("filterAddTAG",
                     "BaseAddFragment successAllDataLiveData getContactFilterList")
@@ -298,20 +299,13 @@ open class FilterAddFragment :
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData filterListLiveData filterList.size ${mainDataList.size}")
                 this@FilterAddFragment.contactFilterList = ArrayList(mainDataList)
-                contactFilterAdapter?.contactFilterList = this@FilterAddFragment.contactFilterList
+                contactFilterAdapter?.numberDataList = this@FilterAddFragment.contactFilterList
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
                 viewModel.hideMainProgress()
             }
-            insertFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
-                handleSuccessFilterAction(String.format(getString(R.string.filter_added), number))
-            }
-            updateFilterLiveData.safeSingleObserve(viewLifecycleOwner) { number ->
-                handleSuccessFilterAction(String.format(getString(R.string.filter_update), number))
-            }
-            deleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                handleSuccessFilterAction(String.format(getString(R.string.delete_filter_from_list),
-                    binding?.filter?.filter.orEmpty()))
+            filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
+                handleSuccessFilterAction(filter)
             }
         }
     }

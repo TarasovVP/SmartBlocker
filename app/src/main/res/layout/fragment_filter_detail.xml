@@ -28,12 +28,26 @@
             app:filter="@{filter}"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/filter_detail_delete_filter"
-            android:layout_width="match_parent"
+        <include
+            android:id="@+id/filter_detail_change_filter"
+            layout="@layout/include_submit_button"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
-            android:text="@string/delete_menu"
+            android:layout_marginEnd="@dimen/margin_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/filter_detail_delete_filter"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
+
+        <include
+            android:id="@+id/filter_detail_delete_filter"
+            layout="@layout/include_submit_button"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
 
         <TextView

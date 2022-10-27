@@ -30,7 +30,7 @@ class NumberDataDetailFragment : BaseFragment<FragmentNumberDetailBinding, Numbe
         super.onViewCreated(view, savedInstanceState)
         args.contact?.apply {
             binding?.contact = this
-            if (contactFilterAdapter?.contactFilterList.isNull()) {
+            if (contactFilterAdapter?.numberDataList.isNull()) {
                 viewModel.filterListWithNumber(this.trimmedPhone)
             }
             binding?.contactDetailAddFilter?.setSafeOnClickListener {
@@ -62,7 +62,7 @@ class NumberDataDetailFragment : BaseFragment<FragmentNumberDetailBinding, Numbe
         viewModel.filterListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
             this.contactFilterList = contactList
             checkFilterListEmptiness()
-            contactFilterAdapter?.contactFilterList = contactList
+            contactFilterAdapter?.numberDataList = contactList
             contactFilterAdapter?.notifyDataSetChanged()
         }
     }

@@ -7,7 +7,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
-import com.tarasovvp.blacklister.enums.AddFilterState
+import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -72,7 +72,7 @@ class CallListFragment :
                     searchDataList()
                 }
             }
-            setFragmentResultListener(AddFilterState.ADD_FILTER_DELETE.name) { _, _ ->
+            setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
                 viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
             }
         }
@@ -107,7 +107,7 @@ class CallListFragment :
             when (menuItem.itemId) {
                 R.id.delete_menu_item -> {
                     this@CallListFragment.findNavController()
-                        .navigate(CallListFragmentDirections.startFilterActionDialog(filterAction = AddFilterState.ADD_FILTER_DELETE.name))
+                        .navigate(CallListFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_DELETE.name))
                     true
                 }
                 R.id.close_menu_item -> {

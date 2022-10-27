@@ -41,7 +41,7 @@
             android:padding="@dimen/padding_2"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="@{filter.addFilterStateDescription}"
+            android:text="@{filter.filterActionDescription}"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_item_filter"
             app:drawableEndCompat="@drawable/ic_info" />
 
@@ -90,7 +90,7 @@
                 android:singleLine="true"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
-                android:backgroundTint="@{ContextCompat.getColor(context, filter.addFilterState.color)}"
+                android:backgroundTint="@{ContextCompat.getColor(context, filter.filterAction.color)}"
                 android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : filter.typeStart ? filter.conditionTypeStartHint() : @string/enter_filter}"
                 app:text="@{filter.filterToInput()}"
                 app:filterToInput="@{filterToInput}" />
@@ -102,10 +102,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
             android:enabled="@{!filter.inValidAddFilterState}"
-            android:text="@{filter.addFilterState.title}"
-            android:textColor="@{ContextCompat.getColor(context, filter.addFilterState.color)}"
-            app:strokeColor="@{ContextCompat.getColor(context, filter.addFilterState.color)}"
-            android:drawableEnd="@{ContextCompat.getDrawable(context, filter.addFilterStateIcon())}"
+            android:text="@{filter.filterAction.title}"
+            android:textColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
+            app:strokeColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
+            android:drawableEnd="@{ContextCompat.getDrawable(context, filter.filterActionIcon())}"
             android:drawablePadding="@dimen/padding_20"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_input_layout" />
 

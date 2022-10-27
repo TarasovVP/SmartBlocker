@@ -24,9 +24,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
 
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
-    val insertFilterLiveData = MutableLiveData<String>()
-    val updateFilterLiveData = MutableLiveData<String>()
-    val deleteFilterLiveData = MutableLiveData<String>()
+    val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getCountryCodeList() {
         showProgress()
@@ -71,7 +69,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             Log.e("filterAddTAG",
                 "AddViewModel getContactFilterList filter $filter")
             filterRepository.insertFilter(filter) {
-                insertFilterLiveData.postValue(filter.filter)
+                filterActionLiveData.postValue(filter)
             }
             hideProgress()
         }
@@ -81,7 +79,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         showProgress()
         launch {
             filterRepository.updateFilter(filter) {
-                updateFilterLiveData.postValue(filter.filter)
+                filterActionLiveData.postValue(filter)
             }
             hideProgress()
         }
@@ -93,7 +91,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             Log.e("filterAddTAG",
                 "AddViewModel deleteFilter filter $filter")
             filterRepository.deleteFilterList(listOf(filter)) {
-                deleteFilterLiveData.postValue(filter.filter)
+                filterActionLiveData.postValue(filter)
             }
             hideProgress()
         }

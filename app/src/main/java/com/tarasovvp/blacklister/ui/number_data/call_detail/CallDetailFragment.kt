@@ -31,7 +31,7 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
         super.onViewCreated(view, savedInstanceState)
         args.call?.apply {
             binding?.call = this
-            if (numberDataAdapter?.contactFilterList.isNull()) {
+            if (numberDataAdapter?.numberDataList.isNull()) {
                 viewModel.filterListWithCall(this.number)
             }
             binding?.callDetailAddFilter?.setSafeOnClickListener {
@@ -65,7 +65,7 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
         viewModel.filterListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
             this.contactFilterList = contactList
             checkFilterListEmptiness()
-            numberDataAdapter?.contactFilterList = contactList
+            numberDataAdapter?.numberDataList = contactList
             numberDataAdapter?.notifyDataSetChanged()
         }
     }

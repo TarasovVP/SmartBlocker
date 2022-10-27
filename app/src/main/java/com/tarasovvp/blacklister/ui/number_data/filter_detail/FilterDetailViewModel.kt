@@ -15,7 +15,7 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
     private val filterRepository = FilterRepository
 
     val contactListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val deleteFilterLiveData = MutableLiveData<Boolean>()
+    val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getQueryContactList(filter: Filter) {
         Log.e("filterAddTAG", "AddViewModel checkContactListByFilter filter $filter")
@@ -35,7 +35,17 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             Log.e("filterAddTAG",
                 "AddViewModel deleteFilter filter $filter")
             filterRepository.deleteFilterList(listOf(filter)) {
-                deleteFilterLiveData.postValue(true)
+                filterActionLiveData.postValue(filter)
+            }
+            hideProgress()
+        }
+    }
+
+    fun updateFilter(filter: Filter) {
+        showProgress()
+        launch {
+            filterRepository.updateFilter(filter) {
+                filterActionLiveData.postValue(filter)
             }
             hideProgress()
         }

@@ -10,7 +10,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
-import com.tarasovvp.blacklister.enums.AddFilterState
+import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.filterDataList
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -78,7 +78,7 @@ open class BaseFilterListFragment :
         }
         binding?.filterListFilter?.isVisible = adapter?.itemCount.orZero() > 0
         setClickListeners()
-        setFragmentResultListener(AddFilterState.ADD_FILTER_DELETE.name) { _, _ ->
+        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
             if (BlackListerApp.instance?.isLoggedInUser()
                     .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
             ) {
@@ -142,9 +142,9 @@ open class BaseFilterListFragment :
                     R.id.delete_menu_item -> {
                         val direction =
                             if (this@BaseFilterListFragment is BlackFilterListFragment) {
-                                BlackFilterListFragmentDirections.startFilterActionDialog(filter = Filter(filterType = BLACK_FILTER), filterAction = AddFilterState.ADD_FILTER_DELETE.name)
+                                BlackFilterListFragmentDirections.startFilterActionDialog(filter = Filter(filterType = BLACK_FILTER), filterAction = FilterAction.FILTER_ACTION_DELETE.name)
                             } else {
-                                WhiteFilterListFragmentDirections.startFilterActionDialog(filter = Filter(filterType = WHITE_FILTER), filterAction = AddFilterState.ADD_FILTER_DELETE.name)
+                                WhiteFilterListFragmentDirections.startFilterActionDialog(filter = Filter(filterType = WHITE_FILTER), filterAction = FilterAction.FILTER_ACTION_DELETE.name)
                             }
                         this@BaseFilterListFragment.findNavController().navigate(direction)
                         true

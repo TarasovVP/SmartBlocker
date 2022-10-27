@@ -9,7 +9,7 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
-import com.tarasovvp.blacklister.enums.AddFilterState
+import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -34,7 +34,7 @@ data class Filter(
     var searchText = String.EMPTY
 
     @get:Exclude
-    var addFilterState: AddFilterState? = null
+    var filterAction: FilterAction? = null
 
     @Exclude
     fun filterTypeTitle(): Int {
@@ -76,6 +76,13 @@ data class Filter(
     }
 
     @Exclude
+    fun conditionTypeDescription() = when (conditionType) {
+        Condition.CONDITION_TYPE_FULL.index -> R.string.filter_full_number_description
+        Condition.CONDITION_TYPE_START.index -> R.string.filter_start_description
+        else -> R.string.filter_contain_description
+    }
+
+    @Exclude
     fun addFilter(): String {
         return when {
             isTypeContain() -> filter
@@ -84,25 +91,26 @@ data class Filter(
     }
 
     @Exclude
-    fun addFilterStateIcon() = when (addFilterState) {
-        AddFilterState.ADD_FILTER_INVALID -> if (isBlackFilter()) R.drawable.ic_black_filter_inactive else R.drawable.ic_white_filter_inactive
-        AddFilterState.ADD_FILTER_CHANGE -> if (isBlackFilter()) R.drawable.ic_white_to_black_filter else R.drawable.ic_black_to_white_filter
+    fun filterActionIcon() = when (filterAction) {
+        FilterAction.FILTER_ACTION_INVALID -> if (isBlackFilter()) R.drawable.ic_black_filter_inactive else R.drawable.ic_white_filter_inactive
+        FilterAction.FILTER_ACTION_CHANGE -> if (isBlackFilter()) R.drawable.ic_white_to_black_filter else R.drawable.ic_black_to_white_filter
         else -> filterTypeIcon()
     }
 
     @Exclude
-    fun addFilterStateDescription() = when (addFilterState) {
-        AddFilterState.ADD_FILTER_CHANGE -> if (isBlackFilter()) R.string.filter_description_change_blocker else R.string.filter_description_change_allow
-        AddFilterState.ADD_FILTER_DELETE -> if (isBlackFilter()) R.string.filter_description_delete_blocker else R.string.filter_description_delete_allow
-        AddFilterState.ADD_FILTER_INVALID -> R.string.filter_description_invalid
+    fun filterActionDescription() = when (filterAction) {
+        FilterAction.FILTER_ACTION_CHANGE -> if (isBlackFilter()) R.string.filter_description_change_blocker else R.string.filter_description_change_allow
+        FilterAction.FILTER_ACTION_DELETE -> if (isBlackFilter()) R.string.filter_description_delete_blocker else R.string.filter_description_delete_allow
+        FilterAction.FILTER_ACTION_INVALID -> R.string.filter_description_invalid
         else -> if (isBlackFilter()) R.string.filter_description_add_blocker else R.string.filter_description_add_allow
     }
 
     @Exclude
-    fun conditionTypeDescription() = when (conditionType) {
-        Condition.CONDITION_TYPE_FULL.index -> R.string.filter_full_number_description
-        Condition.CONDITION_TYPE_START.index -> R.string.filter_start_description
-        else -> R.string.filter_contain_description
+    fun filterActionSuccessText() = when (filterAction) {
+        FilterAction.FILTER_ACTION_ADD -> R.string.filter_added
+        FilterAction.FILTER_ACTION_CHANGE -> R.string.filter_update
+        FilterAction.FILTER_ACTION_DELETE -> R.string.delete_filter_from_list
+        else -> String.EMPTY
     }
 
     @Exclude
@@ -126,7 +134,7 @@ data class Filter(
 
     @Exclude
     fun isInValidAddFilterState(): Boolean {
-        return addFilterState == AddFilterState.ADD_FILTER_INVALID
+        return filterAction == FilterAction.FILTER_ACTION_INVALID
     }
 
     @Exclude
