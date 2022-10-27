@@ -5,7 +5,6 @@
     <data>
 
         <import type="android.view.View" />
-
         <variable
             name="call"
             type="com.tarasovvp.blacklister.model.Call" />
@@ -96,18 +95,19 @@
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_call_block_condition"
-                android:layout_width="@dimen/size_0"
-                android:layout_height="@dimen/size_0"
-                android:text="@{call.blockedCall.blockFilter}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{call.blockFilterValue}"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/sunset"
                 android:gravity="center_vertical|end"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_time"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_call_time"
-                app:layout_constraintTop_toTopOf="@+id/item_call_time" />
+                app:layout_constraintTop_toTopOf="@+id/item_call_time"
+                android:drawableStart="@{call.blockConditionTypeIcon(context)}" />
 
             <CheckBox
                 android:id="@+id/item_call_delete"

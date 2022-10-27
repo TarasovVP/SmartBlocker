@@ -173,8 +173,8 @@
     <string name="filter_full_number_description">Для добавления полного номера выберите код страны, введите номер согласно маски, нажмите кнопку "Добавить"</string>
     <string name="filter_start_description">Для добавления старта номера выберите код страны и/или введите номер не более предложеного маской, нажмите кнопку "Добавить"</string>
     <string name="filter_contain_description">Для добавления номера "Содержит" введите любой номер, нажмите кнопку "Добавить"</string>
-    <string name="contact_list_with_blocker">Конакты, которым будет запрещен входящий вызов этим блокировщиком</string>
-    <string name="contact_list_with_allow">Конакты, которым будет разрешен входящий вызов этим разрешением</string>
+    <string name="contact_list_with_blocker">Контакты, которым будет запрещен входящий вызов этим блокировщиком</string>
+    <string name="contact_list_with_allow">Контакты, которым будет разрешен входящий вызов этим разрешением</string>
     <string name="contact">Контакт</string>
     <string name="call">Вызов</string>
     <string name="contact_list_with_contact">Список фильтров и блокировщиков, которые повлияли на статус контакта</string>

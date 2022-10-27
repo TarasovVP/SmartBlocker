@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/padding_16"
         android:paddingTop="@dimen/padding_8"
-        tools:context=".ui.main.call_list.CallListFragment">
+        tools:context=".ui.number_data.call_list.CallListFragment">
 
         <CheckBox
             android:id="@+id/call_list_check"

@@ -15,13 +15,14 @@ import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
-import com.tarasovvp.blacklister.ui.main.call_list.CallListFragment
-import com.tarasovvp.blacklister.ui.main.contact_list.ContactListFragment
-import com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment
-import com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment
+import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.ui.number_data.call_list.CallListFragment
+import com.tarasovvp.blacklister.ui.number_data.contact_list.ContactListFragment
+import com.tarasovvp.blacklister.ui.number_data.filter_list.BlackFilterListFragment
+import com.tarasovvp.blacklister.ui.number_data.filter_list.WhiteFilterListFragment
 import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 
-abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : BaseAdapter.NumberData> :
+abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
     BaseFragment<B, T>() {
 
     protected val adapter: BaseAdapter<D>? by lazy { createAdapter() }

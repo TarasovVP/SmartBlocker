@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.model.HeaderDataItem
+import com.tarasovvp.blacklister.ui.number_data.NumberData
 
-abstract class BaseAdapter<D : BaseAdapter.NumberData> :
+abstract class BaseAdapter<D : NumberData> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mData: ArrayList<NumberData>? = null
@@ -69,6 +70,4 @@ abstract class BaseAdapter<D : BaseAdapter.NumberData> :
     interface HeaderData : NumberData {
         val headerType: Int
     }
-
-    interface NumberData
 }

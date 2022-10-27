@@ -10,7 +10,7 @@ import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.digitsTrimmed
 import com.tarasovvp.blacklister.extensions.nameInitial
-import com.tarasovvp.blacklister.ui.base.BaseAdapter
+import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize
 
 @Entity
@@ -20,8 +20,8 @@ data class Contact(
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var number: String = String.EMPTY,
-    var filterType: Int = DEFAULT_FILTER
-) : Parcelable, BaseAdapter.NumberData {
+    var filterType: Int = DEFAULT_FILTER,
+) : Parcelable, NumberData {
     var trimmedPhone = number.digitsTrimmed()
     var searchText = String.EMPTY
 

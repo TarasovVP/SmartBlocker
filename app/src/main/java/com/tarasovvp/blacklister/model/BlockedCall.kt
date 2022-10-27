@@ -14,9 +14,4 @@ data class BlockedCall(
     @PrimaryKey(autoGenerate = true) override var id: Int = 0,
     var blockFilter: String = String.EMPTY,
     var blockFilterCondition: Int? = Condition.CONDITION_TYPE_FULL.index
-) : Call(), Parcelable {
-
-    fun conditionTypeIcon(): Int {
-        return blockFilterCondition?.let { Condition.getIconByIndex(it) } ?: R.drawable.ic_avatar
-    }
-}
+) : Call(), Parcelable

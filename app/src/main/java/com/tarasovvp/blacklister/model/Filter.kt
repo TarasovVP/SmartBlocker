@@ -12,7 +12,7 @@ import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.enums.AddFilterState
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.*
-import com.tarasovvp.blacklister.ui.base.BaseAdapter
+import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize
 
 @Entity
@@ -22,8 +22,8 @@ data class Filter(
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
-    var countryCode: CountryCode = CountryCode()
-) : Parcelable, BaseAdapter.NumberData {
+    var countryCode: CountryCode = CountryCode(),
+) : Parcelable, NumberData {
     @get:Exclude
     var isCheckedForDelete = false
 
@@ -72,7 +72,7 @@ data class Filter(
 
     @Exclude
     fun conditionTypeIcon(): Int {
-        return Condition.getIconByIndex(conditionType)
+        return Condition.getMainIconByIndex(conditionType)
     }
 
     @Exclude
@@ -95,22 +95,25 @@ data class Filter(
         AddFilterState.ADD_FILTER_CHANGE -> if (isBlackFilter()) R.string.filter_description_change_blocker else R.string.filter_description_change_allow
         AddFilterState.ADD_FILTER_DELETE -> if (isBlackFilter()) R.string.filter_description_delete_blocker else R.string.filter_description_delete_allow
         AddFilterState.ADD_FILTER_INVALID -> R.string.filter_description_invalid
-        else ->  if (isBlackFilter()) R.string.filter_description_add_blocker else R.string.filter_description_add_allow
+        else -> if (isBlackFilter()) R.string.filter_description_add_blocker else R.string.filter_description_add_allow
     }
 
     @Exclude
     fun conditionTypeDescription() = when (conditionType) {
         Condition.CONDITION_TYPE_FULL.index -> R.string.filter_full_number_description
         Condition.CONDITION_TYPE_START.index -> R.string.filter_start_description
-        else ->  R.string.filter_contain_description
+        else -> R.string.filter_contain_description
     }
 
     @Exclude
     fun filterToInput(): String {
-        return when(conditionType) {
-            Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
+        return when (conditionType) {
+            Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country)
+                    .isNull()
+            )
                 filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
-            Condition.CONDITION_TYPE_START.index -> filter.replace(countryCode.countryCode, String.EMPTY)
+            Condition.CONDITION_TYPE_START.index -> filter.replace(countryCode.countryCode,
+                String.EMPTY)
             else -> filter.digitsTrimmed()
         }
     }

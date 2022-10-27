@@ -1,6 +1,11 @@
 package com.tarasovvp.blacklister.model
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Parcelable
+import androidx.core.content.ContextCompat
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
@@ -12,7 +17,7 @@ import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.nameInitial
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
-import com.tarasovvp.blacklister.ui.base.BaseAdapter
+import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -27,8 +32,8 @@ open class Call(
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
     var numberPresentation: String? = String.EMPTY,
-    var filterType: Int = Constants.DEFAULT_FILTER
-) : Parcelable, BaseAdapter.NumberData {
+    var filterType: Int = Constants.DEFAULT_FILTER,
+) : Parcelable, NumberData {
 
     var isCheckedForDelete = false
     var isDeleteMode = false
@@ -76,7 +81,17 @@ open class Call(
         return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
     }
 
-    fun getBlockedCall(): BlockedCall? {
+    private fun getBlockedCall(): BlockedCall? {
         return if (this is BlockedCall) this else null
+    }
+
+    fun blockConditionTypeIcon(context: Context): Drawable {
+        return getBlockedCall()?.blockFilterCondition?.let { blockFilterCondition -> Condition.getSmallIconByIndex(blockFilterCondition) }?.let {
+            ContextCompat.getDrawable(context, it)
+        } ?: ColorDrawable(Color.TRANSPARENT)
+    }
+
+    fun getBlockFilterValue(): String {
+        return getBlockedCall()?.blockFilter ?: String.EMPTY
     }
 }
