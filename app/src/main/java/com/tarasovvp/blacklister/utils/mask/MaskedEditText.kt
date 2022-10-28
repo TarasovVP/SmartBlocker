@@ -38,7 +38,7 @@ class MaskedEditText @JvmOverloads constructor(
     private var allowedChars: String? = null
 
     init {
-        setOnEditorActionListener(OnEditorActionListener{ _: TextView?, action: Int, _: KeyEvent? ->
+        setOnEditorActionListener(OnEditorActionListener { _: TextView?, action: Int, _: KeyEvent? ->
             if (action == EditorInfo.IME_ACTION_DONE) {
                 this.hideKeyboard()
                 return@OnEditorActionListener true
@@ -152,69 +152,70 @@ class MaskedEditText @JvmOverloads constructor(
         after: Int,
     ) {
         Log.e("filterAddTAG", "MaskedEditText beforeTextChanged s $s")
-        if (mask.isNullOrEmpty().not())  {
-        if (editingBefore.not()) {
-            editingBefore = true
-            if (start > lastValidMaskPosition) {
-                ignore = true
+        if (mask.isNullOrEmpty().not()) {
+            if (editingBefore.not()) {
+                editingBefore = true
+                if (start > lastValidMaskPosition) {
+                    ignore = true
+                }
+                var rangeStart = start
+                if (after == 0) {
+                    rangeStart = erasingStart(start)
+                }
+                val range = calculateRange(rangeStart, start + count)
+                if (range.start != -1) {
+                    rawText?.subtractFromString(range)
+                }
+                if (count > 0) {
+                    selection1 = previousValidPosition(start)
+                }
             }
-            var rangeStart = start
-            if (after == 0) {
-                rangeStart = erasingStart(start)
-            }
-            val range = calculateRange(rangeStart, start + count)
-            if (range.start != -1) {
-                rawText?.subtractFromString(range)
-            }
-            if (count > 0) {
-                selection1 = previousValidPosition(start)
-            }
-        }
         }
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count1: Int) {
-        Log.e("filterAddTAG", "MaskedEditText onTextChanged s $s start $start before $before count1 $count1")
+        Log.e("filterAddTAG",
+            "MaskedEditText onTextChanged s $s start $start before $before count1 $count1")
         if (mask.isNullOrEmpty().not()) {
-        var count = count1
-        if (editingOnChanged.not() && editingBefore) {
-            editingOnChanged = true
-            if (ignore) {
-                return
-            }
-            if (count > 0) {
-                val startingPosition = maskToRaw?.get(nextValidPosition(start)).orZero()
-                val addedString = s.subSequence(start, start + count).toString()
-                count = rawText?.addToString(clear(addedString), startingPosition, maxRawLength)
-                    .orZero()
-                if (initialized) {
-                    val currentPosition: Int =
-                        if (startingPosition + count < rawToMask?.size.orZero()) rawToMask?.get(
-                            startingPosition + count).orZero() else lastValidMaskPosition + 1
-                    selection1 = nextValidPosition(currentPosition)
+            var count = count1
+            if (editingOnChanged.not() && editingBefore) {
+                editingOnChanged = true
+                if (ignore) {
+                    return
+                }
+                if (count > 0) {
+                    val startingPosition = maskToRaw?.get(nextValidPosition(start)).orZero()
+                    val addedString = s.subSequence(start, start + count).toString()
+                    count = rawText?.addToString(clear(addedString), startingPosition, maxRawLength)
+                        .orZero()
+                    if (initialized) {
+                        val currentPosition: Int =
+                            if (startingPosition + count < rawToMask?.size.orZero()) rawToMask?.get(
+                                startingPosition + count).orZero() else lastValidMaskPosition + 1
+                        selection1 = nextValidPosition(currentPosition)
+                    }
                 }
             }
-        }
         }
     }
 
     override fun afterTextChanged(s: Editable) {
         Log.e("filterAddTAG", "MaskedEditText afterTextChanged s $s")
         if (mask.isNullOrEmpty().not()) {
-        if (editingAfter.not() && editingBefore && editingOnChanged) {
-            editingAfter = true
-            if (hint.isNotNull()) {
-                setText(makeMaskedTextWithHint())
-            } else {
-                setText(makeMaskedText())
+            if (editingAfter.not() && editingBefore && editingOnChanged) {
+                editingAfter = true
+                if (hint.isNotNull()) {
+                    setText(makeMaskedTextWithHint())
+                } else {
+                    setText(makeMaskedText())
+                }
+                selectionChanged = false
+                setSelection(selection1)
+                editingBefore = false
+                editingOnChanged = false
+                editingAfter = false
+                ignore = false
             }
-            selectionChanged = false
-            setSelection(selection1)
-            editingBefore = false
-            editingOnChanged = false
-            editingAfter = false
-            ignore = false
-        }
         }
     }
 

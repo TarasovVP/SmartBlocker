@@ -10,8 +10,8 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
-import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.filterDataList
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.orZero
@@ -142,9 +142,13 @@ open class BaseFilterListFragment :
                     R.id.delete_menu_item -> {
                         val direction =
                             if (this@BaseFilterListFragment is BlackFilterListFragment) {
-                                BlackFilterListFragmentDirections.startFilterActionDialog(filter = Filter(filterType = BLACK_FILTER), filterAction = FilterAction.FILTER_ACTION_DELETE.name)
+                                BlackFilterListFragmentDirections.startFilterActionDialog(filter = Filter(
+                                    filterType = BLACK_FILTER),
+                                    filterAction = FilterAction.FILTER_ACTION_DELETE.name)
                             } else {
-                                WhiteFilterListFragmentDirections.startFilterActionDialog(filter = Filter(filterType = WHITE_FILTER), filterAction = FilterAction.FILTER_ACTION_DELETE.name)
+                                WhiteFilterListFragmentDirections.startFilterActionDialog(filter = Filter(
+                                    filterType = WHITE_FILTER),
+                                    filterAction = FilterAction.FILTER_ACTION_DELETE.name)
                             }
                         this@BaseFilterListFragment.findNavController().navigate(direction)
                         true
@@ -178,7 +182,7 @@ open class BaseFilterListFragment :
             if (filter.filter.isEmpty()) {
                 WhiteFilterListFragmentDirections.startFilterAddFragment(
                     filter = filter)
-            }else{
+            } else {
                 WhiteFilterListFragmentDirections.startFilterDetailFragment(
                     filter = filter)
             }
@@ -189,7 +193,9 @@ open class BaseFilterListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                if(this@BaseFilterListFragment.filterList.isNullOrEmpty().not() && filterList == this@BaseFilterListFragment.filterList) {
+                if (this@BaseFilterListFragment.filterList.isNullOrEmpty()
+                        .not() && filterList == this@BaseFilterListFragment.filterList
+                ) {
                     swipeRefresh?.isRefreshing = false
                     return@safeSingleObserve
                 }
@@ -215,8 +221,9 @@ open class BaseFilterListFragment :
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredList = filterList?.filter { filter ->
-            filter.filter.lowercase(Locale.getDefault()).contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ) && (selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_FULL.title }?.isSelected.isTrue() && filter.isTypeFull()
+            filter.filter.lowercase(Locale.getDefault())
+                .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()
+                ) && (selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_FULL.title }?.isSelected.isTrue() && filter.isTypeFull()
                     || selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_START.title }?.isSelected.isTrue() && filter.isTypeStart()
                     || selectedFilterItems?.find { it.title == Condition.CONDITION_TYPE_CONTAIN.title }?.isSelected.isTrue() && filter.isTypeContain()
                     || selectedFilterItems.orEmpty().any { it.isSelected }.not())

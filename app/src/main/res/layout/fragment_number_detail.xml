@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:padding="@dimen/padding_16"
+        android:paddingHorizontal="@dimen/padding_16"
         app:layout_constraintBottom_toTopOf="@+id/contact_detail_add_filter"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_2"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_16"
                 app:contact="@{ contact}"
                 app:layout_constraintTop_toTopOf="parent" />
 

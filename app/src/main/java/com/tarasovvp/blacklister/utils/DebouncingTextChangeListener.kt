@@ -18,7 +18,13 @@ internal class DebouncingTextChangeListener(
     private val coroutineScope = lifecycle.coroutineScope
     private var searchJob: Job? = null
 
-    override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int, ) {}
+    override fun beforeTextChanged(
+        charSequence: CharSequence?,
+        start: Int,
+        count: Int,
+        after: Int,
+    ) {
+    }
 
     override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {}
 

@@ -10,17 +10,17 @@ import kotlinx.coroutines.withContext
 
 object CallRepository {
 
-    private val dao = BlackListerApp.instance?.database?.logCallDao()
+    private val callDao = BlackListerApp.instance?.database?.logCallDao()
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>) {
-        dao?.insertAllLogCalls(logCallList)
+        callDao?.insertAllLogCalls(logCallList)
     }
 
     suspend fun getAllLogCalls(): List<LogCall>? =
         withContext(
             Dispatchers.Default
         ) {
-            dao?.allLogCalls()
+            callDao?.allLogCalls()
         }
 
     suspend fun getSystemLogCallList(context: Context): ArrayList<LogCall> =

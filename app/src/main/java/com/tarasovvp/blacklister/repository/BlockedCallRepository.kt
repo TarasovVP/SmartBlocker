@@ -16,8 +16,12 @@ object BlockedCallRepository {
         return dao?.allBlockedCalls()
     }
 
-    suspend fun blockedCallsByPhone(phone: String): List<BlockedCall>? {
-        return dao?.blockedCallsByPhone(phone)
+    suspend fun blockedCallsByNumber(number: String): List<BlockedCall>? {
+        return dao?.blockedCallsByNumber(number)
+    }
+
+    suspend fun blockedCallsByFilter(filter: String): List<BlockedCall>? {
+        return dao?.blockedCallsByFilter(filter)
     }
 
     suspend fun deleteBlockedCalls(callList: List<Call>) {

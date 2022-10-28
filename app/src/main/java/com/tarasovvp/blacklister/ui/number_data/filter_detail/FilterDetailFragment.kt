@@ -13,6 +13,7 @@ import com.tarasovvp.blacklister.databinding.FragmentFilterDetailBinding
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.isTrue
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
@@ -29,25 +30,35 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
     private val args: FilterDetailFragmentArgs by navArgs()
 
     private var numberDataAdapter: NumberDataAdapter? = null
-    private var contactFilterList: ArrayList<NumberData>? = null
+    private var contactList: ArrayList<NumberData>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args.filter?.apply {
-            (activity as MainActivity).toolbar?.title = getString(filterTypeTitle())
-            binding?.filter = this
-            binding?.filterDetailChangeFilter?.filter = Filter(filterType = if (this.isBlackFilter()) WHITE_FILTER else BLACK_FILTER).apply { filterAction = FilterAction.FILTER_ACTION_CHANGE }
-            binding?.filterDetailDeleteFilter?.filter = Filter(filterType = this.filterType).apply { filterAction = FilterAction.FILTER_ACTION_DELETE }
-            binding?.filterDetailContactListDescription?.text =
-                if (isBlackFilter().isTrue()) getString(
-                    R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
-            if (numberDataAdapter?.numberDataList.isNull()) {
-                viewModel.getQueryContactList(this)
-            }
-        }
+        initViews(args.filter)
         setContactAdapter()
         setClickListeners()
         setFragmentResultListeners()
+        if (numberDataAdapter?.numberDataList.isNull()) {
+            binding?.filter?.let { viewModel.getQueryContactList(it) }
+        } else {
+            checkContactListEmptiness()
+        }
+    }
+
+    private fun initViews(filter: Filter?) {
+        (activity as MainActivity).toolbar?.title = getString(filter?.filterTypeTitle().orZero())
+        binding?.filter = filter
+        binding?.filterDetailItemFilter?.itemFilterCallList?.isVisible = true
+        binding?.filterDetailChangeFilter?.filter = Filter(filterType = if (filter?.isBlackFilter()
+                .isTrue()
+        ) WHITE_FILTER else BLACK_FILTER).apply { filterAction = FilterAction.FILTER_ACTION_CHANGE }
+        binding?.filterDetailDeleteFilter?.filter =
+            Filter(filterType = filter?.filterType.orZero()).apply {
+                filterAction = FilterAction.FILTER_ACTION_DELETE
+            }
+        binding?.filterDetailContactListDescription?.text =
+            if (filter?.isBlackFilter().isTrue()) getString(
+                R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
     }
 
     private fun setFragmentResultListeners() {
@@ -76,32 +87,41 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
                 filter = binding?.filter,
                 filterAction = FilterAction.FILTER_ACTION_DELETE.name))
         }
+        binding?.filterDetailItemFilter?.itemFilterCallList?.setSafeOnClickListener {
+            findNavController().navigate(FilterDetailFragmentDirections.startCallDetailFragment(
+                filter = binding?.filter))
+        }
     }
 
     private fun setContactAdapter() {
         numberDataAdapter =
-            numberDataAdapter ?: NumberDataAdapter(contactFilterList) { contact ->
+            numberDataAdapter ?: NumberDataAdapter(contactList) { contact ->
                 findNavController().navigate(FilterDetailFragmentDirections.startNumberDataDetailFragment(
                     contact as Contact))
             }
         binding?.filterDetailContactList?.adapter = numberDataAdapter
     }
 
+    private fun checkContactListEmptiness() {
+        binding?.filterDetailContactListEmpty?.emptyStateTitle?.text =
+            if (binding?.filter?.isBlackFilter()
+                    .isTrue()
+            ) getString(R.string.contact_by_blocker_empty_state) else getString(R.string.contact_by_allowing_empty_state)
+        binding?.filterDetailContactListDescription?.isVisible = contactList?.isNotEmpty().isTrue()
+        binding?.filterDetailContactListEmpty?.emptyStateContainer?.isVisible = contactList?.isEmpty().isTrue()
+    }
     override fun observeLiveData() {
         with(viewModel) {
-            contactListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                binding?.filterDetailContactListEmpty?.emptyStateTitle?.text =
-                    if (binding?.filter?.isBlackFilter().isTrue()) getString(
-                        R.string.contact_by_blocker_empty_state) else getString(R.string.contact_by_allowing_empty_state)
-                binding?.filterDetailContactListDescription?.isVisible = filterList.isNotEmpty()
-                binding?.filterDetailContactListEmpty?.emptyStateContainer?.isVisible =
-                    filterList.isEmpty()
-                numberDataAdapter?.numberDataList = filterList
+            contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+                this@FilterDetailFragment.contactList = contactList
+                checkContactListEmptiness()
+                numberDataAdapter?.numberDataList = contactList
                 numberDataAdapter?.notifyDataSetChanged()
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 (activity as MainActivity).apply {
-                    showMessage(String.format(getString(filter.filterActionDescription()), binding?.filter?.filter.orEmpty()), false)
+                    showMessage(String.format(getString(filter.filterActionDescription()),
+                        binding?.filter?.filter.orEmpty()), false)
                     getAllData()
                     if (filter.filterAction == FilterAction.FILTER_ACTION_DELETE) {
                         findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
@@ -109,7 +129,7 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
                         else FilterDetailFragmentDirections.startWhiteFilterListFragment())
                     } else {
                         mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                            binding?.filter = filter
+                            initViews(filter)
                             viewModel.getQueryContactList(filter)
                         }
                     }

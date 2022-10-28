@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{filter.conditionTypeName}"
+                android:text="@{filter == null ? filter.filter : context.getString(filter.conditionTypeName)}"
                 android:textColor="@{filter.filterAction == null ? @color/main_color : ContextCompat.getColor(context, filter.filterAction.color)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
@@ -85,8 +85,17 @@
                 android:checked="@{filter.checkedForDelete}"
                 android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_call_list"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/item_filter_call_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/Button.Icon"
+                app:icon="@drawable/ic_call_list"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

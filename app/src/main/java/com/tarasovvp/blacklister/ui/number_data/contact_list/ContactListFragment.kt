@@ -64,7 +64,7 @@ open class ContactListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                if(contactList == this@ContactListFragment.contactList) {
+                if (contactList == this@ContactListFragment.contactList) {
                     swipeRefresh?.isRefreshing = false
                     return@safeSingleObserve
                 }

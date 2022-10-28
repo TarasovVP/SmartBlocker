@@ -20,7 +20,8 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
     fun getFilterList(isBlackList: Boolean) {
         showProgress()
         launch {
-            val filterArrayList = filterRepository.allFiltersByType(if (isBlackList) BLACK_FILTER else WHITE_FILTER) as ArrayList
+            val filterArrayList =
+                filterRepository.allFiltersByType(if (isBlackList) BLACK_FILTER else WHITE_FILTER) as ArrayList
             filterListLiveData.postValue(filterArrayList)
             hideProgress()
         }

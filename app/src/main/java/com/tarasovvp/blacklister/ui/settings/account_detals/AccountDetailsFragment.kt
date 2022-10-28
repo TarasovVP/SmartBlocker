@@ -41,8 +41,10 @@ class AccountDetailsFragment :
 
     private fun initViews() {
         binding?.apply {
-            includeNoAccount.root.isVisible = BlackListerApp.instance?.isLoggedInUser().isTrue().not()
-            accountDetailsMainTitle.text = String.format(getString(R.string.welcome), BlackListerApp.instance?.auth?.currentUser?.email)
+            includeNoAccount.root.isVisible =
+                BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+            accountDetailsMainTitle.text = String.format(getString(R.string.welcome),
+                BlackListerApp.instance?.auth?.currentUser?.email)
             context?.hideKeyboardWithLayoutTouch((root as ViewGroup))
             setOnclickListeners()
             initNewPasswordSet(accountDetailsChangePasswordContainer.getViewsFromLayout(EditText::class.java))
@@ -51,42 +53,45 @@ class AccountDetailsFragment :
 
     private fun setOnclickListeners() {
         binding?.apply {
-        accountDetailsLogOut.setSafeOnClickListener {
-            (activity as MainActivity).stopBlocker()
-            findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(
-                isLogOut = true))
-        }
-        accountDetailsDeleteBtn.setSafeOnClickListener {
-            (activity as MainActivity).stopBlocker()
-            findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
-        }
-        accountDetailsNewPasswordBtn.setSafeOnClickListener {
-            if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.text.toString()) {
-                viewModel.changePassword(accountDetailsCurrentPassword.inputText(),
-                    accountDetailsNewPasswordConfirm.text.toString())
-            } else {
-                showMessage(getString(R.string.passwords_different), true)
+            accountDetailsLogOut.setSafeOnClickListener {
+                (activity as MainActivity).stopBlocker()
+                findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(
+                    isLogOut = true))
             }
-        }
-        includeNoAccount.noAccountBtn.setSafeOnClickListener {
-            findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
-        }
+            accountDetailsDeleteBtn.setSafeOnClickListener {
+                (activity as MainActivity).stopBlocker()
+                findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
+            }
+            accountDetailsNewPasswordBtn.setSafeOnClickListener {
+                if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.text.toString()) {
+                    viewModel.changePassword(accountDetailsCurrentPassword.inputText(),
+                        accountDetailsNewPasswordConfirm.text.toString())
+                } else {
+                    showMessage(getString(R.string.passwords_different), true)
+                }
+            }
+            includeNoAccount.noAccountBtn.setSafeOnClickListener {
+                findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
+            }
         }
     }
 
     private fun initNewPasswordSet(editTextList: ArrayList<EditText>?) {
         binding?.apply {
-        accountDetailsNewPasswordCheck.setOnCheckedChangeListener { _, isChecked ->
-            accountDetailsChangePasswordContainer.isVisible = isChecked
-            if (isChecked) {
-                editTextList?.onEach { it.text.clear() }
+            accountDetailsNewPasswordCheck.setOnCheckedChangeListener { _, isChecked ->
+                accountDetailsChangePasswordContainer.isVisible = isChecked
+                if (isChecked) {
+                    editTextList?.onEach { it.text.clear() }
+                }
             }
-        }
-        accountDetailsNewPasswordBtn.isEnabled = editTextList?.none { it.text.isNullOrEmpty() }.isTrue()
-        editTextList?.onEach { editText ->
-            editText.doAfterTextChanged {
-                binding?.accountDetailsNewPasswordBtn?.isEnabled = editTextList.none { it.text.isNullOrEmpty() }.isTrue()
-            } }
+            accountDetailsNewPasswordBtn.isEnabled =
+                editTextList?.none { it.text.isNullOrEmpty() }.isTrue()
+            editTextList?.onEach { editText ->
+                editText.doAfterTextChanged {
+                    binding?.accountDetailsNewPasswordBtn?.isEnabled =
+                        editTextList.none { it.text.isNullOrEmpty() }.isTrue()
+                }
+            }
             accountDetailsNewPasswordBtn.setSafeOnClickListener {
                 if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.inputText()) {
                     viewModel.changePassword(binding?.accountDetailsCurrentPassword.inputText(),

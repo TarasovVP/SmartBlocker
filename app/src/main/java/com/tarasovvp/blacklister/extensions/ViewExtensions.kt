@@ -2,9 +2,7 @@ package com.tarasovvp.blacklister.extensions
 
 import android.content.res.ColorStateList
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
@@ -61,7 +59,7 @@ fun View.showPopUpWindow(info: Info) {
     popupWindow.elevation = 5f
     popupWindow.showAsDropDown(this,
         0,
-        if (isBelowScreenMiddle) - popupView.root.measuredHeight else 0)
+        if (isBelowScreenMiddle) -popupView.root.measuredHeight else 0)
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }

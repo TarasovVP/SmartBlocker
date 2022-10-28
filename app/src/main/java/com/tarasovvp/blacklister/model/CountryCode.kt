@@ -13,7 +13,8 @@ class CountryCode(
     @PrimaryKey var country: String = String.EMPTY,
     var countryCode: String = String.EMPTY,
     var flagEmoji: String = String.EMPTY,
-    var numberFormat: String = String.EMPTY
+    var numberFormat: String = String.EMPTY,
 ) : Parcelable {
-    @Exclude fun countryEmoji(): String = String.format("%s %s", flagEmoji, country)
+    @Exclude
+    fun countryEmoji(): String = String.format("%s %s", flagEmoji, country)
 }

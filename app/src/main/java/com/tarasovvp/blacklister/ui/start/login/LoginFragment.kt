@@ -86,7 +86,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             editTextList?.onEach { editText ->
                 editText.doAfterTextChanged {
                     loginContinue.isEnabled = editTextList.none { it.text.isNullOrEmpty() }.isTrue()
-                } }
+                }
+            }
             loginContinue.setSafeOnClickListener {
                 viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
                     loginPasswordInput.inputText())

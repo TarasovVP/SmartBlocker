@@ -29,8 +29,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         binding?.signUpContinue?.isEnabled = editTextList?.none { it.text.isNullOrEmpty() }.isTrue()
         editTextList?.onEach { editText ->
             editText.doAfterTextChanged {
-            binding?.signUpContinue?.isEnabled = editTextList.none { it.text.isNullOrEmpty() }.isTrue()
-        } }
+                binding?.signUpContinue?.isEnabled =
+                    editTextList.none { it.text.isNullOrEmpty() }.isTrue()
+            }
+        }
         binding?.signUpContinue?.setSafeOnClickListener {
             if (binding?.signUpPassword.inputText() == binding?.signUpRepeatPassword.inputText()) {
                 viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),

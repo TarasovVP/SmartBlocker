@@ -22,7 +22,7 @@ abstract class BaseAdapter<D : NumberData> :
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int
+        position: Int,
     ) {
         if (holder is BaseAdapter<*>.HeaderViewHolder) {
             holder.bindData(
@@ -43,7 +43,9 @@ abstract class BaseAdapter<D : NumberData> :
     }
 
     override fun getItemCount(): Int {
-        return if (mData.isNull()) { 0 } else {
+        return if (mData.isNull()) {
+            0
+        } else {
             mData?.size ?: 0
         }
     }

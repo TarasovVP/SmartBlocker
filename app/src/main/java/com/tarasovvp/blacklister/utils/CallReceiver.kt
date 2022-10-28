@@ -44,8 +44,12 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         CoroutineScope(Dispatchers.IO).launch {
             val blockFilter = filterRepository.queryFilterList(number)?.firstOrNull()
             Log.e("blockTAG",
-                "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded ${blockFilter?.isBlackFilter().isTrue()} blockHidden ${SharedPreferencesUtil.blockHidden}")
-            if (blockFilter?.isBlackFilter().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+                "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded ${
+                    blockFilter?.isBlackFilter().isTrue()
+                } blockHidden ${SharedPreferencesUtil.blockHidden}")
+            if (blockFilter?.isBlackFilter()
+                    .isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
+            ) {
                 Log.e("blockTAG", "CallReceiver onReceive breakCall")
                 breakCall(context)
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
@@ -55,7 +59,9 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
                 if (blockFilter?.isBlackFilter().isTrue()) {
                     Log.e("blockTAG",
                         "CallReceiver newSingleThreadScheduledExecutor phone $number currentTimeMillis ${System.currentTimeMillis()}")
-                    context.deleteLastBlockedCall(number, blockFilter?.filter.orEmpty(), blockFilter?.conditionType.orZero())
+                    context.deleteLastBlockedCall(number,
+                        blockFilter?.filter.orEmpty(),
+                        blockFilter?.conditionType.orZero())
                     phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
                         blockedCallRepository.allBlockedCalls()?.size))
                 }

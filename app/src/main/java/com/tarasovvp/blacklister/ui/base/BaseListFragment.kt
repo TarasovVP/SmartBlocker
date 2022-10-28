@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
-import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.hideKeyboard
+import com.tarasovvp.blacklister.extensions.orZero
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.number_data.NumberData

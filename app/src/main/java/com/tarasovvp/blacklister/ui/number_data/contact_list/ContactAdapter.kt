@@ -61,7 +61,7 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<
                 contact.searchText = searchQuery
                 this.contact = contact
                 root.setSafeOnClickListener {
-                     contactClick.invoke(contact)
+                    contactClick.invoke(contact)
                 }
                 executePendingBindings()
                 Log.e("adapterTAG",

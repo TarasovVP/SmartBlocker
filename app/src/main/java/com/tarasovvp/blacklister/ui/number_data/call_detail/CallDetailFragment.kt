@@ -6,16 +6,14 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentCallDetailBinding
-import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.Call
+import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
-import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailViewModel>() {
 
@@ -25,30 +23,38 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
     private val args: CallDetailFragmentArgs by navArgs()
 
     private var numberDataAdapter: NumberDataAdapter? = null
-    private var contactFilterList: ArrayList<NumberData> = ArrayList()
+    private var numberDataList: ArrayList<NumberData> = ArrayList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        args.call?.apply {
-            binding?.call = this
+        initViews()
+        setContactAdapter()
+    }
+
+    private fun initViews() {
+        args.contact?.apply {
+            binding?.contact = this
             if (numberDataAdapter?.numberDataList.isNull()) {
-                viewModel.filterListWithCall(this.number)
-            }
-            binding?.callDetailAddFilter?.setSafeOnClickListener {
-                findNavController().navigate(CallDetailFragmentDirections.startFilterAddFragment(
-                    filter = Filter(filter = this.number,
-                        conditionType = Condition.CONDITION_TYPE_FULL.index,
-                        filterType = Constants.BLACK_FILTER)))
+                viewModel.blockedCallsByNumber(this.trimmedPhone)
             }
         }
-        setContactAdapter()
+        args.filter?.apply {
+            binding?.filter = this
+            if (numberDataAdapter?.numberDataList.isNull()) {
+                viewModel.blockedCallsByFilter(this.filter)
+            }
+        }
     }
 
     private fun setContactAdapter() {
         numberDataAdapter =
-            numberDataAdapter ?: NumberDataAdapter(contactFilterList) { filter ->
-                findNavController().navigate(CallDetailFragmentDirections.startFilterDetailFragment(
-                    filter as Filter))
+            numberDataAdapter ?: NumberDataAdapter(numberDataList) { call ->
+                val contact = if (binding?.contact.isNull()) Contact(name = (call as Call).name,
+                    photoUrl = call.photoUrl,
+                    number = call.number,
+                    filterType = call.filterType) else binding?.contact
+                findNavController().navigate(CallDetailFragmentDirections.startNumberDataDetailFragment(
+                    contact))
             }
         binding?.callDetailFilterList?.adapter = numberDataAdapter
     }
@@ -56,16 +62,16 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
     private fun checkFilterListEmptiness() {
         binding?.callDetailFilterListEmpty?.emptyStateTitle?.text =
             getString(R.string.filter_by_call_empty_state)
-        binding?.callDetailFilterListDescription?.isVisible = contactFilterList.isNotEmpty()
+        binding?.callDetailFilterListDescription?.isVisible = numberDataList.isNotEmpty()
         binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible =
-            contactFilterList.isEmpty()
+            numberDataList.isEmpty()
     }
 
     override fun observeLiveData() {
-        viewModel.filterListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-            this.contactFilterList = contactList
+        viewModel.callListLiveData.safeSingleObserve(viewLifecycleOwner) { callList ->
+            this.numberDataList = callList
             checkFilterListEmptiness()
-            numberDataAdapter?.numberDataList = contactList
+            numberDataAdapter?.numberDataList = callList
             numberDataAdapter?.notifyDataSetChanged()
         }
     }

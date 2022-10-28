@@ -82,7 +82,7 @@ fun Context.spToPx(sp: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
 }
 
-fun <T> MutableList<T>.moveToFirst(item: T?): MutableList<T>  {
+fun <T> MutableList<T>.moveToFirst(item: T?): MutableList<T> {
     if (item == null) return this
     val currentIndex = indexOf(item)
     if (currentIndex < 0) return this

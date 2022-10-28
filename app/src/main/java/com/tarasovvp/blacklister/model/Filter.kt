@@ -9,8 +9,8 @@ import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
-import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize

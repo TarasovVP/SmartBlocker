@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/drawable/ic_black_white_list.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/ic_block.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/ic_boy.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/ic_call_list.xml" value="0.1805" />
         <entry key="app/src/main/res/drawable/ic_call_log.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_close_small.xml" value="0.1165" />
@@ -128,11 +129,11 @@
         <entry key="app/src/main/res/layout/item_black_number.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/item_call.xml" value="0.47327044025157233" />
         <entry key="app/src/main/res/layout/item_call_log.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_contact.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/item_contact.xml" value="0.5080128205128205" />
         <entry key="app/src/main/res/layout/item_contact_filter.xml" value="0.3432971014492754" />
         <entry key="app/src/main/res/layout/item_contact_small.xml" value="0.2271062271062271" />
         <entry key="app/src/main/res/layout/item_expandable_header.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_filter.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_filter.xml" value="0.5382003395585738" />
         <entry key="app/src/main/res/layout/item_filter_small.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_header.xml" value="0.11734693877551021" />
         <entry key="app/src/main/res/layout/item_header_empty.xml" value="0.21145833333333333" />

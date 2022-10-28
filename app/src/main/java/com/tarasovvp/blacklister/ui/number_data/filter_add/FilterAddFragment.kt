@@ -42,11 +42,16 @@ open class FilterAddFragment :
     private var contactFilterAdapter: NumberDataAdapter? = null
     private var contactFilterList: ArrayList<NumberData> = ArrayList()
     private var countryCodeList: ArrayList<CountryCode> = arrayListOf()
+    private var addFilter: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.filter = args.filter?.apply {
             filterAction = FilterAction.FILTER_ACTION_INVALID
+            if (filter.isNotEmpty()) {
+                addFilter = filter
+                filter = String.EMPTY
+            }
         }
         setToolbar()
         setClickListeners()
@@ -216,6 +221,13 @@ open class FilterAddFragment :
                         binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeStartHint()
                             .orEmpty())
                     }
+                    binding?.filterAddInput?.post {
+                        if (addFilter.isNotNull()) {
+                            binding?.filterToInput = true
+                            binding?.filterAddInput?.setText(addFilter.orEmpty())
+                            addFilter = null
+                        }
+                    }
                     Log.e("filterAddTAG",
                         "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filter?.filter}")
                 }
@@ -278,7 +290,10 @@ open class FilterAddFragment :
                 filter.filter), false)
             getAllData()
             Log.e("filterAddTAG",
-                "BaseAddFragment handleSuccessFilterAction message ${String.format(getString(filter.filterActionDescription()), filter.filter)}")
+                "BaseAddFragment handleSuccessFilterAction message ${
+                    String.format(getString(filter.filterActionDescription()),
+                        filter.filter)
+                }")
             mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                 Log.e("filterAddTAG",
                     "BaseAddFragment successAllDataLiveData getContactFilterList")

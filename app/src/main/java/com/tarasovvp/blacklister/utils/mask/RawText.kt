@@ -16,7 +16,7 @@ class RawText {
             return 0
         } else require(start >= 0) { "Start position must be non-negative" }
         require(start <= text.length) { "Start position must be less than the actual text length" }
-        val firstPart =  if (start > 0) text.substring(0, start) else String.EMPTY
+        val firstPart = if (start > 0) text.substring(0, start) else String.EMPTY
         val lastPart = if (start < text.length) text.substring(start) else String.EMPTY
         var count = newString1.length
         val newString = if (text.length + newString1.length > maxLength) {

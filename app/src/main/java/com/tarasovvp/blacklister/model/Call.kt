@@ -86,7 +86,9 @@ open class Call(
     }
 
     fun blockConditionTypeIcon(context: Context): Drawable {
-        return getBlockedCall()?.blockFilterCondition?.let { blockFilterCondition -> Condition.getSmallIconByIndex(blockFilterCondition) }?.let {
+        return getBlockedCall()?.blockFilterCondition?.let { blockFilterCondition ->
+            Condition.getSmallIconByIndex(blockFilterCondition)
+        }?.let {
             ContextCompat.getDrawable(context, it)
         } ?: ColorDrawable(Color.TRANSPARENT)
     }
