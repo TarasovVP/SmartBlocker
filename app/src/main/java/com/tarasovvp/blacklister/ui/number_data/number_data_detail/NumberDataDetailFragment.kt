@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
-import com.tarasovvp.blacklister.databinding.FragmentNumberDetailBinding
+import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -20,9 +20,9 @@ import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class NumberDataDetailFragment :
-    BaseFragment<FragmentNumberDetailBinding, NumberDataDetailViewModel>() {
+    BaseFragment<FragmentNumberDataDetailBinding, NumberDataDetailViewModel>() {
 
-    override var layoutId = R.layout.fragment_number_detail
+    override var layoutId = R.layout.fragment_number_data_detail
     override val viewModelClass = NumberDataDetailViewModel::class.java
     private val args: NumberDataDetailFragmentArgs by navArgs()
 
@@ -43,7 +43,7 @@ class NumberDataDetailFragment :
 
     private fun initViews(contact: Contact?) {
         binding?.contact = contact
-        binding?.contactDetailItemContact?.itemContactCallList?.isVisible = true
+        binding?.numberDataDetailItemContact?.itemContactCallList?.isVisible = true
     }
 
     private fun setContactAdapter() {
@@ -52,27 +52,51 @@ class NumberDataDetailFragment :
                 findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
                     filter as Filter))
             }
-        binding?.contactDetailFilterList?.adapter = contactFilterAdapter
+        binding?.numberDataDetailFilterList?.adapter = contactFilterAdapter
     }
 
     private fun setClickListeners() {
-        binding?.contactDetailAddFilter?.setSafeOnClickListener {
-            findNavController().navigate(NumberDataDetailFragmentDirections.startFilterAddFragment(
-                filter = Filter(filter = binding?.contact?.trimmedPhone.orEmpty(),
-                    conditionType = Condition.CONDITION_TYPE_FULL.index,
-                    filterType = Constants.BLACK_FILTER)))
-        }
-        binding?.contactDetailItemContact?.itemContactCallList?.setSafeOnClickListener {
+        binding?.numberDataDetailItemContact?.itemContactCallList?.setSafeOnClickListener {
             findNavController().navigate(NumberDataDetailFragmentDirections.startCallDetailFragment(
                 contact = binding?.contact))
+        }
+        binding?.numberDataDetailAddFilter?.setSafeOnClickListener {
+            setAddFilterConditions()
+        }
+        binding?.numberDataDetailAddFilterFull?.setSafeOnClickListener {
+            startAddFilterScreen(Condition.CONDITION_TYPE_FULL.index)
+        }
+        binding?.numberDataDetailAddFilterStart?.setSafeOnClickListener {
+            startAddFilterScreen(Condition.CONDITION_TYPE_START.index)
+        }
+        binding?.numberDataDetailAddFilterContain?.setSafeOnClickListener {
+            startAddFilterScreen(Condition.CONDITION_TYPE_CONTAIN.index)
+        }
+    }
+
+    private fun startAddFilterScreen(conditionIndex: Int) {
+        findNavController().navigate(NumberDataDetailFragmentDirections.startFilterAddFragment(
+            filter = Filter(filter = binding?.contact?.trimmedPhone.orEmpty(),
+                conditionType = conditionIndex,
+                filterType = Constants.BLACK_FILTER)))
+    }
+
+    private fun setAddFilterConditions() {
+        binding?.apply {
+            numberDataDetailAddFilter.text =
+                getString(if (numberDataDetailAddFilterFull.isVisible) R.string.add else R.string.close)
+            if (numberDataDetailAddFilterFull.isVisible) numberDataDetailAddFilterFull.hide() else numberDataDetailAddFilterFull.show()
+            if (numberDataDetailAddFilterStart.isVisible) numberDataDetailAddFilterStart.hide() else numberDataDetailAddFilterStart.show()
+            if (numberDataDetailAddFilterContain.isVisible) numberDataDetailAddFilterContain.hide() else numberDataDetailAddFilterContain.show()
         }
     }
 
     private fun checkFilterListEmptiness() {
-        binding?.contactDetailFilterListEmpty?.emptyStateTitle?.text =
+        binding?.numberDataDetailFilterListEmpty?.emptyStateTitle?.text =
             getString(R.string.filter_by_contact_empty_state)
-        binding?.contactDetailFilterListDescription?.isVisible = filterList?.isNotEmpty().isTrue()
-        binding?.contactDetailFilterListEmpty?.emptyStateContainer?.isVisible =
+        binding?.numberDataDetailFilterListDescription?.isVisible =
+            filterList?.isNotEmpty().isTrue()
+        binding?.numberDataDetailFilterListEmpty?.emptyStateContainer?.isVisible =
             filterList?.isEmpty().isTrue()
     }
 

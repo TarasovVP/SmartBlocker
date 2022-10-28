@@ -48,7 +48,7 @@ open class FilterAddFragment :
         super.onViewCreated(view, savedInstanceState)
         binding?.filter = args.filter?.apply {
             filterAction = FilterAction.FILTER_ACTION_INVALID
-            if (filter.isNotEmpty()) {
+            if (filter.isNotEmpty() && isTypeContain().not()) {
                 addFilter = filter
                 filter = String.EMPTY
             }

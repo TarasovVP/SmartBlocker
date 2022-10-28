@@ -16,8 +16,8 @@ class CallDetailViewModel(application: Application) : BaseViewModel(application)
         showProgress()
         launch {
             val blackNumberList = blockedCallRepository.blockedCallsByNumber(number)
-            blackNumberList?.let {
-                callListLiveData.postValue(ArrayList(it))
+            blackNumberList?.let { blockedCalls ->
+                callListLiveData.postValue(ArrayList(blockedCalls.sortedByDescending { it.time }))
             }
             hideProgress()
         }
@@ -27,8 +27,8 @@ class CallDetailViewModel(application: Application) : BaseViewModel(application)
         showProgress()
         launch {
             val blackNumberList = blockedCallRepository.blockedCallsByFilter(filter)
-            blackNumberList?.let {
-                callListLiveData.postValue(ArrayList(it))
+            blackNumberList?.let {  blockedCalls ->
+                callListLiveData.postValue(ArrayList(blockedCalls.sortedByDescending { it.time }))
             }
             hideProgress()
         }

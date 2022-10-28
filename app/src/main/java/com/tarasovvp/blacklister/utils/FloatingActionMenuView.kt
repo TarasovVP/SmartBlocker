@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ViewFloatingActionMenuBinding
 import com.tarasovvp.blacklister.enums.Condition
@@ -18,21 +19,12 @@ class FloatingActionMenuView @JvmOverloads constructor(
 
     init {
         binding = ViewFloatingActionMenuBinding.inflate(LayoutInflater.from(context), this, true)
-        var isAllFabsVisible = false
         binding?.apply {
             fabNew.setSafeOnClickListener {
-                fabNew.setImageResource(if (isAllFabsVisible) R.drawable.ic_add else R.drawable.ic_close)
-                isAllFabsVisible = if (isAllFabsVisible) {
-                    fabContain.hide()
-                    fabStart.hide()
-                    fabFull.hide()
-                    false
-                } else {
-                    fabContain.show()
-                    fabStart.show()
-                    fabFull.show()
-                    true
-                }
+                fabNew.setImageResource(if (fabFull.isVisible) R.drawable.ic_add else R.drawable.ic_close)
+                if (fabFull.isVisible) fabFull.hide() else fabFull.show()
+                if (fabStart.isVisible) fabStart.hide() else fabStart.show()
+                if (fabContain.isVisible) fabContain.hide() else fabContain.show()
             }
         }
     }

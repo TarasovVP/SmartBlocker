@@ -108,6 +108,7 @@ class NumberDataAdapter(
                     call?.let { it1 -> numberDataClick.invoke(it1) }
                 }
                 executePendingBindings()
+                itemCallTime.text = String.format("%s, %s", call?.dateFromTime(), call?.dateTimeFromTime())
             }
         }
     }

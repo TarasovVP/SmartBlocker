@@ -131,7 +131,7 @@ fun Context.deleteLastBlockedCall(number: String, filter: String, conditionType:
                             type = BLOCKED_CALL
                             blockFilter = filter
                             blockFilterCondition = conditionType
-                            if (name.isNullOrEmpty()) getString(R.string.number_from_call_log) else name
+                            name = if (blockedCall.name.isNullOrEmpty()) getString(R.string.number_from_call_log) else name
                         })
                     }
                     Log.e("blockTAG",
