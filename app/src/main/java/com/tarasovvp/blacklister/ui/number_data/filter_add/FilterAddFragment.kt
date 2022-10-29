@@ -143,9 +143,9 @@ open class FilterAddFragment :
 
     private fun setFilterTextChangeListener() {
         binding?.apply {
-            this.root.context.hideKeyboardWithLayoutTouch(container)
-            this.root.context.hideKeyboardWithLayoutTouch(filterAddContactList)
-            this.root.context.hideKeyboardWithLayoutTouch(filterAddCountryCodeSpinner)
+            container.hideKeyboardWithLayoutTouch()
+            filterAddContactList.hideKeyboardWithLayoutTouch()
+            filterAddCountryCodeSpinner.hideKeyboardWithLayoutTouch()
             filterAddInput.doAfterTextChanged {
                 filterToInput = false
                 filter = filter?.apply {

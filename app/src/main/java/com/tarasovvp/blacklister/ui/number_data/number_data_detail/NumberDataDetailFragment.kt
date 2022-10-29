@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.number_data.number_data_detail
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -9,6 +10,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.extensions.hideKeyboard
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
@@ -55,13 +57,14 @@ class NumberDataDetailFragment :
         binding?.numberDataDetailFilterList?.adapter = contactFilterAdapter
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setClickListeners() {
         binding?.numberDataDetailItemContact?.itemContactCallList?.setSafeOnClickListener {
             findNavController().navigate(NumberDataDetailFragmentDirections.startCallDetailFragment(
                 contact = binding?.contact))
         }
         binding?.numberDataDetailAddFilter?.setSafeOnClickListener {
-            setAddFilterConditions()
+            setAddFilterConditions(binding?.numberDataDetailAddFilterFull?.isShown.isTrue())
         }
         binding?.numberDataDetailAddFilterFull?.setSafeOnClickListener {
             startAddFilterScreen(Condition.CONDITION_TYPE_FULL.index)
@@ -72,6 +75,22 @@ class NumberDataDetailFragment :
         binding?.numberDataDetailAddFilterContain?.setSafeOnClickListener {
             startAddFilterScreen(Condition.CONDITION_TYPE_CONTAIN.index)
         }
+        binding?.numberDataDetailItemContact?.root?.setSafeOnClickListener {
+            if (binding?.numberDataDetailAddFilterFull?.isShown.isTrue()) {
+                setAddFilterConditions(true)
+            }
+        }
+        binding?.numberDataDetailFilterListDescription?.setSafeOnClickListener {
+            if (binding?.numberDataDetailAddFilterFull?.isShown.isTrue()) {
+                setAddFilterConditions(true)
+            }
+        }
+        binding?.numberDataDetailFilterList?.setOnTouchListener { v, event ->
+            if (binding?.numberDataDetailAddFilterFull?.isShown.isTrue()) {
+                setAddFilterConditions(true)
+            }
+            v?.onTouchEvent(event) ?: true
+        }
     }
 
     private fun startAddFilterScreen(conditionIndex: Int) {
@@ -81,13 +100,13 @@ class NumberDataDetailFragment :
                 filterType = Constants.BLACK_FILTER)))
     }
 
-    private fun setAddFilterConditions() {
+    private fun setAddFilterConditions(isShown: Boolean) {
         binding?.apply {
             numberDataDetailAddFilter.text =
-                getString(if (numberDataDetailAddFilterFull.isVisible) R.string.add else R.string.close)
-            if (numberDataDetailAddFilterFull.isVisible) numberDataDetailAddFilterFull.hide() else numberDataDetailAddFilterFull.show()
-            if (numberDataDetailAddFilterStart.isVisible) numberDataDetailAddFilterStart.hide() else numberDataDetailAddFilterStart.show()
-            if (numberDataDetailAddFilterContain.isVisible) numberDataDetailAddFilterContain.hide() else numberDataDetailAddFilterContain.show()
+                getString(if (isShown) R.string.add else R.string.close)
+            if (isShown) numberDataDetailAddFilterFull.hide() else numberDataDetailAddFilterFull.show()
+            if (isShown) numberDataDetailAddFilterStart.hide() else numberDataDetailAddFilterStart.show()
+            if (isShown) numberDataDetailAddFilterContain.hide() else numberDataDetailAddFilterContain.show()
         }
     }
 

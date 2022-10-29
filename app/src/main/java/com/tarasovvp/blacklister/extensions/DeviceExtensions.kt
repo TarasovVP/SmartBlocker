@@ -123,9 +123,9 @@ fun View.hideKeyboard() {
 }
 
 @SuppressLint("ClickableViewAccessibility")
-fun Context.hideKeyboardWithLayoutTouch(view: ViewGroup) {
-    view.setOnTouchListener { v, event ->
-        view.hideKeyboard()
+fun ViewGroup.hideKeyboardWithLayoutTouch() {
+    setOnTouchListener { v, event ->
+        hideKeyboard()
         v?.onTouchEvent(event) ?: true
     }
 }

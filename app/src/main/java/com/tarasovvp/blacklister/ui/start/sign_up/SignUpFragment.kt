@@ -20,7 +20,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
-        (binding?.root as? ViewGroup)?.let { context?.hideKeyboardWithLayoutTouch(it) }
+        (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
         initContinueButton(binding?.container?.getViewsFromLayout(EditText::class.java))
 
     }

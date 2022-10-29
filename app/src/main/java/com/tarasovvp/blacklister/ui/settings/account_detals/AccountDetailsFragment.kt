@@ -45,7 +45,7 @@ class AccountDetailsFragment :
                 BlackListerApp.instance?.isLoggedInUser().isTrue().not()
             accountDetailsMainTitle.text = String.format(getString(R.string.welcome),
                 BlackListerApp.instance?.auth?.currentUser?.email)
-            context?.hideKeyboardWithLayoutTouch((root as ViewGroup))
+            (root as ViewGroup).hideKeyboardWithLayoutTouch()
             setOnclickListeners()
             initNewPasswordSet(accountDetailsChangePasswordContainer.getViewsFromLayout(EditText::class.java))
         }

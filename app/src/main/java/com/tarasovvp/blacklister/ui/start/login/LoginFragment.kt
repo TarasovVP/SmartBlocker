@@ -48,7 +48,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         setOnClickListeners()
         setLoginButton(binding?.container?.getViewsFromLayout(EditText::class.java))
-        (binding?.root as? ViewGroup)?.let { context?.hideKeyboardWithLayoutTouch(it) }
+        (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
         setFragmentResultListener(FORGOT_PASSWORD) { _, bundle ->
             val email = bundle.getString(EMAIL, String.EMPTY)
             if (email.isNotEmpty()) {

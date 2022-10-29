@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
-                android:text="@string/add_filter"
+                android:text="@string/add"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_item_contact" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -98,6 +98,8 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/padding_8"
+                android:clickable="true"
+                android:focusable="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_filter_list_description" />
