@@ -8,6 +8,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
+import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.enums.FilterAction
@@ -110,19 +111,16 @@ data class Filter(
         FilterAction.FILTER_ACTION_ADD -> R.string.filter_added
         FilterAction.FILTER_ACTION_CHANGE -> R.string.filter_update
         FilterAction.FILTER_ACTION_DELETE -> R.string.delete_filter_from_list
-        else -> String.EMPTY
+        else -> R.string.empty
     }
 
     @Exclude
     fun filterToInput(): String {
         return when (conditionType) {
-            Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country)
-                    .isNull()
-            )
-                filter.digitsTrimmed() else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
-            Condition.CONDITION_TYPE_START.index -> filter.replace(countryCode.countryCode,
-                String.EMPTY)
-            else -> filter.digitsTrimmed()
+            Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
+                filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY) else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
+            Condition.CONDITION_TYPE_START.index -> filter.replace(countryCode.countryCode, String.EMPTY)
+            else -> filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
         }
     }
 

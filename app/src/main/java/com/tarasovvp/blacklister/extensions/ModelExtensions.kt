@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
 
-
 fun Context.systemContactList(): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
@@ -222,7 +221,7 @@ fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
 
 fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
     if (this.isNullOrEmpty()) null
-    else if (this.digitsTrimmed().startsWith(PLUS_CHAR))
+    else if (this.startsWith(PLUS_CHAR))
         PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), String.EMPTY)
     else PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), country)
 } catch (e: Exception) {

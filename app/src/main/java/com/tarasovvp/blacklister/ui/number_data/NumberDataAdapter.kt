@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
+import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.ItemCallBinding
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
@@ -69,6 +71,8 @@ class NumberDataAdapter(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg
                         filter?.filterAction == FilterAction.FILTER_ACTION_DELETE && adapterPosition == 0 -> R.color.delete_bg
+                        filter?.filterType == BLACK_FILTER && adapterPosition == 0 -> R.color.delete_bg
+                        filter?.filterType == WHITE_FILTER && adapterPosition == 0 -> R.color.white_bg
                         else -> R.color.white
                     }))
                 filter?.searchText = if (filter?.isTypeContain().isTrue())

@@ -185,4 +185,5 @@
     <string name="number_from_call_log">Номер из списка звонков</string>
     <string name="number">Номер</string>
     <string name="close">Закрыть</string>
+    <string name="empty" />
 </resources>

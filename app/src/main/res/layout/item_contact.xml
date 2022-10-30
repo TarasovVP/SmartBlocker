@@ -30,13 +30,13 @@
                 android:layout_height="36dp"
                 app:circleImageUrl="@{contact.photoUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_number"
+                app:layout_constraintEnd_toStartOf="@+id/item_number_data_number"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:nameInitial="@{contact.nameInitial}" />
 
             <ImageView
-                android:id="@+id/item_contact_filter_icon"
+                android:id="@+id/item_number_data_icon"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 app:imageResource="@{contact.filterTypeIcon}"
@@ -44,7 +44,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
 
             <TextView
-                android:id="@+id/item_contact_filter_number"
+                android:id="@+id/item_number_data_number"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_16"
@@ -53,19 +53,19 @@
                 app:layout_constraintTop_toTopOf="@+id/item_contact_avatar"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_call_list"
-                app:layout_constraintBottom_toTopOf="@+id/item_contact_name"
+                app:layout_constraintBottom_toTopOf="@+id/item_number_data_name"
                 app:mainText="@{contact.number}"
                 app:searchText="@{contact.searchText}" />
 
             <TextView
-                android:id="@+id/item_contact_name"
+                android:id="@+id/item_number_data_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                app:layout_constraintEnd_toEndOf="@+id/item_contact_filter_number"
-                app:layout_constraintStart_toStartOf="@+id/item_contact_filter_number"
-                app:layout_constraintTop_toBottomOf="@+id/item_contact_filter_number"
+                app:layout_constraintEnd_toEndOf="@+id/item_number_data_number"
+                app:layout_constraintStart_toStartOf="@+id/item_number_data_number"
+                app:layout_constraintTop_toBottomOf="@+id/item_number_data_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
                 app:mainText="@{contact.name}"
                 app:searchText="@{contact.searchText}" />
@@ -77,7 +77,7 @@
                 style="@style/Button.Icon"
                 app:icon="@drawable/ic_call_list"
                 android:visibility="gone"
-                app:layout_constraintStart_toEndOf="@+id/item_contact_filter_number"
+                app:layout_constraintStart_toEndOf="@+id/item_number_data_number"
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

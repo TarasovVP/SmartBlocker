@@ -291,7 +291,7 @@ open class FilterAddFragment :
             getAllData()
             Log.e("filterAddTAG",
                 "BaseAddFragment handleSuccessFilterAction message ${
-                    String.format(getString(filter.filterActionDescription()),
+                    String.format(getString(filter.filterActionSuccessText()),
                         filter.filter)
                 }")
             mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {

@@ -10,11 +10,12 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.blacklister.enums.Condition
-import com.tarasovvp.blacklister.extensions.hideKeyboard
+import com.tarasovvp.blacklister.extensions.getUserCountry
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -97,7 +98,10 @@ class NumberDataDetailFragment :
         findNavController().navigate(NumberDataDetailFragmentDirections.startFilterAddFragment(
             filter = Filter(filter = binding?.contact?.trimmedPhone.orEmpty(),
                 conditionType = conditionIndex,
-                filterType = Constants.BLACK_FILTER)))
+                filterType = Constants.BLACK_FILTER,
+            countryCode = CountryCode(country = context?.getUserCountry().orEmpty())).apply {
+                    filter = filterToInput()
+            }))
     }
 
     private fun setAddFilterConditions(isShown: Boolean) {
