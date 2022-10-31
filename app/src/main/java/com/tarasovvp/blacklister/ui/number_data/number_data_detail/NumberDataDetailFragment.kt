@@ -10,12 +10,8 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.blacklister.enums.Condition
-import com.tarasovvp.blacklister.extensions.getUserCountry
-import com.tarasovvp.blacklister.extensions.isNull
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -31,6 +27,7 @@ class NumberDataDetailFragment :
 
     private var contactFilterAdapter: NumberDataAdapter? = null
     private var filterList: ArrayList<NumberData>? = null
+    private var filter: Filter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,13 +65,13 @@ class NumberDataDetailFragment :
             setAddFilterConditions(binding?.numberDataDetailAddFilterFull?.isShown.isTrue())
         }
         binding?.numberDataDetailAddFilterFull?.setSafeOnClickListener {
-            startAddFilterScreen(Condition.CONDITION_TYPE_FULL.index)
+            createFilter(Condition.CONDITION_TYPE_FULL.index)
         }
         binding?.numberDataDetailAddFilterStart?.setSafeOnClickListener {
-            startAddFilterScreen(Condition.CONDITION_TYPE_START.index)
+            createFilter(Condition.CONDITION_TYPE_START.index)
         }
         binding?.numberDataDetailAddFilterContain?.setSafeOnClickListener {
-            startAddFilterScreen(Condition.CONDITION_TYPE_CONTAIN.index)
+            createFilter(Condition.CONDITION_TYPE_CONTAIN.index)
         }
         binding?.numberDataDetailItemContact?.root?.setSafeOnClickListener {
             if (binding?.numberDataDetailAddFilterFull?.isShown.isTrue()) {
@@ -94,14 +91,16 @@ class NumberDataDetailFragment :
         }
     }
 
-    private fun startAddFilterScreen(conditionIndex: Int) {
-        findNavController().navigate(NumberDataDetailFragmentDirections.startFilterAddFragment(
+    private fun createFilter(conditionIndex: Int) {
             filter = Filter(filter = binding?.contact?.trimmedPhone.orEmpty(),
                 conditionType = conditionIndex,
-                filterType = Constants.BLACK_FILTER,
-            countryCode = CountryCode(country = context?.getUserCountry().orEmpty())).apply {
-                    filter = filterToInput()
-            }))
+                filterType = Constants.BLACK_FILTER)
+        viewModel.getCountryCode( if (binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY).isNull()) 0 else binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY)?.countryCode)
+    }
+
+    private fun startAddFilterScreen() {
+        findNavController().navigate(NumberDataDetailFragmentDirections.startFilterAddFragment(
+            filter = filter))
     }
 
     private fun setAddFilterConditions(isShown: Boolean) {
@@ -124,12 +123,20 @@ class NumberDataDetailFragment :
     }
 
     override fun observeLiveData() {
-        viewModel.filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-            this.filterList = filterList
-            checkFilterListEmptiness()
-            contactFilterAdapter?.numberDataList = filterList
-            contactFilterAdapter?.notifyDataSetChanged()
+        with(viewModel) {
+            filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
+                this@NumberDataDetailFragment.filterList = filterList
+                checkFilterListEmptiness()
+                contactFilterAdapter?.numberDataList = filterList
+                contactFilterAdapter?.notifyDataSetChanged()
+            }
+            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
+                filter?.countryCode = countryCode
+                filter?.filter = filter?.filterToInput().orEmpty()
+                startAddFilterScreen()
+            }
         }
+
     }
 
 }

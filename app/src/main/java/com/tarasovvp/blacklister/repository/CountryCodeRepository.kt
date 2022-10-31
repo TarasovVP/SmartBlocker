@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.repository
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.extensions.countryCodeList
 import com.tarasovvp.blacklister.model.CountryCode
 import kotlinx.coroutines.Dispatchers
@@ -28,4 +29,8 @@ object CountryCodeRepository {
         ) {
             countryCodeDao?.getAllCountryCodes()
         }
+
+    suspend fun getCountryCode(code: Int): CountryCode? {
+        return countryCodeDao?.getCountryCode(String.format(COUNTRY_CODE_START, code.toString()))
+    }
 }

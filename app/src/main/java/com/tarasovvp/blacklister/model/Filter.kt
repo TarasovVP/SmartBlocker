@@ -119,7 +119,7 @@ data class Filter(
         return when (conditionType) {
             Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
                 filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY) else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
-            Condition.CONDITION_TYPE_START.index -> filter.replace(countryCode.countryCode, String.EMPTY)
+            Condition.CONDITION_TYPE_START.index -> filter.replaceFirst(countryCode.countryCode, String.EMPTY)
             else -> filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
         }
     }
