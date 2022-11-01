@@ -34,11 +34,7 @@ class NumberDataDetailFragment :
         initViews(args.contact)
         setContactAdapter()
         setClickListeners()
-        if (contactFilterAdapter?.numberDataList.isNull()) {
-            viewModel.filterListWithNumber(binding?.contact?.trimmedPhone.orEmpty())
-        } else {
-            checkFilterListEmptiness()
-        }
+        viewModel.filterListWithNumber(binding?.contact?.trimmedPhone.orEmpty())
     }
 
     private fun initViews(contact: Contact?) {
@@ -95,7 +91,12 @@ class NumberDataDetailFragment :
             filter = Filter(filter = binding?.contact?.trimmedPhone.orEmpty(),
                 conditionType = conditionIndex,
                 filterType = Constants.BLACK_FILTER)
-        viewModel.getCountryCode( if (binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY).isNull()) 0 else binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY)?.countryCode)
+        val phoneNumber = if (binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY).isNull()) binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(context?.getUserCountry().orEmpty().uppercase()) else binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY)
+        if (phoneNumber.isNull() || conditionIndex == Condition.CONDITION_TYPE_CONTAIN.index) {
+            startAddFilterScreen()
+        } else {
+            viewModel.getCountryCode(phoneNumber?.countryCode)
+        }
     }
 
     private fun startAddFilterScreen() {
@@ -125,6 +126,7 @@ class NumberDataDetailFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
+                if (this@NumberDataDetailFragment.filterList == filterList) return@safeSingleObserve
                 this@NumberDataDetailFragment.filterList = filterList
                 checkFilterListEmptiness()
                 contactFilterAdapter?.numberDataList = filterList

@@ -54,8 +54,8 @@
                 app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_call_list"
                 app:layout_constraintBottom_toTopOf="@+id/item_number_data_name"
-                app:mainText="@{contact.number}"
-                app:searchText="@{contact.searchText}" />
+                app:mainNumberText="@{contact.number}"
+                app:searchNumberText="@{contact.searchText}" />
 
             <TextView
                 android:id="@+id/item_number_data_name"

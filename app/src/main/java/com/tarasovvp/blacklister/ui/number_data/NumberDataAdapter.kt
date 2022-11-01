@@ -67,6 +67,7 @@ class NumberDataAdapter(
         fun bindData(filter: Filter?) {
             binding?.apply {
                 binding?.filter = filter
+                this.filter?.searchText = searchQueryMap.first
                 itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg

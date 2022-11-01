@@ -241,9 +241,8 @@ open class FilterAddFragment :
             }
             binding?.filterAddCountryCodeSpinner?.adapter = countryAdapter
             val countryCodeIndex = countryCodeList.indexOfFirst {
-                it.country == if (binding?.filter?.isTypeContain()
-                        .isTrue()
-                ) String.EMPTY else context.getUserCountry()?.uppercase()
+                it.country == if (binding?.filter?.countryCode?.country.isNullOrEmpty()) context.getUserCountry()
+                    ?.uppercase() else binding?.filter?.countryCode?.country
             }.orZero()
             setSelection(countryCodeIndex)
         }

@@ -63,9 +63,8 @@ open class BaseFilterListFragment :
         findNavController().currentDestination?.label =
             getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
-        selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList().apply {
-            forEach { it.isSelected = false }
-        })
+        selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList()
+            .onEach { it.isSelected = false })
         binding?.filterListFilter?.text =
             if (selectedFilterItems.orEmpty()
                     .any { it.isSelected }
@@ -79,8 +78,8 @@ open class BaseFilterListFragment :
         binding?.filterListFilter?.isVisible = adapter?.itemCount.orZero() > 0
         setClickListeners()
         setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
-            if (BlackListerApp.instance?.isLoggedInUser()
-                    .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+            if (BlackListerApp.instance?.isLoggedInUser().isTrue()
+                && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
             ) {
                 showMessage(getString(R.string.unavailable_network_repeat), true)
             } else {

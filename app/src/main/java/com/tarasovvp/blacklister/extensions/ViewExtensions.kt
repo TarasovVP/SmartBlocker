@@ -122,25 +122,59 @@ fun ImageView.loadCircleImage(photoUrl: String?, nameInitial: String?) {
 
 @BindingAdapter(value = ["searchText", "mainText"], requireAll = false)
 fun TextView.highlightText(searchText: String?, mainText: String?) {
-    if (searchText.isNullOrEmpty().not() && mainText.isNullOrEmpty().not() && mainText.orEmpty()
-            .lowercase().contains(
-                searchText.orEmpty().lowercase())
-    ) {
+    if (searchText.isNullOrEmpty().not()
+        && mainText.isNullOrEmpty().not()
+        && mainText.digitsTrimmed().lowercase().contains(searchText.orEmpty().lowercase())) {
         SpannableString(mainText).apply {
-            var index: Int =
-                mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase())
+            var index: Int = mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase())
             while (index >= 0 && index < mainText?.length.orZero()) {
-                val highlightSpan = TextAppearanceSpan(null, Typeface.BOLD, -1,
-                    ColorStateList(arrayOf(intArrayOf()),
-                        intArrayOf(ContextCompat.getColor(context, R.color.span_text))), null)
-                setSpan(highlightSpan,
-                    index, index + searchText?.length.orZero(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                index = mainText.orEmpty().lowercase()
-                    .indexOf(searchText.orEmpty().lowercase(), index + 1)
+                val highlightSpan = TextAppearanceSpan(null, Typeface.BOLD, -1, ColorStateList(arrayOf(intArrayOf()), intArrayOf(ContextCompat.getColor(context, R.color.span_text))), null)
+                setSpan(highlightSpan, index, index + searchText?.length.orZero(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                index = mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase(), index + 1)
             }
             text = this
         }
     } else {
         text = mainText
+    }
+}
+
+@BindingAdapter(value = ["searchNumberText", "mainNumberText"], requireAll = false)
+fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?) {
+    val highlightedTextList: ArrayList<String> = ArrayList()
+    if (searchNumberText.isNullOrEmpty().not()
+        && mainNumberText.isNullOrEmpty().not()
+        && mainNumberText.digitsTrimmed().lowercase().contains(searchNumberText.orEmpty().lowercase())) {
+        val highlightedText: StringBuilder = StringBuilder()
+        var searchIndex = 0
+        mainNumberText?.forEach { char ->
+            if (char.isDigit()) {
+                if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(searchIndex)) {
+                    highlightedText.append(char)
+                    searchIndex++
+                } else {
+                    if (highlightedText.length >= searchNumberText?.length.orZero()) {
+                        highlightedTextList.add(highlightedText.toString())
+                        searchIndex = 0
+                    }
+                    highlightedText.clear()
+                }
+            } else if (char.isDigit().not() && highlightedText.isNotEmpty()) {
+                highlightedText.append(char)
+            }
+        }
+        highlightedTextList.forEach { searchText ->
+            SpannableString(mainNumberText).apply {
+                var index: Int = mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase())
+                while (index >= 0 && index < mainNumberText?.length.orZero()) {
+                    val highlightSpan = TextAppearanceSpan(null, Typeface.BOLD, -1, ColorStateList(arrayOf(intArrayOf()), intArrayOf(ContextCompat.getColor(context, R.color.span_text))), null)
+                    setSpan(highlightSpan, index, index + searchText.length.orZero(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    index = mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase(), index + 1)
+                }
+                text = this
+            }
+        }
+    } else {
+        text = mainNumberText
     }
 }
