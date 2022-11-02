@@ -124,13 +124,24 @@ fun ImageView.loadCircleImage(photoUrl: String?, nameInitial: String?) {
 fun TextView.highlightText(searchText: String?, mainText: String?) {
     if (searchText.isNullOrEmpty().not()
         && mainText.isNullOrEmpty().not()
-        && mainText.digitsTrimmed().lowercase().contains(searchText.orEmpty().lowercase())) {
+        && mainText.digitsTrimmed().lowercase().contains(searchText.orEmpty().lowercase())
+    ) {
         SpannableString(mainText).apply {
-            var index: Int = mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase())
+            var index: Int =
+                mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase())
             while (index >= 0 && index < mainText?.length.orZero()) {
-                val highlightSpan = TextAppearanceSpan(null, Typeface.BOLD, -1, ColorStateList(arrayOf(intArrayOf()), intArrayOf(ContextCompat.getColor(context, R.color.span_text))), null)
-                setSpan(highlightSpan, index, index + searchText?.length.orZero(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                index = mainText.orEmpty().lowercase().indexOf(searchText.orEmpty().lowercase(), index + 1)
+                val highlightSpan = TextAppearanceSpan(null,
+                    Typeface.BOLD,
+                    -1,
+                    ColorStateList(arrayOf(intArrayOf()),
+                        intArrayOf(ContextCompat.getColor(context, R.color.span_text))),
+                    null)
+                setSpan(highlightSpan,
+                    index,
+                    index + searchText?.length.orZero(),
+                    Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                index = mainText.orEmpty().lowercase()
+                    .indexOf(searchText.orEmpty().lowercase(), index + 1)
             }
             text = this
         }
@@ -144,14 +155,24 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
     val highlightedTextList: ArrayList<String> = ArrayList()
     if (searchNumberText.isNullOrEmpty().not()
         && mainNumberText.isNullOrEmpty().not()
-        && mainNumberText.digitsTrimmed().lowercase().contains(searchNumberText.orEmpty().lowercase())) {
+        && mainNumberText.digitsTrimmed().lowercase()
+            .contains(searchNumberText.orEmpty().lowercase())
+    ) {
         val highlightedText: StringBuilder = StringBuilder()
         var searchIndex = 0
-        mainNumberText?.forEach { char ->
+        mainNumberText?.forEachIndexed { index, char ->
             if (char.isDigit()) {
-                if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(searchIndex)) {
+                if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(
+                        searchIndex)
+                ) {
                     highlightedText.append(char)
-                    searchIndex++
+                    if (index == mainNumberText.length - 1) {
+                        highlightedTextList.add(highlightedText.toString())
+                        searchIndex = 0
+                        highlightedText.clear()
+                    } else {
+                        searchIndex++
+                    }
                 } else {
                     if (highlightedText.length >= searchNumberText?.length.orZero()) {
                         highlightedTextList.add(highlightedText.toString())
@@ -165,11 +186,21 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
         }
         highlightedTextList.forEach { searchText ->
             SpannableString(mainNumberText).apply {
-                var index: Int = mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase())
+                var index: Int =
+                    mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase())
                 while (index >= 0 && index < mainNumberText?.length.orZero()) {
-                    val highlightSpan = TextAppearanceSpan(null, Typeface.BOLD, -1, ColorStateList(arrayOf(intArrayOf()), intArrayOf(ContextCompat.getColor(context, R.color.span_text))), null)
-                    setSpan(highlightSpan, index, index + searchText.length.orZero(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                    index = mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase(), index + 1)
+                    val highlightSpan = TextAppearanceSpan(null,
+                        Typeface.BOLD,
+                        -1,
+                        ColorStateList(arrayOf(intArrayOf()),
+                            intArrayOf(ContextCompat.getColor(context, R.color.span_text))),
+                        null)
+                    setSpan(highlightSpan,
+                        index,
+                        index + searchText.length.orZero(),
+                        Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    index = mainNumberText.orEmpty().lowercase()
+                        .indexOf(searchText.lowercase(), index + 1)
                 }
                 text = this
             }

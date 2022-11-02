@@ -12,10 +12,7 @@ import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
 import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.enums.FilterAction
-import com.tarasovvp.blacklister.extensions.filterDataList
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.orZero
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -76,6 +73,7 @@ open class BaseFilterListFragment :
             emptyStateContainer = filterListEmpty
         }
         binding?.filterListFilter?.isVisible = adapter?.itemCount.orZero() > 0
+        binding?.filterListRecyclerView?.hideKeyboardWithLayoutTouch()
         setClickListeners()
         setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()
@@ -90,6 +88,7 @@ open class BaseFilterListFragment :
 
     private fun setClickListeners() {
         binding?.filterListFilter?.setSafeOnClickListener {
+            binding?.root?.hideKeyboard()
             selectedFilterItems?.let { conditionList ->
                 context?.filterDataList(conditionList) {
                     binding?.filterListFilter?.text =
@@ -192,9 +191,7 @@ open class BaseFilterListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                if (this@BaseFilterListFragment.filterList.isNullOrEmpty()
-                        .not() && filterList == this@BaseFilterListFragment.filterList
-                ) {
+                if (filterList == this@BaseFilterListFragment.filterList) {
                     swipeRefresh?.isRefreshing = false
                     return@safeSingleObserve
                 }

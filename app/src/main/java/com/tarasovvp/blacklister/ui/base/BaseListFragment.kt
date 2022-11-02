@@ -48,9 +48,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         initView()
         setRecyclerView()
         setSearchViewMenu()
-        if (adapter?.itemCount.orZero() == 0) {
-            getData()
-        }
+        getData()
         (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
             viewLifecycleOwner) {
             Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")

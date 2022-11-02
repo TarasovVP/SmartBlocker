@@ -7,9 +7,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.orZero
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -51,7 +49,9 @@ open class ContactListFragment :
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
             contactListCheck.isVisible = adapter?.itemCount.orZero() > 0
+            contactListRecyclerView.hideKeyboardWithLayoutTouch()
             contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
+                root.hideKeyboard()
                 Log.e("adapterTAG",
                     "ContactListFragment setOnCheckedChangeListener compoundButton.isPressed ${compoundButton.isPressed} checked $checked")
                 if (compoundButton.isPressed) {
@@ -86,7 +86,7 @@ open class ContactListFragment :
         val filteredContactList = contactList?.filter { contact ->
             (contact.name?.lowercase(Locale.getDefault())?.contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ).isTrue() || contact.number.lowercase(Locale.getDefault()).contains(
+            ).isTrue() || contact.trimmedPhone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
                 .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)

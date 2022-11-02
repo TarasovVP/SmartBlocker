@@ -8,9 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
 import com.tarasovvp.blacklister.enums.FilterAction
-import com.tarasovvp.blacklister.extensions.isTrue
-import com.tarasovvp.blacklister.extensions.orZero
-import com.tarasovvp.blacklister.extensions.safeSingleObserve
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Contact
@@ -65,7 +63,9 @@ class CallListFragment :
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
             callListCheck.isVisible = adapter?.itemCount.orZero() > 0
+            callListRecyclerView.hideKeyboardWithLayoutTouch()
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
+                root.hideKeyboard()
                 (activity as MainActivity).toolbar?.title =
                     getString(if (checked) R.string.blocked_call_log else R.string.log_list)
                 if (compoundButton.isPressed) {
