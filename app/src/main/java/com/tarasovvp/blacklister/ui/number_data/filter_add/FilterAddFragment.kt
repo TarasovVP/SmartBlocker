@@ -53,6 +53,7 @@ open class FilterAddFragment :
                 filter = String.EMPTY
             }
         }
+        binding?.executePendingBindings()
         setToolbar()
         setClickListeners()
         setFragmentResultListeners()

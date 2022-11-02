@@ -5,24 +5,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_16"
+        android:padding="@dimen/padding_25"
         tools:context=".ui.start.onboarding.OnBoardingFragment">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/on_boarding_view_pager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
-            app:layout_constraintBottom_toTopOf="@+id/on_boarding_tab_layout"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/on_boarding_tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
             app:layout_constraintBottom_toTopOf="@+id/on_boarding_button"
-            app:layout_constraintTop_toBottomOf="@+id/on_boarding_view_pager"
-            app:tabIndicatorColor="@color/main_color"
-            app:tabBackground="@color/main_bg" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/on_boarding_button"
@@ -30,9 +22,10 @@
             android:layout_height="wrap_content"
             android:text="@string/next"
             android:theme="@style/StrokeButton"
+            android:layout_marginVertical="@dimen/margin_35"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/on_boarding_tab_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/on_boarding_view_pager" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

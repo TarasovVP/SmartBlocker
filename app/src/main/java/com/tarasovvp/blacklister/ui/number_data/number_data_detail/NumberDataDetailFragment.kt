@@ -39,6 +39,7 @@ class NumberDataDetailFragment :
 
     private fun initViews(contact: Contact?) {
         binding?.contact = contact
+        binding?.executePendingBindings()
         binding?.numberDataDetailItemContact?.itemContactCallList?.isVisible = true
     }
 

@@ -5,10 +5,9 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.ACCEPT_PERMISSIONS_SCREEN
-import com.tarasovvp.blacklister.databinding.FragmentOnboardingBinding
+import com.tarasovvp.blacklister.databinding.FragmentOnBoardingBinding
 import com.tarasovvp.blacklister.enums.OnBoarding
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.orZero
@@ -18,9 +17,9 @@ import com.tarasovvp.blacklister.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.blacklister.utils.PermissionUtil.permissionsArray
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
-class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
+class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 
-    override var layoutId = R.layout.fragment_onboarding
+    override var layoutId = R.layout.fragment_on_boarding
     private var currentPosition = 0
 
     private val requestPermissionLauncher =
@@ -38,8 +37,8 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
             if (currentPosition == ACCEPT_PERMISSIONS_SCREEN) {
                 checkPermissions()
             } else {
-                binding?.onBoardingViewPager?.currentItem =
-                    (binding?.onBoardingViewPager?.currentItem.orZero()) + 1
+                binding?.onBoardingViewPager?.setCurrentItem((binding?.onBoardingViewPager?.currentItem.orZero()) + 1,
+                    false)
             }
         }
         initViewPager()
@@ -62,22 +61,17 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnboardingBinding>() {
         }
 
         binding?.onBoardingViewPager?.adapter = adapter
-        binding?.onBoardingViewPager?.let { viewPager ->
-            binding?.onBoardingTabLayout?.let { tabLayout ->
-                TabLayoutMediator(tabLayout, viewPager) { _, _ ->
-                }.attach()
+        binding?.onBoardingViewPager?.isUserInputEnabled = false
+        binding?.onBoardingViewPager?.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPosition = position
+                binding?.onBoardingButton?.text =
+                    if (position == ACCEPT_PERMISSIONS_SCREEN) getString(R.string.accept) else getString(
+                        R.string.next)
             }
-            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    currentPosition = position
-                    binding?.onBoardingButton?.text =
-                        if (position == ACCEPT_PERMISSIONS_SCREEN) getString(R.string.accept) else getString(
-                            R.string.next
-                        )
-                }
-            })
-        }
+        })
     }
 
     private fun checkPermissions() {

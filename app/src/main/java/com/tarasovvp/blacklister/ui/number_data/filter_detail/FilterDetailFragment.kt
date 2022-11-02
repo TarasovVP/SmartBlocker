@@ -59,6 +59,7 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
         binding?.filterDetailContactListDescription?.text =
             if (filter?.isBlackFilter().isTrue()) getString(
                 R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
+        binding?.executePendingBindings()
     }
 
     private fun setFragmentResultListeners() {

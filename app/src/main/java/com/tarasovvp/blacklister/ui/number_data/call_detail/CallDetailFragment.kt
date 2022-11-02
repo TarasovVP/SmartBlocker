@@ -34,6 +34,7 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
     private fun initViews() {
         args.contact?.apply {
             binding?.contact = this
+            binding?.executePendingBindings()
             if (numberDataAdapter?.numberDataList.isNull()) {
                 viewModel.blockedCallsByNumber(this.trimmedPhone)
             }
