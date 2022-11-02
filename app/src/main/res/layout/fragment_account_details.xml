@@ -80,7 +80,6 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account_details_current_password_container"
-                    style="@style/OutlinedBoxTextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -98,7 +97,6 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account_details_new_password_create_container"
-                    style="@style/OutlinedBoxTextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -115,7 +113,6 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account_details_new_password_confirm_container"
-                    style="@style/OutlinedBoxTextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"

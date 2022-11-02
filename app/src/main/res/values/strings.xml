@@ -186,4 +186,6 @@
     <string name="number">Номер</string>
     <string name="close">Закрыть</string>
     <string name="empty" />
+    <string name="entrance">Вход</string>
+    <string name="or">Или</string>
 </resources>

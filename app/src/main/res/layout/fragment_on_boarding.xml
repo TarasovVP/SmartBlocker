@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"
-            android:theme="@style/StrokeButton"
             android:layout_marginVertical="@dimen/margin_35"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -17,17 +17,20 @@
                 android:id="@+id/sign_up_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_35"
+                android:layout_marginTop="@dimen/margin_50"
+                android:textSize="@dimen/text_size_18"
                 android:gravity="center"
-                android:text="@string/sign_up_with_email"
+                android:textStyle="bold"
+                android:text="@string/sign_up"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_up_email_container"
-                style="@style/OutlinedBoxTextInputLayoutStyle"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 app:layout_constraintTop_toBottomOf="@+id/sign_up_title" >
 
                 <EditText
@@ -40,10 +43,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_up_password_container"
-                style="@style/OutlinedBoxTextInputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 app:layout_constraintTop_toBottomOf="@+id/sign_up_email_container"
                 app:passwordToggleEnabled="true">
 
@@ -57,10 +60,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_up_repeat_password_container"
-                style="@style/OutlinedBoxTextInputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 app:layout_constraintTop_toBottomOf="@+id/sign_up_password_container"
                 app:passwordToggleEnabled="true">
 
@@ -74,10 +77,12 @@
 
             <Button
                 android:id="@+id/sign_up_continue"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_up"
-                android:layout_marginTop="@dimen/margin_25"
+                android:layout_marginTop="@dimen/margin_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sign_up_repeat_password_container" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

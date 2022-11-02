@@ -57,8 +57,7 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
                 filterAction = FilterAction.FILTER_ACTION_DELETE
             }
         binding?.filterDetailContactListDescription?.text =
-            if (filter?.isBlackFilter().isTrue()) getString(
-                R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
+            if (filter?.isBlackFilter().isTrue()) getString(R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
         binding?.executePendingBindings()
     }
 

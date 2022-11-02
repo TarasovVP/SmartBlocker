@@ -16,17 +16,22 @@
     <color name="alice_blue">#F6F9FF</color>
     <color name="tangaroa">#1C2739</color>
     <color name="neon_blue">#2C3AFA</color>
+    <color name="egyptian_blue">#0F35BD</color>
     <color name="lavender">#F7F8FD</color>
     <color name="haiti_50">#80211F2E</color>
     <color name="nobel">#989595</color>
     <color name="sunset">#C84747</color>
-    <color name="change_bg">#0DFFC108</color>
-    <color name="delete_bg">#0DFF4545</color>
-    <color name="white_bg">#0D86FF45</color>
+    <color name="light_steel_blue">#B4C5E3</color>
+    <color name="valhalla">#211F2E</color>
 
     //custom project colors
     <color name="main_color">@color/midnight_blue</color>
     <color name="main_bg">@color/alice_blue</color>
+    <color name="text_color">@color/valhalla</color>
+    <color name="button_bg">@color/egyptian_blue</color>
     <color name="item_color">@color/white</color>
-    <color name="span_text">@color/neon_blue</color>
+    <color name="span_text">@color/egyptian_blue</color>
+    <color name="change_bg">#0DFFC108</color>
+    <color name="delete_bg">#0DFF4545</color>
+    <color name="white_bg">#0D86FF45</color>
 </resources>

@@ -73,7 +73,6 @@
             android:id="@+id/filter_add_input_layout"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
-            style="@style/OutlinedBoxTextInputLayoutStyle"
             app:endIconMode="clear_text"
             app:endIconDrawable="@drawable/ic_close_small"
             app:layout_constraintEnd_toEndOf="parent"
