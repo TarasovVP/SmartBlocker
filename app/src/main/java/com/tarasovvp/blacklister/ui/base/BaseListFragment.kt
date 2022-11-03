@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
+import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.hideKeyboard
 import com.tarasovvp.blacklister.extensions.orZero
@@ -21,7 +22,6 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.call_list.CallListFragment
 import com.tarasovvp.blacklister.ui.number_data.contact_list.ContactListFragment
-import com.tarasovvp.blacklister.ui.number_data.filter_list.BlackFilterListFragment
 import com.tarasovvp.blacklister.ui.number_data.filter_list.WhiteFilterListFragment
 import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
 
@@ -103,15 +103,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible =
             searchQuery.isNullOrEmpty().not() || isEmpty.not()
         emptyStateContainer?.root?.isVisible = isEmpty
-        emptyStateContainer?.emptyStateTitle?.text =
+        emptyStateContainer?.emptyState =
             if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
-                is BlackFilterListFragment -> getString(R.string.black_list_empty_state)
-                is WhiteFilterListFragment -> getString(R.string.white_list_empty_state)
-                is ContactListFragment -> getString(R.string.contact_list_empty_state)
-                is CallListFragment -> getString(R.string.call_list_empty_state)
-                else -> String.EMPTY
-            } else getString(R.string.no_result_with_list_query)
-        emptyStateContainer?.emptyStateIcon?.setImageResource(R.drawable.ic_empty_state)
+                is WhiteFilterListFragment -> EmptyState.EMPTY_STATE_PERMISSIONS
+                is ContactListFragment -> EmptyState.EMPTY_STATE_CONTACTS
+                is CallListFragment -> EmptyState.EMPTY_STATE_CALLS
+                else -> EmptyState.EMPTY_STATE_BLOCKERS
+            } else EmptyState.EMPTY_STATE_QUERY
         if (isEmpty) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()

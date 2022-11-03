@@ -10,6 +10,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/main_bg"
             android:padding="@dimen/padding_16">
 
             <TextView
@@ -26,10 +27,10 @@
                 android:id="@+id/dialog_info_cancel"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="@string/cancel"
-                android:theme="@style/StrokeButton"
+                style="@style/StrokeButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_info_confirm"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,6 @@
                 android:layout_height="@dimen/size_0"
                 android:layout_marginStart="@dimen/margin_10"
                 android:text="@string/ok"
-                android:theme="@style/StrokeButton"
                 app:layout_constraintBottom_toBottomOf="@+id/dialog_info_cancel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/dialog_info_cancel"

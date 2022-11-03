@@ -60,13 +60,9 @@ open class BaseFilterListFragment :
         findNavController().currentDestination?.label =
             getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
-        selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList()
-            .onEach { it.isSelected = false })
+        selectedFilterItems = selectedFilterItems ?: ArrayList(Condition.values().toList().onEach { it.isSelected = false })
         binding?.filterListFilter?.text =
-            if (selectedFilterItems.orEmpty()
-                    .any { it.isSelected }
-            ) selectedFilterItems?.filter { it.isSelected }
-                ?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
+            if (selectedFilterItems.orEmpty().any { it.isSelected }) selectedFilterItems?.filter { it.isSelected }?.joinToString { getString(it.title) } else getString(R.string.filter_no_filter)
         binding?.apply {
             swipeRefresh = filterListRefresh
             recyclerView = filterListRecyclerView

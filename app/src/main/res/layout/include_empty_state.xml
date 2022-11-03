@@ -2,30 +2,52 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="emptyState"
+            type="com.tarasovvp.blacklister.enums.EmptyState" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/empty_state_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_bg"
-        android:visibility="gone" >
+        android:padding="@dimen/padding_16">
 
         <TextView
             android:id="@+id/empty_state_title"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/empty_state_icon"/>
+            android:fontFamily="@font/comfortaa_bold"
+            android:text="@{emptyState.titleResource  == 0 ? @string/empty : context.getString(emptyState.titleResource)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/empty_state_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{emptyState.descriptionResource  == 0 ? @string/empty : context.getString(emptyState.descriptionResource)}"
+            android:layout_marginTop="@dimen/margin_16"
+            app:layout_constraintTop_toBottomOf="@+id/empty_state_title"/>
 
         <ImageView
             android:id="@+id/empty_state_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginTop="@dimen/margin_16"
+            android:padding="@dimen/padding_16"
+            app:imageResource="@{emptyState.iconResource}"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/empty_state_description"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

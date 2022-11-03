@@ -5,7 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/switch_view_selector">
+        android:background="@drawable/selector_switch_view">
 
         <TextView
             android:id="@+id/view_switch_title"

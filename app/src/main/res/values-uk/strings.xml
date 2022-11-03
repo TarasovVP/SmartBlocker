@@ -149,12 +149,12 @@
     <string name="authorized_user_title">Доступ до списку через хмару для авторизованих користувачів у разі втрати або зміни телефону</string>
     <string name="access_permissions">"Для того щоб почати просимо дати необхідні дозволи"</string>
     <string name="no_in_contact_list">Немає у списку контактів</string>
-    <string name="black_list_empty_state">У чорному списку поки нічого немає. Щоб додати, натисніть кнопку з плюсом внизу</string>
-    <string name="white_list_empty_state">У білому списку поки нічого немає. Щоб додати, натисніть кнопку з плюсом внизу</string>
-    <string name="contact_list_empty_state">Список ваших контактів порожній. Щоб додати, перейдіть до контактів телефону</string>
-    <string name="call_list_empty_state">Список заблокованих дзвінків порожній</string>
+    <string name="empty_state_blockers_description">У чорному списку поки нічого немає. Щоб додати, натисніть кнопку з плюсом внизу</string>
+    <string name="empty_state_permissions_description">У білому списку поки нічого немає. Щоб додати, натисніть кнопку з плюсом внизу</string>
+    <string name="empty_state_contacts_description">Список ваших контактів порожній. Щоб додати, перейдіть до контактів телефону</string>
+    <string name="empty_state_calls_description">Список заблокованих дзвінків порожній</string>
     <string name="invalid_phone_number">Невалідний номер</string>
-    <string name="no_result_with_list_query">За цим запитом нічого не знайдено</string>
+    <string name="empty_state_query_description">За цим запитом нічого не знайдено</string>
     <string name="condition_dialog_title">Виберіть умову</string>
     <string name="unavailable_network">Відсутнє інтернет-з\'єднання.\nДля продовження підключіть інтернет і перезайдіть до програми.</string>
     <string name="unavailable_network_repeat">Відсутнє з\'єднання з Інтернетом.\nДля продовження підключіть інтернет і повторіть дію.</string>

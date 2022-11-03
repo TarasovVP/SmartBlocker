@@ -278,7 +278,7 @@ open class FilterAddFragment :
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
             filterAddEmptyList.emptyStateContainer.isVisible = filteredContactList.isEmpty()
             filterAddEmptyList.emptyStateTitle.text =
-                getString(R.string.no_result_with_list_query)
+                getString(R.string.empty_state_query_description)
         }
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")
