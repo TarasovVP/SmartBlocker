@@ -148,10 +148,6 @@
     <string name="authorized_user_title">Access the list via the cloud for authorized users in case of loss or change of phone</string>
     <string name="access_permissions">"To get started, please give the necessary permissions"</string>
     <string name="no_in_contact_list">Not in contact list</string>
-    <string name="empty_state_blockers_description">There is nothing on the blacklist yet. To add, click the plus button at the bottom</string>
-    <string name="empty_state_permissions_description">There is nothing on the whitelist yet. To add, click the plus button at the bottom</string>
-    <string name="empty_state_contacts_description">Your contact list is empty. To add, go to your phone contacts</string>
-    <string name="empty_state_calls_description">Blocked calls list is empty</string>
     <string name="invalid_phone_number">Invalid phone number</string>
     <string name="empty_state_query_description">No results found for this query</string>
     <string name="condition_dialog_title">Select a condition</string>
@@ -188,9 +184,13 @@
     <string name="empty" />
     <string name="entrance">Вход</string>
     <string name="or">Или</string>
-    <string name="empty_state_contacts_title">Список контактов пуст</string>
-    <string name="empty_state_calls_title">Список звонков пуст</string>
     <string name="empty_state_permissions_title">Список разрешений пуст</string>
     <string name="empty_state_blockers_title">Список блокировщиков пуст</string>
+    <string name="empty_state_contacts_title">Список контактов пуст</string>
+    <string name="empty_state_calls_title">Список звонков пуст</string>
     <string name="empty_state_query_title">Список результатов пуст</string>
+    <string name="empty_state_blockers_description">У вас пока нет блокировщиков. Для добавления нажмите кнопку с плюсом внизу и выбрав признак блокировки, заполните необходимые данные.</string>
+    <string name="empty_state_permissions_description">У вас пока нет разрешений. Для добавления нажмите кнопку с плюсом внизу и выбрав признак разрешения, заполните необходимые данные.</string>
+    <string name="empty_state_contacts_description">В вашем телефоне контакты не найдены. Для добавления перейдите в контакты вашего телефона</string>
+    <string name="empty_state_calls_description">В вашем телефоне журнал вызовов пуст. При появлении вызова в журнале телефона информация отобразится здесь</string>
 </resources>

@@ -95,17 +95,13 @@
                 app:filterToInput="@{filterToInput}" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <include
             android:id="@+id/filter_add_submit"
+            layout="@layout/include_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:enabled="@{!filter.inValidAddFilterState}"
-            android:text="@{filter.filterAction.title}"
-            android:textColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
-            app:strokeColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
-            android:drawableEnd="@{ContextCompat.getDrawable(context, filter.filterActionIcon())}"
-            android:drawablePadding="@dimen/padding_20"
+            app:filter="@{filter}"
+            android:layout_marginTop="@dimen/margin_8"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_input_layout" />
 
         <androidx.recyclerview.widget.RecyclerView

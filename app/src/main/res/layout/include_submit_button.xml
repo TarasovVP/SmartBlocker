@@ -15,6 +15,7 @@
         android:id="@+id/filter_detail_delete_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/StrokeButton"
         android:layout_marginTop="@dimen/margin_8"
         android:padding="@dimen/padding_5"
         android:text="@{filter.filterAction.title}"

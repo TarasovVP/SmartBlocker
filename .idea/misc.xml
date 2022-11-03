@@ -50,6 +50,11 @@
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_empty_state.xml" value="0.258" />
         <entry key="app/src/main/res/drawable/ic_empty_state_allowing.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/ic_empty_state_blockers.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/ic_empty_state_calls.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/ic_empty_state_contacts.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/ic_empty_state_permissions.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/ic_empty_state_query.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/ic_end.xml" value="0.234375" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.122" />
         <entry key="app/src/main/res/drawable/ic_filter_list.xml" value="0.1695" />

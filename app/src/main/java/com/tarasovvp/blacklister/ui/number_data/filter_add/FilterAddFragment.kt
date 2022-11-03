@@ -102,7 +102,7 @@ open class FilterAddFragment :
                     description = getString(filter?.conditionTypeDescription().orZero()),
                     icon = R.drawable.ic_logo))
             }
-            filterAddSubmit.setSafeOnClickListener {
+            filterAddSubmit.root.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()
                         .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
                 ) {

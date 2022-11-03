@@ -3,12 +3,12 @@
     <item
         android:id="@+id/blackFilterListFragment"
         android:title="@string/black_list"
-        android:icon="@drawable/ic_block"
+        android:icon="@drawable/ic_blocker_list"
         android:contentDescription="@string/filter_list"/>
     <item
         android:id="@+id/whiteFilterListFragment"
         android:title="@string/white_list"
-        android:icon="@drawable/ic_white_filter"
+        android:icon="@drawable/ic_permission_list"
         android:contentDescription="@string/filter_list"/>
     <item
         android:id="@+id/contactListFragment"
@@ -18,6 +18,6 @@
     <item
         android:id="@+id/callListFragment"
         android:title="@string/log_list"
-        android:icon="@drawable/ic_call_log"
+        android:icon="@drawable/ic_call_list"
         android:contentDescription="@string/log_list"/>
 </menu>
