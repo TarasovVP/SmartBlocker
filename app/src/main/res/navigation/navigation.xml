@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.tarasovvp.blacklister.ui.start.sign_up.SignUpFragment"
-        android:label="@string/sign_up" />
+        android:label="" />
 
     <fragment
         android:id="@+id/blackFilterListFragment"

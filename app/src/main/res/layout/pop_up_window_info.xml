@@ -11,7 +11,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/item_bg">
+            android:background="@drawable/bg_item">
 
             <ImageView
                 android:id="@+id/pop_up_window_close"

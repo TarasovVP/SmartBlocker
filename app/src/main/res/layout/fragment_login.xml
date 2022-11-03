@@ -136,7 +136,7 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_24"
-                android:text="@string/continue_"
+                android:text="@string/log_in"
                 app:layout_constraintStart_toStartOf="@+id/login_continue_without_acc"
                 app:layout_constraintEnd_toEndOf="@+id/login_continue_without_acc"
                 app:layout_constraintTop_toBottomOf="@+id/login_sign_up" />

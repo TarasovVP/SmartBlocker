@@ -1,4 +1,4 @@
-<resources xmlns:ns2="http://schemas.android.com/apk/res-auto">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Blacklister" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -87,12 +87,17 @@
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
         <item name="materialThemeOverlay">@style/CommonThemeOverlayFilledDense</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
         <item name="hintEnabled">false</item>
     </style>
 
     <style name="CommonThemeOverlayFilledDense">
-        <item name="editTextStyle">@style/Widget.AppCompat.EditText
-        </item>
+        <item name="editTextStyle">@style/Widget.AppCompat.EditText</item>
+        <item name="android:background">@drawable/bg_item</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:paddingStart">@dimen/padding_5</item>
+        <item name="android:paddingEnd">@dimen/padding_5</item>
     </style>
 
     <style name="Button.Icon" parent="Widget.Material3.Button.IconButton">
