@@ -10,6 +10,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
@@ -39,6 +40,7 @@ class NumberDataDetailFragment :
 
     private fun initViews(contact: Contact?) {
         binding?.contact = contact
+        binding?.numberDataDetailFilterListEmpty?.emptyState = EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
         binding?.executePendingBindings()
         binding?.numberDataDetailItemContact?.itemContactCallList?.isVisible = true
     }
@@ -116,8 +118,6 @@ class NumberDataDetailFragment :
     }
 
     private fun checkFilterListEmptiness() {
-        binding?.numberDataDetailFilterListEmpty?.emptyStateTitle?.text =
-            getString(R.string.filter_by_contact_empty_state)
         binding?.numberDataDetailFilterListDescription?.isVisible =
             filterList?.isNotEmpty().isTrue()
         binding?.numberDataDetailFilterListEmpty?.emptyStateContainer?.isVisible =

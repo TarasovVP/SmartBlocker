@@ -17,24 +17,18 @@
         android:padding="@dimen/padding_16">
 
         <TextView
-            android:id="@+id/empty_state_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:fontFamily="@font/comfortaa_bold"
-            android:text="@{emptyState.titleResource  == 0 ? @string/empty : context.getString(emptyState.titleResource)}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/empty_state_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@{emptyState.descriptionResource  == 0 ? @string/empty : context.getString(emptyState.descriptionResource)}"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_16"
+            android:background="@drawable/bg_tooltip"
             android:layout_marginTop="@dimen/margin_16"
-            app:layout_constraintTop_toBottomOf="@+id/empty_state_title"/>
+            android:paddingHorizontal="@dimen/padding_14"
+            android:paddingTop="@dimen/padding_10"
+            android:paddingBottom="@dimen/margin_45"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/empty_state_icon"

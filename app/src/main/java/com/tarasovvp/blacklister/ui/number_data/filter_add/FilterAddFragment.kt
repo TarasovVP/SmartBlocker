@@ -20,6 +20,7 @@ import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
@@ -53,6 +54,7 @@ open class FilterAddFragment :
                 filter = String.EMPTY
             }
         }
+        binding?.filterAddEmptyList?.emptyState = if (binding?.filter?.isBlackFilter().isTrue()) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
         binding?.executePendingBindings()
         setToolbar()
         setClickListeners()
@@ -277,8 +279,6 @@ open class FilterAddFragment :
             }
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
             filterAddEmptyList.emptyStateContainer.isVisible = filteredContactList.isEmpty()
-            filterAddEmptyList.emptyStateTitle.text =
-                getString(R.string.empty_state_query_description)
         }
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")

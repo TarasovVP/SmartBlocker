@@ -68,7 +68,7 @@
     <string name="auto">Automatically follow your device\'s mode settings</string>
     <string name="change_password_succeed">Password changed successfully</string>
     <string name="passwords_different">Passwords don\'t match</string>
-    <string name="enter_as_login_user">You are logged in as an unregistered user. To get full access, please login as a registered user.</string>
+    <string name="empty_state_account_description">You are logged in as an unregistered user. To get full access, please login as a registered user.</string>
     <string name="other">Other</string>
     <string name="finance">Financial institution</string>
     <string name="collectors">Collectors</string>
@@ -174,9 +174,9 @@
     <string name="contact">Контакт</string>
     <string name="call">Вызов</string>
     <string name="contact_list_with_contact">Список фильтров и блокировщиков, которые повлияли на статус контакта</string>
-    <string name="contact_by_blocker_empty_state">По данному блокировщику не найдены совпадения в списке контактов</string>
-    <string name="contact_by_allowing_empty_state">По данному разрешению не найдены совпадения в списке контактов</string>
-    <string name="filter_by_contact_empty_state">По данному номеру из списка контактов не найдены блокировщики и разрешения</string>
+    <string name="empty_state_contacts_by_blocker_description">По данному блокировщику не найдены совпадения в списке контактов</string>
+    <string name="empty_state_contacts_by_permission_description">По данному разрешению не найдены совпадения в списке контактов</string>
+    <string name="empty_state_filters_by_contact_description">По данному номеру из списка контактов не найдены блокировщики и разрешения</string>
     <string name="filter_by_call_empty_state">По данному номеру из списка вызовов не найдены блокировщики и разрешения</string>
     <string name="number_from_call_log">Номер из списка звонков</string>
     <string name="number">Номер</string>
@@ -193,4 +193,5 @@
     <string name="empty_state_permissions_description">У вас пока нет разрешений. Для добавления нажмите кнопку с плюсом внизу и выбрав признак разрешения, заполните необходимые данные.</string>
     <string name="empty_state_contacts_description">В вашем телефоне контакты не найдены. Для добавления перейдите в контакты вашего телефона</string>
     <string name="empty_state_calls_description">В вашем телефоне журнал вызовов пуст. При появлении вызова в журнале телефона информация отобразится здесь</string>
+    <string name="empty_state_blocked_calls_description">Не найдены заблокированные вызовы</string>
 </resources>

@@ -14,6 +14,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.DELETE_USER
 import com.tarasovvp.blacklister.databinding.FragmentAccountDetailsBinding
+import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.ui.MainActivity
@@ -41,7 +42,10 @@ class AccountDetailsFragment :
 
     private fun initViews() {
         binding?.apply {
-            includeNoAccount.root.isVisible =
+            includeEmptyState.emptyState = EmptyState.EMPTY_STATE_ACCOUNT
+            includeEmptyState.root.isVisible =
+                BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+            loginButton.isVisible =
                 BlackListerApp.instance?.isLoggedInUser().isTrue().not()
             accountDetailsMainTitle.text = String.format(getString(R.string.welcome),
                 BlackListerApp.instance?.auth?.currentUser?.email)
@@ -70,7 +74,7 @@ class AccountDetailsFragment :
                     showMessage(getString(R.string.passwords_different), true)
                 }
             }
-            includeNoAccount.noAccountBtn.setSafeOnClickListener {
+            loginButton.setSafeOnClickListener {
                 findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
             }
         }

@@ -10,6 +10,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterDetailBinding
+import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.isTrue
@@ -58,6 +59,7 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
             }
         binding?.filterDetailContactListDescription?.text =
             if (filter?.isBlackFilter().isTrue()) getString(R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
+        binding?.filterDetailContactListEmpty?.emptyState = if (binding?.filter?.isBlackFilter().isTrue()) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
         binding?.executePendingBindings()
     }
 
@@ -103,10 +105,6 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
     }
 
     private fun checkContactListEmptiness() {
-        binding?.filterDetailContactListEmpty?.emptyStateTitle?.text =
-            if (binding?.filter?.isBlackFilter()
-                    .isTrue()
-            ) getString(R.string.contact_by_blocker_empty_state) else getString(R.string.contact_by_allowing_empty_state)
         binding?.filterDetailContactListDescription?.isVisible = contactList?.isNotEmpty().isTrue()
         binding?.filterDetailContactListEmpty?.emptyStateContainer?.isVisible = contactList?.isEmpty().isTrue()
     }

@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentCallDetailBinding
+import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Call
@@ -45,6 +46,8 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
                 viewModel.blockedCallsByFilter(this.filter)
             }
         }
+        binding?.callDetailFilterListEmpty?.emptyState = EmptyState.EMPTY_STATE_BLOCKED_CALLS
+        binding?.executePendingBindings()
     }
 
     private fun setContactAdapter() {
@@ -61,11 +64,8 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
     }
 
     private fun checkFilterListEmptiness() {
-        binding?.callDetailFilterListEmpty?.emptyStateTitle?.text =
-            getString(R.string.filter_by_call_empty_state)
         binding?.callDetailFilterListDescription?.isVisible = numberDataList.isNotEmpty()
-        binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible =
-            numberDataList.isEmpty()
+        binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible = numberDataList.isEmpty()
     }
 
     override fun observeLiveData() {

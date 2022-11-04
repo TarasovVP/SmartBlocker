@@ -68,7 +68,7 @@
     <string name="auto">Автоматично слідувати параметрам режиму вашого пристрою</string>
     <string name="change_password_succeed">Пароль успішно змінено</string>
     <string name="passwords_different">Паролі не співпадають</string>
-    <string name="enter_as_login_user">Ви увійшли незареєстрованим користувачем. Щоб отримати повний доступ, увійдіть як зареєстрований користувач.</string>
+    <string name="empty_state_account_description">Ви увійшли незареєстрованим користувачем. Щоб отримати повний доступ, увійдіть як зареєстрований користувач.</string>
     <string name="other">Інше</string>
     <string name="finance">Фінансова установа</string>
     <string name="collectors">Коллектори</string>
