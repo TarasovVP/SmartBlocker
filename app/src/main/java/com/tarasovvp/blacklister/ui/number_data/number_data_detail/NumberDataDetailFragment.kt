@@ -117,19 +117,12 @@ class NumberDataDetailFragment :
         }
     }
 
-    private fun checkFilterListEmptiness() {
-        binding?.numberDataDetailFilterListDescription?.isVisible =
-            filterList?.isNotEmpty().isTrue()
-        binding?.numberDataDetailFilterListEmpty?.emptyStateContainer?.isVisible =
-            filterList?.isEmpty().isTrue()
-    }
-
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 if (this@NumberDataDetailFragment.filterList == filterList) return@safeSingleObserve
                 this@NumberDataDetailFragment.filterList = filterList
-                checkFilterListEmptiness()
+                binding?.numberDataDetailFilterListEmpty?.root?.isVisible = filterList.isEmpty().isTrue()
                 contactFilterAdapter?.numberDataList = filterList
                 contactFilterAdapter?.notifyDataSetChanged()
             }

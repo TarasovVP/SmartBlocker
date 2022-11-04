@@ -65,7 +65,7 @@ open class ContactListFragment :
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 if (contactList == this@ContactListFragment.contactList) {
-                    swipeRefresh?.isRefreshing = false
+                    checkDataListEmptiness(contactList.isEmpty())
                     return@safeSingleObserve
                 }
                 this@ContactListFragment.contactList = contactList

@@ -188,7 +188,7 @@ open class BaseFilterListFragment :
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 if (filterList == this@BaseFilterListFragment.filterList) {
-                    swipeRefresh?.isRefreshing = false
+                    checkDataListEmptiness(filterList.isNullOrEmpty())
                     return@safeSingleObserve
                 }
                 this@BaseFilterListFragment.filterList = filterList as ArrayList<Filter>

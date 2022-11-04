@@ -130,8 +130,10 @@ class CallListFragment :
         with(viewModel) {
             callListLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
                 if (callListData == callList) {
-                    swipeRefresh?.isRefreshing = false
+                    checkDataListEmptiness(callListData.isEmpty())
                     return@safeSingleObserve
+                } else {
+
                 }
                 callList = callListData
                 searchDataList()

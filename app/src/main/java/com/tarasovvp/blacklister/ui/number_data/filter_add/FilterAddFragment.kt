@@ -278,7 +278,7 @@ open class FilterAddFragment :
                 contactFilterAdapter?.notifyDataSetChanged()
             }
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
-            filterAddEmptyList.emptyStateContainer.isVisible = filteredContactList.isEmpty()
+            filterAddEmptyList.root.isVisible = filteredContactList.isEmpty()
         }
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")

@@ -21,20 +21,30 @@
             android:text="@{onBoarding.title}"
             android:gravity="center"
             android:textSize="@dimen/text_size_16"
-            android:background="@drawable/bg_tooltip"
-            android:paddingHorizontal="@dimen/padding_14"
-            android:paddingTop="@dimen/padding_10"
-            android:paddingBottom="@dimen/margin_45"
+            android:minLines="5"
+            android:background="@drawable/bg_rounded"
+            android:padding="@dimen/padding_10"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/single_on_boarding_icon"/>
+            app:layout_constraintBottom_toTopOf="@+id/single_on_boarding_tooltip_arrow"/>
+
+        <ImageView
+            android:id="@+id/single_on_boarding_tooltip_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_tooltip_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintTop_toBottomOf="@+id/single_on_boarding_title" />
 
         <ImageView
             android:id="@+id/single_on_boarding_icon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
+            android:layout_marginTop="@dimen/margin_5"
             app:imageResource="@{onBoarding.mainImage}"
             app:layout_constraintBottom_toTopOf="@+id/single_on_boarding_tab_layout"
-            app:layout_constraintTop_toBottomOf="@+id/single_on_boarding_title" />
+            app:layout_constraintTop_toBottomOf="@+id/single_on_boarding_tooltip_arrow" />
 
         <ImageView
             android:id="@+id/single_on_boarding_tab_layout"

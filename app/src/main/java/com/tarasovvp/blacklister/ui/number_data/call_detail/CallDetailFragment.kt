@@ -63,15 +63,10 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
         binding?.callDetailFilterList?.adapter = numberDataAdapter
     }
 
-    private fun checkFilterListEmptiness() {
-        binding?.callDetailFilterListDescription?.isVisible = numberDataList.isNotEmpty()
-        binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible = numberDataList.isEmpty()
-    }
-
     override fun observeLiveData() {
         viewModel.callListLiveData.safeSingleObserve(viewLifecycleOwner) { callList ->
             this.numberDataList = callList
-            checkFilterListEmptiness()
+            binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible = numberDataList.isEmpty()
             numberDataAdapter?.numberDataList = callList
             numberDataAdapter?.notifyDataSetChanged()
         }

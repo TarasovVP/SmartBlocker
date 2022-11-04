@@ -41,9 +41,8 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
         setFragmentResultListeners()
         if (numberDataAdapter?.numberDataList.isNull()) {
             binding?.filter?.let { viewModel.getQueryContactList(it) }
-        } else {
-            checkContactListEmptiness()
         }
+        binding?.filterDetailContactListEmpty?.root?.isVisible = contactList?.isEmpty().isTrue()
     }
 
     private fun initViews(filter: Filter?) {
@@ -58,8 +57,12 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
                 filterAction = FilterAction.FILTER_ACTION_DELETE
             }
         binding?.filterDetailContactListDescription?.text =
-            if (filter?.isBlackFilter().isTrue()) getString(R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
-        binding?.filterDetailContactListEmpty?.emptyState = if (binding?.filter?.isBlackFilter().isTrue()) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
+            if (filter?.isBlackFilter()
+                    .isTrue()
+            ) getString(R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
+        binding?.filterDetailContactListEmpty?.emptyState = if (binding?.filter?.isBlackFilter()
+                .isTrue()
+        ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
         binding?.executePendingBindings()
     }
 
@@ -104,15 +107,12 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
         binding?.filterDetailContactList?.adapter = numberDataAdapter
     }
 
-    private fun checkContactListEmptiness() {
-        binding?.filterDetailContactListDescription?.isVisible = contactList?.isNotEmpty().isTrue()
-        binding?.filterDetailContactListEmpty?.emptyStateContainer?.isVisible = contactList?.isEmpty().isTrue()
-    }
     override fun observeLiveData() {
         with(viewModel) {
             contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 this@FilterDetailFragment.contactList = contactList
-                checkContactListEmptiness()
+                binding?.filterDetailContactListEmpty?.root?.isVisible =
+                    contactList.isEmpty().isTrue()
                 numberDataAdapter?.numberDataList = contactList
                 numberDataAdapter?.notifyDataSetChanged()
             }
