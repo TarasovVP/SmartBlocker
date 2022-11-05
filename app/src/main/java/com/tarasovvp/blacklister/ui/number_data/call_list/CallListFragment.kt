@@ -62,7 +62,7 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
-            callListCheck.isVisible = adapter?.itemCount.orZero() > 0
+            callListCheck.isEnabled = adapter?.itemCount.orZero() > 0
             callListRecyclerView.hideKeyboardWithLayoutTouch()
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 root.hideKeyboard()
@@ -132,8 +132,6 @@ class CallListFragment :
                 if (callListData == callList) {
                     checkDataListEmptiness(callListData.isEmpty())
                     return@safeSingleObserve
-                } else {
-
                 }
                 callList = callListData
                 searchDataList()
@@ -165,8 +163,7 @@ class CallListFragment :
         }.orEmpty()
         Log.e("callTAG",
             "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
-        binding?.callListCheck?.isInvisible =
-            (filteredCallList.isNotEmpty() || binding?.callListCheck?.isChecked.isTrue()).not()
+        binding?.callListCheck?.isEnabled = filteredCallList.isNotEmpty() || binding?.callListCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredCallList.isEmpty())
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList)

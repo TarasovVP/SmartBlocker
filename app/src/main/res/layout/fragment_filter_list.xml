@@ -14,7 +14,9 @@
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
             android:text="@string/filter_no_filter"
-            android:visibility="invisible"
+            android:enabled="false"
+            android:textColor="@color/enable_bg_selector"
+            app:drawableTint="@color/enable_bg_selector"
             app:drawableStartCompat="@drawable/ic_filter_list"
             android:drawablePadding="@dimen/padding_10"
             app:layout_constraintTop_toTopOf="parent" />

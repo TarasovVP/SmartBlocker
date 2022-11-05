@@ -68,7 +68,7 @@ open class BaseFilterListFragment :
             recyclerView = filterListRecyclerView
             emptyStateContainer = filterListEmpty
         }
-        binding?.filterListFilter?.isVisible = adapter?.itemCount.orZero() > 0
+        binding?.filterListFilter?.isEnabled = adapter?.itemCount.orZero() > 0
         binding?.filterListRecyclerView?.hideKeyboardWithLayoutTouch()
         setClickListeners()
         setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
@@ -189,6 +189,7 @@ open class BaseFilterListFragment :
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 if (filterList == this@BaseFilterListFragment.filterList) {
                     checkDataListEmptiness(filterList.isNullOrEmpty())
+                    binding?.filterListFilter?.isEnabled = filterList?.size.orZero() > 0
                     return@safeSingleObserve
                 }
                 this@BaseFilterListFragment.filterList = filterList as ArrayList<Filter>
@@ -222,8 +223,7 @@ open class BaseFilterListFragment :
         }.orEmpty()
         Log.e("adapterTAG",
             "FilterList searchDataList filteredList.size ${filteredList.size} selectedFilterItems ${selectedFilterItems?.joinToString()}")
-        binding?.filterListFilter?.isInvisible =
-            (filteredList.isEmpty() && selectedFilterItems.orEmpty().none { it.isSelected })
+        binding?.filterListFilter?.isEnabled = filteredList.isNotEmpty() || (filteredList.isEmpty() && selectedFilterItems.orEmpty().any { it.isSelected })
         checkDataListEmptiness(filteredList.isEmpty())
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList)

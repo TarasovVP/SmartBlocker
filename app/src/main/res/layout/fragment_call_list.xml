@@ -14,7 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
-            android:visibility="invisible"
+            android:enabled="false"
+            android:textColor="@color/enable_bg_selector"
+            android:buttonTint="@color/enable_bg_selector"
             android:text="@string/blocked_call_log"
             app:layout_constraintTop_toTopOf="parent" />
 

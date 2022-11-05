@@ -48,7 +48,7 @@ open class ContactListFragment :
             swipeRefresh = contactListRefresh
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
-            contactListCheck.isVisible = adapter?.itemCount.orZero() > 0
+            contactListCheck.isEnabled = adapter?.itemCount.orZero() > 0
             contactListRecyclerView.hideKeyboardWithLayoutTouch()
             contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 root.hideKeyboard()
@@ -93,8 +93,7 @@ open class ContactListFragment :
         }.orEmpty()
         Log.e("adapterTAG",
             "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
-        binding?.contactListCheck?.isInvisible =
-            (filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()).not()
+        binding?.contactListCheck?.isEnabled = filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredContactList.isEmpty())
         viewModel.getHashMapFromContactList(filteredContactList)
     }
