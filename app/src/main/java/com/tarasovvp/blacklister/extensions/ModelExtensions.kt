@@ -101,9 +101,7 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
-            logCallList.add((callLogCursor.createCallObject(false) as LogCall).apply {
-                name = if (name.isNullOrEmpty()) getString(R.string.number_from_call_log) else name
-            })
+            logCallList.add((callLogCursor.createCallObject(false) as LogCall))
         }
     }
     return logCallList
@@ -167,10 +165,6 @@ fun Context.getInitialBitmap(text: String): Bitmap? {
         canvas.drawRect(rectF, this)
 
         color = Color.WHITE
-        strokeWidth = dpToPx(2F)
-        style = Paint.Style.STROKE
-        canvas.drawCircle(rectSize / 2, rectSize / 2, rectSize / 2, this)
-
         style = Paint.Style.FILL
         canvas.drawText(
             text, (rectSize - textWidth) / 2, (rectSize - textHeight) / 2 + textHeight, this

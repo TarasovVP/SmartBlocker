@@ -41,8 +41,8 @@ open class Call(
 
     fun filterTypeIcon(): Int {
         return when (filterType) {
-            Constants.BLACK_FILTER -> R.drawable.ic_block
-            Constants.WHITE_FILTER -> R.drawable.ic_accepted
+            Constants.BLACK_FILTER -> R.drawable.ic_black_filter
+            Constants.WHITE_FILTER -> R.drawable.ic_white_filter
             else -> 0
         }
     }

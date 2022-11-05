@@ -19,9 +19,9 @@
                 app:info="@string/change_back_ground"
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="@string/change_turn_block"
-                app:turnOffModeIcon="@drawable/ic_block"
+                app:turnOffModeIcon="@drawable/ic_black_filter"
                 app:turnOffModeText="@string/turn_off"
-                app:turnOnModeIcon="@drawable/ic_accepted"
+                app:turnOnModeIcon="@drawable/ic_white_filter"
                 app:turnOnModeText="@string/turn_on" />
 
             <com.tarasovvp.blacklister.utils.SwitchView
@@ -43,9 +43,9 @@
                 app:info="@string/change_back_ground"
                 app:layout_constraintTop_toBottomOf="@+id/block_settings_foreground"
                 app:title="@string/block_hidden"
-                app:turnOffModeIcon="@drawable/ic_block"
+                app:turnOffModeIcon="@drawable/ic_black_filter"
                 app:turnOffModeText="@string/turn_off"
-                app:turnOnModeIcon="@drawable/ic_accepted"
+                app:turnOnModeIcon="@drawable/ic_white_filter"
                 app:turnOnModeText="@string/turn_on" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
