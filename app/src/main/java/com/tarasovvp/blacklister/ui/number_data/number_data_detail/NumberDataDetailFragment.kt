@@ -120,10 +120,10 @@ class NumberDataDetailFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                if (this@NumberDataDetailFragment.filterList == filterList) return@safeSingleObserve
-                this@NumberDataDetailFragment.filterList = filterList
                 binding?.numberDataDetailFilterListEmpty?.root?.isVisible = filterList.isEmpty().isTrue()
                 binding?.numberDataDetailFilterListDescription?.isVisible = filterList.isNotEmpty().isTrue()
+                if (this@NumberDataDetailFragment.filterList == filterList) return@safeSingleObserve
+                this@NumberDataDetailFragment.filterList = filterList
                 contactFilterAdapter?.numberDataList = filterList
                 contactFilterAdapter?.notifyDataSetChanged()
             }

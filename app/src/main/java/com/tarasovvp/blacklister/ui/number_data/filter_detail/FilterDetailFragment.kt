@@ -110,9 +110,10 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
     override fun observeLiveData() {
         with(viewModel) {
             contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                this@FilterDetailFragment.contactList = contactList
                 binding?.filterDetailContactListEmpty?.root?.isVisible = contactList.isEmpty().isTrue()
                 binding?.filterDetailContactListDescription?.isVisible = contactList.isNotEmpty().isTrue()
+                if (this@FilterDetailFragment.contactList == contactList) return@safeSingleObserve
+                this@FilterDetailFragment.contactList = contactList
                 numberDataAdapter?.numberDataList = contactList
                 numberDataAdapter?.notifyDataSetChanged()
             }

@@ -41,6 +41,10 @@ data class Contact(
         return filterType == BLACK_FILTER
     }
 
+    fun isNameEmpty(): Boolean {
+        return name.isNullOrEmpty()
+    }
+
     fun nameInitial(): String {
         return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
     }
