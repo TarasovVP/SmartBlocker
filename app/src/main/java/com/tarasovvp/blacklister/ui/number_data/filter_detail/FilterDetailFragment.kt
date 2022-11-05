@@ -111,8 +111,8 @@ class FilterDetailFragment : BaseFragment<FragmentFilterDetailBinding, FilterDet
         with(viewModel) {
             contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 this@FilterDetailFragment.contactList = contactList
-                binding?.filterDetailContactListEmpty?.root?.isVisible =
-                    contactList.isEmpty().isTrue()
+                binding?.filterDetailContactListEmpty?.root?.isVisible = contactList.isEmpty().isTrue()
+                binding?.filterDetailContactListDescription?.isVisible = contactList.isNotEmpty().isTrue()
                 numberDataAdapter?.numberDataList = contactList
                 numberDataAdapter?.notifyDataSetChanged()
             }

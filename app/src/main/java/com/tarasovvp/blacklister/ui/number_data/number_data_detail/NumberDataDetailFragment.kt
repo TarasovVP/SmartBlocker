@@ -123,6 +123,7 @@ class NumberDataDetailFragment :
                 if (this@NumberDataDetailFragment.filterList == filterList) return@safeSingleObserve
                 this@NumberDataDetailFragment.filterList = filterList
                 binding?.numberDataDetailFilterListEmpty?.root?.isVisible = filterList.isEmpty().isTrue()
+                binding?.numberDataDetailFilterListDescription?.isVisible = filterList.isNotEmpty().isTrue()
                 contactFilterAdapter?.numberDataList = filterList
                 contactFilterAdapter?.notifyDataSetChanged()
             }

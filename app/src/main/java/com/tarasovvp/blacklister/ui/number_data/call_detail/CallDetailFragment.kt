@@ -67,6 +67,7 @@ class CallDetailFragment : BaseFragment<FragmentCallDetailBinding, CallDetailVie
         viewModel.callListLiveData.safeSingleObserve(viewLifecycleOwner) { callList ->
             this.numberDataList = callList
             binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible = numberDataList.isEmpty()
+            binding?.callDetailFilterListDescription?.isVisible = numberDataList.isNotEmpty()
             numberDataAdapter?.numberDataList = callList
             numberDataAdapter?.notifyDataSetChanged()
         }
