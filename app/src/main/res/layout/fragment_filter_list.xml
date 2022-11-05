@@ -10,7 +10,7 @@
 
         <CheckBox
             android:id="@+id/filter_list_filter"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
             android:text="@string/filter_no_filter"
@@ -19,7 +19,20 @@
             android:textColor="@color/enable_bg_selector"
             android:buttonTint="@color/enable_bg_selector"
             android:button="@drawable/ic_filter_list"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/filter_list_info"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/filter_list_info"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_0"
+            style="@style/Button.Icon"
+            app:icon="@drawable/ic_info"
+            app:layout_constraintTop_toTopOf="@+id/filter_list_filter"
+            app:layout_constraintBottom_toBottomOf="@+id/filter_list_filter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/filter_list_filter"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/filter_list_refresh"

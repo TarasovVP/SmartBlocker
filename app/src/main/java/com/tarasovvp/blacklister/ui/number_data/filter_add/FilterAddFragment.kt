@@ -19,9 +19,9 @@ import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
-import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterAction
+import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
@@ -54,7 +54,9 @@ open class FilterAddFragment :
                 filter = String.EMPTY
             }
         }
-        binding?.filterAddEmptyList?.emptyState = if (binding?.filter?.isBlackFilter().isTrue()) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
+        binding?.filterAddEmptyList?.emptyState =
+            if (binding?.filter?.isBlackFilter().isTrue()) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER
+            else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
         binding?.executePendingBindings()
         setToolbar()
         setClickListeners()
