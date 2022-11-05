@@ -1,6 +1,5 @@
 package com.tarasovvp.blacklister.extensions
 
-import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.graphics.*
@@ -10,7 +9,6 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
 import android.util.Log
-import androidx.appcompat.view.ContextThemeWrapper
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.blacklister.R
@@ -22,7 +20,6 @@ import com.tarasovvp.blacklister.constants.Constants.DESC
 import com.tarasovvp.blacklister.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
-import com.tarasovvp.blacklister.enums.Condition
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import kotlinx.coroutines.CoroutineScope
@@ -129,8 +126,9 @@ fun Context.deleteLastBlockedCall(number: String, filter: String, conditionType:
                         BlockedCallRepository.insertBlockedCall(blockedCall.apply {
                             type = BLOCKED_CALL
                             blockFilter = filter
-                            blockFilterCondition = conditionType
-                            name = if (blockedCall.name.isNullOrEmpty()) getString(R.string.number_from_call_log) else name
+                            blockFilterFilterCondition = conditionType
+                            name =
+                                if (blockedCall.name.isNullOrEmpty()) getString(R.string.number_from_call_log) else name
                         })
                     }
                     Log.e("blockTAG",
@@ -232,20 +230,4 @@ fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
 fun String?.isValidPhoneNumber(country: String): Boolean {
     return if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance()
         .isValidNumberForRegion(getPhoneNumber(country), country)
-}
-
-fun Context.filterDataList(conditionList: ArrayList<Condition>, result: () -> Unit): Boolean {
-    val builder =
-        AlertDialog.Builder(ContextThemeWrapper(this, R.style.MultiChoiceAlertDialog))
-    builder.setTitle(R.string.condition_dialog_title)
-    builder.setMultiChoiceItems(conditionList.map { getString(it.title) }.toTypedArray(),
-        conditionList.map { it.isSelected }.toBooleanArray()) { _, position, isChecked ->
-        conditionList[position].isSelected = isChecked
-    }
-    builder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
-    builder.setPositiveButton(R.string.ok) { _, _ ->
-        result.invoke()
-    }
-    builder.show()
-    return true
 }

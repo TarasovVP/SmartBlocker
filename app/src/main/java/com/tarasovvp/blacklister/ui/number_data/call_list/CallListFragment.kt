@@ -62,7 +62,7 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
-            callListCheck.isEnabled = adapter?.itemCount.orZero() > 0
+            callListCheck.isEnabled = adapter?.itemCount.orZero() > 0 || callListCheck.isChecked
             callListRecyclerView.hideKeyboardWithLayoutTouch()
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 root.hideKeyboard()

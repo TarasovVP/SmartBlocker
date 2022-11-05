@@ -48,7 +48,7 @@ open class ContactListFragment :
             swipeRefresh = contactListRefresh
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
-            contactListCheck.isEnabled = adapter?.itemCount.orZero() > 0
+            contactListCheck.isEnabled = adapter?.itemCount.orZero() > 0  || contactListCheck.isChecked
             contactListRecyclerView.hideKeyboardWithLayoutTouch()
             contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 root.hideKeyboard()

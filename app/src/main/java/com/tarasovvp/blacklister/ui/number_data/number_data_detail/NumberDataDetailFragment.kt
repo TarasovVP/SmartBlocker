@@ -9,7 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
-import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
@@ -64,13 +64,13 @@ class NumberDataDetailFragment :
             setAddFilterConditions(binding?.numberDataDetailAddFilterFull?.isShown.isTrue())
         }
         binding?.numberDataDetailAddFilterFull?.setSafeOnClickListener {
-            createFilter(Condition.CONDITION_TYPE_FULL.index)
+            createFilter(FilterCondition.FILTER_CONDITION_FULL.index)
         }
         binding?.numberDataDetailAddFilterStart?.setSafeOnClickListener {
-            createFilter(Condition.CONDITION_TYPE_START.index)
+            createFilter(FilterCondition.FILTER_CONDITION_START.index)
         }
         binding?.numberDataDetailAddFilterContain?.setSafeOnClickListener {
-            createFilter(Condition.CONDITION_TYPE_CONTAIN.index)
+            createFilter(FilterCondition.FILTER_CONDITION_CONTAIN.index)
         }
         binding?.numberDataDetailItemContact?.root?.setSafeOnClickListener {
             if (binding?.numberDataDetailAddFilterFull?.isShown.isTrue()) {
@@ -95,7 +95,7 @@ class NumberDataDetailFragment :
                 conditionType = conditionIndex,
                 filterType = Constants.BLACK_FILTER)
         val phoneNumber = if (binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY).isNull()) binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(context?.getUserCountry().orEmpty().uppercase()) else binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY)
-        if (phoneNumber.isNull() || conditionIndex == Condition.CONDITION_TYPE_CONTAIN.index) {
+        if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
             startAddFilterScreen()
         } else {
             viewModel.getCountryCode(phoneNumber?.countryCode)

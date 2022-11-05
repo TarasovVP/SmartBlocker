@@ -7,7 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ViewFloatingActionMenuBinding
-import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.FilterCondition
 
 class FloatingActionMenuView @JvmOverloads constructor(
     context: Context,
@@ -32,13 +32,13 @@ class FloatingActionMenuView @JvmOverloads constructor(
     fun setFabClickListener(fabClickListener: (Int) -> Unit) {
         binding?.apply {
             fabFull.setSafeOnClickListener {
-                fabClickListener.invoke(Condition.CONDITION_TYPE_FULL.index)
+                fabClickListener.invoke(FilterCondition.FILTER_CONDITION_FULL.index)
             }
             fabStart.setSafeOnClickListener {
-                fabClickListener.invoke(Condition.CONDITION_TYPE_START.index)
+                fabClickListener.invoke(FilterCondition.FILTER_CONDITION_START.index)
             }
             fabContain.setSafeOnClickListener {
-                fabClickListener.invoke(Condition.CONDITION_TYPE_CONTAIN.index)
+                fabClickListener.invoke(FilterCondition.FILTER_CONDITION_CONTAIN.index)
             }
         }
     }

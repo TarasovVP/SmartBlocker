@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bg"
+            android:padding="@dimen/padding_16">
+
+            <TextView
+                android:id="@+id/dialog_filter_condition_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/condition_dialog_title"
+                android:textSize="@dimen/text_size_14"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/dialog_filter_condition_full"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/padding_5"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/condition_full"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_title" />
+
+            <CheckBox
+                android:id="@+id/dialog_filter_condition_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/padding_5"
+                android:layout_marginTop="@dimen/margin_8"
+                android:text="@string/condition_start"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_full" />
+
+            <CheckBox
+                android:id="@+id/dialog_filter_condition_contain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/padding_5"
+                android:layout_marginTop="@dimen/margin_8"
+                android:text="@string/condition_contain"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_start" />
+
+            <Button
+                android:id="@+id/dialog_forgot_password_cancel"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="@string/cancel"
+                style="@style/StrokeButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_forgot_password_confirm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_contain" />
+
+            <Button
+                android:id="@+id/dialog_forgot_password_confirm"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                android:layout_marginStart="@dimen/margin_10"
+                android:text="@string/ok"
+                app:layout_constraintBottom_toBottomOf="@+id/dialog_forgot_password_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/dialog_forgot_password_cancel"
+                app:layout_constraintTop_toTopOf="@+id/dialog_forgot_password_cancel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
+
+
+

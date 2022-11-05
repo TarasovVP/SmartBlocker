@@ -11,13 +11,13 @@
         android:icon="@drawable/ic_permission_list"
         android:contentDescription="@string/filter_list"/>
     <item
-        android:id="@+id/contactListFragment"
-        android:title="@string/contact_list"
-        android:icon="@drawable/ic_contact_list"
-        android:contentDescription="@string/contact_list"/>
-    <item
         android:id="@+id/callListFragment"
         android:title="@string/log_list"
         android:icon="@drawable/ic_call_list"
         android:contentDescription="@string/log_list"/>
+    <item
+        android:id="@+id/contactListFragment"
+        android:title="@string/contact_list"
+        android:icon="@drawable/ic_contact_list"
+        android:contentDescription="@string/contact_list"/>
 </menu>

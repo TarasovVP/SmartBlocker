@@ -47,6 +47,9 @@
             android:id="@+id/startFilterDetailFragment"
             app:destination="@id/filterDetailFragment" />
         <action
+            android:id="@+id/startFilterConditionsDialog"
+            app:destination="@id/filterConditionsDialog" />
+        <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
     </fragment>
@@ -61,6 +64,9 @@
         <action
             android:id="@+id/startFilterDetailFragment"
             app:destination="@id/filterDetailFragment" />
+        <action
+            android:id="@+id/startFilterConditionsDialog"
+            app:destination="@id/filterConditionsDialog" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
@@ -131,7 +137,7 @@
     <fragment
         android:id="@+id/callListFragment"
         android:name="com.tarasovvp.blacklister.ui.number_data.call_list.CallListFragment"
-        android:label="@string/blocked_call_log">
+        android:label="@string/log_list">
         <action
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
@@ -259,6 +265,16 @@
             android:name="isLogOut"
             android:defaultValue="false"
             app:argType="boolean" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/filterConditionsDialog"
+        android:name="com.tarasovvp.blacklister.ui.dialogs.FilterConditionsDialog">
+        <argument
+            android:name="filterConditionList"
+            android:defaultValue="@null"
+            app:argType="integer[]"
+            app:nullable="true" />
     </dialog>
 
     <dialog

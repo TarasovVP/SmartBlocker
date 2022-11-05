@@ -44,4 +44,5 @@ object Constants {
     const val DIALOG = "dialog"
     const val DESC = "DESC"
     const val ASC = "ASC"
+    const val FILTER_CONDITION_LIST = "filterConditionList"
 }

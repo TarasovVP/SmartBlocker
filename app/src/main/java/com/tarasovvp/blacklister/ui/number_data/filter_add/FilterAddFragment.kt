@@ -19,7 +19,7 @@ import com.tarasovvp.blacklister.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
-import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.*
@@ -100,7 +100,7 @@ open class FilterAddFragment :
                     getString(if (filter?.isBlackFilter()
                             .isTrue()
                     ) R.string.blocker else R.string.allow),
-                    getString(Condition.getTitleByIndex(filter?.conditionType.orZero()))),
+                    getString(FilterCondition.getTitleByIndex(filter?.conditionType.orZero()))),
                     description = getString(filter?.conditionTypeDescription().orZero()),
                     icon = R.drawable.ic_logo))
             }

@@ -8,17 +8,17 @@
         android:paddingHorizontal="@dimen/padding_16"
         android:paddingTop="@dimen/padding_8">
 
-        <TextView
+        <CheckBox
             android:id="@+id/filter_list_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/padding_5"
             android:text="@string/filter_no_filter"
             android:enabled="false"
+            android:paddingHorizontal="@dimen/padding_5"
             android:textColor="@color/enable_bg_selector"
-            app:drawableTint="@color/enable_bg_selector"
-            app:drawableStartCompat="@drawable/ic_filter_list"
-            android:drawablePadding="@dimen/padding_10"
+            android:buttonTint="@color/enable_bg_selector"
+            android:button="@drawable/ic_filter_list"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

@@ -10,7 +10,7 @@ import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
-import com.tarasovvp.blacklister.enums.Condition
+import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -56,7 +56,7 @@ data class Filter(
 
     @Exclude
     fun conditionTypeName(): Int {
-        return Condition.getTitleByIndex(conditionType)
+        return FilterCondition.getTitleByIndex(conditionType)
     }
 
     @Exclude
@@ -73,13 +73,13 @@ data class Filter(
 
     @Exclude
     fun conditionTypeIcon(): Int {
-        return Condition.getMainIconByIndex(conditionType)
+        return FilterCondition.getMainIconByIndex(conditionType)
     }
 
     @Exclude
     fun conditionTypeDescription() = when (conditionType) {
-        Condition.CONDITION_TYPE_FULL.index -> R.string.filter_full_number_description
-        Condition.CONDITION_TYPE_START.index -> R.string.filter_start_description
+        FilterCondition.FILTER_CONDITION_FULL.index -> R.string.filter_full_number_description
+        FilterCondition.FILTER_CONDITION_START.index -> R.string.filter_start_description
         else -> R.string.filter_contain_description
     }
 
@@ -117,9 +117,9 @@ data class Filter(
     @Exclude
     fun filterToInput(): String {
         return when (conditionType) {
-            Condition.CONDITION_TYPE_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
+            FilterCondition.FILTER_CONDITION_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
                 filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY) else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
-            Condition.CONDITION_TYPE_START.index -> filter.replaceFirst(countryCode.countryCode, String.EMPTY)
+            FilterCondition.FILTER_CONDITION_START.index -> filter.replaceFirst(countryCode.countryCode, String.EMPTY)
             else -> filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
         }
     }
@@ -137,17 +137,17 @@ data class Filter(
 
     @Exclude
     fun isTypeStart(): Boolean {
-        return conditionType == Condition.CONDITION_TYPE_START.index
+        return conditionType == FilterCondition.FILTER_CONDITION_START.index
     }
 
     @Exclude
     fun isTypeFull(): Boolean {
-        return conditionType == Condition.CONDITION_TYPE_FULL.index
+        return conditionType == FilterCondition.FILTER_CONDITION_FULL.index
     }
 
     @Exclude
     fun isTypeContain(): Boolean {
-        return conditionType == Condition.CONDITION_TYPE_CONTAIN.index
+        return conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.index
     }
 
     @Exclude
