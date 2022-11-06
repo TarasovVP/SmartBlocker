@@ -97,13 +97,7 @@ open class FilterAddFragment :
     private fun setClickListeners() {
         binding?.apply {
             filterAddConditionsDescription.setSafeOnClickListener {
-                filterAddConditionsDescription.showPopUpWindow(Info(title = String.format(getString(
-                    R.string.filter_description_title),
-                    getString(if (filter?.isBlackFilter()
-                            .isTrue()
-                    ) R.string.blocker else R.string.allow),
-                    getString(FilterCondition.getTitleByIndex(filter?.conditionType.orZero()))),
-                    description = getString(filter?.conditionTypeDescription().orZero()),
+                filterAddConditionsDescription.showPopUpWindow(Info(description = getString(filter?.conditionTypeDescription().orZero()),
                     icon = R.drawable.ic_logo))
             }
             filterAddSubmit.root.setSafeOnClickListener {

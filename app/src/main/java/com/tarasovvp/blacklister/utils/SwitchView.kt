@@ -35,8 +35,7 @@ class SwitchView @JvmOverloads constructor(
             }
             viewSwitchInfo.setSafeOnClickListener {
                 if (infoText.isNotEmpty() && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showPopUpWindow(
-                    Info(title = viewSwitchTitle.text.toString(),
-                        description = infoText,
+                    Info(description = infoText,
                         icon = R.drawable.ic_logo))
             }
         }

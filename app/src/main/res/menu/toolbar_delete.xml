@@ -4,13 +4,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/delete_menu_item"
+        android:title="@string/delete_menu"
         android:icon="@drawable/ic_delete"
         app:showAsAction="always"
-        tools:ignore="MenuTitle" />
+        tools:ignore="AlwaysShowAction" />
 
     <item
         android:id="@+id/close_menu_item"
+        android:title="@string/close"
         android:icon="@drawable/ic_close"
-        app:showAsAction="always"
-        tools:ignore="MenuTitle" />
+        app:showAsAction="always"  />
 </menu>

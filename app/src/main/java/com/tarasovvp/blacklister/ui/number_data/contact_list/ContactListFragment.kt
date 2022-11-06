@@ -9,8 +9,10 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
 open class ContactListFragment :
@@ -50,6 +52,10 @@ open class ContactListFragment :
             emptyStateContainer = contactListEmpty
             contactListCheck.isEnabled = adapter?.itemCount.orZero() > 0  || contactListCheck.isChecked
             contactListRecyclerView.hideKeyboardWithLayoutTouch()
+            //TODO add info
+            contactListInfo.setSafeOnClickListener {
+                contactListInfo.showPopUpWindow(Info("Test"))
+            }
             contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 root.hideKeyboard()
                 Log.e("adapterTAG",

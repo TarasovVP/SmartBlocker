@@ -42,8 +42,7 @@ fun View.showMessage(message: String, isError: Boolean) {
 
 fun View.showPopUpWindow(info: Info) {
     val popupView = PopUpWindowInfoBinding.inflate(LayoutInflater.from(context))
-    popupView.popUpWindowTitle.text = info.title
-    popupView.popUpWindowDescription.text = info.description
+    popupView.info = info
     popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
     val popupWindow = PopupWindow(
         popupView.root,
@@ -56,9 +55,9 @@ fun View.showPopUpWindow(info: Info) {
     val isBelowScreenMiddle =
         locationScreen[1] > Resources.getSystem().displayMetrics.heightPixels / 2
     popupWindow.setBackgroundDrawable(null)
-    popupWindow.elevation = 5f
+    popupWindow.elevation = 2f
     popupWindow.showAsDropDown(this,
-        0,
+        (-Resources.getSystem().displayMetrics.widthPixels * 0.75).toInt(),
         if (isBelowScreenMiddle) -popupView.root.measuredHeight else 0)
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()

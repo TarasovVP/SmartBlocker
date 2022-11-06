@@ -13,6 +13,7 @@ import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -106,6 +107,10 @@ open class BaseFilterListFragment :
                 WhiteFilterListFragmentDirections.startFilterConditionsDialog(
                     filterConditionList = conditionFilterIndexes.orEmpty().toIntArray())
             })
+        }
+        //TODO add info
+        binding?.filterListInfo?.setSafeOnClickListener {
+            binding?.filterListInfo?.showPopUpWindow(Info("Test"))
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
             startNextScreen(Filter().apply {

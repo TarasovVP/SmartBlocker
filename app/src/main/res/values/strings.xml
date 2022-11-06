@@ -194,4 +194,5 @@
     <string name="empty_state_contacts_description">В вашем телефоне контакты не найдены. Для добавления перейдите в контакты вашего телефона</string>
     <string name="empty_state_calls_description">В вашем телефоне журнал вызовов пуст. При появлении вызова в журнале телефона информация отобразится здесь</string>
     <string name="empty_state_blocked_calls_description">Не найдены заблокированные вызовы</string>
+    <string name="info">Инфо</string>
 </resources>
