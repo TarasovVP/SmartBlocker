@@ -2,14 +2,12 @@ package com.tarasovvp.blacklister.ui.number_data.contact_list
 
 import android.content.Context
 import android.util.Log
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentContactListBinding
+import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -50,11 +48,11 @@ open class ContactListFragment :
             swipeRefresh = contactListRefresh
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
-            contactListCheck.isEnabled = adapter?.itemCount.orZero() > 0  || contactListCheck.isChecked
+            contactListCheck.isEnabled =
+                adapter?.itemCount.orZero() > 0 || contactListCheck.isChecked
             contactListRecyclerView.hideKeyboardWithLayoutTouch()
-            //TODO add info
             contactListInfo.setSafeOnClickListener {
-                contactListInfo.showPopUpWindow(Info("Test"))
+                contactListInfo.showPopUpWindow(Info.INFO_CONTACT_LIST)
             }
             contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 root.hideKeyboard()
@@ -99,7 +97,8 @@ open class ContactListFragment :
         }.orEmpty()
         Log.e("adapterTAG",
             "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
-        binding?.contactListCheck?.isEnabled = filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()
+        binding?.contactListCheck?.isEnabled =
+            filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredContactList.isEmpty())
         viewModel.getHashMapFromContactList(filteredContactList)
     }

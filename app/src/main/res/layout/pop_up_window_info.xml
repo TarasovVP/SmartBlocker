@@ -6,7 +6,7 @@
 
         <variable
             name="info"
-            type="com.tarasovvp.blacklister.model.Info" />
+            type="com.tarasovvp.blacklister.enums.Info" />
 
     </data>
 
@@ -25,7 +25,7 @@
                 android:id="@+id/pop_up_window_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{info.description}"
+                android:text="@{info.descriptionResource}"
                 android:gravity="center"
                 android:background="@drawable/bg_rounded"
                 android:minLines="5"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:padding="@dimen/padding_16"
-                app:imageResource="@{info.icon}"
+                app:imageResource="@{info.iconResource}"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

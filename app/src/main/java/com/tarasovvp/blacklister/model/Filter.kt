@@ -12,6 +12,7 @@ import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.FilterAction
+import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize
@@ -77,10 +78,10 @@ data class Filter(
     }
 
     @Exclude
-    fun conditionTypeDescription() = when (conditionType) {
-        FilterCondition.FILTER_CONDITION_FULL.index -> R.string.filter_full_number_description
-        FilterCondition.FILTER_CONDITION_START.index -> R.string.filter_start_description
-        else -> R.string.filter_contain_description
+    fun conditionTypeInfo() = when (conditionType) {
+        FilterCondition.FILTER_CONDITION_FULL.index -> Info.INFO_FILTER_ADD_FULL
+        FilterCondition.FILTER_CONDITION_START.index -> Info.INFO_FILTER_ADD_START
+        else -> Info.INFO_FILTER_ADD_CONTAIN
     }
 
     @Exclude

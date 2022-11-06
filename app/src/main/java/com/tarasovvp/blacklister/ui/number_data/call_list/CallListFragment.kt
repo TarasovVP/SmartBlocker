@@ -1,19 +1,16 @@
 package com.tarasovvp.blacklister.ui.number_data.call_list
 
 import android.util.Log
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
 import com.tarasovvp.blacklister.enums.FilterAction
-import com.tarasovvp.blacklister.enums.FilterCondition
+import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -67,9 +64,8 @@ class CallListFragment :
             emptyStateContainer = callListEmpty
             callListCheck.isEnabled = adapter?.itemCount.orZero() > 0 || callListCheck.isChecked
             callListRecyclerView.hideKeyboardWithLayoutTouch()
-            //TODO add info
             callListInfo.setSafeOnClickListener {
-                callListInfo.showPopUpWindow(Info("Test"))
+                callListInfo.showPopUpWindow(Info.INFO_CALL_LIST)
             }
             callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
                 root.hideKeyboard()
@@ -170,7 +166,8 @@ class CallListFragment :
         }.orEmpty()
         Log.e("callTAG",
             "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
-        binding?.callListCheck?.isEnabled = filteredCallList.isNotEmpty() || binding?.callListCheck?.isChecked.isTrue()
+        binding?.callListCheck?.isEnabled =
+            filteredCallList.isNotEmpty() || binding?.callListCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredCallList.isEmpty())
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList)

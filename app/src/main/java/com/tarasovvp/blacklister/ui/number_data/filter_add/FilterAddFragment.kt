@@ -21,12 +21,10 @@ import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterAction
-import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -55,7 +53,9 @@ open class FilterAddFragment :
             }
         }
         binding?.filterAddEmptyList?.emptyState =
-            if (binding?.filter?.isBlackFilter().isTrue()) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER
+            if (binding?.filter?.isBlackFilter()
+                    .isTrue()
+            ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER
             else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
         binding?.executePendingBindings()
         setToolbar()
@@ -97,8 +97,7 @@ open class FilterAddFragment :
     private fun setClickListeners() {
         binding?.apply {
             filterAddConditionsDescription.setSafeOnClickListener {
-                filterAddConditionsDescription.showPopUpWindow(Info(description = getString(filter?.conditionTypeDescription().orZero()),
-                    icon = R.drawable.ic_logo))
+                filter?.conditionTypeInfo()?.let { info -> filterAddConditionsDescription.showPopUpWindow(info) }
             }
             filterAddSubmit.root.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()

@@ -21,7 +21,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
-import com.tarasovvp.blacklister.model.Info
+import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 

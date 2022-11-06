@@ -11,9 +11,9 @@ import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterListBinding
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.enums.FilterCondition
+import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.Info
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -75,8 +75,12 @@ open class BaseFilterListFragment :
 
     private fun setFilterConditionFilter() {
         binding?.filterListFilter?.apply {
-            text = if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString { getString(FilterCondition.getTitleByIndex(it)) }
-            isEnabled = adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
+            text =
+                if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
+                    getString(FilterCondition.getTitleByIndex(it))
+                }
+            isEnabled =
+                adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
         }
     }
 
@@ -108,9 +112,8 @@ open class BaseFilterListFragment :
                     filterConditionList = conditionFilterIndexes.orEmpty().toIntArray())
             })
         }
-        //TODO add info
         binding?.filterListInfo?.setSafeOnClickListener {
-            binding?.filterListInfo?.showPopUpWindow(Info("Test"))
+            binding?.filterListInfo?.showPopUpWindow(if (this is BlackFilterListFragment) Info.INFO_BLOCKER_LIST else Info.INFO_PERMISSION_LIST)
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
             startNextScreen(Filter().apply {
