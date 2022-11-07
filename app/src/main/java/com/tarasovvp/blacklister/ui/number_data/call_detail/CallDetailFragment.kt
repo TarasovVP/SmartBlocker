@@ -7,10 +7,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentCallDetailBinding
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.extensions.isNotNull
-import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.model.Call
-import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
@@ -38,13 +35,9 @@ class CallDetailFragment : BaseDetailFragment<FragmentCallDetailBinding, CallDet
 
     override fun createAdapter() {
         numberDataAdapter =
-            numberDataAdapter ?: NumberDataAdapter(numberDataList) { call ->
-                val contact = if (binding?.contact.isNull()) Contact(name = (call as Call).name,
-                    photoUrl = call.photoUrl,
-                    number = call.number,
-                    filterType = call.filterType) else binding?.contact
+            numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
                 findNavController().navigate(CallDetailFragmentDirections.startNumberDataDetailFragment(
-                    contact))
+                    numberData))
             }
         binding?.callDetailFilterList?.adapter = numberDataAdapter
     }

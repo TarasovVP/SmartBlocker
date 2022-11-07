@@ -10,7 +10,9 @@ import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.LogCall
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
@@ -28,11 +30,16 @@ class NumberDataDetailFragment :
     private var filter: Filter? = null
 
     override fun initViews() {
-        binding?.contact = args.contact
-        binding?.numberDataDetailFilterListEmpty?.emptyState =
-            EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
-        binding?.executePendingBindings()
-        binding?.numberDataDetailItemContact?.itemContactCallList?.isVisible = true
+        binding?.apply {
+            when (args.numberData) {
+                is Contact -> contact = args.numberData as Contact
+                is LogCall -> call = args.numberData as LogCall
+            }
+            numberDataDetailFilterListEmpty.emptyState =
+                EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
+            numberDataDetailItemContact.itemContactCallList.isVisible = true
+            executePendingBindings()
+        }
     }
 
     override fun createAdapter() {

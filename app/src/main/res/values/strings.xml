@@ -178,7 +178,8 @@
     <string name="empty_state_contacts_by_permission_description">По данному разрешению не найдены совпадения в списке контактов</string>
     <string name="empty_state_filters_by_contact_description">По данному номеру из списка контактов не найдены блокировщики и разрешения</string>
     <string name="filter_by_call_empty_state">По данному номеру из списка вызовов не найдены блокировщики и разрешения</string>
-    <string name="number_from_call_log">Номера нет в контактах</string>
+    <string name="number_not_from_contacts">Номера нет в контактах</string>
+    <string name="number_from_call_log">Номер из журнала вызовов</string>
     <string name="number">Номер</string>
     <string name="close">Закрыть</string>
     <string name="empty" />

@@ -10,10 +10,8 @@ import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
 import com.tarasovvp.blacklister.databinding.FragmentFilterDetailBinding
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterAction
-import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
-import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
@@ -46,7 +44,8 @@ class FilterDetailFragment :
                         filterAction = FilterAction.FILTER_ACTION_DELETE
                     }
                 filterDetailContactListDescription.text =
-                    if (filter.isBlackFilter()) getString(R.string.contact_list_with_blocker) else getString(R.string.contact_list_with_allow)
+                    if (filter.isBlackFilter()) getString(R.string.contact_list_with_blocker) else getString(
+                        R.string.contact_list_with_allow)
             }
             filterDetailContactListEmpty.emptyState = if (filter?.isBlackFilter()
                     .isTrue()
@@ -93,9 +92,9 @@ class FilterDetailFragment :
 
     override fun createAdapter() {
         numberDataAdapter =
-            numberDataAdapter ?: NumberDataAdapter(contactList) { contact ->
+            numberDataAdapter ?: NumberDataAdapter(contactList) { numberData ->
                 findNavController().navigate(FilterDetailFragmentDirections.startNumberDataDetailFragment(
-                    contact as Contact))
+                    numberData))
             }
         binding?.filterDetailContactList?.adapter = numberDataAdapter
     }

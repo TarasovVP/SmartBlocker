@@ -69,7 +69,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number"
-                app:mainText="@{call.numberEmpty ? @string/hidden : call.nameEmpty ? @string/number_from_call_log : call.name}"
+                app:mainText="@{call.numberEmpty ? @string/hidden : call.nameEmpty ? @string/number_not_from_contacts : call.name}"
                 app:searchText="@{call.searchText}" />
 
             <TextView

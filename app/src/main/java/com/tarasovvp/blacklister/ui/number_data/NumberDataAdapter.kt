@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.number_data
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
-import com.tarasovvp.blacklister.databinding.ItemCallBinding
+import com.tarasovvp.blacklister.databinding.ItemCallSmallBinding
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.orZero
-import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
@@ -31,18 +31,20 @@ class NumberDataAdapter(
     var searchQueryMap = Pair(String.EMPTY, String.EMPTY)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        Log.e("filterAddTAG",
+            "NumberDataAdapter onCreateViewHolder viewType $viewType numberDataList?.size ${numberDataList?.size}")
         return when (viewType) {
             Contact::class.java.simpleName.hashCode() -> ContactViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_contact, parent, false)
             )
-            BlockedCall::class.java.simpleName.hashCode() -> CallViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_call, parent, false)
-            )
-            else -> FilterViewHolder(
+            Filter::class.java.simpleName.hashCode() -> FilterViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_filter, parent, false)
+            )
+            else -> CallViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_call_small, parent, false)
             )
         }
     }
@@ -105,15 +107,15 @@ class NumberDataAdapter(
 
     internal inner class CallViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var binding: ItemCallBinding? = DataBindingUtil.bind(itemView)
+        var binding: ItemCallSmallBinding? = DataBindingUtil.bind(itemView)
         fun bindData(call: Call?) {
             binding?.apply {
                 this.call = call
+                this.call?.searchText = searchQueryMap.first
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1) }
                 }
                 executePendingBindings()
-                itemCallTime.text = String.format("%s, %s", call?.dateFromTime(), call?.dateTimeFromTime())
             }
         }
     }

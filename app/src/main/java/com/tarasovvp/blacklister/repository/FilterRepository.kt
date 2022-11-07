@@ -77,8 +77,8 @@ object FilterRepository {
         }
     }
 
-    suspend fun queryFilterList(phone: String): List<Filter>? {
-        return filterDao?.queryFilterList(phone)?.sortedByDescending { it.filter.length }
+    suspend fun queryFilterList(number: String): List<Filter>? {
+        return filterDao?.queryFilterList(number)?.sortedByDescending { it.filter.length }
     }
 
 }

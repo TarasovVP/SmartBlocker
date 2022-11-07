@@ -12,7 +12,6 @@ import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -26,7 +25,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
         parent: ViewGroup,
         viewType: Int,
     ): RecyclerView.ViewHolder {
-        return if (viewType == HeaderDataItem.HEADER_TYPE) {
+        return if (viewType == HEADER_TYPE) {
             HeaderViewHolder(
                 DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent.context),
                     R.layout.item_header,

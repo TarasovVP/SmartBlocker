@@ -25,9 +25,8 @@ open class ContactListFragment :
         Log.e("adapterTAG",
             "ContactListFragment createAdapter  contactList?.size ${contactList?.size}")
         return context?.let {
-            ContactAdapter { contact ->
-                findNavController().navigate(ContactListFragmentDirections.startNumberDataDetailFragment(
-                    contact = contact))
+            ContactAdapter { numberData ->
+                findNavController().navigate(ContactListFragmentDirections.startNumberDataDetailFragment(numberData))
             }
         }
     }

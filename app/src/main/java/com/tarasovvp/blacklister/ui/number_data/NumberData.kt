@@ -1,3 +1,7 @@
 package com.tarasovvp.blacklister.ui.number_data
 
-interface NumberData
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+open class NumberData : Parcelable

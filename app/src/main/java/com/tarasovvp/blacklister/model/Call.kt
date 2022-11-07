@@ -33,7 +33,7 @@ open class Call(
     var countryIso: String? = String.EMPTY,
     var numberPresentation: String? = String.EMPTY,
     var filterType: Int = Constants.DEFAULT_FILTER,
-) : Parcelable, NumberData {
+) : Parcelable, NumberData() {
 
     var isCheckedForDelete = false
     var isDeleteMode = false

@@ -1,13 +1,14 @@
 package com.tarasovvp.blacklister.ui.base
 
+import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
-import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.number_data.NumberData
+import kotlinx.android.parcel.Parcelize
 
 abstract class BaseAdapter<D : NumberData> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -15,9 +16,7 @@ abstract class BaseAdapter<D : NumberData> :
     var mData: ArrayList<NumberData>? = null
 
     override fun getItemViewType(position: Int): Int {
-        return if (mData?.get(position) is HeaderData) {
-            (mData?.get(position) as HeaderData).headerType
-        } else 0
+        return if (mData?.get(position) is HeaderData) HEADER_TYPE else NUMBER_DATA_TYPE
     }
 
     override fun onBindViewHolder(
@@ -43,11 +42,7 @@ abstract class BaseAdapter<D : NumberData> :
     }
 
     override fun getItemCount(): Int {
-        return if (mData.isNull()) {
-            0
-        } else {
-            mData?.size ?: 0
-        }
+        return mData?.size ?: 0
     }
 
     fun setHeaderAndData(dataList: List<D>, header: HeaderData) {
@@ -69,7 +64,11 @@ abstract class BaseAdapter<D : NumberData> :
         mData?.clear()
     }
 
-    interface HeaderData : NumberData {
-        val headerType: Int
+    @Parcelize
+    open class HeaderData : NumberData(), Parcelable
+
+    companion object {
+        const val NUMBER_DATA_TYPE = 0
+        const val HEADER_TYPE = 1
     }
 }

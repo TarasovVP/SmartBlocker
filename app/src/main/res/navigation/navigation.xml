@@ -151,9 +151,9 @@
         android:name="com.tarasovvp.blacklister.ui.number_data.number_data_detail.NumberDataDetailFragment"
         android:label="@string/number">
         <argument
-            android:name="contact"
+            android:name="numberData"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Contact"
+            app:argType="com.tarasovvp.blacklister.ui.number_data.NumberData"
             app:nullable="true" />
         <action
             android:id="@+id/startFilterAddFragment"

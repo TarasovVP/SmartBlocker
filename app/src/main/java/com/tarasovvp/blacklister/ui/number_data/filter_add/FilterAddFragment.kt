@@ -25,6 +25,7 @@ import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.LogCall
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -38,8 +39,8 @@ open class FilterAddFragment :
     override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
 
-    private var contactFilterAdapter: NumberDataAdapter? = null
-    private var contactFilterList: ArrayList<NumberData> = ArrayList()
+    private var numberDataAdapter: NumberDataAdapter? = null
+    private var numberDataList: ArrayList<NumberData> = ArrayList()
     private var countryCodeList: ArrayList<CountryCode> = arrayListOf()
     private var addFilter: String? = null
 
@@ -156,10 +157,15 @@ open class FilterAddFragment :
     }
 
     private fun setContactAdapter() {
-        if (contactFilterAdapter.isNull()) {
-            contactFilterAdapter = NumberDataAdapter(contactFilterList) { phone ->
+        if (numberDataAdapter.isNull()) {
+            numberDataAdapter = NumberDataAdapter(numberDataList) { numberData ->
                 val number =
-                    if (phone is Filter) phone.filter else if (phone is Contact) phone.number else String.EMPTY
+                    when (numberData) {
+                        is Filter -> numberData.filter
+                        is Contact -> numberData.number
+                        is LogCall -> numberData.number
+                        else -> String.EMPTY
+                    }
                 binding?.apply {
                     binding?.filterToInput = true
                     if (filter?.isTypeContain().isTrue()) {
@@ -192,9 +198,9 @@ open class FilterAddFragment :
                     }
                 }
                 Log.e("filterAddTAG",
-                    "BaseAddFragment ContactFilterAdapter contactClick contact $phone")
+                    "BaseAddFragment ContactFilterAdapter contactClick contact $numberData")
             }
-            binding?.filterAddContactList?.adapter = contactFilterAdapter
+            binding?.filterAddContactList?.adapter = numberDataAdapter
         }
     }
 
@@ -247,15 +253,16 @@ open class FilterAddFragment :
     }
 
     private fun filterContactFilterList(searchQuery: String) {
-        val filteredContactList = contactFilterList.filter { mainData ->
+        val filteredContactList = numberDataList.filter { mainData ->
             (when (mainData) {
                 is Contact -> mainData.trimmedPhone.contains(searchQuery).isTrue()
                 is Filter -> mainData.filter.contains(searchQuery).isTrue()
+                is LogCall -> mainData.number.contains(searchQuery).isTrue()
                 else -> false
             })
         }
         binding?.apply {
-            contactFilterAdapter?.searchQueryMap =
+            numberDataAdapter?.searchQueryMap =
                 searchQuery to filter?.countryCode?.countryCode.orEmpty()
             val existingFilter =
                 filteredContactList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
@@ -269,8 +276,8 @@ open class FilterAddFragment :
             filteredContactList.toMutableList().moveToFirst(existingFilter?.apply {
                 filterAction = binding?.filter?.filterAction
             }).let { contactList ->
-                contactFilterAdapter?.numberDataList = ArrayList(contactList)
-                contactFilterAdapter?.notifyDataSetChanged()
+                numberDataAdapter?.numberDataList = ArrayList(contactList)
+                numberDataAdapter?.notifyDataSetChanged()
             }
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
             filterAddEmptyList.root.isVisible = filteredContactList.isEmpty()
@@ -308,8 +315,9 @@ open class FilterAddFragment :
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { mainDataList ->
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData filterListLiveData filterList.size ${mainDataList.size}")
-                this@FilterAddFragment.contactFilterList = ArrayList(mainDataList)
-                contactFilterAdapter?.numberDataList = this@FilterAddFragment.contactFilterList
+                this@FilterAddFragment.numberDataList = ArrayList(mainDataList)
+                numberDataAdapter?.numberDataList = this@FilterAddFragment.numberDataList
+                numberDataAdapter?.notifyDataSetChanged()
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
                 viewModel.hideMainProgress()

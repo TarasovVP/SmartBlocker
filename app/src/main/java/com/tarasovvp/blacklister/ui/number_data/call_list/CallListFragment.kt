@@ -10,7 +10,6 @@ import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Call
-import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
@@ -31,11 +30,7 @@ class CallListFragment :
         return context?.let {
             CallAdapter(object : CallClickListener {
                 override fun onCallClick(call: Call) {
-                    findNavController().navigate(CallListFragmentDirections.startNumberDataDetailFragment(
-                        Contact(name = call.name,
-                            photoUrl = call.photoUrl,
-                            number = call.number,
-                            filterType = call.filterType)))
+                    findNavController().navigate(CallListFragmentDirections.startNumberDataDetailFragment(call))
                 }
 
                 override fun onCallLongClick() {

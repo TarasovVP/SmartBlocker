@@ -123,7 +123,6 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             adapter?.setHeaderAndData(
                 dataEntry.value,
                 HeaderDataItem(
-                    headerType = HeaderDataItem.HEADER_TYPE,
                     header = dataEntry.key
                 )
             )
