@@ -90,6 +90,7 @@
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="hintEnabled">false</item>
+        <item name="colorAccent">@color/egyptian_blue</item>
     </style>
 
     <style name="CommonThemeOverlayFilledDense">

@@ -78,6 +78,7 @@
             layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
+            android:layout_marginTop="@dimen/margin_8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_contact_list_description" />
 

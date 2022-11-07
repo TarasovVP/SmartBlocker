@@ -90,7 +90,11 @@ class NumberDataDetailFragment :
     }
 
     override fun getData() {
-        viewModel.filterListWithNumber(binding?.contact?.trimmedPhone.orEmpty())
+        viewModel.filterListWithNumber(when (args.numberData) {
+            is Contact -> binding?.contact?.trimmedPhone.orEmpty()
+            is LogCall -> binding?.call?.number.orEmpty()
+            else -> String.EMPTY
+        })
     }
 
     private fun createFilter(conditionIndex: Int) {
