@@ -98,7 +98,15 @@ open class FilterAddFragment :
     private fun setClickListeners() {
         binding?.apply {
             filterAddConditionsDescription.setSafeOnClickListener {
-                filter?.conditionTypeInfo()?.let { info -> filterAddConditionsDescription.showPopUpWindow(info) }
+                filter?.conditionTypeInfo()
+                    ?.let { info -> filterAddConditionsDescription.showPopUpWindow(info) }
+            }
+            filterAddItemFilter.root.setSafeOnClickListener {
+                findNavController().navigate(FilterAddFragmentDirections.startFilterDetailFragment(
+                    filter = filter?.apply {
+                        filter = addFilter()
+                        filterAction = FilterAction.FILTER_ACTION_PREVIEW
+                    }))
             }
             filterAddSubmit.root.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()

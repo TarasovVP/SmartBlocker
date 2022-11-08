@@ -132,8 +132,13 @@ data class Filter(
     }
 
     @Exclude
-    fun isInValidAddFilterState(): Boolean {
+    fun isInvalidFilterAction(): Boolean {
         return filterAction == FilterAction.FILTER_ACTION_INVALID
+    }
+
+    @Exclude
+    fun isPreviewFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_PREVIEW
     }
 
     @Exclude

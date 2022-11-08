@@ -18,7 +18,7 @@
         style="@style/StrokeButton"
         android:layout_marginTop="@dimen/margin_8"
         android:padding="@dimen/padding_5"
-        android:enabled="@{!filter.isInValidAddFilterState}"
+        android:enabled="@{!filter.invalidFilterAction}"
         android:text="@{filter.filterAction.title}"
         android:textColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
         app:strokeColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"

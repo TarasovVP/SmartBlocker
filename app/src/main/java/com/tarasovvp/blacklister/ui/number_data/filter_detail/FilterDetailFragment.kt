@@ -34,15 +34,12 @@ class FilterDetailFragment :
             args.filter?.let { filter ->
                 (activity as MainActivity).toolbar?.title = getString(filter.filterTypeTitle())
                 this.filter = filter
-                filterDetailItemFilter.itemFilterCallList.isVisible = true
                 filterDetailChangeFilter.filter =
-                    Filter(filterType = if (filter.isBlackFilter()) WHITE_FILTER else BLACK_FILTER).apply {
-                        filterAction = FilterAction.FILTER_ACTION_CHANGE
-                    }
+                    Filter(filterType = filter.filterType).apply { filterAction = FilterAction.FILTER_ACTION_CHANGE }
                 filterDetailDeleteFilter.filter =
-                    Filter(filterType = filter.filterType).apply {
-                        filterAction = FilterAction.FILTER_ACTION_DELETE
-                    }
+                    Filter(filterType = filter.filterType).apply { filterAction = FilterAction.FILTER_ACTION_DELETE }
+                filterDetailAddFilter.filter =
+                    Filter(filterType = filter.filterType).apply { filterAction = FilterAction.FILTER_ACTION_PREVIEW }
                 filterDetailContactListDescription.text =
                     if (filter.isBlackFilter()) getString(R.string.contact_list_with_blocker) else getString(
                         R.string.contact_list_with_allow)

@@ -93,8 +93,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/Button.Icon"
-                app:icon="@drawable/ic_blocked_call_list"
-                android:visibility="gone"
+                app:icon="@{filter.filterAction == null ? @drawable/ic_blocked_call_list : @drawable/ic_arrow_forward}"
+                android:visibility="@{filter.isPreviewFilterAction ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

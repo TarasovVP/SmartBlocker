@@ -116,6 +116,9 @@
             android:id="@+id/startBlockSettingsFragment"
             app:destination="@id/blockSettingsFragment" />
         <action
+            android:id="@+id/startFilterDetailFragment"
+            app:destination="@id/filterDetailFragment" />
+        <action
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
     </fragment>

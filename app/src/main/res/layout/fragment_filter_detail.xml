@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_2"
-            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_8"
             app:filter="@{filter}"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
+            android:visibility="@{filter.isPreviewFilterAction ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter_detail_delete_filter"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
@@ -43,12 +44,24 @@
             android:id="@+id/filter_detail_delete_filter"
             layout="@layout/include_submit_button"
             android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginStart="@dimen/margin_8"
+            android:visibility="@{filter.isPreviewFilterAction ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
+            app:layout_constraintBottom_toBottomOf="@+id/filter_detail_change_filter"
+            app:layout_constraintTop_toTopOf="@+id/filter_detail_change_filter" />
+
+        <include
+            android:id="@+id/filter_detail_add_filter"
+            layout="@layout/include_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:visibility="@{filter.isPreviewFilterAction ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter" />
 
         <TextView
             android:id="@+id/filter_detail_contact_list_description"
@@ -59,7 +72,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="@dimen/padding_2"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_delete_filter" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_add_filter" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filter_detail_contact_list"
