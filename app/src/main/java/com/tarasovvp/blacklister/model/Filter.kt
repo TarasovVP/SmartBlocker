@@ -33,6 +33,9 @@ data class Filter(
     var isDeleteMode = false
 
     @get:Exclude
+    var isPreview = false
+
+    @get:Exclude
     var searchText = String.EMPTY
 
     @get:Exclude
@@ -132,13 +135,13 @@ data class Filter(
     }
 
     @Exclude
-    fun isInvalidFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_INVALID
+    fun isAddFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_ADD
     }
 
     @Exclude
-    fun isPreviewFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_PREVIEW
+    fun isInvalidFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_INVALID
     }
 
     @Exclude

@@ -24,7 +24,7 @@
 
         <include
             android:id="@+id/filter_add_item_filter"
-            layout="@layout/item_filter"
+            layout="@layout/item_filter_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_2"

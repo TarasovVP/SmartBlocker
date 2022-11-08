@@ -189,7 +189,7 @@ open class BaseFilterListFragment :
                     filter = filter)
             } else {
                 BlackFilterListFragmentDirections.startFilterDetailFragment(
-                    filter = filter.apply { filterAction = FilterAction.FILTER_ACTION_PREVIEW })
+                    filter = filter)
             }
         } else {
             if (filter.filter.isEmpty()) {

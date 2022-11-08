@@ -22,34 +22,34 @@
         app:cardElevation="@dimen/padding_1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item_filter_container"
+            android:id="@+id/item_filter_detail_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_8">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/item_filter_avatar"
+                android:id="@+id/item_filter_detail_avatar"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="#80989595"
                 android:scaleType="center"
                 app:imageResource="@{filter.conditionTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
             <ImageView
-                android:id="@+id/item_filter_icon"
+                android:id="@+id/item_filter_detail_icon"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 app:imageResource="@{filter.filterTypeIcon}"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_filter_detail_avatar" />
 
             <TextView
-                android:id="@+id/item_filter_value"
+                android:id="@+id/item_filter_detail_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -58,15 +58,15 @@
                 android:textStyle="bold"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:textColor="@{filter.filterAction == null ? @color/main_color : ContextCompat.getColor(context, filter.filterAction.color)}"
-                app:layout_constraintBottom_toTopOf="@+id/item_filter_type_title"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
-                app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
+                app:layout_constraintBottom_toTopOf="@+id/item_filter_detail_type_title"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_preview"
+                app:layout_constraintStart_toEndOf="@+id/item_filter_detail_avatar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:mainText="@{filter.filterAction == null  ? filter.filter : filter.addFilter}"
                 app:searchText="@{filter.searchText}" />
 
             <TextView
-                android:id="@+id/item_filter_type_title"
+                android:id="@+id/item_filter_detail_type_title"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -74,20 +74,26 @@
                 android:text="@{filter == null ? filter.filter : context.getString(filter.conditionTypeName)}"
                 android:textColor="@{filter.filterAction == null ? @color/main_color : ContextCompat.getColor(context, filter.filterAction.color)}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
-                app:layout_constraintStart_toStartOf="@id/item_filter_value"
-                app:layout_constraintTop_toBottomOf="@+id/item_filter_value" />
+                app:layout_constraintEnd_toEndOf="@+id/item_filter_detail_value"
+                app:layout_constraintStart_toStartOf="@id/item_filter_detail_value"
+                app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_value" />
 
-            <CheckBox
-                android:id="@+id/item_filter_delete"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:checked="@{filter.checkedForDelete}"
-                android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <TextView
+                android:id="@+id/item_filter_detail_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_5"
+                android:text="@{filter.isAddFilterAction ? @string/preview : @string/statement}"
+                android:visibility="@{(filter.isAddFilterAction &amp;&amp; !filter.isPreview) || filter.filterAction == null ? View.VISIBLE : View.GONE}"
+                android:gravity="end|center_vertical"
+                android:textSize="@dimen/text_size_12"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/item_filter_detail_value"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_type_title"
+                app:drawableEndCompat="@drawable/ic_arrow_forward" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
+
+

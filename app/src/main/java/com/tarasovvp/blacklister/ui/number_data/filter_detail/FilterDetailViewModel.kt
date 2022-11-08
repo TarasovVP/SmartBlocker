@@ -72,4 +72,16 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             hideProgress()
         }
     }
+
+    fun insertFilter(filter: Filter) {
+        showProgress()
+        launch {
+            Log.e("filterAddTAG",
+                "FilterDetailViewModel insertFilter filter $filter")
+            filterRepository.insertFilter(filter) {
+                filterActionLiveData.postValue(filter)
+            }
+            hideProgress()
+        }
+    }
 }

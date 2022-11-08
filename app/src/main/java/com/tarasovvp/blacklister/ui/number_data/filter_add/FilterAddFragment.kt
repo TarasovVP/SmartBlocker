@@ -103,10 +103,8 @@ open class FilterAddFragment :
             }
             filterAddItemFilter.root.setSafeOnClickListener {
                 findNavController().navigate(FilterAddFragmentDirections.startFilterDetailFragment(
-                    filter = filter?.apply {
-                        filter = addFilter()
-                        filterAction = FilterAction.FILTER_ACTION_PREVIEW
-                    }))
+                    filter = filter?.apply { filter = addFilter()
+                        isPreview = true}))
             }
             filterAddSubmit.root.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()

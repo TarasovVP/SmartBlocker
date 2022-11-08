@@ -17,6 +17,7 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
+import com.tarasovvp.blacklister.ui.number_data.filter_add.FilterAddFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class FilterDetailFragment :
@@ -34,15 +35,22 @@ class FilterDetailFragment :
             args.filter?.let { filter ->
                 (activity as MainActivity).toolbar?.title = getString(filter.filterTypeTitle())
                 this.filter = filter
-                filterDetailChangeFilter.filter =
-                    Filter(filterType = filter.filterType).apply { filterAction = FilterAction.FILTER_ACTION_CHANGE }
-                filterDetailDeleteFilter.filter =
-                    Filter(filterType = filter.filterType).apply { filterAction = FilterAction.FILTER_ACTION_DELETE }
                 filterDetailAddFilter.filter =
-                    Filter(filterType = filter.filterType).apply { filterAction = FilterAction.FILTER_ACTION_PREVIEW }
+                    Filter(filterType = filter.filterType).apply {
+                        filterAction = FilterAction.FILTER_ACTION_ADD
+                    }
+                filterDetailChangeFilter.filter =
+                    Filter(filterType = filter.filterType).apply {
+                        filterAction = FilterAction.FILTER_ACTION_CHANGE
+                    }
+                filterDetailDeleteFilter.filter =
+                    Filter(filterType = filter.filterType).apply {
+                        filterAction = FilterAction.FILTER_ACTION_DELETE
+                    }
                 filterDetailContactListDescription.text =
                     if (filter.isBlackFilter()) getString(R.string.contact_list_with_blocker) else getString(
                         R.string.contact_list_with_allow)
+
             }
             filterDetailContactListEmpty.emptyState = if (filter?.isBlackFilter()
                     .isTrue()
@@ -66,6 +74,11 @@ class FilterDetailFragment :
                 viewModel.deleteFilter(it)
             }
         }
+        setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
+            binding?.filter?.let {
+                viewModel.insertFilter(it)
+            }
+        }
     }
 
     override fun setClickListeners() {
@@ -80,7 +93,12 @@ class FilterDetailFragment :
                     filter = filter,
                     filterAction = FilterAction.FILTER_ACTION_DELETE.name))
             }
-            filterDetailItemFilter.itemFilterCallList.setSafeOnClickListener {
+            filterDetailAddFilter.root.setSafeOnClickListener {
+                findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
+                    filter = filter?.apply { filter = addFilter() },
+                    filterAction = FilterAction.FILTER_ACTION_ADD.name))
+            }
+            filterDetailItemFilter.itemFilterDetailPreview.setSafeOnClickListener {
                 findNavController().navigate(FilterDetailFragmentDirections.startCallDetailFragment(
                     filter = filter))
             }
@@ -117,15 +135,15 @@ class FilterDetailFragment :
                     showMessage(String.format(getString(filter.filterActionDescription()),
                         binding?.filter?.filter.orEmpty()), false)
                     getAllData()
-                    if (filter.filterAction == FilterAction.FILTER_ACTION_DELETE) {
-                        findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
-                            FilterDetailFragmentDirections.startBlackFilterListFragment()
-                        else FilterDetailFragmentDirections.startWhiteFilterListFragment())
-                    } else {
+                    if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
                         mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                             initViews()
                             viewModel.getQueryContactList(filter)
                         }
+                    } else {
+                        findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
+                            FilterDetailFragmentDirections.startBlackFilterListFragment()
+                        else FilterDetailFragmentDirections.startWhiteFilterListFragment())
                     }
                 }
             }
