@@ -116,7 +116,7 @@ class NumberDataDetailFragment :
 
     private fun startAddFilterScreen() {
         findNavController().navigate(NumberDataDetailFragmentDirections.startFilterAddFragment(
-            filter = filter))
+            filterAdd = filter))
     }
 
     private fun setAddFilterConditions(isShown: Boolean) {

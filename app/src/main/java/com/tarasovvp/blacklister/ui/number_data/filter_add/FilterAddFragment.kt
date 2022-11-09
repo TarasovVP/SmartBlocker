@@ -46,13 +46,18 @@ open class FilterAddFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.filter = args.filter?.apply {
-            filterAction = FilterAction.FILTER_ACTION_INVALID
+        Log.e("filterDetailTAG",
+            "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
+        binding?.filter = args.filterAdd?.apply {
+            filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
             if (filter.isNotEmpty() && isTypeContain().not()) {
                 addFilter = filter
                 filter = String.EMPTY
+                isPreview = false
             }
         }
+        Log.e("filterDetailTAG",
+            "FilterAddFragment onViewCreated after args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filterAddEmptyList?.emptyState =
             if (binding?.filter?.isBlackFilter()
                     .isTrue()
@@ -103,8 +108,7 @@ open class FilterAddFragment :
             }
             filterAddItemFilter.root.setSafeOnClickListener {
                 findNavController().navigate(FilterAddFragmentDirections.startFilterDetailFragment(
-                    filter = filter?.apply { filter = addFilter()
-                        isPreview = true}))
+                    filterDetail = filter?.apply { isPreview = true}))
             }
             filterAddSubmit.root.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()
@@ -163,8 +167,7 @@ open class FilterAddFragment :
     }
 
     private fun setContactAdapter() {
-        if (numberDataAdapter.isNull()) {
-            numberDataAdapter = NumberDataAdapter(numberDataList) { numberData ->
+            numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
                 val number =
                     when (numberData) {
                         is Filter -> numberData.filter
@@ -207,7 +210,6 @@ open class FilterAddFragment :
                     "BaseAddFragment ContactFilterAdapter contactClick contact $numberData")
             }
             binding?.filterAddContactList?.adapter = numberDataAdapter
-        }
     }
 
     private fun setCountrySpinner() {
@@ -239,7 +241,7 @@ open class FilterAddFragment :
                         }
                     }
                     Log.e("filterAddTAG",
-                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filter?.filter}")
+                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filterAdd?.filter}")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit

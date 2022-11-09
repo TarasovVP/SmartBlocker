@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.number_data.filter_detail
 
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -31,10 +32,15 @@ class FilterDetailFragment :
     private var contactList: ArrayList<NumberData>? = null
 
     override fun initViews() {
+        Log.e("filterDetailTAG",
+            "FilterDetailFragment initViews before args.filter ${args.filterDetail} binding?.filter ${binding?.filter}")
         binding?.apply {
-            args.filter?.let { filter ->
+            args.filterDetail?.let { filter ->
                 (activity as MainActivity).toolbar?.title = getString(filter.filterTypeTitle())
                 this.filter = filter
+
+                Log.e("filterDetailTAG",
+                    "FilterDetailFragment initViews after args.filter $filter binding?.filter ${this.filter}")
                 filterDetailAddFilter.filter =
                     Filter(filterType = filter.filterType).apply {
                         filterAction = FilterAction.FILTER_ACTION_ADD

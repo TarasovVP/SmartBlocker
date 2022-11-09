@@ -25,7 +25,7 @@ object ContactRepository {
         }
 
     suspend fun getQueryContactList(filter: Filter): List<Contact>? {
-        return contactDao?.queryContactList(filter.filter, filter.conditionType)
+        return contactDao?.queryContactList(if (filter.isPreview) filter.addFilter() else filter.filter, filter.conditionType)
     }
 
     suspend fun getSystemContactList(context: Context): ArrayList<Contact> =

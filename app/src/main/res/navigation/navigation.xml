@@ -76,7 +76,7 @@
         android:id="@+id/filterDetailFragment"
         android:name="com.tarasovvp.blacklister.ui.number_data.filter_detail.FilterDetailFragment" >
         <argument
-            android:name="filter"
+            android:name="filterDetail"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />
@@ -105,7 +105,7 @@
         android:id="@+id/filterAddFragment"
         android:name="com.tarasovvp.blacklister.ui.number_data.filter_add.FilterAddFragment">
         <argument
-            android:name="filter"
+            android:name="filterAdd"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.blacklister.model.Filter"
             app:nullable="true" />

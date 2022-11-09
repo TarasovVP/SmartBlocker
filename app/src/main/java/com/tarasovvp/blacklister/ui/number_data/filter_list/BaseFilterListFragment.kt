@@ -186,18 +186,18 @@ open class BaseFilterListFragment :
         val direction = if (this is BlackFilterListFragment) {
             if (filter.filter.isEmpty()) {
                 BlackFilterListFragmentDirections.startFilterAddFragment(
-                    filter = filter)
+                    filterAdd = filter)
             } else {
                 BlackFilterListFragmentDirections.startFilterDetailFragment(
-                    filter = filter)
+                    filterDetail = filter)
             }
         } else {
             if (filter.filter.isEmpty()) {
                 WhiteFilterListFragmentDirections.startFilterAddFragment(
-                    filter = filter)
+                    filterAdd = filter)
             } else {
                 WhiteFilterListFragmentDirections.startFilterDetailFragment(
-                    filter = filter)
+                    filterDetail = filter)
             }
         }
         findNavController().navigate(direction)

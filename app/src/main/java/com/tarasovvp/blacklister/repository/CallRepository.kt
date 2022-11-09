@@ -30,7 +30,7 @@ object CallRepository {
     }
 
     suspend fun getQueryCallList(filter: Filter): List<LogCall>? {
-        return callDao?.queryCallList(filter.filter, filter.conditionType)?.distinctBy { it.number }
+        return callDao?.queryCallList(if (filter.isPreview) filter.addFilter() else filter.filter, filter.conditionType)?.distinctBy { it.number }
     }
 
     suspend fun getSystemLogCallList(context: Context): ArrayList<LogCall> =
