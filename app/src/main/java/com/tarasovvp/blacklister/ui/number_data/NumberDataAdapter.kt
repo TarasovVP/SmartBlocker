@@ -15,7 +15,6 @@ import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Contact
@@ -28,7 +27,7 @@ class NumberDataAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var searchQueryMap = Pair(String.EMPTY, String.EMPTY)
+    var searchQuery = String.EMPTY
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.e("filterAddTAG",
@@ -68,8 +67,9 @@ class NumberDataAdapter(
         var binding: ItemFilterBinding? = DataBindingUtil.bind(itemView)
         fun bindData(filter: Filter?) {
             binding?.apply {
-                binding?.filter = filter
-                this.filter?.searchText = searchQueryMap.first
+                this.filter = filter
+                this.filter?.searchText =
+                    String.format("%s%s", filter?.countryCode?.countryCode.orEmpty(), searchQuery)
                 itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg
@@ -78,10 +78,6 @@ class NumberDataAdapter(
                         filter?.filterType == WHITE_FILTER && adapterPosition == 0 -> R.color.white_bg
                         else -> R.color.white
                     }))
-                filter?.searchText = if (filter?.isTypeContain().isTrue())
-                    searchQueryMap.first else String.format("%s%s",
-                    searchQueryMap.second,
-                    searchQueryMap.first)
                 root.setSafeOnClickListener {
                     filter?.let { it1 -> numberDataClick.invoke(it1) }
                 }
@@ -96,7 +92,7 @@ class NumberDataAdapter(
         fun bindData(contact: Contact?) {
             binding?.apply {
                 this.contact = contact
-                this.contact?.searchText = searchQueryMap.first
+                this.contact?.searchText = searchQuery
                 root.setSafeOnClickListener {
                     contact?.let { it1 -> numberDataClick.invoke(it1) }
                 }
@@ -111,7 +107,7 @@ class NumberDataAdapter(
         fun bindData(call: Call?) {
             binding?.apply {
                 this.call = call
-                this.call?.searchText = searchQueryMap.first
+                this.call?.searchText = searchQuery
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1) }
                 }

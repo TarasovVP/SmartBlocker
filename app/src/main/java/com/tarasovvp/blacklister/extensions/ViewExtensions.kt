@@ -20,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -160,7 +161,7 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
         val highlightedText: StringBuilder = StringBuilder()
         var searchIndex = 0
         mainNumberText?.forEachIndexed { index, char ->
-            if (char.isDigit()) {
+            if (char.isDigit() || char == PLUS_CHAR) {
                 if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(
                         searchIndex)
                 ) {
@@ -175,8 +176,8 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
                 } else {
                     if (highlightedText.length >= searchNumberText?.length.orZero()) {
                         highlightedTextList.add(highlightedText.toString())
-                        searchIndex = 0
                     }
+                    searchIndex = 0
                     highlightedText.clear()
                 }
             } else if (char.isDigit().not() && highlightedText.isNotEmpty()) {
@@ -204,6 +205,7 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
                 text = this
             }
         }
+        if (highlightedTextList.isEmpty()) text = mainNumberText
     } else {
         text = mainNumberText
     }

@@ -270,8 +270,7 @@ open class FilterAddFragment :
             })
         }
         binding?.apply {
-            numberDataAdapter?.searchQueryMap =
-                searchQuery to filter?.countryCode?.countryCode.orEmpty()
+            numberDataAdapter?.searchQuery = searchQuery
             val existingFilter =
                 filteredContactList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
             filter?.filterAction = when (existingFilter?.filterType) {

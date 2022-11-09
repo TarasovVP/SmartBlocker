@@ -4,7 +4,6 @@ import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.systemLogCallList
 import com.tarasovvp.blacklister.model.Call
-import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.model.LogCall
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +29,8 @@ object CallRepository {
     }
 
     suspend fun getQueryCallList(filter: Filter): List<LogCall>? {
-        return callDao?.queryCallList(if (filter.isPreview) filter.addFilter() else filter.filter, filter.conditionType)?.distinctBy { it.number }
+        return callDao?.queryCallList(if (filter.isPreview) filter.addFilter() else filter.filter,
+            filter.conditionType)?.distinctBy { it.number }
     }
 
     suspend fun getSystemLogCallList(context: Context): ArrayList<LogCall> =
@@ -40,12 +40,10 @@ object CallRepository {
             context.systemLogCallList()
         }
 
-
     suspend fun getHashMapFromCallList(logCallList: List<Call>): Map<String, List<Call>> =
         withContext(
             Dispatchers.Default
         ) {
             logCallList.groupBy { it.dateFromTime().toString() }
         }
-
 }
