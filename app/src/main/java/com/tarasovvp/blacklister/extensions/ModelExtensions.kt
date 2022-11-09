@@ -107,7 +107,7 @@ fun Context.systemLogCallList(): ArrayList<LogCall> {
     return logCallList
 }
 
-fun Context.deleteLastBlockedCall(number: String, filter: String, conditionType: Int) {
+fun Context.deleteLastBlockedCall(number: String, filter: Filter?) {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
             val blockedCall = cursor.createCallObject(true) as BlockedCall
@@ -123,8 +123,7 @@ fun Context.deleteLastBlockedCall(number: String, filter: String, conditionType:
                     CoroutineScope(Dispatchers.IO).launch {
                         BlockedCallRepository.insertBlockedCall(blockedCall.apply {
                             type = BLOCKED_CALL
-                            blockFilter = filter
-                            blockFilterFilterCondition = conditionType
+                            this.filter = filter
                             name =
                                 if (blockedCall.name.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else name
                         })

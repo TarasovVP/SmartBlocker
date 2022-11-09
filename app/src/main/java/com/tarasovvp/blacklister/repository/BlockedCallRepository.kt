@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.repository
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.model.BlockedCall
 import com.tarasovvp.blacklister.model.Call
+import com.tarasovvp.blacklister.model.Filter
 
 object BlockedCallRepository {
 
@@ -20,7 +21,7 @@ object BlockedCallRepository {
         return dao?.blockedCallsByNumber(number)
     }
 
-    suspend fun blockedCallsByFilter(filter: String): List<BlockedCall>? {
+    suspend fun blockedCallsByFilter(filter: Filter): List<BlockedCall>? {
         return dao?.blockedCallsByFilter(filter)
     }
 

@@ -53,8 +53,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
-                contact.filterType = filterRepository.queryFilterList(contact.trimmedPhone)
-                    ?.firstOrNull()?.filterType ?: DEFAULT_FILTER
+                contact.filter = filterRepository.queryFilterList(contact.trimmedPhone)
+                    ?.firstOrNull()
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
@@ -63,8 +63,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             // init calls data
             val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>())
             callLogList.forEach { logCall ->
-                logCall.filterType = filterRepository.queryFilterList(logCall.number)
-                    ?.firstOrNull()?.filterType ?: DEFAULT_FILTER
+                logCall.filter = filterRepository.queryFilterList(logCall.number)
+                    ?.firstOrNull()
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)

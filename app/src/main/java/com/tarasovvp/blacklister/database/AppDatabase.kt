@@ -11,7 +11,7 @@ import com.tarasovvp.blacklister.model.*
     version = 1,
     exportSchema = false
 )
-@TypeConverters(CountryCodeConverter::class)
+@TypeConverters(CountryCodeConverter::class, FilterConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun logCallDao(): LogCallDao
     abstract fun blockedCallDao(): BlockedCallDao

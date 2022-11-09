@@ -32,7 +32,7 @@ open class Call(
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
     var numberPresentation: String? = String.EMPTY,
-    var filterType: Int = Constants.DEFAULT_FILTER,
+    var filter: Filter? = Filter()
 ) : Parcelable, NumberData() {
 
     var isCheckedForDelete = false
@@ -40,7 +40,7 @@ open class Call(
     var searchText = String.EMPTY
 
     fun filterTypeIcon(): Int {
-        return when (filterType) {
+        return when (filter?.filterType) {
             Constants.BLACK_FILTER -> R.drawable.ic_black_filter
             Constants.WHITE_FILTER -> R.drawable.ic_white_filter
             else -> 0
@@ -81,19 +81,18 @@ open class Call(
         return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
     }
 
-    private fun getBlockedCall(): BlockedCall? {
-        return if (this is BlockedCall) this else null
+    fun filterConditionTypeIcon(context: Context): Drawable {
+        return when(this) {
+            is BlockedCall -> filter?.conditionType?.let { blockFilterCondition ->
+                FilterCondition.getSmallIconByIndex(blockFilterCondition)
+            }?.let {
+                ContextCompat.getDrawable(context, it)
+            } ?: ColorDrawable(Color.TRANSPARENT)
+            else -> ColorDrawable(Color.TRANSPARENT)
+        }
     }
 
-    fun blockConditionTypeIcon(context: Context): Drawable {
-        return getBlockedCall()?.blockFilterFilterCondition?.let { blockFilterCondition ->
-            FilterCondition.getSmallIconByIndex(blockFilterCondition)
-        }?.let {
-            ContextCompat.getDrawable(context, it)
-        } ?: ColorDrawable(Color.TRANSPARENT)
-    }
-
-    fun getBlockFilterValue(): String {
-        return getBlockedCall()?.blockFilter ?: String.EMPTY
+    fun filterValue(): String {
+        return filter?.filter.orEmpty()
     }
 }

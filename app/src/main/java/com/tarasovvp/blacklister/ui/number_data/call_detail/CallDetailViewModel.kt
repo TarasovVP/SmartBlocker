@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.ui.number_data.call_detail
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -23,7 +24,7 @@ class CallDetailViewModel(application: Application) : BaseViewModel(application)
         }
     }
 
-    fun blockedCallsByFilter(filter: String) {
+    fun blockedCallsByFilter(filter: Filter) {
         showProgress()
         launch {
             val blackNumberList = blockedCallRepository.blockedCallsByFilter(filter)

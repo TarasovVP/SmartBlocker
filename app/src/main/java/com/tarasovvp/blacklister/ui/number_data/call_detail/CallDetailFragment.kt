@@ -56,6 +56,6 @@ class CallDetailFragment : BaseDetailFragment<FragmentCallDetailBinding, CallDet
 
     override fun getData() {
         if (binding?.contact.isNotNull()) viewModel.blockedCallsByNumber(binding?.contact?.trimmedPhone.orEmpty())
-        if (binding?.filter.isNotNull()) viewModel.blockedCallsByFilter(binding?.filter?.filter.orEmpty())
+        if (binding?.filter.isNotNull()) binding?.filter?.let { viewModel.blockedCallsByFilter(it) }
     }
 }

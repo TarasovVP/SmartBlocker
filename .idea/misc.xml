@@ -155,6 +155,7 @@
         <entry key="app/src/main/res/layout/item_info_window.xml" value="0.1697061803444782" />
         <entry key="app/src/main/res/layout/item_number.xml" value="0.21693840579710144" />
         <entry key="app/src/main/res/layout/item_number_add.xml" value="0.240625" />
+        <entry key="app/src/main/res/layout/item_number_data.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/layout/log_list_fragment.xml" value="0.2318840579710145" />
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.190625" />
         <entry key="app/src/main/res/layout/main_fragment.xml" value="0.2318840579710145" />

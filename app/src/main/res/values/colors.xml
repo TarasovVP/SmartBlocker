@@ -23,6 +23,7 @@
     <color name="sunset">#C84747</color>
     <color name="light_steel_blue">#B4C5E3</color>
     <color name="valhalla">#211F2E</color>
+    <color name="islamic_green">#06AA0E</color>
 
     //custom project colors
     <color name="main_color">@color/midnight_blue</color>

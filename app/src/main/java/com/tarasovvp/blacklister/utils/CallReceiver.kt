@@ -59,9 +59,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
                 if (blockFilter?.isBlackFilter().isTrue()) {
                     Log.e("blockTAG",
                         "CallReceiver newSingleThreadScheduledExecutor phone $number currentTimeMillis ${System.currentTimeMillis()}")
-                    context.deleteLastBlockedCall(number,
-                        blockFilter?.filter.orEmpty(),
-                        blockFilter?.conditionType.orZero())
+                    context.deleteLastBlockedCall(number, blockFilter)
                     phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
                         blockedCallRepository.allBlockedCalls()?.size))
                 }

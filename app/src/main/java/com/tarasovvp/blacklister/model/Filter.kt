@@ -52,9 +52,16 @@ data class Filter(
     @Exclude
     fun filterTypeIcon(): Int {
         return when (filterType) {
-            BLACK_FILTER -> R.drawable.ic_black_filter
             WHITE_FILTER -> R.drawable.ic_white_filter
-            else -> 0
+            else -> R.drawable.ic_black_filter
+        }
+    }
+
+    @Exclude
+    fun filterTypeColor(): Int {
+        return when (filterType) {
+            WHITE_FILTER -> R.color.islamic_green
+            else -> R.color.sunset
         }
     }
 

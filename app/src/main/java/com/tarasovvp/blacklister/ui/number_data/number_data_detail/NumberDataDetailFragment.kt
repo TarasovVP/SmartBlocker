@@ -37,7 +37,6 @@ class NumberDataDetailFragment :
             }
             numberDataDetailFilterListEmpty.emptyState =
                 EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
-            numberDataDetailItemContact.itemContactCallList.isVisible = true
             executePendingBindings()
         }
     }
@@ -54,7 +53,7 @@ class NumberDataDetailFragment :
     @SuppressLint("ClickableViewAccessibility")
     override fun setClickListeners() {
         binding?.apply {
-            numberDataDetailItemContact.itemContactCallList.setSafeOnClickListener {
+            numberDataDetailItemContact.root.setSafeOnClickListener {
                 findNavController().navigate(NumberDataDetailFragmentDirections.startCallDetailFragment(
                     contact = binding?.contact))
             }
