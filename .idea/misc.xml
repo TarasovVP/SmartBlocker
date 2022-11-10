@@ -140,7 +140,8 @@
         <entry key="app/src/main/res/layout/include_no_account.xml" value="0.26403985507246375" />
         <entry key="app/src/main/res/layout/include_submit_button.xml" value="0.1234375" />
         <entry key="app/src/main/res/layout/item_black_number.xml" value="0.2125" />
-        <entry key="app/src/main/res/layout/item_call.xml" value="0.47327044025157233" />
+        <entry key="app/src/main/res/layout/item_call.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_call_detail.xml" value="0.27291666666666664" />
         <entry key="app/src/main/res/layout/item_call_log.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_call_small.xml" value="0.26856884057971014" />
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.2296983758700696" />

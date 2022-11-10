@@ -10,6 +10,9 @@
             name="contact"
             type="com.tarasovvp.blacklister.model.Contact" />
         <variable
+            name="call"
+            type="com.tarasovvp.blacklister.model.Call" />
+        <variable
             name="filter"
             type="com.tarasovvp.blacklister.model.Filter" />
     </data>
@@ -37,6 +40,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <include
+                android:id="@+id/call_detail_item_call"
+                layout="@layout/item_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_2"
+                android:layout_marginTop="@dimen/margin_8"
+                app:call="@{call}"
+                android:visibility="@{call == null ? View.GONE : View.VISIBLE, default=invisible}"
+                app:layout_constraintTop_toBottomOf="@+id/call_detail_item_contact" />
+
+            <include
                 android:id="@+id/call_detail_item_filter"
                 layout="@layout/item_filter"
                 android:layout_width="match_parent"
@@ -45,7 +59,7 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:visibility="@{filter == null ? View.INVISIBLE : View.VISIBLE}"
                 app:filter="@{filter}"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/call_detail_item_call" />
 
             <TextView
                 android:id="@+id/call_detail_filter_list_description"
@@ -53,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:text="@string/contact_list_with_contact"
-                app:layout_constraintTop_toBottomOf="@+id/call_detail_item_contact" />
+                app:layout_constraintTop_toBottomOf="@+id/call_detail_item_filter" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/call_detail_filter_list"

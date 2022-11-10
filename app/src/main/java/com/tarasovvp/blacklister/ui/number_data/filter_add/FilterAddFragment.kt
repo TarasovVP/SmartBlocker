@@ -30,6 +30,7 @@ import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
+import com.tarasovvp.blacklister.ui.number_data.filter_detail.FilterDetailFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 open class FilterAddFragment :
@@ -72,7 +73,7 @@ open class FilterAddFragment :
         if (binding?.filter?.isTypeContain().isTrue().not()) {
             viewModel.getCountryCodeList()
         }
-        viewModel.getContactFilterList()
+        viewModel.getNumberDataList()
     }
 
     private fun setToolbar() {
@@ -303,10 +304,14 @@ open class FilterAddFragment :
                     String.format(getString(filter.filterActionSuccessText()),
                         filter.filter)
                 }")
-            mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                Log.e("filterAddTAG",
-                    "BaseAddFragment successAllDataLiveData getContactFilterList")
-                viewModel.getContactFilterList()
+            if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
+                mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+                    viewModel.getNumberDataList()
+                }
+            } else {
+                findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
+                    FilterAddFragmentDirections.startBlackFilterListFragment()
+                else FilterAddFragmentDirections.startWhiteFilterListFragment())
             }
         }
     }

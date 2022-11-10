@@ -44,9 +44,8 @@ class CallDetailFragment : BaseDetailFragment<FragmentCallDetailBinding, CallDet
 
     override fun observeLiveData() {
         viewModel.callListLiveData.safeSingleObserve(viewLifecycleOwner) { callList ->
-            binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible =
-                numberDataList.isEmpty()
-            binding?.callDetailFilterListDescription?.isVisible = numberDataList.isNotEmpty()
+            binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible = callList.isEmpty()
+            binding?.callDetailFilterListDescription?.isVisible = callList.isNotEmpty()
             if (this.numberDataList == callList) return@safeSingleObserve
             this.numberDataList = callList
             numberDataAdapter?.numberDataList = callList

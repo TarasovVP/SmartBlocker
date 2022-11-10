@@ -122,12 +122,12 @@ class FilterDetailFragment :
     }
 
     override fun getData() {
-        binding?.filter?.let { viewModel.getQueryContactList(it) }
+        binding?.filter?.let { viewModel.getQueryContactCallList(it) }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+            contactCallListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 binding?.filterDetailContactListEmpty?.root?.isVisible =
                     contactList.isEmpty().isTrue()
                 binding?.filterDetailContactListDescription?.isVisible =
@@ -145,7 +145,7 @@ class FilterDetailFragment :
                     if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
                         mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                             initViews()
-                            viewModel.getQueryContactList(filter)
+                            viewModel.getQueryContactCallList(filter)
                         }
                     } else {
                         findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())

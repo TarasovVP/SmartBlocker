@@ -42,8 +42,6 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
                 callRepository.getHashMapFromCallList(callList.sortedByDescending {
                     it.time
                 })
-            Log.e("callTAG",
-                "CallListViewModel getHashMapFromCallList() getHashMapFromCallList hashMapList $hashMapList")
             callHashMapLiveData.postValue(hashMapList)
             hideProgress()
         }

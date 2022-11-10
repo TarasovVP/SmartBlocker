@@ -10,6 +10,7 @@ import android.util.Log
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.CALL_RECEIVE
+import com.tarasovvp.blacklister.constants.Constants.SECOND
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
@@ -47,15 +48,14 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
                 "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded ${
                     blockFilter?.isBlackFilter().isTrue()
                 } blockHidden ${SharedPreferencesUtil.blockHidden}")
-            if (blockFilter?.isBlackFilter()
-                    .isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
+            if (blockFilter?.isBlackFilter().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
             ) {
                 Log.e("blockTAG", "CallReceiver onReceive breakCall")
                 breakCall(context)
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                 Log.e("blockTAG",
                     "CallReceiver onReceive phone $number currentTimeMillis ${System.currentTimeMillis()}")
-                delay(2000)
+                delay(SECOND)
                 if (blockFilter?.isBlackFilter().isTrue()) {
                     Log.e("blockTAG",
                         "CallReceiver newSingleThreadScheduledExecutor phone $number currentTimeMillis ${System.currentTimeMillis()}")

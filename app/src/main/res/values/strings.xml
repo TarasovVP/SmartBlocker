@@ -199,4 +199,5 @@
     <string name="statement">Выписка</string>
     <string name="preview">Предпросмотр</string>
     <string name="enter">Войти</string>
+    <string name="blocking_history">Блокировки</string>
 </resources>

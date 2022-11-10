@@ -34,7 +34,6 @@ abstract class BaseAdapter<D : NumberData> :
         RecyclerView.ViewHolder(itemView) {
 
         fun bindData(position: Int) {
-            Log.e("adapterTAG", "BaseAdapter bindData position $position itemView $itemView")
             DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.headerDataItem =
                 getHeaderDataInPosition(position)
         }

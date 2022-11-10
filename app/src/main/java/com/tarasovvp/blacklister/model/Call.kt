@@ -38,6 +38,7 @@ open class Call(
     var isCheckedForDelete = false
     var isDeleteMode = false
     var searchText = String.EMPTY
+    var isExtract = false
 
     fun filterTypeIcon(): Int {
         return when (filter?.filterType) {

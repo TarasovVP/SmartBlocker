@@ -23,10 +23,6 @@ data class Contact(
     var trimmedPhone = number.digitsTrimmed()
     var searchText = String.EMPTY
 
-    fun avatar(): Int {
-        return R.drawable.ic_avatar
-    }
-
     fun isBlackFilter(): Boolean {
         return filter?.filterType == BLACK_FILTER
     }

@@ -121,6 +121,16 @@
         <action
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
+        <action
+            android:id="@+id/startBlackFilterListFragment"
+            app:destination="@id/blackFilterListFragment"
+            app:popUpTo="@id/blackFilterListFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/startWhiteFilterListFragment"
+            app:destination="@id/whiteFilterListFragment"
+            app:popUpTo="@id/blackFilterListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -172,7 +182,7 @@
     <fragment
         android:id="@+id/callDetailFragment"
         android:name="com.tarasovvp.blacklister.ui.number_data.call_detail.CallDetailFragment"
-        android:label="@string/blocked_call_log">
+        android:label="@string/blocking_history">
         <argument
             android:name="contact"
             android:defaultValue="@null"

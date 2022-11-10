@@ -82,9 +82,23 @@
                 android:textSize="@dimen/text_size_10"
                 android:text="@{contact.filter.filter}"
                 android:textColor="@{contact.filter.blackFilter ? @color/sunset : @color/islamic_green}"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_statement"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_number"
                 app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/item_contact_statement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_5"
+                android:text="@string/blocking_history"
+                android:visibility="gone"
+                android:gravity="end|center_vertical"
+                android:textSize="@dimen/text_size_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_contact_number"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
+                app:drawableEndCompat="@drawable/ic_arrow_forward" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

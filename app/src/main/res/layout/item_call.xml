@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+
         <variable
             name="call"
             type="com.tarasovvp.blacklister.model.Call" />
@@ -77,9 +78,10 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:text="@{call.dateTimeFromTime()}"
+                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_block_condition"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_name" />
 
@@ -87,25 +89,25 @@
                 android:id="@+id/item_call_type_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() || call.extract ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_call_number"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
+                app:layout_constraintStart_toEndOf="@+id/item_call_number" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_call_block_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{call.filterValue}"
+                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/sunset"
                 android:gravity="center_vertical|end"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_time"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_call_time"
                 app:layout_constraintTop_toTopOf="@+id/item_call_time"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_type_icon"
                 android:drawableStart="@{call.filterConditionTypeIcon(context)}" />
 
             <CheckBox
@@ -115,9 +117,23 @@
                 android:checked="@{call.checkedForDelete}"
                 android:padding="@dimen/padding_8"
                 android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_statement"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
+
+            <TextView
+                android:id="@+id/item_call_statement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_5"
+                android:text="@string/blocking_history"
+                android:visibility="gone"
+                android:gravity="end|center_vertical"
+                android:textSize="@dimen/text_size_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
+                app:drawableEndCompat="@drawable/ic_arrow_forward" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

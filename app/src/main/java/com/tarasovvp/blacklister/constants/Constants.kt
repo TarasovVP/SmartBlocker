@@ -26,6 +26,7 @@ object Constants {
     const val BLOCKED_CALL = "6"
     const val TIME_FORMAT = "HH:mm:ss"
     const val DATE_FORMAT = "dd.MM.yyyy"
+    const val SECOND = 1000L
     const val NOTIFICATION_CHANNEL = "NOTIFICATION_CHANNEL"
     const val FOREGROUND_CALL_SERVICE = "foregroundCallService"
     const val FOREGROUND_ID = 99

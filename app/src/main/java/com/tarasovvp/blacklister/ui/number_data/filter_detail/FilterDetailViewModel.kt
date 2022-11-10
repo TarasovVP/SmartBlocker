@@ -22,10 +22,10 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
     private val filterRepository = FilterRepository
     private val callRepository = CallRepository
 
-    val contactListLiveData = MutableLiveData<ArrayList<NumberData>>()
+    val contactCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
-    fun getQueryContactList(filter: Filter) {
+    fun getQueryContactCallList(filter: Filter) {
         Log.e("filterAddTAG", "AddViewModel checkContactListByFilter filter $filter")
         showProgress()
         launch {
@@ -45,7 +45,7 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
                     else -> String.EMPTY
                 }
             }
-            contactListLiveData.postValue(ArrayList(numberDataList))
+            contactCallListLiveData.postValue(ArrayList(numberDataList))
             Log.e("filterAddTAG", "AddViewModel queryContactListLiveData $filter")
             hideProgress()
         }

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
-import com.tarasovvp.blacklister.databinding.ItemCallDetailBinding
+import com.tarasovvp.blacklister.databinding.ItemCallBinding
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.enums.FilterAction
@@ -43,7 +43,7 @@ class NumberDataAdapter(
             )
             else -> CallViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_call_detail, parent, false)
+                    .inflate(R.layout.item_call, parent, false)
             )
         }
     }
@@ -103,11 +103,12 @@ class NumberDataAdapter(
 
     internal inner class CallViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var binding: ItemCallDetailBinding? = DataBindingUtil.bind(itemView)
+        var binding: ItemCallBinding? = DataBindingUtil.bind(itemView)
         fun bindData(call: Call?) {
             binding?.apply {
                 this.call = call
                 this.call?.searchText = searchQuery
+                this.call?.isExtract = true
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1) }
                 }

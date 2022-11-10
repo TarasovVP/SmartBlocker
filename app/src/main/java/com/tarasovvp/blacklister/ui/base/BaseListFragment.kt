@@ -103,6 +103,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible =
             searchQuery.isNullOrEmpty().not() || isEmpty.not()
         emptyStateContainer?.root?.isVisible = isEmpty
+        swipeRefresh?.isVisible = isEmpty.not()
         emptyStateContainer?.emptyState =
             if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
                 is WhiteFilterListFragment -> EmptyState.EMPTY_STATE_PERMISSIONS

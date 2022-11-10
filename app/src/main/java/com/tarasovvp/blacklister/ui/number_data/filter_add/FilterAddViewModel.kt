@@ -42,7 +42,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
-    fun getContactFilterList() {
+    fun getNumberDataList() {
         launch {
             val contacts = async { contactRepository.getAllContacts() }
             val filters = async { filterRepository.allFilters() }
