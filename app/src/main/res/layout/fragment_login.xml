@@ -34,14 +34,17 @@
                 android:text="@string/with_google_account"
                 app:layout_constraintTop_toBottomOf="@+id/login_main_title" />
 
-            <com.google.android.gms.common.SignInButton
+            <Button
                 android:id="@+id/login_google_auth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/TextButton"
+                android:text="@string/enter"
                 android:layout_marginTop="@dimen/margin_8"
+                app:icon="@drawable/ic_logo_google"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_google_title" />
+                app:layout_constraintTop_toBottomOf="@id/login_google_title"  />
 
             <View
                 android:id="@+id/login_left_divider"

@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -22,23 +23,28 @@ import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
+import com.tarasovvp.blacklister.databinding.SnackBarInfoBinding
 import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 
 fun View.showMessage(message: String, isError: Boolean) {
-    ContextCompat.getColor(context, if (isError) android.R.color.holo_red_light else R.color.blue)
-        .let { color ->
-            Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
-                .apply {
-                    val params = view.layoutParams as FrameLayout.LayoutParams
-                    params.width = FrameLayout.LayoutParams.MATCH_PARENT
-                    params.gravity = Gravity.TOP
-                    view.layoutParams = params
-                    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines =
-                        Int.MAX_VALUE
-                }.withColor(color).show()
-        }
+    Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
+        .apply {
+            view.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).isInvisible = true
+            val snackView = SnackBarInfoBinding.inflate(LayoutInflater.from(context))
+            snackView.snackBarInfoIcon.setImageResource(if (isError) R.drawable.ic_error else R.drawable.ic_success)
+            snackView.snackBarInfoDescription.text = message
+            (view as Snackbar.SnackbarLayout).addView(snackView.root)
+            (snackView.root.layoutParams as FrameLayout.LayoutParams).apply {
+                gravity = Gravity.CENTER
+                width = FrameLayout.LayoutParams.WRAP_CONTENT
+                height = FrameLayout.LayoutParams.WRAP_CONTENT
+                setMargins(context.dpToPx(16f).toInt(), context.dpToPx(4f).toInt(), context.dpToPx(16f).toInt(), context.dpToPx(4f).toInt())
+                view.layoutParams = this
+            }
+        }.show()
 }
 
 fun View.showPopUpWindow(info: Info) {
@@ -171,7 +177,9 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
                         searchIndex)
                 ) {
                     highlightedText.append(char)
-                    if (index == mainNumberText.length - 1) {
+                    if (index == mainNumberText.lastIndex && highlightedText.toString()
+                            .digitsTrimmed().length >= searchNumberText.length.orZero()
+                    ) {
                         highlightedTextList.add(highlightedText.toString())
                         searchIndex = 0
                         highlightedText.clear()
@@ -179,7 +187,9 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
                         searchIndex++
                     }
                 } else {
-                    if (highlightedText.length >= searchNumberText?.length.orZero()) {
+                    if (highlightedText.toString()
+                            .digitsTrimmed().length >= searchNumberText?.length.orZero()
+                    ) {
                         highlightedTextList.add(highlightedText.toString())
                     }
                     searchIndex = 0

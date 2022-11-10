@@ -5,7 +5,6 @@
     <data>
 
         <import type="androidx.core.content.ContextCompat" />
-
         <import type="android.view.View" />
 
         <variable
@@ -34,19 +33,12 @@
                 android:background="#80989595"
                 android:scaleType="center"
                 app:imageResource="@{filter.conditionTypeIcon}"
+                app:tint="@{filter.blackFilter ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
-
-            <ImageView
-                android:id="@+id/item_filter_detail_icon"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                app:imageResource="@{filter.filterTypeIcon}"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/item_filter_detail_avatar" />
 
             <TextView
                 android:id="@+id/item_filter_detail_value"

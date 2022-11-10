@@ -53,6 +53,13 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="TextButton" parent="FilledButton">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/main_color</item>
+        <item name="iconTint">@null</item>
+        <item name="android:elevation">@dimen/margin_2</item>
+    </style>
+
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textColor">@color/main_color</item>>
         <item name="android:maxLines">1</item>
