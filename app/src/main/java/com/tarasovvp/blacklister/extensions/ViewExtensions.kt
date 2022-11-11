@@ -57,15 +57,8 @@ fun View.showPopUpWindow(info: Info) {
         ViewGroup.LayoutParams.WRAP_CONTENT,
         true
     )
-    val locationScreen = intArrayOf(0, 0)
-    this.getLocationOnScreen(locationScreen)
-    val isBelowScreenMiddle =
-        locationScreen[1] > Resources.getSystem().displayMetrics.heightPixels / 2
-    popupWindow.setBackgroundDrawable(null)
     popupWindow.elevation = 2f
-    popupWindow.showAsDropDown(this,
-        (-Resources.getSystem().displayMetrics.widthPixels * 0.75).toInt(),
-        if (isBelowScreenMiddle) -popupView.root.measuredHeight else 0)
+    popupWindow.showAtLocation(this, Gravity.CENTER,0, -(Resources.getSystem().displayMetrics.heightPixels * 0.2).toInt())
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }
