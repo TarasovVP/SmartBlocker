@@ -34,7 +34,7 @@ fun View.showMessage(message: String, isError: Boolean) {
             view.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
             view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).isInvisible = true
             val snackView = SnackBarInfoBinding.inflate(LayoutInflater.from(context))
-            snackView.snackBarInfoIcon.setImageResource(if (isError) R.drawable.ic_error else R.drawable.ic_success)
+            snackView.snackBarInfoIcon.setImageResource(if (isError) R.drawable.ic_result_error else R.drawable.ic_result_success)
             snackView.snackBarInfoDescription.text = message
             (view as Snackbar.SnackbarLayout).addView(snackView.root)
             (snackView.root.layoutParams as FrameLayout.LayoutParams).apply {
@@ -194,6 +194,10 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
                     }
                     searchIndex = 0
                     highlightedText.clear()
+                    if (char == searchNumberText?.get(searchIndex)) {
+                        highlightedText.append(char)
+                        searchIndex++
+                    }
                 }
             } else if (char.isDigit().not() && highlightedText.isNotEmpty()) {
                 highlightedText.append(char)

@@ -59,6 +59,7 @@
         <entry key="app/src/main/res/drawable/ic_empty_state_permissions.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/ic_empty_state_query.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/ic_end.xml" value="0.234375" />
+        <entry key="app/src/main/res/drawable/ic_error.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.122" />
         <entry key="app/src/main/res/drawable/ic_filter_list.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_flag.xml" value="0.143" />
@@ -78,6 +79,7 @@
         <entry key="app/src/main/res/drawable/ic_splash.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_start.xml" value="0.234375" />
         <entry key="app/src/main/res/drawable/ic_stop.xml" value="0.1695" />
+        <entry key="app/src/main/res/drawable/ic_success.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/ic_test.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_white_filter.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_white_filter_inactive.xml" value="0.18" />
@@ -161,7 +163,7 @@
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.190625" />
         <entry key="app/src/main/res/layout/main_fragment.xml" value="0.2318840579710145" />
         <entry key="app/src/main/res/layout/number_list_fragment.xml" value="0.2318840579710145" />
-        <entry key="app/src/main/res/layout/pop_up_window_info.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/pop_up_window_info.xml" value="0.125" />
         <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.2318840579710145" />
         <entry key="app/src/main/res/layout/snack_bar_info.xml" value="0.3188405797101449" />
         <entry key="app/src/main/res/layout/view_empty_state.xml" value="0.23541666666666666" />

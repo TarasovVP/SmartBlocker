@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:background="@drawable/bg_rounded"
-                android:padding="@dimen/padding_16"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toBottomOf="@+id/snack_bar_info_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
