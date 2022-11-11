@@ -138,21 +138,25 @@ class FilterDetailFragment :
                 numberDataAdapter?.notifyDataSetChanged()
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
-                (activity as MainActivity).apply {
-                    showMessage(String.format(getString(filter.filterActionDescription()),
-                        binding?.filter?.filter.orEmpty()), false)
-                    getAllData()
-                    if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
-                        mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                            initViews()
-                            viewModel.getQueryContactCallList(filter)
-                        }
-                    } else {
-                        findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
-                            FilterDetailFragmentDirections.startBlackFilterListFragment()
-                        else FilterDetailFragmentDirections.startWhiteFilterListFragment())
-                    }
+                handleSuccessFilterAction(filter)
+            }
+        }
+    }
+
+    private fun handleSuccessFilterAction(filter: Filter) {
+        (activity as MainActivity).apply {
+            showMessage(String.format(getString(filter.filterActionSuccessText()),
+                binding?.filter?.filter.orEmpty()), false)
+            getAllData()
+            if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
+                mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+                    initViews()
+                    viewModel.getQueryContactCallList(filter)
                 }
+            } else {
+                findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
+                    FilterDetailFragmentDirections.startBlackFilterListFragment()
+                else FilterDetailFragmentDirections.startWhiteFilterListFragment())
             }
         }
     }

@@ -82,6 +82,7 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="@dimen/padding_8"
+            android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_contact_list_description" />

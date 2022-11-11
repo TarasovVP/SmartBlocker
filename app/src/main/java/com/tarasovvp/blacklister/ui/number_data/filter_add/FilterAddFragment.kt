@@ -294,28 +294,6 @@ open class FilterAddFragment :
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")
     }
 
-    private fun handleSuccessFilterAction(filter: Filter) {
-        (activity as MainActivity).apply {
-            showMessage(String.format(getString(filter.filterActionDescription()),
-                filter.filter), false)
-            getAllData()
-            Log.e("filterAddTAG",
-                "BaseAddFragment handleSuccessFilterAction message ${
-                    String.format(getString(filter.filterActionSuccessText()),
-                        filter.filter)
-                }")
-            if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
-                mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                    viewModel.getNumberDataList()
-                }
-            } else {
-                findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
-                    FilterAddFragmentDirections.startBlackFilterListFragment()
-                else FilterAddFragmentDirections.startWhiteFilterListFragment())
-            }
-        }
-    }
-
     override fun observeLiveData() {
         with(viewModel) {
             countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
@@ -336,6 +314,28 @@ open class FilterAddFragment :
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 handleSuccessFilterAction(filter)
+            }
+        }
+    }
+
+    private fun handleSuccessFilterAction(filter: Filter) {
+        (activity as MainActivity).apply {
+            showMessage(String.format(getString(filter.filterActionSuccessText()),
+                filter.filter), false)
+            getAllData()
+            Log.e("filterAddTAG",
+                "BaseAddFragment handleSuccessFilterAction message ${
+                    String.format(getString(filter.filterActionSuccessText()),
+                        filter.filter)
+                }")
+            if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
+                mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+                    viewModel.getNumberDataList()
+                }
+            } else {
+                findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
+                    FilterAddFragmentDirections.startBlackFilterListFragment()
+                else FilterAddFragmentDirections.startWhiteFilterListFragment())
             }
         }
     }

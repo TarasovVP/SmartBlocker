@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
@@ -57,7 +58,9 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             Log.e("filterAddTAG",
                 "AddViewModel deleteFilter filter $filter")
             filterRepository.deleteFilterList(listOf(filter)) {
-                filterActionLiveData.postValue(filter)
+                filterActionLiveData.postValue(filter.apply {
+                    filterAction = FilterAction.FILTER_ACTION_DELETE
+                })
             }
             hideProgress()
         }
@@ -67,7 +70,9 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
         showProgress()
         launch {
             filterRepository.updateFilter(filter) {
-                filterActionLiveData.postValue(filter)
+                filterActionLiveData.postValue(filter.apply {
+                    filterAction = FilterAction.FILTER_ACTION_CHANGE
+                })
             }
             hideProgress()
         }
@@ -79,7 +84,9 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             Log.e("filterAddTAG",
                 "FilterDetailViewModel insertFilter filter $filter")
             filterRepository.insertFilter(filter) {
-                filterActionLiveData.postValue(filter)
+                filterActionLiveData.postValue(filter.apply {
+                    filterAction = FilterAction.FILTER_ACTION_ADD
+                })
             }
             hideProgress()
         }

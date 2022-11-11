@@ -38,7 +38,7 @@
                 app:nameInitial="@{call.nameInitial}" />
 
             <ImageView
-                android:id="@+id/item_call_filter_icon"
+                android:id="@+id/item_call_filter_type"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 app:imageResource="@{call.filterTypeIcon}"
@@ -130,10 +130,36 @@
                 android:visibility="gone"
                 android:gravity="end|center_vertical"
                 android:textSize="@dimen/text_size_12"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_filter_value"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
                 app:drawableEndCompat="@drawable/ic_arrow_forward" />
+
+            <ImageView
+                android:id="@+id/item_call_filter_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_0"
+                android:visibility="@{call.extract ? View.VISIBLE : View.GONE}"
+                app:imageResource="@{call.filter.conditionTypeIcon()}"
+                app:tint="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
+                app:layout_constraintBottom_toTopOf="@+id/item_call_filter_value"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/item_call_filter_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:gravity="end|center_vertical"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="@{call.extract ? View.VISIBLE : View.GONE}"
+                android:text="@{call.filter.filter}"
+                android:textColor="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                app:layout_constraintTop_toBottomOf="@+id/item_call_filter_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
