@@ -54,8 +54,12 @@ class NumberDataDetailFragment :
     override fun setClickListeners() {
         binding?.apply {
             numberDataDetailItemContact.root.setSafeOnClickListener {
-                findNavController().navigate(NumberDataDetailFragmentDirections.startCallDetailFragment(
-                    contact = binding?.contact))
+                findNavController().navigate(NumberDataDetailFragmentDirections.startCallListFragment(
+                    searchQuery = filter?.filter))
+            }
+            numberDataDetailItemCall.root.setSafeOnClickListener {
+                findNavController().navigate(NumberDataDetailFragmentDirections.startCallListFragment(
+                    searchQuery = filter?.filter))
             }
             numberDataDetailAddFilter.setSafeOnClickListener {
                 setAddFilterConditions(numberDataDetailAddFilterFull.isShown.isTrue())
@@ -68,22 +72,6 @@ class NumberDataDetailFragment :
             }
             numberDataDetailAddFilterContain.setSafeOnClickListener {
                 createFilter(FilterCondition.FILTER_CONDITION_CONTAIN.index)
-            }
-            numberDataDetailItemContact.root.setSafeOnClickListener {
-                if (numberDataDetailAddFilterFull.isShown.isTrue()) {
-                    setAddFilterConditions(true)
-                }
-            }
-            numberDataDetailFilterListDescription.setSafeOnClickListener {
-                if (numberDataDetailAddFilterFull.isShown.isTrue()) {
-                    setAddFilterConditions(true)
-                }
-            }
-            numberDataDetailFilterList.setOnTouchListener { v, event ->
-                if (numberDataDetailAddFilterFull.isShown.isTrue()) {
-                    setAddFilterConditions(true)
-                }
-                v?.onTouchEvent(event) ?: true
             }
         }
     }

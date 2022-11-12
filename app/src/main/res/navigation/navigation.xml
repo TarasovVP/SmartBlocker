@@ -87,8 +87,8 @@
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
         <action
-            android:id="@+id/startCallDetailFragment"
-            app:destination="@id/callDetailFragment" />
+            android:id="@+id/startBlockerCallsDetailFragment"
+            app:destination="@id/blockerCallsDetailFragment" />
         <action
             android:id="@+id/startBlackFilterListFragment"
             app:destination="@id/blackFilterListFragment"
@@ -151,6 +151,11 @@
         android:id="@+id/callListFragment"
         android:name="com.tarasovvp.blacklister.ui.number_data.call_list.CallListFragment"
         android:label="@string/log_list">
+        <argument
+            android:name="searchQuery"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
@@ -175,19 +180,14 @@
             android:id="@+id/startFilterDetailFragment"
             app:destination="@id/filterDetailFragment" />
         <action
-            android:id="@+id/startCallDetailFragment"
-            app:destination="@id/callDetailFragment" />
+            android:id="@+id/startCallListFragment"
+            app:destination="@id/callListFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/callDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.call_detail.CallDetailFragment"
+        android:id="@+id/blockerCallsDetailFragment"
+        android:name="com.tarasovvp.blacklister.ui.number_data.blocker_calls_detail.BlockerCallsDetailFragment"
         android:label="@string/blocking_history">
-        <argument
-            android:name="contact"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Contact"
-            app:nullable="true" />
         <argument
             android:name="filter"
             android:defaultValue="@null"

@@ -35,6 +35,7 @@
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
                 app:contact="@{contact}"
+                app:isDetail="@{true}"
                 android:visibility="@{contact == null ? View.GONE : View.VISIBLE, default=gone}"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,6 +47,7 @@
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
                 app:call="@{call}"
+                app:isDetail="@{true}"
                 android:visibility="@{call == null ? View.GONE : View.VISIBLE, default=invisible}"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_item_contact" />
 

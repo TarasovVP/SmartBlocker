@@ -1,8 +1,10 @@
 package com.tarasovvp.blacklister.ui.number_data.call_list
 
+import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentCallListBinding
 import com.tarasovvp.blacklister.enums.FilterAction
@@ -13,6 +15,7 @@ import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
 import com.tarasovvp.blacklister.ui.base.BaseListFragment
+import com.tarasovvp.blacklister.ui.number_data.blocker_calls_detail.BlockerCallsDetailFragmentArgs
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 import java.util.*
 
@@ -21,6 +24,8 @@ class CallListFragment :
 
     override var layoutId = R.layout.fragment_call_list
     override val viewModelClass = CallListViewModel::class.java
+
+    private val args: CallListFragmentArgs by navArgs()
 
     private var callList: List<Call>? = null
     private var isDeleteMode = false
@@ -57,6 +62,7 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
+            searchQuery = args.searchQuery
             callListCheck.isEnabled = adapter?.itemCount.orZero() > 0 || callListCheck.isChecked
             callListRecyclerView.hideKeyboardWithLayoutTouch()
             callListInfo.setSafeOnClickListener {

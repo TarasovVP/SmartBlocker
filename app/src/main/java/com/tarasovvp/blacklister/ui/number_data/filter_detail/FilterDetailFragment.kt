@@ -46,7 +46,7 @@ class FilterDetailFragment :
                         filterAction = FilterAction.FILTER_ACTION_ADD
                     }
                 filterDetailChangeFilter.filter =
-                    Filter(filterType = filter.filterType).apply {
+                    Filter(filterType = if (filter.isBlackFilter()) WHITE_FILTER else BLACK_FILTER).apply {
                         filterAction = FilterAction.FILTER_ACTION_CHANGE
                     }
                 filterDetailDeleteFilter.filter =
@@ -105,7 +105,7 @@ class FilterDetailFragment :
                     filterAction = FilterAction.FILTER_ACTION_ADD.name))
             }
             filterDetailItemFilter.itemFilterDetailPreview.setSafeOnClickListener {
-                findNavController().navigate(FilterDetailFragmentDirections.startCallDetailFragment(
+                findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(
                     filter = filter))
             }
         }
@@ -117,7 +117,9 @@ class FilterDetailFragment :
                 findNavController().navigate(FilterDetailFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
-        numberDataAdapter?.searchQuery = if (binding?.filter?.isPreview.isTrue()) binding?.filter?.addFilter().orEmpty() else binding?.filter?.filter.orEmpty()
+        numberDataAdapter?.searchQuery =
+            if (binding?.filter?.isPreview.isTrue()) binding?.filter?.addFilter()
+                .orEmpty() else binding?.filter?.filter.orEmpty()
         binding?.filterDetailContactList?.adapter = numberDataAdapter
     }
 

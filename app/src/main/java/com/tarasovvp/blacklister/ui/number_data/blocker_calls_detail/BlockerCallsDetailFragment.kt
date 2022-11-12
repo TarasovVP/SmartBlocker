@@ -1,23 +1,23 @@
-package com.tarasovvp.blacklister.ui.number_data.call_detail
+package com.tarasovvp.blacklister.ui.number_data.blocker_calls_detail
 
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.blacklister.R
-import com.tarasovvp.blacklister.databinding.FragmentCallDetailBinding
+import com.tarasovvp.blacklister.databinding.FragmentBlockerCallsDetailBinding
 import com.tarasovvp.blacklister.enums.EmptyState
-import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
 
-class CallDetailFragment : BaseDetailFragment<FragmentCallDetailBinding, CallDetailViewModel>() {
+class BlockerCallsDetailFragment :
+    BaseDetailFragment<FragmentBlockerCallsDetailBinding, BlockerCallsDetailViewModel>() {
 
-    override var layoutId = R.layout.fragment_call_detail
-    override val viewModelClass = CallDetailViewModel::class.java
+    override var layoutId = R.layout.fragment_blocker_calls_detail
+    override val viewModelClass = BlockerCallsDetailViewModel::class.java
 
-    private val args: CallDetailFragmentArgs by navArgs()
+    private val args: BlockerCallsDetailFragmentArgs by navArgs()
 
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
@@ -26,26 +26,26 @@ class CallDetailFragment : BaseDetailFragment<FragmentCallDetailBinding, CallDet
 
     override fun initViews() {
         binding?.apply {
-            contact = args.contact
             filter = args.filter
-            callDetailFilterListEmpty.emptyState = EmptyState.EMPTY_STATE_BLOCKED_CALLS
+            blockerCallsDetailEmpty.emptyState = EmptyState.EMPTY_STATE_BLOCKED_CALLS
             executePendingBindings()
+            blockerCallsDetailFilter.itemFilterDetailPreview.isVisible = false
         }
     }
 
     override fun createAdapter() {
         numberDataAdapter =
             numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
-                findNavController().navigate(CallDetailFragmentDirections.startNumberDataDetailFragment(
+                findNavController().navigate(BlockerCallsDetailFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
-        binding?.callDetailFilterList?.adapter = numberDataAdapter
+        binding?.blockerCallsDetailList?.adapter = numberDataAdapter
     }
 
     override fun observeLiveData() {
         viewModel.callListLiveData.safeSingleObserve(viewLifecycleOwner) { callList ->
-            binding?.callDetailFilterListEmpty?.emptyStateContainer?.isVisible = callList.isEmpty()
-            binding?.callDetailFilterListDescription?.isVisible = callList.isNotEmpty()
+            binding?.blockerCallsDetailEmpty?.emptyStateContainer?.isVisible = callList.isEmpty()
+            binding?.blockerCallsDetailDescription?.isVisible = callList.isNotEmpty()
             if (this.numberDataList == callList) return@safeSingleObserve
             this.numberDataList = callList
             numberDataAdapter?.numberDataList = callList
@@ -54,7 +54,6 @@ class CallDetailFragment : BaseDetailFragment<FragmentCallDetailBinding, CallDet
     }
 
     override fun getData() {
-        if (binding?.contact.isNotNull()) viewModel.blockedCallsByNumber(binding?.contact?.trimmedPhone.orEmpty())
-        if (binding?.filter.isNotNull()) binding?.filter?.let { viewModel.blockedCallsByFilter(it) }
+        binding?.filter?.let { viewModel.blockedCallsByFilter(it) }
     }
 }

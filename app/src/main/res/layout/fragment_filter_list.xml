@@ -51,7 +51,7 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <include
-            android:id="@+id/filter_list_empty"
+            android:id="@+id/filterListEmpty"
             layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"

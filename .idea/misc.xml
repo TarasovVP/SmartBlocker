@@ -110,6 +110,7 @@
         <entry key="app/src/main/res/layout/fragment_black_number_new.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_black_numebr_list.xml" value="0.291213768115942" />
         <entry key="app/src/main/res/layout/fragment_block_settings.xml" value="0.4409722222222222" />
+        <entry key="app/src/main/res/layout/fragment_blockings_by_filter.xml" value="0.240625" />
         <entry key="app/src/main/res/layout/fragment_call_detail.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_call_list.xml" value="0.23115577889447236" />
         <entry key="app/src/main/res/layout/fragment_call_log_list.xml" value="0.1" />

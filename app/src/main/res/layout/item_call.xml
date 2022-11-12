@@ -5,7 +5,9 @@
     <data>
 
         <import type="android.view.View" />
-
+        <variable
+            name="isDetail"
+            type="Boolean" />
         <variable
             name="call"
             type="com.tarasovvp.blacklister.model.Call" />
@@ -42,6 +44,7 @@
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 app:imageResource="@{call.filterTypeIcon}"
+                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
 
@@ -52,12 +55,11 @@
                 android:textSize="@dimen/text_size_16"
                 android:textStyle="bold"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:visibility="@{call.numberEmpty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
                 app:layout_constraintTop_toTopOf="@id/item_call_avatar"
-                app:mainText="@{call.number}"
+                app:mainText="@{call.numberEmpty ? @string/hidden : call.number}"
                 app:searchText="@{call.searchText}" />
 
             <TextView
@@ -70,7 +72,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number"
-                app:mainText="@{call.numberEmpty ? @string/hidden : call.nameEmpty ? @string/number_not_from_contacts : call.name}"
+                app:mainText="@{call.nameEmpty ? call.isExtract ? @string/number_from_call_log : @string/number_not_from_contacts : call.name}"
                 app:searchText="@{call.searchText}" />
 
             <TextView
@@ -101,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{call.filterValue}"
-                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.extract ? isDetail ? View.VISIBLE : View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/sunset"
                 android:gravity="center_vertical|end"
@@ -121,25 +123,11 @@
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
 
-            <TextView
-                android:id="@+id/item_call_statement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/padding_5"
-                android:text="@string/blocking_history"
-                android:visibility="gone"
-                android:gravity="end|center_vertical"
-                android:textSize="@dimen/text_size_12"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_filter_value"
-                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
-                app:drawableEndCompat="@drawable/ic_arrow_forward" />
-
             <ImageView
                 android:id="@+id/item_call_filter_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_0"
-                android:visibility="@{call.extract ? View.VISIBLE : View.GONE}"
+                android:visibility="@{call.extract ? View.VISIBLE : isDetail ? View.VISIBLE : View.GONE}"
                 app:imageResource="@{call.filter.conditionTypeIcon()}"
                 app:tint="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
@@ -154,12 +142,26 @@
                 android:maxLines="1"
                 android:gravity="end|center_vertical"
                 android:textSize="@dimen/text_size_10"
-                android:visibility="@{call.extract ? View.VISIBLE : View.GONE}"
+                android:visibility="@{call.extract ? View.VISIBLE : isDetail ? View.VISIBLE : View.GONE}"
                 android:text="@{call.filter.filter}"
                 android:textColor="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_filter_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar" />
+
+            <TextView
+                android:id="@+id/item_call_statement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_5"
+                android:text="@string/statement"
+                android:visibility="@{isDetail ? View.VISIBLE : View.GONE, default=gone}"
+                android:gravity="end|center_vertical"
+                android:textSize="@dimen/text_size_12"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_filter_value"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
+                app:drawableEndCompat="@drawable/ic_arrow_forward" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

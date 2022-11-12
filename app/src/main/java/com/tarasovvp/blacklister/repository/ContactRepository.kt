@@ -27,10 +27,8 @@ object ContactRepository {
         }
 
     suspend fun getQueryContactList(filter: Filter): List<Contact>? {
-        return contactDao?.queryContactList(if (filter.isPreview) filter.addFilter() else filter.filter,
-            filter.conditionType)
-            ?.filter {
-                it.filter.isNull() || (it.filter?.filter?.length.orZero() < (if (filter.isPreview) filter.addFilter() else filter.filter).length
+        return contactDao?.queryContactList(if (filter.isPreview) filter.addFilter() else filter.filter, filter.conditionType)?.filter {
+                it.filter.isNull() || it.filter == filter || (it.filter?.filter?.length.orZero() < (if (filter.isPreview) filter.addFilter() else filter.filter).length
                         && it.trimmedPhone.indexOf(filter.addFilter()) < it.trimmedPhone.indexOf(it.filter?.filter.orEmpty()))
             }
     }
