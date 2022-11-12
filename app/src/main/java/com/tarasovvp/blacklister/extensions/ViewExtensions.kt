@@ -39,7 +39,7 @@ fun View.showMessage(message: String, isError: Boolean) {
             (view as Snackbar.SnackbarLayout).addView(snackView.root)
             (snackView.root.layoutParams as FrameLayout.LayoutParams).apply {
                 gravity = Gravity.CENTER
-                width = FrameLayout.LayoutParams.WRAP_CONTENT
+                width = FrameLayout.LayoutParams.MATCH_PARENT
                 height = FrameLayout.LayoutParams.WRAP_CONTENT
                 setMargins(context.dpToPx(16f).toInt(), context.dpToPx(4f).toInt(), context.dpToPx(16f).toInt(), context.dpToPx(4f).toInt())
                 view.layoutParams = this
@@ -62,12 +62,6 @@ fun View.showPopUpWindow(info: Info) {
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }
-}
-
-
-fun Snackbar.withColor(@ColorInt colorInt: Int): Snackbar {
-    this.view.setBackgroundColor(colorInt)
-    return this
 }
 
 fun <T> ViewGroup.getViewsFromLayout(

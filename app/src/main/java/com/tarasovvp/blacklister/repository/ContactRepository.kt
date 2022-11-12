@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.repository
 import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.isNull
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.systemContactList
 import com.tarasovvp.blacklister.model.Contact
@@ -29,8 +30,8 @@ object ContactRepository {
         return contactDao?.queryContactList(if (filter.isPreview) filter.addFilter() else filter.filter,
             filter.conditionType)
             ?.filter {
-                it.filter?.filter?.length.orZero() < (if (filter.isPreview) filter.addFilter() else filter.filter).length
-                        && it.trimmedPhone.indexOf(it.filter?.filter.orEmpty()) < it.trimmedPhone.indexOf(filter.filter)
+                it.filter.isNull() || (it.filter?.filter?.length.orZero() < (if (filter.isPreview) filter.addFilter() else filter.filter).length
+                        && it.trimmedPhone.indexOf(filter.addFilter()) < it.trimmedPhone.indexOf(it.filter?.filter.orEmpty()))
             }
     }
 
