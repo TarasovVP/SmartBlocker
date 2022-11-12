@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.repository
 
 import android.content.Context
 import com.tarasovvp.blacklister.BlackListerApp
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.systemLogCallList
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Filter
@@ -30,7 +31,8 @@ object CallRepository {
 
     suspend fun getQueryCallList(filter: Filter): List<LogCall>? {
         return callDao?.queryCallList(if (filter.isPreview) filter.addFilter() else filter.filter,
-            filter.conditionType)?.distinctBy { it.number }
+            filter.conditionType)?.distinctBy { it.number }?.filter { it.filter?.filter?.length.orZero() < (if (filter.isPreview) filter.addFilter() else filter.filter).length
+                && it.number.indexOf(it.filter?.filter.orEmpty()) < it.number.indexOf(filter.filter)}
     }
 
     suspend fun getSystemLogCallList(context: Context): ArrayList<LogCall> =

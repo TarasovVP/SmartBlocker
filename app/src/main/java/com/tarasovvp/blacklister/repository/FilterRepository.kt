@@ -81,4 +81,14 @@ object FilterRepository {
         return filterDao?.queryFilterList(number)?.sortedByDescending { it.filter.length }
     }
 
+    suspend fun queryFilter(number: String): Filter? {
+        val filterList = filterDao?.queryFilterList(number)
+        val maxLengthFilterList =
+            filterList?.filter { filter -> filter.filter.length == filterList.maxByOrNull { it.filter.length }?.filter?.length }
+        return if (maxLengthFilterList.orEmpty().size > 1) maxLengthFilterList.orEmpty()
+            .minByOrNull {
+                number.indexOf(it.filter)
+            } else maxLengthFilterList.orEmpty().firstOrNull()
+    }
+
 }

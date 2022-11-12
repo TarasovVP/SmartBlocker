@@ -43,7 +43,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
         Log.e("blockTAG",
             "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number")
         CoroutineScope(Dispatchers.IO).launch {
-            val blockFilter = filterRepository.queryFilterList(number)?.firstOrNull()
+            val blockFilter = filterRepository.queryFilter(number)
             Log.e("blockTAG",
                 "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded ${
                     blockFilter?.isBlackFilter().isTrue()

@@ -3,7 +3,6 @@ package com.tarasovvp.blacklister.ui
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
@@ -53,8 +52,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val contactList = contactRepository.getSystemContactList(getApplication<Application>())
             Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
             contactList.forEach { contact ->
-                contact.filter = filterRepository.queryFilterList(contact.trimmedPhone)
-                    ?.firstOrNull()
+                contact.filter = filterRepository.queryFilter(contact.trimmedPhone)
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
@@ -63,8 +61,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             // init calls data
             val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>())
             callLogList.forEach { logCall ->
-                logCall.filter = filterRepository.queryFilterList(logCall.number)
-                    ?.firstOrNull()
+                logCall.filter = filterRepository.queryFilter(logCall.number)
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)

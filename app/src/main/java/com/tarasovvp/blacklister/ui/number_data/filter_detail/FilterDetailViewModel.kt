@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.model.LogCall
