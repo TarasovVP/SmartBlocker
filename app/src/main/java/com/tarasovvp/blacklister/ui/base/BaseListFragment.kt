@@ -87,6 +87,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                     searchQuery = it
                     searchDataList()
                 })
+                clearFocus()
             }
             toolbar?.setOnMenuItemClickListener { menuItem ->
                 when (menuItem?.itemId) {
