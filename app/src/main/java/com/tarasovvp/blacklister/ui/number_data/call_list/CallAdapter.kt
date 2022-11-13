@@ -61,6 +61,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 call.isDeleteMode = isDeleteMode
                 call.searchText = searchQuery
+                call.isExtract = false
                 this.call = call
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {

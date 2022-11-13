@@ -10,9 +10,7 @@ import com.tarasovvp.blacklister.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.extensions.*
-import com.tarasovvp.blacklister.model.Contact
-import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.LogCall
+import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
 import com.tarasovvp.blacklister.ui.number_data.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
@@ -33,7 +31,8 @@ class NumberDataDetailFragment :
         binding?.apply {
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
-                is LogCall -> call = args.numberData as LogCall
+                is BlockedCall,
+                is LogCall -> call = (args.numberData as Call).apply { isExtract = true }
             }
             numberDataDetailFilterListEmpty.emptyState =
                 EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
@@ -55,11 +54,11 @@ class NumberDataDetailFragment :
         binding?.apply {
             numberDataDetailItemContact.root.setSafeOnClickListener {
                 findNavController().navigate(NumberDataDetailFragmentDirections.startCallListFragment(
-                    searchQuery = filter?.filter))
+                    searchQuery = getNumber()))
             }
             numberDataDetailItemCall.root.setSafeOnClickListener {
                 findNavController().navigate(NumberDataDetailFragmentDirections.startCallListFragment(
-                    searchQuery = filter?.filter))
+                    searchQuery = getNumber()))
             }
             numberDataDetailAddFilter.setSafeOnClickListener {
                 setAddFilterConditions(numberDataDetailAddFilterFull.isShown.isTrue())
@@ -84,16 +83,18 @@ class NumberDataDetailFragment :
         })
     }
 
+    private fun getNumber(): String {
+        return if ( binding?.contact.isNull()) binding?.call?.number.orEmpty() else binding?.contact?.trimmedPhone.orEmpty()
+    }
+
     private fun createFilter(conditionIndex: Int) {
-        filter = Filter(filter = binding?.contact?.trimmedPhone.orEmpty(),
+        filter = Filter(filter = getNumber(),
             conditionType = conditionIndex,
             filterType = Constants.BLACK_FILTER)
-        val phoneNumber = if (binding?.contact?.trimmedPhone.orEmpty().getPhoneNumber(String.EMPTY)
+        val phoneNumber = if (getNumber().getPhoneNumber(String.EMPTY)
                 .isNull()
-        ) binding?.contact?.trimmedPhone.orEmpty()
-            .getPhoneNumber(context?.getUserCountry().orEmpty()
-                .uppercase()) else binding?.contact?.trimmedPhone.orEmpty()
-            .getPhoneNumber(String.EMPTY)
+        ) getNumber().getPhoneNumber(context?.getUserCountry().orEmpty()
+                .uppercase()) else getNumber().getPhoneNumber(String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
             startAddFilterScreen()
         } else {
