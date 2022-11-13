@@ -19,8 +19,8 @@ class BlockerCallsDetailFragment :
 
     private val args: BlockerCallsDetailFragmentArgs by navArgs()
 
-    private var numberDataAdapter: NumberDataAdapter? = null
-    private var numberDataList: ArrayList<NumberData> = ArrayList()
+    private var blockerCallAdapter: NumberDataAdapter? = null
+    private var blockerCallList: ArrayList<NumberData> = ArrayList()
 
     override fun setClickListeners() = Unit
 
@@ -34,22 +34,23 @@ class BlockerCallsDetailFragment :
     }
 
     override fun createAdapter() {
-        numberDataAdapter =
-            numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
+        blockerCallAdapter =
+            blockerCallAdapter ?: NumberDataAdapter(blockerCallList) { numberData ->
                 findNavController().navigate(BlockerCallsDetailFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
-        binding?.blockerCallsDetailList?.adapter = numberDataAdapter
+        blockerCallAdapter?.isExtract = false
+        binding?.blockerCallsDetailList?.adapter = blockerCallAdapter
     }
 
     override fun observeLiveData() {
         viewModel.callListLiveData.safeSingleObserve(viewLifecycleOwner) { callList ->
             binding?.blockerCallsDetailEmpty?.emptyStateContainer?.isVisible = callList.isEmpty()
             binding?.blockerCallsDetailDescription?.isVisible = callList.isNotEmpty()
-            if (this.numberDataList == callList) return@safeSingleObserve
-            this.numberDataList = callList
-            numberDataAdapter?.numberDataList = callList
-            numberDataAdapter?.notifyDataSetChanged()
+            if (this.blockerCallList == callList) return@safeSingleObserve
+            this.blockerCallList = callList
+            blockerCallAdapter?.numberDataList = callList
+            blockerCallAdapter?.notifyDataSetChanged()
         }
     }
 

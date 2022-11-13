@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{call.filterValue}"
-                android:visibility="@{call.extract || isDetail ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.extract || isDetail || call.filter.conditionType == 0 ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/sunset"
                 android:gravity="center_vertical|end"

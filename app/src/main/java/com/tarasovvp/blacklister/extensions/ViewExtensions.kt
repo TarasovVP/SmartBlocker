@@ -216,3 +216,72 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
         text = mainNumberText
     }
 }
+
+@BindingAdapter(value = ["searchNumberText", "mainNumberText"], requireAll = false)
+fun TextView.imageSpanText(searchNumberText: String?, mainNumberText: String?) {
+    val highlightedTextList: ArrayList<String> = ArrayList()
+    if (searchNumberText.isNullOrEmpty().not()
+        && mainNumberText.isNullOrEmpty().not()
+        && mainNumberText.digitsTrimmed().lowercase()
+            .contains(searchNumberText.orEmpty().lowercase())
+    ) {
+        val highlightedText: StringBuilder = StringBuilder()
+        var searchIndex = 0
+        mainNumberText?.forEachIndexed { index, char ->
+            if (char.isDigit() || char == PLUS_CHAR) {
+                if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(
+                        searchIndex)
+                ) {
+                    highlightedText.append(char)
+                    if (index == mainNumberText.lastIndex && highlightedText.toString()
+                            .digitsTrimmed().length >= searchNumberText.length.orZero()
+                    ) {
+                        highlightedTextList.add(highlightedText.toString())
+                        searchIndex = 0
+                        highlightedText.clear()
+                    } else {
+                        searchIndex++
+                    }
+                } else {
+                    if (highlightedText.toString()
+                            .digitsTrimmed().length >= searchNumberText?.length.orZero()
+                    ) {
+                        highlightedTextList.add(highlightedText.toString())
+                    }
+                    searchIndex = 0
+                    highlightedText.clear()
+                    if (char == searchNumberText?.get(searchIndex)) {
+                        highlightedText.append(char)
+                        searchIndex++
+                    }
+                }
+            } else if (char.isDigit().not() && highlightedText.isNotEmpty()) {
+                highlightedText.append(char)
+            }
+        }
+        highlightedTextList.forEach { searchText ->
+            SpannableString(mainNumberText).apply {
+                var index: Int =
+                    mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase())
+                while (index >= 0 && index < mainNumberText?.length.orZero()) {
+                    val highlightSpan = TextAppearanceSpan(null,
+                        Typeface.BOLD,
+                        -1,
+                        ColorStateList(arrayOf(intArrayOf()),
+                            intArrayOf(ContextCompat.getColor(context, R.color.span_text))),
+                        null)
+                    setSpan(highlightSpan,
+                        index,
+                        index + searchText.length.orZero(),
+                        Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    index = mainNumberText.orEmpty().lowercase()
+                        .indexOf(searchText.lowercase(), index + 1)
+                }
+                text = this
+            }
+        }
+        if (highlightedTextList.isEmpty()) text = mainNumberText
+    } else {
+        text = mainNumberText
+    }
+}

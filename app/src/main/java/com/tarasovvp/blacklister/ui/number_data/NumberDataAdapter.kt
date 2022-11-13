@@ -28,6 +28,7 @@ class NumberDataAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var searchQuery = String.EMPTY
+    var isExtract = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.e("filterAddTAG",
@@ -108,7 +109,7 @@ class NumberDataAdapter(
             binding?.apply {
                 this.call = call
                 this.call?.searchText = searchQuery
-                this.call?.isExtract = true
+                this.call?.isExtract = isExtract
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1) }
                 }
