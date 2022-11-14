@@ -28,7 +28,7 @@ class BlockerCallsDetailViewModel(application: Application) : BaseViewModel(appl
         showProgress()
         launch {
             val blackNumberList = blockedCallRepository.blockedCallsByFilter(filter)
-            blackNumberList?.let {  blockedCalls ->
+            blackNumberList?.let { blockedCalls ->
                 callListLiveData.postValue(ArrayList(blockedCalls.sortedByDescending { it.time }))
             }
             hideProgress()

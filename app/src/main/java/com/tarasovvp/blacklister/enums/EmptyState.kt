@@ -4,7 +4,7 @@ import com.tarasovvp.blacklister.R
 
 enum class EmptyState(
     val descriptionResource: Int,
-    val iconResource: Int
+    val iconResource: Int,
 ) {
     EMPTY_STATE_BLOCKERS(R.string.empty_state_blockers_description,
         R.drawable.ic_assistant_empty_state),

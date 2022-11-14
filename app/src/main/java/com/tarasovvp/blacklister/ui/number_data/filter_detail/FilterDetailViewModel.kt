@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.model.LogCall
@@ -42,7 +41,8 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             }
             numberDataList.sortBy {
                 when (it) {
-                    is Contact -> it.trimmedPhone.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
+                    is Contact -> it.trimmedPhone.replace(Constants.PLUS_CHAR.toString(),
+                        String.EMPTY)
                     is LogCall -> it.number.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
                     else -> String.EMPTY
                 }

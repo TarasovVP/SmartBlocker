@@ -4,7 +4,7 @@ import com.tarasovvp.blacklister.R
 
 enum class Info(
     val descriptionResource: Int,
-    val iconResource: Int
+    val iconResource: Int,
 ) {
     INFO_BLOCKER_LIST(R.string.empty_state_blockers_description,
         R.drawable.ic_assistant_info),

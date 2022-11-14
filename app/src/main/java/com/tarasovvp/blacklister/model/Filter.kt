@@ -10,8 +10,8 @@ import com.tarasovvp.blacklister.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
-import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.FilterAction
+import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -128,9 +128,14 @@ data class Filter(
     @Exclude
     fun filterToInput(): String {
         return when (conditionType) {
-            FilterCondition.FILTER_CONDITION_FULL.index -> if (filter.getPhoneNumber(countryCode.country).isNull())
-                filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY) else filter.getPhoneNumber(countryCode.country)?.nationalNumber.toString()
-            FilterCondition.FILTER_CONDITION_START.index -> filter.replaceFirst(countryCode.countryCode, String.EMPTY)
+            FilterCondition.FILTER_CONDITION_FULL.index -> if (filter.getPhoneNumber(countryCode.country)
+                    .isNull()
+            )
+                filter.digitsTrimmed()
+                    .replace(PLUS_CHAR.toString(), String.EMPTY) else filter.getPhoneNumber(
+                countryCode.country)?.nationalNumber.toString()
+            FilterCondition.FILTER_CONDITION_START.index -> filter.replaceFirst(countryCode.countryCode,
+                String.EMPTY)
             else -> filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
         }
     }

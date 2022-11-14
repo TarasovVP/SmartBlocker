@@ -32,7 +32,8 @@ fun View.showMessage(message: String, isError: Boolean) {
     Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
         .apply {
             view.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
-            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).isInvisible = true
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).isInvisible =
+                true
             val snackView = SnackBarInfoBinding.inflate(LayoutInflater.from(context))
             snackView.snackBarInfoIcon.setImageResource(if (isError) R.drawable.ic_result_error else R.drawable.ic_result_success)
             snackView.snackBarInfoDescription.text = message
@@ -41,7 +42,10 @@ fun View.showMessage(message: String, isError: Boolean) {
                 gravity = Gravity.CENTER
                 width = FrameLayout.LayoutParams.MATCH_PARENT
                 height = FrameLayout.LayoutParams.WRAP_CONTENT
-                setMargins(context.dpToPx(16f).toInt(), context.dpToPx(4f).toInt(), context.dpToPx(16f).toInt(), context.dpToPx(4f).toInt())
+                setMargins(context.dpToPx(16f).toInt(),
+                    context.dpToPx(4f).toInt(),
+                    context.dpToPx(16f).toInt(),
+                    context.dpToPx(4f).toInt())
                 view.layoutParams = this
             }
         }.show()
@@ -58,7 +62,10 @@ fun View.showPopUpWindow(info: Info) {
         true
     )
     popupWindow.elevation = 2f
-    popupWindow.showAtLocation(this, Gravity.CENTER,0, -(Resources.getSystem().displayMetrics.heightPixels * 0.2).toInt())
+    popupWindow.showAtLocation(this,
+        Gravity.CENTER,
+        0,
+        -(Resources.getSystem().displayMetrics.heightPixels * 0.2).toInt())
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }
@@ -217,3 +224,71 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
     }
 }
 
+@BindingAdapter(value = ["searchNumberText", "mainNumberText"], requireAll = false)
+fun TextView.imageSpanText(searchNumberText: String?, mainNumberText: String?) {
+    val highlightedTextList: ArrayList<String> = ArrayList()
+    if (searchNumberText.isNullOrEmpty().not()
+        && mainNumberText.isNullOrEmpty().not()
+        && mainNumberText.digitsTrimmed().lowercase()
+            .contains(searchNumberText.orEmpty().lowercase())
+    ) {
+        val highlightedText: StringBuilder = StringBuilder()
+        var searchIndex = 0
+        mainNumberText?.forEachIndexed { index, char ->
+            if (char.isDigit() || char == PLUS_CHAR) {
+                if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(
+                        searchIndex)
+                ) {
+                    highlightedText.append(char)
+                    if (index == mainNumberText.lastIndex && highlightedText.toString()
+                            .digitsTrimmed().length >= searchNumberText.length.orZero()
+                    ) {
+                        highlightedTextList.add(highlightedText.toString())
+                        searchIndex = 0
+                        highlightedText.clear()
+                    } else {
+                        searchIndex++
+                    }
+                } else {
+                    if (highlightedText.toString()
+                            .digitsTrimmed().length >= searchNumberText?.length.orZero()
+                    ) {
+                        highlightedTextList.add(highlightedText.toString())
+                    }
+                    searchIndex = 0
+                    highlightedText.clear()
+                    if (char == searchNumberText?.get(searchIndex)) {
+                        highlightedText.append(char)
+                        searchIndex++
+                    }
+                }
+            } else if (char.isDigit().not() && highlightedText.isNotEmpty()) {
+                highlightedText.append(char)
+            }
+        }
+        highlightedTextList.forEach { searchText ->
+            SpannableString(mainNumberText).apply {
+                var index: Int =
+                    mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase())
+                while (index >= 0 && index < mainNumberText?.length.orZero()) {
+                    val highlightSpan = TextAppearanceSpan(null,
+                        Typeface.BOLD,
+                        -1,
+                        ColorStateList(arrayOf(intArrayOf()),
+                            intArrayOf(ContextCompat.getColor(context, R.color.span_text))),
+                        null)
+                    setSpan(highlightSpan,
+                        index,
+                        index + searchText.length.orZero(),
+                        Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    index = mainNumberText.orEmpty().lowercase()
+                        .indexOf(searchText.lowercase(), index + 1)
+                }
+                text = this
+            }
+        }
+        if (highlightedTextList.isEmpty()) text = mainNumberText
+    } else {
+        text = mainNumberText
+    }
+}

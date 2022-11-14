@@ -13,7 +13,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.blacklister.enums.EmptyState
-import com.tarasovvp.blacklister.extensions.*
+import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.hideKeyboard
+import com.tarasovvp.blacklister.extensions.orZero
+import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.number_data.NumberData
@@ -21,7 +24,6 @@ import com.tarasovvp.blacklister.ui.number_data.call_list.CallListFragment
 import com.tarasovvp.blacklister.ui.number_data.contact_list.ContactListFragment
 import com.tarasovvp.blacklister.ui.number_data.filter_list.WhiteFilterListFragment
 import com.tarasovvp.blacklister.utils.DebouncingQueryTextListener
-import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
     BaseFragment<B, T>() {
@@ -47,7 +49,8 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         setRecyclerView()
         setSearchViewMenu()
         getData()
-        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
+            viewLifecycleOwner) {
             Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
             this@BaseListFragment.getData()
         }

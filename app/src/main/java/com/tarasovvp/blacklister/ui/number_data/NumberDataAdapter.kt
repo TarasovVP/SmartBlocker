@@ -14,7 +14,6 @@ import com.tarasovvp.blacklister.databinding.ItemCallBinding
 import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.enums.FilterAction
-import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Call
@@ -70,7 +69,9 @@ class NumberDataAdapter(
             binding?.apply {
                 this.filter = filter
                 this.filter?.searchText =
-                    String.format("%s%s", filter?.countryCode?.countryCode.orEmpty(), addingFilter.filter)
+                    String.format("%s%s",
+                        filter?.countryCode?.countryCode.orEmpty(),
+                        addingFilter.filter)
                 itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg

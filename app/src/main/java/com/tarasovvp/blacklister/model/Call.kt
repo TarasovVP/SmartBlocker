@@ -32,7 +32,7 @@ open class Call(
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
     var numberPresentation: String? = String.EMPTY,
-    var filter: Filter? = Filter()
+    var filter: Filter? = Filter(),
 ) : Parcelable, NumberData() {
 
     var isCheckedForDelete = false
@@ -83,7 +83,7 @@ open class Call(
     }
 
     fun filterConditionTypeIcon(context: Context): Drawable {
-        return when(this) {
+        return when (this) {
             is BlockedCall -> filter?.conditionType?.let { blockFilterCondition ->
                 FilterCondition.getSmallIconByIndex(blockFilterCondition)
             }?.let {

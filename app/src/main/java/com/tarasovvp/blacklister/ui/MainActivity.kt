@@ -120,7 +120,8 @@ class MainActivity : AppCompatActivity() {
             } savedInstanceState ${savedInstanceState.isNull()}")
         if (SharedPreferencesUtil.isOnBoardingSeen
             && BlackListerApp.instance?.isLoggedInUser().isTrue()
-            && savedInstanceState.isNull()) {
+            && savedInstanceState.isNull()
+        ) {
             if (BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
                 navController?.navigate(R.id.startUnavailableNetworkDialog)
             } else {
@@ -183,7 +184,8 @@ class MainActivity : AppCompatActivity() {
             }
             Log.e("destinationTAG", "MainActivity return@addOnDestinationChangedListener after")
             toolbar?.menu?.clear()
-            toolbar?.isVisible = destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment
+            toolbar?.isVisible =
+                destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment
         }
     }
 

@@ -29,7 +29,8 @@ class NumberDataDetailViewModel(application: Application) : BaseViewModel(applic
 
     fun getCountryCode(code: Int?) {
         launch {
-            val countryCode = code?.let { countryCodeRepository.getCountryCode(it) } ?: CountryCode()
+            val countryCode =
+                code?.let { countryCodeRepository.getCountryCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
     }

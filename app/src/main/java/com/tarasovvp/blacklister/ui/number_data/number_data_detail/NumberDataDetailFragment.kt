@@ -32,7 +32,8 @@ class NumberDataDetailFragment :
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
                 is BlockedCall,
-                is LogCall -> call = (args.numberData as Call).apply { isExtract = true }
+                is LogCall,
+                -> call = (args.numberData as Call).apply { isExtract = true }
             }
             numberDataDetailFilterListEmpty.emptyState =
                 EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
@@ -84,7 +85,7 @@ class NumberDataDetailFragment :
     }
 
     private fun getNumber(): String {
-        return if ( binding?.contact.isNull()) binding?.call?.number.orEmpty() else binding?.contact?.trimmedPhone.orEmpty()
+        return if (binding?.contact.isNull()) binding?.call?.number.orEmpty() else binding?.contact?.trimmedPhone.orEmpty()
     }
 
     private fun createFilter(conditionIndex: Int) {
@@ -94,7 +95,7 @@ class NumberDataDetailFragment :
         val phoneNumber = if (getNumber().getPhoneNumber(String.EMPTY)
                 .isNull()
         ) getNumber().getPhoneNumber(context?.getUserCountry().orEmpty()
-                .uppercase()) else getNumber().getPhoneNumber(String.EMPTY)
+            .uppercase()) else getNumber().getPhoneNumber(String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
             startAddFilterScreen()
         } else {

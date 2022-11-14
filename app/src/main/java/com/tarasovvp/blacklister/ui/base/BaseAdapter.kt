@@ -1,7 +1,6 @@
 package com.tarasovvp.blacklister.ui.base
 
 import android.os.Parcelable
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView

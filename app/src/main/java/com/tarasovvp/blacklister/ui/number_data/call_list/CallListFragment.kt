@@ -33,7 +33,8 @@ class CallListFragment :
         return context?.let {
             CallAdapter(object : CallClickListener {
                 override fun onCallClick(call: Call) {
-                    findNavController().navigate(CallListFragmentDirections.startNumberDataDetailFragment(call))
+                    findNavController().navigate(CallListFragmentDirections.startNumberDataDetailFragment(
+                        call))
                 }
 
                 override fun onCallLongClick() {

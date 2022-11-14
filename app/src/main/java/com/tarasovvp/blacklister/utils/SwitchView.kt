@@ -35,7 +35,8 @@ class SwitchView @JvmOverloads constructor(
             }
             //TODO complete
             viewSwitchInfo.setSafeOnClickListener {
-                if (infoText.isNotEmpty() && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showPopUpWindow(Info.INFO_SETTINGS)
+                if (infoText.isNotEmpty() && binding?.root?.isEnabled.isTrue()) viewSwitchInfo.showPopUpWindow(
+                    Info.INFO_SETTINGS)
             }
         }
     }

@@ -6,7 +6,7 @@ enum class FilterCondition(
     val title: Int,
     val mainIcon: Int,
     val smallIcon: Int,
-    var index: Int
+    var index: Int,
 ) {
     FILTER_CONDITION_FULL(R.string.condition_full,
         R.drawable.ic_condition_phone,
