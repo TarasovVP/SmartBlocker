@@ -14,6 +14,8 @@ import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.text.htmlEncode
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -53,7 +55,16 @@ fun View.showMessage(message: String, isError: Boolean) {
 
 fun View.showPopUpWindow(info: Info) {
     val popupView = PopUpWindowInfoBinding.inflate(LayoutInflater.from(context))
+    info.descriptionResource
+    //TODO remove mock
+    val description = "\"<p><b>First, </b><br/>\" +\n" +
+            "                \"Please press the <img src ='addbutton.png'> button beside the to insert a new event.</p>\" +\n" +
+            "                \"<p><b>Second,</b><br/>\" +\n" +
+            "                \"Please insert the details of the event.</p>\"\n" +
+            "                \"<p>The icon of the is show the level of the event.<br/>\" +\n" +
+            "                \"eg: <img src = 'tu1.png' > is easier to do.</p></td>\""
     popupView.info = info
+    popupView.popUpWindowDescription.text = description.parseAsHtml()
     popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
     val popupWindow = PopupWindow(
         popupView.root,
@@ -157,75 +168,6 @@ fun TextView.highlightText(searchText: String?, mainText: String?) {
 
 @BindingAdapter(value = ["searchNumberText", "mainNumberText"], requireAll = false)
 fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?) {
-    val highlightedTextList: ArrayList<String> = ArrayList()
-    if (searchNumberText.isNullOrEmpty().not()
-        && mainNumberText.isNullOrEmpty().not()
-        && mainNumberText.digitsTrimmed().lowercase()
-            .contains(searchNumberText.orEmpty().lowercase())
-    ) {
-        val highlightedText: StringBuilder = StringBuilder()
-        var searchIndex = 0
-        mainNumberText?.forEachIndexed { index, char ->
-            if (char.isDigit() || char == PLUS_CHAR) {
-                if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(
-                        searchIndex)
-                ) {
-                    highlightedText.append(char)
-                    if (index == mainNumberText.lastIndex && highlightedText.toString()
-                            .digitsTrimmed().length >= searchNumberText.length.orZero()
-                    ) {
-                        highlightedTextList.add(highlightedText.toString())
-                        searchIndex = 0
-                        highlightedText.clear()
-                    } else {
-                        searchIndex++
-                    }
-                } else {
-                    if (highlightedText.toString()
-                            .digitsTrimmed().length >= searchNumberText?.length.orZero()
-                    ) {
-                        highlightedTextList.add(highlightedText.toString())
-                    }
-                    searchIndex = 0
-                    highlightedText.clear()
-                    if (char == searchNumberText?.get(searchIndex)) {
-                        highlightedText.append(char)
-                        searchIndex++
-                    }
-                }
-            } else if (char.isDigit().not() && highlightedText.isNotEmpty()) {
-                highlightedText.append(char)
-            }
-        }
-        highlightedTextList.forEach { searchText ->
-            SpannableString(mainNumberText).apply {
-                var index: Int =
-                    mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase())
-                while (index >= 0 && index < mainNumberText?.length.orZero()) {
-                    val highlightSpan = TextAppearanceSpan(null,
-                        Typeface.BOLD,
-                        -1,
-                        ColorStateList(arrayOf(intArrayOf()),
-                            intArrayOf(ContextCompat.getColor(context, R.color.span_text))),
-                        null)
-                    setSpan(highlightSpan,
-                        index,
-                        index + searchText.length.orZero(),
-                        Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                    index = mainNumberText.orEmpty().lowercase()
-                        .indexOf(searchText.lowercase(), index + 1)
-                }
-                text = this
-            }
-        }
-        if (highlightedTextList.isEmpty()) text = mainNumberText
-    } else {
-        text = mainNumberText
-    }
-}
-
-@BindingAdapter(value = ["searchNumberText", "mainNumberText"], requireAll = false)
-fun TextView.imageSpanText(searchNumberText: String?, mainNumberText: String?) {
     val highlightedTextList: ArrayList<String> = ArrayList()
     if (searchNumberText.isNullOrEmpty().not()
         && mainNumberText.isNullOrEmpty().not()

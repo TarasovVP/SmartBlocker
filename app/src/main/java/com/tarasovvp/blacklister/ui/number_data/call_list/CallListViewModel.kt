@@ -40,7 +40,7 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
         launch {
             val hashMapList =
                 callRepository.getHashMapFromCallList(callList.sortedByDescending {
-                    it.time
+                    it.callDate
                 })
             callHashMapLiveData.postValue(hashMapList)
             hideProgress()

@@ -27,11 +27,11 @@ class NumberDataAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var addingFilter = Filter()
+    var addingFilter: Filter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.e("filterAddTAG",
-            "NumberDataAdapter onCreateViewHolder viewType $viewType numberDataList?.size ${numberDataList?.size} addingFilter.filter ${addingFilter.filter}  addingFilter.countryCode ${addingFilter.countryCode.countryCode}")
+            "NumberDataAdapter onCreateViewHolder viewType $viewType numberDataList?.size ${numberDataList?.size} addingFilter.filter ${addingFilter?.filter}  addingFilter.countryCode ${addingFilter?.countryCode?.countryCode}")
         return when (viewType) {
             Contact::class.java.simpleName.hashCode() -> ContactViewHolder(
                 LayoutInflater.from(parent.context)
@@ -71,7 +71,7 @@ class NumberDataAdapter(
                 this.filter?.searchText =
                     String.format("%s%s",
                         filter?.countryCode?.countryCode.orEmpty(),
-                        addingFilter.filter)
+                        addingFilter?.filter)
                 itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg
@@ -94,7 +94,7 @@ class NumberDataAdapter(
         fun bindData(contact: Contact?) {
             binding?.apply {
                 this.contact = contact
-                this.contact?.searchText = addingFilter.addFilter()
+                this.contact?.searchText = addingFilter?.addFilter().orEmpty()
                 root.setSafeOnClickListener {
                     contact?.let { it1 -> numberDataClick.invoke(it1) }
                 }
@@ -109,7 +109,7 @@ class NumberDataAdapter(
         fun bindData(call: Call?) {
             binding?.apply {
                 this.call = call
-                this.call?.searchText = addingFilter.addFilter()
+                this.call?.searchText = addingFilter?.addFilter().orEmpty()
                 this.call?.isExtract = addingFilter.isNotNull()
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1) }

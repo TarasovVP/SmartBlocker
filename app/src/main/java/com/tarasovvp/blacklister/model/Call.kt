@@ -28,7 +28,7 @@ open class Call(
     var number: String = String.EMPTY,
     var normalizedNumber: String? = String.EMPTY,
     var type: String? = String.EMPTY,
-    var time: String? = String.EMPTY,
+    var callDate: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
     var numberPresentation: String? = String.EMPTY,
@@ -66,12 +66,16 @@ open class Call(
         }
     }
 
-    fun dateTimeFromTime(): String? {
-        return time?.toDateFromMilliseconds(Constants.TIME_FORMAT)
+    fun timeFromCallDate(): String? {
+        return callDate?.toDateFromMilliseconds(Constants.TIME_FORMAT)
     }
 
-    fun dateFromTime(): String? {
-        return time?.toDateFromMilliseconds(DATE_FORMAT)
+    fun dateFromCallDate(): String? {
+        return callDate?.toDateFromMilliseconds(DATE_FORMAT)
+    }
+
+    fun dateTimeFromCallDate(): String {
+        return String.format("%s, %s", dateFromCallDate(), timeFromCallDate())
     }
 
     fun isBlockedCall(): Boolean {

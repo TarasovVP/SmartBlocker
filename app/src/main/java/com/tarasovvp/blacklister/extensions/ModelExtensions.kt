@@ -87,7 +87,7 @@ fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
     logCall.name = this.getString(1)
     logCall.number = this.getString(2)
     logCall.type = this.getString(3)
-    logCall.time = this.getString(4)
+    logCall.callDate = this.getString(4)
     logCall.normalizedNumber = this.getString(5)
     logCall.countryIso = this.getString(6)
     logCall.numberPresentation = this.getString(7)
@@ -112,11 +112,11 @@ fun Context.deleteLastBlockedCall(number: String, filter: Filter?) {
         while (cursor.moveToNext()) {
             val blockedCall = cursor.createCallObject(true) as BlockedCall
             Log.e("blockTAG",
-                "Extensions deleteLastMissedCall id ${blockedCall.id} number ${blockedCall.number} type ${blockedCall.type} time ${blockedCall.time} currentTimeMillis ${System.currentTimeMillis()}")
+                "Extensions deleteLastMissedCall id ${blockedCall.id} number ${blockedCall.number} type ${blockedCall.type} time ${blockedCall.callDate} currentTimeMillis ${System.currentTimeMillis()}")
             if (number == blockedCall.number && REJECTED_CALL == blockedCall.type) {
                 try {
                     Log.e("blockTAG",
-                        "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${blockedCall.name} time ${blockedCall.time} phone ${blockedCall.number} type ${blockedCall.type} id ${blockedCall.callId}")
+                        "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${blockedCall.name} time ${blockedCall.callDate} phone ${blockedCall.number} type ${blockedCall.type} id ${blockedCall.callId}")
                     val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
                         "${CALL_ID}'${blockedCall.callId}'",
                         null)

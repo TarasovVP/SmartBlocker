@@ -79,7 +79,7 @@
                 android:id="@+id/item_call_time"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:text="@{call.dateTimeFromTime()}"
+                android:text="@{call.timeFromCallDate()}"
                 android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"

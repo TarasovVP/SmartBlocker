@@ -42,7 +42,7 @@ class CallListFragment :
                 }
 
                 override fun onCallDeleteCheckChange(call: Call) {
-                    callList?.find { it.time == call.time }?.isCheckedForDelete =
+                    callList?.find { it.callDate == call.callDate }?.isCheckedForDelete =
                         call.isCheckedForDelete
                     if (callList?.any { it.isCheckedForDelete }.isTrue().not() && isDeleteMode) {
                         changeDeleteMode()

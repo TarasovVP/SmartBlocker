@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = "logCall", indices = [Index(value = ["time"], unique = true)])
+@Entity(tableName = "logCall", indices = [Index(value = ["callDate"], unique = true)])
 @Parcelize
 data class LogCall(
     @PrimaryKey(autoGenerate = true) override var id: Int = 0,

@@ -49,6 +49,6 @@ object CallRepository {
         withContext(
             Dispatchers.Default
         ) {
-            logCallList.groupBy { it.dateFromTime().toString() }
+            logCallList.groupBy { it.dateFromCallDate().toString() }
         }
 }

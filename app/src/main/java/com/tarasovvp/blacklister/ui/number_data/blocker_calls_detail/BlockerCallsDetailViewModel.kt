@@ -18,7 +18,7 @@ class BlockerCallsDetailViewModel(application: Application) : BaseViewModel(appl
         launch {
             val blackNumberList = blockedCallRepository.blockedCallsByNumber(number)
             blackNumberList?.let { blockedCalls ->
-                callListLiveData.postValue(ArrayList(blockedCalls.sortedByDescending { it.time }))
+                callListLiveData.postValue(ArrayList(blockedCalls.sortedByDescending { it.callDate }))
             }
             hideProgress()
         }
@@ -29,7 +29,7 @@ class BlockerCallsDetailViewModel(application: Application) : BaseViewModel(appl
         launch {
             val blackNumberList = blockedCallRepository.blockedCallsByFilter(filter)
             blackNumberList?.let { blockedCalls ->
-                callListLiveData.postValue(ArrayList(blockedCalls.sortedByDescending { it.time }))
+                callListLiveData.postValue(ArrayList(blockedCalls.sortedByDescending { it.callDate }))
             }
             hideProgress()
         }

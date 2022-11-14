@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_16"
                     android:gravity="center"
-                    android:text="@{info.descriptionResource}"
+
                     app:layout_constraintTop_toBottomOf="@+id/pop_up_window_close" />
 
                 <ImageView
