@@ -15,6 +15,7 @@ import com.tarasovvp.blacklister.databinding.ItemContactBinding
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.isNotNull
 import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Contact
@@ -27,12 +28,11 @@ class NumberDataAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var searchQuery = String.EMPTY
-    var isExtract = false
+    var addingFilter = Filter()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.e("filterAddTAG",
-            "NumberDataAdapter onCreateViewHolder viewType $viewType numberDataList?.size ${numberDataList?.size}")
+            "NumberDataAdapter onCreateViewHolder viewType $viewType numberDataList?.size ${numberDataList?.size} addingFilter.filter ${addingFilter.filter}  addingFilter.countryCode ${addingFilter.countryCode.countryCode}")
         return when (viewType) {
             Contact::class.java.simpleName.hashCode() -> ContactViewHolder(
                 LayoutInflater.from(parent.context)
@@ -70,7 +70,7 @@ class NumberDataAdapter(
             binding?.apply {
                 this.filter = filter
                 this.filter?.searchText =
-                    String.format("%s%s", filter?.countryCode?.countryCode.orEmpty(), searchQuery)
+                    String.format("%s%s", filter?.countryCode?.countryCode.orEmpty(), addingFilter.filter)
                 itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg
@@ -93,7 +93,7 @@ class NumberDataAdapter(
         fun bindData(contact: Contact?) {
             binding?.apply {
                 this.contact = contact
-                this.contact?.searchText = searchQuery
+                this.contact?.searchText = addingFilter.addFilter()
                 root.setSafeOnClickListener {
                     contact?.let { it1 -> numberDataClick.invoke(it1) }
                 }
@@ -108,8 +108,8 @@ class NumberDataAdapter(
         fun bindData(call: Call?) {
             binding?.apply {
                 this.call = call
-                this.call?.searchText = searchQuery
-                this.call?.isExtract = isExtract
+                this.call?.searchText = addingFilter.addFilter()
+                this.call?.isExtract = addingFilter.isNotNull()
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1) }
                 }

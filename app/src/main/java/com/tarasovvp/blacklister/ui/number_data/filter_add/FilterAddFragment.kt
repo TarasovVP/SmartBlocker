@@ -210,6 +210,7 @@ open class FilterAddFragment :
                 Log.e("filterAddTAG",
                     "BaseAddFragment ContactFilterAdapter contactClick contact $numberData")
             }
+            binding?.filter?.let { numberDataAdapter?.addingFilter = it }
             binding?.filterAddContactList?.adapter = numberDataAdapter
     }
 
@@ -271,7 +272,7 @@ open class FilterAddFragment :
             })
         }
         binding?.apply {
-            numberDataAdapter?.searchQuery = searchQuery
+            filter?.let { numberDataAdapter?.addingFilter = it }
             val existingFilter =
                 filteredContactList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
             filter?.filterAction = when (existingFilter?.filterType) {
@@ -289,6 +290,7 @@ open class FilterAddFragment :
             }
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
             filterAddEmptyList.root.isVisible = filteredContactList.isEmpty()
+            filter?.let { numberDataAdapter?.addingFilter = it }
         }
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")

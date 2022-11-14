@@ -24,7 +24,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="@{call.deleteMode &amp;&amp; !call.isBlockedType() ? 0.5f : 1f}"
+            android:alpha="@{call.deleteMode &amp;&amp; !call.blockedCall ? 0.5f : 1f}"
             android:padding="@dimen/padding_8">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -91,7 +91,7 @@
                 android:id="@+id/item_call_type_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() || call.extract ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall || call.extract || isDetail ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{call.filterValue}"
-                android:visibility="@{call.extract || isDetail || call.filter.conditionType == 0 ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.extract || isDetail || !call.isBlockedCall ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/sunset"
                 android:gravity="center_vertical|end"
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:checked="@{call.checkedForDelete}"
                 android:padding="@dimen/padding_8"
-                android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.VISIBLE : View.GONE, default=gone}"
+                android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_statement"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />

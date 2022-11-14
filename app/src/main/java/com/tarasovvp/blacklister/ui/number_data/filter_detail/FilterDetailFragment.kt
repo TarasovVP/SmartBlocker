@@ -117,9 +117,7 @@ class FilterDetailFragment :
                 findNavController().navigate(FilterDetailFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
-        numberDataAdapter?.searchQuery =
-            if (binding?.filter?.isPreview.isTrue()) binding?.filter?.addFilter()
-                .orEmpty() else binding?.filter?.filter.orEmpty()
+        binding?.filter?.let { numberDataAdapter?.addingFilter = it }
         binding?.filterDetailContactList?.adapter = numberDataAdapter
     }
 

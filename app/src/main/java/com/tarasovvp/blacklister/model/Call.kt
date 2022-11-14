@@ -74,7 +74,7 @@ open class Call(
         return time?.toDateFromMilliseconds(DATE_FORMAT)
     }
 
-    fun isBlockedType(): Boolean {
+    fun isBlockedCall(): Boolean {
         return type == BLOCKED_CALL
     }
 

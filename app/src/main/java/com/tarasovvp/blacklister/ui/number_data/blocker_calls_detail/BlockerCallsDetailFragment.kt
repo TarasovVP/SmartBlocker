@@ -39,7 +39,6 @@ class BlockerCallsDetailFragment :
                 findNavController().navigate(BlockerCallsDetailFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
-        blockerCallAdapter?.isExtract = false
         binding?.blockerCallsDetailList?.adapter = blockerCallAdapter
     }
 
