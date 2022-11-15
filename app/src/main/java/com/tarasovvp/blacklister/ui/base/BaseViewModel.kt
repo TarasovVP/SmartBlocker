@@ -16,14 +16,6 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     val isMainProgressProcess = MediatorLiveData<Boolean>()
     val progressStatusLiveData = MutableLiveData<String>()
 
-    fun showMainProgress() {
-        isMainProgressProcess.postValue(true)
-    }
-
-    fun hideMainProgress() {
-        isMainProgressProcess.postValue(false)
-    }
-
     fun hideProgress() {
         isProgressProcess.postValue(false)
     }

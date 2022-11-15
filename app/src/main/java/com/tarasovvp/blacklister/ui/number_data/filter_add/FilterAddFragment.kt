@@ -1,5 +1,6 @@
 package com.tarasovvp.blacklister.ui.number_data.filter_add
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -43,6 +44,11 @@ open class FilterAddFragment :
     private var numberDataList: ArrayList<NumberData> = ArrayList()
     private var countryCodeList: ArrayList<CountryCode> = arrayListOf()
     private var addFilter: String? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).setProgressVisibility(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -290,6 +296,7 @@ open class FilterAddFragment :
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
             filterAddEmptyList.root.isVisible = filteredContactList.isEmpty()
             filter?.let { numberDataAdapter?.addingFilter = it }
+            (activity as MainActivity).setProgressVisibility(false)
         }
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")
@@ -311,7 +318,6 @@ open class FilterAddFragment :
                 numberDataAdapter?.notifyDataSetChanged()
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
-                viewModel.hideMainProgress()
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 handleSuccessFilterAction(filter)
