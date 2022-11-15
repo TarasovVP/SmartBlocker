@@ -17,8 +17,8 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
 
     val filterHashMapLiveData = MutableLiveData<Map<String, List<Filter>>?>()
 
-    fun getFilterList(isBlackList: Boolean) {
-        showProgress()
+    fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {
+        if (refreshing.not()) showProgress()
         launch {
             val filterArrayList =
                 filterRepository.allFiltersByType(if (isBlackList) BLACK_FILTER else WHITE_FILTER) as ArrayList
@@ -27,9 +27,9 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
         }
     }
 
-    fun getHashMapFromFilterList(filterList: List<Filter>) {
+    fun getHashMapFromFilterList(filterList: List<Filter>, refreshing: Boolean) {
+        if (refreshing.not()) showProgress()
         launch {
-            showProgress()
             filterHashMapLiveData.postValue(
                 filterRepository.getHashMapFromFilterList(filterList)
             )

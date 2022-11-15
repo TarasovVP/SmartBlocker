@@ -173,11 +173,11 @@ class CallListFragment :
             filteredCallList.isNotEmpty() || binding?.callListCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredCallList.isEmpty())
         if (filteredCallList.isNotEmpty()) {
-            viewModel.getHashMapFromCallList(filteredCallList)
+            viewModel.getHashMapFromCallList(filteredCallList, swipeRefresh?.isRefreshing.isTrue())
         }
     }
 
     override fun getData() {
-        viewModel.getCallList()
+        viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())
     }
 }

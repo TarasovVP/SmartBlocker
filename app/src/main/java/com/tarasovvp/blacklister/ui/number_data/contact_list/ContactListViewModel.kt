@@ -13,8 +13,8 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
     val contactLiveData = MutableLiveData<List<Contact>>()
     val contactHashMapLiveData = MutableLiveData<Map<String, List<Contact>>?>()
 
-    fun getContactList() {
-        showProgress()
+    fun getContactList(refreshing: Boolean) {
+        if (refreshing.not()) showProgress()
         launch {
             val contactList = contactRepository.getAllContacts()
             contactList?.apply {
@@ -24,8 +24,8 @@ class ContactListViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    fun getHashMapFromContactList(contactList: List<Contact>) {
-        showProgress()
+    fun getHashMapFromContactList(contactList: List<Contact>, refreshing: Boolean) {
+        if (refreshing.not()) showProgress()
         launch {
             contactHashMapLiveData.postValue(contactRepository.getHashMapFromContactList(
                 contactList))

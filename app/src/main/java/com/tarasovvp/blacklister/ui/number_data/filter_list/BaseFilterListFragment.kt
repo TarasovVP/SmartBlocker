@@ -248,14 +248,14 @@ open class BaseFilterListFragment :
                 .not())
         checkDataListEmptiness(filteredList.isEmpty())
         if (filteredList.isNotEmpty()) {
-            viewModel.getHashMapFromFilterList(filteredList)
+            viewModel.getHashMapFromFilterList(filteredList, swipeRefresh?.isRefreshing.isTrue())
         }
     }
 
     override fun getData() {
         Log.e("adapterTAG",
             "FilterList getData() filterList.size ${filterList?.size} selectedFilterItems ${conditionFilterIndexes?.joinToString()}")
-        viewModel.getFilterList(this is BlackFilterListFragment)
+        viewModel.getFilterList(this is BlackFilterListFragment, swipeRefresh?.isRefreshing.isTrue())
     }
 }
 

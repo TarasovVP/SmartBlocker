@@ -14,7 +14,7 @@ interface LogCallDao {
     @Query("SELECT * FROM logCall")
     suspend fun allLogCalls(): List<LogCall>
 
-    @Query("SELECT * FROM logCall WHERE (name = '' || name IS NULL) AND type != '2'")
+    @Query("SELECT * FROM logCall WHERE (name = '' || name IS NULL) AND type != '2' AND (number != '' || name IS NOT NULL)")
     suspend fun allNumbersNotFromContacts(): List<LogCall>
 
     @Query("SELECT * FROM logCall WHERE (number = :filter) OR (number LIKE :filter || '%' AND :type = 1) OR (number LIKE '%' || :filter || '%' AND :type = 2)")

@@ -100,11 +100,11 @@ open class ContactListFragment :
         binding?.contactListCheck?.isEnabled =
             filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredContactList.isEmpty())
-        viewModel.getHashMapFromContactList(filteredContactList)
+        viewModel.getHashMapFromContactList(filteredContactList, swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun getData() {
         Log.e("adapterTAG", "ContactListFragment getData()")
-        viewModel.getContactList()
+        viewModel.getContactList(swipeRefresh?.isRefreshing.isTrue())
     }
 }

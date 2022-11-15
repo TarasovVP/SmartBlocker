@@ -19,7 +19,8 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
     val callHashMapLiveData = MutableLiveData<Map<String, List<Call>>?>()
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
-    fun getCallList() {
+    fun getCallList(refreshing: Boolean) {
+        if (refreshing.not()) showProgress()
         launch {
             val logCalls = async { callRepository.getAllLogCalls() }
             val blockedCalls = async { blockedCallRepository.allBlockedCalls() }
@@ -31,12 +32,13 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
                 addAll(blockedCallList)
             }
             callListLiveData.postValue(callList)
+            hideProgress()
         }
     }
 
-    fun getHashMapFromCallList(callList: List<Call>) {
+    fun getHashMapFromCallList(callList: List<Call>, refreshing: Boolean) {
         Log.e("callTAG", "CallListViewModel getHashMapFromCallList() start")
-        showProgress()
+        if (refreshing.not()) showProgress()
         launch {
             val hashMapList =
                 callRepository.getHashMapFromCallList(callList.sortedByDescending {
