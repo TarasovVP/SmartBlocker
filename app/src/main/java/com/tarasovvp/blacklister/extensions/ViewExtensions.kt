@@ -3,6 +3,7 @@ package com.tarasovvp.blacklister.extensions
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Typeface
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
@@ -14,8 +15,6 @@ import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-import androidx.core.text.htmlEncode
-import androidx.core.text.parseAsHtml
 import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -56,15 +55,7 @@ fun View.showMessage(message: String, isError: Boolean) {
 fun View.showPopUpWindow(info: Info) {
     val popupView = PopUpWindowInfoBinding.inflate(LayoutInflater.from(context))
     info.descriptionResource
-    //TODO remove mock
-    val description = "\"<p><b>First, </b><br/>\" +\n" +
-            "                \"Please press the <img src ='addbutton.png'> button beside the to insert a new event.</p>\" +\n" +
-            "                \"<p><b>Second,</b><br/>\" +\n" +
-            "                \"Please insert the details of the event.</p>\"\n" +
-            "                \"<p>The icon of the is show the level of the event.<br/>\" +\n" +
-            "                \"eg: <img src = 'tu1.png' > is easier to do.</p></td>\""
     popupView.info = info
-    popupView.popUpWindowDescription.text = description.parseAsHtml()
     popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
     val popupWindow = PopupWindow(
         popupView.root,

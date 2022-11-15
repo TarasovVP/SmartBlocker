@@ -1,8 +1,12 @@
 package com.tarasovvp.blacklister.extensions
 
 import android.content.Context
+import android.text.Spannable
+import android.text.Spanned
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import androidx.core.content.ContextCompat
+import androidx.core.text.parseAsHtml
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -80,6 +84,15 @@ fun Context.dpToPx(dp: Float): Float {
 
 fun Context.spToPx(sp: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
+}
+
+fun Context.htmlWithImages(htmlText: String): Spanned {
+    return htmlText.parseAsHtml(imageGetter = {
+        val resourceId = resources.getIdentifier(it, "drawable", packageName)
+        val drawable = ContextCompat.getDrawable(this, resourceId)
+        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+        drawable
+    })
 }
 
 fun <T> MutableList<T>.moveToFirst(item: T?): MutableList<T> {

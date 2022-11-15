@@ -1,6 +1,9 @@
 package com.tarasovvp.blacklister.enums
 
+import android.content.Context
+import android.text.Spanned
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.extensions.htmlWithImages
 
 enum class Info(
     val descriptionResource: Int,
@@ -27,5 +30,8 @@ enum class Info(
     INFO_BLOCKED_CALL_DETAIL(R.string.empty_state_filters_by_contact_description,
         R.drawable.ic_assistant_info),
     INFO_SETTINGS(R.string.empty_state_contacts_by_blocker_description,
-        R.drawable.ic_assistant_info)
+        R.drawable.ic_assistant_info);
+    fun getHtmlWithImages(context: Context): Spanned {
+        return context.htmlWithImages(context.getString(descriptionResource))
+    }
 }
