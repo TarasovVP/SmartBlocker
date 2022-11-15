@@ -67,7 +67,7 @@ fun View.showPopUpWindow(info: Info) {
     popupWindow.showAtLocation(this,
         Gravity.CENTER,
         0,
-        -(Resources.getSystem().displayMetrics.heightPixels * 0.2).toInt())
+        -(Resources.getSystem().displayMetrics.heightPixels * 0.05).toInt())
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }

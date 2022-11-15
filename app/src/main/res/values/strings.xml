@@ -115,7 +115,8 @@
     <string name="settings_back_ground_info">If you select the background mode, the blocking will be performed even with the application closed. Otherwise, blocking will be done only when the application is running.</string>
     <string name="change_back_ground">Select an operation mode</string>
     <string name="add_conditions_title">Select application conditions</string>
-    <string name="add_conditions_info">If no application conditions are selected, the application will block numbers that exactly match the entered number. Please note that incoming calls contain a country code. If you are not sure about the accuracy of the code, select the \'contains\'</string> option
+    <string name="add_conditions_info">If no application conditions are selected, the application will block numbers that exactly match the entered number. Please note that incoming calls contain a country code. If you are not sure about the accuracy of the code, select the \'contains\'</string>
+    option
     <string name="add_to_list_title">Add number to filter</string>
     <string name="forgot_password_title">Enter your email and we send new password on it</string>
     <string name="can_block">blocked</string>
@@ -200,5 +201,10 @@
     <string name="preview">Предпросмотр</string>
     <string name="enter">Войти</string>
     <string name="blocking_history">Блокировки</string>
-    <string name="test_html"><![CDATA[<p><b>First, </b><br/>Please press the <img src =\'ic_white_filter\'> button beside the to insert a new event.</p>]]></string>
+    <string name="info_blockers_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>
+Для удобства поиска можно воспользоваться поисковиком <img src =\'ic_search\'>, чтоб отобрать блокировщик по номеру<br/>
+или фильтром <img src =\'ic_filter_list\'> - для отбора по типу блокировки<br/>
+Быстрый клик по блокировщику переносит на экран с деталями
+Долгий клик открывает меню удаления <img src =\'ic_delete\'><br/>
+Если необходимо добавить новый блокировщик - нажмите кнопку с плюсом внизу <img src =\'test_button\'> и выберите тип блокировки</p>]]></string>
 </resources>

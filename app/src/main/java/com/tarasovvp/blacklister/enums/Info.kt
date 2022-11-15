@@ -9,7 +9,7 @@ enum class Info(
     val descriptionResource: Int,
     val iconResource: Int,
 ) {
-    INFO_BLOCKER_LIST(R.string.empty_state_blockers_description,
+    INFO_BLOCKER_LIST(R.string.info_blockers_list,
         R.drawable.ic_assistant_info),
     INFO_PERMISSION_LIST(R.string.empty_state_permissions_description,
         R.drawable.ic_assistant_info),
