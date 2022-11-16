@@ -206,6 +206,10 @@ open class BaseFilterListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
+                if (this@BaseFilterListFragment.filterList == filterList) {
+                    checkDataListEmptiness(filterList.isNullOrEmpty())
+                    return@safeSingleObserve
+                }
                 this@BaseFilterListFragment.filterList = filterList as ArrayList<Filter>
                 searchDataList()
             }
@@ -255,7 +259,8 @@ open class BaseFilterListFragment :
     override fun getData() {
         Log.e("adapterTAG",
             "FilterList getData() filterList.size ${filterList?.size} selectedFilterItems ${conditionFilterIndexes?.joinToString()}")
-        viewModel.getFilterList(this is BlackFilterListFragment, swipeRefresh?.isRefreshing.isTrue())
+        viewModel.getFilterList(this is BlackFilterListFragment,
+            swipeRefresh?.isRefreshing.isTrue())
     }
 }
 

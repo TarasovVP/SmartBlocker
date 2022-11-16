@@ -1,6 +1,7 @@
 package com.tarasovvp.blacklister.ui.number_data.filter_list
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
 import com.tarasovvp.blacklister.constants.Constants.WHITE_FILTER
@@ -18,6 +19,8 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
     val filterHashMapLiveData = MutableLiveData<Map<String, List<Filter>>?>()
 
     fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {
+        Log.e("adapterTAG",
+            "FilterListViewModel getFilterList refreshing $refreshing")
         if (refreshing.not()) showProgress()
         launch {
             val filterArrayList =
@@ -28,6 +31,8 @@ class FilterListViewModel(application: Application) : BaseViewModel(application)
     }
 
     fun getHashMapFromFilterList(filterList: List<Filter>, refreshing: Boolean) {
+        Log.e("adapterTAG",
+            "FilterListViewModel getHashMapFromFilterList refreshing $refreshing")
         if (refreshing.not()) showProgress()
         launch {
             filterHashMapLiveData.postValue(

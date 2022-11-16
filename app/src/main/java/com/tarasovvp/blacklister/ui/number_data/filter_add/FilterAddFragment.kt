@@ -1,6 +1,5 @@
 package com.tarasovvp.blacklister.ui.number_data.filter_add
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -45,24 +44,19 @@ open class FilterAddFragment :
     private var countryCodeList: ArrayList<CountryCode> = arrayListOf()
     private var addFilter: String? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity as MainActivity).setProgressVisibility(true)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("filterDetailTAG",
+        Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filter = args.filterAdd?.apply {
             filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
+            isPreview = false
             if (filter.isNotEmpty() && isTypeContain().not()) {
                 addFilter = filter
                 filter = String.EMPTY
-                isPreview = false
             }
         }
-        Log.e("filterDetailTAG",
+        Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated after args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filterAddEmptyList?.emptyState =
             if (binding?.filter?.isBlackFilter()
@@ -75,10 +69,12 @@ open class FilterAddFragment :
         setFragmentResultListeners()
         setFilterTextChangeListener()
         setContactAdapter()
+        viewModel.getNumberDataList()
         if (binding?.filter?.isTypeContain().isTrue().not()) {
             viewModel.getCountryCodeList()
+        } else {
+            binding?.filterAddInput?.hint = getString(R.string.enter_filter)
         }
-        viewModel.getNumberDataList()
     }
 
     private fun setToolbar() {
@@ -163,6 +159,13 @@ open class FilterAddFragment :
             filterAddCountryCodeSpinner.hideKeyboardWithLayoutTouch()
             filterAddInput.setupClearButtonWithAction()
             filterAddInput.doAfterTextChanged {
+                Log.e("filterAddTAG",
+                    "FilterAddFragment setFilterTextChangeListener before editable $it numberFormat")
+                if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull().isTrue())
+                    || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart().isTrue())
+                ) return@doAfterTextChanged
+                Log.e("filterAddTAG",
+                    "FilterAddFragment setFilterTextChangeListener after filter.filter ${filter?.filter} editable $it numberFormat ${filter?.countryCode?.numberFormat} conditionTypeFullHint ${filter?.conditionTypeFullHint()}")
                 filterToInput = false
                 filter = filter?.apply {
                     filter =
@@ -297,7 +300,9 @@ open class FilterAddFragment :
             filterAddContactList.isVisible = filteredContactList.isEmpty().not()
             filterAddEmptyList.root.isVisible = filteredContactList.isEmpty()
             filter?.let { numberDataAdapter?.addingFilter = it }
-            (activity as MainActivity).setProgressVisibility(false)
+            Log.e("filterAddTAG",
+                "FilterAddFragment filterContactFilterList viewModel.hideProgress()")
+            viewModel.hideProgress()
         }
         Log.e("filterAddTAG",
             "BaseAddFragment filterContactList filteredContactList?.size ${filteredContactList.size}")

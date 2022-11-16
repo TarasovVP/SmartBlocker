@@ -41,6 +41,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun getNumberDataList() {
+        showProgress()
         launch {
             val contacts = async { contactRepository.getAllContacts() }
             val filters = async { filterRepository.allFilters() }

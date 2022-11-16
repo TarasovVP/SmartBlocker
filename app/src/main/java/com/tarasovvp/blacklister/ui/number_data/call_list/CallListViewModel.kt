@@ -20,6 +20,8 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun getCallList(refreshing: Boolean) {
+        Log.e("adapterTAG",
+            "CallListViewModel getCallList refreshing $refreshing")
         if (refreshing.not()) showProgress()
         launch {
             val logCalls = async { callRepository.getAllLogCalls() }
@@ -37,7 +39,8 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getHashMapFromCallList(callList: List<Call>, refreshing: Boolean) {
-        Log.e("callTAG", "CallListViewModel getHashMapFromCallList() start")
+        Log.e("adapterTAG",
+            "CallListViewModel getHashMapFromFilterList refreshing $refreshing")
         if (refreshing.not()) showProgress()
         launch {
             val hashMapList =

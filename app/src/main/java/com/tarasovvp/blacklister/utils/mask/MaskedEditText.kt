@@ -56,8 +56,10 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     fun setNumberMask(mask: String) {
+        Log.e("filterAddTAG",
+            "MaskedEditText setNumberMask mask $mask hint $hint")
         this.mask = mask
-        hint = mask
+        if (mask.isNotBlank()) hint = mask
         cleanUp()
     }
 

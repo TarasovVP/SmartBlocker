@@ -78,7 +78,6 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@{ContextCompat.getColor(context, filter.filterAction.color)}"
             android:digits="0123456789"
-            android:hint="@{filter.typeFull ? filter.conditionTypeFullHint() : filter.typeStart ? filter.conditionTypeStartHint() : @string/enter_filter}"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:maxLines="1"

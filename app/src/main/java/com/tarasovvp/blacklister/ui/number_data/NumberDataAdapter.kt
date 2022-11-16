@@ -30,8 +30,6 @@ class NumberDataAdapter(
     var addingFilter: Filter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.e("filterAddTAG",
-            "NumberDataAdapter onCreateViewHolder viewType $viewType numberDataList?.size ${numberDataList?.size} addingFilter.filter ${addingFilter?.filter}  addingFilter.countryCode ${addingFilter?.countryCode?.countryCode}")
         return when (viewType) {
             Contact::class.java.simpleName.hashCode() -> ContactViewHolder(
                 LayoutInflater.from(parent.context)
