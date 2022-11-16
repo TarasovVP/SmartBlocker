@@ -12,13 +12,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
-import com.google.android.material.textfield.TextInputEditText
 import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.extensions.*
 
 class MaskedEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-) : TextInputEditText(context, attrs), TextWatcher {
+) : androidx.appcompat.widget.AppCompatEditText(context, attrs), TextWatcher {
 
     private var focusChangeListener: OnFocusChangeListener? = null
 
@@ -63,7 +62,7 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     fun getRawText(): String {
-        return String.format("%s%s", String.EMPTY, rawText?.text.orEmpty())
+        return rawText?.text.orEmpty()
     }
 
     private fun cleanUp() {

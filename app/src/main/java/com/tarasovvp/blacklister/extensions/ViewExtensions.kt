@@ -1,16 +1,12 @@
 package com.tarasovvp.blacklister.extensions
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Typeface
-import android.text.Html
-import android.text.Spannable
-import android.text.SpannableString
+import android.text.*
 import android.text.style.TextAppearanceSpan
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
@@ -22,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.blacklister.R
+import com.tarasovvp.blacklister.constants.Constants.HASH_CHAR
 import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.blacklister.databinding.SnackBarInfoBinding
@@ -224,4 +221,26 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
     } else {
         text = mainNumberText
     }
+}
+
+@SuppressLint("ClickableViewAccessibility")
+fun EditText.setupClearButtonWithAction() {
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+            val clearIcon = if (editable.toString().replace(HASH_CHAR.toString(), String.EMPTY).isNotBlank()) R.drawable.ic_close else 0
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, clearIcon, 0)
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+    })
+
+    setOnTouchListener(View.OnTouchListener { _, event ->
+        if (event.action == MotionEvent.ACTION_UP) {
+            if (event.rawX >= (this.right - this.compoundPaddingRight)) {
+                this.setText(String.EMPTY)
+                return@OnTouchListener true
+            }
+        }
+        return@OnTouchListener false
+    })
 }

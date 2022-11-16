@@ -161,6 +161,7 @@ open class FilterAddFragment :
             container.hideKeyboardWithLayoutTouch()
             filterAddContactList.hideKeyboardWithLayoutTouch()
             filterAddCountryCodeSpinner.hideKeyboardWithLayoutTouch()
+            filterAddInput.setupClearButtonWithAction()
             filterAddInput.doAfterTextChanged {
                 filterToInput = false
                 filter = filter?.apply {
