@@ -1,16 +1,15 @@
 package com.tarasovvp.blacklister.utils.mask
 
-import android.util.Log
 import com.tarasovvp.blacklister.extensions.EMPTY
 
 class RawText {
     var text = String.EMPTY
 
     fun subtractFromString(range: Range) {
-        text = String.format("%s%s", if (range.start > 0 && range.start <= text.length)
-            text.substring(0, range.start) else String.EMPTY, if (range.end >= 0 && range.end < text.length) text.substring(range.end) else String.EMPTY)
-        Log.e("filterAddTAG",
-            "MaskedEditText RawText subtractFromString text $text")
+        text = String.format("%s%s",
+            if (range.start > 0 && range.start <= text.length)
+                text.substring(0, range.start) else String.EMPTY,
+            if (range.end >= 0 && range.end < text.length) text.substring(range.end) else String.EMPTY)
     }
 
     fun addToString(newString1: String?, start: Int, maxLength: Int): Int {

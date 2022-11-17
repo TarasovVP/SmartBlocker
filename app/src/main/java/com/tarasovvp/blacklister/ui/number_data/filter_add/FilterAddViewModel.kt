@@ -51,7 +51,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             val filterList = filters.await().orEmpty()
             val callList = calls.await().orEmpty()
             Log.e("filterAddTAG",
-                "AddViewModel getContactFilterList callList?.size ${callList.size}")
+                "AddViewModel getNumberDataList callList.size ${callList.size}")
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contactList)
                 addAll(filterList)
@@ -66,7 +66,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
                 }
             }
             Log.e("filterAddTAG",
-                "AddViewModel getContactFilterList mainDataList?.size ${numberDataList.size}")
+                "AddViewModel getNumberDataList mainDataList?.size ${numberDataList.size}")
             numberDataListLiveData.postValue(numberDataList)
         }
     }
@@ -74,7 +74,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun insertFilter(filter: Filter) {
         launch {
             Log.e("filterAddTAG",
-                "AddViewModel getContactFilterList filter $filter")
+                "AddViewModel insertFilter filter $filter")
             filterRepository.insertFilter(filter) {
                 filterActionLiveData.postValue(filter)
             }
