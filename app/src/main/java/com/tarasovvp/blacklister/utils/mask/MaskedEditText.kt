@@ -147,6 +147,8 @@ class MaskedEditText @JvmOverloads constructor(
         while (start > 0 && maskToRaw?.get(start) == -1) {
             start--
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText erasingStart mask $mask hint $hint  raw ${rawText?.text}")
         return start
     }
 
@@ -154,7 +156,7 @@ class MaskedEditText @JvmOverloads constructor(
         s: CharSequence, start: Int, count: Int,
         after: Int,
     ) {
-        Log.e("filterAddTAG", "MaskedEditText beforeTextChanged s $s")
+        Log.e("filterAddTAG", "MaskedEditText beforeTextChanged s $s raw ${rawText?.text}")
         if (mask.isNullOrEmpty().not()) {
             if (editingBefore.not()) {
                 editingBefore = true
@@ -175,12 +177,12 @@ class MaskedEditText @JvmOverloads constructor(
             }
         }
         Log.e("filterAddTAG",
-            "MaskedEditText beforeTextChanged mask $mask hint $hint")
+            "MaskedEditText beforeTextChanged mask $mask hint $hint  raw ${rawText?.text}")
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count1: Int) {
         Log.e("filterAddTAG",
-            "MaskedEditText onTextChanged s $s start $start before $before count1 $count1")
+            "MaskedEditText onTextChanged s $s start $start before $before count1 $count1  raw ${rawText?.text}")
         if (mask.isNullOrEmpty().not()) {
             var count = count1
             if (editingOnChanged.not() && editingBefore) {
@@ -203,11 +205,11 @@ class MaskedEditText @JvmOverloads constructor(
             }
         }
         Log.e("filterAddTAG",
-            "MaskedEditText onTextChanged mask $mask hint $hint")
+            "MaskedEditText onTextChanged mask $mask hint $hint  raw ${rawText?.text}")
     }
 
     override fun afterTextChanged(s: Editable) {
-        Log.e("filterAddTAG", "MaskedEditText afterTextChanged s $s")
+        Log.e("filterAddTAG", "MaskedEditText afterTextChanged s $s  raw ${rawText?.text}")
         if (mask.isNullOrEmpty().not()) {
             if (editingAfter.not() && editingBefore && editingOnChanged) {
                 editingAfter = true
@@ -225,7 +227,7 @@ class MaskedEditText @JvmOverloads constructor(
             }
         }
         Log.e("filterAddTAG",
-            "MaskedEditText afterTextChanged mask $mask hint $hint")
+            "MaskedEditText afterTextChanged mask $mask hint $hint  raw ${rawText?.text}")
     }
 
     override fun onSelectionChanged(selStart1: Int, selEnd1: Int) {
@@ -251,6 +253,8 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText onSelectionChanged mask $mask hint $hint raw ${rawText?.text}")
         super.onSelectionChanged(selStart, selEnd)
     }
 
@@ -305,7 +309,7 @@ class MaskedEditText @JvmOverloads constructor(
             }
         }
         Log.e("filterAddTAG",
-            "MaskedEditText makeMaskedText mask $mask maskedText $maskedText")
+            "MaskedEditText makeMaskedText mask $mask maskedText $maskedText  raw ${rawText?.text}")
         return String(maskedText)
     }
 
@@ -331,7 +335,7 @@ class MaskedEditText @JvmOverloads constructor(
             }
         }
         Log.e("filterAddTAG",
-            "MaskedEditText makeMaskedTextWithHint mask $mask hint $hint SpannableStringBuilder $ssb")
+            "MaskedEditText makeMaskedTextWithHint mask $mask hint $hint SpannableStringBuilder $ssb  raw ${rawText?.text}")
         return ssb
     }
 
@@ -357,7 +361,7 @@ class MaskedEditText @JvmOverloads constructor(
             }
         }
         Log.e("filterAddTAG",
-            "MaskedEditText makeMaskedTextWithHintcalculateRange mask $mask hint $hint range $range")
+            "MaskedEditText makeMaskedTextWithHintcalculateRange mask $mask hint $hint range $range raw ${rawText?.text}")
         return range
     }
 
