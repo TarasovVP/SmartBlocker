@@ -100,6 +100,8 @@ class MaskedEditText @JvmOverloads constructor(
                 this@MaskedEditText.setSelection(lastValidPosition())
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText cleanUp mask $mask hint $hint")
     }
 
     private fun findLastValidMaskPosition(): Int {
@@ -172,6 +174,8 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText beforeTextChanged mask $mask hint $hint")
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count1: Int) {
@@ -198,6 +202,8 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText onTextChanged mask $mask hint $hint")
     }
 
     override fun afterTextChanged(s: Editable) {
@@ -218,6 +224,8 @@ class MaskedEditText @JvmOverloads constructor(
                 ignore = false
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText afterTextChanged mask $mask hint $hint")
     }
 
     override fun onSelectionChanged(selStart1: Int, selEnd1: Int) {
@@ -296,30 +304,34 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText makeMaskedText mask $mask maskedText $maskedText")
         return String(maskedText)
     }
 
     private fun makeMaskedTextWithHint(): CharSequence {
         val ssb = SpannableStringBuilder()
         var mtrv: Int
-        for (i in mask.orEmpty().indices) {
-            mtrv = maskToRaw?.get(i).orZero()
+        mask?.forEachIndexed { index, char ->
+            mtrv = maskToRaw?.get(index).orZero()
             if (mtrv != -1) {
                 if (mtrv < rawText?.length().orZero()) {
                     rawText?.charAt(mtrv)?.let { ssb.append(it) }
                 } else {
-                    ssb.append(hint?.get(maskToRaw?.get(i).orZero()) ?: Character.MIN_VALUE)
+                    hint?.get(index)?.let { ssb.append(it) }
                 }
             } else {
-                mask?.get(i)?.let { ssb.append(it) }
+                ssb.append(char)
             }
             if (rawText?.length()
-                    .orZero() < rawToMask?.size.orZero() && i >= rawToMask?.get(rawText?.length()
+                    .orZero() < rawToMask?.size.orZero() && index >= rawToMask?.get(rawText?.length()
                     .orZero()).orZero()
             ) {
-                ssb.setSpan(ForegroundColorSpan(currentHintTextColor), i, i + 1, 0)
+                ssb.setSpan(ForegroundColorSpan(currentHintTextColor), index, index + 1, 0)
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText makeMaskedTextWithHint mask $mask hint $hint SpannableStringBuilder $ssb")
         return ssb
     }
 
@@ -344,6 +356,8 @@ class MaskedEditText @JvmOverloads constructor(
                 range.start = newStart
             }
         }
+        Log.e("filterAddTAG",
+            "MaskedEditText makeMaskedTextWithHintcalculateRange mask $mask hint $hint range $range")
         return range
     }
 
