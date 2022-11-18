@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.digitsTrimmed
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.model.LogCall
@@ -13,7 +14,7 @@ import com.tarasovvp.blacklister.repository.CallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
-import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.model.NumberData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
@@ -38,13 +39,11 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contactList)
                 addAll(callList)
-            }
-            numberDataList.sortBy {
-                when (it) {
-                    is Contact -> it.trimmedPhone.replace(Constants.PLUS_CHAR.toString(),
-                        String.EMPTY)
-                    is LogCall -> it.number.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
-                    else -> String.EMPTY
+                sortBy {
+                    it.numberData.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
+                }
+                distinctBy {
+                    it.numberData
                 }
             }
             contactCallListLiveData.postValue(ArrayList(numberDataList))

@@ -19,7 +19,7 @@ import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.HeaderDataItem
 import com.tarasovvp.blacklister.ui.MainActivity
-import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.model.NumberData
 import com.tarasovvp.blacklister.ui.number_data.call_list.CallListFragment
 import com.tarasovvp.blacklister.ui.number_data.contact_list.ContactListFragment
 import com.tarasovvp.blacklister.ui.number_data.filter_list.WhiteFilterListFragment

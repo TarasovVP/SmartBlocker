@@ -53,7 +53,9 @@ fun Context.systemContactList(): ArrayList<Contact> {
                 name = contactCursor.getString(1),
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3)
-            ))
+            ).apply {
+                numberData = contactCursor.getString(3).digitsTrimmed()
+            })
         }
     }
     return contactList
@@ -94,6 +96,7 @@ fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         logCall.photoUrl = this.getString(7)
     }
+    logCall.numberData = this.getString(2)
     return logCall
 }
 
@@ -221,6 +224,10 @@ fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
 }
 
 fun String?.isValidPhoneNumber(country: String): Boolean {
-    return if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance()
-        .isValidNumberForRegion(getPhoneNumber(country), country)
+    return try {
+        if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance()
+            .isValidNumberForRegion(getPhoneNumber(country), country)
+    } catch (e: Exception) {
+        return false
+    }
 }

@@ -8,7 +8,7 @@ import com.tarasovvp.blacklister.databinding.FragmentBlockerCallsDetailBinding
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
-import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.model.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
 
 class BlockerCallsDetailFragment :

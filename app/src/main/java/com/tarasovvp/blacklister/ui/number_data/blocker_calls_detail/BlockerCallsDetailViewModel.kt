@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
-import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.model.NumberData
 
 class BlockerCallsDetailViewModel(application: Application) : BaseViewModel(application) {
 

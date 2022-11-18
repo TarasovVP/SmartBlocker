@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.model
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
@@ -9,7 +10,6 @@ import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.digitsTrimmed
 import com.tarasovvp.blacklister.extensions.isValidPhoneNumber
 import com.tarasovvp.blacklister.extensions.nameInitial
-import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize
 
 @Entity
@@ -21,6 +21,7 @@ data class Contact(
     var number: String = String.EMPTY,
     var filter: Filter? = Filter(),
 ) : Parcelable, NumberData() {
+
     var trimmedPhone = number.digitsTrimmed()
     var searchText = String.EMPTY
 

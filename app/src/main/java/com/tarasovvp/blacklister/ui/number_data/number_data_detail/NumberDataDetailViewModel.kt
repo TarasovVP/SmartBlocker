@@ -6,7 +6,7 @@ import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.repository.CountryCodeRepository
 import com.tarasovvp.blacklister.repository.FilterRepository
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
-import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.model.NumberData
 
 class NumberDataDetailViewModel(application: Application) : BaseViewModel(application) {
 

@@ -1,6 +1,5 @@
 package com.tarasovvp.blacklister.ui.number_data
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.tarasovvp.blacklister.extensions.orZero
 import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.NumberData
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
 class NumberDataAdapter(

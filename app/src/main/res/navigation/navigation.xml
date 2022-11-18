@@ -171,7 +171,7 @@
         <argument
             android:name="numberData"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.ui.number_data.NumberData"
+            app:argType="com.tarasovvp.blacklister.model.NumberData"
             app:nullable="true" />
         <action
             android:id="@+id/startFilterAddFragment"

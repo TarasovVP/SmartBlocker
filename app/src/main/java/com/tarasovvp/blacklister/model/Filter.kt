@@ -2,6 +2,7 @@ package com.tarasovvp.blacklister.model
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.blacklister.R
@@ -14,7 +15,6 @@ import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.enums.Info
 import com.tarasovvp.blacklister.extensions.*
-import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize
 
 @Entity

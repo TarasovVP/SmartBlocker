@@ -59,7 +59,7 @@ fun Any?.isNotNull() = this != null
 
 fun Boolean?.isTrue() = this == true
 
-fun Boolean?.isNotTrue() = this == true
+fun Boolean?.isNotTrue() = this != true
 
 fun Int?.orZero() = this ?: 0
 

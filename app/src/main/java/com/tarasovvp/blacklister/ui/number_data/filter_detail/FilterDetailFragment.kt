@@ -16,7 +16,7 @@ import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseDetailFragment
-import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.model.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
 import com.tarasovvp.blacklister.ui.number_data.filter_add.FilterAddFragmentDirections
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
@@ -82,7 +82,9 @@ class FilterDetailFragment :
         }
         setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
             binding?.filter?.let {
-                viewModel.insertFilter(it)
+                viewModel.insertFilter(it.apply {
+                    numberData = filter
+                })
             }
         }
     }

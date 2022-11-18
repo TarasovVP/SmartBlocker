@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
+import androidx.room.Ignore
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL
@@ -17,7 +18,6 @@ import com.tarasovvp.blacklister.enums.FilterCondition
 import com.tarasovvp.blacklister.extensions.EMPTY
 import com.tarasovvp.blacklister.extensions.nameInitial
 import com.tarasovvp.blacklister.extensions.toDateFromMilliseconds
-import com.tarasovvp.blacklister.ui.number_data.NumberData
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -34,7 +34,6 @@ open class Call(
     var numberPresentation: String? = String.EMPTY,
     var filter: Filter? = Filter(),
 ) : Parcelable, NumberData() {
-
     var isCheckedForDelete = false
     var isDeleteMode = false
     var searchText = String.EMPTY

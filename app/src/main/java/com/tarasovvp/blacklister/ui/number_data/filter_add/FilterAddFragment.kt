@@ -28,7 +28,7 @@ import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.model.LogCall
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.ui.number_data.NumberData
+import com.tarasovvp.blacklister.model.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -137,7 +137,9 @@ open class FilterAddFragment :
         }
         setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
             binding?.filter?.let {
-                viewModel.insertFilter(it)
+                viewModel.insertFilter(it.apply {
+                    numberData = filter
+                })
             }
         }
         setFragmentResultListener(FilterAction.FILTER_ACTION_CHANGE.name) { _, _ ->
@@ -274,17 +276,11 @@ open class FilterAddFragment :
     }
 
     private fun filterContactFilterList(searchQuery: String) {
-        val filteredContactList = numberDataList.filter { mainData ->
-            (when (mainData) {
-                is Contact -> if (binding?.filter?.isTypeContain().isNotTrue()
-                ) mainData.isValidPhoneNumber(binding?.filter?.countryCode?.countryCode.orEmpty()
-                    .replace(
-                        PLUS_CHAR.toString(), String.EMPTY)) else mainData.trimmedPhone.contains(
-                    searchQuery).isTrue()
-                is Filter -> mainData.filter.contains(searchQuery).isTrue()
-                is LogCall -> mainData.number.contains(searchQuery).isTrue()
-                else -> false
-            })
+        val filteredContactList = numberDataList.filter { numberData ->
+            numberData.numberData.contains(searchQuery).isTrue() &&
+                    if (binding?.filter?.isTypeContain()
+                            .isNotTrue()
+                    ) numberData.numberData.isValidPhoneNumber(binding?.filter?.countryCode?.country.orEmpty()) else true
         }
         binding?.apply {
             filter?.let { numberDataAdapter?.addingFilter = it }
