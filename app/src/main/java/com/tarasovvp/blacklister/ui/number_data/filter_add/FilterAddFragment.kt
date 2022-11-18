@@ -70,7 +70,7 @@ open class FilterAddFragment :
         setFilterTextChangeListener()
         setContactAdapter()
         viewModel.getNumberDataList()
-        if (binding?.filter?.isTypeContain().isTrue().not()) {
+        if (binding?.filter?.isTypeContain().isNotTrue()) {
             viewModel.getCountryCodeList()
         } else {
             binding?.filterAddInput?.hint = getString(R.string.enter_filter)
@@ -114,7 +114,7 @@ open class FilterAddFragment :
             }
             filterAddSubmit.root.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()
-                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
                 ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
@@ -161,8 +161,10 @@ open class FilterAddFragment :
             filterAddInput.doAfterTextChanged {
                 Log.e("filterAddTAG",
                     "FilterAddFragment setFilterTextChangeListener before editable $it numberFormat")
-                if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull().isTrue())
-                    || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart().isTrue())
+                if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull()
+                        .isTrue())
+                    || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart()
+                        .isTrue())
                 ) return@doAfterTextChanged
                 Log.e("filterAddTAG",
                     "FilterAddFragment setFilterTextChangeListener after filter.filter ${filter?.filter} editable $it numberFormat ${filter?.countryCode?.numberFormat} conditionTypeFullHint ${filter?.conditionTypeFullHint()}")
@@ -274,7 +276,11 @@ open class FilterAddFragment :
     private fun filterContactFilterList(searchQuery: String) {
         val filteredContactList = numberDataList.filter { mainData ->
             (when (mainData) {
-                is Contact -> mainData.trimmedPhone.contains(searchQuery).isTrue()
+                is Contact -> if (binding?.filter?.isTypeContain().isNotTrue()
+                ) mainData.isValidPhoneNumber(binding?.filter?.countryCode?.countryCode.orEmpty()
+                    .replace(
+                        PLUS_CHAR.toString(), String.EMPTY)) else mainData.trimmedPhone.contains(
+                    searchQuery).isTrue()
                 is Filter -> mainData.filter.contains(searchQuery).isTrue()
                 is LogCall -> mainData.number.contains(searchQuery).isTrue()
                 else -> false

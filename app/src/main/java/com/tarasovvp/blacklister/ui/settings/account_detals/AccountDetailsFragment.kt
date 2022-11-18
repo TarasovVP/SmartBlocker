@@ -44,9 +44,9 @@ class AccountDetailsFragment :
         binding?.apply {
             includeEmptyState.emptyState = EmptyState.EMPTY_STATE_ACCOUNT
             includeEmptyState.root.isVisible =
-                BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+                BlackListerApp.instance?.isLoggedInUser().isNotTrue()
             loginButton.isVisible =
-                BlackListerApp.instance?.isLoggedInUser().isTrue().not()
+                BlackListerApp.instance?.isLoggedInUser().isNotTrue()
             accountDetailsMainTitle.text = String.format(getString(R.string.welcome),
                 BlackListerApp.instance?.auth?.currentUser?.email)
             (root as ViewGroup).hideKeyboardWithLayoutTouch()

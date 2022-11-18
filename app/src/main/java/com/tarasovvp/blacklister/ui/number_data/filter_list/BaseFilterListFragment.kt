@@ -47,7 +47,7 @@ open class BaseFilterListFragment :
                 override fun onFilterDeleteCheckChange(filter: Filter) {
                     filterList?.find { it.filter == filter.filter }?.isCheckedForDelete =
                         filter.isCheckedForDelete
-                    if (filterList?.any { it.isCheckedForDelete }.isTrue().not() && isDeleteMode) {
+                    if (filterList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode) {
                         changeDeleteMode()
                     }
                 }
@@ -87,7 +87,7 @@ open class BaseFilterListFragment :
     private fun setFragmentResultListeners() {
         setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()
-                && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+                && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
             ) {
                 showMessage(getString(R.string.unavailable_network_repeat), true)
             } else {

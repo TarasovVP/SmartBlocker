@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             && BlackListerApp.instance?.isLoggedInUser().isTrue()
             && savedInstanceState.isNull()
         ) {
-            if (BlackListerApp.instance?.isNetworkAvailable.isTrue().not()) {
+            if (BlackListerApp.instance?.isNetworkAvailable.isNotTrue()) {
                 navController?.navigate(R.id.startUnavailableNetworkDialog)
             } else {
                 if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()

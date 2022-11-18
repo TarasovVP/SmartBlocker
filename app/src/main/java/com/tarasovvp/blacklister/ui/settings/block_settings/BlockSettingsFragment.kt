@@ -5,6 +5,7 @@ import android.view.View
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.FragmentBlockSettingsBinding
+import com.tarasovvp.blacklister.extensions.isNotTrue
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.extensions.safeSingleObserve
 import com.tarasovvp.blacklister.local.SharedPreferencesUtil
@@ -46,7 +47,7 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
             blockSettingsHidden.setSwitchChange(SharedPreferencesUtil.blockHidden)
             blockSettingsHidden.setSwitchClickListener { isChecked ->
                 if (BlackListerApp.instance?.isLoggedInUser()
-                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isTrue().not()
+                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
                 ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {

@@ -58,14 +58,6 @@ data class Filter(
     }
 
     @Exclude
-    fun filterTypeColor(): Int {
-        return when (filterType) {
-            WHITE_FILTER -> R.color.islamic_green
-            else -> R.color.sunset
-        }
-    }
-
-    @Exclude
     fun conditionTypeName(): Int {
         return FilterCondition.getTitleByIndex(conditionType)
     }

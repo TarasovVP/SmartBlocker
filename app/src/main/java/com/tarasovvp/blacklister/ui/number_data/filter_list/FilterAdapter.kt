@@ -10,6 +10,7 @@ import com.tarasovvp.blacklister.R
 import com.tarasovvp.blacklister.databinding.ItemFilterBinding
 import com.tarasovvp.blacklister.databinding.ItemHeaderBinding
 import com.tarasovvp.blacklister.extensions.EMPTY
+import com.tarasovvp.blacklister.extensions.isNotTrue
 import com.tarasovvp.blacklister.extensions.isTrue
 import com.tarasovvp.blacklister.model.Filter
 import com.tarasovvp.blacklister.ui.base.BaseAdapter
@@ -63,7 +64,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                 this.filter = filter
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        itemFilterDelete.isChecked = itemFilterDelete.isChecked.isTrue().not()
+                        itemFilterDelete.isChecked = itemFilterDelete.isChecked.isNotTrue()
                     } else {
                         filterClickListener.onFilterClick(filter)
                     }
