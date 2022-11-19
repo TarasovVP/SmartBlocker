@@ -74,8 +74,6 @@ class NumberDataAdapter(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg
                         filter?.filterAction == FilterAction.FILTER_ACTION_DELETE && adapterPosition == 0 -> R.color.delete_bg
-                        filter?.filterType == BLACK_FILTER && adapterPosition == 0 -> R.color.delete_bg
-                        filter?.filterType == WHITE_FILTER && adapterPosition == 0 -> R.color.white_bg
                         else -> R.color.white
                     }))
                 root.setSafeOnClickListener {
