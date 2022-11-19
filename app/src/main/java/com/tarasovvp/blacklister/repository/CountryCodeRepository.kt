@@ -12,11 +12,13 @@ object CountryCodeRepository {
 
     private val countryCodeDao = BlackListerApp.instance?.database?.countryCodeDao()
 
-    suspend fun getSystemCountryCodeList(): ArrayList<CountryCode> =
+    suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
         withContext(
             Dispatchers.Default
         ) {
-            PhoneNumberUtil.getInstance().countryCodeList()
+            PhoneNumberUtil.getInstance().countryCodeList { size, position ->
+                result.invoke(size, position)
+            }
         }
 
     suspend fun insertAllCountryCodes(list: List<CountryCode>) {

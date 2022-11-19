@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.model.CurrentUser
+import com.tarasovvp.blacklister.model.MainProgress
 import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
 import kotlinx.coroutines.async
@@ -19,11 +20,15 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     val successAllDataLiveData = MutableLiveData<Boolean>()
 
+    private val mainProgress = MainProgress()
+
     fun getCurrentUser() {
         launch {
             Log.e("getAllDataTAG", "MainViewModel getCurrentUser")
             showProgress()
-            progressStatusLiveData.postValue("Сбор информацию")
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressDescription = "Сбор информацию"
+            })
             realDataBaseRepository.getCurrentUser { currentUser ->
                 insertCurrentUserData(currentUser)
             }
@@ -33,7 +38,9 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     private fun insertCurrentUserData(currentUser: CurrentUser?) {
         launch {
             currentUser?.let {
-                progressStatusLiveData.postValue("Запрос внешних данных")
+                progressStatusLiveData.postValue(mainProgress.apply {
+                    progressDescription = "Запрос внешних данных"
+                })
                 val filters = async { filterRepository.insertAllFilters(it.filterList) }
                 val blockedCalls =
                     async { blockedCallRepository.insertAllBlockedCalls(it.blockedCallList) }
@@ -48,33 +55,48 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.e("getAllDataTAG", "MainViewModel getAllData check time start")
             // init country code data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
-            progressStatusLiveData.postValue("Обновление данных локализации")
-            val countryCodeList = countryCodeRepository.getSystemCountryCodeList()
+            val countryCodeList = countryCodeRepository.getSystemCountryCodeList { size, position ->
+                //TODO implement progress
+                progressStatusLiveData.postValue(mainProgress.apply {
+                    progressDescription = "Обновление данных локализации"
+                    progressMax = size
+                    progressPosition = position
+                })
+            }
             Log.e("allDataTAG",
                 "MainViewModel getSystemCountryCodeList countryCodeList.size ${countryCodeList.size}")
             countryCodeRepository.insertAllCountryCodes(countryCodeList)
             // init contacts data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
-            progressStatusLiveData.postValue("Обновление контактов")
-            val contactList = contactRepository.getSystemContactList(getApplication<Application>())
-            Log.e("allDataTAG", "MainViewModel getAllData contactList.forEach")
-            contactList.forEach { contact ->
-                contact.filter = filterRepository.queryFilter(contact.trimmedPhone)
+            val contactList = contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
+                //TODO implement progress
+                progressStatusLiveData.postValue(mainProgress.apply {
+                    progressDescription = "Обновление контактов"
+                    progressMax = size
+                    progressPosition = position
+                })
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
             Log.e("allDataTAG", "MainViewModel getAllData getSystemLogCallList")
-            progressStatusLiveData.postValue("Обновление списка звонков")
             // init calls data
-            val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>())
-            callLogList.forEach { logCall ->
-                logCall.filter = filterRepository.queryFilter(logCall.number)
+            val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
+                //TODO implement progress
+                progressStatusLiveData.postValue(mainProgress.apply {
+                    progressDescription = "Обновление списка звонков"
+                    progressMax = size
+                    progressPosition = position
+                })
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)
             Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
-            progressStatusLiveData.postValue("Обновление данных")
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressDescription = "Обновление данных"
+                progressMax = 0
+                progressPosition = 0
+            })
             Log.e("getAllDataTAG", "MainViewModel getAllData check time finish")
         }
     }

@@ -34,11 +34,13 @@ object ContactRepository {
         }
     }
 
-    suspend fun getSystemContactList(context: Context): ArrayList<Contact> =
+    suspend fun getSystemContactList(context: Context, result: (Int, Int) -> Unit): ArrayList<Contact> =
         withContext(
             Dispatchers.Default
         ) {
-            context.systemContactList()
+            context.systemContactList { size, position ->
+                result.invoke(size, position)
+            }
         }
 
     suspend fun getHashMapFromContactList(contactList: List<Contact>): Map<String, List<Contact>> =

@@ -234,8 +234,8 @@ class MainActivity : AppCompatActivity() {
                     "MainActivity exceptionLiveData setProgressVisibility(false)")
                 setMainProgressVisibility(false)
             }
-            progressStatusLiveData.safeSingleObserve(this@MainActivity) { title ->
-                binding?.mainProgressBar?.mainProgressBarTitle?.text = title
+            progressStatusLiveData.safeSingleObserve(this@MainActivity) { mainProgress ->
+                binding?.mainProgressBarAnimation?.mainProgress = mainProgress
             }
         }
     }
@@ -245,7 +245,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setMainProgressVisibility(isVisible: Boolean) {
-        binding?.mainProgressBar?.mainProgressBarContainer?.isVisible = isVisible
+        binding?.mainProgressBarAnimation?.mainProgressBarContainer?.isVisible = isVisible
         Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible")
     }
 

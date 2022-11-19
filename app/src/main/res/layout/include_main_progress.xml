@@ -2,6 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="mainProgress"
+            type="com.tarasovvp.blacklister.model.MainProgress" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_progress_bar_container"
         android:layout_width="match_parent"
@@ -13,7 +21,7 @@
         android:visibility="gone">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/main_progress_bar"
+            android:id="@+id/main_progress_bar_animation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -32,8 +40,21 @@
             android:layout_marginBottom="@dimen/margin_16"
             android:textColor="@color/alice_blue"
             android:textSize="@dimen/text_size_16"
-            android:text="@string/progress_title"
-            app:layout_constraintTop_toBottomOf="@+id/main_progress_bar"
+            android:text="@{mainProgress.progressDescription}"
+            app:layout_constraintTop_toBottomOf="@+id/main_progress_bar_animation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/main_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginHorizontal="@dimen/margin_25"
+            android:max="@{mainProgress.progressMax}"
+            android:progress="@{mainProgress.progressPosition}"
+            app:layout_constraintTop_toBottomOf="@+id/main_progress_bar_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

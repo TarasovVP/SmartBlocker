@@ -38,11 +38,13 @@ object CallRepository {
         }
     }
 
-    suspend fun getSystemLogCallList(context: Context): ArrayList<LogCall> =
+    suspend fun getSystemLogCallList(context: Context, result: (Int, Int) -> Unit): ArrayList<LogCall> =
         withContext(
             Dispatchers.Default
         ) {
-            context.systemLogCallList()
+            context.systemLogCallList { size, position ->
+                result.invoke(size, position)
+            }
         }
 
     suspend fun getHashMapFromCallList(logCallList: List<Call>): Map<String, List<Call>> =

@@ -22,13 +22,14 @@ import com.tarasovvp.blacklister.constants.Constants.PLUS_CHAR
 import com.tarasovvp.blacklister.constants.Constants.REJECTED_CALL
 import com.tarasovvp.blacklister.model.*
 import com.tarasovvp.blacklister.repository.BlockedCallRepository
+import com.tarasovvp.blacklister.repository.FilterRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
 
-fun Context.systemContactList(): ArrayList<Contact> {
+fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Contacts.DISPLAY_NAME,
@@ -52,10 +53,14 @@ fun Context.systemContactList(): ArrayList<Contact> {
                 id = contactCursor.getString(0),
                 name = contactCursor.getString(1),
                 photoUrl = contactCursor.getString(2),
-                number = contactCursor.getString(3)
+                number = contactCursor.getString(3),
             ).apply {
                 numberData = contactCursor.getString(3).digitsTrimmed()
+                CoroutineScope(Dispatchers.IO).launch {
+                    filter = FilterRepository.queryFilter(numberData)
+                }
             })
+            result.invoke(cursor.count, contactList.size)
         }
     }
     return contactList
@@ -97,14 +102,18 @@ fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
         logCall.photoUrl = this.getString(7)
     }
     logCall.numberData = this.getString(2)
+    CoroutineScope(Dispatchers.IO).launch {
+        logCall.filter = FilterRepository.queryFilter(logCall.numberData)
+    }
     return logCall
 }
 
-fun Context.systemLogCallList(): ArrayList<LogCall> {
+fun Context.systemLogCallList(result: (Int, Int) -> Unit): ArrayList<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
             logCallList.add((callLogCursor.createCallObject(false) as LogCall))
+            result.invoke(callLogCursor.count, logCallList.size)
         }
     }
     return logCallList
@@ -196,9 +205,9 @@ fun Context.getUserCountry(): String? {
     return null
 }
 
-fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
+fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> {
     val countryCodeMap = arrayListOf<CountryCode>()
-    supportedRegions.sorted().forEach { region ->
+    supportedRegions.sorted().forEachIndexed { index, region ->
         val countryCode =
             String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString())
         val numberFormat = try {
@@ -209,6 +218,7 @@ fun PhoneNumberUtil.countryCodeList(): ArrayList<CountryCode> {
             String.EMPTY
         }
         countryCodeMap.add(CountryCode(region, countryCode, region.flagEmoji(), numberFormat))
+        result.invoke(supportedRegions.size, index)
     }
     return countryCodeMap
 }

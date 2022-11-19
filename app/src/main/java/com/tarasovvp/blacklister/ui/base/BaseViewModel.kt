@@ -6,6 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.blacklister.extensions.launchIO
+import com.tarasovvp.blacklister.model.MainProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 
@@ -14,7 +15,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     val exceptionLiveData = MutableLiveData<String>()
     val isProgressProcess = MediatorLiveData<Boolean>()
     val isMainProgressProcess = MediatorLiveData<Boolean>()
-    val progressStatusLiveData = MutableLiveData<String>()
+    val progressStatusLiveData = MutableLiveData<MainProgress>()
 
     fun showProgress() {
         isProgressProcess.postValue(true)
