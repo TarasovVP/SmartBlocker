@@ -4,10 +4,13 @@ import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.blacklister.BlackListerApp
 import com.tarasovvp.blacklister.constants.Constants
+import com.tarasovvp.blacklister.constants.Constants.BLOCKED_CALL_LIST
 import com.tarasovvp.blacklister.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.blacklister.constants.Constants.EXCEPTION
 import com.tarasovvp.blacklister.constants.Constants.FILTER_LIST
 import com.tarasovvp.blacklister.constants.Constants.USERS
+import com.tarasovvp.blacklister.model.BlockedCall
+import com.tarasovvp.blacklister.model.Call
 import com.tarasovvp.blacklister.model.CurrentUser
 import com.tarasovvp.blacklister.model.Filter
 
@@ -30,6 +33,12 @@ object RealDataBaseRepository {
                             snapshot.children.forEach { child ->
                                 child.getValue(Filter::class.java)
                                     ?.let { currentUser.filterList.add(it) }
+                            }
+                        }
+                        BLOCKED_CALL_LIST -> {
+                            snapshot.children.forEach { child ->
+                                child.getValue(BlockedCall::class.java)
+                                    ?.let { currentUser.blockedCallList.add(it) }
                             }
                         }
                     }
@@ -56,6 +65,30 @@ object RealDataBaseRepository {
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
                     if (filterList.map { it.filter }
+                            .contains(snapshot.key)) snapshot.ref.removeValue()
+                }
+                result.invoke()
+            }.addOnFailureListener {
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+            }
+    }
+
+    fun insertBlockedCall(blockedCall: BlockedCall, result: () -> Unit) {
+        currentUserDatabase.child(BLOCKED_CALL_LIST).child(blockedCall.number).setValue(blockedCall)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
+                result.invoke()
+            }.addOnFailureListener {
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+            }
+    }
+
+    fun deleteBlockedCallList(blockedCallList: List<Call>, result: () -> Unit) {
+        currentUserDatabase.child(FILTER_LIST).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
+                task.result.children.forEach { snapshot ->
+                    if (blockedCallList.map { it.number }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()

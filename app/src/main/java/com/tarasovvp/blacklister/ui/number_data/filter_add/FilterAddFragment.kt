@@ -22,13 +22,11 @@ import com.tarasovvp.blacklister.databinding.FragmentFilterAddBinding
 import com.tarasovvp.blacklister.enums.EmptyState
 import com.tarasovvp.blacklister.enums.FilterAction
 import com.tarasovvp.blacklister.extensions.*
-import com.tarasovvp.blacklister.model.Contact
 import com.tarasovvp.blacklister.model.CountryCode
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.LogCall
+import com.tarasovvp.blacklister.model.NumberData
 import com.tarasovvp.blacklister.ui.MainActivity
 import com.tarasovvp.blacklister.ui.base.BaseFragment
-import com.tarasovvp.blacklister.model.NumberData
 import com.tarasovvp.blacklister.ui.number_data.NumberDataAdapter
 import com.tarasovvp.blacklister.utils.setSafeOnClickListener
 
@@ -46,6 +44,21 @@ open class FilterAddFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
+        setToolbar()
+        setClickListeners()
+        setFragmentResultListeners()
+        setFilterTextChangeListener()
+        setNumberDataAdapter()
+        viewModel.getNumberDataList()
+        if (binding?.filter?.isTypeContain().isNotTrue()) {
+            viewModel.getCountryCodeList()
+        } else {
+            binding?.filterAddInput?.hint = getString(R.string.enter_filter)
+        }
+    }
+
+    private fun initViews() {
         Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filter = args.filterAdd?.apply {
@@ -64,17 +77,6 @@ open class FilterAddFragment :
             ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER
             else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
         binding?.executePendingBindings()
-        setToolbar()
-        setClickListeners()
-        setFragmentResultListeners()
-        setFilterTextChangeListener()
-        setContactAdapter()
-        viewModel.getNumberDataList()
-        if (binding?.filter?.isTypeContain().isNotTrue()) {
-            viewModel.getCountryCodeList()
-        } else {
-            binding?.filterAddInput?.hint = getString(R.string.enter_filter)
-        }
     }
 
     private fun setToolbar() {
@@ -132,7 +134,7 @@ open class FilterAddFragment :
                 filterType =
                     if (binding?.filter?.isBlackFilter().isTrue()) WHITE_FILTER else BLACK_FILTER
             }
-            filterContactFilterList(binding?.filter?.filter.orEmpty())
+            filterContactFilterList(binding?.filter?.addFilter().orEmpty())
             setToolbar()
         }
         setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
@@ -174,31 +176,25 @@ open class FilterAddFragment :
                 filter = filter?.apply {
                     filter =
                         if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
-                    filterContactFilterList(this.filter)
+                    filterContactFilterList(this.addFilter())
                 }
             }
         }
     }
 
-    private fun setContactAdapter() {
+    private fun setNumberDataAdapter() {
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
-            val number =
-                when (numberData) {
-                    is Filter -> numberData.filter
-                    is Contact -> numberData.number
-                    is LogCall -> numberData.number
-                    else -> String.EMPTY
-                }
             binding?.apply {
                 binding?.filterToInput = true
                 if (filter?.isTypeContain().isTrue()) {
                     filter = filter?.apply {
                         this.filter =
-                            number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
+                            numberData.numberData.digitsTrimmed()
+                                .replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
                 } else {
                     val phoneNumber =
-                        number.getPhoneNumber(filter?.countryCode?.country.orEmpty())
+                        numberData.numberData.getPhoneNumber(filter?.countryCode?.country.orEmpty())
                     Log.e("filterAddTAG",
                         "BaseAddFragment ContactFilterAdapter contactClick phoneNumber $phoneNumber")
                     if ((phoneNumber?.nationalNumber.toString() == filterAddInput.getRawText() &&
@@ -208,7 +204,7 @@ open class FilterAddFragment :
                         filter = filter?.apply {
                             this.filter =
                                 phoneNumber?.nationalNumber?.toString()
-                                    ?: number.digitsTrimmed()
+                                    ?: numberData.numberData.digitsTrimmed()
                         }
                         filterAddCountryCodeSpinner.setSelection(countryCodeList.indexOfFirst {
                             it.countryCode == if (phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(
@@ -277,10 +273,10 @@ open class FilterAddFragment :
 
     private fun filterContactFilterList(searchQuery: String) {
         val filteredContactList = numberDataList.filter { numberData ->
-            numberData.numberData.contains(searchQuery).isTrue() &&
-                    if (binding?.filter?.isTypeContain()
-                            .isNotTrue()
-                    ) numberData.numberData.isValidPhoneNumber(binding?.filter?.countryCode?.country.orEmpty()) else true
+            numberData.numberData.contains(searchQuery)
+                .isTrue() && if (binding?.filter?.isTypeContain()
+                    .isNotTrue()
+            ) numberData.numberData.isValidPhoneNumber(binding?.filter?.countryCode?.country.orEmpty()) else true
         }
         binding?.apply {
             filter?.let { numberDataAdapter?.addingFilter = it }

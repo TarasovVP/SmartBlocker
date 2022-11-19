@@ -12,6 +12,7 @@ object Constants {
     const val COUNTRY_CODE_START = "+%s"
     const val BLOCK_HIDDEN = "blockHidden"
     const val FILTER_LIST = "filterList"
+    const val BLOCKED_CALL_LIST = "blockedCallList"
     const val DEFAULT_FILTER = 0
     const val BLACK_FILTER = 1
     const val WHITE_FILTER = 2

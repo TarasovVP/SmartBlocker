@@ -3,12 +3,15 @@ package com.tarasovvp.blacklister.ui
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.blacklister.model.Filter
+import com.tarasovvp.blacklister.model.CurrentUser
 import com.tarasovvp.blacklister.repository.*
 import com.tarasovvp.blacklister.ui.base.BaseViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
     private val filterRepository = FilterRepository
+    private val blockedCallRepository = BlockedCallRepository
     private val countryCodeRepository = CountryCodeRepository
     private val logCallRepository = CallRepository
     private val contactRepository = ContactRepository
@@ -22,17 +25,21 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             showProgress()
             progressStatusLiveData.postValue("Сбор информацию")
             realDataBaseRepository.getCurrentUser { currentUser ->
-                currentUser?.let { insertAllFilters(it.filterList) }
+                insertCurrentUserData(currentUser)
             }
         }
     }
 
-    private fun insertAllFilters(filterList: ArrayList<Filter>) {
+    private fun insertCurrentUserData(currentUser: CurrentUser?) {
         launch {
-            Log.e("getAllDataTAG", "MainViewModel insertAllWhiteFilters")
-            progressStatusLiveData.postValue("Обновление фильтров")
-            filterRepository.insertAllFilters(filterList)
-            getAllData()
+            currentUser?.let {
+                progressStatusLiveData.postValue("Запрос внешних данных")
+                val filters = async { filterRepository.insertAllFilters(it.filterList) }
+                val blockedCalls =
+                    async { blockedCallRepository.insertAllBlockedCalls(it.blockedCallList) }
+                awaitAll(filters, blockedCalls)
+                getAllData()
+            }
         }
     }
 

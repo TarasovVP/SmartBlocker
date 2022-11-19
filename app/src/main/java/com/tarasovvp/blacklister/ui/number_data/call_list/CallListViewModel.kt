@@ -55,9 +55,10 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
     fun deleteCallList(callList: List<Call>) {
         showProgress()
         launch {
-            blockedCallRepository.deleteBlockedCalls(callList)
-            successDeleteNumberLiveData.postValue(true)
-            hideProgress()
+            blockedCallRepository.deleteBlockedCalls(callList) {
+                successDeleteNumberLiveData.postValue(true)
+                hideProgress()
+            }
         }
     }
 }
