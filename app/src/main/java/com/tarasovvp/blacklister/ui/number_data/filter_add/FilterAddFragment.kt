@@ -219,7 +219,6 @@ open class FilterAddFragment :
             Log.e("filterAddTAG",
                 "BaseAddFragment ContactFilterAdapter contactClick contact $numberData")
         }
-        binding?.filter?.let { numberDataAdapter?.addingFilter = it }
         binding?.filterAddContactList?.adapter = numberDataAdapter
     }
 
@@ -275,31 +274,43 @@ open class FilterAddFragment :
         val filteredList = arrayListOf<NumberData>()
         val supposedFilteredList = arrayListOf<NumberData>()
         numberDataList.forEach { numberData ->
-            if (numberData.numberData.digitsTrimmed().contains(binding?.filter?.addFilter().orEmpty())
-                    .isTrue() && if (binding?.filter?.isTypeContain().isNotTrue() && (numberData is Filter).not()) numberData.numberData.digitsTrimmed().isValidPhoneNumber(binding?.filter?.countryCode?.country.orEmpty()) else true) filteredList.add(numberData)
-            else if (numberData.numberData.digitsTrimmed().contains(binding?.filter?.filter.orEmpty()).isTrue()) supposedFilteredList.add(numberData)
+            if (numberData.numberData.digitsTrimmed()
+                    .contains(binding?.filter?.addFilter().orEmpty())
+                    .isTrue() && if (binding?.filter?.isTypeContain()
+                        .isNotTrue() && (numberData is Filter).not()
+                ) numberData.numberData.digitsTrimmed()
+                    .isValidPhoneNumber(binding?.filter?.countryCode?.country.orEmpty()) else true
+            ) filteredList.add(numberData.apply {
+                searchText = binding?.filter?.addFilter().orEmpty()
+            })
+            else if (numberData.numberData.digitsTrimmed()
+                    .contains(binding?.filter?.filter.orEmpty()).isTrue()
+            ) supposedFilteredList.add(numberData.apply {
+                searchText = binding?.filter?.filter.orEmpty()
+            })
         }
         Log.e("filterAddTAG",
             "FilterAddFragment filterNumberDataList filteredList?.size ${filteredList.size} supposedFilteredList?.size ${supposedFilteredList.size}")
         binding?.apply {
-            filter?.let { numberDataAdapter?.addingFilter = it }
             val existingFilter =
                 filteredList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
             filter?.filterAction = when (existingFilter?.filterType) {
-                null -> if (filter?.isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else FilterAction.FILTER_ACTION_ADD
+                null -> if (filter?.isInValidPhoneNumber()
+                        .isTrue()
+                ) FilterAction.FILTER_ACTION_INVALID else FilterAction.FILTER_ACTION_ADD
                 filter?.filterType -> FilterAction.FILTER_ACTION_DELETE
                 else -> FilterAction.FILTER_ACTION_CHANGE
             }
             filteredList.addAll(supposedFilteredList)
             filteredList.toMutableList().moveToFirst(existingFilter).let { contactList ->
                 numberDataAdapter?.numberDataList = ArrayList(contactList.apply {
-                    (firstOrNull() as? Filter)?.filterAction = filter?.filterAction
+                    (firstOrNull() as? Filter)?.filterAction =
+                        if (filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE || filter?.filterAction == FilterAction.FILTER_ACTION_DELETE) filter?.filterAction else FilterAction.FILTER_ACTION_ADD
                 })
                 numberDataAdapter?.notifyDataSetChanged()
             }
             filterAddContactList.isVisible = filteredList.isEmpty().not()
             filterAddEmptyList.root.isVisible = filteredList.isEmpty()
-            filter?.let { numberDataAdapter?.addingFilter = it }
             Log.e("filterAddTAG",
                 "FilterAddFragment filterContactFilterList viewModel.hideProgress()")
             viewModel.hideProgress()

@@ -36,9 +36,6 @@ data class Filter(
     var isPreview = false
 
     @get:Exclude
-    var searchText = String.EMPTY
-
-    @get:Exclude
     var filterAction: FilterAction? = null
 
     @Exclude

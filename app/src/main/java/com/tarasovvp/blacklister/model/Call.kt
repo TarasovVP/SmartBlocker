@@ -36,7 +36,6 @@ open class Call(
 ) : Parcelable, NumberData() {
     var isCheckedForDelete = false
     var isDeleteMode = false
-    var searchText = String.EMPTY
     var isExtract = false
 
     fun filterTypeIcon(): Int {

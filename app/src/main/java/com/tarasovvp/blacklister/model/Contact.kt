@@ -23,7 +23,6 @@ data class Contact(
 ) : Parcelable, NumberData() {
 
     var trimmedPhone = number.digitsTrimmed()
-    var searchText = String.EMPTY
 
     fun isBlackFilter(): Boolean {
         return filter?.filterType == BLACK_FILTER

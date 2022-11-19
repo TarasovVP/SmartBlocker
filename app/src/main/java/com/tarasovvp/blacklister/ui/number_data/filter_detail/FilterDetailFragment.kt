@@ -119,7 +119,6 @@ class FilterDetailFragment :
                 findNavController().navigate(FilterDetailFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
-        binding?.filter?.let { numberDataAdapter?.addingFilter = it }
         binding?.filterDetailContactList?.adapter = numberDataAdapter
     }
 
@@ -135,7 +134,11 @@ class FilterDetailFragment :
                 binding?.filterDetailContactListDescription?.isVisible =
                     contactList.isNotEmpty().isTrue()
                 if (this@FilterDetailFragment.contactList == contactList) return@safeSingleObserve
-                this@FilterDetailFragment.contactList = contactList
+                this@FilterDetailFragment.contactList = contactList.apply {
+                    forEach {
+                        it.searchText = binding?.filter?.filter.orEmpty()
+                    }
+                }
                 numberDataAdapter?.numberDataList = contactList
                 numberDataAdapter?.notifyDataSetChanged()
             }
