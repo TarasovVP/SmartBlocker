@@ -6,10 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.blacklister.constants.Constants.BLACK_FILTER
-import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.digitsTrimmed
-import com.tarasovvp.blacklister.extensions.isValidPhoneNumber
-import com.tarasovvp.blacklister.extensions.nameInitial
+import com.tarasovvp.blacklister.extensions.*
 import kotlinx.android.parcel.Parcelize
 
 @Entity
@@ -36,8 +33,7 @@ data class Contact(
         return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
     }
 
-    @Exclude
-    fun isValidPhoneNumber(countryCode: String): Boolean {
-        return trimmedPhone.isValidPhoneNumber(countryCode)
+    fun nationalNumber(country: String): String {
+        return trimmedPhone.getPhoneNumber(country)?.nationalNumber.toString()
     }
 }

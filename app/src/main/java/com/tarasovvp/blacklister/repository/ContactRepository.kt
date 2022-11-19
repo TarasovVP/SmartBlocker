@@ -34,6 +34,14 @@ object ContactRepository {
         }
     }
 
+    suspend fun getSupposedContactList(filter: Filter): List<Contact>? {
+        return contactDao?.queryContactList(if (filter.isPreview) filter.addFilter() else filter.filter,
+            filter.conditionType)?.filter {
+            it.filter.isNull() || it.filter == filter || (it.filter?.filter?.length.orZero() < (if (filter.isPreview) filter.addFilter() else filter.filter).length
+                    && it.trimmedPhone.indexOf(filter.addFilter()) < it.trimmedPhone.indexOf(it.filter?.filter.orEmpty()))
+        }
+    }
+
     suspend fun getSystemContactList(context: Context, result: (Int, Int) -> Unit): ArrayList<Contact> =
         withContext(
             Dispatchers.Default

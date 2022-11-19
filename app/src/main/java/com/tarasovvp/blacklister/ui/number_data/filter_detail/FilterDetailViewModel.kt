@@ -5,11 +5,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.blacklister.constants.Constants
 import com.tarasovvp.blacklister.enums.FilterAction
-import com.tarasovvp.blacklister.extensions.EMPTY
-import com.tarasovvp.blacklister.extensions.digitsTrimmed
-import com.tarasovvp.blacklister.model.Contact
+import com.tarasovvp.blacklister.extensions.*
 import com.tarasovvp.blacklister.model.Filter
-import com.tarasovvp.blacklister.model.LogCall
 import com.tarasovvp.blacklister.repository.CallRepository
 import com.tarasovvp.blacklister.repository.ContactRepository
 import com.tarasovvp.blacklister.repository.FilterRepository
@@ -31,17 +28,32 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
         Log.e("filterAddTAG", "AddViewModel checkContactListByFilter filter $filter")
         showProgress()
         launch {
-            val contacts = async { contactRepository.getQueryContactList(filter) }
             val calls = async { callRepository.getQueryCallList(filter) }
-            awaitAll(contacts, calls)
-            val contactList = contacts.await().orEmpty()
+            val contacts = async { contactRepository.getAllContacts() }
+            awaitAll(calls, contacts)
             val callList = calls.await().orEmpty()
+            val contactList = contacts.await().orEmpty()
+            val matchedContactList = arrayListOf<NumberData>()
+            val supposedFilteredList = arrayListOf<NumberData>()
+            contactList.forEach { numberData ->
+                if (numberData.numberData.digitsTrimmed()
+                        .contains(filter.addFilter())
+                        .isTrue()) matchedContactList.add(numberData.apply {
+                    searchText = filter.addFilter()
+                })
+                else if (numberData.numberData.digitsTrimmed()
+                        .contains(filter.filter).isTrue()
+                ) supposedFilteredList.add(numberData.apply {
+                    searchText = filter.filter
+                })
+            }
             val numberDataList = ArrayList<NumberData>().apply {
-                addAll(contactList)
                 addAll(callList)
+                addAll(supposedFilteredList)
                 sortBy {
                     it.numberData.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
                 }
+                addAll(matchedContactList)
                 distinctBy {
                     it.numberData
                 }
