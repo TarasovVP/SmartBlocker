@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.onboarding.OnBoardingFragment">
+        android:name="com.tarasovvp.smartblocker.ui.start.onboarding.OnBoardingFragment">
         <action
             android:id="@+id/startLoginScreen"
             app:destination="@id/loginFragment"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.login.LoginFragment"
+        android:name="com.tarasovvp.smartblocker.ui.start.login.LoginFragment"
         android:label="@string/log_in">
         <action
             android:id="@+id/startBlackFilterListFragment"
@@ -33,12 +33,12 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.sign_up.SignUpFragment"
+        android:name="com.tarasovvp.smartblocker.ui.start.sign_up.SignUpFragment"
         android:label="" />
 
     <fragment
         android:id="@+id/blackFilterListFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.filter_list.BlackFilterListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragment"
         android:label="@string/black_list">
         <action
             android:id="@+id/startFilterAddFragment"
@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/whiteFilterListFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.filter_list.WhiteFilterListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragment"
         android:label="@string/white_list">
         <action
             android:id="@+id/startFilterAddFragment"
@@ -74,11 +74,11 @@
 
     <fragment
         android:id="@+id/filterDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.filter_detail.FilterDetailFragment" >
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_detail.FilterDetailFragment" >
         <argument
             android:name="filterDetail"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:argType="com.tarasovvp.smartblocker.model.Filter"
             app:nullable="true" />
         <action
             android:id="@+id/startNumberDataDetailFragment"
@@ -103,11 +103,11 @@
 
     <fragment
         android:id="@+id/filterAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.filter_add.FilterAddFragment">
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_add.FilterAddFragment">
         <argument
             android:name="filterAdd"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:argType="com.tarasovvp.smartblocker.model.Filter"
             app:nullable="true" />
         <action
             android:id="@+id/startFilterActionDialog"
@@ -135,7 +135,7 @@
 
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.contact_list.ContactListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.contact_list.ContactListFragment"
         android:label="@string/contact_list">
         <action
             android:id="@+id/startNumberDataDetailFragment"
@@ -143,13 +143,13 @@
         <argument
             android:name="filter"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:argType="com.tarasovvp.smartblocker.model.Filter"
             app:nullable="true" />
     </fragment>
 
     <fragment
         android:id="@+id/callListFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.call_list.CallListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragment"
         android:label="@string/log_list">
         <argument
             android:name="searchQuery"
@@ -166,12 +166,12 @@
 
     <fragment
         android:id="@+id/numberDataDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.number_data_detail.NumberDataDetailFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.number_data_detail.NumberDataDetailFragment"
         android:label="@string/number">
         <argument
             android:name="numberData"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.NumberData"
+            app:argType="com.tarasovvp.smartblocker.model.NumberData"
             app:nullable="true" />
         <action
             android:id="@+id/startFilterAddFragment"
@@ -186,12 +186,12 @@
 
     <fragment
         android:id="@+id/blockerCallsDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.number_data.blocker_calls_detail.BlockerCallsDetailFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.blocker_calls_detail.BlockerCallsDetailFragment"
         android:label="@string/blocking_history">
         <argument
             android:name="filter"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:argType="com.tarasovvp.smartblocker.model.Filter"
             app:nullable="true" />
         <action
             android:id="@+id/startNumberDataDetailFragment"
@@ -204,7 +204,7 @@
 
     <fragment
         android:id="@+id/settingsListFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.settings_list.SettingsListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.settings_list.SettingsListFragment"
         android:label="@string/settings">
         <action
             android:id="@+id/startBlockSettingsFragment"
@@ -229,12 +229,12 @@
 
     <fragment
         android:id="@+id/blockSettingsFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.block_settings.BlockSettingsFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.block_settings.BlockSettingsFragment"
         android:label="@string/block_settings" />
 
     <fragment
         android:id="@+id/accountDetailsFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.account_detals.AccountDetailsFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.account_detals.AccountDetailsFragment"
         android:label="@string/personal_details">
         <action
             android:id="@+id/startAccountActionDialog"
@@ -248,17 +248,17 @@
 
     <fragment
         android:id="@+id/appLanguageFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.app_language.AppLanguageFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.app_language.AppLanguageFragment"
         android:label="@string/app_language" />
 
     <fragment
         android:id="@+id/appThemeFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.app_theme.AppThemeFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.app_theme.AppThemeFragment"
         android:label="@string/app_theme" />
 
     <dialog
         android:id="@+id/filterActionDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.FilterActionDialog">
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterActionDialog">
         <argument
             android:name="filterAction"
             android:defaultValue=""
@@ -267,13 +267,13 @@
         <argument
             android:name="filter"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:argType="com.tarasovvp.smartblocker.model.Filter"
             app:nullable="true" />
     </dialog>
 
     <dialog
         android:id="@+id/accountActionDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.AccountActionDialog">
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.AccountActionDialog">
         <argument
             android:name="isLogOut"
             android:defaultValue="false"
@@ -282,7 +282,7 @@
 
     <dialog
         android:id="@+id/filterConditionsDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.FilterConditionsDialog">
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterConditionsDialog">
         <argument
             android:name="filterConditionList"
             android:defaultValue="@null"
@@ -292,7 +292,7 @@
 
     <dialog
         android:id="@+id/appExitDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.AppExitDialog" />
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.AppExitDialog" />
 
     <action
         android:id="@+id/startAppExitDialog"
@@ -300,7 +300,7 @@
 
     <dialog
         android:id="@+id/unavailableNetworkDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.UnavailableNetworkDialog" />
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.UnavailableNetworkDialog" />
 
     <action
         android:id="@+id/startUnavailableNetworkDialog"
@@ -308,7 +308,7 @@
 
     <dialog
         android:id="@+id/forgotPasswordDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.ForgotPasswordDialog">
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.ForgotPasswordDialog">
         <argument
             android:name="email"
             android:defaultValue=""

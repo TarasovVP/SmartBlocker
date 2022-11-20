@@ -15,7 +15,7 @@
 
         <variable
             name="filter"
-            type="com.tarasovvp.blacklister.model.Filter" />
+            type="com.tarasovvp.smartblocker.model.Filter" />
 
     </data>
 
@@ -72,7 +72,7 @@
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
             app:layout_constraintTop_toTopOf="@+id/filter_add_input" />
 
-        <com.tarasovvp.blacklister.utils.mask.MaskedEditText
+        <com.tarasovvp.smartblocker.utils.mask.MaskedEditText
             android:id="@+id/filter_add_input"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"

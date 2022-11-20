@@ -6,7 +6,7 @@
 
         <variable
             name="info"
-            type="com.tarasovvp.blacklister.enums.Info" />
+            type="com.tarasovvp.smartblocker.enums.Info" />
 
     </data>
 

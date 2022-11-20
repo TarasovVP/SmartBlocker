@@ -58,7 +58,7 @@
             app:layout_constraintTop_toBottomOf="@+id/filter_list_filter"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <com.tarasovvp.blacklister.utils.FloatingActionMenuView
+        <com.tarasovvp.smartblocker.utils.FloatingActionMenuView
             android:id="@+id/filter_list_fab_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

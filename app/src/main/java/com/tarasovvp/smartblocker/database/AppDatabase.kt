@@ -1,0 +1,21 @@
+package com.tarasovvp.smartblocker.database
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.tarasovvp.smartblocker.database.dao.*
+import com.tarasovvp.smartblocker.model.*
+
+@Database(
+    entities = [LogCall::class, BlockedCall::class, Contact::class, Filter::class, CountryCode::class],
+    version = 1,
+    exportSchema = false
+)
+@TypeConverters(CountryCodeConverter::class, FilterConverter::class)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun logCallDao(): LogCallDao
+    abstract fun blockedCallDao(): BlockedCallDao
+    abstract fun contactDao(): ContactDao
+    abstract fun filterDao(): FilterDao
+    abstract fun countryCodeDao(): CountryCodeDao
+}

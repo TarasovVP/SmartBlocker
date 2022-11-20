@@ -10,7 +10,7 @@
             type="Boolean" />
         <variable
             name="call"
-            type="com.tarasovvp.blacklister.model.Call" />
+            type="com.tarasovvp.smartblocker.model.Call" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -9,7 +9,7 @@
 
         <variable
             name="filter"
-            type="com.tarasovvp.blacklister.model.Filter" />
+            type="com.tarasovvp.smartblocker.model.Filter" />
     </data>
 
     <androidx.cardview.widget.CardView

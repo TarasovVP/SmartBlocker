@@ -1,33 +1,42 @@
 {
   "project_info": {
-    "project_number": "576475361826",
-    "project_id": "blacklister-b6048",
-    "storage_bucket": "blacklister-b6048.appspot.com"
+    "project_number": "865166794508",
+    "firebase_url": "https://smart-blocker-db809-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "smart-blocker-db809",
+    "storage_bucket": "smart-blocker-db809.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:576475361826:android:7b59d0c56aff7b94c2107b",
+        "mobilesdk_app_id": "1:865166794508:android:f7cab09d37d035121bf329",
         "android_client_info": {
-          "package_name": "com.tarasovvp.blacklister"
+          "package_name": "com.tarasovvp.smartblocker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com",
+          "client_id": "865166794508-osj31asdpbqrg4273ilceflnsnso1ohh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tarasovvp.smartblocker",
+            "certificate_hash": "6f00bae36143f3ac8c5ac1af0f5a02fb779ac8cb"
+          }
+        },
+        {
+          "client_id": "865166794508-5muqsbokmlifd918hpq0u1g0co38ck4c.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA9ZPw6m5qwsoY4kONsJmPOZpESeVhl_m0"
+          "current_key": "AIzaSyBJ5ZesxJfPEIpK2tTgMOP_GT0LnVQZ4SA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com",
+              "client_id": "865166794508-5muqsbokmlifd918hpq0u1g0co38ck4c.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
