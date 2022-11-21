@@ -95,7 +95,7 @@ class NumberDataAdapter(
         fun bindData(call: Call?) {
             binding?.apply {
                 this.call = call
-                //this.call?.isExtract = searchText.isNotNull()
+                this.call?.isExtract = true
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1) }
                 }

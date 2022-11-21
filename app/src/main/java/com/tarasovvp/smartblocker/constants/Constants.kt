@@ -5,7 +5,7 @@ object Constants {
     const val REALTIME_DATABASE =
         "https://smart-blocker-db809-default-rtdb.europe-west1.firebasedatabase.app"
     const val SERVER_CLIENT_ID =
-        "576475361826-qqu63i7ii3aquesphf7e071osjjh6178.apps.googleusercontent.com"
+        "865166794508-5muqsbokmlifd918hpq0u1g0co38ck4c.apps.googleusercontent.com"
     const val USERS = "users"
     const val PLUS_CHAR = '+'
     const val HASH_CHAR = '#'

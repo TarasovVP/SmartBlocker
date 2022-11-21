@@ -21,7 +21,7 @@
     <string name="avoid_call">"BlackLister will save you from intrusive calls"</string>
     <string name="receive_notifications">BlackLister will warn you about the severity of incoming calls</string>
     <string name="accept">Confirm</string>
-    <string name="blacklister_is_on">Unwanted call protection enabled</string>
+    <string name="smart_blocker_is_on">Unwanted call protection enabled</string>
     <string name="search">Search</string>
     <string name="list_empty">List is empty</string>
     <string name="exit_application">Do you want to exit the application?</string>

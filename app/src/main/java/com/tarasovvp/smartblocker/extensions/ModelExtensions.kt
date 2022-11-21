@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.max
 
 fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
@@ -240,4 +241,27 @@ fun String?.isValidPhoneNumber(country: String): Boolean {
     } catch (e: Exception) {
         return false
     }
+}
+
+fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<NumberData> {
+    val filteredList = arrayListOf<NumberData>()
+    val supposedFilteredList = arrayListOf<NumberData>()
+    forEach { numberData ->
+        val phoneNumber = numberData.numberData.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
+        if (numberData.numberData.digitsTrimmed()
+                .contains(filter?.addFilter().orEmpty())
+                .isTrue() && (filter?.isTypeContain()
+                    .isNotTrue() && (numberData is Filter).not()
+        )) filteredList.add(numberData.apply {
+            searchText = filter?.addFilter().orEmpty()
+        })
+        else if ((filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed()
+                .contains(filter?.filter.orEmpty()).isTrue()) || (filter?.isTypeContain().isTrue().not()
+                    && phoneNumber?.nationalNumber.toString().startsWith(filter?.filter.orEmpty()).isTrue()
+                    && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode) == filter?.countryCode?.countryCode)) supposedFilteredList.add(numberData.apply {
+            searchText = filter?.filter.orEmpty()
+        })
+    }
+    filteredList.addAll(supposedFilteredList)
+    return filteredList
 }

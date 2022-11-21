@@ -271,26 +271,9 @@ open class FilterAddFragment :
     }
 
     private fun filterNumberDataList() {
-        val filteredList = arrayListOf<NumberData>()
-        val supposedFilteredList = arrayListOf<NumberData>()
-        numberDataList.forEach { numberData ->
-            if (numberData.numberData.digitsTrimmed()
-                    .contains(binding?.filter?.addFilter().orEmpty())
-                    .isTrue() && if (binding?.filter?.isTypeContain()
-                        .isNotTrue() && (numberData is Filter).not()
-                ) numberData.numberData.digitsTrimmed()
-                    .isValidPhoneNumber(binding?.filter?.countryCode?.country.orEmpty()) else true
-            ) filteredList.add(numberData.apply {
-                searchText = binding?.filter?.addFilter().orEmpty()
-            })
-            else if (numberData.numberData.digitsTrimmed()
-                    .contains(binding?.filter?.filter.orEmpty()).isTrue()
-            ) supposedFilteredList.add(numberData.apply {
-                searchText = binding?.filter?.filter.orEmpty()
-            })
-        }
+        val filteredList = numberDataList.filteredNumberDataList(binding?.filter)
         Log.e("filterAddTAG",
-            "FilterAddFragment filterNumberDataList filteredList?.size ${filteredList.size} supposedFilteredList?.size ${supposedFilteredList.size}")
+            "FilterAddFragment filterNumberDataList filteredList?.size ${filteredList.size}")
         binding?.apply {
             val existingFilter =
                 filteredList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
@@ -301,7 +284,6 @@ open class FilterAddFragment :
                 filter?.filterType -> FilterAction.FILTER_ACTION_DELETE
                 else -> FilterAction.FILTER_ACTION_CHANGE
             }
-            filteredList.addAll(supposedFilteredList)
             filteredList.toMutableList().moveToFirst(existingFilter).let { contactList ->
                 numberDataAdapter?.numberDataList = ArrayList(contactList.apply {
                     (firstOrNull() as? Filter)?.filterAction =
