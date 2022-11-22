@@ -21,7 +21,8 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
     private val filterRepository = FilterRepository
     private val callRepository = CallRepository
 
-    val contactCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
+    val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
+
     val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getQueryContactCallList(filter: Filter) {
@@ -33,33 +34,28 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             awaitAll(calls, contacts)
             val callList = calls.await().orEmpty()
             val contactList = contacts.await().orEmpty()
-            val matchedContactList = arrayListOf<NumberData>()
-            val supposedFilteredList = arrayListOf<NumberData>()
-            contactList.forEach { numberData ->
-                if (numberData.numberData.digitsTrimmed()
-                        .contains(filter.addFilter())
-                        .isTrue()) matchedContactList.add(numberData.apply {
-                    searchText = filter.addFilter()
-                })
-                else if (numberData.numberData.digitsTrimmed()
-                        .contains(filter.filter).isTrue()
-                ) supposedFilteredList.add(numberData.apply {
-                    searchText = filter.filter
-                })
-            }
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(callList)
-                addAll(supposedFilteredList)
+                addAll(contactList)
                 sortBy {
                     it.numberData.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
                 }
-                addAll(matchedContactList)
                 distinctBy {
                     it.numberData
                 }
             }
-            contactCallListLiveData.postValue(ArrayList(numberDataList))
+            filteredNumberDataList(filter, numberDataList)
             Log.e("filterAddTAG", "AddViewModel queryContactListLiveData $filter")
+            hideProgress()
+        }
+    }
+
+    private fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
+        showProgress()
+        launch {
+            Log.e("filterAddTAG",
+                "AddViewModel filteredNumberDataList filter $filter")
+            numberDataListLiveData.postValue(numberDataList.filteredNumberDataList(filter))
             hideProgress()
         }
     }

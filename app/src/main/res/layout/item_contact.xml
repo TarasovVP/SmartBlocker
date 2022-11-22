@@ -46,13 +46,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_16"
                 android:textStyle="bold"
+                android:text="@{contact.highlightedSpanned}"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 app:layout_constraintTop_toTopOf="@+id/item_contact_avatar"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"
-                app:layout_constraintBottom_toTopOf="@+id/item_contact_name"
-                app:mainNumberText="@{contact.number}"
-                app:searchNumberText="@{contact.searchText}" />
+                app:layout_constraintBottom_toTopOf="@+id/item_contact_name" />
 
             <TextView
                 android:id="@+id/item_contact_name"

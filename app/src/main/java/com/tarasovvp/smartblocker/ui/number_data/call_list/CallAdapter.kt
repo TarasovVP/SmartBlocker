@@ -9,6 +9,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.model.Call
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
@@ -61,6 +62,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 call.isDeleteMode = isDeleteMode
                 call.searchText = searchQuery
+                call.highlightedSpanned = call.number.highlightedSpanned(searchQuery, null)
                 call.isExtract = false
                 this.call = call
                 root.setSafeOnClickListener {
@@ -71,7 +73,10 @@ class CallAdapter(val callClickListener: CallClickListener) :
                             callClickListener.onCallDeleteInfoClick()
                         }
                     } else {
-                        callClickListener.onCallClick(call)
+                        callClickListener.onCallClick(call.apply {
+                            searchText = String.EMPTY
+                            call.highlightedSpanned = call.number.highlightedSpanned(String.EMPTY, null)
+                        })
                     }
                 }
                 root.setOnLongClickListener {

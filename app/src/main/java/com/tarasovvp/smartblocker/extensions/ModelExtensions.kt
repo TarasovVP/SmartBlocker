@@ -27,7 +27,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.max
 
 fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
@@ -225,9 +224,9 @@ fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<Count
 }
 
 fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
+    Log.e("searchTAG", "ModelExtensions getPhoneNumber this $this country $country")
     if (this.isNullOrEmpty()) null
-    else if (this.startsWith(PLUS_CHAR))
-        PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), String.EMPTY)
+    else if (this.startsWith(PLUS_CHAR)) PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), String.EMPTY)
     else PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), country)
 } catch (e: Exception) {
     e.printStackTrace()
@@ -247,20 +246,30 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
     val filteredList = arrayListOf<NumberData>()
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
-        val phoneNumber = numberData.numberData.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
-        if (numberData.numberData.digitsTrimmed()
-                .contains(filter?.addFilter().orEmpty())
-                .isTrue() && (filter?.isTypeContain()
-                    .isNotTrue() && (numberData is Filter).not()
-        )) filteredList.add(numberData.apply {
-            searchText = filter?.addFilter().orEmpty()
-        })
-        else if ((filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed()
-                .contains(filter?.filter.orEmpty()).isTrue()) || (filter?.isTypeContain().isTrue().not()
-                    && phoneNumber?.nationalNumber.toString().startsWith(filter?.filter.orEmpty()).isTrue()
-                    && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode) == filter?.countryCode?.countryCode)) supposedFilteredList.add(numberData.apply {
-            searchText = filter?.filter.orEmpty()
-        })
+        if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed()
+                .contains(filter?.filter.orEmpty()).isTrue()
+        ) {
+            filteredList.add(numberData.apply {
+                searchText = filter?.filter.orEmpty()
+                highlightedSpanned = numberData.numberData.highlightedSpanned(filter?.filter, null)
+            })
+        } else {
+            val phoneNumber = numberData.numberData.digitsTrimmed()
+                .getPhoneNumber(filter?.countryCode?.country.orEmpty())
+            if (numberData.numberData.digitsTrimmed().startsWith(filter?.addFilter().orEmpty()).isTrue())
+                filteredList.add(numberData.apply {
+                    searchText = filter?.addFilter().orEmpty()
+                    highlightedSpanned = numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
+                }) else if ((phoneNumber?.nationalNumber.toString()
+                    .startsWith(filter?.filterWithoutCountryCode().orEmpty())
+                    .isTrue() && String.format(COUNTRY_CODE_START,
+                    phoneNumber?.countryCode) == filter?.countryCode?.countryCode)
+            )
+                supposedFilteredList.add(numberData.apply {
+                    searchText = if (filter.filter == filter.addFilter()) filter.filterWithoutCountryCode() else filter.filter
+                    highlightedSpanned = numberData.numberData.highlightedSpanned(if (filter.filter == filter.addFilter()) filter.filterWithoutCountryCode() else filter.filter, filter.countryCode.countryCode)
+                })
+        }
     }
     filteredList.addAll(supposedFilteredList)
     return filteredList

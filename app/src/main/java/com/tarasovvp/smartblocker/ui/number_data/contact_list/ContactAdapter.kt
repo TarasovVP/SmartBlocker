@@ -10,6 +10,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.digitsTrimmed
+import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.model.Contact
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
@@ -58,9 +60,13 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<
             val contact = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
                 contact.searchText = searchQuery
+                contact.highlightedSpanned = contact.number.highlightedSpanned(searchQuery, null)
                 this.contact = contact
                 root.setSafeOnClickListener {
-                    contactClick.invoke(contact)
+                    contactClick.invoke(contact.apply {
+                        searchText = String.EMPTY
+                        contact.highlightedSpanned = contact.number.highlightedSpanned( String.EMPTY, null)
+                    })
                 }
                 executePendingBindings()
                 Log.e("adapterTAG",

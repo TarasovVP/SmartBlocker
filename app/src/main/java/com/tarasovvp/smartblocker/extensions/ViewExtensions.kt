@@ -3,8 +3,12 @@ package com.tarasovvp.smartblocker.extensions
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Typeface
-import android.text.*
+import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextWatcher
 import android.text.style.TextAppearanceSpan
 import android.view.*
 import android.widget.*
@@ -128,7 +132,7 @@ fun ImageView.setImageTint(@ColorInt color: Int) {
 fun TextView.highlightText(searchText: String?, mainText: String?) {
     if (searchText.isNullOrEmpty().not()
         && mainText.isNullOrEmpty().not()
-        && mainText.digitsTrimmed().lowercase().contains(searchText.orEmpty().lowercase())
+        && mainText.orEmpty().lowercase().contains(searchText.orEmpty().lowercase())
     ) {
         SpannableString(mainText).apply {
             var index: Int =
@@ -154,23 +158,26 @@ fun TextView.highlightText(searchText: String?, mainText: String?) {
     }
 }
 
-@BindingAdapter(value = ["searchNumberText", "mainNumberText"], requireAll = false)
-fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?) {
+fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?): SpannableString {
+    val mainText = if (countryCode.isNullOrEmpty().not()) {
+        String.format("%s? %s", countryCode, this)
+    } else this
+    val spannableString = SpannableString(mainText)
     val highlightedTextList: ArrayList<String> = ArrayList()
     if (searchNumberText.isNullOrEmpty().not()
-        && mainNumberText.isNullOrEmpty().not()
-        && mainNumberText.digitsTrimmed().lowercase()
+        && this.isNullOrEmpty().not()
+        && this.digitsTrimmed().lowercase()
             .contains(searchNumberText.orEmpty().lowercase())
     ) {
-        val highlightedText: StringBuilder = StringBuilder()
+        var highlightedText: StringBuilder = StringBuilder()
         var searchIndex = 0
-        mainNumberText?.forEachIndexed { index, char ->
+        this?.forEachIndexed { index, char ->
             if (char.isDigit() || char == PLUS_CHAR) {
                 if (searchIndex < searchNumberText?.length.orZero() && char == searchNumberText?.get(
                         searchIndex)
                 ) {
                     highlightedText.append(char)
-                    if (index == mainNumberText.lastIndex && highlightedText.toString()
+                    if (index == this.lastIndex && highlightedText.toString()
                             .digitsTrimmed().length >= searchNumberText.length.orZero()
                     ) {
                         highlightedTextList.add(highlightedText.toString())
@@ -196,30 +203,43 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
                 highlightedText.append(char)
             }
         }
+        if (countryCode.isNullOrEmpty().not()) {
+            spannableString.apply {
+                val highlightSpan = TextAppearanceSpan(null,
+                    Typeface.ITALIC,
+                    -1,
+                    ColorStateList(arrayOf(intArrayOf()),
+                        intArrayOf(Color.LTGRAY)),
+                    null)
+                setSpan(highlightSpan,
+                    0,
+                    countryCode?.length.orZero() + 1,
+                    Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            }
+        }
         highlightedTextList.forEach { searchText ->
-            SpannableString(mainNumberText).apply {
+            spannableString.apply {
                 var index: Int =
-                    mainNumberText.orEmpty().lowercase().indexOf(searchText.lowercase())
-                while (index >= 0 && index < mainNumberText?.length.orZero()) {
+                    mainText.orEmpty().lowercase().indexOf(searchText.lowercase())
+                while (index >= 0 && index < this@highlightedSpanned?.length.orZero()) {
                     val highlightSpan = TextAppearanceSpan(null,
                         Typeface.BOLD,
                         -1,
                         ColorStateList(arrayOf(intArrayOf()),
-                            intArrayOf(ContextCompat.getColor(context, R.color.span_text))),
+                            intArrayOf(Color.BLUE)),
                         null)
                     setSpan(highlightSpan,
                         index,
                         index + searchText.length.orZero(),
                         Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                    index = mainNumberText.orEmpty().lowercase()
+                    index = mainText.orEmpty().lowercase()
                         .indexOf(searchText.lowercase(), index + 1)
                 }
-                text = this
             }
         }
-        if (highlightedTextList.isEmpty()) text = mainNumberText
+        return spannableString
     } else {
-        text = mainNumberText
+        return spannableString
     }
 }
 
@@ -227,9 +247,12 @@ fun TextView.highlightedText(searchNumberText: String?, mainNumberText: String?)
 fun EditText.setupClearButtonWithAction() {
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {
-            val clearIcon = if (editable.toString().replace(HASH_CHAR.toString(), String.EMPTY).isNotBlank()) R.drawable.ic_close else 0
+            val clearIcon = if (editable.toString().replace(HASH_CHAR.toString(), String.EMPTY)
+                    .isNotBlank()
+            ) R.drawable.ic_close else 0
             setCompoundDrawablesWithIntrinsicBounds(0, 0, clearIcon, 0)
         }
+
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
     })

@@ -128,7 +128,7 @@ class FilterDetailFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            contactCallListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+            numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 binding?.filterDetailContactListEmpty?.root?.isVisible =
                     contactList.isEmpty().isTrue()
                 binding?.filterDetailContactListDescription?.isVisible =

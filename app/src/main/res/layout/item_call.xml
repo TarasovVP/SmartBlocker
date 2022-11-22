@@ -58,12 +58,11 @@
                 android:textSize="@dimen/text_size_16"
                 android:textStyle="bold"
                 android:layout_marginHorizontal="@dimen/margin_16"
+                android:text="@{call.highlightedSpanned}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-                app:layout_constraintTop_toTopOf="@id/item_call_avatar"
-                app:mainText="@{call.numberEmpty ? @string/hidden : call.number}"
-                app:searchText="@{call.searchText}" />
+                app:layout_constraintTop_toTopOf="@id/item_call_avatar"  />
 
             <TextView
                 android:id="@+id/item_call_name"

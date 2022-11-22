@@ -91,6 +91,14 @@ data class Filter(
     }
 
     @Exclude
+    fun filterWithoutCountryCode(): String {
+        return when (filter) {
+            addFilter() -> filter.replace(countryCode.countryCode, String.EMPTY)
+            else -> filter
+        }
+    }
+
+    @Exclude
     fun filterActionIcon() = when (filterAction) {
         FilterAction.FILTER_ACTION_INVALID -> if (isBlackFilter()) R.drawable.ic_black_filter_inactive else R.drawable.ic_white_filter_inactive
         FilterAction.FILTER_ACTION_CHANGE -> if (isBlackFilter()) R.drawable.ic_white_to_black_filter else R.drawable.ic_black_to_white_filter

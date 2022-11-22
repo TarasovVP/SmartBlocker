@@ -51,14 +51,13 @@
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_16"
                 android:textStyle="bold"
+                android:text="@{filter.highlightedSpanned}"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:textColor="@{filter.filterAction == null ? @color/main_color : ContextCompat.getColor(context, filter.filterAction.color)}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_type_title"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:mainText="@{filter.filterAction == null  ? filter.filter : filter.addFilter}"
-                app:searchText="@{filter.searchText}" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/item_filter_type_title"

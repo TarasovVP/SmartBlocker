@@ -25,6 +25,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
 
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
+    val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getCountryCodeList() {
@@ -64,6 +65,16 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             Log.e("filterAddTAG",
                 "AddViewModel getNumberDataList mainDataList?.size ${numberDataList.size}")
             numberDataListLiveData.postValue(numberDataList)
+        }
+    }
+
+    fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
+        showProgress()
+        launch {
+            Log.e("filterAddTAG",
+                "AddViewModel filteredNumberDataList filter $filter")
+            filteredNumberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter, numberDataList))
+            hideProgress()
         }
     }
 

@@ -134,7 +134,7 @@ open class FilterAddFragment :
                 filterType =
                     if (binding?.filter?.isBlackFilter().isTrue()) PERMISSION else BLOCKER
             }
-            filterNumberDataList()
+            viewModel.filteredNumberDataList(binding?.filter, numberDataList)
             setToolbar()
         }
         setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
@@ -177,7 +177,7 @@ open class FilterAddFragment :
                     filter =
                         if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
                 }
-                filterNumberDataList()
+                viewModel.filteredNumberDataList(binding?.filter, numberDataList)
             }
         }
     }
@@ -270,8 +270,7 @@ open class FilterAddFragment :
         }
     }
 
-    private fun filterNumberDataList() {
-        val filteredList = numberDataList.filteredNumberDataList(binding?.filter)
+    private fun filterNumberDataList(filteredList: ArrayList<NumberData>) {
         Log.e("filterAddTAG",
             "FilterAddFragment filterNumberDataList filteredList?.size ${filteredList.size}")
         binding?.apply {
@@ -309,14 +308,19 @@ open class FilterAddFragment :
                 this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
                 setCountrySpinner()
             }
-            numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { mainDataList ->
+            numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 Log.e("filterAddTAG",
-                    "BaseAddFragment observeLiveData filterListLiveData filterList.size ${mainDataList.size}")
-                this@FilterAddFragment.numberDataList = ArrayList(mainDataList)
+                    "BaseAddFragment observeLiveData filterListLiveData filterList.size ${numberDataList.size}")
+                this@FilterAddFragment.numberDataList = ArrayList(numberDataList)
                 numberDataAdapter?.numberDataList = this@FilterAddFragment.numberDataList
                 numberDataAdapter?.notifyDataSetChanged()
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
+            }
+            filteredNumberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredNumberDataList ->
+                Log.e("filterAddTAG",
+                    "BaseAddFragment observeLiveData filteredNumberDataListLiveData filteredNumberDataList.size ${filteredNumberDataList.size}")
+                filterNumberDataList(filteredNumberDataList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 handleSuccessFilterAction(filter)

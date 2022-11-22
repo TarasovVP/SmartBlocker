@@ -10,6 +10,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.isNotTrue
 import com.tarasovvp.smartblocker.model.Filter
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
@@ -60,6 +61,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
                 filter.isDeleteMode = isDeleteMode
                 filter.searchText = searchQuery
+                filter.highlightedSpanned = filter.filter.highlightedSpanned(searchQuery, null)
                 this.filter = filter
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
