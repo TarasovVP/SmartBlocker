@@ -61,7 +61,9 @@ class FilterDetailFragment :
             filterDetailContactListEmpty.emptyState = if (filter?.isBlackFilter()
                     .isTrue()
             ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
-            filterDetailContactListEmpty.root.isVisible = contactList.isNullOrEmpty()
+            contactList?.let {
+                filterDetailContactListEmpty.root.isVisible = it.isEmpty()
+            }
             executePendingBindings()
         }
         setFragmentResultListeners()
@@ -84,6 +86,7 @@ class FilterDetailFragment :
             binding?.filter?.let {
                 viewModel.insertFilter(it.apply {
                     numberData = filter
+                    filterWithoutCountryCode = extractFilterWithoutCountryCode()
                 })
             }
         }

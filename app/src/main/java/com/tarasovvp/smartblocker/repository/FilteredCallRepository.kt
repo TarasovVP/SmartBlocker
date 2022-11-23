@@ -2,39 +2,39 @@ package com.tarasovvp.smartblocker.repository
 
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.model.BlockedCall
+import com.tarasovvp.smartblocker.model.FilteredCall
 import com.tarasovvp.smartblocker.model.Call
 import com.tarasovvp.smartblocker.model.Filter
 
-object BlockedCallRepository {
+object FilteredCallRepository {
 
     private val realDataBaseRepository = RealDataBaseRepository
     private val blockedCallDao = BlackListerApp.instance?.database?.blockedCallDao()
 
-    suspend fun insertAllBlockedCalls(blockedCallList: ArrayList<BlockedCall>) {
+    suspend fun insertAllBlockedCalls(blockedCallList: ArrayList<FilteredCall>) {
         blockedCallDao?.deleteAllBlockCalls()
         blockedCallDao?.insertAllBlockedCalls(blockedCallList)
     }
 
-    fun insertBlockedCall(blockedCall: BlockedCall) {
+    fun insertBlockedCall(filteredCall: FilteredCall) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-            realDataBaseRepository.insertBlockedCall(blockedCall) {
-                blockedCallDao?.insertBlockedCall(blockedCall)
+            realDataBaseRepository.insertBlockedCall(filteredCall) {
+                blockedCallDao?.insertBlockedCall(filteredCall)
             }
         } else {
-            blockedCallDao?.insertBlockedCall(blockedCall)
+            blockedCallDao?.insertBlockedCall(filteredCall)
         }
     }
 
-    suspend fun allBlockedCalls(): List<BlockedCall>? {
+    suspend fun allBlockedCalls(): List<FilteredCall>? {
         return blockedCallDao?.allBlockedCalls()
     }
 
-    suspend fun blockedCallsByNumber(number: String): List<BlockedCall>? {
+    suspend fun blockedCallsByNumber(number: String): List<FilteredCall>? {
         return blockedCallDao?.blockedCallsByNumber(number)
     }
 
-    suspend fun blockedCallsByFilter(filter: Filter): List<BlockedCall>? {
+    suspend fun blockedCallsByFilter(filter: Filter): List<FilteredCall>? {
         return blockedCallDao?.blockedCallsByFilter(filter)
     }
 

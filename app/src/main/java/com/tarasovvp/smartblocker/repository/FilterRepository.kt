@@ -1,8 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
 import com.tarasovvp.smartblocker.BlackListerApp
-import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.extensions.isTrue
+import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.model.Filter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -78,11 +77,12 @@ object FilterRepository {
     }
 
     suspend fun queryFilterList(number: String): List<Filter>? {
-        return filterDao?.queryFilterList(number)?.sortedByDescending { it.filter.length }
+        val filterList = filterDao?.allFilters()
+        return filterList?.filteredFilterList(number)?.sortedByDescending { it.filter.length }
     }
 
     suspend fun queryFilter(number: String): Filter? {
-        val filterList = filterDao?.queryFilterList(number)
+        val filterList = filterDao?.queryFullMatchFilterList(number)
         val maxLengthFilterList =
             filterList?.filter { filter -> filter.filter.length == filterList.maxByOrNull { it.filter.length }?.filter?.length }
         return if (maxLengthFilterList.orEmpty().size > 1) maxLengthFilterList.orEmpty()

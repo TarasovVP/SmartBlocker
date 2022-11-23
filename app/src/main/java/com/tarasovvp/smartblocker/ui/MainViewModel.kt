@@ -12,7 +12,7 @@ import kotlinx.coroutines.awaitAll
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
     private val filterRepository = FilterRepository
-    private val blockedCallRepository = BlockedCallRepository
+    private val blockedCallRepository = FilteredCallRepository
     private val countryCodeRepository = CountryCodeRepository
     private val logCallRepository = CallRepository
     private val contactRepository = ContactRepository

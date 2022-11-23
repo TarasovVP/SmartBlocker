@@ -21,7 +21,7 @@ import com.tarasovvp.smartblocker.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.model.*
-import com.tarasovvp.smartblocker.repository.BlockedCallRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -89,7 +89,7 @@ fun Context.systemCallLogCursor(): Cursor? {
 }
 
 fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
-    val logCall = if (isBlockedCall) BlockedCall() else LogCall()
+    val logCall = if (isBlockedCall) FilteredCall() else LogCall()
     logCall.callId = this.getString(0)
     logCall.name = this.getString(1)
     logCall.number = this.getString(2)
@@ -119,34 +119,34 @@ fun Context.systemLogCallList(result: (Int, Int) -> Unit): ArrayList<LogCall> {
     return logCallList
 }
 
-fun Context.deleteLastBlockedCall(number: String, filter: Filter?) {
+fun Context.writeFilteredCall(number: String, filter: Filter?) {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
-            val blockedCall = cursor.createCallObject(true) as BlockedCall
+            val filteredCall = cursor.createCallObject(true) as FilteredCall
             Log.e("blockTAG",
-                "Extensions deleteLastMissedCall id ${blockedCall.id} number ${blockedCall.number} type ${blockedCall.type} time ${blockedCall.callDate} currentTimeMillis ${System.currentTimeMillis()}")
-            if (number == blockedCall.number && REJECTED_CALL == blockedCall.type) {
+                "Extensions deleteLastMissedCall id ${filteredCall.id} number ${filteredCall.number} type ${filteredCall.type} time ${filteredCall.callDate} currentTimeMillis ${System.currentTimeMillis()}")
+            if (number == filteredCall.number && REJECTED_CALL == filteredCall.type) {
                 try {
                     Log.e("blockTAG",
-                        "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${blockedCall.name} time ${blockedCall.callDate} phone ${blockedCall.number} type ${blockedCall.type} id ${blockedCall.callId}")
+                        "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${filteredCall.name} time ${filteredCall.callDate} phone ${filteredCall.number} type ${filteredCall.type} id ${filteredCall.callId}")
                     val result = this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
-                        "${CALL_ID}'${blockedCall.callId}'",
+                        "${CALL_ID}'${filteredCall.callId}'",
                         null)
                     CoroutineScope(Dispatchers.IO).launch {
-                        BlockedCallRepository.insertBlockedCall(blockedCall.apply {
+                        FilteredCallRepository.insertBlockedCall(filteredCall.apply {
                             type = BLOCKED_CALL
                             this.filter = filter
                             name =
-                                if (blockedCall.name.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else name
+                                if (filteredCall.name.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else name
                         })
                     }
                     Log.e("blockTAG",
-                        "Extensions delete callId ${blockedCall.callId} result $result")
+                        "Extensions delete callId ${filteredCall.callId} result $result")
                     break
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                     CoroutineScope(Dispatchers.IO).launch {
-                        BlockedCallRepository.insertBlockedCall(blockedCall)
+                        FilteredCallRepository.insertBlockedCall(filteredCall)
                     }
                     Log.e("blockTAG", "Extensions delete Exception ${e.localizedMessage}")
                 }
@@ -226,7 +226,8 @@ fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<Count
 fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
     Log.e("searchTAG", "ModelExtensions getPhoneNumber this $this country $country")
     if (this.isNullOrEmpty()) null
-    else if (this.startsWith(PLUS_CHAR)) PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), String.EMPTY)
+    else if (this.startsWith(PLUS_CHAR)) PhoneNumberUtil.getInstance()
+        .parse(this.digitsTrimmed(), String.EMPTY)
     else PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), country)
 } catch (e: Exception) {
     e.printStackTrace()
@@ -242,35 +243,74 @@ fun String?.isValidPhoneNumber(country: String): Boolean {
     }
 }
 
+fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
+    return try {
+        if (this.isNull()) false else PhoneNumberUtil.getInstance()
+            .isValidNumber(this)
+    } catch (e: Exception) {
+        return false
+    }
+}
+
 fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<NumberData> {
     val filteredList = arrayListOf<NumberData>()
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
+        numberData.highlightedSpanned = numberData.numberData.highlightedSpanned(String.EMPTY, null)
         if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed()
                 .contains(filter?.filter.orEmpty()).isTrue()
         ) {
             filteredList.add(numberData.apply {
-                searchText = filter?.filter.orEmpty()
                 highlightedSpanned = numberData.numberData.highlightedSpanned(filter?.filter, null)
             })
         } else {
-            val phoneNumber = numberData.numberData.digitsTrimmed()
-                .getPhoneNumber(filter?.countryCode?.country.orEmpty())
-            if (numberData.numberData.digitsTrimmed().startsWith(filter?.addFilter().orEmpty()).isTrue())
-                filteredList.add(numberData.apply {
-                    searchText = filter?.addFilter().orEmpty()
-                    highlightedSpanned = numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
-                }) else if ((phoneNumber?.nationalNumber.toString()
-                    .startsWith(filter?.filterWithoutCountryCode().orEmpty())
-                    .isTrue() && String.format(COUNTRY_CODE_START,
-                    phoneNumber?.countryCode) == filter?.countryCode?.countryCode)
-            )
-                supposedFilteredList.add(numberData.apply {
-                    searchText = if (filter.filter == filter.addFilter()) filter.filterWithoutCountryCode() else filter.filter
-                    highlightedSpanned = numberData.numberData.highlightedSpanned(if (filter.filter == filter.addFilter()) filter.filterWithoutCountryCode() else filter.filter, filter.countryCode.countryCode)
-                })
+            val phoneNumber = numberData.numberData.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
+            if (phoneNumber.isValidPhoneNumber() && (numberData is Filter).not()) {
+                if (numberData.numberData.digitsTrimmed().startsWith(filter?.addFilter().orEmpty())
+                        .isTrue()
+                )
+                    filteredList.add(numberData.apply {
+                        highlightedSpanned =
+                            numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
+                    }) else if ((phoneNumber?.nationalNumber.toString()
+                        .startsWith(filter?.extractFilterWithoutCountryCode().orEmpty())
+                        .isTrue() && String.format(COUNTRY_CODE_START,
+                        phoneNumber?.countryCode) == filter?.countryCode?.countryCode)
+                )
+                    supposedFilteredList.add(numberData.apply {
+                        highlightedSpanned =
+                            numberData.numberData.highlightedSpanned(if (filter.filter == filter.addFilter()) filter.extractFilterWithoutCountryCode() else filter.filter,
+                                filter.countryCode.countryCode)
+                    })
+            }
         }
     }
     filteredList.addAll(supposedFilteredList)
     return filteredList
+}
+
+fun List<Filter>.filteredFilterList(number: String): ArrayList<Filter> {
+    val filteredFilterList = arrayListOf<Filter>()
+    forEach { filter ->
+        val phoneNumber = number.getPhoneNumber(filter.countryCode.country)
+        when {
+            filter.isTypeContain() -> if (number.contains(filter.filter)) filteredFilterList.add(filter)
+            filter.isTypeStart() -> {
+                if (number.startsWith(filter.filter)) filteredFilterList.add(filter) else if (phoneNumber.isValidPhoneNumber()
+                    && phoneNumber?.nationalNumber.toString()
+                        .startsWith(filter.filterWithoutCountryCode)) filteredFilterList.add(filter.apply {
+                    highlightedSpanned =
+                        filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY, filter.countryCode.countryCode)
+                })
+            }
+            filter.isTypeContain() -> {
+                if (number == filter.filter) filteredFilterList.add(filter) else if (phoneNumber.isValidPhoneNumber()
+                    && phoneNumber?.nationalNumber.toString() == filter.filterWithoutCountryCode) filteredFilterList.add(filter.apply {
+                    highlightedSpanned =
+                        filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY, filter.countryCode.countryCode)
+                })
+            }
+        }
+    }
+    return filteredFilterList
 }

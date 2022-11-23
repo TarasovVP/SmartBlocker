@@ -85,7 +85,7 @@ open class Call(
 
     fun filterConditionTypeIcon(context: Context): Drawable {
         return when (this) {
-            is BlockedCall -> filter?.conditionType?.let { blockFilterCondition ->
+            is FilteredCall -> filter?.conditionType?.let { blockFilterCondition ->
                 FilterCondition.getSmallIconByIndex(blockFilterCondition)
             }?.let {
                 ContextCompat.getDrawable(context, it)

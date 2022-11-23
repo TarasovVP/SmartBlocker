@@ -7,7 +7,7 @@ import com.tarasovvp.smartblocker.database.dao.*
 import com.tarasovvp.smartblocker.model.*
 
 @Database(
-    entities = [LogCall::class, BlockedCall::class, Contact::class, Filter::class, CountryCode::class],
+    entities = [LogCall::class, FilteredCall::class, Contact::class, Filter::class, CountryCode::class],
     version = 1,
     exportSchema = false
 )

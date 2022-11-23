@@ -163,13 +163,27 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
         String.format("%s? %s", countryCode, this)
     } else this
     val spannableString = SpannableString(mainText)
+    if (countryCode.isNullOrEmpty().not()) {
+        spannableString.apply {
+            val highlightSpan = TextAppearanceSpan(null,
+                Typeface.ITALIC,
+                -1,
+                ColorStateList(arrayOf(intArrayOf()),
+                    intArrayOf(Color.LTGRAY)),
+                null)
+            setSpan(highlightSpan,
+                0,
+                countryCode?.length.orZero() + 1,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        }
+    }
     val highlightedTextList: ArrayList<String> = ArrayList()
     if (searchNumberText.isNullOrEmpty().not()
         && this.isNullOrEmpty().not()
         && this.digitsTrimmed().lowercase()
             .contains(searchNumberText.orEmpty().lowercase())
     ) {
-        var highlightedText: StringBuilder = StringBuilder()
+        val highlightedText: StringBuilder = StringBuilder()
         var searchIndex = 0
         this?.forEachIndexed { index, char ->
             if (char.isDigit() || char == PLUS_CHAR) {
@@ -201,20 +215,6 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
                 }
             } else if (char.isDigit().not() && highlightedText.isNotEmpty()) {
                 highlightedText.append(char)
-            }
-        }
-        if (countryCode.isNullOrEmpty().not()) {
-            spannableString.apply {
-                val highlightSpan = TextAppearanceSpan(null,
-                    Typeface.ITALIC,
-                    -1,
-                    ColorStateList(arrayOf(intArrayOf()),
-                        intArrayOf(Color.LTGRAY)),
-                    null)
-                setSpan(highlightSpan,
-                    0,
-                    countryCode?.length.orZero() + 1,
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             }
         }
         highlightedTextList.forEach { searchText ->

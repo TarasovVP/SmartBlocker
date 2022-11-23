@@ -11,6 +11,8 @@ import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
+import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.model.Call
 import com.tarasovvp.smartblocker.model.Contact
@@ -60,7 +62,9 @@ class NumberDataAdapter(
         var binding: ItemFilterBinding? = DataBindingUtil.bind(itemView)
         fun bindData(filter: Filter?) {
             binding?.apply {
-                this.filter = filter
+                this.filter = filter?.apply {
+                    highlightedSpanned = highlightedSpanned ?: filter.filter.highlightedSpanned( String.EMPTY, null)
+                }
                 itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
                     root.context, when {
                         filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg
@@ -82,7 +86,10 @@ class NumberDataAdapter(
             binding?.apply {
                 this.contact = contact
                 root.setSafeOnClickListener {
-                    contact?.let { it1 -> numberDataClick.invoke(it1) }
+                    contact?.let { it1 -> numberDataClick.invoke(it1.apply {
+                        searchText = String.EMPTY
+                        highlightedSpanned = number.highlightedSpanned( String.EMPTY, null)
+                    }) }
                 }
                 executePendingBindings()
             }
@@ -97,7 +104,10 @@ class NumberDataAdapter(
                 this.call = call
                 this.call?.isExtract = true
                 root.setSafeOnClickListener {
-                    call?.let { it1 -> numberDataClick.invoke(it1) }
+                    call?.let { it1 -> numberDataClick.invoke(it1.apply {
+                        searchText = String.EMPTY
+                        highlightedSpanned = number.highlightedSpanned( String.EMPTY, null)
+                    }) }
                 }
                 executePendingBindings()
             }

@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.constants.Constants.USERS
-import com.tarasovvp.smartblocker.model.BlockedCall
+import com.tarasovvp.smartblocker.model.FilteredCall
 import com.tarasovvp.smartblocker.model.Call
 import com.tarasovvp.smartblocker.model.CurrentUser
 import com.tarasovvp.smartblocker.model.Filter
@@ -37,7 +37,7 @@ object RealDataBaseRepository {
                         }
                         BLOCKED_CALL_LIST -> {
                             snapshot.children.forEach { child ->
-                                child.getValue(BlockedCall::class.java)
+                                child.getValue(FilteredCall::class.java)
                                     ?.let { currentUser.blockedCallList.add(it) }
                             }
                         }
@@ -73,8 +73,8 @@ object RealDataBaseRepository {
             }
     }
 
-    fun insertBlockedCall(blockedCall: BlockedCall, result: () -> Unit) {
-        currentUserDatabase.child(BLOCKED_CALL_LIST).child(blockedCall.number).setValue(blockedCall)
+    fun insertBlockedCall(filteredCall: FilteredCall, result: () -> Unit) {
+        currentUserDatabase.child(BLOCKED_CALL_LIST).child(filteredCall.number).setValue(filteredCall)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()

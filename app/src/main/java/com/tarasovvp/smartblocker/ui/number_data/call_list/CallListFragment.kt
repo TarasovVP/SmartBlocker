@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentCallListBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.model.BlockedCall
+import com.tarasovvp.smartblocker.model.FilteredCall
 import com.tarasovvp.smartblocker.model.Call
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
@@ -165,7 +165,7 @@ class CallListFragment :
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.number.lowercase(Locale.getDefault())
                 .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-                    && if (binding?.callListCheck?.isChecked.isTrue()) call is BlockedCall else true
+                    && if (binding?.callListCheck?.isChecked.isTrue()) call is FilteredCall else true
         }.orEmpty()
         Log.e("callTAG",
             "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")

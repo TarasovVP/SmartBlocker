@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.model.Call
-import com.tarasovvp.smartblocker.repository.BlockedCallRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.repository.CallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import kotlinx.coroutines.async
@@ -13,7 +13,7 @@ import kotlinx.coroutines.awaitAll
 class CallListViewModel(application: Application) : BaseViewModel(application) {
 
     private val callRepository = CallRepository
-    private val blockedCallRepository = BlockedCallRepository
+    private val blockedCallRepository = FilteredCallRepository
 
     val callListLiveData = MutableLiveData<List<Call>>()
     val callHashMapLiveData = MutableLiveData<Map<String, List<Call>>?>()

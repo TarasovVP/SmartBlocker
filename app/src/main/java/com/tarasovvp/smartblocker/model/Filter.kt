@@ -24,6 +24,7 @@ data class Filter(
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
     var countryCode: CountryCode = CountryCode(),
+    var filterWithoutCountryCode: String = String.EMPTY
 ) : Parcelable, NumberData() {
     @get:Exclude
     var isCheckedForDelete = false
@@ -91,7 +92,7 @@ data class Filter(
     }
 
     @Exclude
-    fun filterWithoutCountryCode(): String {
+    fun extractFilterWithoutCountryCode(): String {
         return when (filter) {
             addFilter() -> filter.replace(countryCode.countryCode, String.EMPTY)
             else -> filter

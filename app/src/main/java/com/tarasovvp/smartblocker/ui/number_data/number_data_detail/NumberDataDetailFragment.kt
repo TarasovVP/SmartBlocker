@@ -31,7 +31,7 @@ class NumberDataDetailFragment :
         binding?.apply {
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
-                is BlockedCall,
+                is FilteredCall,
                 is LogCall,
                 -> call = (args.numberData as Call).apply { isExtract = true }
             }

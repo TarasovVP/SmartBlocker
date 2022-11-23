@@ -46,16 +46,14 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             }
             filteredNumberDataList(filter, numberDataList)
             Log.e("filterAddTAG", "AddViewModel queryContactListLiveData $filter")
-            hideProgress()
         }
     }
 
     private fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
-        showProgress()
         launch {
             Log.e("filterAddTAG",
                 "AddViewModel filteredNumberDataList filter $filter")
-            numberDataListLiveData.postValue(numberDataList.filteredNumberDataList(filter))
+            numberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter, numberDataList))
             hideProgress()
         }
     }

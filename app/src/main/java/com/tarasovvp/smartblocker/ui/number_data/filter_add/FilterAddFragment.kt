@@ -141,6 +141,7 @@ open class FilterAddFragment :
             binding?.filter?.let {
                 viewModel.insertFilter(it.apply {
                     numberData = filter
+                    filterWithoutCountryCode = extractFilterWithoutCountryCode()
                 })
             }
         }
@@ -276,12 +277,12 @@ open class FilterAddFragment :
         binding?.apply {
             val existingFilter =
                 filteredList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
-            filter?.filterAction = when (existingFilter?.filterType) {
-                null -> if (filter?.isInValidPhoneNumber()
-                        .isTrue()
-                ) FilterAction.FILTER_ACTION_INVALID else FilterAction.FILTER_ACTION_ADD
-                filter?.filterType -> FilterAction.FILTER_ACTION_DELETE
-                else -> FilterAction.FILTER_ACTION_CHANGE
+            filter = filter?.apply {
+                filterAction = when (existingFilter?.filterType) {
+                    null -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else FilterAction.FILTER_ACTION_ADD
+                    filterType -> FilterAction.FILTER_ACTION_DELETE
+                    else -> FilterAction.FILTER_ACTION_CHANGE
+                }
             }
             filteredList.toMutableList().moveToFirst(existingFilter).let { contactList ->
                 numberDataAdapter?.numberDataList = ArrayList(contactList.apply {
@@ -312,8 +313,12 @@ open class FilterAddFragment :
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData filterListLiveData filterList.size ${numberDataList.size}")
                 this@FilterAddFragment.numberDataList = ArrayList(numberDataList)
-                numberDataAdapter?.numberDataList = this@FilterAddFragment.numberDataList
-                numberDataAdapter?.notifyDataSetChanged()
+                if (binding?.filter?.isTypeContain().isTrue().not()) {
+                    filteredNumberDataList(binding?.filter, this@FilterAddFragment.numberDataList)
+                } else {
+                    numberDataAdapter?.numberDataList = this@FilterAddFragment.numberDataList
+                    numberDataAdapter?.notifyDataSetChanged()
+                }
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
             }

@@ -10,8 +10,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 open class NumberData : Parcelable {
     var numberData: String = String.EMPTY
+    @get:Exclude
+    @Ignore
     var searchText: String = String.EMPTY
-
     @get:Exclude
     @Ignore
     var highlightedSpanned: SpannableString? = null

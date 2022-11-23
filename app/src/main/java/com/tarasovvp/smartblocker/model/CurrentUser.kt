@@ -6,5 +6,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class CurrentUser(
     var filterList: ArrayList<Filter> = arrayListOf(),
-    var blockedCallList: ArrayList<BlockedCall> = arrayListOf()
+    var blockedCallList: ArrayList<FilteredCall> = arrayListOf()
 ) : Parcelable
