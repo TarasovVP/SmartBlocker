@@ -13,7 +13,7 @@ import kotlinx.coroutines.awaitAll
 class CallListViewModel(application: Application) : BaseViewModel(application) {
 
     private val callRepository = CallRepository
-    private val blockedCallRepository = FilteredCallRepository
+    private val filteredCallRepository = FilteredCallRepository
 
     val callListLiveData = MutableLiveData<List<Call>>()
     val callHashMapLiveData = MutableLiveData<Map<String, List<Call>>?>()
@@ -25,13 +25,13 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
         if (refreshing.not()) showProgress()
         launch {
             val logCalls = async { callRepository.getAllLogCalls() }
-            val blockedCalls = async { blockedCallRepository.allBlockedCalls() }
-            awaitAll(logCalls, blockedCalls)
+            val filteredCalls = async { filteredCallRepository.allFilteredCalls() }
+            awaitAll(logCalls, filteredCalls)
             val logCallList = logCalls.await().orEmpty()
-            val blockedCallList = blockedCalls.await().orEmpty()
+            val filteredCallList = filteredCalls.await().orEmpty()
             val callList = ArrayList<Call>().apply {
                 addAll(logCallList)
-                addAll(blockedCallList)
+                addAll(filteredCallList)
             }
             callListLiveData.postValue(callList)
             hideProgress()
@@ -55,7 +55,7 @@ class CallListViewModel(application: Application) : BaseViewModel(application) {
     fun deleteCallList(callList: List<Call>) {
         showProgress()
         launch {
-            blockedCallRepository.deleteBlockedCalls(callList) {
+            filteredCallRepository.deleteFilteredCalls(callList) {
                 successDeleteNumberLiveData.postValue(true)
                 hideProgress()
             }

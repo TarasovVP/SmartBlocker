@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/drawable/ic_accepted.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_access_permissions.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/ic_allowed_call.xml" value="0.125" />
         <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_arrow_forward.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/ic_arrow_transparent.xml" value="0.36614583333333334" />
@@ -33,6 +34,7 @@
         <entry key="app/src/main/res/drawable/ic_black_to_white_filter.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_black_white_list.xml" value="0.16" />
         <entry key="app/src/main/res/drawable/ic_block.xml" value="0.2833333333333333" />
+        <entry key="app/src/main/res/drawable/ic_blocked_call.xml" value="0.125" />
         <entry key="app/src/main/res/drawable/ic_blocked_call_list.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/ic_boy.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_call_list.xml" value="0.1805" />
@@ -111,6 +113,7 @@
         <entry key="app/src/main/res/layout/fragment_black_number_new.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_black_numebr_list.xml" value="0.291213768115942" />
         <entry key="app/src/main/res/layout/fragment_block_settings.xml" value="0.4409722222222222" />
+        <entry key="app/src/main/res/layout/fragment_blocker_calls_detail.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/fragment_blockings_by_filter.xml" value="0.240625" />
         <entry key="app/src/main/res/layout/fragment_call_detail.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_call_list.xml" value="0.23115577889447236" />

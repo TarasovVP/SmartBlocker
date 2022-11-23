@@ -38,7 +38,7 @@ object RealDataBaseRepository {
                         BLOCKED_CALL_LIST -> {
                             snapshot.children.forEach { child ->
                                 child.getValue(FilteredCall::class.java)
-                                    ?.let { currentUser.blockedCallList.add(it) }
+                                    ?.let { currentUser.filteredCallList.add(it) }
                             }
                         }
                     }
@@ -73,7 +73,7 @@ object RealDataBaseRepository {
             }
     }
 
-    fun insertBlockedCall(filteredCall: FilteredCall, result: () -> Unit) {
+    fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
         currentUserDatabase.child(BLOCKED_CALL_LIST).child(filteredCall.number).setValue(filteredCall)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -83,12 +83,12 @@ object RealDataBaseRepository {
             }
     }
 
-    fun deleteBlockedCallList(blockedCallList: List<Call>, result: () -> Unit) {
+    fun deleteFilteredCallList(filteredCallList: List<Call>, result: () -> Unit) {
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
-                    if (blockedCallList.map { it.number }
+                    if (filteredCallList.map { it.number }
                             .contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()

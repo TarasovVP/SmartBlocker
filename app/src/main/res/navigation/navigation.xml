@@ -186,7 +186,7 @@
 
     <fragment
         android:id="@+id/blockerCallsDetailFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.blocker_calls_detail.BlockerCallsDetailFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filtered_calls_detail.FilteredCallsDetailFragment"
         android:label="@string/blocking_history">
         <argument
             android:name="filter"

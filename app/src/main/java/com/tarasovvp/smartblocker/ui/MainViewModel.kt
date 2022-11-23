@@ -12,7 +12,7 @@ import kotlinx.coroutines.awaitAll
 
 class MainViewModel(application: Application) : BaseViewModel(application) {
     private val filterRepository = FilterRepository
-    private val blockedCallRepository = FilteredCallRepository
+    private val filteredCallRepository = FilteredCallRepository
     private val countryCodeRepository = CountryCodeRepository
     private val logCallRepository = CallRepository
     private val contactRepository = ContactRepository
@@ -42,9 +42,9 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                     progressDescription = "Запрос внешних данных"
                 })
                 val filters = async { filterRepository.insertAllFilters(it.filterList) }
-                val blockedCalls =
-                    async { blockedCallRepository.insertAllBlockedCalls(it.blockedCallList) }
-                awaitAll(filters, blockedCalls)
+                val filteredCalls =
+                    async { filteredCallRepository.insertAllFilteredCalls(it.filteredCallList) }
+                awaitAll(filters, filteredCalls)
                 getAllData()
             }
         }

@@ -22,7 +22,7 @@
             android:layout_height="match_parent">
 
             <include
-                android:id="@+id/blocker_calls_detail_filter"
+                android:id="@+id/filtered_calls_detail_filter"
                 layout="@layout/item_filter_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,15 +33,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/blocker_calls_detail_description"
+                android:id="@+id/filtered_calls_detail_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:text="@string/contact_list_with_contact"
-                app:layout_constraintTop_toBottomOf="@+id/blocker_calls_detail_filter" />
+                app:layout_constraintTop_toBottomOf="@+id/filtered_calls_detail_filter" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/blocker_calls_detail_list"
+                android:id="@+id/filtered_calls_detail_list"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"
                 android:layout_marginTop="@dimen/margin_8"
@@ -51,16 +51,16 @@
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/blocker_calls_detail_description" />
+                app:layout_constraintTop_toBottomOf="@+id/filtered_calls_detail_description" />
 
             <include
-                android:id="@+id/blocker_calls_detail_empty"
+                android:id="@+id/filtered_calls_detail_empty"
                 layout="@layout/include_empty_state"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"
                 android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/blocker_calls_detail_description" />
+                app:layout_constraintTop_toBottomOf="@+id/filtered_calls_detail_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

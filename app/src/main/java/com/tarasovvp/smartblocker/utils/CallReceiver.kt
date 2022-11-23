@@ -24,13 +24,13 @@ import kotlinx.coroutines.launch
 open class CallReceiver(private val phoneListener: (String) -> Unit) : BroadcastReceiver() {
 
     private val filterRepository = FilterRepository
-    private val blockedCallRepository = FilteredCallRepository
+    private val filteredCallRepository = FilteredCallRepository
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
             BlackListerApp.instance?.apply {
                 phoneListener.invoke(String.format(this.getString(R.string.blocked_calls),
-                    blockedCallRepository.allBlockedCalls()?.size))
+                    filteredCallRepository.allFilteredCalls()?.size))
             }
         }
     }
@@ -60,7 +60,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
                         "CallReceiver newSingleThreadScheduledExecutor phone $number currentTimeMillis ${System.currentTimeMillis()}")
                     context.writeFilteredCall(number, filter)
                     phoneListener.invoke(String.format(context.getString(R.string.blocked_calls),
-                        blockedCallRepository.allBlockedCalls()?.size))
+                        filteredCallRepository.allFilteredCalls()?.size))
                 }
                 context.sendBroadcast(Intent(CALL_RECEIVE))
             }

@@ -14,7 +14,7 @@ import com.tarasovvp.smartblocker.model.*
 @TypeConverters(CountryCodeConverter::class, FilterConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun logCallDao(): LogCallDao
-    abstract fun blockedCallDao(): BlockedCallDao
+    abstract fun filteredCallDao(): FilteredCallDao
     abstract fun contactDao(): ContactDao
     abstract fun filterDao(): FilterDao
     abstract fun countryCodeDao(): CountryCodeDao

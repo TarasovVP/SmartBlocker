@@ -9,43 +9,43 @@ import com.tarasovvp.smartblocker.model.Filter
 object FilteredCallRepository {
 
     private val realDataBaseRepository = RealDataBaseRepository
-    private val blockedCallDao = BlackListerApp.instance?.database?.blockedCallDao()
+    private val filteredCallDao = BlackListerApp.instance?.database?.filteredCallDao()
 
-    suspend fun insertAllBlockedCalls(blockedCallList: ArrayList<FilteredCall>) {
-        blockedCallDao?.deleteAllBlockCalls()
-        blockedCallDao?.insertAllBlockedCalls(blockedCallList)
+    suspend fun insertAllFilteredCalls(filteredCallList: ArrayList<FilteredCall>) {
+        filteredCallDao?.deleteAllFilteredCalls()
+        filteredCallDao?.insertAllFilteredCalls(filteredCallList)
     }
 
-    fun insertBlockedCall(filteredCall: FilteredCall) {
+    fun insertFilteredCall(filteredCall: FilteredCall) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-            realDataBaseRepository.insertBlockedCall(filteredCall) {
-                blockedCallDao?.insertBlockedCall(filteredCall)
+            realDataBaseRepository.insertFilteredCall(filteredCall) {
+                filteredCallDao?.insertFilteredCall(filteredCall)
             }
         } else {
-            blockedCallDao?.insertBlockedCall(filteredCall)
+            filteredCallDao?.insertFilteredCall(filteredCall)
         }
     }
 
-    suspend fun allBlockedCalls(): List<FilteredCall>? {
-        return blockedCallDao?.allBlockedCalls()
+    suspend fun allFilteredCalls(): List<FilteredCall>? {
+        return filteredCallDao?.allFilteredCalls()
     }
 
-    suspend fun blockedCallsByNumber(number: String): List<FilteredCall>? {
-        return blockedCallDao?.blockedCallsByNumber(number)
+    suspend fun filteredCallsByNumber(number: String): List<FilteredCall>? {
+        return filteredCallDao?.filteredCallsByNumber(number)
     }
 
-    suspend fun blockedCallsByFilter(filter: Filter): List<FilteredCall>? {
-        return blockedCallDao?.blockedCallsByFilter(filter)
+    suspend fun filteredCallsByFilter(filter: Filter): List<FilteredCall>? {
+        return filteredCallDao?.filteredCallsByFilter(filter)
     }
 
-    fun deleteBlockedCalls(blockedCallList: List<Call>, result: () -> Unit) {
+    fun deleteFilteredCalls(filteredCallList: List<Call>, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-            realDataBaseRepository.deleteBlockedCallList(blockedCallList) {
-                blockedCallDao?.deleteBlockCalls(blockedCallList.map { it.id })
+            realDataBaseRepository.deleteFilteredCallList(filteredCallList) {
+                filteredCallDao?.deleteFilteredCalls(filteredCallList.map { it.id })
                 result.invoke()
             }
         } else {
-            blockedCallDao?.deleteBlockCalls(blockedCallList.map { it.id })
+            filteredCallDao?.deleteFilteredCalls(filteredCallList.map { it.id })
             result.invoke()
         }
     }
