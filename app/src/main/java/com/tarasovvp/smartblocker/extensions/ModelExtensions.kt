@@ -128,11 +128,9 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
             if (number == filteredCall.number) {
                 CoroutineScope(Dispatchers.IO).launch {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {
-                        type =
-                            if (filter?.isBlackFilter().isTrue()) BLOCKED_CALL else PERMISSION_CALL
+                        type = if (filter?.isBlackFilter().isTrue()) BLOCKED_CALL else PERMISSION_CALL
                         this.filter = filter
-                        name =
-                            if (filteredCall.name.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else name
+                        name = if (filteredCall.name.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else name
                     })
                 }
                 if (filter?.isBlackFilter().isTrue()) {

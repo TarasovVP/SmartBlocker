@@ -65,15 +65,15 @@ open class BaseFilterListFragment :
             swipeRefresh = filterListRefresh
             recyclerView = filterListRecyclerView
             emptyStateContainer = filterListEmpty
+            filterListRecyclerView.hideKeyboardWithLayoutTouch()
         }
-        binding?.filterListRecyclerView?.hideKeyboardWithLayoutTouch()
-        conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         setFilterConditionFilter()
         setClickListeners()
         setFragmentResultListeners()
     }
 
     private fun setFilterConditionFilter() {
+        conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.filterListFilter?.apply {
             text =
                 if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
@@ -81,23 +81,6 @@ open class BaseFilterListFragment :
                 }
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
-        }
-    }
-
-    private fun setFragmentResultListeners() {
-        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
-            if (BlackListerApp.instance?.isLoggedInUser().isTrue()
-                && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
-            ) {
-                showMessage(getString(R.string.unavailable_network_repeat), true)
-            } else {
-                viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
-            }
-        }
-        setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
-            conditionFilterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)
-            setFilterConditionFilter()
-            searchDataList()
         }
     }
 
@@ -121,6 +104,23 @@ open class BaseFilterListFragment :
                     if (this@BaseFilterListFragment is BlackFilterListFragment) BLOCKER else PERMISSION
                 this.conditionType = conditionType
             })
+        }
+    }
+
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
+            if (BlackListerApp.instance?.isLoggedInUser().isTrue()
+                && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
+            ) {
+                showMessage(getString(R.string.unavailable_network_repeat), true)
+            } else {
+                viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
+            }
+        }
+        setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
+            conditionFilterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)
+            setFilterConditionFilter()
+            searchDataList()
         }
     }
 

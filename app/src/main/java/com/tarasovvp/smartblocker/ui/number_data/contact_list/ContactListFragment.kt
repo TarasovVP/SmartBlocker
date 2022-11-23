@@ -1,15 +1,18 @@
 package com.tarasovvp.smartblocker.ui.number_data.contact_list
 
-import android.content.Context
 import android.util.Log
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentContactListBinding
+import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.model.Contact
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
+import com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
@@ -20,6 +23,7 @@ open class ContactListFragment :
     override val viewModelClass = ContactListViewModel::class.java
 
     private var contactList: List<Contact>? = null
+    private var conditionFilterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<Contact>? {
         Log.e("adapterTAG",
@@ -32,36 +36,47 @@ open class ContactListFragment :
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.e("adapterTAG", "ContactListFragment onAttach adapter $adapter")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.e("adapterTAG",
-            "ContactListFragment onResume adapter $adapter itemCount ${adapter?.itemCount}")
-    }
-
     override fun initView() {
         binding?.apply {
             swipeRefresh = contactListRefresh
             recyclerView = contactListRecyclerView
             emptyStateContainer = contactListEmpty
-            contactListCheck.isEnabled =
-                adapter?.itemCount.orZero() > 0 || contactListCheck.isChecked
             contactListRecyclerView.hideKeyboardWithLayoutTouch()
-            contactListInfo.setSafeOnClickListener {
-                contactListInfo.showPopUpWindow(Info.INFO_CONTACT_LIST)
-            }
-            contactListCheck.setOnCheckedChangeListener { compoundButton, checked ->
-                root.hideKeyboard()
-                Log.e("adapterTAG",
-                    "ContactListFragment setOnCheckedChangeListener compoundButton.isPressed ${compoundButton.isPressed} checked $checked")
-                if (compoundButton.isPressed) {
-                    searchDataList()
+        }
+        setContactConditionFilter()
+        setClickListeners()
+        setFragmentResultListeners()
+    }
+
+    private fun setContactConditionFilter() {
+        conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
+        binding?.contactListCheck?.apply {
+            text =
+                if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
+                    getString(FilterCondition.getTitleByIndex(it))
                 }
-            }
+            isEnabled =
+                adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
+        }
+    }
+
+    private fun setClickListeners() {
+        binding?.contactListCheck?.setSafeOnClickListener {
+            binding?.root?.hideKeyboard()
+            findNavController().navigate(
+                CallListFragmentDirections.startFilterConditionsDialog(filterConditionList = conditionFilterIndexes.orEmpty()
+                    .toIntArray()))
+        }
+        binding?.contactListInfo?.setSafeOnClickListener {
+            binding?.contactListInfo?.showPopUpWindow(Info.INFO_CONTACT_LIST)
+        }
+    }
+
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
+            conditionFilterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
+            setContactConditionFilter()
+            searchDataList()
         }
     }
 
@@ -100,7 +115,8 @@ open class ContactListFragment :
         binding?.contactListCheck?.isEnabled =
             filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredContactList.isEmpty())
-        viewModel.getHashMapFromContactList(filteredContactList, swipeRefresh?.isRefreshing.isTrue())
+        viewModel.getHashMapFromContactList(filteredContactList,
+            swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun getData() {

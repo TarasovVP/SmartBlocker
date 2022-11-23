@@ -4,16 +4,23 @@ import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentCallListBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
+import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.model.FilteredCall
 import com.tarasovvp.smartblocker.model.Call
+import com.tarasovvp.smartblocker.model.Filter
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
+import com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragment
+import com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragmentDirections
+import com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
@@ -27,6 +34,7 @@ class CallListFragment :
 
     private var callList: List<Call>? = null
     private var isDeleteMode = false
+    private var conditionFilterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<Call>? {
         Log.e("adapterTAG", "CallListFragment createAdapter callList?.size ${callList?.size}")
@@ -61,26 +69,48 @@ class CallListFragment :
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
             emptyStateContainer = callListEmpty
+            callListRecyclerView.hideKeyboardWithLayoutTouch()
+        }
             Log.e("searchTAG", "CallListFragment initView args.searchQuery ${args.searchQuery}")
             args.searchQuery?.let {
                 searchQuery = it
             }
-            callListCheck.isEnabled = adapter?.itemCount.orZero() > 0 || callListCheck.isChecked
-            callListRecyclerView.hideKeyboardWithLayoutTouch()
-            callListInfo.setSafeOnClickListener {
-                callListInfo.showPopUpWindow(Info.INFO_CALL_LIST)
-            }
-            callListCheck.setOnCheckedChangeListener { compoundButton, checked ->
-                root.hideKeyboard()
-                (activity as MainActivity).toolbar?.title =
-                    getString(if (checked) R.string.blocked_call_log else R.string.log_list)
-                if (compoundButton.isPressed) {
-                    searchDataList()
+            setCallConditionFilter()
+            setClickListeners()
+            setFragmentResultListeners()
+    }
+
+    private fun setCallConditionFilter() {
+        conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
+        binding?.callListCheck?.apply {
+            text =
+                if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
+                    getString(FilterCondition.getTitleByIndex(it))
                 }
-            }
-            setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
-                viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
-            }
+            isEnabled =
+                adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
+        }
+    }
+
+    private fun setClickListeners() {
+        binding?.callListCheck?.setSafeOnClickListener {
+            binding?.root?.hideKeyboard()
+            findNavController().navigate(
+                CallListFragmentDirections.startFilterConditionsDialog(filterConditionList = conditionFilterIndexes.orEmpty().toIntArray()))
+        }
+        binding?.callListInfo?.setSafeOnClickListener {
+            binding?.callListInfo?.showPopUpWindow(Info.INFO_CALL_LIST)
+        }
+    }
+
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
+            viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
+        }
+        setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
+            conditionFilterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
+            setCallConditionFilter()
+            searchDataList()
         }
     }
 

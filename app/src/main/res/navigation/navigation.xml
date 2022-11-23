@@ -137,14 +137,17 @@
         android:id="@+id/contactListFragment"
         android:name="com.tarasovvp.smartblocker.ui.number_data.contact_list.ContactListFragment"
         android:label="@string/contact_list">
-        <action
-            android:id="@+id/startNumberDataDetailFragment"
-            app:destination="@id/numberDataDetailFragment" />
         <argument
             android:name="filter"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.smartblocker.model.Filter"
             app:nullable="true" />
+        <action
+            android:id="@+id/startNumberDataDetailFragment"
+            app:destination="@id/numberDataDetailFragment" />
+        <action
+            android:id="@+id/startFilterConditionsDialog"
+            app:destination="@id/filterConditionsDialog" />
     </fragment>
 
     <fragment
@@ -159,6 +162,9 @@
         <action
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
+        <action
+            android:id="@+id/startFilterConditionsDialog"
+            app:destination="@id/filterConditionsDialog" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
