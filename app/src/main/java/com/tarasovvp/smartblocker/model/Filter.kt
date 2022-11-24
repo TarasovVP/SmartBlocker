@@ -173,6 +173,11 @@ data class Filter(
         return filterType == BLOCKER
     }
 
+    @Exclude
+    fun isWhiteFilter(): Boolean {
+        return filterType == PERMISSION
+    }
+
     override fun equals(other: Any?): Boolean {
         return if (other is Filter) {
             this.filter == other.filter && this.conditionType == other.conditionType && this.filterType == other.filterType

@@ -7,6 +7,8 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
+import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentCallListBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
@@ -184,7 +186,7 @@ class CallListFragment :
     }
 
     override fun isFiltered(): Boolean {
-        return binding?.callListCheck?.isChecked.isTrue()
+        return conditionFilterIndexes.isNullOrEmpty().not()
     }
 
     override fun searchDataList() {
@@ -195,7 +197,9 @@ class CallListFragment :
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.number.lowercase(Locale.getDefault())
                 .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-                    && if (binding?.callListCheck?.isChecked.isTrue()) call is FilteredCall else true
+                    && (call.filter?.isBlackFilter().isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
+                    call.filter?.isWhiteFilter().isTrue() && conditionFilterIndexes?.contains(PERMISSION).isTrue()
+                    || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         Log.e("callTAG",
             "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")

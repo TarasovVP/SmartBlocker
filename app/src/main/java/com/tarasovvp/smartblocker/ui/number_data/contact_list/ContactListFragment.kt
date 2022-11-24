@@ -5,6 +5,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
+import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentContactListBinding
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
@@ -97,7 +99,7 @@ open class ContactListFragment :
     }
 
     override fun isFiltered(): Boolean {
-        return binding?.contactListCheck?.isChecked.isTrue()
+        return conditionFilterIndexes.isNullOrEmpty().not()
     }
 
     override fun searchDataList() {
@@ -108,7 +110,9 @@ open class ContactListFragment :
             ).isTrue() || contact.trimmedPhone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
-                .isTrue()) && (if (binding?.contactListCheck?.isChecked.isTrue()) contact.isBlackFilter() else true)
+                .isTrue()) && (contact.filter?.isBlackFilter().isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
+                    contact.filter?.isWhiteFilter().isTrue() && conditionFilterIndexes?.contains(PERMISSION).isTrue()
+                    || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         Log.e("adapterTAG",
             "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
