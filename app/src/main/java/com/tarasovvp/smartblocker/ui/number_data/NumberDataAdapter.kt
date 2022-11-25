@@ -10,9 +10,9 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
-import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
+import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.model.Call
 import com.tarasovvp.smartblocker.model.Contact
@@ -67,8 +67,8 @@ class NumberDataAdapter(
                 }
                 itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
                     root.context, when {
-                        filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE && adapterPosition == 0 -> R.color.change_bg
-                        filter?.filterAction == FilterAction.FILTER_ACTION_DELETE && adapterPosition == 0 -> R.color.delete_bg
+                        filter?.isChangeFilterAction().isTrue() && adapterPosition == 0 -> R.color.change_bg
+                        filter?.isDeleteFilterAction().isTrue() && adapterPosition == 0 -> R.color.delete_bg
                         else -> R.color.white
                     }))
                 root.setSafeOnClickListener {

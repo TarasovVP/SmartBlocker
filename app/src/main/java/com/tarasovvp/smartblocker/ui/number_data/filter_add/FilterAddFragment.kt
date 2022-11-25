@@ -13,11 +13,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.CHANGE_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
-import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.FragmentFilterAddBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
@@ -62,7 +63,8 @@ open class FilterAddFragment :
         Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filter = args.filterAdd?.apply {
-            filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
+            filterAction = filterAction
+                ?: if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_INVALID else FilterAction.FILTER_ACTION_PERMISSION_INVALID
             isPreview = false
             if (filter.isNotEmpty() && isTypeContain().not()) {
                 addFilter = filter
@@ -95,8 +97,10 @@ open class FilterAddFragment :
                         ) R.drawable.ic_black_to_white_filter else R.drawable.ic_white_to_black_filter)
                     setOnMenuItemClickListener {
                         findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
-                            filter = binding?.filter,
-                            filterAction = CHANGE_FILTER))
+                            filterNumber = binding?.filter?.filter,
+                            filterAction = if (binding?.filter?.isBlackFilter()
+                                    .isTrue()
+                            ) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE))
                         return@setOnMenuItemClickListener true
                     }
                 }
@@ -121,38 +125,45 @@ open class FilterAddFragment :
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
                     findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
-                        filter = filter?.apply { filter = addFilter() },
-                        filterAction = filter?.filterAction?.name))
+                        filterNumber = filter?.addFilter(),
+                        filterAction = filter?.filterAction ?: if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
                 }
             }
         }
     }
 
     private fun setFragmentResultListeners() {
-        setFragmentResultListener(CHANGE_FILTER) { _, _ ->
-            binding?.filter = binding?.filter?.apply {
-                filterType =
-                    if (binding?.filter?.isBlackFilter().isTrue()) PERMISSION else BLOCKER
+        binding?.filter?.let { filter ->
+            setFragmentResultListener(CHANGE_FILTER) { _, _ ->
+                binding?.filter = binding?.filter?.apply {
+                    filterType =
+                        if (binding?.filter?.isBlackFilter().isTrue()) PERMISSION else BLOCKER
+                }
+                viewModel.filteredNumberDataList(binding?.filter, numberDataList)
+                setToolbar()
             }
-            viewModel.filteredNumberDataList(binding?.filter, numberDataList)
-            setToolbar()
-        }
-        setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.insertFilter(it.apply {
-                    numberData = filter
-                    filterWithoutCountryCode = extractFilterWithoutCountryCode()
-                })
-            }
-        }
-        setFragmentResultListener(FilterAction.FILTER_ACTION_CHANGE.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.updateFilter(it)
-            }
-        }
-        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.deleteFilter(it)
+            setFragmentResultListener(Constants.FILTER_ACTION) { _, bundle ->
+                when (val filterAction =
+                    bundle.getSerializable(Constants.FILTER_ACTION) as FilterAction) {
+                    FilterAction.FILTER_ACTION_BLOCKER_CHANGE,
+                    FilterAction.FILTER_ACTION_PERMISSION_CHANGE,
+                    -> viewModel.updateFilter(filter.apply {
+                        this.filterAction = filterAction
+                    })
+                    FilterAction.FILTER_ACTION_BLOCKER_DELETE,
+                    FilterAction.FILTER_ACTION_PERMISSION_DELETE,
+                    -> viewModel.deleteFilter(filter.apply {
+                        this.filterAction = filterAction
+                    })
+                    FilterAction.FILTER_ACTION_BLOCKER_ADD,
+                    FilterAction.FILTER_ACTION_PERMISSION_ADD,
+                    -> viewModel.insertFilter(filter.apply {
+                        numberData = filter.filter
+                        filterWithoutCountryCode = extractFilterWithoutCountryCode()
+                        this.filterAction = filterAction
+                    })
+                    else -> Unit
+                }
             }
         }
     }
@@ -279,15 +290,17 @@ open class FilterAddFragment :
                 filteredList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
             filter = filter?.apply {
                 filterAction = when (existingFilter?.filterType) {
-                    null -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else FilterAction.FILTER_ACTION_ADD
-                    filterType -> FilterAction.FILTER_ACTION_DELETE
-                    else -> FilterAction.FILTER_ACTION_CHANGE
+                    null -> if (isInValidPhoneNumber().isTrue()) if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_INVALID else FilterAction.FILTER_ACTION_PERMISSION_INVALID else if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
+                    filterType -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                    else -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_CHANGE else FilterAction.FILTER_ACTION_PERMISSION_CHANGE
                 }
             }
             filteredList.toMutableList().moveToFirst(existingFilter).let { contactList ->
                 numberDataAdapter?.numberDataList = ArrayList(contactList.apply {
                     (firstOrNull() as? Filter)?.filterAction =
-                        if (filter?.filterAction == FilterAction.FILTER_ACTION_CHANGE || filter?.filterAction == FilterAction.FILTER_ACTION_DELETE) filter?.filterAction else FilterAction.FILTER_ACTION_ADD
+                        if (filter?.isChangeFilterAction()
+                                .isTrue() || filter?.isDeleteFilterAction().isTrue()
+                        ) filter?.filterAction else if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
                 })
                 numberDataAdapter?.notifyDataSetChanged()
             }
@@ -335,15 +348,11 @@ open class FilterAddFragment :
 
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showMessage(String.format(getString(filter.filterActionSuccessText()),
+            showMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
+                .orEmpty(),
                 filter.filter), false)
             getAllData()
-            Log.e("filterAddTAG",
-                "BaseAddFragment handleSuccessFilterAction message ${
-                    String.format(getString(filter.filterActionSuccessText()),
-                        filter.filter)
-                }")
-            if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
+            if (filter.isChangeFilterAction()) {
                 mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                     viewModel.getNumberDataList()
                 }

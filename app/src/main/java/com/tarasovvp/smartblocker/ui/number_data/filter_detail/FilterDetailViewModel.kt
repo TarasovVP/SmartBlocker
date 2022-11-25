@@ -4,14 +4,13 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants
-import com.tarasovvp.smartblocker.enums.FilterAction
-import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.model.NumberData
 import com.tarasovvp.smartblocker.repository.CallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
-import com.tarasovvp.smartblocker.model.NumberData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
@@ -53,7 +52,8 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
         launch {
             Log.e("filterAddTAG",
                 "AddViewModel filteredNumberDataList filter $filter")
-            numberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter, numberDataList))
+            numberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
+                numberDataList))
             hideProgress()
         }
     }
@@ -64,9 +64,7 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             Log.e("filterAddTAG",
                 "AddViewModel deleteFilter filter $filter")
             filterRepository.deleteFilterList(listOf(filter)) {
-                filterActionLiveData.postValue(filter.apply {
-                    filterAction = FilterAction.FILTER_ACTION_DELETE
-                })
+                filterActionLiveData.postValue(filter)
             }
             hideProgress()
         }
@@ -76,9 +74,7 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
         showProgress()
         launch {
             filterRepository.updateFilter(filter) {
-                filterActionLiveData.postValue(filter.apply {
-                    filterAction = FilterAction.FILTER_ACTION_CHANGE
-                })
+                filterActionLiveData.postValue(filter)
             }
             hideProgress()
         }
@@ -90,9 +86,7 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             Log.e("filterAddTAG",
                 "FilterDetailViewModel insertFilter filter $filter")
             filterRepository.insertFilter(filter) {
-                filterActionLiveData.postValue(filter.apply {
-                    filterAction = FilterAction.FILTER_ACTION_ADD
-                })
+                filterActionLiveData.postValue(filter)
             }
             hideProgress()
         }

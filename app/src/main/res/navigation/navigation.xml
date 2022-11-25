@@ -263,21 +263,6 @@
         android:label="@string/app_theme" />
 
     <dialog
-        android:id="@+id/filterActionDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterActionDialog">
-        <argument
-            android:name="filterAction"
-            android:defaultValue=""
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="filter"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.model.Filter"
-            app:nullable="true" />
-    </dialog>
-
-    <dialog
         android:id="@+id/accountActionDialog"
         android:name="com.tarasovvp.smartblocker.ui.dialogs.AccountActionDialog">
         <argument
@@ -335,6 +320,19 @@
             android:defaultValue="false"
             app:argType="boolean"
             app:nullable="false" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/filterActionDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterActionDialog">
+        <argument
+            android:name="filterAction"
+            app:argType="com.tarasovvp.smartblocker.enums.FilterAction" />
+        <argument
+            android:name="filterNumber"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </dialog>
 
 </navigation>

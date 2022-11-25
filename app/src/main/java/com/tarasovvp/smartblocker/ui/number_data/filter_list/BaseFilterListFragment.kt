@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentFilterListBinding
@@ -109,7 +110,7 @@ open class BaseFilterListFragment :
     }
 
     private fun setFragmentResultListeners() {
-        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
+        setFragmentResultListener(FILTER_ACTION) { _, _ ->
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()
                 && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
             ) {
@@ -154,15 +155,14 @@ open class BaseFilterListFragment :
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.delete_menu_item -> {
+                        // TODO add filter number
                         val direction =
                             if (this@BaseFilterListFragment is BlackFilterListFragment) {
-                                BlackFilterListFragmentDirections.startFilterActionDialog(filter = Filter(
-                                    filterType = BLOCKER),
-                                    filterAction = FilterAction.FILTER_ACTION_DELETE.name)
+                                BlackFilterListFragmentDirections.startFilterActionDialog(filterNumber = "",
+                                    filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE)
                             } else {
-                                WhiteFilterListFragmentDirections.startFilterActionDialog(filter = Filter(
-                                    filterType = PERMISSION),
-                                    filterAction = FilterAction.FILTER_ACTION_DELETE.name)
+                                WhiteFilterListFragmentDirections.startFilterActionDialog(filterNumber = "",
+                                    filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE)
                             }
                         this@BaseFilterListFragment.findNavController().navigate(direction)
                         true

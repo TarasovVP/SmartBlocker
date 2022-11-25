@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentFilterDetailBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
@@ -14,11 +15,10 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.model.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
-import com.tarasovvp.smartblocker.model.NumberData
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
-import com.tarasovvp.smartblocker.ui.number_data.filter_add.FilterAddFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class FilterDetailFragment :
@@ -43,15 +43,18 @@ class FilterDetailFragment :
                     "FilterDetailFragment initViews after args.filter $filter binding?.filter ${this.filter}")
                 filterDetailAddFilter.filter =
                     Filter(filterType = filter.filterType).apply {
-                        filterAction = FilterAction.FILTER_ACTION_ADD
+                        filterAction =
+                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
                     }
                 filterDetailChangeFilter.filter =
                     Filter(filterType = if (filter.isBlackFilter()) PERMISSION else BLOCKER).apply {
-                        filterAction = FilterAction.FILTER_ACTION_CHANGE
+                        filterAction =
+                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_PERMISSION_CHANGE else FilterAction.FILTER_ACTION_BLOCKER_CHANGE
                     }
                 filterDetailDeleteFilter.filter =
                     Filter(filterType = filter.filterType).apply {
-                        filterAction = FilterAction.FILTER_ACTION_DELETE
+                        filterAction =
+                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                     }
                 filterDetailContactListDescription.text =
                     if (filter.isBlackFilter()) getString(R.string.contact_list_with_blocker) else getString(
@@ -70,24 +73,29 @@ class FilterDetailFragment :
     }
 
     private fun setFragmentResultListeners() {
-        setFragmentResultListener(FilterAction.FILTER_ACTION_CHANGE.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.updateFilter(it.apply {
-                    filterType = if (this.isBlackFilter()) PERMISSION else BLOCKER
-                })
-            }
-        }
-        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.deleteFilter(it)
-            }
-        }
-        setFragmentResultListener(FilterAction.FILTER_ACTION_ADD.name) { _, _ ->
-            binding?.filter?.let {
-                viewModel.insertFilter(it.apply {
-                    numberData = filter
-                    filterWithoutCountryCode = extractFilterWithoutCountryCode()
-                })
+        binding?.filter?.let { filter ->
+            setFragmentResultListener(FILTER_ACTION) { _, bundle ->
+                when (val filterAction = bundle.getSerializable(FILTER_ACTION) as FilterAction) {
+                    FilterAction.FILTER_ACTION_BLOCKER_CHANGE,
+                    FilterAction.FILTER_ACTION_PERMISSION_CHANGE,
+                    -> viewModel.updateFilter(filter.apply {
+                        filterType = if (this.isBlackFilter()) PERMISSION else BLOCKER
+                        this.filterAction = filterAction
+                    })
+                    FilterAction.FILTER_ACTION_BLOCKER_DELETE,
+                    FilterAction.FILTER_ACTION_PERMISSION_DELETE,
+                    -> viewModel.deleteFilter(filter.apply {
+                        this.filterAction = filterAction
+                    })
+                    FilterAction.FILTER_ACTION_BLOCKER_ADD,
+                    FilterAction.FILTER_ACTION_PERMISSION_ADD,
+                    -> viewModel.insertFilter(filter.apply {
+                        numberData = this.filter
+                        this.filterAction = filterAction
+                        filterWithoutCountryCode = extractFilterWithoutCountryCode()
+                    })
+                    else -> Unit
+                }
             }
         }
     }
@@ -95,25 +103,25 @@ class FilterDetailFragment :
     override fun setClickListeners() {
         binding?.apply {
             filterDetailChangeFilter.root.setSafeOnClickListener {
-                findNavController().navigate(FilterDetailFragmentDirections.startFilterActionDialog(
-                    filter = filter,
-                    filterAction = FilterAction.FILTER_ACTION_CHANGE.name))
+                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_PERMISSION_CHANGE else FilterAction.FILTER_ACTION_BLOCKER_CHANGE)
             }
             filterDetailDeleteFilter.root.setSafeOnClickListener {
-                findNavController().navigate(FilterDetailFragmentDirections.startFilterActionDialog(
-                    filter = filter,
-                    filterAction = FilterAction.FILTER_ACTION_DELETE.name))
+                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
             }
             filterDetailAddFilter.root.setSafeOnClickListener {
-                findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
-                    filter = filter?.apply { filter = addFilter() },
-                    filterAction = FilterAction.FILTER_ACTION_ADD.name))
+                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
             }
             filterDetailItemFilter.itemFilterDetailPreview.setSafeOnClickListener {
                 findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(
                     filter = filter))
             }
         }
+    }
+
+    private fun startFilterActionDialog(filterAction: FilterAction) {
+        findNavController().navigate(FilterDetailFragmentDirections.startFilterActionDialog(
+            filterNumber = binding?.filter?.filter,
+            filterAction = filterAction))
     }
 
     override fun createAdapter() {
@@ -153,17 +161,18 @@ class FilterDetailFragment :
 
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showMessage(String.format(getString(filter.filterActionSuccessText()),
-                binding?.filter?.filter.orEmpty()), false)
+            showMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
+                .orEmpty(), binding?.filter?.filter.orEmpty()), false)
             getAllData()
-            if (filter.filterAction == FilterAction.FILTER_ACTION_CHANGE) {
+            if (filter.isChangeFilterAction()) {
                 mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                     initViews()
                     viewModel.getQueryContactCallList(filter)
                 }
             } else {
-                findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
-                    FilterDetailFragmentDirections.startBlackFilterListFragment()
+                findNavController().navigate(if (binding?.filter?.isBlackFilter()
+                        .isTrue()
+                ) FilterDetailFragmentDirections.startBlackFilterListFragment()
                 else FilterDetailFragmentDirections.startWhiteFilterListFragment())
             }
         }

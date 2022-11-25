@@ -8,8 +8,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.HASH_CHAR
-import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
@@ -24,7 +24,7 @@ data class Filter(
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
     var countryCode: CountryCode = CountryCode(),
-    var filterWithoutCountryCode: String = String.EMPTY
+    var filterWithoutCountryCode: String = String.EMPTY,
 ) : Parcelable, NumberData() {
     @get:Exclude
     var isCheckedForDelete = false
@@ -43,14 +43,6 @@ data class Filter(
         return when (filterType) {
             PERMISSION -> R.string.allow
             else -> R.string.blocker
-        }
-    }
-
-    @Exclude
-    fun filterTypeIcon(): Int {
-        return when (filterType) {
-            PERMISSION -> R.drawable.ic_permission
-            else -> R.drawable.ic_blocker
         }
     }
 
@@ -100,29 +92,6 @@ data class Filter(
     }
 
     @Exclude
-    fun filterActionIcon() = when (filterAction) {
-        FilterAction.FILTER_ACTION_INVALID -> if (isBlackFilter()) R.drawable.ic_black_filter_inactive else R.drawable.ic_white_filter_inactive
-        FilterAction.FILTER_ACTION_CHANGE -> if (isBlackFilter()) R.drawable.ic_white_to_black_filter else R.drawable.ic_black_to_white_filter
-        else -> filterTypeIcon()
-    }
-
-    @Exclude
-    fun filterActionDescription() = when (filterAction) {
-        FilterAction.FILTER_ACTION_CHANGE -> if (isBlackFilter()) R.string.filter_description_change_blocker else R.string.filter_description_change_allow
-        FilterAction.FILTER_ACTION_DELETE -> if (isBlackFilter()) R.string.filter_description_delete_blocker else R.string.filter_description_delete_allow
-        FilterAction.FILTER_ACTION_INVALID -> R.string.filter_description_invalid
-        else -> if (isBlackFilter()) R.string.filter_description_add_blocker else R.string.filter_description_add_allow
-    }
-
-    @Exclude
-    fun filterActionSuccessText() = when (filterAction) {
-        FilterAction.FILTER_ACTION_ADD -> R.string.filter_added
-        FilterAction.FILTER_ACTION_CHANGE -> R.string.filter_update
-        FilterAction.FILTER_ACTION_DELETE -> R.string.delete_filter_from_list
-        else -> R.string.empty
-    }
-
-    @Exclude
     fun filterToInput(): String {
         return when (conditionType) {
             FilterCondition.FILTER_CONDITION_FULL.index -> if (filter.getPhoneNumber(countryCode.country)
@@ -144,13 +113,23 @@ data class Filter(
     }
 
     @Exclude
-    fun isAddFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_ADD
+    fun isInvalidFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_INVALID || filterAction == FilterAction.FILTER_ACTION_PERMISSION_INVALID
     }
 
     @Exclude
-    fun isInvalidFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_INVALID
+    fun isAddFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_ADD || filterAction == FilterAction.FILTER_ACTION_PERMISSION_ADD
+    }
+
+    @Exclude
+    fun isChangeFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_CHANGE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_CHANGE
+    }
+
+    @Exclude
+    fun isDeleteFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
     }
 
     @Exclude

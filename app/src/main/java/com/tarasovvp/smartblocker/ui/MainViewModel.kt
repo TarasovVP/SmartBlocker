@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.model.CurrentUser
 import com.tarasovvp.smartblocker.model.MainProgress
 import com.tarasovvp.smartblocker.repository.*
@@ -56,9 +57,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             // init country code data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
             val countryCodeList = countryCodeRepository.getSystemCountryCodeList { size, position ->
-                //TODO implement progress
                 progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = "Обновление данных локализации"
+                    progressDescription = getApplication<Application>().getString(R.string.progress_update_localizations)
                     progressMax = size
                     progressPosition = position
                 })
@@ -69,9 +69,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             // init contacts data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
             val contactList = contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
-                //TODO implement progress
                 progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = "Обновление контактов"
+                    progressDescription = getApplication<Application>().getString(R.string.update_contacts)
                     progressMax = size
                     progressPosition = position
                 })
@@ -81,9 +80,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.e("allDataTAG", "MainViewModel getAllData getSystemLogCallList")
             // init calls data
             val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
-                //TODO implement progress
                 progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = "Обновление списка звонков"
+                    progressDescription = getApplication<Application>().getString(R.string.update_calls)
                     progressMax = size
                     progressPosition = position
                 })
@@ -93,7 +91,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
             progressStatusLiveData.postValue(mainProgress.apply {
-                progressDescription = "Обновление данных"
+                progressDescription = getApplication<Application>().getString(R.string.update_data)
                 progressMax = 0
                 progressPosition = 0
             })

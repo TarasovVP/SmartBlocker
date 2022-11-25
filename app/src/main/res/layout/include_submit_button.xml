@@ -23,7 +23,7 @@
         android:text="@{filter.filterAction.title}"
         android:textColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
         app:strokeColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
-        android:drawableEnd="@{ContextCompat.getDrawable(context, filter.filterActionIcon())}"
+        android:drawableEnd="@{ContextCompat.getDrawable(context, filter.filterAction.icon)}"
         android:layout_marginStart="@dimen/margin_8"
         app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
         app:layout_constraintEnd_toEndOf="parent"

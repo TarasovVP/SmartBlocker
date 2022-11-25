@@ -44,7 +44,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="@dimen/padding_2"
-            android:text="@{filter.filterActionDescription}"
+            android:text="@{filter.filterAction.descriptionText}"
             app:drawableEndCompat="@drawable/ic_info"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_item_filter" />
 

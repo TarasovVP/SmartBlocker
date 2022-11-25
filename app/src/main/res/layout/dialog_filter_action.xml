@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="filterAction"
+            type="com.tarasovvp.smartblocker.enums.FilterAction" />
+        <variable
+            name="filterNumber"
+            type="String" />
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_top"
+            android:padding="@dimen/padding_16">
+
+            <Button
+                android:id="@+id/dialog_delete_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Button.Icon"
+                android:background="@{filterAction.icon}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/dialog_delete_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_14"
+                android:text="@{String.format(context.getString(filterAction.requestText), filterNumber)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_delete_icon"
+                tools:text="Delete?"/>
+
+            <View
+                android:id="@+id/dialog_delete_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_1"
+                android:layout_marginVertical="@dimen/margin_8"
+                android:background="@color/sunset"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_delete_description" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
+

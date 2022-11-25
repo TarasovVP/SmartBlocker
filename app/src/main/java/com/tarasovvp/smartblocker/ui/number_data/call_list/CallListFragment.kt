@@ -8,6 +8,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.databinding.FragmentCallListBinding
@@ -19,7 +20,6 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
-import kotlinx.android.synthetic.main.fragment_call_list.view.*
 import java.util.*
 
 class CallListFragment :
@@ -114,7 +114,7 @@ class CallListFragment :
     }
 
     private fun setFragmentResultListeners() {
-        setFragmentResultListener(FilterAction.FILTER_ACTION_DELETE.name) { _, _ ->
+        setFragmentResultListener(FILTER_ACTION) { _, _ ->
             viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
@@ -153,7 +153,7 @@ class CallListFragment :
             when (menuItem.itemId) {
                 R.id.delete_menu_item -> {
                     this@CallListFragment.findNavController()
-                        .navigate(CallListFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_DELETE.name))
+                        .navigate(CallListFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE))
                     true
                 }
                 R.id.close_menu_item -> {
