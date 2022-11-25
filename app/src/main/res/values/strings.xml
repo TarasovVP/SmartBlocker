@@ -207,4 +207,12 @@
 Быстрый клик по блокировщику переносит на экран с деталями
 Долгий клик открывает меню удаления <img src =\'ic_delete\'><br/>
 Если необходимо добавить новый блокировщик - нажмите кнопку с плюсом внизу <img src =\'test_button\'> и выберите тип блокировки</p>]]></string>
+    <string name="blocked_by_blocker">Заблокирован фильтром</string>
+    <string name="permitted_by_permission">Разрешен фильтром</string>
+    <string name="with_blocker">C фильтром-блокировщиком</string>
+    <string name="with_permission">C фильтром-разрешением</string>
+    <string name="with_blocker_filter">С блокировщиком</string>
+    <string name="with_permission_filter">С разрешением</string>
+    <string name="by_blocker_filter">Заблокирован</string>
+    <string name="by_permission_filter">С блокировщиком</string>
 </resources>

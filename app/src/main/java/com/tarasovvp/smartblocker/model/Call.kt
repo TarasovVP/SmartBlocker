@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.OUT_COMING_CALL
-import com.tarasovvp.smartblocker.constants.Constants.PERMISSION_CALL
+import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.EMPTY
@@ -60,7 +60,7 @@ open class Call(
             MISSED_CALL -> R.drawable.ic_missed_call
             REJECTED_CALL -> R.drawable.ic_rejected_call
             BLOCKED_CALL -> R.drawable.ic_blocked_call
-            PERMISSION_CALL -> R.drawable.ic_allowed_call
+            PERMITTED_CALL -> R.drawable.ic_allowed_call
             else -> R.drawable.ic_incoming_call
         }
     }
@@ -79,6 +79,10 @@ open class Call(
 
     fun isBlockedCall(): Boolean {
         return type == BLOCKED_CALL
+    }
+
+    fun isPermittedCall(): Boolean {
+        return type == PERMITTED_CALL
     }
 
     fun nameInitial(): String {

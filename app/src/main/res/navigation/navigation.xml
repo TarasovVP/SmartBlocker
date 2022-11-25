@@ -146,8 +146,8 @@
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
         <action
-            android:id="@+id/startFilterConditionsDialog"
-            app:destination="@id/filterConditionsDialog" />
+            android:id="@+id/startNumberDataFilteringDialog"
+            app:destination="@id/numberDataFilteringDialog" />
     </fragment>
 
     <fragment
@@ -163,8 +163,8 @@
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
         <action
-            android:id="@+id/startFilterConditionsDialog"
-            app:destination="@id/filterConditionsDialog" />
+            android:id="@+id/startNumberDataFilteringDialog"
+            app:destination="@id/numberDataFilteringDialog" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
@@ -320,6 +320,21 @@
             android:defaultValue=""
             app:argType="string"
             app:nullable="true" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/numberDataFilteringDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.NumberDataFilteringDialog">
+        <argument
+            android:name="filteringList"
+            android:defaultValue="@null"
+            app:argType="integer[]"
+            app:nullable="true" />
+        <argument
+            android:name="isCallList"
+            android:defaultValue="false"
+            app:argType="boolean"
+            app:nullable="false" />
     </dialog>
 
 </navigation>

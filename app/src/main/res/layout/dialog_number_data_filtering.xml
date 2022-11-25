@@ -2,6 +2,18 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+        <import type="java.util.ArrayList"/>
+        <variable
+            name="isCallList"
+            type="Boolean" />
+        <variable
+            name="filteringList"
+            type="ArrayList&lt;Integer&gt;"/>
+    </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,34 +35,49 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
-                android:id="@+id/dialog_number_data_filtering_full"
+                android:id="@+id/dialog_number_data_with_blocker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/with_blocker"
+                android:checked="@{filteringList.contains(1)}"
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_16"
-                android:text="@string/condition_full"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_filtering_title" />
 
             <CheckBox
-                android:id="@+id/dialog_number_data_filtering_start"
+                android:id="@+id/dialog_number_data_with_permission"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/with_permission"
+                android:checked="@{filteringList.contains(2)}"
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_8"
-                android:text="@string/condition_start"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_filtering_full" />
+                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_with_blocker" />
 
             <CheckBox
-                android:id="@+id/dialog_number_data_filtering_contain"
+                android:id="@+id/dialog_number_data_by_blocker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/blocked_by_blocker"
+                android:visibility="@{isCallList ? View.VISIBLE : View.GONE, default = gone}"
+                android:checked="@{filteringList.contains(6)}"
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_8"
-                android:text="@string/condition_contain"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_filtering_start" />
+                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_with_permission" />
+
+            <CheckBox
+                android:id="@+id/dialog_number_data_by_permission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/permitted_by_permission"
+                android:visibility="@{isCallList ? View.VISIBLE : View.GONE, default = gone}"
+                android:checked="@{filteringList.contains(11)}"
+                android:paddingVertical="@dimen/padding_5"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_by_blocker" />
 
             <Button
-                android:id="@+id/dialog_forgot_password_cancel"
+                android:id="@+id/dialog_number_data_cancel"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
@@ -58,20 +85,20 @@
                 android:text="@string/cancel"
                 style="@style/StrokeButton"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/dialog_forgot_password_confirm"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_number_data_confirm"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_filtering_contain" />
+                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_by_permission" />
 
             <Button
-                android:id="@+id/dialog_forgot_password_confirm"
+                android:id="@+id/dialog_number_data_confirm"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
                 android:layout_marginStart="@dimen/margin_10"
                 android:text="@string/ok"
-                app:layout_constraintBottom_toBottomOf="@+id/dialog_forgot_password_cancel"
+                app:layout_constraintBottom_toBottomOf="@+id/dialog_number_data_cancel"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/dialog_forgot_password_cancel"
-                app:layout_constraintTop_toTopOf="@+id/dialog_forgot_password_cancel" />
+                app:layout_constraintStart_toEndOf="@+id/dialog_number_data_cancel"
+                app:layout_constraintTop_toTopOf="@+id/dialog_number_data_cancel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

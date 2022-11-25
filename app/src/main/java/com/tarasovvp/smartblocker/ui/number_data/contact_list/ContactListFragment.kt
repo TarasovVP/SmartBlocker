@@ -53,10 +53,16 @@ open class ContactListFragment :
     private fun setContactConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.contactListCheck?.apply {
-            text =
-                if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
-                    getString(FilterCondition.getTitleByIndex(it))
-                }
+            val callFilteringText = arrayListOf<String>()
+            if (conditionFilterIndexes.isNullOrEmpty())
+                callFilteringText.add(getString(R.string.filter_no_filter))
+            else {
+                if (conditionFilterIndexes?.contains(BLOCKER).isTrue())
+                    callFilteringText.add(context.getString(R.string.with_blocker_filter))
+                if (conditionFilterIndexes?.contains(PERMISSION).isTrue())
+                    callFilteringText.add(context.getString(R.string.with_permission_filter))
+            }
+            text = callFilteringText.joinToString()
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
         }
@@ -66,7 +72,7 @@ open class ContactListFragment :
         binding?.contactListCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
             findNavController().navigate(
-                CallListFragmentDirections.startFilterConditionsDialog(filterConditionList = conditionFilterIndexes.orEmpty()
+                CallListFragmentDirections.startNumberDataFilteringDialog(filteringList = conditionFilterIndexes.orEmpty()
                     .toIntArray()))
         }
         binding?.contactListInfo?.setSafeOnClickListener {

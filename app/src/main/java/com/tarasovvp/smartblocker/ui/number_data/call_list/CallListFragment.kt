@@ -4,25 +4,20 @@ import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
+import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.databinding.FragmentCallListBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
-import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.model.FilteredCall
 import com.tarasovvp.smartblocker.model.Call
-import com.tarasovvp.smartblocker.model.Filter
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
-import com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragment
-import com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragmentDirections
-import com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
@@ -73,22 +68,32 @@ class CallListFragment :
             emptyStateContainer = callListEmpty
             callListRecyclerView.hideKeyboardWithLayoutTouch()
         }
-            Log.e("searchTAG", "CallListFragment initView args.searchQuery ${args.searchQuery}")
-            args.searchQuery?.let {
-                searchQuery = it
-            }
-            setCallConditionFilter()
-            setClickListeners()
-            setFragmentResultListeners()
+        Log.e("searchTAG", "CallListFragment initView args.searchQuery ${args.searchQuery}")
+        args.searchQuery?.let {
+            searchQuery = it
+        }
+        setCallConditionFilter()
+        setClickListeners()
+        setFragmentResultListeners()
     }
 
     private fun setCallConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.callListCheck?.apply {
-            text =
-                if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
-                    getString(FilterCondition.getTitleByIndex(it))
-                }
+            val callFilteringText = arrayListOf<String>()
+            if (conditionFilterIndexes.isNullOrEmpty())
+                callFilteringText.add(getString(R.string.filter_no_filter))
+            else {
+                if (conditionFilterIndexes?.contains(BLOCKER).isTrue())
+                    callFilteringText.add(context.getString(R.string.with_blocker_filter))
+                if (conditionFilterIndexes?.contains(PERMISSION).isTrue())
+                    callFilteringText.add(context.getString(R.string.with_permission_filter))
+                if (conditionFilterIndexes?.contains(BLOCKED_CALL.toInt()).isTrue())
+                    callFilteringText.add(context.getString(R.string.by_blocker_filter))
+                if (conditionFilterIndexes?.contains(PERMITTED_CALL.toInt()).isTrue())
+                    callFilteringText.add(context.getString(R.string.by_permission_filter))
+            }
+            text = callFilteringText.joinToString()
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
         }
@@ -98,7 +103,8 @@ class CallListFragment :
         binding?.callListCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
             findNavController().navigate(
-                CallListFragmentDirections.startFilterConditionsDialog(filterConditionList = conditionFilterIndexes.orEmpty().toIntArray()))
+                CallListFragmentDirections.startNumberDataFilteringDialog(isCallList = true,
+                    filteringList = conditionFilterIndexes.orEmpty().toIntArray()))
         }
         binding?.callListInfo?.setSafeOnClickListener {
             binding?.callListInfo?.showPopUpWindow(Info.INFO_CALL_LIST)
@@ -197,8 +203,14 @@ class CallListFragment :
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.number.lowercase(Locale.getDefault())
                 .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-                    && (call.filter?.isBlackFilter().isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
-                    call.filter?.isWhiteFilter().isTrue() && conditionFilterIndexes?.contains(PERMISSION).isTrue()
+                    && (call.filter?.isBlackFilter().isTrue() && conditionFilterIndexes?.contains(
+                BLOCKER).isTrue() ||
+                    call.filter?.isWhiteFilter().isTrue() && conditionFilterIndexes?.contains(
+                PERMISSION).isTrue() ||
+                    call.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(
+                BLOCKED_CALL.toInt()).isTrue() ||
+                    call.isPermittedCall().isTrue() && conditionFilterIndexes?.contains(
+                PERMITTED_CALL.toInt()).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         Log.e("callTAG",
