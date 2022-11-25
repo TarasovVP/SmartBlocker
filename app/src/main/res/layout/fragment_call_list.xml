@@ -19,6 +19,10 @@
             android:textColor="@color/enable_bg_selector"
             android:buttonTint="@color/enable_bg_selector"
             android:button="@drawable/ic_filter_list"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit ="marquee_forever"
+            android:scrollHorizontally="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/call_list_info"/>

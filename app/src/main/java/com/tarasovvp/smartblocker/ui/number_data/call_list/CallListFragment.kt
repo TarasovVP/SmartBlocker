@@ -19,6 +19,7 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
+import kotlinx.android.synthetic.main.fragment_call_list.view.*
 import java.util.*
 
 class CallListFragment :
@@ -80,6 +81,7 @@ class CallListFragment :
     private fun setCallConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.callListCheck?.apply {
+            isSelected = true
             val callFilteringText = arrayListOf<String>()
             if (conditionFilterIndexes.isNullOrEmpty())
                 callFilteringText.add(getString(R.string.filter_no_filter))

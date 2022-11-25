@@ -75,6 +75,7 @@ open class BaseFilterListFragment :
     private fun setFilterConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.filterListFilter?.apply {
+            isSelected = true
             text =
                 if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
                     getString(FilterCondition.getTitleByIndex(it))

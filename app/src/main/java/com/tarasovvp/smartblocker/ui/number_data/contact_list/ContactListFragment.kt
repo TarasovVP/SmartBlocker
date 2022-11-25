@@ -53,6 +53,7 @@ open class ContactListFragment :
     private fun setContactConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.contactListCheck?.apply {
+            isSelected = true
             val callFilteringText = arrayListOf<String>()
             if (conditionFilterIndexes.isNullOrEmpty())
                 callFilteringText.add(getString(R.string.filter_no_filter))
