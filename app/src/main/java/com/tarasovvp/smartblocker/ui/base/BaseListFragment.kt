@@ -17,9 +17,9 @@ import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.hideKeyboard
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
-import com.tarasovvp.smartblocker.model.HeaderDataItem
+import com.tarasovvp.smartblocker.models.HeaderDataItem
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragment
 import com.tarasovvp.smartblocker.ui.number_data.contact_list.ContactListFragment
 import com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragment

@@ -22,9 +22,9 @@ import com.tarasovvp.smartblocker.databinding.FragmentFilterAddBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.model.CountryCode
-import com.tarasovvp.smartblocker.model.Filter
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
@@ -84,7 +84,7 @@ open class FilterAddFragment :
         (activity as MainActivity).apply {
             toolbar?.apply {
                 title =
-                    getString(if (binding?.filter?.isBlackFilter().isTrue()) R.string.blocker else R.string.allow)
+                    getString(if (binding?.filter?.isBlackFilter().isTrue()) R.string.blocker else R.string.permission)
                 menu?.clear()
                 inflateMenu(R.menu.toolbar_filter)
                 menu?.findItem(R.id.filter_menu_item)?.apply {

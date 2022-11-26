@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.models.Filter
 
 @Dao
 interface FilterDao {

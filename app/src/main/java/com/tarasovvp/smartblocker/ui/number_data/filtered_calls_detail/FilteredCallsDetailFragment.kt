@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentBlockerCallsDetailBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
 
 class FilteredCallsDetailFragment :

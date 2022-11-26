@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.repository
 
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.models.Filter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

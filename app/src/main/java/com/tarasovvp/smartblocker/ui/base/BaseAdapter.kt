@@ -5,8 +5,8 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
-import com.tarasovvp.smartblocker.model.HeaderDataItem
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.HeaderDataItem
+import com.tarasovvp.smartblocker.models.NumberData
 import kotlinx.android.parcel.Parcelize
 
 abstract class BaseAdapter<D : NumberData> :

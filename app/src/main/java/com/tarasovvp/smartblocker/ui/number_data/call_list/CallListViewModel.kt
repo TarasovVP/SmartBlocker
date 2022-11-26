@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.ui.number_data.call_list
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.model.Call
+import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.repository.CallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel

@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="filter"
-            type="com.tarasovvp.smartblocker.model.Filter" />
+            type="com.tarasovvp.smartblocker.models.Filter" />
     </data>
 
     <androidx.core.widget.NestedScrollView

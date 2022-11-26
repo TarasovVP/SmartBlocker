@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.tarasovvp.smartblocker.database.dao.*
-import com.tarasovvp.smartblocker.model.*
+import com.tarasovvp.smartblocker.models.*
 
 @Database(
     entities = [LogCall::class, FilteredCall::class, Contact::class, Filter::class, CountryCode::class],

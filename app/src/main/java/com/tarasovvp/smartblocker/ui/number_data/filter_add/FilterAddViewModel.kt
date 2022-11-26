@@ -5,9 +5,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.model.CountryCode
-import com.tarasovvp.smartblocker.model.Filter
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.CallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.CountryCodeRepository

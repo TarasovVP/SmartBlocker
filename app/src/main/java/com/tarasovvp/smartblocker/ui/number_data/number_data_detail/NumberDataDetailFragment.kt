@@ -10,9 +10,9 @@ import com.tarasovvp.smartblocker.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.model.*
+import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 

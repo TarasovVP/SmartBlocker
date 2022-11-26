@@ -3,9 +3,9 @@ package com.tarasovvp.smartblocker.repository
 import android.content.Context
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.model.Contact
-import com.tarasovvp.smartblocker.model.Filter
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.Contact
+import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.NumberData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

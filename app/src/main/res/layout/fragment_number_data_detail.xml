@@ -8,10 +8,10 @@
 
         <variable
             name="call"
-            type="com.tarasovvp.smartblocker.model.Call" />
+            type="com.tarasovvp.smartblocker.models.Call" />
         <variable
             name="contact"
-            type="com.tarasovvp.smartblocker.model.Contact" />
+            type="com.tarasovvp.smartblocker.models.Contact" />
     </data>
 
     <androidx.core.widget.NestedScrollView

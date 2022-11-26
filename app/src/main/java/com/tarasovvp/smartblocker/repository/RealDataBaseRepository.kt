@@ -9,10 +9,10 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.constants.Constants.USERS
-import com.tarasovvp.smartblocker.model.FilteredCall
-import com.tarasovvp.smartblocker.model.Call
-import com.tarasovvp.smartblocker.model.CurrentUser
-import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.models.FilteredCall
+import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.CurrentUser
+import com.tarasovvp.smartblocker.models.Filter
 
 object RealDataBaseRepository {
 

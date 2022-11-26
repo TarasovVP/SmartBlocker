@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.ui.number_data.contact_list
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.model.Contact
+import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 

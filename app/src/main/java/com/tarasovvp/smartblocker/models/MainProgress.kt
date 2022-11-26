@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.model
+package com.tarasovvp.smartblocker.models
 
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.extensions.EMPTY

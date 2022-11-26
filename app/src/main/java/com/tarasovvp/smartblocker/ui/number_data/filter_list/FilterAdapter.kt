@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.isNotTrue
-import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 

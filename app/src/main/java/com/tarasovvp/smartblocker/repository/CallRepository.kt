@@ -5,9 +5,9 @@ import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.extensions.isNull
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.systemLogCallList
-import com.tarasovvp.smartblocker.model.Call
-import com.tarasovvp.smartblocker.model.Filter
-import com.tarasovvp.smartblocker.model.LogCall
+import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.LogCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.smartblocker.extensions.launchIO
-import com.tarasovvp.smartblocker.model.MainProgress
+import com.tarasovvp.smartblocker.models.MainProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 

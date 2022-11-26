@@ -2,9 +2,9 @@ package com.tarasovvp.smartblocker.repository
 
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.model.FilteredCall
-import com.tarasovvp.smartblocker.model.Call
-import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.models.FilteredCall
+import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.Filter
 
 object FilteredCallRepository {
 

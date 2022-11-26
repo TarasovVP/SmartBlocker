@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.ui.number_data.filtered_calls_detail
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.model.Filter
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 

@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.ui.number_data.call_list
 
-import com.tarasovvp.smartblocker.model.Call
+import com.tarasovvp.smartblocker.models.Call
 
 interface CallClickListener {
     fun onCallClick(call: Call)

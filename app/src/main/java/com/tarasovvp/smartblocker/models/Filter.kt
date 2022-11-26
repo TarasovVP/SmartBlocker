@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.model
+package com.tarasovvp.smartblocker.models
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -26,6 +26,10 @@ data class Filter(
     var countryCode: CountryCode = CountryCode(),
     var filterWithoutCountryCode: String = String.EMPTY,
 ) : Parcelable, NumberData() {
+
+    @get:Exclude
+    var filteredContacts: String = String.EMPTY
+
     @get:Exclude
     var isCheckedForDelete = false
 
@@ -41,8 +45,16 @@ data class Filter(
     @Exclude
     fun filterTypeTitle(): Int {
         return when (filterType) {
-            PERMISSION -> R.string.allow
+            PERMISSION -> R.string.permission
             else -> R.string.blocker
+        }
+    }
+
+    @Exclude
+    fun filteredContactsText(): Int {
+        return when (filterType) {
+            PERMISSION -> R.string.permissionFilteredContacts
+            else -> R.string.blockerFilteredContacts
         }
     }
 

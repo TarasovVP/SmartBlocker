@@ -4,7 +4,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.extensions.countryCodeList
-import com.tarasovvp.smartblocker.model.CountryCode
+import com.tarasovvp.smartblocker.models.CountryCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

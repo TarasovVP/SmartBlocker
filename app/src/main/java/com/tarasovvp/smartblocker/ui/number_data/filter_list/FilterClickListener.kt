@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.ui.number_data.filter_list
 
-import com.tarasovvp.smartblocker.model.Filter
+import com.tarasovvp.smartblocker.models.Filter
 
 interface FilterClickListener {
     fun onFilterClick(filter: Filter)

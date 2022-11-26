@@ -10,9 +10,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.extensions.digitsTrimmed
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
-import com.tarasovvp.smartblocker.model.Contact
+import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 

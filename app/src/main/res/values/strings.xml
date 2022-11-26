@@ -158,7 +158,7 @@
     <string name="invalid">Invalid</string>
     <string name="filter_update">Number %s is updated</string>
     <string name="blocker">Блокировщик</string>
-    <string name="allow">Разрешение</string>
+    <string name="permission">Разрешение</string>
     <string name="number_transfer_to_blocker_description">Сделать блокировщик разрешением?</string>
     <string name="number_transfer_to_permission_description">Сделать разрешение блокировщиком?</string>
     <string name="number_delete_from_blocker_description">Удалить существующий блокировщик?</string>
@@ -234,4 +234,7 @@
     <string name="transfer_to_blocker">Перейти в блокировщики?</string>
     <string name="transfer_to_permission">Перейти в разрешения?</string>
     <string name="number_value">number %s </string>
+    <string name="update_filters">Обновление фильтров</string>
+    <string name="permissionFilteredContacts">Повлияет на %s контактов</string>
+    <string name="blockerFilteredContacts">Повлияет на %s контактов</string>
 </resources>

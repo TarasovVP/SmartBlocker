@@ -4,8 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.model.CurrentUser
-import com.tarasovvp.smartblocker.model.MainProgress
+import com.tarasovvp.smartblocker.models.CurrentUser
+import com.tarasovvp.smartblocker.models.MainProgress
 import com.tarasovvp.smartblocker.repository.*
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import kotlinx.coroutines.async
@@ -88,6 +88,18 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             }
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)
+            // init filter data
+            val filterList = filterRepository.allFilters() as? ArrayList
+            filterList?.forEachIndexed { index, filter ->
+                filter.filteredContacts = contactList.filter { it.filter == filter }.size.toString()
+                progressStatusLiveData.postValue(mainProgress.apply {
+                    progressDescription = getApplication<Application>().getString(R.string.update_filters)
+                    progressMax = filterList.size
+                    progressPosition = index
+                })
+            }
+            Log.e("allDataTAG", "MainViewModel filterList $filterList")
+            filterList?.let { filterRepository.insertAllFilters(it) }
             Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
             progressStatusLiveData.postValue(mainProgress.apply {

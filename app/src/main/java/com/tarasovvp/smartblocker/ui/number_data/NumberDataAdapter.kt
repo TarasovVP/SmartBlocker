@@ -14,10 +14,10 @@ import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.orZero
-import com.tarasovvp.smartblocker.model.Call
-import com.tarasovvp.smartblocker.model.Contact
-import com.tarasovvp.smartblocker.model.Filter
-import com.tarasovvp.smartblocker.model.NumberData
+import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.Contact
+import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class NumberDataAdapter(

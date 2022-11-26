@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.tarasovvp.smartblocker.model.CountryCode
+import com.tarasovvp.smartblocker.models.CountryCode
 
 class CountryCodeConverter {
 

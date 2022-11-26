@@ -10,7 +10,7 @@
             type="Boolean" />
         <variable
             name="contact"
-            type="com.tarasovvp.smartblocker.model.Contact" />
+            type="com.tarasovvp.smartblocker.models.Contact" />
     </data>
 
     <androidx.cardview.widget.CardView
