@@ -231,4 +231,7 @@
     <string name="number_transfer_to_permission_success">Номер %s перемещен в разрешения!</string>
     <string name="number_transfer_to_blocker_request">Переместить номер %s в блокировщики?</string>
     <string name="number_transfer_to_blocker_success">Номер %s перемещен в блокировщики!</string>
+    <string name="transfer_to_blocker">Перейти в блокировщики?</string>
+    <string name="transfer_to_permission">Перейти в разрешения?</string>
+    <string name="number_value">number %s </string>
 </resources>

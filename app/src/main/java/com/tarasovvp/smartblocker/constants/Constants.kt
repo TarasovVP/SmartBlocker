@@ -16,7 +16,6 @@ object Constants {
     const val DEFAULT_FILTER = 0
     const val BLOCKER = 1
     const val PERMISSION = 2
-    const val CHANGE_FILTER = "changeFilter"
     const val EMAIL = "email"
     const val LOG_CALL_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"

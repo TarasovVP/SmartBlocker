@@ -124,7 +124,7 @@ data class Filter(
 
     @Exclude
     fun isChangeFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_CHANGE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_CHANGE
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_TRANSFER || filterAction == FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
     }
 
     @Exclude

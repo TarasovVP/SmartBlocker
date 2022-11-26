@@ -49,7 +49,7 @@ class FilterDetailFragment :
                 filterDetailChangeFilter.filter =
                     Filter(filterType = if (filter.isBlackFilter()) PERMISSION else BLOCKER).apply {
                         filterAction =
-                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_CHANGE else FilterAction.FILTER_ACTION_PERMISSION_CHANGE
+                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
                     }
                 filterDetailDeleteFilter.filter =
                     Filter(filterType = filter.filterType).apply {
@@ -76,8 +76,8 @@ class FilterDetailFragment :
         binding?.filter?.let { filter ->
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction = bundle.getSerializable(FILTER_ACTION) as FilterAction) {
-                    FilterAction.FILTER_ACTION_BLOCKER_CHANGE,
-                    FilterAction.FILTER_ACTION_PERMISSION_CHANGE,
+                    FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
+                    FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
                     -> viewModel.updateFilter(filter.apply {
                         filterType = if (this.isBlackFilter()) PERMISSION else BLOCKER
                         this.filterAction = filterAction
@@ -103,7 +103,7 @@ class FilterDetailFragment :
     override fun setClickListeners() {
         binding?.apply {
             filterDetailChangeFilter.root.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CHANGE else FilterAction.FILTER_ACTION_PERMISSION_CHANGE)
+                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
             }
             filterDetailDeleteFilter.root.setSafeOnClickListener {
                 startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
@@ -120,7 +120,7 @@ class FilterDetailFragment :
 
     private fun startFilterActionDialog(filterAction: FilterAction) {
         findNavController().navigate(FilterDetailFragmentDirections.startFilterActionDialog(
-            filterNumber = binding?.filter?.filter,
+            filterNumber = String.format(getString(R.string.number_value), binding?.filter?.filter),
             filterAction = filterAction))
     }
 

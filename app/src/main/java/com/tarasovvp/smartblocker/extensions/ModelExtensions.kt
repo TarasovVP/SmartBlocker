@@ -253,11 +253,10 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
         numberData.highlightedSpanned = numberData.numberData.highlightedSpanned(String.EMPTY, null)
-        if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed()
-                .contains(filter?.filter.orEmpty()).isTrue()
+        if ((numberData is Filter || filter?.isTypeContain().isTrue()) && numberData.numberData.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()
         ) {
             filteredList.add(numberData.apply {
-                highlightedSpanned = numberData.numberData.highlightedSpanned(filter?.filter, null)
+                highlightedSpanned = numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
             })
         } else {
             val phoneNumber = numberData.numberData.digitsTrimmed()
