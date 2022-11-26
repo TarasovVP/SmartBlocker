@@ -49,7 +49,7 @@ class FilterDetailFragment :
                 filterDetailChangeFilter.filter =
                     Filter(filterType = if (filter.isBlackFilter()) PERMISSION else BLOCKER).apply {
                         filterAction =
-                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_PERMISSION_CHANGE else FilterAction.FILTER_ACTION_BLOCKER_CHANGE
+                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_CHANGE else FilterAction.FILTER_ACTION_PERMISSION_CHANGE
                     }
                 filterDetailDeleteFilter.filter =
                     Filter(filterType = filter.filterType).apply {
@@ -103,7 +103,7 @@ class FilterDetailFragment :
     override fun setClickListeners() {
         binding?.apply {
             filterDetailChangeFilter.root.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_PERMISSION_CHANGE else FilterAction.FILTER_ACTION_BLOCKER_CHANGE)
+                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CHANGE else FilterAction.FILTER_ACTION_PERMISSION_CHANGE)
             }
             filterDetailDeleteFilter.root.setSafeOnClickListener {
                 startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)

@@ -34,8 +34,9 @@ class FilterActionDialog : BottomSheetDialogFragment() {
         binding?.apply {
             filterAction = args.filterAction
             filterNumber = args.filterNumber
-            dialogDeleteIcon.setSafeOnClickListener {
+            root.setSafeOnClickListener {
                 setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterAction))
+                dismiss()
             }
         }
     }

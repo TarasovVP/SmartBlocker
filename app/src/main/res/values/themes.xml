@@ -24,6 +24,7 @@
         <item name="radioButtonStyle">@style/RadioButtonStyle</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="android:fontFamily">@font/comfortaa_regular</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
     </style>
 
     <style name="FilledButton" parent="Widget.MaterialComponents.Button.TextButton">
@@ -123,5 +124,11 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
+    <style name="BottomSheetDialogStyle" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalStyle</item>
+    </style>
 
+    <style name="ModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_rounded_top</item>
+    </style>
 </resources>
