@@ -16,8 +16,8 @@ class FilteredCallsDetailViewModel(application: Application) : BaseViewModel(app
     fun filteredCallsByFilter(filter: Filter) {
         showProgress()
         launch {
-            val blackNumberList = filteredCallRepository.filteredCallsByFilter(filter)
-            blackNumberList?.let { filteredCalls ->
+            val filteredCallList = filteredCallRepository.filteredCallsByFilter(filter)
+            filteredCallList?.let { filteredCalls ->
                 callListLiveData.postValue(ArrayList(filteredCalls.sortedByDescending { it.callDate }))
             }
             hideProgress()
