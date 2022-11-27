@@ -8,5 +8,5 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class FilteredCall(
-    @PrimaryKey(autoGenerate = true) override var id: Int = 0,
+    @PrimaryKey override var callId: Int = 0,
 ) : Call(), Parcelable

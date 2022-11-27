@@ -4,7 +4,7 @@ import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.constants.Constants
-import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL_LIST
+import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
@@ -35,7 +35,7 @@ object RealDataBaseRepository {
                                     ?.let { currentUser.filterList.add(it) }
                             }
                         }
-                        BLOCKED_CALL_LIST -> {
+                        FILTERED_CALL_LIST -> {
                             snapshot.children.forEach { child ->
                                 child.getValue(FilteredCall::class.java)
                                     ?.let { currentUser.filteredCallList.add(it) }
@@ -74,7 +74,7 @@ object RealDataBaseRepository {
     }
 
     fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
-        currentUserDatabase.child(BLOCKED_CALL_LIST).child(filteredCall.number).setValue(filteredCall)
+        currentUserDatabase.child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()

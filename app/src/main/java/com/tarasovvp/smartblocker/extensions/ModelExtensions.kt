@@ -90,7 +90,7 @@ fun Context.systemCallLogCursor(): Cursor? {
 
 fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
     val logCall = if (isBlockedCall) FilteredCall() else LogCall()
-    logCall.callId = this.getString(0)
+    logCall.callId = this.getInt(0)
     logCall.name = this.getString(1)
     logCall.number = this.getString(2)
     logCall.type = this.getString(3)
@@ -124,7 +124,7 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
         while (cursor.moveToNext()) {
             val filteredCall = cursor.createCallObject(true) as FilteredCall
             Log.e("blockTAG",
-                "Extensions deleteLastMissedCall id ${filteredCall.id} number ${filteredCall.number} type ${filteredCall.type} time ${filteredCall.callDate} currentTimeMillis ${System.currentTimeMillis()}")
+                "Extensions deleteLastMissedCall number ${filteredCall.number} type ${filteredCall.type} time ${filteredCall.callDate} currentTimeMillis ${System.currentTimeMillis()}")
             if (number == filteredCall.number) {
                 CoroutineScope(Dispatchers.IO).launch {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {

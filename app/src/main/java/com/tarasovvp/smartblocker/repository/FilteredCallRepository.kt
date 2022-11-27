@@ -41,11 +41,11 @@ object FilteredCallRepository {
     fun deleteFilteredCalls(filteredCallList: List<Call>, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilteredCallList(filteredCallList) {
-                filteredCallDao?.deleteFilteredCalls(filteredCallList.map { it.id })
+                filteredCallDao?.deleteFilteredCalls(filteredCallList.map { it.callId })
                 result.invoke()
             }
         } else {
-            filteredCallDao?.deleteFilteredCalls(filteredCallList.map { it.id })
+            filteredCallDao?.deleteFilteredCalls(filteredCallList.map { it.callId })
             result.invoke()
         }
     }

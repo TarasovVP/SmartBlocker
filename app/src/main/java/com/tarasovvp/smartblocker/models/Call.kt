@@ -16,14 +16,14 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.nameInitial
 import com.tarasovvp.smartblocker.extensions.toDateFromMilliseconds
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 open class Call(
-    open var id: Int = 0,
-    var callId: String? = String.EMPTY,
+    open var callId: Int = 0,
     var name: String? = String.EMPTY,
     var number: String = String.EMPTY,
     var normalizedNumber: String? = String.EMPTY,
@@ -44,10 +44,6 @@ open class Call(
             Constants.PERMISSION -> R.drawable.ic_permission
             else -> 0
         }
-    }
-
-    fun isNumberEmpty(): Boolean {
-        return number.isEmpty()
     }
 
     fun isNameEmpty(): Boolean {
@@ -92,7 +88,7 @@ open class Call(
     fun filterConditionTypeIcon(context: Context): Drawable {
         return when (this) {
             is FilteredCall -> filter?.conditionType?.let { blockFilterCondition ->
-                FilterCondition.getSmallIconByIndex(blockFilterCondition)
+                FilterCondition.getSmallIconByIndex(blockFilterCondition, filter?.isBlackFilter().isTrue())
             }?.let {
                 ContextCompat.getDrawable(context, it)
             } ?: ColorDrawable(Color.TRANSPARENT)
