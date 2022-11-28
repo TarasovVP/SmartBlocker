@@ -111,7 +111,7 @@ class FilterDetailFragment :
             filterDetailAddFilter.root.setSafeOnClickListener {
                 startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
             }
-            filterDetailItemFilter.itemFilterDetailPreview.setSafeOnClickListener {
+            root.setSafeOnClickListener {
                 findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(
                     filter = filter))
             }

@@ -74,14 +74,14 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number"
-                app:mainText="@{call.nameEmpty ? call.isExtract ? @string/number_from_call_log : @string/number_not_from_contacts : call.name}"
+                app:mainText="@{call.nameEmpty ? call.isExtract ? @string/number_from_call_log : @string/number_not_from_contacts : call.callName}"
                 app:searchText="@{call.searchText}" />
 
             <TextView
                 android:id="@+id/item_call_time"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:text="@{call.timeFromCallDate()}"
+                android:text="@{call.isFilteredCallDetails ? call.dateTimeFromCallDate() : call.timeFromCallDate()}"
                 android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{call.filterValue}"
-                android:visibility="@{call.extract || isDetail || (!call.isBlockedCall &amp;&amp; !call.isPermittedCall) ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.extract || isDetail || call.isFilteredCallDetails || (!call.isBlockedCall &amp;&amp; !call.isPermittedCall) ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
                 android:gravity="center_vertical|end"

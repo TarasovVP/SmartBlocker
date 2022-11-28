@@ -31,6 +31,9 @@ data class Filter(
     var filteredContacts: String = String.EMPTY
 
     @get:Exclude
+    var filteredCalls: String = String.EMPTY
+
+    @get:Exclude
     var isCheckedForDelete = false
 
     @get:Exclude
@@ -53,8 +56,16 @@ data class Filter(
     @Exclude
     fun filteredContactsText(): Int {
         return when (filterType) {
-            PERMISSION -> R.string.permissionFilteredContacts
-            else -> R.string.blockerFilteredContacts
+            PERMISSION -> R.string.permission_filtered_contacts
+            else -> R.string.blocker_filtered_contacts
+        }
+    }
+
+    @Exclude
+    fun filteredCallsText(): Int {
+        return when (filterType) {
+            PERMISSION -> R.string.permission_filtered_calls
+            else -> R.string.blocker_filtered_calls
         }
     }
 

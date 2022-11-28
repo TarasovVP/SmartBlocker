@@ -29,7 +29,6 @@ class FilteredCallsDetailFragment :
             filter = args.filter
             filteredCallsDetailEmpty.emptyState = EmptyState.EMPTY_STATE_BLOCKED_CALLS
             executePendingBindings()
-            filteredCallsDetailFilter.itemFilterDetailPreview.isVisible = false
         }
     }
 
@@ -38,6 +37,7 @@ class FilteredCallsDetailFragment :
             filteredCallAdapter ?: NumberDataAdapter(filteredCallList) { numberData ->
                 findNavController().navigate(FilteredCallsDetailFragmentDirections.startNumberDataDetailFragment(numberData))
             }
+        filteredCallAdapter?.isFilteredCallDetails = true
         binding?.filteredCallsDetailList?.adapter = filteredCallAdapter
     }
 
@@ -53,6 +53,6 @@ class FilteredCallsDetailFragment :
     }
 
     override fun getData() {
-        binding?.filter?.let { viewModel.filteredCallsByFilter(it) }
+        binding?.filter?.let { viewModel.filteredCallsByFilter(it.filter) }
     }
 }

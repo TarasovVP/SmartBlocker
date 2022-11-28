@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
+import androidx.room.Embedded
+import androidx.room.Ignore
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
@@ -24,19 +26,19 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 open class Call(
     open var callId: Int = 0,
-    var name: String? = String.EMPTY,
+    var callName: String? = String.EMPTY,
     var number: String = String.EMPTY,
     var normalizedNumber: String? = String.EMPTY,
     var type: String? = String.EMPTY,
     var callDate: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
-    var numberPresentation: String? = String.EMPTY,
-    var filter: Filter? = Filter(),
+    @Embedded(prefix = "filter_") var filter: Filter? = Filter()
 ) : Parcelable, NumberData() {
-    var isCheckedForDelete = false
-    var isDeleteMode = false
-    var isExtract = false
+    @Ignore var isCheckedForDelete = false
+    @Ignore var isDeleteMode = false
+    @Ignore var isExtract = false
+    @Ignore var isFilteredCallDetails = false
 
     fun filterTypeIcon(): Int {
         return when (filter?.filterType) {
@@ -47,7 +49,7 @@ open class Call(
     }
 
     fun isNameEmpty(): Boolean {
-        return name.isNullOrEmpty()
+        return callName.isNullOrEmpty()
     }
 
     fun callIcon(): Int {
@@ -82,7 +84,7 @@ open class Call(
     }
 
     fun nameInitial(): String {
-        return if (name.isNullOrEmpty()) String(Character.toChars(128222)) else name.nameInitial()
+        return if (callName.isNullOrEmpty()) String(Character.toChars(128222)) else callName.nameInitial()
     }
 
     fun filterConditionTypeIcon(context: Context): Drawable {

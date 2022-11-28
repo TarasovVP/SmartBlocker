@@ -235,6 +235,8 @@
     <string name="transfer_to_permission">Перейти в разрешения?</string>
     <string name="number_value">number %s </string>
     <string name="update_filters">Обновление фильтров</string>
-    <string name="permissionFilteredContacts">Повлияет на %s контактов</string>
-    <string name="blockerFilteredContacts">Повлияет на %s контактов</string>
+    <string name="blocker_filtered_contacts">Повлияет на %s контактов</string>
+    <string name="permission_filtered_contacts">Повлияет на %s контактов</string>
+    <string name="blocker_filtered_calls">Заблокировано %s звонков</string>
+    <string name="permission_filtered_calls">Разрешено %s звонков</string>
 </resources>

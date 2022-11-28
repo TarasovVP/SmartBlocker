@@ -26,6 +26,8 @@ class NumberDataAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    var isFilteredCallDetails: Boolean = true
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             Contact::class.java.simpleName.hashCode() -> ContactViewHolder(
@@ -102,7 +104,9 @@ class NumberDataAdapter(
         fun bindData(call: Call?) {
             binding?.apply {
                 this.call = call
-                this.call?.isExtract = true
+                this.call?.isExtract = isFilteredCallDetails.not()
+                this.call?.isFilteredCallDetails = isFilteredCallDetails
+                this.call?.highlightedSpanned = this.call?.highlightedSpanned ?: this.call?.number.highlightedSpanned(String.EMPTY, null)
                 root.setSafeOnClickListener {
                     call?.let { it1 -> numberDataClick.invoke(it1.apply {
                         searchText = String.EMPTY

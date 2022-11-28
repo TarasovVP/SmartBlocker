@@ -13,7 +13,7 @@ class FilteredCallsDetailViewModel(application: Application) : BaseViewModel(app
 
     val callListLiveData = MutableLiveData<ArrayList<NumberData>>()
 
-    fun filteredCallsByFilter(filter: Filter) {
+    fun filteredCallsByFilter(filter: String) {
         showProgress()
         launch {
             val filteredCallList = filteredCallRepository.filteredCallsByFilter(filter)

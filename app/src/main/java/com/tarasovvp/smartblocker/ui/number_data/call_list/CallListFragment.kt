@@ -201,7 +201,7 @@ class CallListFragment :
         Log.e("callTAG", "CallListFragment searchDataList() start")
         (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredCallList = callList?.filter { call ->
-            (call.name?.lowercase(Locale.getDefault())
+            (call.callName?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.number.lowercase(Locale.getDefault())
                 .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())

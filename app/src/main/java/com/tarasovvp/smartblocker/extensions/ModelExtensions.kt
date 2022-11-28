@@ -91,13 +91,12 @@ fun Context.systemCallLogCursor(): Cursor? {
 fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
     val logCall = if (isBlockedCall) FilteredCall() else LogCall()
     logCall.callId = this.getInt(0)
-    logCall.name = this.getString(1)
+    logCall.callName = this.getString(1)
     logCall.number = this.getString(2)
     logCall.type = this.getString(3)
     logCall.callDate = this.getString(4)
     logCall.normalizedNumber = this.getString(5)
     logCall.countryIso = this.getString(6)
-    logCall.numberPresentation = this.getString(7)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         logCall.photoUrl = this.getString(7)
     }
@@ -130,13 +129,13 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {
                         type = if (filter?.isBlackFilter().isTrue()) BLOCKED_CALL else PERMITTED_CALL
                         this.filter = filter
-                        name = if (filteredCall.name.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else name
+                        callName = if (filteredCall.callName.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else callName
                     })
                 }
                 if (filter?.isBlackFilter().isTrue()) {
                     try {
                         Log.e("blockTAG",
-                            "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${filteredCall.name} time ${filteredCall.callDate} phone ${filteredCall.number} type ${filteredCall.type} id ${filteredCall.callId}")
+                            "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${filteredCall.callName} time ${filteredCall.callDate} phone ${filteredCall.number} type ${filteredCall.type} id ${filteredCall.callId}")
                         this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${CALL_ID}'${filteredCall.callId}'", null)
                         Log.e("blockTAG",
                             "Extensions delete callId ${filteredCall.callId}")
