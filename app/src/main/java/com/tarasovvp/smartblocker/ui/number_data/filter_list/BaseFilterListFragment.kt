@@ -91,10 +91,10 @@ open class BaseFilterListFragment :
             binding?.root?.hideKeyboard()
             findNavController().navigate(if (this is BlackFilterListFragment) {
                 BlackFilterListFragmentDirections.startFilterConditionsDialog(
-                    filterConditionList = conditionFilterIndexes.orEmpty().toIntArray())
+                    filteringList = conditionFilterIndexes.orEmpty().toIntArray())
             } else {
                 WhiteFilterListFragmentDirections.startFilterConditionsDialog(
-                    filterConditionList = conditionFilterIndexes.orEmpty().toIntArray())
+                    filteringList = conditionFilterIndexes.orEmpty().toIntArray())
             })
         }
         binding?.filterListInfo?.setSafeOnClickListener {

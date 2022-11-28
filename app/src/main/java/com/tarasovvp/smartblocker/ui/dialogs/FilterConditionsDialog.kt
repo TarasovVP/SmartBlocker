@@ -18,18 +18,11 @@ class FilterConditionsDialog : BaseDialog<DialogFilterConditionBinding>() {
 
     override fun initUI() {
         binding?.apply {
-            args.filterConditionList?.let { filterConditionList ->
-                dialogFilterConditionFull.isChecked =
-                    filterConditionList.contains(FilterCondition.FILTER_CONDITION_FULL.index)
-                dialogFilterConditionStart.isChecked =
-                    filterConditionList.contains(FilterCondition.FILTER_CONDITION_START.index)
-                dialogFilterConditionContain.isChecked =
-                    filterConditionList.contains(FilterCondition.FILTER_CONDITION_CONTAIN.index)
-            }
-            dialogForgotPasswordCancel.setSafeOnClickListener {
+            filteringList = ArrayList<Int>(args.filteringList?.toMutableList().orEmpty())
+            dialogFilterConditionCancel.setSafeOnClickListener {
                 dismiss()
             }
-            dialogForgotPasswordConfirm.setSafeOnClickListener {
+            dialogFilterConditionConfirm.setSafeOnClickListener {
                 setFragmentResult(FILTER_CONDITION_LIST,
                     bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
                         if (dialogFilterConditionFull.isChecked) add(FilterCondition.FILTER_CONDITION_FULL.index)

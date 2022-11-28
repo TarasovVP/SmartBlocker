@@ -275,7 +275,7 @@
         android:id="@+id/filterConditionsDialog"
         android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterConditionsDialog">
         <argument
-            android:name="filterConditionList"
+            android:name="filteringList"
             android:defaultValue="@null"
             app:argType="integer[]"
             app:nullable="true" />
