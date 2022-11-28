@@ -39,12 +39,18 @@
                 app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar_divider" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+                android:background="@drawable/shadow" />
+
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:itemBackground="@color/midnight_blue"
+                app:itemBackground="@color/bottom_nav_bg_selector"
                 app:itemIconTint="@color/bottom_nav_color_selector"
                 app:itemTextColor="@color/bottom_nav_color_selector"
                 app:labelVisibilityMode="labeled"
@@ -57,13 +63,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/progress"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/progress" />
 
             <include
                 android:id="@+id/main_progress_bar_animation"

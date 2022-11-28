@@ -68,7 +68,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
-    fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
+    fun filterNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
         showProgress()
         launch {
             Log.e("filterAddTAG",

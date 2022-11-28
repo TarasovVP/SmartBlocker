@@ -31,9 +31,8 @@ class NumberDataDetailFragment :
         binding?.apply {
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
-                is FilteredCall,
                 is LogCall,
-                -> call = (args.numberData as Call).apply { isExtract = true }
+                is FilteredCall -> call = (args.numberData as Call).apply { isExtract = true }
             }
             numberDataDetailFilterListEmpty.emptyState =
                 EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
@@ -79,7 +78,8 @@ class NumberDataDetailFragment :
     override fun getData() {
         viewModel.filterListWithNumber(when (args.numberData) {
             is Contact -> binding?.contact?.trimmedPhone.orEmpty()
-            is LogCall -> binding?.call?.number.orEmpty()
+            is LogCall,
+            is FilteredCall -> binding?.call?.number.orEmpty()
             else -> String.EMPTY
         })
     }

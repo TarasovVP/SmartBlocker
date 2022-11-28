@@ -97,6 +97,7 @@
         <entry key="app/src/main/res/drawable/main_bg2.xml" value="0.154" />
         <entry key="app/src/main/res/drawable/on_boarding_button_bg.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/selector_radio_group.xml" value="0.1635" />
+        <entry key="app/src/main/res/drawable/shadow.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/switch_view_selector.xml" value="0.1695" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16990291262135923" />

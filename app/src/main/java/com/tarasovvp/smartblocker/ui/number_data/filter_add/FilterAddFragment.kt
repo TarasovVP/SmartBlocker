@@ -143,7 +143,7 @@ open class FilterAddFragment :
                                         .isTrue()
                                 ) PERMISSION else BLOCKER
                         }
-                        viewModel.filteredNumberDataList(binding?.filter, numberDataList)
+                        viewModel.filterNumberDataList(binding?.filter, numberDataList)
                         setToolbar()
                     }
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
@@ -192,7 +192,7 @@ open class FilterAddFragment :
                     filter =
                         if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
                 }
-                viewModel.filteredNumberDataList(binding?.filter, numberDataList)
+                viewModel.filterNumberDataList(binding?.filter, numberDataList)
             }
         }
     }
@@ -332,7 +332,7 @@ open class FilterAddFragment :
                     "BaseAddFragment observeLiveData filterListLiveData filterList.size ${numberDataList.size}")
                 this@FilterAddFragment.numberDataList = ArrayList(numberDataList)
                 if (binding?.filter?.isTypeContain().isTrue().not()) {
-                    filteredNumberDataList(binding?.filter, this@FilterAddFragment.numberDataList)
+                    filterNumberDataList(binding?.filter, this@FilterAddFragment.numberDataList)
                 } else {
                     numberDataAdapter?.numberDataList = this@FilterAddFragment.numberDataList
                     numberDataAdapter?.notifyDataSetChanged()

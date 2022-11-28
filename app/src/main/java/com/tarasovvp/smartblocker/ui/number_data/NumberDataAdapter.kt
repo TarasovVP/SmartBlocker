@@ -26,7 +26,7 @@ class NumberDataAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var isFilteredCallDetails: Boolean = true
+    var isFilteredCallDetails: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
