@@ -3,6 +3,8 @@ package com.tarasovvp.smartblocker.extensions
 import android.content.Context
 import android.database.Cursor
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.provider.CallLog
@@ -28,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
+
 
 fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
@@ -150,12 +153,12 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
     }
 }
 
-fun Context.getInitialBitmap(text: String): Bitmap? {
+fun Context.getInitialDrawable(text: String): Drawable {
     Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.LTGRAY
         textSize = spToPx(18F)
         typeface = Typeface.DEFAULT
-        textAlign = Paint.Align.LEFT
+        textAlign = Paint.Align.CENTER
         val textBound = Rect()
         getTextBounds(text, 0, text.length, textBound)
         val textHeight = textBound.height()
@@ -172,10 +175,11 @@ fun Context.getInitialBitmap(text: String): Bitmap? {
 
         color = Color.WHITE
         style = Paint.Style.FILL
+        isFakeBoldText = true
         canvas.drawText(
             text, (rectSize - textWidth) / 2, (rectSize - textHeight) / 2 + textHeight, this
         )
-        return initialBitmap
+        return BitmapDrawable(resources, initialBitmap)
     }
 }
 

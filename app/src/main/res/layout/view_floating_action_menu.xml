@@ -10,7 +10,6 @@
             android:id="@+id/fab_full"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/main_bg"
             app:icon="@drawable/ic_condition_full"
             android:text="@string/condition_full"
             android:visibility="gone"
@@ -22,7 +21,6 @@
             android:id="@+id/fab_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/main_bg"
             app:icon="@drawable/ic_condition_start"
             android:text="@string/condition_start"
             android:visibility="gone"
@@ -34,8 +32,6 @@
             android:id="@+id/fab_contain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
-            android:backgroundTint="@color/main_bg"
             app:icon="@drawable/ic_condition_contain"
             android:text="@string/condition_contain"
             android:visibility="gone"
@@ -49,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10"
             android:src="@drawable/ic_add"
-            android:backgroundTint="@color/main_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

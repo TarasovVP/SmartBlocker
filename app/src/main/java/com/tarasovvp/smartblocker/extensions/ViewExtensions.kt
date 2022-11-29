@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
@@ -14,7 +15,6 @@ import android.view.*
 import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -107,16 +107,11 @@ fun EditText.setTextToInput(inputText: String?, filterToInput: Boolean) {
     if (filterToInput) setText(inputText)
 }
 
-@BindingAdapter(value = ["circleImageUrl", "nameInitial"], requireAll = false)
-fun ImageView.loadCircleImage(photoUrl: String?, nameInitial: String?) {
-    val placeHolder = if (nameInitial.isNullOrEmpty()) ContextCompat.getDrawable(context,
-        R.drawable.ic_avatar) else RoundedBitmapDrawableFactory.create(resources,
-        nameInitial.let { context.getInitialBitmap(it) }).apply {
-        isCircular = true
-    }
+@BindingAdapter(value = ["imageUrl", "placeHolder"], requireAll = false)
+fun ImageView.loadCircleImage(imageUrl: String?, placeHolder: Drawable?) {
     Glide
         .with(this.context)
-        .load(photoUrl)
+        .load(imageUrl)
         .apply(RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(placeHolder)
             .error(placeHolder))
@@ -249,7 +244,7 @@ fun EditText.setupClearButtonWithAction() {
         override fun afterTextChanged(editable: Editable?) {
             val clearIcon = if (editable.toString().replace(HASH_CHAR.toString(), String.EMPTY)
                     .isNotBlank()
-            ) R.drawable.ic_close else 0
+            ) R.drawable.ic_clear else 0
             setCompoundDrawablesWithIntrinsicBounds(0, 0, clearIcon, 0)
         }
 

@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.HASH_CHAR
@@ -50,6 +51,14 @@ data class Filter(
         return when (filterType) {
             PERMISSION -> R.string.permission
             else -> R.string.blocker
+        }
+    }
+
+    @Exclude
+    fun filterTypeIcon(): Int {
+        return when (filterType) {
+            PERMISSION -> R.drawable.ic_permission
+            else -> R.drawable.ic_blocker
         }
     }
 

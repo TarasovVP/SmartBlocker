@@ -33,20 +33,16 @@ open class Call(
     var callDate: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
-    @Embedded(prefix = "filter_") var filter: Filter? = Filter()
+    @Embedded(prefix = "filter_") var filter: Filter? = Filter(),
 ) : Parcelable, NumberData() {
-    @Ignore var isCheckedForDelete = false
-    @Ignore var isDeleteMode = false
-    @Ignore var isExtract = false
-    @Ignore var isFilteredCallDetails = false
-
-    fun filterTypeIcon(): Int {
-        return when (filter?.filterType) {
-            Constants.BLOCKER -> R.drawable.ic_blocker
-            Constants.PERMISSION -> R.drawable.ic_permission
-            else -> 0
-        }
-    }
+    @Ignore
+    var isCheckedForDelete = false
+    @Ignore
+    var isDeleteMode = false
+    @Ignore
+    var isExtract = false
+    @Ignore
+    var isFilteredCallDetails = false
 
     fun isNameEmpty(): Boolean {
         return callName.isNullOrEmpty()
@@ -71,6 +67,10 @@ open class Call(
         return callDate?.toDateFromMilliseconds(DATE_FORMAT)
     }
 
+    fun placeHolder(context: Context): Drawable? {
+        return ContextCompat.getDrawable(context, R.drawable.ic_call_list)
+    }
+
     fun dateTimeFromCallDate(): String {
         return String.format("%s, %s", dateFromCallDate(), timeFromCallDate())
     }
@@ -90,7 +90,8 @@ open class Call(
     fun filterConditionTypeIcon(context: Context): Drawable {
         return when (this) {
             is FilteredCall -> filter?.conditionType?.let { blockFilterCondition ->
-                FilterCondition.getSmallIconByIndex(blockFilterCondition, filter?.isBlackFilter().isTrue())
+                FilterCondition.getSmallIconByIndex(blockFilterCondition,
+                    filter?.isBlackFilter().isTrue())
             }?.let {
                 ContextCompat.getDrawable(context, it)
             } ?: ColorDrawable(Color.TRANSPARENT)

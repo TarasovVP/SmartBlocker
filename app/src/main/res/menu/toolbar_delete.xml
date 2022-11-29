@@ -12,6 +12,6 @@
     <item
         android:id="@+id/close_menu_item"
         android:title="@string/close"
-        android:icon="@drawable/ic_close"
+        android:icon="@drawable/ic_clear"
         app:showAsAction="always"  />
 </menu>

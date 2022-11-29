@@ -25,13 +25,14 @@
     <color name="valhalla">#211F2E</color>
     <color name="islamic_green">#06AA0E</color>
     <color name="comet">#636076</color>
+    <color name="cornflower_blue">#6480E2</color>
 
     //custom project colors
     <color name="main_color">@color/midnight_blue</color>
     <color name="main_bg">@color/alice_blue</color>
     <color name="text_color">@color/valhalla</color>
     <color name="secondary_text_color">@color/comet</color>
-    <color name="button_bg">@color/egyptian_blue</color>
+    <color name="button_bg">@color/cornflower_blue</color>
     <color name="item_color">@color/white</color>
     <color name="span_text">@color/egyptian_blue</color>
     <color name="change_bg">#0DFFC108</color>
