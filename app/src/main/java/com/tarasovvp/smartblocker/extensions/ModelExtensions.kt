@@ -130,16 +130,20 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
             if (number == filteredCall.number) {
                 CoroutineScope(Dispatchers.IO).launch {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {
-                        type = if (filter?.isBlackFilter().isTrue()) BLOCKED_CALL else PERMITTED_CALL
+                        type =
+                            if (filter?.isBlackFilter().isTrue()) BLOCKED_CALL else PERMITTED_CALL
                         this.filter = filter
-                        callName = if (filteredCall.callName.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else callName
+                        callName =
+                            if (filteredCall.callName.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else callName
                     })
                 }
                 if (filter?.isBlackFilter().isTrue()) {
                     try {
                         Log.e("blockTAG",
                             "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${filteredCall.callName} time ${filteredCall.callDate} phone ${filteredCall.number} type ${filteredCall.type} id ${filteredCall.callId}")
-                        this.contentResolver.delete(Uri.parse(LOG_CALL_CALL), "${CALL_ID}'${filteredCall.callId}'", null)
+                        this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
+                            "${CALL_ID}'${filteredCall.callId}'",
+                            null)
                         Log.e("blockTAG",
                             "Extensions delete callId ${filteredCall.callId}")
                     } catch (e: java.lang.Exception) {
@@ -154,33 +158,30 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
 }
 
 fun Context.getInitialDrawable(text: String): Drawable {
-    Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.LTGRAY
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.TRANSPARENT
         textSize = spToPx(18F)
-        typeface = Typeface.DEFAULT
-        textAlign = Paint.Align.CENTER
-        val textBound = Rect()
-        getTextBounds(text, 0, text.length, textBound)
-        val textHeight = textBound.height()
-        val textWidth = textBound.width()
-        val rectSize = max(textHeight + dpToPx(16f) * 2, textWidth + dpToPx(16f) * 2)
-
-        val initialBitmap = Bitmap.createBitmap(
-            rectSize.toInt(), rectSize.toInt(),
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(initialBitmap)
-        val rectF = RectF(0f, 0f, rectSize, rectSize)
-        canvas.drawRect(rectF, this)
-
-        color = Color.WHITE
-        style = Paint.Style.FILL
         isFakeBoldText = true
-        canvas.drawText(
-            text, (rectSize - textWidth) / 2, (rectSize - textHeight) / 2 + textHeight, this
-        )
-        return BitmapDrawable(resources, initialBitmap)
+        typeface = Typeface.DEFAULT
+        textAlign = Paint.Align.LEFT
     }
+    val textBound = Rect()
+    paint.getTextBounds(text, 0, text.length, textBound)
+    val textHeight = textBound.height()
+    val textWidth = textBound.width()
+    val rectSize = max(textHeight + dpToPx(16F) * 2, textWidth + dpToPx(16F) * 2)
+    val initialBitmap = Bitmap.createBitmap(
+        rectSize.toInt(), rectSize.toInt(),
+        Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(initialBitmap)
+    paint.color = Color.WHITE
+    paint.style = Paint.Style.FILL
+    canvas.drawText(text,
+        (rectSize - textWidth) / 2,
+        (rectSize - textHeight) / 2 + textHeight,
+        paint)
+    return BitmapDrawable(resources, initialBitmap)
 }
 
 fun Context.getUserCountry(): String? {
@@ -256,10 +257,13 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
         numberData.highlightedSpanned = numberData.numberData.highlightedSpanned(String.EMPTY, null)
-        if ((numberData is Filter || filter?.isTypeContain().isTrue()) && numberData.numberData.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()
+        if ((numberData is Filter || filter?.isTypeContain()
+                .isTrue()) && numberData.numberData.digitsTrimmed()
+                .contains(filter?.filter.orEmpty()).isTrue()
         ) {
             filteredList.add(numberData.apply {
-                highlightedSpanned = numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
+                highlightedSpanned =
+                    numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
             })
         } else {
             val phoneNumber = numberData.numberData.digitsTrimmed()

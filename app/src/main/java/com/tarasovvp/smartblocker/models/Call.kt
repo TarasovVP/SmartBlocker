@@ -17,10 +17,7 @@ import com.tarasovvp.smartblocker.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.enums.FilterCondition
-import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.extensions.nameInitial
-import com.tarasovvp.smartblocker.extensions.toDateFromMilliseconds
+import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -37,10 +34,13 @@ open class Call(
 ) : Parcelable, NumberData() {
     @Ignore
     var isCheckedForDelete = false
+
     @Ignore
     var isDeleteMode = false
+
     @Ignore
     var isExtract = false
+
     @Ignore
     var isFilteredCallDetails = false
 
@@ -68,7 +68,8 @@ open class Call(
     }
 
     fun placeHolder(context: Context): Drawable? {
-        return ContextCompat.getDrawable(context, R.drawable.ic_call_list)
+        return if (callName.isNullOrEmpty()) ContextCompat.getDrawable(context,
+            R.drawable.ic_call_list) else context.getInitialDrawable(callName.nameInitial())
     }
 
     fun dateTimeFromCallDate(): String {
@@ -81,10 +82,6 @@ open class Call(
 
     fun isPermittedCall(): Boolean {
         return type == PERMITTED_CALL
-    }
-
-    fun nameInitial(): String {
-        return if (callName.isNullOrEmpty()) String(Character.toChars(128222)) else callName.nameInitial()
     }
 
     fun filterConditionTypeIcon(context: Context): Drawable {
