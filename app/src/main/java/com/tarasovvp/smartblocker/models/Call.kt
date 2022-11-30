@@ -1,8 +1,6 @@
 package com.tarasovvp.smartblocker.models
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
@@ -16,8 +14,10 @@ import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
-import com.tarasovvp.smartblocker.enums.FilterCondition
-import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.getInitialDrawable
+import com.tarasovvp.smartblocker.extensions.nameInitial
+import com.tarasovvp.smartblocker.extensions.toDateFromMilliseconds
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -82,18 +82,6 @@ open class Call(
 
     fun isPermittedCall(): Boolean {
         return type == PERMITTED_CALL
-    }
-
-    fun filterConditionTypeIcon(context: Context): Drawable {
-        return when (this) {
-            is FilteredCall -> filter?.conditionType?.let { blockFilterCondition ->
-                FilterCondition.getSmallIconByIndex(blockFilterCondition,
-                    filter?.isBlackFilter().isTrue())
-            }?.let {
-                ContextCompat.getDrawable(context, it)
-            } ?: ColorDrawable(Color.TRANSPARENT)
-            else -> ColorDrawable(Color.TRANSPARENT)
-        }
     }
 
     fun filterValue(): String {

@@ -101,6 +101,11 @@ data class Filter(
     }
 
     @Exclude
+    fun conditionTypeSmallIcon(): Int {
+        return FilterCondition.getSmallIconByIndex(conditionType, isBlackFilter())
+    }
+
+    @Exclude
     fun conditionTypeInfo() = when (conditionType) {
         FilterCondition.FILTER_CONDITION_FULL.index -> Info.INFO_FILTER_ADD_FULL
         FilterCondition.FILTER_CONDITION_START.index -> Info.INFO_FILTER_ADD_START

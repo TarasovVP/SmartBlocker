@@ -60,7 +60,7 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 app:layout_constraintTop_toTopOf="@+id/item_contact_avatar"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
-                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/item_contact_name" />
 
             <TextView
@@ -76,32 +76,6 @@
                 app:mainText="@{ contact.nameEmpty ? @string/number_not_from_contacts : contact.name}"
                 app:searchText="@{contact.searchText}" />
 
-            <ImageView
-                android:id="@+id/item_contact_filter_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_0"
-                android:visibility="@{isDetail ? View.GONE : View.VISIBLE}"
-                app:imageResource="@{contact.filter.conditionTypeIcon()}"
-                app:tint="@{contact.filter.blackFilter ? @color/sunset : @color/islamic_green}"
-                app:layout_constraintTop_toTopOf="@+id/item_contact_number"
-                app:layout_constraintBottom_toTopOf="@+id/item_contact_filter_value"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/item_contact_filter_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:gravity="end|center_vertical"
-                android:textSize="@dimen/text_size_10"
-                android:visibility="@{isDetail ? View.GONE : View.VISIBLE}"
-                android:text="@{contact.filter.filter}"
-                android:textColor="@{contact.filter.blackFilter ? @color/sunset : @color/islamic_green}"
-                app:layout_constraintEnd_toStartOf="@+id/item_contact_statement"
-                app:layout_constraintStart_toEndOf="@+id/item_contact_number"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
             <TextView
                 android:id="@+id/item_contact_statement"
                 android:layout_width="wrap_content"
@@ -115,6 +89,28 @@
                 app:layout_constraintTop_toTopOf="@+id/item_contact_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
                 app:drawableEndCompat="@drawable/ic_arrow_forward" />
+
+            <View
+                android:id="@+id/item_contact_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_1"
+                android:background="@color/light_steel_blue"
+                android:layout_marginTop="@dimen/margin_8"
+                android:visibility="@{isDetail ? View.GONE : View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_name" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_contact_filter_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="@{isDetail ? View.GONE : View.VISIBLE}"
+                android:text="@{contact.filter.filter}"
+                android:textColor="@{contact.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_divider"
+                android:drawableStart="@{contact.filter.conditionTypeSmallIcon}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
