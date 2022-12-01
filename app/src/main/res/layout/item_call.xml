@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="androidx.core.content.ContextCompat" />
+
         <import type="android.view.View" />
+
         <variable
             name="isDetail"
             type="Boolean" />
+
         <variable
             name="call"
             type="com.tarasovvp.smartblocker.models.Call" />
@@ -18,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_2"
         android:layout_marginTop="@dimen/margin_8"
-        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="@dimen/padding_12"
         app:cardElevation="@dimen/padding_1">
 
@@ -28,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="@{call.deleteMode &amp;&amp; !call.blockedCall ? 0.5f : 1f}"
-            android:padding="@dimen/padding_8">
+            android:padding="@dimen/padding_16">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_call_avatar"
@@ -36,18 +40,19 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/cornflower_blue"
                 android:scaleType="center"
-                app:tint="@color/white"
                 app:imageUrl="@{call.photoUrl}"
-                app:placeHolder="@{call.placeHolder(context)}"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/item_call_divider"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:placeHolder="@{call.placeHolder(context)}"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                app:tint="@color/white" />
 
             <ImageView
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
+                android:visibility="@{call.extract || isDetail ? View.VISIBLE : View.GONE}"
                 app:imageResource="@{call.filter.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
@@ -56,14 +61,14 @@
                 android:id="@+id/item_call_number"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_16"
-                android:textStyle="bold"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@{call.highlightedSpanned}"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-                app:layout_constraintTop_toTopOf="@id/item_call_avatar"  />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/item_call_name"
@@ -83,8 +88,8 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:text="@{call.isFilteredCallDetails ? call.dateTimeFromCallDate() : call.timeFromCallDate()}"
-                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 android:textSize="@dimen/text_size_10"
+                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
@@ -97,23 +102,23 @@
                 android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall || call.extract || isDetail ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
-                app:layout_constraintStart_toEndOf="@+id/item_call_number" />
+                app:layout_constraintStart_toEndOf="@+id/item_call_number"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_call_filter_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{call.filterValue}"
-                android:visibility="@{call.extract || isDetail || call.isFilteredCallDetails || (!call.isBlockedCall &amp;&amp; !call.isPermittedCall) ? View.GONE : View.VISIBLE}"
-                android:textSize="@dimen/text_size_10"
-                android:textColor="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                android:drawableStart="@{call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
                 android:gravity="center_vertical|end"
+                android:text="@{call.filterValue}"
+                android:textColor="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_time"
-                app:layout_constraintTop_toTopOf="@+id/item_call_time"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_type_icon"
-                android:drawableStart="@{ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}" />
+                app:layout_constraintTop_toTopOf="@+id/item_call_time" />
 
             <CheckBox
                 android:id="@+id/item_call_delete"
@@ -122,8 +127,8 @@
                 android:checked="@{call.checkedForDelete}"
                 android:padding="@dimen/padding_8"
                 android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall ? View.VISIBLE : View.GONE, default=gone}"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_statement"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_statement"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
 
             <TextView
@@ -131,36 +136,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/padding_5"
-                android:text="@string/statement"
-                android:visibility="@{isDetail ? View.VISIBLE : View.GONE, default=gone}"
                 android:gravity="end|center_vertical"
+                android:text="@string/statement"
                 android:textSize="@dimen/text_size_12"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="@{isDetail ? View.VISIBLE : View.GONE, default=gone}"
+                app:drawableEndCompat="@drawable/ic_arrow_forward"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
-                app:drawableEndCompat="@drawable/ic_arrow_forward" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
 
             <View
                 android:id="@+id/item_call_divider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/padding_1"
-                android:background="@color/light_steel_blue"
                 android:layout_marginTop="@dimen/margin_8"
+                android:background="@color/light_steel_blue"
                 android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_time" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/item_call_filter_value"
-                android:layout_width="match_parent"
+                android:id="@+id/item_call_filter_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_5"
+                android:text="@{call.filterNullOrEmpty ? call.extract || isDetail || !call.filteredCall ? @string/without_filter_call : @string/without_filter : call.filter.blackFilter ? call.extract || isDetail ? @string/blocker_indication_value : @string/blocker_call_value : call.extract || isDetail ? @string/permission_indication_value : @string/permission_call_value}"
+                android:textColor="@{call.filterNullOrEmpty ? @color/comet : call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="@{isDetail ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_filter_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_call_divider" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_call_filter_value"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                android:drawableStart="@{call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:text="@{call.filterNullOrEmpty ? `` : call.filter.filter}"
+                android:textColor="@{call.filterNullOrEmpty ? @color/comet : call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
                 android:textSize="@dimen/text_size_10"
                 android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
-                android:text="@{call.filter.filter}"
-                android:textColor="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
-                app:layout_constraintTop_toBottomOf="@+id/item_call_divider"
-                android:drawableStart="@{ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"  />
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_call_filter_title"
+                app:layout_constraintTop_toTopOf="@+id/item_call_filter_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

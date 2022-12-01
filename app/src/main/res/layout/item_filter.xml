@@ -102,6 +102,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:layout_marginTop="@dimen/margin_5"
+                android:textSize="@dimen/text_size_10"
                 android:textColor="@{filter.blackFilter ? @color/sunset : @color/islamic_green}"
                 android:text="@{String.format(context.getString(filter.filteredContactsText), filter.filteredContacts)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_divider" />

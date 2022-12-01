@@ -8,10 +8,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.extensions.digitsTrimmed
-import com.tarasovvp.smartblocker.extensions.getInitialDrawable
-import com.tarasovvp.smartblocker.extensions.nameInitial
+import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.android.parcel.Parcelize
 
 @Entity
@@ -37,5 +34,9 @@ data class Contact(
     fun placeHolder(context: Context): Drawable? {
         return if (name.nameInitial().isEmpty()) ContextCompat.getDrawable(context,
             R.drawable.ic_contact) else context.getInitialDrawable(name.nameInitial())
+    }
+
+    fun isFilterNullOrEmpty(): Boolean {
+        return filter?.filter.isNullOrEmpty().isTrue()
     }
 }

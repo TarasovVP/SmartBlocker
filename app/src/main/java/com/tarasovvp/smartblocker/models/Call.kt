@@ -14,10 +14,7 @@ import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
-import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.extensions.getInitialDrawable
-import com.tarasovvp.smartblocker.extensions.nameInitial
-import com.tarasovvp.smartblocker.extensions.toDateFromMilliseconds
+import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -86,5 +83,13 @@ open class Call(
 
     fun filterValue(): String {
         return filter?.filter.orEmpty()
+    }
+
+    fun isFilterNullOrEmpty(): Boolean {
+        return filter?.filter.isNullOrEmpty().isTrue()
+    }
+
+    fun isFilteredCall(): Boolean {
+        return this is FilteredCall
     }
 }
