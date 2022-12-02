@@ -132,7 +132,7 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {
                         type =
                             if (filter?.isBlackFilter().isTrue()) BLOCKED_CALL else PERMITTED_CALL
-                        this.filter = filter
+                        this.filtered = filter
                         callName =
                             if (filteredCall.callName.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else callName
                     })
