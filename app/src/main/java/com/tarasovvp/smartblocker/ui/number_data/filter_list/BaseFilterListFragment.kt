@@ -81,6 +81,7 @@ open class BaseFilterListFragment :
                 if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
                     getString(FilterCondition.getTitleByIndex(it))
                 }
+            isChecked = conditionFilterIndexes.isNullOrEmpty().not()
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
         }
@@ -89,6 +90,7 @@ open class BaseFilterListFragment :
     private fun setClickListeners() {
         binding?.filterListFilter?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
+            binding?.filterListFilter?.isChecked = binding?.filterListFilter?.isChecked.isTrue().not()
             findNavController().navigate(if (this is BlackFilterListFragment) {
                 BlackFilterListFragmentDirections.startFilterConditionsDialog(
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray())

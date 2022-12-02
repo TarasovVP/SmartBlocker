@@ -63,6 +63,7 @@ open class ContactListFragment :
                     callFilteringText.add(context.getString(R.string.with_permission_filter))
             }
             text = callFilteringText.joinToString()
+            isChecked = conditionFilterIndexes.isNullOrEmpty().not()
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
         }
@@ -71,6 +72,7 @@ open class ContactListFragment :
     private fun setClickListeners() {
         binding?.contactListCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
+            binding?.contactListCheck?.isChecked = binding?.contactListCheck?.isChecked.isTrue().not()
             findNavController().navigate(
                 CallListFragmentDirections.startNumberDataFilteringDialog(filteringList = conditionFilterIndexes.orEmpty()
                     .toIntArray()))
