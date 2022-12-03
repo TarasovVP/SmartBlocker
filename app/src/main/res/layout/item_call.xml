@@ -38,7 +38,7 @@
                 android:id="@+id/item_call_avatar"
                 android:layout_width="@dimen/margin_50"
                 android:layout_height="@dimen/margin_50"
-                android:background="@color/cornflower_blue"
+                android:background="@color/light_steel_blue"
                 android:scaleType="center"
                 app:imageUrl="@{call.photoUrl}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_divider"
@@ -52,7 +52,7 @@
             <ImageView
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                android:visibility="@{call.extract || isDetail ? View.VISIBLE : View.GONE}"
+                android:visibility="@{call.extract ? View.VISIBLE : View.GONE}"
                 app:imageResource="@{call.filter.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
@@ -99,7 +99,7 @@
                 android:id="@+id/item_call_type_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall || call.extract || isDetail ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall || call.extract ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
@@ -159,11 +159,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{call.filterNullOrEmpty ? call.extract || isDetail || !call.filteredCall ? @string/without_filter_call : @string/without_filter : call.filter.blackFilter ? call.extract || isDetail ? @string/blocker_indication_value : @string/blocker_call_value : call.extract || isDetail ? @string/permission_indication_value : @string/permission_call_value}"
-                android:textColor="@{call.filterNullOrEmpty ? @color/comet : call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                android:text="@{call.callFilterTitle}"
+                android:textColor="@{ContextCompat.getColor(context, call.callFilterTint)}"
                 android:textSize="@dimen/text_size_10"
-                android:visibility="@{isDetail ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_divider" />
 
@@ -171,13 +169,13 @@
                 android:id="@+id/item_call_filter_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
-                android:drawableStart="@{call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
+                android:drawableStart="@{call.callFilterIcon == null ? null : ContextCompat.getDrawable(context, call.callFilterIcon)}"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{call.filterNullOrEmpty ? `` : call.filter.filter}"
-                android:textColor="@{call.filterNullOrEmpty ? @color/comet : call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                android:text="@{call.callFilterValue}"
+                android:textColor="@{ContextCompat.getColor(context, call.callFilterTint)}"
+                android:visibility="@{!call.extract &amp;&amp; !call.filteredNullOrEmpty ? View.VISIBLE : View.GONE}"
                 android:textSize="@dimen/text_size_10"
-                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_call_filter_title"
@@ -186,4 +184,3 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
-

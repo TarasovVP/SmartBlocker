@@ -1,8 +1,10 @@
 package com.tarasovvp.smartblocker.models
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
+import android.provider.CallLog
 import androidx.core.content.ContextCompat
 import androidx.room.Embedded
 import androidx.room.Ignore
@@ -89,7 +91,87 @@ open class Call(
         return filter?.filter.isNullOrEmpty().isTrue()
     }
 
+    fun isFilteredNullOrEmpty(): Boolean {
+        return this is FilteredCall && filtered?.filter.isNullOrEmpty().isTrue()
+    }
+
     fun isFilteredCall(): Boolean {
         return this is FilteredCall
+    }
+
+    fun callFilterTitle(): Int {
+        return if (this is FilteredCall) {
+            if (isFilteredNullOrEmpty()) {
+                R.string.without_filter_call
+            } else if (filtered?.isBlackFilter().isTrue()) {
+                R.string.blocker_call_value
+            } else {
+                R.string.permission_call_value
+            }
+        } else {
+            if (isExtract.not()) {
+                R.string.without_filter_call
+            } else {
+                if (isFilterNullOrEmpty()) {
+                    R.string.without_filter
+                } else if (filter?.isBlackFilter().isTrue()) {
+                    R.string.blocker_indication_value
+                } else {
+                    R.string.permission_indication_value
+                }
+            }
+        }
+    }
+
+    fun callFilterValue(): String {
+        return if (this is FilteredCall) {
+            if (isFilteredNullOrEmpty()) {
+                String.EMPTY
+            } else {
+                filtered?.filter.orEmpty()
+            }
+        } else {
+            if (isFilterNullOrEmpty()) {
+                String.EMPTY
+            } else {
+                filter?.filter.orEmpty()
+            }
+        }
+    }
+
+    fun callFilterIcon(): Int? {
+        return if (this is FilteredCall) {
+            if (isFilteredNullOrEmpty()) {
+                null
+            } else {
+                filtered?.conditionTypeSmallIcon()
+            }
+        } else {
+            if (isFilterNullOrEmpty()) {
+                null
+            } else {
+                filter?.conditionTypeSmallIcon()
+            }
+        }
+    }
+
+    fun callFilterTint(): Int {
+        return if (this is FilteredCall) {
+            if (isFilteredNullOrEmpty()) {
+                R.color.comet
+            } else if (filtered?.isBlackFilter().isTrue()) {
+                R.color.sunset
+            } else {
+                R.color.islamic_green
+            }
+        } else {
+            if (isFilterNullOrEmpty()) {
+                R.color.comet
+            } else if (filter?.isBlackFilter().isTrue()) {
+                R.color.sunset
+            } else {
+                R.color.islamic_green
+            }
+        }
     }
 }

@@ -10,6 +10,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class FilteredCall(
     @PrimaryKey override var callId: Int = 0,
-) : Call(), Parcelable {
     @Embedded(prefix = "filtered_") var filtered: Filter? = Filter()
-}
+) : Call(), Parcelable
