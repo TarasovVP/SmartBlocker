@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="androidx.core.content.ContextCompat" />
+        <import type="android.view.View" />
+        <variable
+            name="contact"
+            type="com.tarasovvp.smartblocker.models.Contact" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_2"
+        android:layout_marginTop="@dimen/margin_8"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/padding_12"
+        app:cardElevation="@dimen/padding_1">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_16">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/item_contact_avatar"
+                android:layout_width="@dimen/margin_50"
+                android:layout_height="@dimen/margin_50"
+                android:background="@color/light_steel_blue"
+                android:scaleType="center"
+                app:imageUrl="@{contact.photoUrl}"
+                app:placeHolder="@{contact.placeHolder(context)}"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                app:layout_constraintBottom_toTopOf="@+id/item_contact_divider"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                app:imageResource="@{contact.filter.filterTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
+
+            <TextView
+                android:id="@+id/item_contact_number"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold"
+                android:text="@{contact.highlightedSpanned}"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/item_contact_name" />
+
+            <TextView
+                android:id="@+id/item_contact_name"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintEnd_toEndOf="@+id/item_contact_number"
+                app:layout_constraintStart_toStartOf="@+id/item_contact_number"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_number"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
+                app:mainText="@{ contact.nameEmpty ? @string/number_not_from_contacts : contact.name}"
+                app:searchText="@{contact.searchText}" />
+
+            <TextView
+                android:id="@+id/item_contact_statement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_5"
+                android:text="@string/statement"
+                android:gravity="end|center_vertical"
+                android:textSize="@dimen/text_size_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_contact_number"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
+                app:drawableEndCompat="@drawable/ic_arrow_forward" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

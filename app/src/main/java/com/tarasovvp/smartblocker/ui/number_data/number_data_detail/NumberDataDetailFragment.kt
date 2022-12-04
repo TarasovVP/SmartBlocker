@@ -29,6 +29,8 @@ class NumberDataDetailFragment :
 
     override fun initViews() {
         binding?.apply {
+            contact = Contact()
+            call = Call()
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
                 is LogCall,
