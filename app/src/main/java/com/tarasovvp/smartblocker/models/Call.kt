@@ -1,10 +1,8 @@
 package com.tarasovvp.smartblocker.models
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
-import android.provider.CallLog
 import androidx.core.content.ContextCompat
 import androidx.room.Embedded
 import androidx.room.Ignore
@@ -95,10 +93,6 @@ open class Call(
         return this is FilteredCall && filtered?.filter.isNullOrEmpty().isTrue()
     }
 
-    fun isFilteredCall(): Boolean {
-        return this is FilteredCall
-    }
-
     fun callFilterTitle(): Int {
         return if (this is FilteredCall) {
             if (isFilteredNullOrEmpty()) {
@@ -124,54 +118,32 @@ open class Call(
     }
 
     fun callFilterValue(): String {
-        return if (this is FilteredCall) {
-            if (isFilteredNullOrEmpty()) {
-                String.EMPTY
-            } else {
-                filtered?.filter.orEmpty()
-            }
-        } else {
-            if (isFilterNullOrEmpty()) {
-                String.EMPTY
-            } else {
-                filter?.filter.orEmpty()
-            }
+        return when {
+            this is FilteredCall && isFilteredNullOrEmpty().not() && isExtract.not() -> filtered?.filter.orEmpty()
+            this is LogCall && isFilterNullOrEmpty().not() && isExtract -> filter?.filter.orEmpty()
+            else -> String.EMPTY
         }
     }
 
     fun callFilterIcon(): Int? {
-        return if (this is FilteredCall) {
-            if (isFilteredNullOrEmpty()) {
-                null
-            } else {
-                filtered?.conditionTypeSmallIcon()
-            }
-        } else {
-            if (isFilterNullOrEmpty()) {
-                null
-            } else {
-                filter?.conditionTypeSmallIcon()
-            }
+        return when {
+            this is FilteredCall && isFilteredNullOrEmpty().not() && isExtract.not() -> filtered?.conditionTypeSmallIcon()
+            this is LogCall && isFilterNullOrEmpty().not() && isExtract -> filter?.conditionTypeSmallIcon()
+            else -> null
         }
     }
 
     fun callFilterTint(): Int {
-        return if (this is FilteredCall) {
-            if (isFilteredNullOrEmpty()) {
-                R.color.comet
-            } else if (filtered?.isBlackFilter().isTrue()) {
-                R.color.sunset
-            } else {
-                R.color.islamic_green
+        return when {
+            this is FilteredCall && isFilteredNullOrEmpty().not() && isExtract.not() -> when {
+                filtered?.isBlackFilter().isTrue() -> R.color.sunset
+                else -> R.color.islamic_green
             }
-        } else {
-            if (isFilterNullOrEmpty()) {
-                R.color.comet
-            } else if (filter?.isBlackFilter().isTrue()) {
-                R.color.sunset
-            } else {
-                R.color.islamic_green
+            this is LogCall && isFilterNullOrEmpty().not() && isExtract -> when {
+                filter?.isBlackFilter().isTrue() -> R.color.sunset
+                else -> R.color.islamic_green
             }
+            else -> R.color.comet
         }
     }
 }
