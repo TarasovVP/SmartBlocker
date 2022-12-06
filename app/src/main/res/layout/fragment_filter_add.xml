@@ -25,36 +25,13 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/padding_16">
 
-        <include
-            android:id="@+id/filter_add_item_filter"
-            layout="@layout/item_filter_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_2"
-            android:layout_marginTop="@dimen/margin_8"
-            app:filter="@{filter}"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/filter_add_conditions_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:drawablePadding="@dimen/padding_10"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:padding="@dimen/padding_2"
-            android:text="@{filter.filterAction.descriptionText}"
-            app:drawableEndCompat="@drawable/ic_info"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_item_filter" />
-
         <Spinner
             android:id="@+id/filter_add_country_code_spinner"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_0"
-            android:background="@drawable/bg_spinner"
             android:minWidth="@dimen/margin_45"
             android:paddingEnd="@dimen/padding_10"
+            android:background="@drawable/test_bg_country"
             android:visibility="@{filter.typeContain ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +45,10 @@
             android:gravity="center"
             android:text="@{filter.countryCode.countryCode}"
             android:textSize="@dimen/text_size_18"
+            android:layout_marginHorizontal="@dimen/margin_4"
+            android:background="@drawable/test_bg_code"
             app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
+            app:layout_constraintEnd_toStartOf="@+id/filter_add_input"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_spinner"
             app:layout_constraintTop_toTopOf="@+id/filter_add_input" />
 
@@ -85,9 +65,33 @@
             android:singleLine="true"
             app:filterToInput="@{filterToInput}"
             app:text="@{filter.filterToInput()}"
+            android:layout_marginTop="@dimen/margin_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_description"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/filter_add_item_filter"
+            layout="@layout/item_filter_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            android:layout_marginTop="@dimen/margin_8"
+            app:filter="@{filter}"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
+
+        <TextView
+            android:id="@+id/filter_add_conditions_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:drawablePadding="@dimen/padding_10"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/padding_2"
+            android:text="@{filter.filterAction.descriptionText}"
+            app:drawableEndCompat="@drawable/ic_info"
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_item_filter" />
 
         <include
             android:id="@+id/filter_add_submit"
@@ -96,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
             app:filter="@{filter}"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_description" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filter_add_contact_list"
