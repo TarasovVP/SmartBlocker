@@ -1,9 +1,13 @@
 package com.tarasovvp.smartblocker.ui.base
 
+import android.app.SearchManager
+import android.content.Context.SEARCH_SERVICE
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
@@ -18,12 +22,13 @@ import com.tarasovvp.smartblocker.extensions.hideKeyboard
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.HeaderDataItem
-import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragment
 import com.tarasovvp.smartblocker.ui.number_data.contact_list.ContactListFragment
 import com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
+
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
     BaseFragment<B, T>() {

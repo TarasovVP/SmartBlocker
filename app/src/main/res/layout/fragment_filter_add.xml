@@ -4,19 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
             name="filterToInput"
             type="Boolean" />
-
         <variable
             name="filter"
             type="com.tarasovvp.smartblocker.models.Filter" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -27,6 +27,7 @@
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
         <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
         <item name="extendedFloatingActionButtonStyle">@style/ExtendedFloatingActionButtonStyle</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 
     <style name="FilledButton" parent="Widget.MaterialComponents.Button.TextButton">
@@ -143,5 +144,9 @@
         <item name="android:backgroundTint">@color/cornflower_blue</item>
         <item name="iconTint">@color/white</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="searchHintIcon">@drawable/ic_search</item>
     </style>
 </resources>
