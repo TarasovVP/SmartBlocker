@@ -67,12 +67,12 @@ class NumberDataAdapter(
                 this.filter = filter?.apply {
                     highlightedSpanned = highlightedSpanned ?: filter.filter.highlightedSpanned( String.EMPTY, null)
                 }
-                itemFilterContainer.setBackgroundColor(ContextCompat.getColor(
+                itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context, when {
-                        filter?.isChangeFilterAction().isTrue() && adapterPosition == 0 -> R.color.change_bg
-                        filter?.isDeleteFilterAction().isTrue() && adapterPosition == 0 -> R.color.delete_bg
-                        else -> R.color.white
-                    }))
+                        filter?.isChangeFilterAction().isTrue() && adapterPosition == 0 -> filter?.filterAction?.color ?: R.color.transparent
+                        filter?.isDeleteFilterAction().isTrue() && adapterPosition == 0 -> filter?.filterAction?.color ?: R.color.transparent
+                        else -> R.color.transparent
+                    })
                 root.setSafeOnClickListener {
                     filter?.let { it1 -> numberDataClick.invoke(it1) }
                 }

@@ -55,11 +55,12 @@
         <include
             android:id="@+id/filter_detail_add_filter"
             layout="@layout/include_submit_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
             android:visibility="@{filter.isPreview ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter" />
 

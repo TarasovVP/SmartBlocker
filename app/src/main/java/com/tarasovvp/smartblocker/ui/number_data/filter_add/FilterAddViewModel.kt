@@ -25,6 +25,7 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
 
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
+    val existingFilterLiveData = MutableLiveData<Filter>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
@@ -43,17 +44,14 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         showProgress()
         launch {
             val contacts = async { contactRepository.getAllContacts() }
-            val filters = async { filterRepository.allFilters() }
             val calls = async { callRepository.getAllCallsNumbers() }
-            awaitAll(contacts, filters, calls)
+            awaitAll(contacts, calls)
             val contactList = contacts.await().orEmpty()
-            val filterList = filters.await().orEmpty()
             val callList = calls.await().orEmpty()
             Log.e("filterAddTAG",
                 "AddViewModel getNumberDataList callList.size ${callList.size}")
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contactList)
-                addAll(filterList)
                 addAll(callList)
                 sortBy {
                     it.numberData.replace(PLUS_CHAR.toString(), String.EMPTY)
@@ -65,6 +63,15 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             Log.e("filterAddTAG",
                 "AddViewModel getNumberDataList mainDataList?.size ${numberDataList.size}")
             numberDataListLiveData.postValue(numberDataList)
+        }
+    }
+
+    fun checkFilterExist(filter: Filter) {
+        launch {
+            Log.e("filterAddTAG",
+                "AddViewModel checkFilterExist filter $filter")
+            val result = filterRepository.getFilter(filter)
+            existingFilterLiveData.postValue(result ?: Filter())
         }
     }
 

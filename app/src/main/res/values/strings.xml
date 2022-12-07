@@ -198,7 +198,7 @@
     <string name="empty_state_blocked_calls_description">Не найдены заблокированные вызовы</string>
     <string name="info">Инфо</string>
     <string name="statement">Выписка</string>
-    <string name="preview">Предпросмотр</string>
+    <string name="preview">Результат</string>
     <string name="enter">Войти</string>
     <string name="blocking_history">Блокировки</string>
     <string name="info_blockers_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>

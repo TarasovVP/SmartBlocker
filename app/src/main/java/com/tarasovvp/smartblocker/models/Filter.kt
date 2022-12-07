@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.HASH_CHAR
@@ -151,7 +150,7 @@ data class Filter(
 
     @Exclude
     fun isInvalidFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_INVALID || filterAction == FilterAction.FILTER_ACTION_PERMISSION_INVALID
+        return filterAction == FilterAction.FILTER_ACTION_INVALID
     }
 
     @Exclude

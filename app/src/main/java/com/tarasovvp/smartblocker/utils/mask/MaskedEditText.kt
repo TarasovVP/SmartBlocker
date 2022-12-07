@@ -12,6 +12,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.core.content.ContextCompat
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.HASH_CHAR
 import com.tarasovvp.smartblocker.extensions.*
 
@@ -44,6 +46,7 @@ class MaskedEditText @JvmOverloads constructor(
             }
             false
         })
+        background = ContextCompat.getDrawable(context, R.drawable.bg_rounded)
         addTextChangedListener(this)
     }
 

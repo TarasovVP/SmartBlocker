@@ -20,8 +20,8 @@ interface FilterDao {
     @Query("SELECT * FROM filter WHERE filterType = :filterType")
     suspend fun allFiltersByType(filterType: Int): List<Filter>
 
-    @Query("SELECT * FROM filter WHERE filter = :filter AND conditionType = :type")
-    suspend fun getFilter(filter: String, type: Int): Filter?
+    @Query("SELECT * FROM filter WHERE filter = :filter AND conditionType = :conditionType")
+    suspend fun getFilter(filter: String, conditionType: Int): Filter?
 
     @Query("SELECT * FROM filter WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2)")
     suspend fun queryFullMatchFilterList(number: String): List<Filter>

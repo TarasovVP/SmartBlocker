@@ -5,7 +5,6 @@
     <data>
 
         <import type="androidx.core.content.ContextCompat" />
-
         <variable
             name="filter"
             type="com.tarasovvp.smartblocker.models.Filter" />
@@ -16,14 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/StrokeButton"
-        android:layout_marginTop="@dimen/margin_8"
-        android:padding="@dimen/padding_10"
-        android:drawablePadding="@dimen/padding_10"
+        android:paddingVertical="@dimen/padding_10"
+        android:paddingHorizontal="@dimen/padding_30"
         android:enabled="@{!filter.invalidFilterAction}"
         android:text="@{filter.filterAction.title}"
         android:textColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
         app:strokeColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
-        android:drawableEnd="@{ContextCompat.getDrawable(context, filter.filterAction.icon)}"
         android:layout_marginStart="@dimen/margin_8"
         app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
         app:layout_constraintEnd_toEndOf="parent"

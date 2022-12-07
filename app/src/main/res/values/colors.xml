@@ -10,6 +10,7 @@
     <color name="blue">#267DFF</color>
     <color name="progress_bg">#80000000</color>
     <color name="disable_color">#32989595</color>
+    <color name="transparent">#00000000</color>
 
     //custom colors
     <color name="midnight_blue">#102B58</color>
@@ -35,7 +36,5 @@
     <color name="button_bg">@color/cornflower_blue</color>
     <color name="item_color">@color/white</color>
     <color name="span_text">@color/egyptian_blue</color>
-    <color name="change_bg">#0DFFC108</color>
-    <color name="delete_bg">#0DFF4545</color>
     <color name="white_bg">#0D86FF45</color>
 </resources>

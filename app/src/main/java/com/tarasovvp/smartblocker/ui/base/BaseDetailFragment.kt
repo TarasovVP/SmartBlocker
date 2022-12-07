@@ -4,17 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.showPopUpWindow
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.number_data.filtered_calls_detail.FilteredCallsDetailFragment
 import com.tarasovvp.smartblocker.ui.number_data.filter_detail.FilterDetailFragment
+import com.tarasovvp.smartblocker.ui.number_data.filtered_calls_detail.FilteredCallsDetailFragment
 
 abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
     BaseFragment<B, T>() {
-
-    protected var emptyStateContainer: IncludeEmptyStateBinding? = null
 
     abstract fun initViews()
     abstract fun setClickListeners()

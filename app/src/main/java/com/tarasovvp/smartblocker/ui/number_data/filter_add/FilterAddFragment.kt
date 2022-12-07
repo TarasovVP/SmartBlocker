@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -13,10 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
+import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
-import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.FragmentFilterAddBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
@@ -26,12 +24,12 @@ import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.base.BaseFragment
+import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 open class FilterAddFragment :
-    BaseFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
+    BaseDetailFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
 
     override var layoutId = R.layout.fragment_filter_add
     override val viewModelClass = FilterAddViewModel::class.java
@@ -44,26 +42,15 @@ open class FilterAddFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        setToolbar()
-        setClickListeners()
         setFragmentResultListeners()
         setFilterTextChangeListener()
-        setNumberDataAdapter()
-        viewModel.getNumberDataList()
-        if (binding?.filter?.isTypeContain().isNotTrue()) {
-            viewModel.getCountryCodeList()
-        } else {
-            binding?.filterAddInput?.hint = getString(R.string.enter_filter)
-        }
     }
 
-    private fun initViews() {
+    override fun initViews() {
         Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filter = args.filterAdd?.apply {
-            filterAction = filterAction
-                ?: if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_INVALID else FilterAction.FILTER_ACTION_PERMISSION_INVALID
+            filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
             isPreview = false
             if (filter.isNotEmpty() && isTypeContain().not()) {
                 addFilter = filter
@@ -80,30 +67,7 @@ open class FilterAddFragment :
         binding?.executePendingBindings()
     }
 
-    private fun setToolbar() {
-        (activity as MainActivity).apply {
-            toolbar?.apply {
-                title =
-                    getString(if (binding?.filter?.isBlackFilter().isTrue()) R.string.blocker else R.string.permission)
-                menu?.clear()
-                inflateMenu(R.menu.toolbar_filter)
-                menu?.findItem(R.id.filter_menu_item)?.apply {
-                    icon = ContextCompat.getDrawable(context,
-                        if (binding?.filter?.isBlackFilter().isTrue()) R.drawable.ic_black_to_white_filter else R.drawable.ic_white_to_black_filter)
-                    setOnMenuItemClickListener {
-                        findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
-                            filterNumber = binding?.filter?.filter,
-                            filterAction = if (binding?.filter?.isBlackFilter()
-                                    .isTrue()
-                            ) FilterAction.FILTER_ACTION_BLOCKER_CHANGE else FilterAction.FILTER_ACTION_PERMISSION_CHANGE))
-                        return@setOnMenuItemClickListener true
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setClickListeners() {
+    override fun setClickListeners() {
         binding?.apply {
             filterAddConditionsDescription.setSafeOnClickListener {
                 filter?.conditionTypeInfo()
@@ -129,23 +93,20 @@ open class FilterAddFragment :
         }
     }
 
+    override fun getData() {
+        viewModel.getNumberDataList()
+        if (binding?.filter?.isTypeContain().isNotTrue()) {
+            viewModel.getCountryCodeList()
+        } else {
+            binding?.filterAddInput?.hint = getString(R.string.enter_filter)
+        }
+    }
+
     private fun setFragmentResultListeners() {
         binding?.filter?.let { filter ->
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction =
                     bundle.getSerializable(FILTER_ACTION) as FilterAction) {
-                    FilterAction.FILTER_ACTION_BLOCKER_CHANGE,
-                    FilterAction.FILTER_ACTION_PERMISSION_CHANGE,
-                    -> {
-                        binding?.filter = filter.apply {
-                            filterType =
-                                if (binding?.filter?.isBlackFilter()
-                                        .isTrue()
-                                ) PERMISSION else BLOCKER
-                        }
-                        viewModel.filterNumberDataList(binding?.filter, numberDataList)
-                        setToolbar()
-                    }
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
                     -> viewModel.updateFilter(filter.apply {
@@ -191,13 +152,14 @@ open class FilterAddFragment :
                 filter = filter?.apply {
                     filter =
                         if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
+                    viewModel.checkFilterExist(this)
                 }
-                viewModel.filterNumberDataList(binding?.filter, numberDataList)
+                viewModel.filterNumberDataList(filter, numberDataList)
             }
         }
     }
 
-    private fun setNumberDataAdapter() {
+    override fun createAdapter() {
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
             binding?.apply {
                 binding?.filterToInput = true
@@ -289,26 +251,8 @@ open class FilterAddFragment :
         Log.e("filterAddTAG",
             "FilterAddFragment filterNumberDataList filteredList?.size ${filteredList.size}")
         binding?.apply {
-            val existingFilter =
-                filteredList.find { (it is Filter) && it.filter == filter?.addFilter() && it.conditionType == filter?.conditionType } as? Filter
-            filter = filter?.apply {
-                filterAction = when (existingFilter?.filterType) {
-                    null -> if (isInValidPhoneNumber().isTrue()) if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_INVALID else FilterAction.FILTER_ACTION_PERMISSION_INVALID else if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
-                    filterType -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                    else -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
-                }
-            }
-            filteredList.toMutableList().moveToFirst(existingFilter).let { contactList ->
-                numberDataAdapter?.numberDataList = ArrayList(contactList.apply {
-                    (firstOrNull() as? Filter)?.filterAction =
-                        if (filter?.isChangeFilterAction()
-                                .isTrue() || filter?.isDeleteFilterAction().isTrue()
-                        ) filter?.filterAction else if (filter?.isBlackFilter()
-                                .isTrue()
-                        ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
-                })
-                numberDataAdapter?.notifyDataSetChanged()
-            }
+            numberDataAdapter?.numberDataList = filteredList
+            numberDataAdapter?.notifyDataSetChanged()
             filterAddContactList.isVisible = filteredList.isEmpty().not()
             filterAddEmptyList.root.isVisible = filteredList.isEmpty()
             Log.e("filterAddTAG",
@@ -340,6 +284,17 @@ open class FilterAddFragment :
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
             }
+            existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
+                Log.e("filterAddTAG",
+                    "BaseAddFragment observeLiveData existingFilterLiveData existingFilter $existingFilter")
+                binding?.filter = binding?.filter?.apply {
+                    filterAction = when (existingFilter.filterType) {
+                        DEFAULT_FILTER -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
+                        filterType -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                        else -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
+                    }
+                }
+            }
             filteredNumberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredNumberDataList ->
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData filteredNumberDataListLiveData filteredNumberDataList.size ${filteredNumberDataList.size}")
@@ -357,15 +312,9 @@ open class FilterAddFragment :
                 .orEmpty(),
                 filter.filter), false)
             getAllData()
-            if (filter.isChangeFilterAction()) {
-                mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                    viewModel.getNumberDataList()
-                }
-            } else {
-                findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
-                    FilterAddFragmentDirections.startBlackFilterListFragment()
-                else FilterAddFragmentDirections.startWhiteFilterListFragment())
-            }
+            findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
+                FilterAddFragmentDirections.startBlackFilterListFragment()
+            else FilterAddFragmentDirections.startWhiteFilterListFragment())
         }
     }
 }
