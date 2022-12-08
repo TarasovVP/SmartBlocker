@@ -12,18 +12,18 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/item_filter_detail_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_2"
         android:layout_marginTop="@dimen/margin_8"
         android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="@{filter.addFilterAction &amp;&amp; !filter.preview}"
+        android:enabled="@{!filter.resultHidden}"
         app:strokeWidth="@dimen/padding_1"
         app:cardCornerRadius="@dimen/padding_12"
         app:cardElevation="@dimen/padding_1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item_filter_detail_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_16">
@@ -79,10 +79,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end|center_vertical"
-                android:text="@string/preview"
+                android:text="@{filter.addFilterAction &amp;&amp; !filter.preview ? @string/preview : @string/statement}"
                 android:textSize="@dimen/text_size_12"
                 android:includeFontPadding="false"
-                android:visibility="@{!filter.addFilterAction || filter.preview ? View.GONE : View.VISIBLE}"
+                android:visibility="@{filter.resultHidden ? View.GONE : View.VISIBLE}"
                 app:drawableEndCompat="@drawable/ic_arrow_forward"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_detail_value"
                 app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_avatar"

@@ -70,14 +70,6 @@ data class Filter(
     }
 
     @Exclude
-    fun filteredCallsText(): Int {
-        return when (filterType) {
-            PERMISSION -> R.string.permission_filtered_calls
-            else -> R.string.blocker_filtered_calls
-        }
-    }
-
-    @Exclude
     fun conditionTypeName(): Int {
         return FilterCondition.getTitleByIndex(conditionType)
     }
@@ -101,7 +93,7 @@ data class Filter(
 
     @Exclude
     fun conditionTypeSmallIcon(): Int {
-        return FilterCondition.getSmallIconByIndex(conditionType, isBlackFilter())
+        return FilterCondition.getSmallIconByIndex(conditionType, isBlocker())
     }
 
     @Exclude
@@ -117,6 +109,11 @@ data class Filter(
             isTypeContain() -> filter
             else -> String.format("%s%s", countryCode.countryCode, filterToInput())
         }
+    }
+
+    @Exclude
+    fun isResultHidden(): Boolean {
+        return (isAddFilterAction() && isPreview) || (filterAction.isNotNull() && isAddFilterAction().not())
     }
 
     @Exclude
@@ -184,12 +181,12 @@ data class Filter(
     }
 
     @Exclude
-    fun isBlackFilter(): Boolean {
+    fun isBlocker(): Boolean {
         return filterType == BLOCKER
     }
 
     @Exclude
-    fun isWhiteFilter(): Boolean {
+    fun isPermission(): Boolean {
         return filterType == PERMISSION
     }
 

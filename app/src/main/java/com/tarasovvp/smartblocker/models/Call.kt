@@ -97,7 +97,7 @@ open class Call(
         return if (this is FilteredCall) {
             if (isFilteredNullOrEmpty()) {
                 R.string.without_filter_call
-            } else if (filtered?.isBlackFilter().isTrue()) {
+            } else if (filtered?.isBlocker().isTrue()) {
                 R.string.blocker_call_value
             } else {
                 R.string.permission_call_value
@@ -108,7 +108,7 @@ open class Call(
             } else {
                 if (isFilterNullOrEmpty()) {
                     R.string.without_filter
-                } else if (filter?.isBlackFilter().isTrue()) {
+                } else if (filter?.isBlocker().isTrue()) {
                     R.string.blocker_indication_value
                 } else {
                     R.string.permission_indication_value
@@ -136,11 +136,11 @@ open class Call(
     fun callFilterTint(): Int {
         return when {
             this is FilteredCall && isFilteredNullOrEmpty().not() && isExtract.not() -> when {
-                filtered?.isBlackFilter().isTrue() -> R.color.sunset
+                filtered?.isBlocker().isTrue() -> R.color.sunset
                 else -> R.color.islamic_green
             }
             this is LogCall && isFilterNullOrEmpty().not() && isExtract -> when {
-                filter?.isBlackFilter().isTrue() -> R.color.sunset
+                filter?.isBlocker().isTrue() -> R.color.sunset
                 else -> R.color.islamic_green
             }
             else -> R.color.comet

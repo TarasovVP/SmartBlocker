@@ -46,9 +46,9 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
             val filter = filterRepository.queryFilter(number)
             Log.e("blockTAG",
                 "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded ${
-                    filter?.isBlackFilter().isTrue()
+                    filter?.isBlocker().isTrue()
                 } blockHidden ${SharedPreferencesUtil.blockHidden}")
-            if (filter?.isBlackFilter().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+            if (filter?.isBlocker().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
                 Log.e("blockTAG", "CallReceiver onReceive breakCall")
                 breakCall(context)
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {

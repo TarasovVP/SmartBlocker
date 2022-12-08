@@ -207,9 +207,9 @@ class CallListFragment :
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || call.number.lowercase(Locale.getDefault())
                 .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-                    && (call.filter?.isBlackFilter().isTrue() && conditionFilterIndexes?.contains(
+                    && (call.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(
                 BLOCKER).isTrue() ||
-                    call.filter?.isWhiteFilter().isTrue() && conditionFilterIndexes?.contains(
+                    call.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
                 PERMISSION).isTrue() ||
                     call.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(
                 BLOCKED_CALL.toInt()).isTrue() ||

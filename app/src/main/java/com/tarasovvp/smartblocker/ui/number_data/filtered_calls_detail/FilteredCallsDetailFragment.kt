@@ -29,6 +29,7 @@ class FilteredCallsDetailFragment :
             filter = args.filter
             filteredCallsDetailEmpty.emptyState = EmptyState.EMPTY_STATE_BLOCKED_CALLS
             executePendingBindings()
+            filteredCallsDetailFilter.itemFilterDetailResult.isVisible = false
         }
     }
 

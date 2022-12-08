@@ -118,8 +118,8 @@ open class ContactListFragment :
             ).isTrue() || contact.trimmedPhone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
-                .isTrue()) && (contact.filter?.isBlackFilter().isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
-                    contact.filter?.isWhiteFilter().isTrue() && conditionFilterIndexes?.contains(PERMISSION).isTrue()
+                .isTrue()) && (contact.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
+                    contact.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(PERMISSION).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         Log.e("adapterTAG",

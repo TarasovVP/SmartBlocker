@@ -109,7 +109,7 @@
                 android:drawableStart="@{call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
                 android:gravity="center_vertical|end"
                 android:text="@{call.filterValue}"
-                android:textColor="@{call.filter.blackFilter ? @color/sunset : @color/islamic_green}"
+                android:textColor="@{call.filter.blocker ? @color/sunset : @color/islamic_green}"
                 android:textSize="@dimen/text_size_10"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_time"

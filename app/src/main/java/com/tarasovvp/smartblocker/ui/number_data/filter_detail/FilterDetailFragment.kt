@@ -44,24 +44,24 @@ class FilterDetailFragment :
                 filterDetailAddFilter.filter =
                     Filter(filterType = filter.filterType).apply {
                         filterAction =
-                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
+                            if (filter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
                     }
                 filterDetailChangeFilter.filter =
-                    Filter(filterType = if (filter.isBlackFilter()) PERMISSION else BLOCKER).apply {
+                    Filter(filterType = if (filter.isBlocker()) PERMISSION else BLOCKER).apply {
                         filterAction =
-                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
+                            if (filter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
                     }
                 filterDetailDeleteFilter.filter =
                     Filter(filterType = filter.filterType).apply {
                         filterAction =
-                            if (filter.isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                            if (filter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                     }
                 filterDetailContactListDescription.text =
-                    if (filter.isBlackFilter()) getString(R.string.contact_list_with_blocker) else getString(
+                    if (filter.isBlocker()) getString(R.string.contact_list_with_blocker) else getString(
                         R.string.contact_list_with_allow)
 
             }
-            filterDetailContactListEmpty.emptyState = if (filter?.isBlackFilter()
+            filterDetailContactListEmpty.emptyState = if (filter?.isBlocker()
                     .isTrue()
             ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
             contactList?.let {
@@ -79,7 +79,7 @@ class FilterDetailFragment :
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
                     -> viewModel.updateFilter(filter.apply {
-                        filterType = if (this.isBlackFilter()) PERMISSION else BLOCKER
+                        filterType = if (this.isBlocker()) PERMISSION else BLOCKER
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
@@ -103,17 +103,16 @@ class FilterDetailFragment :
     override fun setClickListeners() {
         binding?.apply {
             filterDetailChangeFilter.root.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
+                startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
             }
             filterDetailDeleteFilter.root.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
+                startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
             }
             filterDetailAddFilter.root.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlackFilter().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
+                startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
             }
-            root.setSafeOnClickListener {
-                findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(
-                    filter = filter))
+            filterDetailItemFilter.itemFilterDetailContainer.setSafeOnClickListener {
+                findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(filter = filter))
             }
         }
     }
@@ -170,7 +169,7 @@ class FilterDetailFragment :
                     viewModel.getQueryContactCallList(filter)
                 }
             } else {
-                findNavController().navigate(if (binding?.filter?.isBlackFilter()
+                findNavController().navigate(if (binding?.filter?.isBlocker()
                         .isTrue()
                 ) FilterDetailFragmentDirections.startBlackFilterListFragment()
                 else FilterDetailFragmentDirections.startWhiteFilterListFragment())

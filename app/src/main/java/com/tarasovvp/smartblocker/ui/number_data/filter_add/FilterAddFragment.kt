@@ -60,7 +60,7 @@ open class FilterAddFragment :
         Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated after args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filterAddEmptyList?.emptyState =
-            if (binding?.filter?.isBlackFilter()
+            if (binding?.filter?.isBlocker()
                     .isTrue()
             ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER
             else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
@@ -69,11 +69,7 @@ open class FilterAddFragment :
 
     override fun setClickListeners() {
         binding?.apply {
-            filterAddConditionsDescription.setSafeOnClickListener {
-                filter?.conditionTypeInfo()
-                    ?.let { info -> filterAddConditionsDescription.showPopUpWindow(info) }
-            }
-            filterAddItemFilter.root.setSafeOnClickListener {
+            filterAddItemFilter.itemFilterDetailContainer.setSafeOnClickListener {
                 findNavController().navigate(FilterAddFragmentDirections.startFilterDetailFragment(
                     filterDetail = filter?.apply { isPreview = true }))
             }
@@ -85,7 +81,7 @@ open class FilterAddFragment :
                 } else {
                     findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
                         filterNumber = filter?.addFilter(),
-                        filterAction = filter?.filterAction ?: if (filter?.isBlackFilter()
+                        filterAction = filter?.filterAction ?: if (filter?.isBlocker()
                                 .isTrue()
                         ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
                 }
@@ -289,9 +285,9 @@ open class FilterAddFragment :
                     "BaseAddFragment observeLiveData existingFilterLiveData existingFilter $existingFilter")
                 binding?.filter = binding?.filter?.apply {
                     filterAction = when (existingFilter.filterType) {
-                        DEFAULT_FILTER -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
-                        filterType -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                        else -> if (isBlackFilter()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
+                        DEFAULT_FILTER -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
+                        filterType -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                        else -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
                     }
                 }
             }
@@ -312,7 +308,7 @@ open class FilterAddFragment :
                 .orEmpty(),
                 filter.filter), false)
             getAllData()
-            findNavController().navigate(if (binding?.filter?.isBlackFilter().isTrue())
+            findNavController().navigate(if (binding?.filter?.isBlocker().isTrue())
                 FilterAddFragmentDirections.startBlackFilterListFragment()
             else FilterAddFragmentDirections.startWhiteFilterListFragment())
         }

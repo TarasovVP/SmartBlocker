@@ -131,13 +131,13 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
                 CoroutineScope(Dispatchers.IO).launch {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {
                         type =
-                            if (filter?.isBlackFilter().isTrue()) BLOCKED_CALL else PERMITTED_CALL
+                            if (filter?.isBlocker().isTrue()) BLOCKED_CALL else PERMITTED_CALL
                         this.filtered = filter
                         callName =
                             if (filteredCall.callName.isNullOrEmpty()) getString(R.string.number_not_from_contacts) else callName
                     })
                 }
-                if (filter?.isBlackFilter().isTrue()) {
+                if (filter?.isBlocker().isTrue()) {
                     try {
                         Log.e("blockTAG",
                             "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${filteredCall.callName} time ${filteredCall.callDate} phone ${filteredCall.number} type ${filteredCall.type} id ${filteredCall.callId}")
