@@ -14,6 +14,8 @@ import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
@@ -38,27 +40,8 @@ class FilterDetailFragment :
             args.filterDetail?.let { filter ->
                 (activity as MainActivity).toolbar?.title = getString(filter.filterTypeTitle())
                 this.filter = filter
-
                 Log.e("filterDetailTAG",
                     "FilterDetailFragment initViews after args.filter $filter binding?.filter ${this.filter}")
-                filterDetailAddFilter.filter =
-                    Filter(filterType = filter.filterType).apply {
-                        filterAction =
-                            if (filter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
-                    }
-                filterDetailChangeFilter.filter =
-                    Filter(filterType = if (filter.isBlocker()) PERMISSION else BLOCKER).apply {
-                        filterAction =
-                            if (filter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
-                    }
-                filterDetailDeleteFilter.filter =
-                    Filter(filterType = filter.filterType).apply {
-                        filterAction =
-                            if (filter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                    }
-                filterDetailContactListDescription.text =
-                    if (filter.isBlocker()) getString(R.string.contact_list_with_blocker) else getString(
-                        R.string.contact_list_with_allow)
 
             }
             filterDetailContactListEmpty.emptyState = if (filter?.isBlocker()
@@ -102,13 +85,13 @@ class FilterDetailFragment :
 
     override fun setClickListeners() {
         binding?.apply {
-            filterDetailChangeFilter.root.setSafeOnClickListener {
+            filterDetailChangeFilter.setSafeOnClickListener {
                 startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
             }
-            filterDetailDeleteFilter.root.setSafeOnClickListener {
+            filterDetailDeleteFilter.setSafeOnClickListener {
                 startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
             }
-            filterDetailAddFilter.root.setSafeOnClickListener {
+            filterDetailAddFilter.setSafeOnClickListener {
                 startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
             }
             filterDetailItemFilter.itemFilterDetailContainer.setSafeOnClickListener {
@@ -141,14 +124,24 @@ class FilterDetailFragment :
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 binding?.filterDetailContactListEmpty?.root?.isVisible =
                     contactList.isEmpty().isTrue()
-                binding?.filterDetailContactListDescription?.isVisible =
-                    contactList.isNotEmpty().isTrue()
                 if (this@FilterDetailFragment.contactList == contactList) return@safeSingleObserve
-                this@FilterDetailFragment.contactList = contactList.apply {
-                    forEach {
+                if (binding?.filter?.isPreview.isTrue()) {
+                    binding?.filter = binding?.filter?.apply {
+                        filteredContacts = contactList.size.toString()
+                    }
+                    this@FilterDetailFragment.contactList = contactList.onEach {
                         it.searchText = binding?.filter?.filter.orEmpty()
+                        when(it) {
+                            is Contact -> it.filter = binding?.filter?.apply {
+                                filter = addFilter()
+                            }
+                            is Call -> it.filter = binding?.filter?.apply {
+                                filter = addFilter()
+                            }
+                        }
                     }
                 }
+
                 numberDataAdapter?.numberDataList = contactList
                 numberDataAdapter?.notifyDataSetChanged()
             }

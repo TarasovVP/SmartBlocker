@@ -62,6 +62,19 @@ data class Filter(
     }
 
     @Exclude
+    fun filterTypeTint(): Int {
+        return when (filterType) {
+            PERMISSION -> R.color.islamic_green
+            else -> R.color.sunset
+        }
+    }
+
+    @Exclude
+    fun filterDetailTint(): Int {
+        return if (isPreview) filterTypeTint() else filterAction?.color ?: filterTypeTint()
+    }
+
+    @Exclude
     fun filteredContactsText(): Int {
         return when (filterType) {
             PERMISSION -> R.string.permission_filtered_contacts

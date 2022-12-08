@@ -73,7 +73,7 @@ open class FilterAddFragment :
                 findNavController().navigate(FilterAddFragmentDirections.startFilterDetailFragment(
                     filterDetail = filter?.apply { isPreview = true }))
             }
-            filterAddSubmit.root.setSafeOnClickListener {
+            filterAddSubmit.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()
                         .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
                 ) {

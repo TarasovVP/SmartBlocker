@@ -20,7 +20,6 @@
     <string name="bg_work_on">Робота у фоновому режимі</string>
     <string name="avoid_call">"BlackLister позбавить Вас нав'язливих дзвінків"</string>
     <string name="receive_notifications">BlackLister попереджатиме про ступінь небезпеки вхідних дзвінків</string>
-    <string name="accept">Підтвердити</string>
     <string name="smart_blocker_is_on">Захист небажаних дзвінків увімкнено</string>
     <string name="search">Пошук</string>
     <string name="list_empty">Список порожній</string>

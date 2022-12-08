@@ -21,6 +21,16 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/padding_16">
 
+        <include
+            android:id="@+id/filter_add_item_filter"
+            layout="@layout/item_filter_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            android:layout_marginTop="@dimen/margin_8"
+            app:filter="@{filter}"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Spinner
             android:id="@+id/filter_add_country_code_spinner"
             android:layout_width="wrap_content"
@@ -64,40 +74,19 @@
             android:layout_marginTop="@dimen/margin_8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/filter_add_country_code_value"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <include
-            android:id="@+id/filter_add_item_filter"
-            layout="@layout/item_filter_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_2"
-            android:layout_marginTop="@dimen/margin_8"
-            app:filter="@{filter}"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
-
-        <TextView
-            android:id="@+id/filter_add_conditions_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_8"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="@dimen/text_size_10"
-            android:paddingHorizontal="@dimen/padding_8"
-            android:text="@{filter.filterAction.descriptionText}"
             app:layout_constraintTop_toBottomOf="@+id/filter_add_item_filter" />
 
-        <include
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/filter_add_submit"
-            layout="@layout/include_submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            app:filter="@{filter}"
+            android:paddingHorizontal="@dimen/padding_30"
+            android:enabled="@{!filter.invalidFilterAction}"
+            android:alpha="@{filter.invalidFilterAction ? 0.5f : 1f}"
+            android:text="@{filter.filterAction.title}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_add_conditions_description" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_add_input" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filter_add_contact_list"

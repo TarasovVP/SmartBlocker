@@ -20,7 +20,6 @@
     <string name="bg_work_on">Working in the background</string>
     <string name="avoid_call">"BlackLister will save you from intrusive calls"</string>
     <string name="receive_notifications">BlackLister will warn you about the severity of incoming calls</string>
-    <string name="accept">Confirm</string>
     <string name="smart_blocker_is_on">Unwanted call protection enabled</string>
     <string name="search">Search</string>
     <string name="list_empty">List is empty</string>
@@ -159,10 +158,10 @@
     <string name="filter_update">Number %s is updated</string>
     <string name="blocker">Блокировщик</string>
     <string name="permission">Допуск</string>
-    <string name="number_transfer_to_blocker_description">Сделать блокировщик допуском?</string>
-    <string name="number_transfer_to_permission_description">Сделать допуск блокировщиком?</string>
-    <string name="number_delete_from_blocker_description">Удалить существующий блокировщик?</string>
-    <string name="number_delete_from_permission_description">Удалить существующий допуск?</string>
+    <string name="number_transfer_to_blocker_description">Блокировщик уже существует. Сделать допуском?</string>
+    <string name="number_transfer_to_permission_description">Допуск уже существует. Сделать блокировщиком?</string>
+    <string name="number_delete_from_blocker_description">Блокировщик уже существует. Удалить?</string>
+    <string name="number_delete_from_permission_description">Допуск уже существует. Удалить?</string>
     <string name="filter_description_invalid">Номер не валидный</string>
     <string name="number_add_to_blocker_description">Добавить номер в блокировщики?</string>
     <string name="number_add_to_permission_description">Добавить номер в допуски?</string>
@@ -245,4 +244,5 @@
     <string name="without_filter_call">Без совпадения с фильтром</string>
     <string name="blocker_call_value">Заблокирован фильтром:&#160;</string>
     <string name="permission_call_value">Допущен фильтром:&#160;</string>
+    <string name="accept">Принять</string>
 </resources>
