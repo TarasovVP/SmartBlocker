@@ -45,7 +45,7 @@
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
             android:layout_marginStart="@dimen/margin_8"
-            android:text="@string/delete"
+            android:text="@string/delete_"
             android:visibility="@{filter.isPreview ? View.GONE : View.VISIBLE, default=gone}"
             app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
             app:layout_constraintEnd_toEndOf="parent"

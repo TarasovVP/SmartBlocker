@@ -239,8 +239,10 @@
     <string name="blocker_filtered_calls">Заблокировано %s звонков</string>
     <string name="permission_filtered_calls">Допущено %s звонков</string>
     <string name="without_filter">Без признаков фильтра</string>
-    <string name="blocker_indication_value">Признак блокировщика:&#160;</string>
-    <string name="permission_indication_value">Признак допуска:&#160;</string>
+    <string name="blocker_indication_value">Будет заблокирован фильтром:&#160;</string>
+    <string name="permission_indication_value">Будет допущен фильтром:&#160;</string>
+    <string name="blocker_indication_value_sign">Признак блокировщика:&#160;</string>
+    <string name="permission_indication_value_sign">Признак допуска:&#160;</string>
     <string name="without_filter_call">Без совпадения с фильтром</string>
     <string name="blocker_call_value">Заблокирован фильтром:&#160;</string>
     <string name="permission_call_value">Допущен фильтром:&#160;</string>

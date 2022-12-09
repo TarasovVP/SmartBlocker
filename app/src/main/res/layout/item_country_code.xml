@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="call"
+            type="com.tarasovvp.smartblocker.models.CountryCode" />
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_16">
+
+            <TextView
+                android:id="@+id/item_call_number"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:text="@{call.countryEmoji}"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_name"/>
+
+            <TextView
+                android:id="@+id/item_call_name"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:text="@{call.countryCode}"
+                app:layout_constraintStart_toEndOf="@+id/item_call_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_call_number"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_number" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

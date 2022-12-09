@@ -197,6 +197,7 @@ open class FilterAddFragment :
 
     private fun setCountrySpinner() {
         binding?.filterAddCountryCodeSpinner?.apply {
+            items = countryCodeList
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     spinner: AdapterView<*>?,
@@ -229,12 +230,7 @@ open class FilterAddFragment :
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
-            val countryAdapter = context?.let {
-                ArrayAdapter(it,
-                    android.R.layout.simple_spinner_item,
-                    countryCodeList.map { countryCode -> countryCode.countryEmoji() })
-            }
-            binding?.filterAddCountryCodeSpinner?.adapter = countryAdapter
+
             val countryCodeIndex = countryCodeList.indexOfFirst {
                 it.country == if (binding?.filter?.countryCode?.country.isNullOrEmpty()) context.getUserCountry()
                     ?.uppercase() else binding?.filter?.countryCode?.country

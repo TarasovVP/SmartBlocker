@@ -31,18 +31,16 @@
             app:filter="@{filter}"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
+        <com.tarasovvp.smartblocker.utils.searchable.SearchableSpinner
             android:id="@+id/filter_add_country_code_spinner"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_0"
             android:minWidth="@dimen/margin_45"
-            android:paddingEnd="@dimen/padding_10"
             android:background="@drawable/bg_rounded"
             android:visibility="@{filter.typeContain ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/filter_add_input"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/filter_add_input"
-            tools:ignore="RtlSymmetry" />
+            app:layout_constraintTop_toTopOf="@+id/filter_add_input"  />
 
         <TextView
             android:id="@+id/filter_add_country_code_value"
