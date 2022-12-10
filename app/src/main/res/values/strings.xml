@@ -247,4 +247,5 @@
     <string name="blocker_call_value">Заблокирован фильтром:&#160;</string>
     <string name="permission_call_value">Допущен фильтром:&#160;</string>
     <string name="accept">Принять</string>
+    <string name="country_choose">Выберите страну</string>
 </resources>

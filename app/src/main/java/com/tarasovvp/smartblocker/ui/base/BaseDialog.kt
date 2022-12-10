@@ -41,8 +41,9 @@ abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
         val dialog = dialog
         if (dialog.isNotNull() && dialog?.window.isNotNull()) {
             val width = Resources.getSystem().displayMetrics.widthPixels
+            val height = Resources.getSystem().displayMetrics.heightPixels
             dialog?.window?.setLayout((width * 0.85).toInt(),
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+                if (height > 0.6) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
             dialog?.window?.setGravity(Gravity.CENTER)
             dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog?.setCancelable(true)

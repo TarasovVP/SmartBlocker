@@ -4,37 +4,42 @@
 
     <data>
         <variable
-            name="call"
+            name="countryCode"
             type="com.tarasovvp.smartblocker.models.CountryCode" />
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_16">
+            android:paddingVertical="@dimen/padding_5">
 
             <TextView
-                android:id="@+id/item_call_number"
+                android:id="@+id/item_country_code_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@{call.countryEmoji}"
-                android:textSize="@dimen/text_size_16"
+                android:text="@{countryCode.countryEmoji}"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_name"/>
+                app:layout_constraintEnd_toStartOf="@+id/item_country_code_value"/>
 
             <TextView
-                android:id="@+id/item_call_name"
+                android:id="@+id/item_country_code_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:text="@{call.countryCode}"
-                app:layout_constraintStart_toEndOf="@+id/item_call_number"
+                android:text="@{countryCode.countryCode}"
+                android:gravity="end|center_vertical"
+                app:layout_constraintStart_toEndOf="@+id/item_country_code_name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/item_call_number"
-                app:layout_constraintBottom_toBottomOf="@+id/item_call_number" />
+                app:layout_constraintTop_toTopOf="@+id/item_country_code_name"
+                app:layout_constraintBottom_toBottomOf="@+id/item_country_code_name" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@color/nobel"
+                app:layout_constraintTop_toBottomOf="@+id/item_country_code_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

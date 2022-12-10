@@ -42,6 +42,7 @@ object Constants {
     const val FORGOT_PASSWORD = "forgotPassword"
     const val DELETE_USER = "deleteUser"
     const val LOG_OUT = "logOut"
+    const val COUNTRY_CODE = "countryCode"
     const val EXCEPTION = "exception"
     const val DIALOG = "dialog"
     const val DESC = "DESC"

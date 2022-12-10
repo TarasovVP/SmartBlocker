@@ -29,6 +29,16 @@
                 android:textSize="@dimen/text_size_14"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/dialog_filter_condition_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_8"
+                style="@style/Button.Icon"
+                app:icon="@drawable/ic_close_small"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <CheckBox
                 android:id="@+id/dialog_filter_condition_full"
                 android:layout_width="match_parent"
@@ -60,28 +70,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_start" />
 
             <Button
-                android:id="@+id/dialog_filter_condition_cancel"
-                android:layout_width="@dimen/size_0"
+                android:id="@+id/dialog_filter_condition_confirm"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:text="@string/cancel"
-                style="@style/StrokeButton"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/dialog_filter_condition_confirm"
+                android:text="@string/ok"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_contain" />
-
-            <Button
-                android:id="@+id/dialog_filter_condition_confirm"
-                android:layout_width="@dimen/size_0"
-                android:layout_height="@dimen/size_0"
-                android:layout_marginStart="@dimen/margin_10"
-                android:text="@string/ok"
-                app:layout_constraintBottom_toBottomOf="@+id/dialog_filter_condition_cancel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/dialog_filter_condition_cancel"
-                app:layout_constraintTop_toTopOf="@+id/dialog_filter_condition_cancel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

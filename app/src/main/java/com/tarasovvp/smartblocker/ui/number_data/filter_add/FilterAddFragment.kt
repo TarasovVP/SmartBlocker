@@ -3,8 +3,6 @@ package com.tarasovvp.smartblocker.ui.number_data.filter_add
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -12,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
@@ -86,6 +85,10 @@ open class FilterAddFragment :
                         ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
                 }
             }
+            filterAddCountryCodeSpinner.setSafeOnClickListener {
+                findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog(
+                    countryCodeList = countryCodeList.toTypedArray()))
+            }
         }
     }
 
@@ -100,6 +103,9 @@ open class FilterAddFragment :
 
     private fun setFragmentResultListeners() {
         binding?.filter?.let { filter ->
+            setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
+                bundle.getParcelable<CountryCode>(COUNTRY_CODE)?.let { setCountrySpinner(it) }
+            }
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction =
                     bundle.getSerializable(FILTER_ACTION) as FilterAction) {
@@ -132,7 +138,7 @@ open class FilterAddFragment :
         binding?.apply {
             container.hideKeyboardWithLayoutTouch()
             filterAddContactList.hideKeyboardWithLayoutTouch()
-            filterAddCountryCodeSpinner.hideKeyboardWithLayoutTouch()
+            //filterAddCountryCodeSpinner.hideKeyboardWithLayoutTouch()
             filterAddInput.setupClearButtonWithAction()
             filterAddInput.doAfterTextChanged {
                 Log.e("filterAddTAG",
@@ -179,11 +185,10 @@ open class FilterAddFragment :
                                 phoneNumber?.nationalNumber?.toString()
                                     ?: numberData.numberData.digitsTrimmed()
                         }
-                        filterAddCountryCodeSpinner.setSelection(countryCodeList.indexOfFirst {
-                            it.countryCode == if (phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(
+                        filterAddCountryCodeSpinner.text =
+                            if (phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(
                                 COUNTRY_CODE_START,
                                 phoneNumber?.countryCode.toString())
-                        }.orZero())
                         Log.e("filterAddTAG",
                             "BaseAddFragment ContactFilterAdapter filterAddCountryCodeSpinner filter ${filter?.filter} countryCode ${filter?.countryCode?.countryCode}")
                     }
@@ -195,47 +200,29 @@ open class FilterAddFragment :
         binding?.filterAddContactList?.adapter = numberDataAdapter
     }
 
-    private fun setCountrySpinner() {
+    private fun setCountrySpinner(countryCode: CountryCode) {
         binding?.filterAddCountryCodeSpinner?.apply {
-            items = countryCodeList
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    spinner: AdapterView<*>?,
-                    tv: View?,
-                    position: Int,
-                    id: Long,
-                ) {
-                    countryCodeList[position].let { selectedCountryCode ->
-                        binding?.filter = binding?.filter?.apply {
-                            countryCode = selectedCountryCode
-                        }
-                    }
-                    if (binding?.filter?.isTypeFull().isTrue()) {
-                        binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeFullHint()
-                            .orEmpty())
-                    } else if (binding?.filter?.isTypeStart().isTrue()) {
-                        binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeStartHint()
-                            .orEmpty())
-                    }
-                    binding?.filterAddInput?.post {
-                        if (addFilter.isNotNull()) {
-                            binding?.filterToInput = true
-                            binding?.filterAddInput?.setText(addFilter.orEmpty())
-                            addFilter = null
-                        }
-                    }
-                    Log.e("filterAddTAG",
-                        "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filterAdd?.filter}")
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+            binding?.filter = binding?.filter?.apply {
+                this.countryCode = countryCode
             }
+            if (binding?.filter?.isTypeFull().isTrue()) {
+                binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeFullHint()
+                    .orEmpty())
+            } else if (binding?.filter?.isTypeStart().isTrue()) {
+                binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeStartHint()
+                    .orEmpty())
+            }
+            binding?.filterAddInput?.post {
+                if (addFilter.isNotNull()) {
+                    binding?.filterToInput = true
+                    binding?.filterAddInput?.setText(addFilter.orEmpty())
+                    addFilter = null
+                }
+            }
+            Log.e("filterAddTAG",
+                "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filterAdd?.filter}")
 
-            val countryCodeIndex = countryCodeList.indexOfFirst {
-                it.country == if (binding?.filter?.countryCode?.country.isNullOrEmpty()) context.getUserCountry()
-                    ?.uppercase() else binding?.filter?.countryCode?.country
-            }.orZero()
-            setSelection(countryCodeIndex)
+            text = countryCode.country
         }
     }
 
@@ -261,7 +248,9 @@ open class FilterAddFragment :
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData countryCodeLiveData countryCodeList.size ${countryCodeList.size}")
                 this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
-                setCountrySpinner()
+                (if (binding?.filter?.countryCode?.country.isNullOrEmpty()) countryCodeList.find {  it.country == context?.getUserCountry()?.uppercase() } else binding?.filter?.countryCode)?.let {
+                    setCountrySpinner(it)
+                }
             }
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 Log.e("filterAddTAG",
