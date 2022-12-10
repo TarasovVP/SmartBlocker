@@ -222,7 +222,7 @@ open class FilterAddFragment :
             Log.e("filterAddTAG",
                 "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filterAdd?.filter}")
 
-            text = countryCode.country
+            text = countryCode.countryEmoji()
         }
     }
 
