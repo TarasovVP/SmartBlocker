@@ -1,6 +1,9 @@
 package com.tarasovvp.smartblocker.extensions
 
 import android.content.Context
+import android.os.Build.VERSION.SDK_INT
+import android.os.Bundle
+import android.os.Parcelable
 import android.text.Spanned
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -11,6 +14,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import kotlinx.coroutines.*
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -96,11 +100,12 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
     })
 }
 
-fun <T> MutableList<T>.moveToFirst(item: T?): MutableList<T> {
-    if (item == null) return this
-    val currentIndex = indexOf(item)
-    if (currentIndex < 0) return this
-    removeAt(currentIndex)
-    add(0, item)
-    return this
+inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
+    SDK_INT >= 33 -> getParcelable(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+}
+
+inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = when {
+    SDK_INT >= 33 -> getSerializable(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getSerializable(key) as? T
 }

@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
-import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.android.parcel.Parcelize
 
@@ -107,13 +106,6 @@ data class Filter(
     @Exclude
     fun conditionTypeSmallIcon(): Int {
         return FilterCondition.getSmallIconByIndex(conditionType, isBlocker())
-    }
-
-    @Exclude
-    fun conditionTypeInfo() = when (conditionType) {
-        FilterCondition.FILTER_CONDITION_FULL.index -> Info.INFO_FILTER_ADD_FULL
-        FilterCondition.FILTER_CONDITION_START.index -> Info.INFO_FILTER_ADD_START
-        else -> Info.INFO_FILTER_ADD_CONTAIN
     }
 
     @Exclude

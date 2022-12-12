@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.tarasovvp.smartblocker.ui.start.sign_up.SignUpFragment"
-        android:label="" />
+        android:label="@string/sign_up" />
 
     <fragment
         android:id="@+id/blackFilterListFragment"

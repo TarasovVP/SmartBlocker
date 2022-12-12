@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.android.parcel.Parcelize
 
@@ -22,10 +21,6 @@ data class Contact(
 ) : Parcelable, NumberData() {
 
     var trimmedPhone = number.digitsTrimmed()
-
-    fun isBlackFilter(): Boolean {
-        return filter?.filterType == BLOCKER
-    }
 
     fun isNameEmpty(): Boolean {
         return name.isNullOrEmpty()

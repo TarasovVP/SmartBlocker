@@ -29,10 +29,6 @@ object FilteredCallRepository {
         return filteredCallDao?.allFilteredCalls()
     }
 
-    suspend fun filteredCallsByNumber(number: String): List<FilteredCall>? {
-        return filteredCallDao?.filteredCallsByNumber(number)
-    }
-
     suspend fun filteredCallsByFilter(filter: String): List<FilteredCall>? {
         return filteredCallDao?.filteredCallsByFilter(filter)
     }

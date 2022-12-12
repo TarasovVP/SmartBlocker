@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 abstract class BaseAdapter<D : NumberData> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var mData: ArrayList<NumberData>? = null
+    private var mData: ArrayList<NumberData>? = null
 
     override fun getItemViewType(position: Int): Int {
         return if (mData?.get(position) is HeaderData) HEADER_TYPE else NUMBER_DATA_TYPE

@@ -118,11 +118,6 @@ fun ImageView.loadCircleImage(imageUrl: String?, placeHolder: Drawable?) {
         .into(this)
 }
 
-@BindingAdapter("app:tint")
-fun ImageView.setImageTint(@ColorInt color: Int) {
-    setColorFilter(color)
-}
-
 @BindingAdapter(value = ["searchText", "mainText"], requireAll = false)
 fun TextView.highlightText(searchText: String?, mainText: String?) {
     if (searchText.isNullOrEmpty().not()

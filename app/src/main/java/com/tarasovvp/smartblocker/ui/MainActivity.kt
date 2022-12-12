@@ -31,7 +31,6 @@ import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import java.util.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
@@ -96,18 +95,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding?.mainSplash?.addAnimatorListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(p0: Animator?) {
+            override fun onAnimationStart(p0: Animator) {
             }
-
-            override fun onAnimationEnd(p0: Animator?) {
+            override fun onAnimationEnd(p0: Animator) {
                 binding?.mainSplash?.isVisible = false
                 binding?.mainContainer?.isVisible = true
             }
-
-            override fun onAnimationCancel(p0: Animator?) {
+            override fun onAnimationCancel(p0: Animator) {
             }
-
-            override fun onAnimationRepeat(p0: Animator?) {
+            override fun onAnimationRepeat(p0: Animator) {
             }
         })
         setNavController()

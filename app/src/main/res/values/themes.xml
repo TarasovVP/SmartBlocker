@@ -148,6 +148,6 @@
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchIcon">@drawable/ic_search</item>
         <item name="searchHintIcon">@drawable/ic_search</item>
-        <item name="queryBackground">@drawable/test_bg_input</item>
+        <item name="queryBackground">@drawable/bg_rounded</item>
     </style>
 </resources>

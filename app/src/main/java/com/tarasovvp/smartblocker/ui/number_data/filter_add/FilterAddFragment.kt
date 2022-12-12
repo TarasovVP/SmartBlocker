@@ -37,7 +37,6 @@ open class FilterAddFragment :
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
     private var countryCodeList: ArrayList<CountryCode> = arrayListOf()
-    private var addFilter: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,10 +50,6 @@ open class FilterAddFragment :
         binding?.filter = args.filterAdd?.apply {
             filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
             isPreview = false
-            if (filter.isNotEmpty() && isTypeContain().not()) {
-                addFilter = filter
-                filter = String.EMPTY
-            }
         }
         Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated after args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
@@ -104,11 +99,11 @@ open class FilterAddFragment :
     private fun setFragmentResultListeners() {
         binding?.filter?.let { filter ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
-                bundle.getParcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
+                bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
             }
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction =
-                    bundle.getSerializable(FILTER_ACTION) as FilterAction) {
+                    bundle.serializable<FilterAction>(FILTER_ACTION)) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
                     -> viewModel.updateFilter(filter.apply {
@@ -152,8 +147,7 @@ open class FilterAddFragment :
                     "FilterAddFragment setFilterTextChangeListener after filter.filter ${filter?.filter} editable $it numberFormat ${filter?.countryCode?.numberFormat} conditionTypeFullHint ${filter?.conditionTypeFullHint()}")
                 filterToInput = false
                 filter = filter?.apply {
-                    filter =
-                        if (this.isTypeContain()) filterAddInput.inputText() else filterAddInput.getRawText()
+                    filter = filterAddInput.inputText().replace("#", String.EMPTY).replace(" ", String.EMPTY)
                     viewModel.checkFilterExist(this)
                 }
                 viewModel.filterNumberDataList(filter, numberDataList)

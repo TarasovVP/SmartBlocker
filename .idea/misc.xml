@@ -107,6 +107,8 @@
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/switch_view_selector.xml" value="0.1695" />
+        <entry key="app/src/main/res/drawable/test_bg_code.xml" value="0.12" />
+        <entry key="app/src/main/res/drawable/test_bg_country.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16990291262135923" />
         <entry key="app/src/main/res/layout/block_settings.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/contact_list_fragment.xml" value="0.2318840579710145" />

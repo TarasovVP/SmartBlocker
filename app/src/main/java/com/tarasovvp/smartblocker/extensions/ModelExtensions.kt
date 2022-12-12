@@ -224,7 +224,6 @@ fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<Count
 }
 
 fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
-    Log.e("searchTAG", "ModelExtensions getPhoneNumber this $this country $country")
     if (this.isNullOrEmpty()) null
     else if (this.startsWith(PLUS_CHAR)) PhoneNumberUtil.getInstance()
         .parse(this.digitsTrimmed(), String.EMPTY)
