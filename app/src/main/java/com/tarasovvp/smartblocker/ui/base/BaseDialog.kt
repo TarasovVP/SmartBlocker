@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.tarasovvp.smartblocker.extensions.isNotNull
+import com.tarasovvp.smartblocker.extensions.orZero
 
 abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
 
@@ -40,10 +41,12 @@ abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
         super.onStart()
         val dialog = dialog
         if (dialog.isNotNull() && dialog?.window.isNotNull()) {
+            val desiredHeight = binding?.root?.height?.let { View.MeasureSpec.makeMeasureSpec(it, View.MeasureSpec.EXACTLY) }
+            desiredHeight?.let { binding?.root?.measure(it, View.MeasureSpec.UNSPECIFIED) }
             val width = Resources.getSystem().displayMetrics.widthPixels
             val height = Resources.getSystem().displayMetrics.heightPixels
             dialog?.window?.setLayout((width * 0.85).toInt(),
-                if (height > 0.6) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
+                if (binding?.root?.measuredHeight.orZero() > height * 0.8) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
             dialog?.window?.setGravity(Gravity.CENTER)
             dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog?.setCancelable(true)

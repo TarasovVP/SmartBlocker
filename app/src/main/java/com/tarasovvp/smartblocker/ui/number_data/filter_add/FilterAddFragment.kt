@@ -104,7 +104,7 @@ open class FilterAddFragment :
     private fun setFragmentResultListeners() {
         binding?.filter?.let { filter ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
-                bundle.getParcelable<CountryCode>(COUNTRY_CODE)?.let { setCountrySpinner(it) }
+                bundle.getParcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
             }
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction =
@@ -200,29 +200,21 @@ open class FilterAddFragment :
         binding?.filterAddContactList?.adapter = numberDataAdapter
     }
 
-    private fun setCountrySpinner(countryCode: CountryCode) {
-        binding?.filterAddCountryCodeSpinner?.apply {
-            binding?.filter = binding?.filter?.apply {
+    private fun setCountryCode(countryCode: CountryCode) {
+        binding?.apply {
+            filter = filter?.apply {
                 this.countryCode = countryCode
-            }
-            if (binding?.filter?.isTypeFull().isTrue()) {
-                binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeFullHint()
-                    .orEmpty())
-            } else if (binding?.filter?.isTypeStart().isTrue()) {
-                binding?.filterAddInput?.setNumberMask(binding?.filter?.conditionTypeStartHint()
-                    .orEmpty())
-            }
-            binding?.filterAddInput?.post {
-                if (addFilter.isNotNull()) {
-                    binding?.filterToInput = true
-                    binding?.filterAddInput?.setText(addFilter.orEmpty())
-                    addFilter = null
+                if (isTypeFull().isTrue()) {
+                    filterAddInput.setNumberMask(conditionTypeFullHint())
+                } else if (isTypeStart().isTrue()) {
+                    filterAddInput.setNumberMask(conditionTypeStartHint())
                 }
             }
             Log.e("filterAddTAG",
-                "BaseAddFragment OnItemSelectedListener countryCode ${binding?.filter?.countryCode?.countryCode} binding?.filter ${binding?.filter?.filter} args.filter ${this@FilterAddFragment.args.filterAdd?.filter}")
+                "BaseAddFragment OnItemSelectedListener countryCode ${filter?.countryCode?.countryCode} binding?.filter ${filter?.filter} args.filter ${this@FilterAddFragment.args.filterAdd?.filter}")
 
-            text = countryCode.countryEmoji()
+            filterAddCountryCodeSpinner.text = countryCode.countryEmoji()
+            viewModel.filterNumberDataList(filter, numberDataList)
         }
     }
 
@@ -249,7 +241,7 @@ open class FilterAddFragment :
                     "BaseAddFragment observeLiveData countryCodeLiveData countryCodeList.size ${countryCodeList.size}")
                 this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
                 (if (binding?.filter?.countryCode?.country.isNullOrEmpty()) countryCodeList.find {  it.country == context?.getUserCountry()?.uppercase() } else binding?.filter?.countryCode)?.let {
-                    setCountrySpinner(it)
+                    setCountryCode(it)
                 }
             }
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->

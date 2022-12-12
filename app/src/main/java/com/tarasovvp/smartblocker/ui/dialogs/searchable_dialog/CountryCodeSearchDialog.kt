@@ -26,8 +26,9 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
             countryCodeSearchList.adapter = countryCodeSearchAdapter
             countryCodeSearchInput.doAfterTextChanged { searchText ->
                 countryCodeSearchAdapter.countryCodeList = args.countryCodeList?.filter {
-                    it.countryCode.contains(searchText.toString()) || it.country.contains(searchText.toString())
+                    it.countryCode.contains(searchText.toString()) || it.country.lowercase().contains(searchText.toString())
                 }
+                countryCodeSearchAdapter.notifyDataSetChanged()
             }
             countryCodeSearchCancel.setSafeOnClickListener {
                 dismiss()
