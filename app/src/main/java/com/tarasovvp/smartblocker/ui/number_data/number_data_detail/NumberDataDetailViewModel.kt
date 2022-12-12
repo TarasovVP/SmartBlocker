@@ -3,10 +3,10 @@ package com.tarasovvp.smartblocker.ui.number_data.number_data_detail
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
-import com.tarasovvp.smartblocker.models.NumberData
 
 class NumberDataDetailViewModel(application: Application) : BaseViewModel(application) {
 

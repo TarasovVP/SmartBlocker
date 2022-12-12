@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
-import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
@@ -34,7 +33,8 @@ class NumberDataDetailFragment :
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
                 is LogCall,
-                is FilteredCall -> call = (args.numberData as Call).apply { isExtract = true }
+                is FilteredCall,
+                -> call = (args.numberData as Call).apply { isExtract = true }
             }
             numberDataDetailFilterListEmpty.emptyState =
                 EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
@@ -81,7 +81,8 @@ class NumberDataDetailFragment :
         viewModel.filterListWithNumber(when (args.numberData) {
             is Contact -> binding?.contact?.trimmedPhone.orEmpty()
             is LogCall,
-            is FilteredCall -> binding?.call?.number.orEmpty()
+            is FilteredCall,
+            -> binding?.call?.number.orEmpty()
             else -> String.EMPTY
         })
     }

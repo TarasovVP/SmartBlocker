@@ -38,7 +38,10 @@ object CallRepository {
         }
     }
 
-    suspend fun getSystemLogCallList(context: Context, result: (Int, Int) -> Unit): ArrayList<LogCall> =
+    suspend fun getSystemLogCallList(
+        context: Context,
+        result: (Int, Int) -> Unit,
+    ): ArrayList<LogCall> =
         withContext(
             Dispatchers.Default
         ) {

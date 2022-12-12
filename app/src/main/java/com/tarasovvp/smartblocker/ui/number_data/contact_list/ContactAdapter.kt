@@ -64,7 +64,8 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<
                 root.setSafeOnClickListener {
                     contactClick.invoke(contact.apply {
                         searchText = String.EMPTY
-                        contact.highlightedSpanned = contact.number.highlightedSpanned( String.EMPTY, null)
+                        contact.highlightedSpanned =
+                            contact.number.highlightedSpanned(String.EMPTY, null)
                     })
                 }
                 executePendingBindings()

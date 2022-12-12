@@ -75,7 +75,8 @@ class CallAdapter(val callClickListener: CallClickListener) :
                     } else {
                         callClickListener.onCallClick(call.apply {
                             searchText = String.EMPTY
-                            call.highlightedSpanned = call.number.highlightedSpanned(String.EMPTY, null)
+                            call.highlightedSpanned =
+                                call.number.highlightedSpanned(String.EMPTY, null)
                         })
                     }
                 }

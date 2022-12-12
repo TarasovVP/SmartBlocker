@@ -7,8 +7,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentBlockerCallsDetailBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
-import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
 import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
 
 class FilteredCallsDetailFragment :
@@ -36,7 +36,8 @@ class FilteredCallsDetailFragment :
     override fun createAdapter() {
         filteredCallAdapter =
             filteredCallAdapter ?: NumberDataAdapter(filteredCallList) { numberData ->
-                findNavController().navigate(FilteredCallsDetailFragmentDirections.startNumberDataDetailFragment(numberData))
+                findNavController().navigate(FilteredCallsDetailFragmentDirections.startNumberDataDetailFragment(
+                    numberData))
             }
         filteredCallAdapter?.isFilteredCallDetails = true
         binding?.filteredCallsDetailList?.adapter = filteredCallAdapter

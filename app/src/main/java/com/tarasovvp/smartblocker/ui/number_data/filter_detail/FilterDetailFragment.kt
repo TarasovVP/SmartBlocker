@@ -86,16 +86,23 @@ class FilterDetailFragment :
     override fun setClickListeners() {
         binding?.apply {
             filterDetailChangeFilter.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
+                startFilterActionDialog(if (filter?.isBlocker()
+                        .isTrue()
+                ) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
             }
             filterDetailDeleteFilter.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
+                startFilterActionDialog(if (filter?.isBlocker()
+                        .isTrue()
+                ) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
             }
             filterDetailAddFilter.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
+                startFilterActionDialog(if (filter?.isBlocker()
+                        .isTrue()
+                ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
             }
             filterDetailItemFilter.itemFilterDetailContainer.setSafeOnClickListener {
-                findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(filter = filter))
+                findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(
+                    filter = filter))
             }
         }
     }
@@ -131,7 +138,7 @@ class FilterDetailFragment :
                     }
                     this@FilterDetailFragment.contactList = contactList.onEach {
                         it.searchText = binding?.filter?.filter.orEmpty()
-                        when(it) {
+                        when (it) {
                             is Contact -> it.filter = binding?.filter?.apply {
                                 filter = addFilter()
                             }

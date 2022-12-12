@@ -31,6 +31,7 @@ enum class Info(
         R.drawable.ic_assistant_info),
     INFO_SETTINGS(R.string.empty_state_contacts_by_blocker_description,
         R.drawable.ic_assistant_info);
+
     fun getHtmlWithImages(context: Context): Spanned {
         return context.htmlWithImages(context.getString(descriptionResource))
     }

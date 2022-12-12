@@ -58,7 +58,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
             val countryCodeList = countryCodeRepository.getSystemCountryCodeList { size, position ->
                 progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = getApplication<Application>().getString(R.string.progress_update_localizations)
+                    progressDescription =
+                        getApplication<Application>().getString(R.string.progress_update_localizations)
                     progressMax = size
                     progressPosition = position
                 })
@@ -68,33 +69,39 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             countryCodeRepository.insertAllCountryCodes(countryCodeList)
             // init contacts data
             Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
-            val contactList = contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
-                progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = getApplication<Application>().getString(R.string.update_contacts)
-                    progressMax = size
-                    progressPosition = position
-                })
-            }
+            val contactList =
+                contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
+                    progressStatusLiveData.postValue(mainProgress.apply {
+                        progressDescription =
+                            getApplication<Application>().getString(R.string.update_contacts)
+                        progressMax = size
+                        progressPosition = position
+                    })
+                }
             Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
             Log.e("allDataTAG", "MainViewModel getAllData getSystemLogCallList")
             // init calls data
-            val callLogList = logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
-                progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = getApplication<Application>().getString(R.string.update_calls)
-                    progressMax = size
-                    progressPosition = position
-                })
-            }
+            val callLogList =
+                logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
+                    progressStatusLiveData.postValue(mainProgress.apply {
+                        progressDescription =
+                            getApplication<Application>().getString(R.string.update_calls)
+                        progressMax = size
+                        progressPosition = position
+                    })
+                }
             Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)
             // init filter data
             val filterList = filterRepository.allFilters() as? ArrayList
             filterList?.forEachIndexed { index, filter ->
                 filter.filteredContacts = contactList.filter { it.filter == filter }.size.toString()
-                filter.filteredCalls = filteredCallRepository.filteredCallsByFilter(filter.filter)?.size.toString()
+                filter.filteredCalls =
+                    filteredCallRepository.filteredCallsByFilter(filter.filter)?.size.toString()
                 progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = getApplication<Application>().getString(R.string.update_filters)
+                    progressDescription =
+                        getApplication<Application>().getString(R.string.update_filters)
                     progressMax = filterList.size
                     progressPosition = index
                 })

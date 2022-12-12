@@ -90,7 +90,8 @@ open class BaseFilterListFragment :
     private fun setClickListeners() {
         binding?.filterListFilter?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
-            binding?.filterListFilter?.isChecked = binding?.filterListFilter?.isChecked.isTrue().not()
+            binding?.filterListFilter?.isChecked =
+                binding?.filterListFilter?.isChecked.isTrue().not()
             findNavController().navigate(if (this is BlackFilterListFragment) {
                 BlackFilterListFragmentDirections.startFilterConditionsDialog(
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray())
@@ -160,10 +161,12 @@ open class BaseFilterListFragment :
                         // TODO add filter number
                         val direction =
                             if (this@BaseFilterListFragment is BlackFilterListFragment) {
-                                BlackFilterListFragmentDirections.startFilterActionDialog(filterNumber = "",
+                                BlackFilterListFragmentDirections.startFilterActionDialog(
+                                    filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE)
                             } else {
-                                WhiteFilterListFragmentDirections.startFilterActionDialog(filterNumber = "",
+                                WhiteFilterListFragmentDirections.startFilterActionDialog(
+                                    filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE)
                             }
                         this@BaseFilterListFragment.findNavController().navigate(direction)

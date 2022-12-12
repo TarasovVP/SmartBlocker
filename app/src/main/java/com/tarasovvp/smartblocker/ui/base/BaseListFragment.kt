@@ -1,13 +1,9 @@
 package com.tarasovvp.smartblocker.ui.base
 
-import android.app.SearchManager
-import android.content.Context.SEARCH_SERVICE
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController

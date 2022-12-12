@@ -65,12 +65,17 @@ class NumberDataAdapter(
         fun bindData(filter: Filter?) {
             binding?.apply {
                 this.filter = filter?.apply {
-                    highlightedSpanned = highlightedSpanned ?: filter.filter.highlightedSpanned( String.EMPTY, null)
+                    highlightedSpanned =
+                        highlightedSpanned ?: filter.filter.highlightedSpanned(String.EMPTY, null)
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context, when {
-                        filter?.isChangeFilterAction().isTrue() && adapterPosition == 0 -> filter?.filterAction?.color ?: R.color.transparent
-                        filter?.isDeleteFilterAction().isTrue() && adapterPosition == 0 -> filter?.filterAction?.color ?: R.color.transparent
+                        filter?.isChangeFilterAction()
+                            .isTrue() && adapterPosition == 0 -> filter?.filterAction?.color
+                            ?: R.color.transparent
+                        filter?.isDeleteFilterAction()
+                            .isTrue() && adapterPosition == 0 -> filter?.filterAction?.color
+                            ?: R.color.transparent
                         else -> R.color.transparent
                     })
                 root.setSafeOnClickListener {
@@ -88,10 +93,12 @@ class NumberDataAdapter(
             binding?.apply {
                 this.contact = contact
                 root.setSafeOnClickListener {
-                    contact?.let { it1 -> numberDataClick.invoke(it1.apply {
-                        searchText = String.EMPTY
-                        highlightedSpanned = number.highlightedSpanned( String.EMPTY, null)
-                    }) }
+                    contact?.let { it1 ->
+                        numberDataClick.invoke(it1.apply {
+                            searchText = String.EMPTY
+                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null)
+                        })
+                    }
                 }
                 executePendingBindings()
             }
@@ -106,12 +113,15 @@ class NumberDataAdapter(
                 this.call = call
                 this.call?.isExtract = isFilteredCallDetails.not()
                 this.call?.isFilteredCallDetails = isFilteredCallDetails
-                this.call?.highlightedSpanned = this.call?.highlightedSpanned ?: this.call?.number.highlightedSpanned(String.EMPTY, null)
+                this.call?.highlightedSpanned = this.call?.highlightedSpanned
+                    ?: this.call?.number.highlightedSpanned(String.EMPTY, null)
                 root.setSafeOnClickListener {
-                    call?.let { it1 -> numberDataClick.invoke(it1.apply {
-                        searchText = String.EMPTY
-                        highlightedSpanned = number.highlightedSpanned( String.EMPTY, null)
-                    }) }
+                    call?.let { it1 ->
+                        numberDataClick.invoke(it1.apply {
+                            searchText = String.EMPTY
+                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null)
+                        })
+                    }
                 }
                 executePendingBindings()
             }

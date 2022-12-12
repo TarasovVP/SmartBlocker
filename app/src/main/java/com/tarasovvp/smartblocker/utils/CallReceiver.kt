@@ -13,8 +13,8 @@ import com.tarasovvp.smartblocker.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
-import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +48,9 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
                 "CallReceiver onReceive telephony.callState ${telephony.callState} phone $number isBlockNeeded ${
                     filter?.isBlocker().isTrue()
                 } blockHidden ${SharedPreferencesUtil.blockHidden}")
-            if (filter?.isBlocker().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+            if (filter?.isBlocker()
+                    .isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING
+            ) {
                 Log.e("blockTAG", "CallReceiver onReceive breakCall")
                 breakCall(context)
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {

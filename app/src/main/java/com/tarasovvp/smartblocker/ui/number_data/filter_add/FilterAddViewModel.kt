@@ -80,7 +80,8 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         launch {
             Log.e("filterAddTAG",
                 "AddViewModel filteredNumberDataList filter $filter")
-            filteredNumberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter, numberDataList))
+            filteredNumberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
+                numberDataList))
             hideProgress()
         }
     }

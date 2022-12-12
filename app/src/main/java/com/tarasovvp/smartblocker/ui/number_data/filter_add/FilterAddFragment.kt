@@ -240,7 +240,9 @@ open class FilterAddFragment :
                 Log.e("filterAddTAG",
                     "BaseAddFragment observeLiveData countryCodeLiveData countryCodeList.size ${countryCodeList.size}")
                 this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
-                (if (binding?.filter?.countryCode?.country.isNullOrEmpty()) countryCodeList.find {  it.country == context?.getUserCountry()?.uppercase() } else binding?.filter?.countryCode)?.let {
+                (if (binding?.filter?.countryCode?.country.isNullOrEmpty()) countryCodeList.find {
+                    it.country == context?.getUserCountry()?.uppercase()
+                } else binding?.filter?.countryCode)?.let {
                     setCountryCode(it)
                 }
             }

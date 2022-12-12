@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.tarasovvp.smartblocker.models.FilteredCall
-import com.tarasovvp.smartblocker.models.Filter
 
 @Dao
 interface FilteredCallDao {

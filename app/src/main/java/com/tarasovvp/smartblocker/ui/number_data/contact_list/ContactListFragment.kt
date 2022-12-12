@@ -72,7 +72,8 @@ open class ContactListFragment :
     private fun setClickListeners() {
         binding?.contactListCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
-            binding?.contactListCheck?.isChecked = binding?.contactListCheck?.isChecked.isTrue().not()
+            binding?.contactListCheck?.isChecked =
+                binding?.contactListCheck?.isChecked.isTrue().not()
             findNavController().navigate(
                 CallListFragmentDirections.startNumberDataFilteringDialog(filteringList = conditionFilterIndexes.orEmpty()
                     .toIntArray()))
@@ -118,8 +119,10 @@ open class ContactListFragment :
             ).isTrue() || contact.trimmedPhone.lowercase(Locale.getDefault()).contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
-                .isTrue()) && (contact.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
-                    contact.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(PERMISSION).isTrue()
+                .isTrue()) && (contact.filter?.isBlocker()
+                .isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
+                    contact.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
+                PERMISSION).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         Log.e("adapterTAG",
