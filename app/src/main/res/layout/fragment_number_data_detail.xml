@@ -6,6 +6,9 @@
 
         <import type="android.view.View" />
         <variable
+            name="isDetails"
+            type="Boolean" />
+        <variable
             name="call"
             type="com.tarasovvp.smartblocker.models.Call" />
         <variable
@@ -28,23 +31,25 @@
 
             <include
                 android:id="@+id/number_data_detail_item_contact"
-                layout="@layout/item_contact_detail"
+                layout="@layout/item_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
                 app:contact="@{contact}"
+                app:isDetails="@{isDetails}"
                 android:visibility="@{contact.number == `` ? View.GONE : View.VISIBLE, default=gone}"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <include
                 android:id="@+id/number_data_detail_item_call"
-                layout="@layout/item_call_detail"
+                layout="@layout/item_call"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
                 app:call="@{call}"
+                app:isDetails="@{isDetails}"
                 android:visibility="@{call.number == `` ? View.GONE : View.VISIBLE, default=invisible}"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_item_contact" />
 
@@ -95,14 +100,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter_start"  />
 
-            <TextView
-                android:id="@+id/number_data_detail_filter_list_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:text="@string/contact_list_with_contact"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/number_data_detail_filter_list"
                 android:layout_width="match_parent"
@@ -116,7 +113,7 @@
                 android:focusable="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_filter_list_description" />
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter" />
 
             <include
                 android:id="@+id/number_data_detail_filter_list_empty"
@@ -125,7 +122,7 @@
                 android:layout_height="@dimen/size_0"
                 android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_filter_list_description" />
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

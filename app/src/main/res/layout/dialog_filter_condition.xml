@@ -17,13 +17,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_16">
+            android:paddingBottom="@dimen/padding_16">
 
             <TextView
                 android:id="@+id/dialog_filter_condition_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_marginTop="@dimen/margin_16"
                 android:text="@string/condition_dialog_title"
                 android:textSize="@dimen/text_size_14"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@string/condition_full"
                 android:checked="@{filteringList.contains(0)}"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_title" />
@@ -54,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@string/condition_start"
                 android:checked="@{filteringList.contains(1)}"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_full" />
@@ -64,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@string/condition_contain"
                 android:checked="@{filteringList.contains(2)}"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_start" />
@@ -73,6 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ok"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_contain" />

@@ -3,18 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="mainProgress"
             type="com.tarasovvp.smartblocker.models.MainProgress" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_progress_bar_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80625F75"
+        android:background="#99211F2E"
         android:clickable="true"
         android:elevation="@dimen/margin_10"
         android:focusable="true"
@@ -33,6 +31,21 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/progress" />
 
+        <ProgressBar
+            android:id="@+id/main_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progressBackgroundTint="@color/white"
+            android:progressTint="@color/cornflower_blue"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:max="@{mainProgress.progressMax}"
+            android:progress="@{mainProgress.progressPosition}"
+            app:layout_constraintTop_toBottomOf="@+id/main_progress_bar_animation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/main_progress_bar_title"
             android:layout_width="wrap_content"
@@ -41,20 +54,7 @@
             android:textColor="@color/item_color"
             android:textSize="@dimen/text_size_16"
             android:text="@{mainProgress.progressDescription}"
-            app:layout_constraintTop_toBottomOf="@+id/main_progress_bar_animation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/main_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_marginTop="@dimen/margin_8"
-            android:layout_marginHorizontal="@dimen/margin_25"
-            android:max="@{mainProgress.progressMax}"
-            android:progress="@{mainProgress.progressPosition}"
-            app:layout_constraintTop_toBottomOf="@+id/main_progress_bar_title"
+            app:layout_constraintTop_toBottomOf="@+id/main_progress_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

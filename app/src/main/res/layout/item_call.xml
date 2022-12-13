@@ -5,9 +5,10 @@
     <data>
 
         <import type="androidx.core.content.ContextCompat" />
-
         <import type="android.view.View" />
-
+        <variable
+            name="isDetails"
+            type="Boolean" />
         <variable
             name="call"
             type="com.tarasovvp.smartblocker.models.Call" />
@@ -67,29 +68,28 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/item_call_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{call.isFilteredCallDetails ? call.dateTimeFromCallDate() : call.timeFromCallDate()}"
+                android:textSize="@dimen/text_size_10"
+                android:maxLines="1"
+                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_call_number"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/item_call_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                app:layout_constraintBottom_toTopOf="@+id/item_call_time"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number"
                 app:mainText="@{call.nameEmpty ? call.isExtract ? @string/number_from_call_log : @string/number_not_from_contacts : call.callName}"
                 app:searchText="@{call.searchText}" />
-
-            <TextView
-                android:id="@+id/item_call_time"
-                android:layout_width="@dimen/size_0"
-                android:layout_height="wrap_content"
-                android:text="@{call.isFilteredCallDetails ? call.dateTimeFromCallDate() : call.timeFromCallDate()}"
-                android:textSize="@dimen/text_size_10"
-                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
-                app:layout_constraintStart_toStartOf="@+id/item_call_number"
-                app:layout_constraintTop_toBottomOf="@+id/item_call_name" />
 
             <ImageView
                 android:id="@+id/item_call_type_icon"
@@ -97,10 +97,10 @@
                 android:layout_height="wrap_content"
                 android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall || call.extract ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
-                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintBottom_toTopOf="@+id/item_call_divider"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
-                app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
+                app:layout_constraintTop_toBottomOf="@+id/item_call_time" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_call_filter_condition"
@@ -112,9 +112,9 @@
                 android:textColor="@{call.filter.blocker ? @color/sunset : @color/islamic_green}"
                 android:textSize="@dimen/text_size_10"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/item_call_time"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_type_icon"
-                app:layout_constraintTop_toTopOf="@+id/item_call_time" />
+                app:layout_constraintTop_toTopOf="@+id/item_call_name" />
 
             <CheckBox
                 android:id="@+id/item_call_delete"
@@ -123,6 +123,20 @@
                 android:checked="@{call.checkedForDelete}"
                 android:padding="@dimen/padding_8"
                 android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall ? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_statement"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
+
+            <TextView
+                android:id="@+id/item_call_statement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/padding_5"
+                android:gravity="end|center_vertical"
+                android:text="@string/statement"
+                android:textSize="@dimen/text_size_12"
+                android:visibility="@{isDetails ? View.VISIBLE : View.GONE, default=gone}"
+                app:drawableEndCompat="@drawable/ic_arrow_forward"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
@@ -133,7 +147,7 @@
                 android:layout_height="@dimen/padding_1"
                 android:layout_marginTop="@dimen/margin_8"
                 android:background="@color/light_steel_blue"
-                app:layout_constraintTop_toBottomOf="@+id/item_call_time" />
+                app:layout_constraintTop_toBottomOf="@+id/item_call_name" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/item_call_filter_title"

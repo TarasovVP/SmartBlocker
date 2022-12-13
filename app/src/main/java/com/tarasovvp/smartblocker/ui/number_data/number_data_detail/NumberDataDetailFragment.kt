@@ -30,6 +30,7 @@ class NumberDataDetailFragment :
         binding?.apply {
             contact = Contact()
             call = Call()
+            isDetails = true
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
                 is LogCall,
@@ -88,7 +89,7 @@ class NumberDataDetailFragment :
     }
 
     private fun getNumber(): String {
-        return if (binding?.contact.isNull()) binding?.call?.number.orEmpty() else binding?.contact?.trimmedPhone.orEmpty()
+        return if (binding?.contact?.numberData.isNullOrEmpty()) binding?.call?.number.orEmpty() else binding?.contact?.trimmedPhone.orEmpty()
     }
 
     private fun createFilter(conditionIndex: Int) {
@@ -126,8 +127,6 @@ class NumberDataDetailFragment :
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 binding?.numberDataDetailFilterListEmpty?.root?.isVisible =
                     filterList.isEmpty().isTrue()
-                binding?.numberDataDetailFilterListDescription?.isVisible =
-                    filterList.isNotEmpty().isTrue()
                 if (this@NumberDataDetailFragment.filterList == filterList) return@safeSingleObserve
                 this@NumberDataDetailFragment.filterList = filterList
                 contactFilterAdapter?.numberDataList = filterList

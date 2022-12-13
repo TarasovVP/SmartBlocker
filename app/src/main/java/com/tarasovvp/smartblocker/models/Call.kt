@@ -94,25 +94,17 @@ open class Call(
     }
 
     fun callFilterTitle(): Int {
-        return if (this is FilteredCall) {
-            if (isFilteredNullOrEmpty()) {
-                R.string.without_filter_call
-            } else if (filtered?.isBlocker().isTrue()) {
-                R.string.blocker_call_value
-            } else {
-                R.string.permission_call_value
+        return if (isExtract) {
+            when {
+                filter?.isPermission().isTrue() -> R.string.permission_indication_value
+                filter?.isBlocker().isTrue() -> R.string.blocker_indication_value
+                else -> R.string.without_filter
             }
         } else {
-            if (isExtract.not()) {
-                R.string.without_filter_call
-            } else {
-                if (isFilterNullOrEmpty()) {
-                    R.string.without_filter
-                } else if (filter?.isBlocker().isTrue()) {
-                    R.string.blocker_indication_value
-                } else {
-                    R.string.permission_indication_value
-                }
+            when {
+                this is FilteredCall && filtered?.isBlocker().isTrue() -> R.string.blocker_call_value
+                this is FilteredCall && filtered?.isPermission().isTrue() -> R.string.permission_call_value
+                else -> R.string.without_filter_call
             }
         }
     }
