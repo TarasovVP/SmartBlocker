@@ -11,7 +11,7 @@ enum class FilterAction(
     val successText: Int,
 ) {
     FILTER_ACTION_INVALID(R.string.add,
-        R.color.nobel,
+        R.color.comet,
         R.drawable.ic_black_filter_inactive,
         R.string.filter_description_invalid,
         0,

@@ -13,28 +13,24 @@
     <color name="transparent">#00000000</color>
 
     //custom colors
-    <color name="midnight_blue">#102B58</color>
-    <color name="alice_blue">#F6F9FF</color>
-    <color name="tangaroa">#1C2739</color>
-    <color name="neon_blue">#2C3AFA</color>
-    <color name="egyptian_blue">#0F35BD</color>
+    <color name="hawkes_blue">#F1F4F9</color>
     <color name="lavender">#F7F8FD</color>
-    <color name="haiti_50">#80211F2E</color>
-    <color name="nobel">#989595</color>
+    <color name="tiber">#11203A</color>
+    <color name="cyprus">#081D30</color>
+    <color name="comet">#636076</color>
+    <color name="cornflower_blue">#6480E2</color>
     <color name="sunset">#C84747</color>
     <color name="light_steel_blue">#B4C5E3</color>
     <color name="valhalla">#211F2E</color>
     <color name="islamic_green">#06AA0E</color>
-    <color name="comet">#636076</color>
-    <color name="cornflower_blue">#6480E2</color>
+
 
     //custom project colors
-    <color name="main_color">@color/midnight_blue</color>
-    <color name="main_bg">@color/alice_blue</color>
-    <color name="text_color">@color/valhalla</color>
-    <color name="secondary_text_color">@color/comet</color>
-    <color name="button_bg">@color/cornflower_blue</color>
+    <color name="main_bg_start">@color/hawkes_blue</color>
+    <color name="main_bg_end">@color/lavender</color>
+    <color name="text_color_grey">@color/comet</color>
+    <color name="text_color_black">@color/valhalla</color>
     <color name="item_color">@color/white</color>
-    <color name="span_text">@color/egyptian_blue</color>
-    <color name="white_bg">#0D86FF45</color>
+    <color name="button_bg">@color/cornflower_blue</color>
+    <color name="span_text">@color/cornflower_blue</color>
 </resources>

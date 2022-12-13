@@ -11,7 +11,7 @@
             android:id="@+id/mainContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/main_bg"
+            android:background="@drawable/bg_main"
             android:visibility="gone">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -21,13 +21,12 @@
                 android:layout_marginHorizontal="@dimen/margin_10"
                 app:layout_constraintBottom_toTopOf="@+id/toolbar_divider"
                 app:layout_constraintTop_toTopOf="parent"
-                app:titleTextColor="@color/main_color" />
+                app:titleTextColor="@color/text_color_grey" />
 
             <View
                 android:id="@+id/toolbar_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_alignParentTop="true"
                 android:background="@color/light_steel_blue"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
