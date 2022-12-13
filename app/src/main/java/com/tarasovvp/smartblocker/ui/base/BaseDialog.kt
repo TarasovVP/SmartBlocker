@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.extensions.isNotNull
 import com.tarasovvp.smartblocker.extensions.orZero
+import com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog.CountryCodeSearchDialog
 
 abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
 
@@ -49,7 +50,7 @@ abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
             val width = Resources.getSystem().displayMetrics.widthPixels
             val height = Resources.getSystem().displayMetrics.heightPixels
             dialog?.window?.setLayout((width * 0.85).toInt(),
-                if (binding?.root?.measuredHeight.orZero() > height * 0.8) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
+                if (this is CountryCodeSearchDialog) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
             dialog?.window?.setGravity(Gravity.CENTER)
             dialog?.window?.setBackgroundDrawable(context?.let {
                 ContextCompat.getDrawable(it,

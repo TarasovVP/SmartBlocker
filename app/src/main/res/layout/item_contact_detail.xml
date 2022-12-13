@@ -34,7 +34,7 @@
                 android:scaleType="center"
                 app:imageUrl="@{contact.photoUrl}"
                 app:placeHolder="@{contact.placeHolder(context)}"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                app:shapeAppearanceOverlay="@style/RoundedImageView"
                 app:layout_constraintBottom_toTopOf="@+id/item_contact_divider"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_number"
                 app:layout_constraintStart_toStartOf="parent"

@@ -18,25 +18,22 @@ import kotlinx.coroutines.awaitAll
 
 class FilterAddViewModel(application: Application) : BaseViewModel(application) {
 
+    private val countryCodeRepository = CountryCodeRepository
     private val filterRepository = FilterRepository
     private val contactRepository = ContactRepository
     private val callRepository = CallRepository
-    private val countryCodeRepository = CountryCodeRepository
 
-    val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
+    val countryCodeLiveData = MutableLiveData<CountryCode>()
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
     val existingFilterLiveData = MutableLiveData<Filter>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
-    fun getCountryCodeList() {
+    fun getCountryCodeWithCountry(country: String?) {
         launch {
-            val countryCodeList = countryCodeRepository.getAllCountryCodes()
-            Log.e("filterAddTAG",
-                "AddViewModel getCountryCodeMap countryCodeMap.size ${countryCodeList?.size}")
-            countryCodeList?.apply {
-                countryCodeListLiveData.postValue(this)
-            }
+            val countryCode =
+                country?.let { countryCodeRepository.getCountryCodeWithCountry(it) } ?: CountryCode()
+            countryCodeLiveData.postValue(countryCode)
         }
     }
 

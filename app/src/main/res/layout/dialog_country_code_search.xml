@@ -5,13 +5,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_16">
+        android:paddingBottom="@dimen/padding_16">
 
         <Button
             android:id="@+id/country_code_search_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_8"
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_16"
             style="@style/Button.Icon"
             app:icon="@drawable/ic_close_small"
             app:layout_constraintTop_toTopOf="parent"
@@ -21,22 +22,33 @@
             android:id="@+id/country_code_search_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:endIconDrawable="@drawable/ic_search"
+            app:endIconMode="custom"
+            app:layout_constraintTop_toBottomOf="@+id/country_code_search_cancel">
 
             <EditText
                 android:id="@+id/country_code_search_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/country_choose"
-                android:inputType="textEmailAddress" />
+                android:hint="@string/country_choose" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/country_code_search_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_1"
+            android:background="@color/light_steel_blue"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:layout_constraintTop_toBottomOf="@+id/country_code_search_container"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/country_code_search_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/country_code_search_container"/>
+            app:layout_constraintTop_toBottomOf="@+id/country_code_search_divider"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

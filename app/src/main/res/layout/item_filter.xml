@@ -38,7 +38,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+                app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
             <ImageView
                 android:layout_width="@dimen/margin_20"

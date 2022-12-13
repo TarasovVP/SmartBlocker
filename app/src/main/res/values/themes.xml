@@ -93,7 +93,7 @@
         <item name="android:paddingBottom">@dimen/padding_20</item>
     </style>
 
-    <style name="roundedImageViewRounded">
+    <style name="RoundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>

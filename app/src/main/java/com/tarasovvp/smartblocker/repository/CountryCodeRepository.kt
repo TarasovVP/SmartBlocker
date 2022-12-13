@@ -32,7 +32,11 @@ object CountryCodeRepository {
             countryCodeDao?.getAllCountryCodes()
         }
 
-    suspend fun getCountryCode(code: Int): CountryCode? {
-        return countryCodeDao?.getCountryCode(String.format(COUNTRY_CODE_START, code.toString()))
+    suspend fun getCountryCodeWithCountry(country: String): CountryCode? {
+        return countryCodeDao?.getCountryCodeWithCountry(country.uppercase())
+    }
+
+    suspend fun getCountryCodeWithCode(code: Int): CountryCode? {
+        return countryCodeDao?.getCountryCodeWithCode(String.format(COUNTRY_CODE_START, code.toString()))
     }
 }

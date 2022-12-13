@@ -36,7 +36,6 @@ open class FilterAddFragment :
 
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
-    private var countryCodeList: ArrayList<CountryCode> = arrayListOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,7 +91,11 @@ open class FilterAddFragment :
     override fun getData() {
         viewModel.getNumberDataList()
         if (binding?.filter?.isTypeContain().isNotTrue()) {
-            viewModel.getCountryCodeList()
+            if (binding?.filter?.countryCode?.countryCode.isNullOrEmpty()) {
+                viewModel.getCountryCodeWithCountry(context?.getUserCountry())
+            } else {
+                binding?.filter?.countryCode?.let { setCountryCode(it) }
+            }
         } else {
             binding?.filterAddInput?.hint = getString(R.string.enter_filter)
         }
@@ -135,7 +138,6 @@ open class FilterAddFragment :
         binding?.apply {
             container.hideKeyboardWithLayoutTouch()
             filterAddContactList.hideKeyboardWithLayoutTouch()
-            //filterAddCountryCodeSpinner.hideKeyboardWithLayoutTouch()
             filterAddInput.setupClearButtonWithAction()
             filterAddInput.doAfterTextChanged {
                 Log.e("filterAddTAG",
@@ -232,15 +234,10 @@ open class FilterAddFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
                 Log.e("filterAddTAG",
-                    "BaseAddFragment observeLiveData countryCodeLiveData countryCodeList.size ${countryCodeList.size}")
-                this@FilterAddFragment.countryCodeList = ArrayList(countryCodeList)
-                (if (binding?.filter?.countryCode?.country.isNullOrEmpty()) countryCodeList.find {
-                    it.country == context?.getUserCountry()?.uppercase()
-                } else binding?.filter?.countryCode)?.let {
-                    setCountryCode(it)
-                }
+                    "BaseAddFragment observeLiveData countryCodeLiveData countryCode $countryCode")
+                setCountryCode(countryCode)
             }
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 Log.e("filterAddTAG",

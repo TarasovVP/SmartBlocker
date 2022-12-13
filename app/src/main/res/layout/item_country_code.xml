@@ -11,7 +11,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/padding_5">
+            android:background="@color/item_color"
+            android:padding="@dimen/padding_8">
 
             <TextView
                 android:id="@+id/item_country_code_name"

@@ -30,7 +30,7 @@ class NumberDataDetailViewModel(application: Application) : BaseViewModel(applic
     fun getCountryCode(code: Int?) {
         launch {
             val countryCode =
-                code?.let { countryCodeRepository.getCountryCode(it) } ?: CountryCode()
+                code?.let { countryCodeRepository.getCountryCodeWithCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
     }
