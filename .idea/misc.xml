@@ -15,14 +15,17 @@
         <entry key="app/src/main/res/drawable-v24/switch_view_selector.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/bg_item.xml" value="0.185" />
         <entry key="app/src/main/res/drawable/bg_main.xml" value="0.12" />
+        <entry key="app/src/main/res/drawable/bg_rounded.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/bg_rounded_bottom.xml" value="0.197" />
         <entry key="app/src/main/res/drawable/bg_rounded_top.xml" value="0.131" />
         <entry key="app/src/main/res/drawable/bg_spinner.xml" value="0.2265" />
+        <entry key="app/src/main/res/drawable/bg_splash.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/button_bg_selector.xml" value="0.1615" />
         <entry key="app/src/main/res/drawable/check_box_selector.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/data.xml" value="0.1155" />
         <entry key="app/src/main/res/drawable/expanded_check_box_selector.xml" value="0.1835" />
+        <entry key="app/src/main/res/drawable/filter_selector.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/ic_accepted.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_access_permissions.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.1875" />
@@ -43,6 +46,8 @@
         <entry key="app/src/main/res/drawable/ic_boy.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_call_list.xml" value="0.1805" />
         <entry key="app/src/main/res/drawable/ic_call_log.xml" value="0.1695" />
+        <entry key="app/src/main/res/drawable/ic_check_box_checked.xml" value="0.12" />
+        <entry key="app/src/main/res/drawable/ic_check_box_unchecked.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_close_small.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/ic_condition_contain.xml" value="0.1925" />

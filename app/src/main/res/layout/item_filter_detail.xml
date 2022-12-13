@@ -19,7 +19,7 @@
         android:layout_marginTop="@dimen/margin_8"
         android:foreground="?android:attr/selectableItemBackground"
         android:enabled="@{!filter.resultHidden}"
-        app:strokeColor="@{ContextCompat.getColor(context, filter.filterDetailTint)}"
+        app:strokeColor="@{filter.filterAction == null ? @color/transparent : ContextCompat.getColor(context, filter.filterDetailTint)}"
         app:strokeWidth="@dimen/padding_1"
         app:cardCornerRadius="@dimen/padding_12"
         app:cardElevation="@dimen/padding_1">
