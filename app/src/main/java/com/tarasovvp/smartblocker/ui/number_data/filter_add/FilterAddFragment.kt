@@ -81,8 +81,11 @@ open class FilterAddFragment :
                 }
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {
-                findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog(
-                    countryCodeList = countryCodeList.toTypedArray()))
+                Log.e("countryCodeTAG", "FilterAddDialog filterAddCountryCodeSpinner currentDestination?.displayName ${findNavController().currentDestination?.displayName}")
+                if (findNavController().currentDestination?.id == R.id.filterAddFragment) {
+                    findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog(
+                        countryCodeList = countryCodeList.toTypedArray()))
+                }
             }
         }
     }

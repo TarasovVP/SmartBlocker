@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.dialogs.searchable_dialog
+package com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog
 
 import android.view.LayoutInflater
 import android.view.View
