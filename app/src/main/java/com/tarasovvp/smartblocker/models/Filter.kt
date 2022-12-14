@@ -82,6 +82,14 @@ data class Filter(
     }
 
     @Exclude
+    fun filteredCallsText(): Int {
+        return when (filterType) {
+            PERMISSION -> R.string.permission_filtered_calls
+            else -> R.string.blocker_filtered_calls
+        }
+    }
+
+    @Exclude
     fun conditionTypeName(): Int {
         return FilterCondition.getTitleByIndex(conditionType)
     }

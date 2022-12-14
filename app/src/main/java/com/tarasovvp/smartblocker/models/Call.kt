@@ -95,7 +95,7 @@ open class Call(
     }
 
     fun callFilterTitle(): Int {
-        return if (isExtract) {
+        return if (isExtract && !isFilteredCallDetails) {
             when {
                 filter?.isPermission().isTrue() -> R.string.permission_indication_value
                 filter?.isBlocker().isTrue() -> R.string.blocker_indication_value
@@ -112,30 +112,27 @@ open class Call(
 
     fun callFilterValue(): String {
         return when {
-            this is FilteredCall && isFilteredNullOrEmpty().not() && isExtract.not() -> filtered?.filter.orEmpty()
-            this is LogCall && isFilterNullOrEmpty().not() && isExtract -> filter?.filter.orEmpty()
+            isFilteredCallDetails -> dateTimeFromCallDate()
+            isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() -> filtered?.filter.orEmpty()
+            isExtract && isFilterNullOrEmpty().not() -> filter?.filter.orEmpty()
             else -> String.EMPTY
         }
     }
 
     fun callFilterIcon(): Int? {
         return when {
-            this is FilteredCall && isFilteredNullOrEmpty().not() && isExtract.not() -> filtered?.conditionTypeSmallIcon()
-            this is LogCall && isFilterNullOrEmpty().not() && isExtract -> filter?.conditionTypeSmallIcon()
+            isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() ->  filtered?.conditionTypeSmallIcon()
+            isExtract && isFilterNullOrEmpty().not()-> filter?.conditionTypeSmallIcon()
             else -> null
         }
     }
 
     fun callFilterTint(): Int {
         return when {
-            this is FilteredCall && isFilteredNullOrEmpty().not() && isExtract.not() -> when {
-                filtered?.isBlocker().isTrue() -> R.color.sunset
-                else -> R.color.islamic_green
-            }
-            this is LogCall && isFilterNullOrEmpty().not() && isExtract -> when {
-                filter?.isBlocker().isTrue() -> R.color.sunset
-                else -> R.color.islamic_green
-            }
+            isExtract.not() && this is FilteredCall && filtered?.isBlocker().isTrue() -> R.color.sunset
+            isExtract.not() && this is FilteredCall &&  filtered?.isPermission().isTrue() -> R.color.islamic_green
+            filter?.isBlocker().isTrue() -> R.color.sunset
+            filter?.isPermission().isTrue() -> R.color.islamic_green
             else -> R.color.comet
         }
     }

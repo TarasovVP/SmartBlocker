@@ -234,8 +234,8 @@
     <string name="transfer_to_permission">Перейти в допуски?</string>
     <string name="number_value">number %s </string>
     <string name="update_filters">Обновление фильтров</string>
-    <string name="blocker_filtered_contacts">Повлияет на %s контактов</string>
-    <string name="permission_filtered_contacts">Повлияет на %s контактов</string>
+    <string name="blocker_filtered_contacts">Повлияет на %s номеров</string>
+    <string name="permission_filtered_contacts">Повлияет на %s номеров</string>
     <string name="blocker_filtered_calls">Заблокировано %s звонков</string>
     <string name="permission_filtered_calls">Допущено %s звонков</string>
     <string name="without_filter">Без признаков фильтра</string>
@@ -248,4 +248,5 @@
     <string name="permission_call_value">Допущен фильтром:&#160;</string>
     <string name="accept">Принять</string>
     <string name="country_choose">Выберите страну</string>
+    <string name="numbers">Номера</string>
 </resources>

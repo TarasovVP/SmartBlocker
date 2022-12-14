@@ -10,6 +10,7 @@ import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.CallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -19,8 +20,10 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
     private val contactRepository = ContactRepository
     private val filterRepository = FilterRepository
     private val callRepository = CallRepository
+    private val filteredCallRepository = FilteredCallRepository
 
     val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
+    val filteredCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
 
     val filterActionLiveData = MutableLiveData<Filter>()
 
@@ -55,6 +58,15 @@ class FilterDetailViewModel(application: Application) : BaseViewModel(applicatio
             numberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
                 numberDataList))
             hideProgress()
+        }
+    }
+
+    fun filteredCallsByFilter(filter: String) {
+        launch {
+            val filteredCallList = filteredCallRepository.filteredCallsByFilter(filter)
+            filteredCallList?.let { filteredCalls ->
+                filteredCallListLiveData.postValue(ArrayList(filteredCalls.sortedByDescending { it.callDate }))
+            }
         }
     }
 

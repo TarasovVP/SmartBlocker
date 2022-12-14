@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/filterDetailFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_detail.FilterDetailFragment" >
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_detail.FilterDetailFragment">
         <argument
             android:name="filterDetail"
             android:defaultValue="@null"
@@ -86,9 +86,6 @@
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
-        <action
-            android:id="@+id/startBlockerCallsDetailFragment"
-            app:destination="@id/blockerCallsDetailFragment" />
         <action
             android:id="@+id/startBlackFilterListFragment"
             app:destination="@id/blackFilterListFragment"
@@ -191,20 +188,6 @@
         <action
             android:id="@+id/startCallListFragment"
             app:destination="@id/callListFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/blockerCallsDetailFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filtered_calls_detail.FilteredCallsDetailFragment"
-        android:label="@string/blocking_history">
-        <argument
-            android:name="filter"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.models.Filter"
-            app:nullable="true" />
-        <action
-            android:id="@+id/startNumberDataDetailFragment"
-            app:destination="@id/numberDataDetailFragment" />
     </fragment>
 
     <action

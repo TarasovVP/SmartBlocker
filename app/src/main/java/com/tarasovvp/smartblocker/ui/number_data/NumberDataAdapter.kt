@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
-import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.Contact
@@ -69,15 +68,9 @@ class NumberDataAdapter(
                         highlightedSpanned ?: filter.filter.highlightedSpanned(String.EMPTY, null)
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
-                    root.context, when {
-                        filter?.isChangeFilterAction()
-                            .isTrue() && adapterPosition == 0 -> filter?.filterAction?.color
-                            ?: R.color.transparent
-                        filter?.isDeleteFilterAction()
-                            .isTrue() && adapterPosition == 0 -> filter?.filterAction?.color
-                            ?: R.color.transparent
-                        else -> R.color.transparent
-                    })
+                    root.context,
+                    if (adapterPosition == 0) filter?.filterTypeTint() ?: R.color.transparent
+                    else R.color.transparent)
                 root.setSafeOnClickListener {
                     filter?.let { it1 -> numberDataClick.invoke(it1) }
                 }

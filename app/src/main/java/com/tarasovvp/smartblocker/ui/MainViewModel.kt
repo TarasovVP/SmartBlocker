@@ -97,8 +97,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             val filterList = filterRepository.allFilters() as? ArrayList
             filterList?.forEachIndexed { index, filter ->
                 filter.filteredContacts = contactList.filter { it.filter == filter }.size.toString()
-                filter.filteredCalls =
-                    filteredCallRepository.filteredCallsByFilter(filter.filter)?.size.toString()
                 progressStatusLiveData.postValue(mainProgress.apply {
                     progressDescription =
                         getApplication<Application>().getString(R.string.update_filters)

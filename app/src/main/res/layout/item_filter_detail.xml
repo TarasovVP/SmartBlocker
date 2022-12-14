@@ -5,7 +5,9 @@
     <data>
         <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
-
+        <variable
+            name="isFilteredCallDetails"
+            type="Boolean" />
         <variable
             name="filter"
             type="com.tarasovvp.smartblocker.models.Filter" />
@@ -80,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end|center_vertical"
-                android:text="@{filter.addFilterAction &amp;&amp; !filter.preview ? @string/preview : @string/statement}"
+                android:text="@{filter.addFilterAction &amp;&amp; !filter.preview ? @string/preview : isFilteredCallDetails ?  @string/statement : @string/numbers}"
                 android:textSize="@dimen/text_size_12"
                 android:includeFontPadding="false"
                 android:visibility="@{filter.resultHidden ? View.GONE : View.VISIBLE}"
@@ -106,7 +108,7 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@{ContextCompat.getColor(context, filter.filterDetailTint)}"
-                android:text="@{filter.preview || filter.filterAction == null ? String.format(context.getString(filter.filteredContactsText), filter.filteredContacts) : context.getString(filter.filterAction.descriptionText)}"
+                android:text="@{filter.preview || filter.filterAction == null ? String.format(context.getString(isFilteredCallDetails ? filter.filteredContactsText : filter.filteredCallsText), isFilteredCallDetails ? filter.filteredContacts : filter.filteredCalls) : context.getString(filter.filterAction.descriptionText)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_divider" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

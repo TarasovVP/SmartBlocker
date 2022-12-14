@@ -49,7 +49,7 @@
             <ImageView
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                android:visibility="@{call.extract ? View.VISIBLE : View.GONE}"
+                android:visibility="@{!call.extract || call.filter.filterType == 0 ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.filter.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
@@ -71,10 +71,10 @@
                 android:id="@+id/item_call_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{call.isFilteredCallDetails ? call.dateTimeFromCallDate() : call.timeFromCallDate()}"
+                android:text="@{call.timeFromCallDate()}"
                 android:textSize="@dimen/text_size_10"
                 android:maxLines="1"
-                android:visibility="@{call.extract ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.extract || call.isFilteredCallDetails ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -164,7 +164,7 @@
                 android:id="@+id/item_call_filter_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
-                android:drawableStart="@{call.callFilterIcon == null ? null : ContextCompat.getDrawable(context, call.callFilterIcon)}"
+                android:drawableStart="@{call.callFilterIcon == null || call.isFilteredCallDetails ? null : ContextCompat.getDrawable(context, call.callFilterIcon)}"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{call.callFilterValue}"

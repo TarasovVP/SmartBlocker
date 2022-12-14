@@ -135,7 +135,7 @@
     <string name="condition_full">Полный номер</string>
     <string name="filter">Фильтр</string>
     <string name="choose_least_one_filter">Выберите минимум один фильтр</string>
-    <string name="delete_">Удалить?</string>
+    <string name="delete_">Удалить</string>
     <string name="contact_filter_match">Найдено %s совпадений из %s</string>
     <string name="blocked_calls_history">История блокировки номера</string>
     <string name="only_black_list">Только с признаками блокировки</string>

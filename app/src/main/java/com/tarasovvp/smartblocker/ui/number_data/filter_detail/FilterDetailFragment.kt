@@ -31,7 +31,10 @@ class FilterDetailFragment :
     private val args: FilterDetailFragmentArgs by navArgs()
 
     private var numberDataAdapter: NumberDataAdapter? = null
-    private var contactList: ArrayList<NumberData>? = null
+    private var numberDataList: ArrayList<NumberData>? = null
+    private var filteredCallList: ArrayList<NumberData>? = null
+
+    private var isFilteredCallDetails: Boolean = false
 
     override fun initViews() {
         Log.e("filterDetailTAG",
@@ -44,10 +47,11 @@ class FilterDetailFragment :
                     "FilterDetailFragment initViews after args.filter $filter binding?.filter ${this.filter}")
 
             }
+            filterDetailItemFilter.isFilteredCallDetails = isFilteredCallDetails.not()
             filterDetailContactListEmpty.emptyState = if (filter?.isBlocker()
                     .isTrue()
             ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
-            contactList?.let {
+            numberDataList?.let {
                 filterDetailContactListEmpty.root.isVisible = it.isEmpty()
             }
             executePendingBindings()
@@ -101,8 +105,12 @@ class FilterDetailFragment :
                 ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD)
             }
             filterDetailItemFilter.itemFilterDetailContainer.setSafeOnClickListener {
-                findNavController().navigate(FilterDetailFragmentDirections.startBlockerCallsDetailFragment(
-                    filter = filter))
+                isFilteredCallDetails = isFilteredCallDetails.not()
+                numberDataAdapter?.numberDataList = if (isFilteredCallDetails)  filteredCallList else numberDataList
+                numberDataAdapter?.isFilteredCallDetails = isFilteredCallDetails
+                filterDetailItemFilter.isFilteredCallDetails = isFilteredCallDetails.not()
+                filterDetailContactListEmpty.root.isVisible = numberDataAdapter?.numberDataList.isNullOrEmpty()
+                numberDataAdapter?.notifyDataSetChanged()
             }
         }
     }
@@ -115,7 +123,7 @@ class FilterDetailFragment :
 
     override fun createAdapter() {
         numberDataAdapter =
-            numberDataAdapter ?: NumberDataAdapter(contactList) { numberData ->
+            numberDataAdapter ?: NumberDataAdapter(arrayListOf()) { numberData ->
                 findNavController().navigate(FilterDetailFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
@@ -123,20 +131,21 @@ class FilterDetailFragment :
     }
 
     override fun getData() {
-        binding?.filter?.let { viewModel.getQueryContactCallList(it) }
+        binding?.filter?.let {
+            viewModel.getQueryContactCallList(it)
+            viewModel.filteredCallsByFilter(it.filter)}
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+            numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 binding?.filterDetailContactListEmpty?.root?.isVisible =
-                    contactList.isEmpty().isTrue()
-                if (this@FilterDetailFragment.contactList == contactList) return@safeSingleObserve
+                    numberDataList.isEmpty().isTrue()
                 if (binding?.filter?.isPreview.isTrue()) {
                     binding?.filter = binding?.filter?.apply {
-                        filteredContacts = contactList.size.toString()
+                        filteredContacts = numberDataList.size.toString()
                     }
-                    this@FilterDetailFragment.contactList = contactList.onEach {
+                    this@FilterDetailFragment.numberDataList = numberDataList.onEach {
                         it.searchText = binding?.filter?.filter.orEmpty()
                         when (it) {
                             is Contact -> it.filter = binding?.filter?.apply {
@@ -147,10 +156,15 @@ class FilterDetailFragment :
                             }
                         }
                     }
+                } else {
+                    this@FilterDetailFragment.numberDataList = numberDataList
                 }
-
-                numberDataAdapter?.numberDataList = contactList
+                numberDataAdapter?.numberDataList = numberDataList
                 numberDataAdapter?.notifyDataSetChanged()
+            }
+            filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
+                binding?.filter?.filteredCalls = filteredCallList.size.toString()
+                this@FilterDetailFragment.filteredCallList = filteredCallList
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 handleSuccessFilterAction(filter)
