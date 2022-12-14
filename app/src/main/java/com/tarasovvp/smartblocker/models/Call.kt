@@ -66,7 +66,8 @@ open class Call(
 
     fun placeHolder(context: Context): Drawable? {
         return if (callName.isNullOrEmpty()) ContextCompat.getDrawable(context,
-            R.drawable.ic_call_list) else context.getInitialDrawable(callName.nameInitial())
+            R.drawable.ic_call_list) else if (callName.nameInitial().isEmpty()) ContextCompat.getDrawable(context,
+            R.drawable.ic_contact) else context.getInitialDrawable(callName.nameInitial())
     }
 
     fun dateTimeFromCallDate(): String {
