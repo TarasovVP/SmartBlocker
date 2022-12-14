@@ -80,7 +80,8 @@ open class FilterAddFragment :
                 }
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {
-                Log.e("countryCodeTAG", "FilterAddDialog filterAddCountryCodeSpinner currentDestination?.displayName ${findNavController().currentDestination?.displayName}")
+                Log.e("countryCodeTAG",
+                    "FilterAddDialog filterAddCountryCodeSpinner currentDestination?.displayName ${findNavController().currentDestination?.displayName}")
                 if (findNavController().currentDestination?.id == R.id.filterAddFragment) {
                     findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
                 }
@@ -151,7 +152,8 @@ open class FilterAddFragment :
                     "FilterAddFragment setFilterTextChangeListener after filter.filter ${filter?.filter} editable $it numberFormat ${filter?.countryCode?.numberFormat} conditionTypeFullHint ${filter?.conditionTypeFullHint()}")
                 filterToInput = false
                 filter = filter?.apply {
-                    filter = filterAddInput.inputText().replace("#", String.EMPTY).replace(" ", String.EMPTY)
+                    filter = filterAddInput.inputText().replace("#", String.EMPTY)
+                        .replace(" ", String.EMPTY)
                     viewModel.checkFilterExist(this)
                 }
                 viewModel.filterNumberDataList(filter, numberDataList)

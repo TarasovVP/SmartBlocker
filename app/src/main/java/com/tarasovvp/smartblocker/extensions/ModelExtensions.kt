@@ -256,20 +256,15 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
         numberData.highlightedSpanned = numberData.numberData.highlightedSpanned(String.EMPTY, null)
-        if ((numberData is Filter || filter?.isTypeContain()
-                .isTrue()) && numberData.numberData.digitsTrimmed()
-                .contains(filter?.filter.orEmpty()).isTrue()
-        ) {
+        if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()) {
             filteredList.add(numberData.apply {
                 highlightedSpanned =
                     numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
             })
         } else {
-            val phoneNumber = numberData.numberData.digitsTrimmed()
-                .getPhoneNumber(filter?.countryCode?.country.orEmpty())
-            if (phoneNumber.isValidPhoneNumber() && (numberData is Filter).not()) {
-                if (numberData.numberData.digitsTrimmed().startsWith(filter?.addFilter().orEmpty())
-                        .isTrue()
+            val phoneNumber = numberData.numberData.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
+            if (phoneNumber.isValidPhoneNumber()) {
+                if (numberData.numberData.digitsTrimmed().startsWith(filter?.addFilter().orEmpty()).isTrue()
                 )
                     filteredList.add(numberData.apply {
                         highlightedSpanned =

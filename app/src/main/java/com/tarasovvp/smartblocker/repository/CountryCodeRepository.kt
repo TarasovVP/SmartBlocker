@@ -37,6 +37,7 @@ object CountryCodeRepository {
     }
 
     suspend fun getCountryCodeWithCode(code: Int): CountryCode? {
-        return countryCodeDao?.getCountryCodeWithCode(String.format(COUNTRY_CODE_START, code.toString()))
+        return countryCodeDao?.getCountryCodeWithCode(String.format(COUNTRY_CODE_START,
+            code.toString()))
     }
 }

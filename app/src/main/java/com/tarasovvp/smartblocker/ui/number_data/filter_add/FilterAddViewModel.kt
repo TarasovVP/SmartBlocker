@@ -32,7 +32,8 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun getCountryCodeWithCountry(country: String?) {
         launch {
             val countryCode =
-                country?.let { countryCodeRepository.getCountryCodeWithCountry(it) } ?: CountryCode()
+                country?.let { countryCodeRepository.getCountryCodeWithCountry(it) }
+                    ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
     }

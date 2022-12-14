@@ -13,7 +13,6 @@ import android.text.TextWatcher
 import android.text.style.TextAppearanceSpan
 import android.view.*
 import android.widget.*
-import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter

@@ -200,12 +200,6 @@
     <string name="preview">Результат</string>
     <string name="enter">Войти</string>
     <string name="blocking_history">Блокировки</string>
-    <string name="info_blockers_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>
-Для удобства поиска можно воспользоваться поисковиком <img src =\'ic_search\'>, чтоб отобрать блокировщик по номеру<br/>
-или фильтром <img src =\'ic_filter_list\'> - для отбора по типу блокировки<br/>
-Быстрый клик по блокировщику переносит на экран с деталями
-Долгий клик открывает меню удаления <img src =\'ic_delete\'><br/>
-Если необходимо добавить новый блокировщик - нажмите кнопку с плюсом внизу <img src =\'test_button\'> и выберите тип блокировки</p>]]></string>
     <string name="blocked_by_blocker">Заблокирован фильтром</string>
     <string name="permitted_by_permission">Допущен фильтром</string>
     <string name="with_blocker">C фильтром-блокировщиком</string>
@@ -249,4 +243,12 @@
     <string name="accept">Принять</string>
     <string name="country_choose">Выберите страну</string>
     <string name="numbers">Номера</string>
+    <string name="info_blockers_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>
+Для удобства поиска можно воспользоваться поисковиком <img src =\'ic_search\'>, чтоб отобрать блокировщик по номеру<br/>
+или фильтром <img src =\'ic_filter_list\'> - для отбора по типу блокировки<br/>
+Быстрый клик по блокировщику переносит на экран с деталями
+Долгий клик открывает меню удаления <img src =\'ic_delete\'><br/>
+Если необходимо добавить новый блокировщик - нажмите кнопку с плюсом внизу <img src =\'test_button\'> и выберите тип блокировки</p>]]></string>
+    <string name="number_data_detail_info"><![CDATA[<p> <u>Условия фильтрования:</u><br/> <img src =\'ic_condition_full\'>Полный номер <b>+380502711344</b> <br/>пример: <b>+380502711344</b><br/> <img src =\'ic_condition_start\'>Начинается <b>+38050</b> <br/>пример: <b>+38050</b>2711344<br/> <img src =\'ic_condition_contain\'>Содержит <b>1344</b> <br/>пример: +38050271<b>1344</b><br/><br/> <u>Приоритет(правила):</u><br/> <ul><li>Полный номер - максимальный приоритет<br/> <li>Максимальная длина (Начинается, Содержит)<br/> <li>При равной длине (Начинается, Содержит): приоритет - Начинается<br/> <li>При равной длине (Содержит, Содержит): приоритет - с ранним индексом старта</ul><br/><br/> <u>Приоритет(список-пример):</u><br/> <img src =\'ic_condition_full\'>Полный номер <b>+380502711344</b><br/> <img src =\'ic_condition_start\'>Начинается <b>+38050</b><br/> <img src =\'ic_condition_contain\'>Содержит <b>711344</b><br/> <img src =\'ic_condition_start\'>Начинается <b>+3805</b><br/> <img src =\'ic_condition_contain\'>Содержит <b>7113</b><br/> <img src =\'ic_condition_contain\'>Содержит <b>1344</b><br/></p>]]></string>
+    <string name="example"><![CDATA[<p> Приоритет (примеры сравнений):<br/> <img src =\'ic_condition_full\'>Полный номер <b>+380502711344</b> > <img src =\'ic_condition_start\'>Начинается <b>+38050</b><br/> <img src =\'ic_condition_full\'>Полный номер <b>+380502711344</b> > <img src =\'ic_condition_contain\'>Содержит <b>1344</b><br/> <img src =\'ic_condition_start\'>Начинается <b>+38050</b>(6 символов) > <img src =\'ic_condition_start\'>Начинается <b>+3805</b>(5 символов)<br/> <img src =\'ic_condition_start\'>Начинается <b>+38050</b>(6 символов) > <img src =\'ic_condition_contain\'>Содержит <b>1344</b>(4 символа)<br/> <img src =\'ic_condition_start\'>Начинается <b>+38050</b>(6 символов) > <img src =\'ic_condition_contain\'>Содержит <b>711344</b>(6 символов)<br/> <img src =\'ic_condition_contain\'>Содержит <b>711344</b>(6 символов) > <img src =\'ic_condition_start\'>Начинается <b>+38050</b>(6 символов)<br/> <img src =\'ic_condition_contain\'>Содержит <b>711344</b> (6 символов) > <img src =\'ic_condition_contain\'>Содержит <b>1344</b>(4 символа)<br/> <img src =\'ic_condition_contain\'>Содержит <b>7113</b>(6 символов) +380502<b>711344 (индекс = 6) > <img src =\'ic_condition_contain\'>Содержит <b>1344</b> (4 символа) +38050271<b>1344</b> (индекс = 9)<br/></p>]]> </string>
 </resources>

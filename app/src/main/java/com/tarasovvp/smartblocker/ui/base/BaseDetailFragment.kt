@@ -8,7 +8,6 @@ import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.showPopUpWindow
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.number_data.filter_detail.FilterDetailFragment
-import com.tarasovvp.smartblocker.ui.number_data.filtered_calls_detail.FilteredCallsDetailFragment
 
 abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
     BaseFragment<B, T>() {
@@ -33,7 +32,6 @@ abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
             toolbar?.setOnMenuItemClickListener {
                 toolbar?.showPopUpWindow(when (this@BaseDetailFragment) {
                     is FilterDetailFragment -> Info.INFO_FILTER_DETAIL
-                    is FilteredCallsDetailFragment -> Info.INFO_BLOCKED_CALL_DETAIL
                     else -> Info.INFO_NUMBER_DATA_DETAIL
                 })
                 return@setOnMenuItemClickListener true

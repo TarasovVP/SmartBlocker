@@ -97,12 +97,15 @@ class MainActivity : AppCompatActivity() {
         binding?.mainSplash?.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator) {
             }
+
             override fun onAnimationEnd(p0: Animator) {
                 binding?.mainSplash?.isVisible = false
                 binding?.mainContainer?.isVisible = true
             }
+
             override fun onAnimationCancel(p0: Animator) {
             }
+
             override fun onAnimationRepeat(p0: Animator) {
             }
         })

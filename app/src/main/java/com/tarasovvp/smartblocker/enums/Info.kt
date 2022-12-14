@@ -23,7 +23,7 @@ enum class Info(
         R.drawable.ic_assistant_info),
     INFO_FILTER_ADD_CONTAIN(R.string.filter_contain_description,
         R.drawable.ic_assistant_info),
-    INFO_NUMBER_DATA_DETAIL(R.string.empty_state_query_description,
+    INFO_NUMBER_DATA_DETAIL(R.string.number_data_detail_info,
         R.drawable.ic_assistant_info),
     INFO_FILTER_DETAIL(R.string.empty_state_account_description,
         R.drawable.ic_assistant_info),

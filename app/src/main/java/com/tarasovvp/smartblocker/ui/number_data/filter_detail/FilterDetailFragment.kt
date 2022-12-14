@@ -106,10 +106,12 @@ class FilterDetailFragment :
             }
             filterDetailItemFilter.itemFilterDetailContainer.setSafeOnClickListener {
                 isFilteredCallDetails = isFilteredCallDetails.not()
-                numberDataAdapter?.numberDataList = if (isFilteredCallDetails)  filteredCallList else numberDataList
+                numberDataAdapter?.numberDataList =
+                    if (isFilteredCallDetails) filteredCallList else numberDataList
                 numberDataAdapter?.isFilteredCallDetails = isFilteredCallDetails
                 filterDetailItemFilter.isFilteredCallDetails = isFilteredCallDetails.not()
-                filterDetailContactListEmpty.root.isVisible = numberDataAdapter?.numberDataList.isNullOrEmpty()
+                filterDetailContactListEmpty.root.isVisible =
+                    numberDataAdapter?.numberDataList.isNullOrEmpty()
                 numberDataAdapter?.notifyDataSetChanged()
             }
         }
@@ -133,7 +135,8 @@ class FilterDetailFragment :
     override fun getData() {
         binding?.filter?.let {
             viewModel.getQueryContactCallList(it)
-            viewModel.filteredCallsByFilter(it.filter)}
+            viewModel.filteredCallsByFilter(it.filter)
+        }
     }
 
     override fun observeLiveData() {

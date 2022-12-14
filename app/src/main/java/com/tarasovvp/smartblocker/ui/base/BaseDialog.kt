@@ -13,7 +13,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.extensions.isNotNull
-import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog.CountryCodeSearchDialog
 
 abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {

@@ -5,10 +5,14 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.room.Room
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.database.AppDatabase
 import com.tarasovvp.smartblocker.extensions.createNotificationChannel
 import com.tarasovvp.smartblocker.extensions.isNotNull
@@ -22,6 +26,7 @@ class BlackListerApp : Application() {
 
     var database: AppDatabase? = null
     var auth: FirebaseAuth? = null
+    var googleSignInClient: GoogleSignInClient? = null
     var isNetworkAvailable: Boolean? = null
 
     override fun onCreate() {
@@ -32,6 +37,12 @@ class BlackListerApp : Application() {
             .allowMainThreadQueries()
             .build()
         auth = Firebase.auth
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(Constants.SERVER_CLIENT_ID)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
         Log.e("authTAG", "BlackListerApp onCreate auth?.uid ${instance?.auth?.uid}")
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)

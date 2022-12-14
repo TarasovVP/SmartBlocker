@@ -66,7 +66,9 @@ open class Call(
 
     fun placeHolder(context: Context): Drawable? {
         return if (callName.isNullOrEmpty()) ContextCompat.getDrawable(context,
-            R.drawable.ic_call_list) else if (callName.nameInitial().isEmpty()) ContextCompat.getDrawable(context,
+            R.drawable.ic_call_list) else if (callName.nameInitial()
+                .isEmpty()
+        ) ContextCompat.getDrawable(context,
             R.drawable.ic_contact) else context.getInitialDrawable(callName.nameInitial())
     }
 
@@ -103,8 +105,10 @@ open class Call(
             }
         } else {
             when {
-                this is FilteredCall && filtered?.isBlocker().isTrue() -> R.string.blocker_call_value
-                this is FilteredCall && filtered?.isPermission().isTrue() -> R.string.permission_call_value
+                this is FilteredCall && filtered?.isBlocker()
+                    .isTrue() -> R.string.blocker_call_value
+                this is FilteredCall && filtered?.isPermission()
+                    .isTrue() -> R.string.permission_call_value
                 else -> R.string.without_filter_call
             }
         }
@@ -121,16 +125,18 @@ open class Call(
 
     fun callFilterIcon(): Int? {
         return when {
-            isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() ->  filtered?.conditionTypeSmallIcon()
-            isExtract && isFilterNullOrEmpty().not()-> filter?.conditionTypeSmallIcon()
+            isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() -> filtered?.conditionTypeSmallIcon()
+            isExtract && isFilterNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
             else -> null
         }
     }
 
     fun callFilterTint(): Int {
         return when {
-            isExtract.not() && this is FilteredCall && filtered?.isBlocker().isTrue() -> R.color.sunset
-            isExtract.not() && this is FilteredCall &&  filtered?.isPermission().isTrue() -> R.color.islamic_green
+            isExtract.not() && this is FilteredCall && filtered?.isBlocker()
+                .isTrue() -> R.color.sunset
+            isExtract.not() && this is FilteredCall && filtered?.isPermission()
+                .isTrue() -> R.color.islamic_green
             filter?.isBlocker().isTrue() -> R.color.sunset
             filter?.isPermission().isTrue() -> R.color.islamic_green
             else -> R.color.comet

@@ -11,15 +11,12 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.constants.Constants.FORGOT_PASSWORD
-import com.tarasovvp.smartblocker.constants.Constants.SERVER_CLIENT_ID
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
@@ -31,18 +28,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override var layoutId = R.layout.fragment_login
     override val viewModelClass = LoginViewModel::class.java
-
-    private var googleSignInClient: GoogleSignInClient? = null
-
-    override fun onStart() {
-        super.onStart()
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(SERVER_CLIENT_ID)
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,7 +60,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.inputText()))
             }
             loginGoogleAuth.setSafeOnClickListener {
-                googleSignInLauncher.launch(googleSignInClient?.signInIntent)
+                googleSignInLauncher.launch(BlackListerApp.instance?.googleSignInClient?.signInIntent)
             }
         }
     }

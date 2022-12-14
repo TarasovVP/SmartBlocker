@@ -93,6 +93,7 @@ object AuthRepository {
 
     fun signOut(result: () -> Unit) {
         auth?.signOut()
+        BlackListerApp.instance?.googleSignInClient?.signOut()
         result.invoke()
     }
 
