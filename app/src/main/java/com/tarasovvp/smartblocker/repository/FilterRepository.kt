@@ -80,7 +80,7 @@ object FilterRepository {
 
     suspend fun queryFilterList(number: String): List<Filter>? {
         val filterList = filterDao?.allFilters()
-        return filterList?.filteredFilterList(number)?.sortedByDescending { it.filter.length }
+        return filterList?.filteredFilterList(number)
     }
 
     suspend fun queryFilter(number: String): Filter? {

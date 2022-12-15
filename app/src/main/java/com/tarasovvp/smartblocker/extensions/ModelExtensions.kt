@@ -286,33 +286,24 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
     return filteredList
 }
 
-fun List<Filter>.filteredFilterList(number: String): ArrayList<Filter> {
+fun List<Filter>.filteredFilterList(number: String): List<Filter> {
     val filteredFilterList = arrayListOf<Filter>()
     forEach { filter ->
         val phoneNumber = number.getPhoneNumber(filter.countryCode.country)
         when {
-            filter.isTypeContain() -> if (number.contains(filter.filter)) filteredFilterList.add(
-                filter)
-            filter.isTypeStart() -> {
-                if (number.startsWith(filter.filter)) filteredFilterList.add(filter) else if (phoneNumber.isValidPhoneNumber()
-                    && phoneNumber?.nationalNumber.toString()
-                        .startsWith(filter.filterWithoutCountryCode)
-                ) filteredFilterList.add(filter.apply {
-                    highlightedSpanned =
-                        filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY,
-                            filter.countryCode.countryCode)
-                })
-            }
-            filter.isTypeContain() -> {
-                if (number == filter.filter) filteredFilterList.add(filter) else if (phoneNumber.isValidPhoneNumber()
+            filter.isTypeContain() && number.contains(filter.filter) -> filteredFilterList.add(filter)
+            filter.isTypeStart() && (number.startsWith(filter.filter) || (phoneNumber.isValidPhoneNumber() && phoneNumber?.nationalNumber.toString()
+                .startsWith(filter.filterWithoutCountryCode))) -> filteredFilterList.add(filter/*.apply {
+                highlightedSpanned = filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY, filter.countryCode.countryCode)
+            }*/)
+            filter.isTypeFull() && (number == filter.filter || (phoneNumber.isValidPhoneNumber()
                     && phoneNumber?.nationalNumber.toString() == filter.filterWithoutCountryCode
-                ) filteredFilterList.add(filter.apply {
-                    highlightedSpanned =
-                        filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY,
-                            filter.countryCode.countryCode)
-                })
-            }
+                    )) -> filteredFilterList.add(filter/*.apply {
+                highlightedSpanned =
+                    filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY,
+                        filter.countryCode.countryCode)
+            }*/)
         }
     }
-    return filteredFilterList
+    return filteredFilterList.sortedWith(compareBy({ it.filter.length }, { number.indexOf(it.filter) })).reversed()
 }

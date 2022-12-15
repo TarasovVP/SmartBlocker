@@ -72,11 +72,13 @@ open class FilterAddFragment :
                 ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
-                    findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
-                        filterNumber = filter?.addFilter(),
-                        filterAction = filter?.filterAction ?: if (filter?.isBlocker()
-                                .isTrue()
-                        ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
+                    if (findNavController().currentDestination?.id == R.id.filterAddFragment) {
+                        findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
+                            filterNumber = filter?.addFilter(),
+                            filterAction = filter?.filterAction ?: if (filter?.isBlocker()
+                                    .isTrue()
+                            ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
+                    }
                 }
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {

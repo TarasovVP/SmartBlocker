@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.models
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
@@ -41,6 +42,7 @@ data class Filter(
     @get:Exclude
     var isPreview = false
 
+    @Ignore
     @get:Exclude
     var filterAction: FilterAction? = null
 
