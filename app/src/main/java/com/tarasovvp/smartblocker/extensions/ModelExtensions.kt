@@ -305,5 +305,5 @@ fun List<Filter>.filteredFilterList(number: String): List<Filter> {
             }*/)
         }
     }
-    return filteredFilterList.sortedWith(compareBy({ it.filter.length }, { number.indexOf(it.filter) })).reversed()
+    return filteredFilterList.sortedWith(compareBy({ it.filter.length }, { -number.indexOf(it.filter) })).reversed()
 }

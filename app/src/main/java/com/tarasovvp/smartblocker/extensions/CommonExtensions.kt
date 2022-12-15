@@ -1,6 +1,8 @@
 package com.tarasovvp.smartblocker.extensions
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Parcelable
@@ -94,9 +96,13 @@ fun Context.spToPx(sp: Float): Float {
 fun Context.htmlWithImages(htmlText: String): Spanned {
     return htmlText.parseAsHtml(imageGetter = {
         val resourceId = resources.getIdentifier(it, "drawable", packageName)
-        val drawable = ContextCompat.getDrawable(this, resourceId)
-        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        drawable
+        if (resourceId > 0) {
+            val drawable = ContextCompat.getDrawable(this, resourceId)
+            drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+            drawable
+        } else {
+            ColorDrawable(Color.TRANSPARENT)
+        }
     })
 }
 

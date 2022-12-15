@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.extensions
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
@@ -57,17 +58,18 @@ fun View.showPopUpWindow(info: Info) {
     info.descriptionResource
     popupView.info = info
     popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+    val height = View.MeasureSpec.makeMeasureSpec((Resources.getSystem().displayMetrics.heightPixels * 0.8).toInt(), View.MeasureSpec.AT_MOST)
     val popupWindow = PopupWindow(
         popupView.root,
         (Resources.getSystem().displayMetrics.widthPixels * 0.9).toInt(),
-        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ActionBar.LayoutParams.WRAP_CONTENT,
         true
     )
     popupWindow.elevation = 2f
     popupWindow.showAtLocation(this,
-        Gravity.CENTER,
+        Gravity.TOP,
         0,
-        -(Resources.getSystem().displayMetrics.heightPixels * 0.05).toInt())
+        context.dpToPx(80f).toInt())
     popupView.popUpWindowClose.setSafeOnClickListener {
         popupWindow.dismiss()
     }

@@ -17,21 +17,13 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_30"
+            android:paddingBottom="@dimen/padding_16">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/pop_up_window_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/padding_16"
-                    android:paddingVertical="@dimen/padding_8"
-                    android:src="@drawable/ic_close_small"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/pop_up_window_description"
@@ -42,21 +34,26 @@
                     android:lineSpacingExtra="5sp"
                     android:textColor="@color/text_color_black"
                     android:text="@{info.getHtmlWithImages(context)}"
-                    app:layout_constraintTop_toBottomOf="@+id/pop_up_window_close" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/pop_up_window_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_16"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:layout_marginBottom="@dimen/margin_16"
                     android:scaleType="fitCenter"
                     app:imageResource="@{info.iconResource}"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pop_up_window_description" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+        <ImageView
+            android:id="@+id/pop_up_window_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:paddingHorizontal="@dimen/padding_16"
+            android:paddingVertical="@dimen/padding_8"
+            android:src="@drawable/ic_close_small"/>
     </androidx.cardview.widget.CardView>
 </layout>
