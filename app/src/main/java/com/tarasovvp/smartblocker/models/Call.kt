@@ -137,8 +137,8 @@ open class Call(
                 .isTrue() -> R.color.sunset
             isExtract.not() && this is FilteredCall && filtered?.isPermission()
                 .isTrue() -> R.color.islamic_green
-            filter?.isBlocker().isTrue() -> R.color.sunset
-            filter?.isPermission().isTrue() -> R.color.islamic_green
+            isExtract && filter?.isBlocker().isTrue() -> R.color.sunset
+            isExtract && filter?.isPermission().isTrue() -> R.color.islamic_green
             else -> R.color.comet
         }
     }

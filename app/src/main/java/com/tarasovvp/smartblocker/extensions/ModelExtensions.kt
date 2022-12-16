@@ -293,16 +293,10 @@ fun List<Filter>.filteredFilterList(number: String): List<Filter> {
         when {
             filter.isTypeContain() && number.contains(filter.filter) -> filteredFilterList.add(filter)
             filter.isTypeStart() && (number.startsWith(filter.filter) || (phoneNumber.isValidPhoneNumber() && phoneNumber?.nationalNumber.toString()
-                .startsWith(filter.filterWithoutCountryCode))) -> filteredFilterList.add(filter/*.apply {
-                highlightedSpanned = filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY, filter.countryCode.countryCode)
-            }*/)
+                .startsWith(filter.filterWithoutCountryCode))) -> filteredFilterList.add(filter)
             filter.isTypeFull() && (number == filter.filter || (phoneNumber.isValidPhoneNumber()
                     && phoneNumber?.nationalNumber.toString() == filter.filterWithoutCountryCode
-                    )) -> filteredFilterList.add(filter/*.apply {
-                highlightedSpanned =
-                    filter.filterWithoutCountryCode.highlightedSpanned(String.EMPTY,
-                        filter.countryCode.countryCode)
-            }*/)
+                    )) -> filteredFilterList.add(filter)
         }
     }
     return filteredFilterList.sortedWith(compareBy({ it.filter.length }, { -number.indexOf(it.filter) })).reversed()
