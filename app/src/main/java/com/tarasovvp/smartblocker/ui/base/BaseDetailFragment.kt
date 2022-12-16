@@ -14,6 +14,7 @@ abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
 
     abstract fun initViews()
     abstract fun setClickListeners()
+    abstract fun setFragmentResultListeners()
     abstract fun createAdapter()
     abstract fun getData()
 
@@ -21,6 +22,7 @@ abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
         super.onViewCreated(view, savedInstanceState)
         initViews()
         setClickListeners()
+        setFragmentResultListeners()
         createAdapter()
         getData()
         setInfoMenu()

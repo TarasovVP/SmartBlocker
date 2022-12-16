@@ -1,8 +1,6 @@
 package com.tarasovvp.smartblocker.ui.number_data.filter_add
 
-import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -37,13 +35,8 @@ open class FilterAddFragment :
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListeners()
-        setFilterTextChangeListener()
-    }
-
     override fun initViews() {
+        setFilterTextChangeListener()
         Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filter = args.filterAdd?.apply {
@@ -104,7 +97,7 @@ open class FilterAddFragment :
         }
     }
 
-    private fun setFragmentResultListeners() {
+    override fun setFragmentResultListeners() {
         binding?.filter?.let { filter ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
                 bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }

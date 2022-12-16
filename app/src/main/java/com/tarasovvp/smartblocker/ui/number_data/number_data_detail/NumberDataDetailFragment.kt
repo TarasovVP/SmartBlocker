@@ -93,13 +93,14 @@ class NumberDataDetailFragment :
     }
 
     private fun createFilter(conditionIndex: Int) {
-        filter = Filter(filter = getNumber(),
+        val number = getNumber()
+        filter = Filter(filter = number,
             conditionType = conditionIndex,
             filterType = Constants.BLOCKER)
-        val phoneNumber = if (getNumber().getPhoneNumber(String.EMPTY)
+        val phoneNumber = if (number.getPhoneNumber(String.EMPTY)
                 .isNull()
-        ) getNumber().getPhoneNumber(context?.getUserCountry().orEmpty()
-            .uppercase()) else getNumber().getPhoneNumber(String.EMPTY)
+        ) number.getPhoneNumber(context?.getUserCountry().orEmpty()
+            .uppercase()) else number.getPhoneNumber(String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
             startAddFilterScreen()
         } else {
@@ -138,6 +139,6 @@ class NumberDataDetailFragment :
                 startAddFilterScreen()
             }
         }
-
     }
+    override fun setFragmentResultListeners() = Unit
 }

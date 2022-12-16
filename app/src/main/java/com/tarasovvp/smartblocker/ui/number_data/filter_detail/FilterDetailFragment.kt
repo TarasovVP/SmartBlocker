@@ -45,7 +45,6 @@ class FilterDetailFragment :
                 this.filter = filter
                 Log.e("filterDetailTAG",
                     "FilterDetailFragment initViews after args.filter $filter binding?.filter ${this.filter}")
-
             }
             filterDetailItemFilter.isFilteredCallDetails = isFilteredCallDetails.not()
             filterDetailContactListEmpty.emptyState = if (filter?.isBlocker()
@@ -56,10 +55,9 @@ class FilterDetailFragment :
             }
             executePendingBindings()
         }
-        setFragmentResultListeners()
     }
 
-    private fun setFragmentResultListeners() {
+    override fun setFragmentResultListeners() {
         binding?.filter?.let { filter ->
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction = bundle.getSerializable(FILTER_ACTION) as FilterAction) {
