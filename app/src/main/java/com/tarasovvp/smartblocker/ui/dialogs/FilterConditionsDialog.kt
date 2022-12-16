@@ -23,13 +23,13 @@ class FilterConditionsDialog : BaseDialog<DialogFilterConditionBinding>() {
                 dismiss()
             }
             dialogFilterConditionConfirm.setSafeOnClickListener {
+                dismiss()
                 setFragmentResult(FILTER_CONDITION_LIST,
                     bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
                         if (dialogFilterConditionFull.isChecked) add(FilterCondition.FILTER_CONDITION_FULL.index)
                         if (dialogFilterConditionStart.isChecked) add(FilterCondition.FILTER_CONDITION_START.index)
                         if (dialogFilterConditionContain.isChecked) add(FilterCondition.FILTER_CONDITION_CONTAIN.index)
                     }))
-                dismiss()
             }
         }
     }

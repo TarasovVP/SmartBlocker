@@ -143,10 +143,6 @@
     <string name="empty_state_title">У %s нічого немає.</string>
     <string name="data_collecting">Збір інформації</string>
     <string name="no_country_code">Без коду</string>
-    <string name="inner_data_access_title">Привіт! Я ваш помічник у блокуванні небажаних дзвінків</string>
-    <string name="black_white_list_title">Зі мною Ви зможете блокувати вхідні не тільки за конкретним номером, але навіть за ознакою(наприклад за кодом оператора)</string>
-    <string name="authorized_user_title">Доступ до списку через хмару для авторизованих користувачів у разі втрати або зміни телефону</string>
-    <string name="access_permissions">"Для того щоб почати просимо дати необхідні дозволи"</string>
     <string name="no_in_contact_list">Немає у списку контактів</string>
     <string name="invalid_phone_number">Невалідний номер</string>
     <string name="empty_state_query_description">За цим запитом нічого не знайдено</string>

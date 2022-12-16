@@ -143,10 +143,6 @@
     <string name="empty_state_title">There is nothing in %s.</string>
     <string name="data_collecting">Information collection</string>
     <string name="no_country_code">No code</string>
-    <string name="inner_data_access_title">Hello! I am your assistant in blocking unwanted calls</string>
-    <string name="black_white_list_title">With me you can block incoming calls not only by a specific number, but even by a sign (for example, by operator code)</string>
-    <string name="authorized_user_title">Access the list via the cloud for authorized users in case of loss or change of phone</string>
-    <string name="access_permissions">"To get started, please give the necessary permissions"</string>
     <string name="no_in_contact_list">Not in contact list</string>
     <string name="invalid_phone_number">Invalid phone number</string>
     <string name="empty_state_query_description">No results found for this query</string>
@@ -155,6 +151,10 @@
     <string name="unavailable_network_repeat">No internet connection.\nTo continue, please connect to the internet and try again.</string>
     <string name="blocked_call_log">Blocked</string>
     <string name="invalid">Invalid</string>
+    <string name="inner_data_access_title">Hello! I am your assistant in blocking unwanted calls</string>
+    <string name="black_white_list_title">With me you can block incoming calls not only by a specific number, but even by a sign (for example, by operator code)</string>
+    <string name="authorized_user_title">Access the list via the cloud for authorized users in case of loss or change of phone</string>
+    <string name="access_permissions">"To get started, please give the necessary permissions"</string>
     <string name="filter_update">Number %s is updated</string>
     <string name="blocker">Блокировщик</string>
     <string name="permission">Допуск</string>

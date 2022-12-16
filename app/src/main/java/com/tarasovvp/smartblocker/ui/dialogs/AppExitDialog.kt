@@ -18,8 +18,8 @@ class AppExitDialog : BaseDialog<DialogInfoBinding>() {
             dismiss()
         }
         binding?.dialogInfoConfirm?.setSafeOnClickListener {
-            setFragmentResult(APP_EXIT, bundleOf())
             dismiss()
+            setFragmentResult(APP_EXIT, bundleOf())
         }
     }
 }

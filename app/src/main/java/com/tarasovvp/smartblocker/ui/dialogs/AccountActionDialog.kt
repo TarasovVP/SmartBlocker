@@ -23,8 +23,8 @@ class AccountActionDialog : BaseDialog<DialogInfoBinding>() {
             dismiss()
         }
         binding?.dialogInfoConfirm?.setSafeOnClickListener {
-            setFragmentResult(if (args.isLogOut) LOG_OUT else DELETE_USER, bundleOf())
             dismiss()
+            setFragmentResult(if (args.isLogOut) LOG_OUT else DELETE_USER, bundleOf())
         }
     }
 }

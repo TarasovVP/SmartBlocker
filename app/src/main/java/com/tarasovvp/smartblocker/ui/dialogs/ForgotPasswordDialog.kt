@@ -23,9 +23,9 @@ class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
             dismiss()
         }
         binding?.dialogForgotPasswordConfirm?.setSafeOnClickListener {
+            dismiss()
             setFragmentResult(FORGOT_PASSWORD,
                 bundleOf(EMAIL to binding?.dialogForgotPassEmailInput.inputText()))
-            dismiss()
         }
     }
 }

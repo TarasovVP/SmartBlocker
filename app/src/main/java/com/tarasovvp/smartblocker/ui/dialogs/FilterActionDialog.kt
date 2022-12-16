@@ -35,8 +35,8 @@ class FilterActionDialog : BottomSheetDialogFragment() {
             filterAction = args.filterAction
             filterNumber = args.filterNumber
             root.setSafeOnClickListener {
-                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterAction))
                 dismiss()
+                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterAction))
             }
         }
     }

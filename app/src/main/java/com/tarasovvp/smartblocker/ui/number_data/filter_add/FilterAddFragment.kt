@@ -65,21 +65,17 @@ open class FilterAddFragment :
                 ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {
-                    if (findNavController().currentDestination?.id == R.id.filterAddFragment) {
-                        findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
-                            filterNumber = filter?.addFilter(),
-                            filterAction = filter?.filterAction ?: if (filter?.isBlocker()
-                                    .isTrue()
-                            ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
-                    }
+                    findNavController().navigate(FilterAddFragmentDirections.startFilterActionDialog(
+                        filterNumber = filter?.addFilter(),
+                        filterAction = filter?.filterAction ?: if (filter?.isBlocker()
+                                .isTrue()
+                        ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
                 }
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {
                 Log.e("countryCodeTAG",
                     "FilterAddDialog filterAddCountryCodeSpinner currentDestination?.displayName ${findNavController().currentDestination?.displayName}")
-                if (findNavController().currentDestination?.id == R.id.filterAddFragment) {
-                    findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
-                }
+                findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
             }
         }
     }
@@ -272,11 +268,15 @@ open class FilterAddFragment :
     }
 
     private fun handleSuccessFilterAction(filter: Filter) {
+        Log.e("destinationTAG",
+            "FilterAddFragment before handleSuccessFilterAction currentDestination ${findNavController().currentDestination?.displayName}")
         (activity as MainActivity).apply {
             showMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(),
                 filter.filter), false)
             getAllData()
+            Log.e("destinationTAG",
+                "FilterAddFragment handleSuccessFilterAction currentDestination ${findNavController().currentDestination?.displayName}")
             findNavController().navigate(if (binding?.filter?.isBlocker().isTrue())
                 FilterAddFragmentDirections.startBlackFilterListFragment()
             else FilterAddFragmentDirections.startWhiteFilterListFragment())

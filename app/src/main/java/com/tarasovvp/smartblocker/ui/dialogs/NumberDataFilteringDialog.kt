@@ -27,6 +27,7 @@ class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>()
                 dismiss()
             }
             dialogNumberDataConfirm.setSafeOnClickListener {
+                dismiss()
                 setFragmentResult(FILTER_CONDITION_LIST,
                     bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
                         if (dialogNumberDataWithBlocker.isChecked) add(BLOCKER)
@@ -34,7 +35,6 @@ class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>()
                         if (dialogNumberDataByBlocker.isChecked) add(BLOCKED_CALL.toInt())
                         if (dialogNumberDataByPermission.isChecked) add(PERMITTED_CALL.toInt())
                     }))
-                dismiss()
             }
         }
     }
