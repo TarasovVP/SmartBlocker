@@ -151,10 +151,10 @@
     <string name="unavailable_network_repeat">No internet connection.\nTo continue, please connect to the internet and try again.</string>
     <string name="blocked_call_log">Blocked</string>
     <string name="invalid">Invalid</string>
-    <string name="inner_data_access_title">Hello! I am your assistant in blocking unwanted calls</string>
-    <string name="black_white_list_title">With me you can block incoming calls not only by a specific number, but even by a sign (for example, by operator code)</string>
-    <string name="authorized_user_title">Access the list via the cloud for authorized users in case of loss or change of phone</string>
-    <string name="access_permissions">"To get started, please give the necessary permissions"</string>
+    <string name="onboarding_intro"><![CDATA[<b>Smart Blocker</b> - приложение, которое позволяет блокировать входящие вызовы через умные фильтры.]]></string>
+    <string name="onboarding_filter_conditions"><![CDATA[Фильтровать в <b>Smart Blocker</b> можно по трем признакам:<br/><img src =\'ic_condition_full\'>Полный номер - полное совпадение с входящим вызовом;<br/><img src =\'ic_condition_start\'>Начинается - совпадение по началу номера;<br/><img src =\'ic_condition_contain\'>Содержит - совпадение фильтра в любом месте входящего вызова.]]></string>
+    <string name="onboarding_filter_types"><![CDATA[Фильтры в <b>Smart Blocker</b> бывают двух типов:<br/><img src =\'ic_blocker\'>Блокировщики  - при совпадении фильтра блокируют входящий вызов;<br/><img src =\'ic_permission\'>Допуски - при совпадении допускают входящий вызов, даже если у него есть совпадение с блокировщиком.]]></string>
+    <string name="onboarding_permissions"><![CDATA[Для корректной работы <b>Smart Blocker</b> необходимо дать необходимые разрешения. Для этого выберите “Разрешить” в системных окнах, предложенных телефоном.]]></string>
     <string name="filter_update">Number %s is updated</string>
     <string name="blocker">Блокировщик</string>
     <string name="permission">Допуск</string>
