@@ -190,16 +190,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startBlocker() {
-        if (SharedPreferencesUtil.foreGround) {
-            callIntent?.apply {
-                stopService(this)
-                callIntent = null
-            }
-            callReceiver = CallReceiver {
-            }
-            val filter = IntentFilter(Constants.PHONE_STATE)
-            registerReceiver(callReceiver, filter)
-        } else {
             callReceiver?.apply {
                 unregisterReceiver(this)
                 callReceiver = null
@@ -210,7 +200,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 startService(callIntent)
             }
-        }
     }
 
     fun stopBlocker() {

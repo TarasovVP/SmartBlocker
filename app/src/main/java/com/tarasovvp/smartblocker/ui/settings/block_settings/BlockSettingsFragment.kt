@@ -37,12 +37,6 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
                     }
                     checkBlockSettingsEnable(isChecked.not())
                 }
-                blockSettingsForeground.setSwitchChange(SharedPreferencesUtil.foreGround.not())
-                blockSettingsForeground.setSwitchClickListener { isChecked ->
-                    blockSettingsForeground.setSwitchChange(isChecked.not())
-                    SharedPreferencesUtil.foreGround = isChecked
-                    startBlocker()
-                }
             }
             blockSettingsHidden.setSwitchChange(SharedPreferencesUtil.blockHidden)
             blockSettingsHidden.setSwitchClickListener { isChecked ->
@@ -59,7 +53,6 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
 
     private fun checkBlockSettingsEnable(isChecked: Boolean) {
         binding?.apply {
-            blockSettingsForeground.setEnableChange(isChecked)
             blockSettingsHidden.setEnableChange(isChecked)
         }
     }

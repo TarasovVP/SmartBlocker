@@ -53,15 +53,6 @@ object SharedPreferencesUtil {
             )
         }
 
-    var foreGround: Boolean
-        get() = loadBoolean(FOREGROUND)
-        set(foreGround) {
-            saveBoolean(
-                FOREGROUND,
-                foreGround
-            )
-        }
-
     var blockHidden: Boolean
         get() = loadBoolean(BLOCK_HIDDEN)
         set(blockHidden) {

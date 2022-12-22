@@ -176,11 +176,6 @@ data class Filter(
     }
 
     @Exclude
-    fun isDeleteFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
-    }
-
-    @Exclude
     fun isTypeStart(): Boolean {
         return conditionType == FilterCondition.FILTER_CONDITION_START.index
     }

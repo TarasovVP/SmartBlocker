@@ -25,23 +25,12 @@
                 app:turnOnModeText="@string/turn_on" />
 
             <com.tarasovvp.smartblocker.utils.SwitchView
-                android:id="@+id/block_settings_foreground"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
-                app:info="@string/settings_back_ground_info"
-                app:layout_constraintTop_toBottomOf="@+id/block_settings_turn"
-                app:title="@string/change_back_ground"
-                app:turnOffModeText="@string/back_ground"
-                app:turnOnModeText="@string/fore_ground" />
-
-            <com.tarasovvp.smartblocker.utils.SwitchView
                 android:id="@+id/block_settings_hidden"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_25"
                 app:info="@string/change_back_ground"
-                app:layout_constraintTop_toBottomOf="@+id/block_settings_foreground"
+                app:layout_constraintTop_toBottomOf="@+id/block_settings_turn"
                 app:title="@string/block_hidden"
                 app:turnOffModeIcon="@drawable/ic_blocker"
                 app:turnOffModeText="@string/turn_off"
