@@ -86,10 +86,6 @@ class CallListFragment :
             if (conditionFilterIndexes.isNullOrEmpty())
                 callFilteringText.add(getString(R.string.filter_no_filter))
             else {
-                if (conditionFilterIndexes?.contains(BLOCKER).isTrue())
-                    callFilteringText.add(context.getString(R.string.with_blocker_filter))
-                if (conditionFilterIndexes?.contains(PERMISSION).isTrue())
-                    callFilteringText.add(context.getString(R.string.with_permission_filter))
                 if (conditionFilterIndexes?.contains(BLOCKED_CALL.toInt()).isTrue())
                     callFilteringText.add(context.getString(R.string.by_blocker_filter))
                 if (conditionFilterIndexes?.contains(PERMITTED_CALL.toInt()).isTrue())
