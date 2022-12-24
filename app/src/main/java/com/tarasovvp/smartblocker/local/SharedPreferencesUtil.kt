@@ -5,7 +5,6 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.local.Settings.APP_LANG
 import com.tarasovvp.smartblocker.local.Settings.APP_THEME
 import com.tarasovvp.smartblocker.local.Settings.BLOCK_TURN_OFF
-import com.tarasovvp.smartblocker.local.Settings.FOREGROUND
 import com.tarasovvp.smartblocker.local.Settings.ON_BOARDING_SEEN
 import com.tarasovvp.smartblocker.local.Settings.clearSharedPreferences
 import com.tarasovvp.smartblocker.local.Settings.loadBoolean

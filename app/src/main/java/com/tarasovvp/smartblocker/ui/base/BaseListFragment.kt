@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.ui.base
 
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
@@ -22,6 +23,7 @@ import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragment
 import com.tarasovvp.smartblocker.ui.number_data.contact_list.ContactListFragment
+import com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragment
 import com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 
@@ -80,6 +82,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             Log.e("searchTAG", "BaseListFragment setSearchViewMenu searchQuery $searchQuery")
             toolbar?.inflateMenu(R.menu.toolbar_search)
             context?.let { SearchView(it) }?.apply {
+                if (this@BaseListFragment is BlackFilterListFragment || this@BaseListFragment is WhiteFilterListFragment) inputType = InputType.TYPE_CLASS_NUMBER
                 toolbar?.menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
                     setQuery(searchQuery, false)
                     menuItem.actionView = this
