@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/blackFilterListFragment"
-        android:title="@string/black_list"
+        android:id="@+id/blockerListFragment"
+        android:title="@string/blocker_list"
         android:icon="@drawable/ic_blocker_list"
         android:contentDescription="@string/filter_list"/>
     <item
-        android:id="@+id/whiteFilterListFragment"
-        android:title="@string/white_list"
+        android:id="@+id/permissionListFragment"
+        android:title="@string/permission_list"
         android:icon="@drawable/ic_permission_list"
         android:contentDescription="@string/filter_list"/>
     <item

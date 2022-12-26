@@ -19,8 +19,8 @@
         android:name="com.tarasovvp.smartblocker.ui.start.login.LoginFragment"
         android:label="@string/log_in">
         <action
-            android:id="@+id/startBlackFilterListFragment"
-            app:destination="@id/blackFilterListFragment"
+            android:id="@+id/startBlockerListFragment"
+            app:destination="@id/blockerListFragment"
             app:popUpTo="@+id/mainNavigation"
             app:popUpToInclusive="true" />
         <action
@@ -37,9 +37,9 @@
         android:label="@string/sign_up" />
 
     <fragment
-        android:id="@+id/blackFilterListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragment"
-        android:label="@string/black_list">
+        android:id="@+id/blockerListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.BlockerListFragment"
+        android:label="@string/blocker_list">
         <action
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
@@ -55,9 +55,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/whiteFilterListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragment"
-        android:label="@string/white_list">
+        android:id="@+id/permissionListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.PermissionListFragment"
+        android:label="@string/permission_list">
         <action
             android:id="@+id/startFilterAddFragment"
             app:destination="@id/filterAddFragment" />
@@ -87,14 +87,14 @@
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
         <action
-            android:id="@+id/startBlackFilterListFragment"
-            app:destination="@id/blackFilterListFragment"
-            app:popUpTo="@id/blackFilterListFragment"
+            android:id="@+id/startBlockerListFragment"
+            app:destination="@id/blockerListFragment"
+            app:popUpTo="@id/blockerListFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/startWhiteFilterListFragment"
-            app:destination="@id/whiteFilterListFragment"
-            app:popUpTo="@id/blackFilterListFragment"
+            android:id="@+id/startPermissionListFragment"
+            app:destination="@id/permissionListFragment"
+            app:popUpTo="@id/blockerListFragment"
             app:popUpToInclusive="false" />
     </fragment>
 
@@ -123,14 +123,14 @@
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
         <action
-            android:id="@+id/startBlackFilterListFragment"
-            app:destination="@id/blackFilterListFragment"
-            app:popUpTo="@id/blackFilterListFragment"
+            android:id="@+id/startBlockerListFragment"
+            app:destination="@id/blockerListFragment"
+            app:popUpTo="@id/blockerListFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/startWhiteFilterListFragment"
-            app:destination="@id/whiteFilterListFragment"
-            app:popUpTo="@id/blackFilterListFragment"
+            android:id="@+id/startPermissionListFragment"
+            app:destination="@id/permissionListFragment"
+            app:popUpTo="@id/blockerListFragment"
             app:popUpToInclusive="false" />
     </fragment>
 

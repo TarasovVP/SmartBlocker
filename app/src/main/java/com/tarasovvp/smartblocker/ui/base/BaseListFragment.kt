@@ -23,8 +23,8 @@ import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragment
 import com.tarasovvp.smartblocker.ui.number_data.contact_list.ContactListFragment
-import com.tarasovvp.smartblocker.ui.number_data.filter_list.BlackFilterListFragment
-import com.tarasovvp.smartblocker.ui.number_data.filter_list.WhiteFilterListFragment
+import com.tarasovvp.smartblocker.ui.number_data.filter_list.BlockerListFragment
+import com.tarasovvp.smartblocker.ui.number_data.filter_list.PermissionListFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 
 
@@ -82,7 +82,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             Log.e("searchTAG", "BaseListFragment setSearchViewMenu searchQuery $searchQuery")
             toolbar?.inflateMenu(R.menu.toolbar_search)
             context?.let { SearchView(it) }?.apply {
-                if (this@BaseListFragment is BlackFilterListFragment || this@BaseListFragment is WhiteFilterListFragment) inputType = InputType.TYPE_CLASS_NUMBER
+                if (this@BaseListFragment is BlockerListFragment || this@BaseListFragment is PermissionListFragment) inputType = InputType.TYPE_CLASS_NUMBER
                 toolbar?.menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
                     setQuery(searchQuery, false)
                     menuItem.actionView = this
@@ -112,7 +112,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         swipeRefresh?.isVisible = isEmpty.not()
         emptyStateContainer?.emptyState =
             if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
-                is WhiteFilterListFragment -> EmptyState.EMPTY_STATE_PERMISSIONS
+                is PermissionListFragment -> EmptyState.EMPTY_STATE_PERMISSIONS
                 is ContactListFragment -> EmptyState.EMPTY_STATE_CONTACTS
                 is CallListFragment -> EmptyState.EMPTY_STATE_CALLS
                 else -> EmptyState.EMPTY_STATE_BLOCKERS

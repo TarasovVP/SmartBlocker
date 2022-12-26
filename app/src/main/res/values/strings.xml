@@ -37,11 +37,9 @@
     <string name="all_call_log_list">All call log list</string>
     <string name="edit">Edit</string>
     <string name="change">Change</string>
-    <string name="delete_filter_from_list">Remove %s from blacklist?</string>
-    <string name="add_contact_to_black_list">Do you want to blacklist %s?</string>
+    <string name="delete_filter_from_list">Remove %s from blockers?</string>
+    <string name="add_contact_to_blocker">Do you want to blockers %s?</string>
     <string name="details">Details</string>
-    <string name="delete_black_list">Remove from blacklist</string>
-    <string name="add_black_list">Add to blacklist</string>
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_filter">Enter number</string>
     <string name="condition_contain">Contains</string>
@@ -74,8 +72,8 @@
     <string name="spam">Spam</string>
     <string name="fraud">Fraud</string>
     <string name="privates">Private</string>
-    <string name="black_list">Blockers</string>
-    <string name="white_list">Allowings</string>
+    <string name="blocker_list">Blockers</string>
+    <string name="permission_list">Permission</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="log_out">Do you want to log out of your account?</string>

@@ -60,7 +60,7 @@ open class BaseFilterListFragment :
         Log.e("adapterTAG",
             "FilterListFragment initView selectedFilterItems $conditionFilterIndexes")
         findNavController().currentDestination?.label =
-            getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+            getString(if (this@BaseFilterListFragment is BlockerListFragment) R.string.blocker_list else R.string.permission_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         binding?.apply {
             swipeRefresh = filterListRefresh
@@ -92,21 +92,21 @@ open class BaseFilterListFragment :
             binding?.root?.hideKeyboard()
             binding?.filterListFilter?.isChecked =
                 binding?.filterListFilter?.isChecked.isTrue().not()
-            findNavController().navigate(if (this is BlackFilterListFragment) {
-                BlackFilterListFragmentDirections.startFilterConditionsDialog(
+            findNavController().navigate(if (this is BlockerListFragment) {
+                BlockerListFragmentDirections.startFilterConditionsDialog(
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray())
             } else {
-                WhiteFilterListFragmentDirections.startFilterConditionsDialog(
+                BlockerListFragmentDirections.startFilterConditionsDialog(
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray())
             })
         }
         binding?.filterListInfo?.setSafeOnClickListener {
-            binding?.filterListInfo?.showPopUpWindow(if (this is BlackFilterListFragment) Info.INFO_BLOCKER_LIST else Info.INFO_PERMISSION_LIST)
+            binding?.filterListInfo?.showPopUpWindow(if (this is BlockerListFragment) Info.INFO_BLOCKER_LIST else Info.INFO_PERMISSION_LIST)
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
             startNextScreen(Filter().apply {
                 filterType =
-                    if (this@BaseFilterListFragment is BlackFilterListFragment) BLOCKER else PERMISSION
+                    if (this@BaseFilterListFragment is BlockerListFragment) BLOCKER else PERMISSION
                 this.conditionType = conditionType
             })
         }
@@ -139,10 +139,10 @@ open class BaseFilterListFragment :
             }
         }
         findNavController().currentDestination?.label =
-            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlockerListFragment) R.string.blocker_list else R.string.permission_list)
         (activity as MainActivity).toolbar?.apply {
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlackFilterListFragment) R.string.black_list else R.string.white_list)
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlockerListFragment) R.string.blocker_list else R.string.permission_list)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
@@ -160,12 +160,12 @@ open class BaseFilterListFragment :
                     R.id.delete_menu_item -> {
                         // TODO add filter number
                         val direction =
-                            if (this@BaseFilterListFragment is BlackFilterListFragment) {
-                                BlackFilterListFragmentDirections.startFilterActionDialog(
+                            if (this@BaseFilterListFragment is BlockerListFragment) {
+                                BlockerListFragmentDirections.startFilterActionDialog(
                                     filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE)
                             } else {
-                                WhiteFilterListFragmentDirections.startFilterActionDialog(
+                                BlockerListFragmentDirections.startFilterActionDialog(
                                     filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE)
                             }
@@ -189,20 +189,20 @@ open class BaseFilterListFragment :
     }
 
     private fun startNextScreen(filter: Filter) {
-        val direction = if (this is BlackFilterListFragment) {
+        val direction = if (this is BlockerListFragment) {
             if (filter.filter.isEmpty()) {
-                BlackFilterListFragmentDirections.startFilterAddFragment(
+                BlockerListFragmentDirections.startFilterAddFragment(
                     filterAdd = filter)
             } else {
-                BlackFilterListFragmentDirections.startFilterDetailFragment(
+                BlockerListFragmentDirections.startFilterDetailFragment(
                     filterDetail = filter)
             }
         } else {
             if (filter.filter.isEmpty()) {
-                WhiteFilterListFragmentDirections.startFilterAddFragment(
+                BlockerListFragmentDirections.startFilterAddFragment(
                     filterAdd = filter)
             } else {
-                WhiteFilterListFragmentDirections.startFilterDetailFragment(
+                BlockerListFragmentDirections.startFilterDetailFragment(
                     filterDetail = filter)
             }
         }
@@ -265,7 +265,7 @@ open class BaseFilterListFragment :
     override fun getData() {
         Log.e("adapterTAG",
             "FilterList getData() filterList.size ${filterList?.size} selectedFilterItems ${conditionFilterIndexes?.joinToString()}")
-        viewModel.getFilterList(this is BlackFilterListFragment,
+        viewModel.getFilterList(this is BlockerListFragment,
             swipeRefresh?.isRefreshing.isTrue())
     }
 }

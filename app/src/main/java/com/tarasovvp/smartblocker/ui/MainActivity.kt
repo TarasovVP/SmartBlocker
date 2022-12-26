@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
     var navigationScreens = arrayListOf(
         R.id.callListFragment,
         R.id.contactListFragment,
-        R.id.blackFilterListFragment,
-        R.id.whiteFilterListFragment
+        R.id.blockerListFragment,
+        R.id.permissionListFragment
     )
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                 when {
                     SharedPreferencesUtil.isOnBoardingSeen.not() -> R.id.onBoardingFragment
                     BlackListerApp.instance?.isLoggedInUser().isTrue() -> {
-                        R.id.blackFilterListFragment
+                        R.id.blockerListFragment
                     }
                     else -> R.id.loginFragment
                 }
@@ -162,8 +162,8 @@ class MainActivity : AppCompatActivity() {
         }
         bottomNavigationView?.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.blackFilterListFragment -> navController?.navigate(R.id.blackFilterListFragment)
-                R.id.whiteFilterListFragment -> navController?.navigate(R.id.whiteFilterListFragment)
+                R.id.blockerListFragment -> navController?.navigate(R.id.blockerListFragment)
+                R.id.permissionListFragment -> navController?.navigate(R.id.permissionListFragment)
                 R.id.contactListFragment -> navController?.navigate(R.id.contactListFragment)
                 R.id.callListFragment -> navController?.navigate(R.id.callListFragment)
             }

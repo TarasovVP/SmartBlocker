@@ -38,7 +38,7 @@
     <string name="edit">Редагувати</string>
     <string name="change">Змінити</string>
     <string name="delete_filter_from_list">Видалити %s із чорного списку?</string>
-    <string name="add_contact_to_black_list">Додати %s до чорного списку?</string>
+    <string name="add_contact_to_blocker">Додати %s до чорного списку?</string>
     <string name="details">Деталі</string>
     <string name="delete_black_list">Видалити із чорного списку</string>
     <string name="add_black_list">Додати до чорного списку</string>
@@ -74,8 +74,8 @@
     <string name="spam">Спам</string>
     <string name="fraud">Шахрайство</string>
     <string name="privates">Особисте</string>
-    <string name="black_list">Блокувальники</string>
-    <string name="white_list">Дозволи</string>
+    <string name="blocker_list">Блокувальники</string>
+    <string name="permission_list">Дозволи</string>
     <string name="enter_your_email">Enter Your Email</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="log_out">Ви хочете вийти зі свого облікового запису?</string>

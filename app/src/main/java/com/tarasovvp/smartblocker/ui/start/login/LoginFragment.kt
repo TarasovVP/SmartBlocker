@@ -51,7 +51,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     getAllData()
                     if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
-                findNavController().navigate(LoginFragmentDirections.startBlackFilterListFragment())
+                findNavController().navigate(LoginFragmentDirections.startBlockerListFragment())
             }
             loginSignUp.setSafeOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.startSignUpFragment())
@@ -91,7 +91,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     getAllData()
                     if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
-                findNavController().navigate(R.id.blackFilterListFragment)
+                findNavController().navigate(R.id.blockerListFragment)
                 Log.e("authTAG",
                     "LoginFragment successSignInLiveData navigate(R.id.blackFilterListFragment) auth?.uid ${BlackListerApp.instance?.auth?.uid}")
             }
