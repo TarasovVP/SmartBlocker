@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -178,6 +179,10 @@ class MainActivity : AppCompatActivity() {
                 "MainActivity addOnDestinationChangedListener isDialog $isDialog binding?.title ${binding?.toolbar?.title} title ${toolbar?.title} toolbar?.navigationIcon ${toolbar?.navigationIcon}")
             if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
                 toolbar?.navigationIcon = null
+            } else {
+                if (destination.navigatorName != DIALOG && isDialog.not()) {
+                    toolbar?.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
+                }
             }
             if (destination.navigatorName == DIALOG || isDialog) {
                 isDialog = isDialog.not()

@@ -10,7 +10,7 @@
         <item name="colorSecondary">@color/cornflower_blue</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
+
         <item name="android:statusBarColor" >@color/text_color_grey</item>
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="android:textColor">@color/text_color_grey</item>
@@ -18,7 +18,7 @@
         <item name="android:textColorHint">@color/comet</item>
         <item name="colorControlNormal">@color/text_color_grey</item>
         <item name="colorOnSurface">@color/main_bg_start</item>
-        <!-- Customize your theme here. -->
+
         <item name="materialButtonStyle">@style/FilledButton</item>
         <item name="checkboxStyle">@style/CheckBox</item>
         <item name="radioButtonStyle">@style/RadioButtonStyle</item>

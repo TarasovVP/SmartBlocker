@@ -47,6 +47,7 @@ class MaskedEditText @JvmOverloads constructor(
             false
         })
         background = ContextCompat.getDrawable(context, R.drawable.bg_rounded)
+        letterSpacing = 0.15f
         addTextChangedListener(this)
     }
 

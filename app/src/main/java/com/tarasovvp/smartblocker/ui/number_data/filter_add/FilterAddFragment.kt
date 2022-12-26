@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
+import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.FragmentFilterAddBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
@@ -144,7 +145,7 @@ open class FilterAddFragment :
                     "FilterAddFragment setFilterTextChangeListener after filter.filter ${filter?.filter} editable $it numberFormat ${filter?.countryCode?.numberFormat} conditionTypeFullHint ${filter?.conditionTypeFullHint()}")
                 filterToInput = false
                 filter = filter?.apply {
-                    filter = filterAddInput.inputText().replace("#", String.EMPTY)
+                    filter = filterAddInput.inputText().replace(MASK_CHAR.toString(), String.EMPTY)
                         .replace(" ", String.EMPTY)
                     viewModel.checkFilterExist(this)
                 }
