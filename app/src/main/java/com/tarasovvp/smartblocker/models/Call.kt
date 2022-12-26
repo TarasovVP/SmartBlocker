@@ -47,12 +47,12 @@ open class Call(
 
     fun callIcon(): Int {
         return when (type) {
-            OUT_COMING_CALL -> R.drawable.ic_outcoming_call
-            MISSED_CALL -> R.drawable.ic_missed_call
-            REJECTED_CALL -> R.drawable.ic_rejected_call
-            BLOCKED_CALL -> R.drawable.ic_blocked_call
-            PERMITTED_CALL -> R.drawable.ic_allowed_call
-            else -> R.drawable.ic_incoming_call
+            OUT_COMING_CALL -> R.drawable.ic_call_outcoming
+            MISSED_CALL -> R.drawable.ic_call_missed
+            REJECTED_CALL -> R.drawable.ic_call_rejected
+            BLOCKED_CALL -> R.drawable.ic_call_blocked
+            PERMITTED_CALL -> R.drawable.ic_call_permitted
+            else -> R.drawable.ic_call_incoming
         }
     }
 
