@@ -39,9 +39,6 @@ data class Filter(
     @get:Exclude
     var isDeleteMode = false
 
-    @get:Exclude
-    var isPreview = false
-
     @Ignore
     @get:Exclude
     var filterAction: FilterAction? = null
@@ -72,7 +69,7 @@ data class Filter(
 
     @Exclude
     fun filterDetailTint(): Int {
-        return if (isPreview) filterTypeTint() else filterAction?.color ?: filterTypeTint()
+        return filterAction?.color ?: filterTypeTint()
     }
 
     @Exclude
@@ -124,11 +121,6 @@ data class Filter(
             isTypeContain() -> filter
             else -> String.format("%s%s", countryCode.countryCode, filterToInput())
         }
-    }
-
-    @Exclude
-    fun isResultHidden(): Boolean {
-        return (isAddFilterAction() && isPreview) || (filterAction.isNotNull() && isAddFilterAction().not())
     }
 
     @Exclude

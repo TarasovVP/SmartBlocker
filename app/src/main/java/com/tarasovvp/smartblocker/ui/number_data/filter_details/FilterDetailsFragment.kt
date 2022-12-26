@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.filter_detail
+package com.tarasovvp.smartblocker.ui.number_data.filter_details
 
 import android.util.Log
 import androidx.core.view.isVisible
@@ -23,11 +23,11 @@ import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
 import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class FilterDetailFragment :
-    BaseDetailFragment<FragmentFilterDetailBinding, FilterDetailViewModel>() {
+class FilterDetailsFragment :
+    BaseDetailFragment<FragmentFilterDetailBinding, FilterDetailsViewModel>() {
 
     override var layoutId = R.layout.fragment_filter_detail
-    override val viewModelClass = FilterDetailViewModel::class.java
+    override val viewModelClass = FilterDetailsViewModel::class.java
     private val args: FilterDetailFragmentArgs by navArgs()
 
     private var numberDataAdapter: NumberDataAdapter? = null
@@ -146,7 +146,7 @@ class FilterDetailFragment :
                     binding?.filter = binding?.filter?.apply {
                         filteredContacts = numberDataList.size.toString()
                     }
-                    this@FilterDetailFragment.numberDataList = numberDataList.onEach {
+                    this@FilterDetailsFragment.numberDataList = numberDataList.onEach {
                         it.searchText = binding?.filter?.filter.orEmpty()
                         when (it) {
                             is Contact -> it.filter = binding?.filter?.apply {
@@ -158,14 +158,14 @@ class FilterDetailFragment :
                         }
                     }
                 } else {
-                    this@FilterDetailFragment.numberDataList = numberDataList
+                    this@FilterDetailsFragment.numberDataList = numberDataList
                 }
                 numberDataAdapter?.numberDataList = numberDataList
                 numberDataAdapter?.notifyDataSetChanged()
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
                 binding?.filter?.filteredCalls = filteredCallList.size.toString()
-                this@FilterDetailFragment.filteredCallList = filteredCallList
+                this@FilterDetailsFragment.filteredCallList = filteredCallList
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 handleSuccessFilterAction(filter)

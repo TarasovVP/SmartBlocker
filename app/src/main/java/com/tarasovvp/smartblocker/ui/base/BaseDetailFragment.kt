@@ -7,7 +7,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.showPopUpWindow
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.number_data.filter_detail.FilterDetailFragment
+import com.tarasovvp.smartblocker.ui.number_data.filter_details.FilterDetailsFragment
 
 abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
     BaseFragment<B, T>() {
@@ -33,7 +33,7 @@ abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
             toolbar?.inflateMenu(R.menu.toolbar_info)
             toolbar?.setOnMenuItemClickListener {
                 toolbar?.showPopUpWindow(when (this@BaseDetailFragment) {
-                    is FilterDetailFragment -> Info.INFO_FILTER_DETAIL
+                    is FilterDetailsFragment -> Info.INFO_FILTER_DETAIL
                     else -> Info.INFO_NUMBER_DATA_DETAIL
                 })
                 return@setOnMenuItemClickListener true

@@ -35,7 +35,6 @@
             android:layout_marginEnd="@dimen/margin_8"
             style="@style/StrokeButton"
             android:text="@string/change"
-            android:visibility="@{filter.isPreview ? View.GONE : View.VISIBLE, default=gone}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter_detail_delete_filter"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
@@ -46,35 +45,24 @@
             android:layout_height="@dimen/size_0"
             android:layout_marginStart="@dimen/margin_8"
             android:text="@string/delete_"
-            android:visibility="@{filter.isPreview ? View.GONE : View.VISIBLE, default=gone}"
             app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/filter_detail_change_filter"
             app:layout_constraintTop_toTopOf="@+id/filter_detail_change_filter" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/filter_detail_add_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:text="@string/accept"
-            android:visibility="@{filter.isPreview ? View.VISIBLE : View.GONE, default=gone}"
-            app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/filter_detail_contact_list"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/filter_detail_view_pager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
-            android:clipToPadding="false"
-            android:orientation="vertical"
             android:paddingBottom="@dimen/padding_8"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_add_filter" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter" >
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/filter_detail_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_contact" />
+        </androidx.viewpager2.widget.ViewPager2>
 
         <include
             android:id="@+id/filter_detail_contact_list_empty"
@@ -83,7 +71,7 @@
             android:layout_height="@dimen/size_0"
             android:layout_marginTop="@dimen/margin_8"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_add_filter" />
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -61,7 +61,7 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@{filter.addFilter}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_detail_type_title"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_result"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_detail_avatar"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,21 +76,6 @@
                 app:layout_constraintStart_toStartOf="@id/item_filter_detail_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_value"
                 app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_avatar"/>
-
-            <TextView
-                android:id="@+id/item_filter_detail_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end|center_vertical"
-                android:text="@{filter.addFilterAction &amp;&amp; !filter.preview ? @string/preview : isFilteredCallDetails ?  @string/statement : @string/numbers}"
-                android:textSize="@dimen/text_size_12"
-                android:includeFontPadding="false"
-                android:visibility="@{filter.resultHidden ? View.GONE : View.VISIBLE}"
-                app:drawableEndCompat="@drawable/ic_arrow_forward"
-                app:layout_constraintStart_toEndOf="@+id/item_filter_detail_value"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_avatar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/item_filter_detail_avatar" />
 
             <View
                 android:id="@+id/item_filter_detail_divider"

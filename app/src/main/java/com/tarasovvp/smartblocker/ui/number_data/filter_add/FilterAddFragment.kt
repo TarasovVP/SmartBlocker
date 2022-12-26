@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
@@ -43,7 +44,6 @@ open class FilterAddFragment :
             "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filter = args.filterAdd?.apply {
             filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
-            isPreview = false
         }
         Log.e("filterAddTAG",
             "FilterAddFragment onViewCreated after args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
@@ -57,10 +57,6 @@ open class FilterAddFragment :
 
     override fun setClickListeners() {
         binding?.apply {
-            filterAddItemFilter.itemFilterDetailContainer.setSafeOnClickListener {
-                findNavController().navigate(FilterAddFragmentDirections.startFilterDetailFragment(
-                    filterDetail = filter?.apply { isPreview = true }))
-            }
             filterAddSubmit.setSafeOnClickListener {
                 if (BlackListerApp.instance?.isLoggedInUser()
                         .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
@@ -77,7 +73,9 @@ open class FilterAddFragment :
             filterAddCountryCodeSpinner.setSafeOnClickListener {
                 Log.e("countryCodeTAG",
                     "FilterAddDialog filterAddCountryCodeSpinner currentDestination?.displayName ${findNavController().currentDestination?.displayName}")
-                findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
+                if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {
+                    findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
+                }
             }
         }
     }
