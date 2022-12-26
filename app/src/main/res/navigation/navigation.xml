@@ -223,7 +223,11 @@
     <fragment
         android:id="@+id/blockSettingsFragment"
         android:name="com.tarasovvp.smartblocker.ui.settings.block_settings.BlockSettingsFragment"
-        android:label="@string/block_settings" />
+        android:label="@string/block_settings">
+        <action
+            android:id="@+id/startCountryCodeSearchDialog"
+            app:destination="@id/countryCodeSearchDialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/accountDetailsFragment"

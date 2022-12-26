@@ -8,7 +8,7 @@ import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
-import com.tarasovvp.smartblocker.constants.Constants.HASH_CHAR
+import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.enums.FilterAction
@@ -98,14 +98,14 @@ data class Filter(
 
     @Exclude
     fun conditionTypeFullHint(): String {
-        return countryCode.numberFormat.replace(Regex("[0-9]"), HASH_CHAR.toString())
+        return countryCode.numberFormat.replace(Regex("[0-9]"), MASK_CHAR.toString())
     }
 
     @Exclude
     fun conditionTypeStartHint(): String {
         return countryCode.numberFormat.filter { it.isDigit() }
-            .replace(Regex("[0-9]"), HASH_CHAR.toString())
-            .replaceFirst(HASH_CHAR.toString(), String.EMPTY)
+            .replace(Regex("[0-9]"), MASK_CHAR.toString())
+            .replaceFirst(MASK_CHAR.toString(), String.EMPTY)
     }
 
     @Exclude

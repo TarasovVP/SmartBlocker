@@ -37,6 +37,25 @@
                 app:turnOnModeIcon="@drawable/ic_permission"
                 app:turnOnModeText="@string/turn_on" />
 
+            <TextView
+                android:id="@+id/settings_country_code_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_0"
+                android:gravity="center_vertical"
+                app:drawableEndCompat="@drawable/ic_drop_down"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/block_settings_hidden" />
+
+            <TextView
+                android:id="@+id/filter_add_country_code_value"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_0"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_18"
+                app:layout_constraintBottom_toBottomOf="@+id/settings_country_code_spinner"
+                app:layout_constraintStart_toEndOf="@+id/settings_country_code_spinner"
+                app:layout_constraintTop_toTopOf="@+id/settings_country_code_spinner" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

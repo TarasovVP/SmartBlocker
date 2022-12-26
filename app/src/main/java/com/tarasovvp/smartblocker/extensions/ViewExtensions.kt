@@ -22,7 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants.HASH_CHAR
+import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.smartblocker.databinding.SnackBarInfoBinding
@@ -238,7 +238,7 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
 fun EditText.setupClearButtonWithAction() {
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {
-            val clearIcon = if (editable.toString().replace(HASH_CHAR.toString(), String.EMPTY)
+            val clearIcon = if (editable.toString().replace(MASK_CHAR.toString(), String.EMPTY)
                     .isNotBlank()
             ) R.drawable.ic_clear else 0
             setCompoundDrawablesWithIntrinsicBounds(0, 0, clearIcon, 0)

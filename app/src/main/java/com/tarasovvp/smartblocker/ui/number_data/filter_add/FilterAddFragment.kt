@@ -17,6 +17,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentFilterAddBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
@@ -84,7 +85,7 @@ open class FilterAddFragment :
         viewModel.getNumberDataList()
         if (binding?.filter?.isTypeContain().isNotTrue()) {
             if (binding?.filter?.countryCode?.countryCode.isNullOrEmpty()) {
-                viewModel.getCountryCodeWithCountry(context?.getUserCountry())
+                viewModel.getCountryCodeWithCountry(SharedPreferencesUtil.countryCode)
             } else {
                 binding?.filter?.countryCode?.let { setCountryCode(it) }
             }

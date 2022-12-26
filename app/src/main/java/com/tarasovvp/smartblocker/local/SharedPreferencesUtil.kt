@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.local
 
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
+import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.local.Settings.APP_LANG
 import com.tarasovvp.smartblocker.local.Settings.APP_THEME
 import com.tarasovvp.smartblocker.local.Settings.BLOCK_TURN_OFF
@@ -58,6 +59,15 @@ object SharedPreferencesUtil {
             saveBoolean(
                 BLOCK_HIDDEN,
                 blockHidden
+            )
+        }
+
+    var countryCode: String?
+        get() = loadString(COUNTRY_CODE)
+        set(countryCode) {
+            saveString(
+                COUNTRY_CODE,
+                countryCode
             )
         }
 

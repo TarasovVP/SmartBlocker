@@ -1,16 +1,23 @@
 package com.tarasovvp.smartblocker.ui.settings.block_settings
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentBlockSettingsBinding
 import com.tarasovvp.smartblocker.extensions.isNotTrue
 import com.tarasovvp.smartblocker.extensions.isTrue
+import com.tarasovvp.smartblocker.extensions.parcelable
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
+import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSettingsViewModel>() {
 
@@ -48,6 +55,13 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
                     viewModel.changeBlockHidden(isChecked.not())
                 }
             }
+            viewModel.getCountryCodeWithCountry(SharedPreferencesUtil.countryCode)
+            settingsCountryCodeSpinner.setSafeOnClickListener {
+                findNavController().navigate(BlockSettingsFragmentDirections.startCountryCodeSearchDialog())
+            }
+            setFragmentResultListener(Constants.COUNTRY_CODE) { _, bundle ->
+                bundle.parcelable<CountryCode>(Constants.COUNTRY_CODE)?.let { viewModel.countryCodeLiveData.postValue(it) }
+            }
         }
     }
 
@@ -63,6 +77,10 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
                 binding?.blockSettingsHidden?.setSwitchChange(blockHidden)
                 SharedPreferencesUtil.blockHidden = blockHidden
                 (activity as MainActivity).getAllData()
+            }
+            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
+                SharedPreferencesUtil.countryCode = countryCode.country
+                binding?.settingsCountryCodeSpinner?.text = countryCode.countryEmoji()
             }
         }
     }

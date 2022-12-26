@@ -14,7 +14,7 @@ import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.core.content.ContextCompat
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants.HASH_CHAR
+import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.extensions.*
 
 class MaskedEditText @JvmOverloads constructor(
@@ -123,7 +123,7 @@ class MaskedEditText @JvmOverloads constructor(
         var charIndex = 0
         for (i in mask.orEmpty().indices) {
             val currentChar = mask?.get(i)
-            if (currentChar == HASH_CHAR) {
+            if (currentChar == MASK_CHAR) {
                 aux[charIndex] = i
                 maskToRaw?.let {
                     it[i] = charIndex++
