@@ -85,10 +85,10 @@ class FilterDetailsFragment :
     }
 
     override fun createAdapter() {
-        numberDataScreen = SingleDetailsFragment(true) {
+        numberDataScreen = SingleDetailsFragment {
             findNavController().navigate(FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it))
         }
-        filteredCallsScreen = SingleDetailsFragment {
+        filteredCallsScreen = SingleDetailsFragment(true) {
             findNavController().navigate(FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it))
         }
         val fragmentList = arrayListOf(

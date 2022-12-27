@@ -5,9 +5,7 @@
     <data>
         <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
-        <variable
-            name="isDetails"
-            type="Boolean" />
+
         <variable
             name="contact"
             type="com.tarasovvp.smartblocker.models.Contact" />
@@ -75,20 +73,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
                 app:mainText="@{ contact.nameEmpty ? @string/number_not_from_contacts : contact.name}"
                 app:searchText="@{contact.searchText}" />
-
-            <TextView
-                android:id="@+id/item_contact_statement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/padding_5"
-                android:text="@string/statement"
-                android:visibility="@{isDetails ? View.VISIBLE : View.GONE, default=gone}"
-                android:gravity="end|center_vertical"
-                android:textSize="@dimen/text_size_12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/item_contact_number"
-                app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
-                app:drawableEndCompat="@drawable/ic_arrow_forward" />
 
             <View
                 android:id="@+id/item_contact_divider"

@@ -30,7 +30,6 @@ class NumberDataDetailFragment :
         binding?.apply {
             contact = Contact()
             call = Call()
-            isDetails = true
             when (args.numberData) {
                 is Contact -> contact = args.numberData as Contact
                 is LogCall,
@@ -42,11 +41,11 @@ class NumberDataDetailFragment :
     }
 
     override fun createAdapter() {
-        filtersScreen = SingleDetailsFragment(true) {
+        filtersScreen = SingleDetailsFragment {
             findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
                 filterDetail = it as Filter))
         }
-        filteredCallsScreen = SingleDetailsFragment {
+        filteredCallsScreen = SingleDetailsFragment(true) {
             findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
                 filterDetail = it as Filter))
         }
@@ -68,7 +67,6 @@ class NumberDataDetailFragment :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                //binding?.numberDataDetailItemContact?.isFilteredCallDetails = binding?.filterDetailItemFilter?.isFilteredCallDetails.isTrue().not()
                 binding?.numberDataDetailTabs?.setImageResource(if (position == 0) R.drawable.ic_filter_details_tab_1 else R.drawable.ic_filter_details_tab_2)
             }
         })

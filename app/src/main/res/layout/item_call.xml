@@ -6,9 +6,7 @@
 
         <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
-        <variable
-            name="isDetails"
-            type="Boolean" />
+
         <variable
             name="call"
             type="com.tarasovvp.smartblocker.models.Call" />

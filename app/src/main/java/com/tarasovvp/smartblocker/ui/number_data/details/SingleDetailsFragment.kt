@@ -22,6 +22,8 @@ class SingleDetailsFragment(
             singleFilterDetailsList.adapter =
                 numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
                     numberDataResult.invoke(numberData)
+                }.apply {
+                    this.isFilteredCallDetails = this@SingleDetailsFragment.isFilteredCallDetails
                 }
             filterDetailsNumberListEmpty.emptyState =
                 EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER

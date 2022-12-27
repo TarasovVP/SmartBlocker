@@ -5,9 +5,7 @@
     <data>
 
         <import type="android.view.View" />
-        <variable
-            name="isDetails"
-            type="Boolean" />
+
         <variable
             name="call"
             type="com.tarasovvp.smartblocker.models.Call" />
@@ -37,7 +35,6 @@
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
                 app:contact="@{contact}"
-                app:isDetails="@{isDetails}"
                 android:visibility="@{contact.number == `` ? View.GONE : View.VISIBLE, default=gone}"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +46,6 @@
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
                 app:call="@{call}"
-                app:isDetails="@{isDetails}"
                 android:visibility="@{call.number == `` ? View.GONE : View.VISIBLE, default=invisible}"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_item_contact" />
 
