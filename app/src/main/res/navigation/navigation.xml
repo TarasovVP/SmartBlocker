@@ -45,7 +45,7 @@
             app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startFilterDetailFragment"
-            app:destination="@id/filterDetailFragment" />
+            app:destination="@id/filterDetailsFragment" />
         <action
             android:id="@+id/startFilterConditionsDialog"
             app:destination="@id/filterConditionsDialog" />
@@ -63,7 +63,7 @@
             app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startFilterDetailFragment"
-            app:destination="@id/filterDetailFragment" />
+            app:destination="@id/filterDetailsFragment" />
         <action
             android:id="@+id/startFilterConditionsDialog"
             app:destination="@id/filterConditionsDialog" />
@@ -73,7 +73,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/filterDetailFragment"
+        android:id="@+id/filterDetailsFragment"
         android:name="com.tarasovvp.smartblocker.ui.number_data.filter_details.FilterDetailsFragment">
         <argument
             android:name="filterDetail"
@@ -118,7 +118,7 @@
             app:destination="@id/blockSettingsFragment" />
         <action
             android:id="@+id/startFilterDetailFragment"
-            app:destination="@id/filterDetailFragment" />
+            app:destination="@id/filterDetailsFragment" />
         <action
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
@@ -185,7 +185,7 @@
             app:destination="@id/filterAddFragment" />
         <action
             android:id="@+id/startFilterDetailFragment"
-            app:destination="@id/filterDetailFragment" />
+            app:destination="@id/filterDetailsFragment" />
         <action
             android:id="@+id/startCallListFragment"
             app:destination="@id/callListFragment" />

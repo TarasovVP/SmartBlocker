@@ -40,8 +40,6 @@
     <string name="delete_filter_from_list">Видалити %s із чорного списку?</string>
     <string name="add_contact_to_blocker">Додати %s до чорного списку?</string>
     <string name="details">Деталі</string>
-    <string name="delete_black_list">Видалити із чорного списку</string>
-    <string name="add_black_list">Додати до чорного списку</string>
     <string name="enter_phone_number">Введіть номер телефону</string>
     <string name="enter_filter">Введіть номер</string>
     <string name="condition_contain">Включає</string>
@@ -96,7 +94,6 @@
     <string name="black_list_empty">Немає збігів із чорного списку</string>
     <string name="white_list_empty">Немає збігів із білого списку</string>
     <string name="block_add_info">Можуть %s %s номерів зі списку ваших контактів</string>
-    <string name="not_block_add_info">Через іншу пріоритетність не можуть бути %s %s номерів зі списку ваших контактів</string>
     <string name="progress_title">Зачекайте. Йде оновлення даних.</string>
     <string name="log_in">Log in</string>
     <string name="with_google_account">With google account</string>

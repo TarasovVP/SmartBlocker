@@ -167,6 +167,7 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.625" />
         <entry key="app/src/main/res/layout/fragment_settings_list.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.4886025768087215" />
+        <entry key="app/src/main/res/layout/fragment_single_filter_details.xml" value="0.10235507246376811" />
         <entry key="app/src/main/res/layout/fragment_single_on_boarding.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/layout/fragment_single_onboarding.xml" value="0.125" />
         <entry key="app/src/main/res/layout/include_empty_state.xml" value="0.2838541666666667" />

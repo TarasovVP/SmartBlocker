@@ -6,9 +6,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class FilterDetailsAdapter(
-    list: ArrayList<SingleFilterDetailsFragment>,
+    list: ArrayList<SingleFilterDetailsFragment?>,
     fm: FragmentManager,
-    lifecycle: Lifecycle,
+    lifecycle: Lifecycle
 ) : FragmentStateAdapter(fm, lifecycle) {
 
     private val fragmentList = list
@@ -18,7 +18,7 @@ class FilterDetailsAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragmentList[position]
+        return fragmentList[position] ?: SingleFilterDetailsFragment {}
     }
 
 }

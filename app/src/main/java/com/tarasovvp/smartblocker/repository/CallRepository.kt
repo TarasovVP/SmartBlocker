@@ -31,9 +31,9 @@ object CallRepository {
     }
 
     suspend fun getQueryCallList(filter: Filter): List<LogCall>? {
-        return callDao?.queryCallList(if (filter.isPreview) filter.addFilter() else filter.filter,
+        return callDao?.queryCallList(filter.filter,
             filter.conditionType)?.distinctBy { it.number }?.filter {
-            it.filter.isNull() || it.filter == filter || (it.filter?.filter?.length.orZero() < (if (filter.isPreview) filter.addFilter() else filter.filter).length
+            it.filter.isNull() || it.filter == filter || (it.filter?.filter?.length.orZero() < (filter.filter).length
                     && it.number.indexOf(filter.addFilter()) < it.number.indexOf(it.filter?.filter.orEmpty()))
         }
     }

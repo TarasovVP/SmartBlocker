@@ -50,19 +50,22 @@
             app:layout_constraintBottom_toBottomOf="@+id/filter_detail_change_filter"
             app:layout_constraintTop_toTopOf="@+id/filter_detail_change_filter" />
 
+        <ImageView
+            android:id="@+id/filter_detail_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_filter_details_tab_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter"/>
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/filter_detail_view_pager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             android:paddingBottom="@dimen/padding_8"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter" >
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/filter_detail_tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_contact" />
-        </androidx.viewpager2.widget.ViewPager2>
+            app:layout_constraintTop_toBottomOf="@+id/filter_detail_tabs" />
 
         <include
             android:id="@+id/filter_detail_contact_list_empty"

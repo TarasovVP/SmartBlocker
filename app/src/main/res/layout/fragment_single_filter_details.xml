@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ndroid="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        ndroid:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/tools">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/single_filter_details_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="@dimen/padding_16" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <include
-            android:id="@+id/filter_details_contact_list_empty"
+            android:id="@+id/filter_details_number_list_empty"
             layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             android:layout_marginTop="@dimen/margin_8"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filter_detail_change_filter" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
