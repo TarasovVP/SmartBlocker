@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.call_list
+package com.tarasovvp.smartblocker.ui.number_data.list.call_list
 
 import android.util.Log
 import androidx.fragment.app.setFragmentResultListener

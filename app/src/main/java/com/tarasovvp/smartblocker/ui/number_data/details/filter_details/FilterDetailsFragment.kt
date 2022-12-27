@@ -1,7 +1,6 @@
-package com.tarasovvp.smartblocker.ui.number_data.filter_details
+package com.tarasovvp.smartblocker.ui.number_data.details.filter_details
 
 import android.util.Log
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,14 +10,14 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentFilterDetailBinding
-import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
+import com.tarasovvp.smartblocker.ui.number_data.details.DetailsPagerAdapter
+import com.tarasovvp.smartblocker.ui.number_data.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class FilterDetailsFragment :
@@ -28,16 +27,10 @@ class FilterDetailsFragment :
     override val viewModelClass = FilterDetailsViewModel::class.java
     private val args: FilterDetailsFragmentArgs by navArgs()
 
-    private var numberDataList: ArrayList<NumberData>? = null
-    private var filteredCallList: ArrayList<NumberData>? = null
-
-    private var numberDataScreen: SingleFilterDetailsFragment? = null
-    private var filteredCallsScreen: SingleFilterDetailsFragment? = null
-    private var isFilteredCallDetails: Boolean = false
+    private var numberDataScreen: SingleDetailsFragment? = null
+    private var filteredCallsScreen: SingleDetailsFragment? = null
 
     override fun initViews() {
-        Log.e("filterDetailTAG",
-            "FilterDetailFragment initViews before args.filter ${args.filterDetail} binding?.filter ${binding?.filter}")
         binding?.apply {
             args.filterDetail?.let { filter ->
                 (activity as MainActivity).toolbar?.title = getString(filter.filterTypeTitle())
@@ -92,30 +85,32 @@ class FilterDetailsFragment :
     }
 
     override fun createAdapter() {
-        numberDataScreen =  SingleFilterDetailsFragment(isFilteredCallDetails) {
-            FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it)
+        numberDataScreen = SingleDetailsFragment(true) {
+            findNavController().navigate(FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it))
         }
-        filteredCallsScreen =  SingleFilterDetailsFragment {
-            FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it)
+        filteredCallsScreen = SingleDetailsFragment {
+            findNavController().navigate(FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it))
         }
         val fragmentList = arrayListOf(
             numberDataScreen,
             filteredCallsScreen
         )
 
-        binding?.filterDetailViewPager?.adapter = activity?.supportFragmentManager?.let { fragmentManager ->
-            FilterDetailsAdapter(
-                fragmentList,
-                fragmentManager,
-                lifecycle
-            )
-        }
+        binding?.filterDetailViewPager?.adapter =
+            activity?.supportFragmentManager?.let { fragmentManager ->
+                DetailsPagerAdapter(
+                    fragmentList,
+                    fragmentManager,
+                    lifecycle
+                )
+            }
         binding?.filterDetailViewPager?.offscreenPageLimit = 2
         binding?.filterDetailViewPager?.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding?.filterDetailItemFilter?.isFilteredCallDetails = binding?.filterDetailItemFilter?.isFilteredCallDetails.isTrue().not()
+                binding?.filterDetailItemFilter?.isFilteredCallDetails =
+                    binding?.filterDetailItemFilter?.isFilteredCallDetails.isTrue().not()
                 binding?.filterDetailTabs?.setImageResource(if (position == 0) R.drawable.ic_filter_details_tab_1 else R.drawable.ic_filter_details_tab_2)
             }
         })
@@ -131,14 +126,10 @@ class FilterDetailsFragment :
     override fun observeLiveData() {
         with(viewModel) {
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
-                binding?.filterDetailContactListEmpty?.root?.isVisible =
-                    numberDataList.isEmpty().isTrue()
-                this@FilterDetailsFragment.numberDataList = numberDataList
                 numberDataScreen?.updateNumberDataList(numberDataList)
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
                 binding?.filter?.filteredCalls = filteredCallList.size.toString()
-                this@FilterDetailsFragment.filteredCallList = filteredCallList
                 filteredCallsScreen?.updateNumberDataList(filteredCallList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->

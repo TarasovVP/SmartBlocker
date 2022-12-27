@@ -100,29 +100,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter_start"  />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/number_data_detail_filter_list"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0"
-                android:layout_marginTop="@dimen/margin_8"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_8"
-                android:scrollbars="vertical"
-                android:clickable="true"
-                android:focusable="true"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter" />
+            <ImageView
+                android:id="@+id/number_data_detail_tabs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_filter_details_tab_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter_contain"/>
 
-            <include
-                android:id="@+id/number_data_detail_filter_list_empty"
-                layout="@layout/include_empty_state"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/number_data_detail_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"
-                android:layout_marginTop="@dimen/margin_8"
+                android:paddingBottom="@dimen/padding_8"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter" />
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_tabs" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

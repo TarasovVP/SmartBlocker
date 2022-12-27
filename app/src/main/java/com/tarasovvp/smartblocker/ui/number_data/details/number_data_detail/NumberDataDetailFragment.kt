@@ -1,18 +1,18 @@
-package com.tarasovvp.smartblocker.ui.number_data.number_data_detail
+package com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail
 
 import android.annotation.SuppressLint
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentNumberDataDetailBinding
-import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
-import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
+import com.tarasovvp.smartblocker.ui.number_data.details.DetailsPagerAdapter
+import com.tarasovvp.smartblocker.ui.number_data.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class NumberDataDetailFragment :
@@ -22,8 +22,8 @@ class NumberDataDetailFragment :
     override val viewModelClass = NumberDataDetailViewModel::class.java
     private val args: NumberDataDetailFragmentArgs by navArgs()
 
-    private var contactFilterAdapter: NumberDataAdapter? = null
-    private var filterList: ArrayList<NumberData>? = null
+    private var filtersScreen: SingleDetailsFragment? = null
+    private var filteredCallsScreen: SingleDetailsFragment? = null
     private var filter: Filter? = null
 
     override fun initViews() {
@@ -37,32 +37,47 @@ class NumberDataDetailFragment :
                 is FilteredCall,
                 -> call = (args.numberData as Call).apply { isExtract = true }
             }
-            numberDataDetailFilterListEmpty.emptyState =
-                EmptyState.EMPTY_STATE_FILTERS_BY_CONTACT
             executePendingBindings()
         }
     }
 
     override fun createAdapter() {
-        contactFilterAdapter =
-            contactFilterAdapter ?: NumberDataAdapter(filterList) { filter ->
-                findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
-                    filter as Filter))
+        filtersScreen = SingleDetailsFragment(true) {
+            findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
+                filterDetail = it as Filter))
+        }
+        filteredCallsScreen = SingleDetailsFragment {
+            findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
+                filterDetail = it as Filter))
+        }
+        val fragmentList = arrayListOf(
+            filtersScreen,
+            filteredCallsScreen
+        )
+
+        binding?.numberDataDetailViewPager?.adapter =
+            activity?.supportFragmentManager?.let { fragmentManager ->
+                DetailsPagerAdapter(
+                    fragmentList,
+                    fragmentManager,
+                    lifecycle
+                )
             }
-        binding?.numberDataDetailFilterList?.adapter = contactFilterAdapter
+        binding?.numberDataDetailViewPager?.offscreenPageLimit = 2
+        binding?.numberDataDetailViewPager?.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                //binding?.numberDataDetailItemContact?.isFilteredCallDetails = binding?.filterDetailItemFilter?.isFilteredCallDetails.isTrue().not()
+                binding?.numberDataDetailTabs?.setImageResource(if (position == 0) R.drawable.ic_filter_details_tab_1 else R.drawable.ic_filter_details_tab_2)
+            }
+        })
     }
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun setClickListeners() {
         binding?.apply {
-            numberDataDetailItemContact.root.setSafeOnClickListener {
-                findNavController().navigate(NumberDataDetailFragmentDirections.startCallListFragment(
-                    searchQuery = getNumber()))
-            }
-            numberDataDetailItemCall.root.setSafeOnClickListener {
-                findNavController().navigate(NumberDataDetailFragmentDirections.startCallListFragment(
-                    searchQuery = getNumber()))
-            }
             numberDataDetailAddFilter.setSafeOnClickListener {
                 setAddFilterConditions(numberDataDetailAddFilterFull.isShown.isTrue())
             }
@@ -79,13 +94,15 @@ class NumberDataDetailFragment :
     }
 
     override fun getData() {
-        viewModel.filterListWithNumber(when (args.numberData) {
+        val number = when (args.numberData) {
             is Contact -> binding?.contact?.trimmedPhone.orEmpty()
             is LogCall,
             is FilteredCall,
             -> binding?.call?.number.orEmpty()
             else -> String.EMPTY
-        })
+        }
+        viewModel.filterListWithNumber(number)
+        viewModel.filteredCallsByNumber(number)
     }
 
     private fun getNumber(): String {
@@ -126,12 +143,10 @@ class NumberDataDetailFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                binding?.numberDataDetailFilterListEmpty?.root?.isVisible =
-                    filterList.isEmpty().isTrue()
-                if (this@NumberDataDetailFragment.filterList == filterList) return@safeSingleObserve
-                this@NumberDataDetailFragment.filterList = filterList
-                contactFilterAdapter?.numberDataList = filterList
-                contactFilterAdapter?.notifyDataSetChanged()
+                filtersScreen?.updateNumberDataList(filterList)
+            }
+            filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
+                filteredCallsScreen?.updateNumberDataList(filteredCallList)
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
                 filter?.countryCode = countryCode
@@ -140,5 +155,6 @@ class NumberDataDetailFragment :
             }
         }
     }
+
     override fun setFragmentResultListeners() = Unit
 }

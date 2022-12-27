@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.contact_list
+package com.tarasovvp.smartblocker.ui.number_data.list.contact_list
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData

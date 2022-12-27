@@ -1,12 +1,12 @@
-package com.tarasovvp.smartblocker.ui.number_data.filter_details
+package com.tarasovvp.smartblocker.ui.number_data.details
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class FilterDetailsAdapter(
-    list: ArrayList<SingleFilterDetailsFragment?>,
+class DetailsPagerAdapter(
+    list: ArrayList<SingleDetailsFragment?>,
     fm: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fm, lifecycle) {
@@ -18,7 +18,7 @@ class FilterDetailsAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragmentList[position] ?: SingleFilterDetailsFragment {}
+        return fragmentList[position] ?: SingleDetailsFragment {}
     }
 
 }

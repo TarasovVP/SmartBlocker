@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.filter_add
+package com.tarasovvp.smartblocker.ui.number_data.details.filter_add
 
 import android.util.Log
 import androidx.core.view.isVisible
@@ -25,7 +25,7 @@ import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
-import com.tarasovvp.smartblocker.ui.number_data.NumberDataAdapter
+import com.tarasovvp.smartblocker.ui.number_data.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 open class FilterAddFragment :

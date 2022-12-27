@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.contact_list
+package com.tarasovvp.smartblocker.ui.number_data.list.contact_list
 
 import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
@@ -13,7 +13,7 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
-import com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragmentDirections
+import com.tarasovvp.smartblocker.ui.number_data.list.call_list.CallListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 

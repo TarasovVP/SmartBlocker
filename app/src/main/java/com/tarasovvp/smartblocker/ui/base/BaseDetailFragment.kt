@@ -7,7 +7,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.showPopUpWindow
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.number_data.filter_details.FilterDetailsFragment
+import com.tarasovvp.smartblocker.ui.number_data.details.filter_details.FilterDetailsFragment
 
 abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
     BaseFragment<B, T>() {

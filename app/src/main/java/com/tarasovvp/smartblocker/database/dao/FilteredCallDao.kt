@@ -20,6 +20,9 @@ interface FilteredCallDao {
     @Query("SELECT * FROM filteredCall WHERE filter_filter = :filter")
     suspend fun filteredCallsByFilter(filter: String): List<FilteredCall>
 
+    @Query("SELECT * FROM filteredCall WHERE number = :number")
+    suspend fun filteredCallsByNumber(number: String): List<FilteredCall>
+
     @Query("delete from filteredCall where callId  in (:callIdList)")
     fun deleteFilteredCalls(callIdList: List<Int>)
 

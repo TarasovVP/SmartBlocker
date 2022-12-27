@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.filter_details
+package com.tarasovvp.smartblocker.ui.number_data.details.filter_details
 
 import android.app.Application
 import android.util.Log

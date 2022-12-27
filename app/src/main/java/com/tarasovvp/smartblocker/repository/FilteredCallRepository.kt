@@ -33,6 +33,10 @@ object FilteredCallRepository {
         return filteredCallDao?.filteredCallsByFilter(filter)
     }
 
+    suspend fun filteredCallsByNumber(number: String): List<FilteredCall>? {
+        return filteredCallDao?.filteredCallsByNumber(number)
+    }
+
     fun deleteFilteredCalls(filteredCallList: List<Call>, result: () -> Unit) {
         if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilteredCallList(filteredCallList) {

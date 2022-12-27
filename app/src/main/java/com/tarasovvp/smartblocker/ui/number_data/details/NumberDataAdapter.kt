@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data
+package com.tarasovvp.smartblocker.ui.number_data.details
 
 import android.view.LayoutInflater
 import android.view.View

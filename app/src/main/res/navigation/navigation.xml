@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/blockerListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.BlockerListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.filter_list.BlockerListFragment"
         android:label="@string/blocker_list">
         <action
             android:id="@+id/startFilterAddFragment"
@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/permissionListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_list.PermissionListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.filter_list.PermissionListFragment"
         android:label="@string/permission_list">
         <action
             android:id="@+id/startFilterAddFragment"
@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/filterDetailsFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_details.FilterDetailsFragment">
+        android:name="com.tarasovvp.smartblocker.ui.number_data.details.filter_details.FilterDetailsFragment">
         <argument
             android:name="filterDetail"
             android:defaultValue="@null"
@@ -100,7 +100,7 @@
 
     <fragment
         android:id="@+id/filterAddFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.filter_add.FilterAddFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.details.filter_add.FilterAddFragment"
         android:label="@string/adding">
         <argument
             android:name="filterAdd"
@@ -136,7 +136,7 @@
 
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.contact_list.ContactListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.contact_list.ContactListFragment"
         android:label="@string/contact_list">
         <argument
             android:name="filter"
@@ -153,7 +153,7 @@
 
     <fragment
         android:id="@+id/callListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.call_list.CallListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.call_list.CallListFragment"
         android:label="@string/log_list">
         <argument
             android:name="searchQuery"
@@ -173,7 +173,7 @@
 
     <fragment
         android:id="@+id/numberDataDetailFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.number_data_detail.NumberDataDetailFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail.NumberDataDetailFragment"
         android:label="@string/number">
         <argument
             android:name="numberData"
