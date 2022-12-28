@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.settings.account_detals
+package com.tarasovvp.smartblocker.ui.settings.settings_account
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.repository.AuthRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
-class AccountDetailsViewModel(application: Application) : BaseViewModel(application) {
+class SettingsAccountViewModel(application: Application) : BaseViewModel(application) {
 
     private val authRepository = AuthRepository
 

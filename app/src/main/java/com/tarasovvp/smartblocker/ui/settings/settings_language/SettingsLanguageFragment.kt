@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.settings.app_language
+package com.tarasovvp.smartblocker.ui.settings.settings_language
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 
-class AppLanguageFragment :
+class SettingsLanguageFragment :
     BaseBindingFragment<FragmentAppLanguageBinding>() {
 
     override var layoutId = R.layout.fragment_app_language

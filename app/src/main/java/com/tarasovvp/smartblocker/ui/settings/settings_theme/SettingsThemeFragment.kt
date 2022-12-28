@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.settings.app_theme
+package com.tarasovvp.smartblocker.ui.settings.settings_theme
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentAppThemeBinding
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 
-class AppThemeFragment :
+class SettingsThemeFragment :
     BaseBindingFragment<FragmentAppThemeBinding>() {
 
     override var layoutId = R.layout.fragment_app_theme

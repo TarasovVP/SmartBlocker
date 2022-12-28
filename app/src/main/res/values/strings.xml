@@ -49,10 +49,6 @@
     <string name="russian">Russian</string>
     <string name="ukrainian">Ukrainian</string>
     <string name="english">English</string>
-    <string name="block_settings">Set blocking</string>
-    <string name="personal_details">Personal post details</string>
-    <string name="app_language">Application language</string>
-    <string name="app_theme">Appendix Theme</string>
     <string name="enter_new_name">Enter new name</string>
     <string name="enter_current_password">Enter current password</string>
     <string name="enter_new_password">Enter new password</string>
@@ -251,4 +247,11 @@
     <string name="adding">Добавление</string>
     <string name="delete_black_list">Видалити із чорного списку</string>
     <string name="add_black_list">Додати до чорного списку</string>
+    <string name="settings_blocker">Настройки блокировщика</string>
+    <string name="settings_account">Ваш аккаунт</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_theme">Выбор темы</string>
+    <string name="settings_evaluate">Оценить приложение</string>
+    <string name="settings_review">Написать разработчику</string>
+    <string name="settings_privacy">Политика конфиденциальности</string>
 </resources>

@@ -49,10 +49,6 @@
     <string name="russian">Російська</string>
     <string name="ukrainian">Українська</string>
     <string name="english">Англійська</string>
-    <string name="block_settings">Налаштування блокування</string>
-    <string name="personal_details">Деталі облікового запису</string>
-    <string name="app_language">Мова програми</string>
-    <string name="app_theme">Тема програми</string>
     <string name="enter_new_name">Введіть нове ім\'я</string>
     <string name="enter_current_password">Введіть поточний пароль</string>
     <string name="enter_new_password">Введіть новий пароль</string>

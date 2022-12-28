@@ -16,16 +16,20 @@ class SettingsListFragment : BaseBindingFragment<FragmentSettingsListBinding>() 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.container?.getViewsFromLayout(TextView::class.java)?.forEach {
-            it.setSafeOnClickListener { view ->
-                val direction = when (view.id) {
-                    binding?.settingsListBlockSettings?.id -> SettingsListFragmentDirections.startBlockSettingsFragment()
-                    binding?.settingsListAccountDetails?.id -> SettingsListFragmentDirections.startAccountDetailsFragment()
-                    binding?.settingsListAppLanguage?.id -> SettingsListFragmentDirections.startAppLanguageFragment()
-                    binding?.settingsListAppTheme?.id -> SettingsListFragmentDirections.startAppThemeFragment()
-                    else -> SettingsListFragmentDirections.startBlockSettingsFragment()
+        binding?.apply {
+            container.getViewsFromLayout(TextView::class.java).forEach {
+                it.setSafeOnClickListener { view ->
+                    val direction = when (view.id) {
+                        settingsAccount.id -> SettingsListFragmentDirections.startSettingsAccountFragment()
+                        settingsLanguage.id -> SettingsListFragmentDirections.startSettingsLanguageFragment()
+                        settingsTheme.id -> SettingsListFragmentDirections.startSettingsThemeFragment()
+                        settingsEvaluate.id -> SettingsListFragmentDirections.startSettingsEvaluateDialog()
+                        settingsReview.id -> SettingsListFragmentDirections.startSettingsReviewFragment()
+                        settingsPrivacy.id -> SettingsListFragmentDirections.startSettingsPrivacyFragment()
+                        else -> SettingsListFragmentDirections.startSettingsBlockerFragment()
+                    }
+                    findNavController().navigate(direction)
                 }
-                findNavController().navigate(direction)
             }
         }
     }

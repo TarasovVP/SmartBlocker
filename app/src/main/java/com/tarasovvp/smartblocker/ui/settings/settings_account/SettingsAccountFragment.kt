@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.settings.account_detals
+package com.tarasovvp.smartblocker.ui.settings.settings_account
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,11 +22,11 @@ import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import com.tarasovvp.smartblocker.ui.settings.settings_list.SettingsListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class AccountDetailsFragment :
-    BaseFragment<FragmentAccountDetailsBinding, AccountDetailsViewModel>() {
+class SettingsAccountFragment :
+    BaseFragment<FragmentAccountDetailsBinding, SettingsAccountViewModel>() {
 
     override var layoutId = R.layout.fragment_account_details
-    override val viewModelClass = AccountDetailsViewModel::class.java
+    override val viewModelClass = SettingsAccountViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,12 +59,12 @@ class AccountDetailsFragment :
         binding?.apply {
             accountDetailsLogOut.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
-                findNavController().navigate(SettingsListFragmentDirections.startAccountActionDialog(
+                findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog(
                     isLogOut = true))
             }
             accountDetailsDeleteBtn.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
-                findNavController().navigate(AccountDetailsFragmentDirections.startAccountActionDialog())
+                findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog())
             }
             accountDetailsNewPasswordBtn.setSafeOnClickListener {
                 if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.text.toString()) {
@@ -75,7 +75,7 @@ class AccountDetailsFragment :
                 }
             }
             loginButton.setSafeOnClickListener {
-                findNavController().navigate(AccountDetailsFragmentDirections.startLoginFragment())
+                findNavController().navigate(SettingsAccountFragmentDirections.startLoginFragment())
             }
         }
     }

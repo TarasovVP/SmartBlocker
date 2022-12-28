@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.settings.block_settings
+package com.tarasovvp.smartblocker.ui.settings.settings_blocker
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
-class BlockSettingsViewModel(application: Application) : BaseViewModel(application) {
+class SettingsBlockerViewModel(application: Application) : BaseViewModel(application) {
 
     private val realDataBaseRepository = RealDataBaseRepository
     private val countryCodeRepository = CountryCodeRepository

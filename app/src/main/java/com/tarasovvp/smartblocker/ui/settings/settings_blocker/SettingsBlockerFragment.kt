@@ -1,7 +1,6 @@
-package com.tarasovvp.smartblocker.ui.settings.block_settings
+package com.tarasovvp.smartblocker.ui.settings.settings_blocker
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -19,10 +18,10 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSettingsViewModel>() {
+class SettingsBlockerFragment : BaseFragment<FragmentBlockSettingsBinding, SettingsBlockerViewModel>() {
 
     override var layoutId = R.layout.fragment_block_settings
-    override val viewModelClass = BlockSettingsViewModel::class.java
+    override val viewModelClass = SettingsBlockerViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,7 +56,7 @@ class BlockSettingsFragment : BaseFragment<FragmentBlockSettingsBinding, BlockSe
             }
             viewModel.getCountryCodeWithCountry(SharedPreferencesUtil.countryCode)
             settingsCountryCodeSpinner.setSafeOnClickListener {
-                findNavController().navigate(BlockSettingsFragmentDirections.startCountryCodeSearchDialog())
+                findNavController().navigate(SettingsBlockerFragmentDirections.startCountryCodeSearchDialog())
             }
             setFragmentResultListener(Constants.COUNTRY_CODE) { _, bundle ->
                 bundle.parcelable<CountryCode>(Constants.COUNTRY_CODE)?.let { viewModel.countryCodeLiveData.postValue(it) }
