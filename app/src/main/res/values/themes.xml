@@ -88,9 +88,11 @@
 
     <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textColor">@color/text_color_grey</item>
-        <item name="android:layoutDirection">rtl</item>
-        <item name="android:paddingTop">@dimen/padding_20</item>
-        <item name="android:paddingBottom">@dimen/padding_20</item>
+        <item name="android:paddingTop">@dimen/padding_10</item>
+        <item name="android:paddingBottom">@dimen/padding_10</item>
+        <item name="android:paddingStart">@dimen/padding_8</item>
+        <item name="android:paddingEnd">@dimen/padding_16</item>
+        <item name="android:background">@drawable/bg_rounded</item>
     </style>
 
     <style name="RoundedImageView">

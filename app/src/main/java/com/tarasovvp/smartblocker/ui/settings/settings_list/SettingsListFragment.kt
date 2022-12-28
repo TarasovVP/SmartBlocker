@@ -6,7 +6,9 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
+import com.tarasovvp.smartblocker.extensions.flagDrawable
 import com.tarasovvp.smartblocker.extensions.getViewsFromLayout
+import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
@@ -17,6 +19,8 @@ class SettingsListFragment : BaseBindingFragment<FragmentSettingsListBinding>() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
+            settingsLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language, 0,
+            SharedPreferencesUtil.appLang.orEmpty().flagDrawable(), 0)
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener { view ->
                     val direction = when (view.id) {

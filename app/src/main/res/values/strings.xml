@@ -56,9 +56,6 @@
     <string name="change_name">Change name</string>
     <string name="change_password">Change password</string>
     <string name="block_hidden">Block hidden numbers</string>
-    <string name="day">Light theme</string>
-    <string name="night">Dark theme</string>
-    <string name="auto">Automatically follow your device\'s mode settings</string>
     <string name="change_password_succeed">Password changed successfully</string>
     <string name="passwords_different">Passwords don\'t match</string>
     <string name="empty_state_account_description">You are logged in as an unregistered user. To get full access, please login as a registered user.</string>
@@ -254,4 +251,7 @@
     <string name="settings_evaluate">Оценить приложение</string>
     <string name="settings_review">Написать разработчику</string>
     <string name="settings_privacy">Политика конфиденциальности</string>
+    <string name="day">Светлая</string>
+    <string name="night">Темная</string>
+    <string name="auto">Согласно настроек телефона</string>
 </resources>

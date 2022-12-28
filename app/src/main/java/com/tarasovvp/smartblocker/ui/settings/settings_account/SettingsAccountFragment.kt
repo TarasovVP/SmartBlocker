@@ -13,19 +13,18 @@ import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.DELETE_USER
-import com.tarasovvp.smartblocker.databinding.FragmentAccountDetailsBinding
+import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
-import com.tarasovvp.smartblocker.ui.settings.settings_list.SettingsListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class SettingsAccountFragment :
-    BaseFragment<FragmentAccountDetailsBinding, SettingsAccountViewModel>() {
+    BaseFragment<FragmentSettingsAccountBinding, SettingsAccountViewModel>() {
 
-    override var layoutId = R.layout.fragment_account_details
+    override var layoutId = R.layout.fragment_settings_account
     override val viewModelClass = SettingsAccountViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

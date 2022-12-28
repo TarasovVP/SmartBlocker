@@ -12,38 +12,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/app_theme_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
-                android:paddingVertical="@dimen/padding_16"
-                android:text="@string/app_theme_title"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <RadioGroup
                 android:id="@+id/app_theme"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                app:layout_constraintTop_toBottomOf="@+id/app_theme_title">
+                android:layout_height="match_parent" >
 
                 <RadioButton
                     android:id="@+id/app_theme_day"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:text="@string/day" />
 
                 <RadioButton
                     android:id="@+id/app_theme_night"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:text="@string/night" />
 
                 <RadioButton
                     android:id="@+id/app_auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
                     android:text="@string/auto" />
             </RadioGroup>
 

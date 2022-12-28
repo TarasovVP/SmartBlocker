@@ -14,6 +14,9 @@ import androidx.core.text.parseAsHtml
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_RU
+import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import kotlinx.coroutines.*
 import java.io.Serializable
@@ -81,6 +84,14 @@ fun String.flagEmoji(): String {
     val firstLetter = Character.codePointAt(this, 0) - 0x41 + 0x1F1E6
     val secondLetter = Character.codePointAt(this, 1) - 0x41 + 0x1F1E6
     return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
+}
+
+fun String.flagDrawable(): Int {
+    return when(this) {
+        APP_LANG_UK -> R.drawable.ic_flag_ua
+        APP_LANG_RU -> R.drawable.ic_flag_ru
+        else -> R.drawable.ic_flag_us
+    }
 }
 
 fun String?.digitsTrimmed() = this?.filter { it.isDigit() || it == PLUS_CHAR }.orEmpty()

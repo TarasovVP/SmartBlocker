@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
-import com.tarasovvp.smartblocker.databinding.FragmentAppLanguageBinding
+import com.tarasovvp.smartblocker.databinding.FragmentSettingsLanguageBinding
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 
 class SettingsLanguageFragment :
-    BaseBindingFragment<FragmentAppLanguageBinding>() {
+    BaseBindingFragment<FragmentSettingsLanguageBinding>() {
 
-    override var layoutId = R.layout.fragment_app_language
+    override var layoutId = R.layout.fragment_settings_language
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

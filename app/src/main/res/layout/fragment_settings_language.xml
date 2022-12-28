@@ -12,41 +12,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/settings_languages_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
-                android:paddingVertical="@dimen/padding_16"
-                android:text="@string/settings_language_title"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <RadioGroup
                 android:id="@+id/settings_languages_rg"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                app:layout_constraintTop_toBottomOf="@+id/settings_languages_title">
+                android:layout_height="match_parent" >
 
                 <RadioButton
                     android:id="@+id/settings_languages_rb_ru"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/padding_20"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:drawableEnd="@drawable/ic_flag_ru"
                     android:text="@string/russian" />
 
                 <RadioButton
                     android:id="@+id/settings_languages_rb_uk"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/padding_20"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:drawableEnd="@drawable/ic_flag_ua"
                     android:text="@string/ukrainian" />
 
                 <RadioButton
                     android:id="@+id/settings_languages_rb_en"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/padding_20"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:drawableEnd="@drawable/ic_flag_us"
                     android:text="@string/english" />
             </RadioGroup>
 

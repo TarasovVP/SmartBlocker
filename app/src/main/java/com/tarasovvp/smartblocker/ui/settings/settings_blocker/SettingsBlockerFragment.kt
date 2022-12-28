@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
-import com.tarasovvp.smartblocker.databinding.FragmentBlockSettingsBinding
+import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.extensions.isNotTrue
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.parcelable
@@ -18,9 +18,9 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class SettingsBlockerFragment : BaseFragment<FragmentBlockSettingsBinding, SettingsBlockerViewModel>() {
+class SettingsBlockerFragment : BaseFragment<FragmentSettingsBlockerBinding, SettingsBlockerViewModel>() {
 
-    override var layoutId = R.layout.fragment_block_settings
+    override var layoutId = R.layout.fragment_settings_blocker
     override val viewModelClass = SettingsBlockerViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

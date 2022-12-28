@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.databinding.FragmentAppThemeBinding
+import com.tarasovvp.smartblocker.databinding.FragmentSettingsThemeBinding
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 
 class SettingsThemeFragment :
-    BaseBindingFragment<FragmentAppThemeBinding>() {
+    BaseBindingFragment<FragmentSettingsThemeBinding>() {
 
-    override var layoutId = R.layout.fragment_app_theme
+    override var layoutId = R.layout.fragment_settings_theme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

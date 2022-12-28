@@ -58,9 +58,6 @@
     <string name="change_name">Сменить имя</string>
     <string name="change_password">Сменить пароль</string>
     <string name="block_hidden">Блокировать скрытые номера</string>
-    <string name="day">Светлая тема</string>
-    <string name="night">Темная тема</string>
-    <string name="auto">Автоматически следовать настройкам режима вашего устройства</string>
     <string name="change_password_succeed">Пароль успешно изменен</string>
     <string name="passwords_different">Пароли не совпадают</string>
     <string name="empty_state_account_description">Вы вошли незарегистрированным пользователем. Для того, чтобы получить полный доступ войдите как зарегистрированный пользователь.</string>
