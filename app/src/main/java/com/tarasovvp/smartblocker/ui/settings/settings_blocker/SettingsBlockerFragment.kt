@@ -39,13 +39,15 @@ class SettingsBlockerFragment :
                 }
             }
             settingsBlockerHiddenSwitch.isChecked = SharedPreferencesUtil.blockHidden
-            settingsBlockerHiddenSwitch.setOnCheckedChangeListener { _, isChecked ->
-                if (BlackListerApp.instance?.isLoggedInUser()
-                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
-                ) {
-                    showMessage(getString(R.string.unavailable_network_repeat), true)
-                } else {
-                    viewModel.changeBlockHidden(isChecked.not())
+            settingsBlockerHiddenSwitch.setOnCheckedChangeListener { compoundButton, isChecked ->
+                if (compoundButton.isPressed) {
+                    if (BlackListerApp.instance?.isLoggedInUser()
+                            .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
+                    ) {
+                        showMessage(getString(R.string.unavailable_network_repeat), true)
+                    } else {
+                        viewModel.changeBlockHidden(isChecked.not())
+                    }
                 }
             }
         }
@@ -54,7 +56,12 @@ class SettingsBlockerFragment :
     override fun observeLiveData() {
         with(viewModel) {
             successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
+                binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden.not()
                 SharedPreferencesUtil.blockHidden = blockHidden
+            }
+            exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { error ->
+                binding?.settingsBlockerHiddenSwitch?.isChecked = binding?.settingsBlockerHiddenSwitch?.isChecked.isTrue().not()
+                showMessage(error, true)
             }
         }
     }
