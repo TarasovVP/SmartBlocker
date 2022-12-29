@@ -12,50 +12,73 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.tarasovvp.smartblocker.utils.SwitchView
-                android:id="@+id/block_settings_turn"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_blocker_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:info="@string/change_back_ground"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="@string/change_turn_block"
-                app:turnOffModeIcon="@drawable/ic_blocker"
-                app:turnOffModeText="@string/turn_off"
-                app:turnOnModeIcon="@drawable/ic_permission"
-                app:turnOnModeText="@string/turn_on" />
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:padding="@dimen/padding_16"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <com.tarasovvp.smartblocker.utils.SwitchView
-                android:id="@+id/block_settings_hidden"
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_blocker_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Фильтровать звонки"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/settings_blocker_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_1"
+                    android:background="@color/light_steel_blue"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_switch" />
+
+                <TextView
+                    android:id="@+id/settings_blocker_describe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:textSize="@dimen/text_size_10"
+                    android:text="Программа будет фильтровать все вызовы согласно ваших фильтров"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_blocker_hidden_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
-                app:info="@string/change_back_ground"
-                app:layout_constraintTop_toBottomOf="@+id/block_settings_turn"
-                app:title="@string/block_hidden"
-                app:turnOffModeIcon="@drawable/ic_blocker"
-                app:turnOffModeText="@string/turn_off"
-                app:turnOnModeIcon="@drawable/ic_permission"
-                app:turnOnModeText="@string/turn_on" />
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:padding="@dimen/padding_16"
+                app:layout_constraintTop_toBottomOf="@+id/settings_blocker_container">
 
-            <TextView
-                android:id="@+id/settings_country_code_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_0"
-                android:gravity="center_vertical"
-                app:drawableEndCompat="@drawable/ic_drop_down"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/block_settings_hidden" />
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_blocker_hidden_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Блокировать скрытые номера"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/filter_add_country_code_value"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_0"
-                android:gravity="center"
-                android:textSize="@dimen/text_size_18"
-                app:layout_constraintBottom_toBottomOf="@+id/settings_country_code_spinner"
-                app:layout_constraintStart_toEndOf="@+id/settings_country_code_spinner"
-                app:layout_constraintTop_toTopOf="@+id/settings_country_code_spinner" />
+                <View
+                    android:id="@+id/settings_blocker_hidden_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_1"
+                    android:background="@color/light_steel_blue"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_switch" />
 
+                <TextView
+                    android:id="@+id/settings_blocker_hidden_describe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:textSize="@dimen/text_size_10"
+                    android:text="Программа не будет фильтровать скрытые номера"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
