@@ -3,16 +3,16 @@ package com.tarasovvp.smartblocker.ui.settings.settings_account
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.BlackListerApp
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants
+import com.tarasovvp.smartblocker.constants.Constants.CHANGE_PASSWORD
+import com.tarasovvp.smartblocker.constants.Constants.CURRENT_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.DELETE_USER
+import com.tarasovvp.smartblocker.constants.Constants.LOG_OUT
+import com.tarasovvp.smartblocker.constants.Constants.NEW_PASSWORD
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.*
@@ -30,12 +30,24 @@ class SettingsAccountFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        setOnclickListeners()
+        setFragmentResults()
+    }
+
+    private fun setFragmentResults() {
+        setFragmentResultListener(LOG_OUT) { _, _ ->
+            viewModel.signOut()
+        }
         setFragmentResultListener(DELETE_USER) { _, _ ->
             viewModel.deleteUser()
         }
-
-        setFragmentResultListener(Constants.LOG_OUT) { _, _ ->
-            viewModel.signOut()
+        setFragmentResultListener(CHANGE_PASSWORD) { _, bundle ->
+            if(bundle.getString(CURRENT_PASSWORD, String.EMPTY).isEmpty() || bundle.getString(NEW_PASSWORD, String.EMPTY).isEmpty()) {
+                showMessage(getString(R.string.passwords_different), true)
+            } else {
+                viewModel.changePassword(bundle.getString(CURRENT_PASSWORD, String.EMPTY),
+                    bundle.getString(NEW_PASSWORD, String.EMPTY))
+            }
         }
     }
 
@@ -44,64 +56,29 @@ class SettingsAccountFragment :
             includeEmptyState.emptyState = EmptyState.EMPTY_STATE_ACCOUNT
             includeEmptyState.root.isVisible =
                 BlackListerApp.instance?.isLoggedInUser().isNotTrue()
-            loginButton.isVisible =
+            settingsAccountLogin.isVisible =
                 BlackListerApp.instance?.isLoggedInUser().isNotTrue()
-            accountDetailsMainTitle.text = String.format(getString(R.string.welcome),
-                BlackListerApp.instance?.auth?.currentUser?.email)
-            (root as ViewGroup).hideKeyboardWithLayoutTouch()
-            setOnclickListeners()
-            initNewPasswordSet(accountDetailsChangePasswordContainer.getViewsFromLayout(EditText::class.java))
+            settingsAccountName.text = BlackListerApp.instance?.auth?.currentUser?.email
+            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(BlackListerApp.instance?.auth?.currentUser?.email.nameInitial()))
         }
     }
 
     private fun setOnclickListeners() {
         binding?.apply {
-            accountDetailsLogOut.setSafeOnClickListener {
+            settingsAccountLogOut.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
                 findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog(
                     isLogOut = true))
             }
-            accountDetailsDeleteBtn.setSafeOnClickListener {
+            settingsAccountDelete.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
                 findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog())
             }
-            accountDetailsNewPasswordBtn.setSafeOnClickListener {
-                if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.text.toString()) {
-                    viewModel.changePassword(accountDetailsCurrentPassword.inputText(),
-                        accountDetailsNewPasswordConfirm.text.toString())
-                } else {
-                    showMessage(getString(R.string.passwords_different), true)
-                }
+            settingsAccountChangePassword.setSafeOnClickListener {
+                findNavController().navigate(SettingsAccountFragmentDirections.startChangePasswordDialog())
             }
-            loginButton.setSafeOnClickListener {
+            settingsAccountLogin.setSafeOnClickListener {
                 findNavController().navigate(SettingsAccountFragmentDirections.startLoginFragment())
-            }
-        }
-    }
-
-    private fun initNewPasswordSet(editTextList: ArrayList<EditText>?) {
-        binding?.apply {
-            accountDetailsNewPasswordCheck.setOnCheckedChangeListener { _, isChecked ->
-                accountDetailsChangePasswordContainer.isVisible = isChecked
-                if (isChecked) {
-                    editTextList?.onEach { it.text.clear() }
-                }
-            }
-            accountDetailsNewPasswordBtn.isEnabled =
-                editTextList?.none { it.text.isNullOrEmpty() }.isTrue()
-            editTextList?.onEach { editText ->
-                editText.doAfterTextChanged {
-                    binding?.accountDetailsNewPasswordBtn?.isEnabled =
-                        editTextList.none { it.text.isNullOrEmpty() }.isTrue()
-                }
-            }
-            accountDetailsNewPasswordBtn.setSafeOnClickListener {
-                if (accountDetailsNewPasswordCreate.inputText() == accountDetailsNewPasswordConfirm.inputText()) {
-                    viewModel.changePassword(binding?.accountDetailsCurrentPassword.inputText(),
-                        accountDetailsNewPasswordConfirm.text.toString())
-                } else {
-                    showMessage(getString(R.string.passwords_different), true)
-                }
             }
         }
     }
@@ -119,7 +96,6 @@ class SettingsAccountFragment :
             }
             successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(String.format(getString(R.string.change_password_succeed)), false)
-                binding?.accountDetailsNewPasswordCheck?.isChecked = false
             }
         }
     }

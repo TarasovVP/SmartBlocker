@@ -119,6 +119,7 @@
                 android:paddingVertical="@dimen/padding_10"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@string/forgot_password"
+                android:textColor="@color/button_bg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
 

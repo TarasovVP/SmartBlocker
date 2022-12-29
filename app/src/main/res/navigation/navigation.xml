@@ -239,6 +239,9 @@
             android:id="@+id/startAccountActionDialog"
             app:destination="@id/accountActionDialog" />
         <action
+            android:id="@+id/startChangePasswordDialog"
+            app:destination="@id/changePasswordDialog" />
+        <action
             android:id="@+id/startLoginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@+id/mainNavigation"
@@ -313,6 +316,10 @@
             app:argType="string"
             app:nullable="true" />
     </dialog>
+
+    <dialog
+        android:id="@+id/changePasswordDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.ChangePasswordDialog" />
 
     <dialog
         android:id="@+id/numberDataFilteringDialog"

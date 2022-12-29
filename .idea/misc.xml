@@ -129,6 +129,7 @@
         <entry key="app/src/main/res/layout/dialog_add_list.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/layout/dialog_add_to_list.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/dialog_black_list_preview.xml" value="0.15715579710144928" />
+        <entry key="app/src/main/res/layout/dialog_change_password.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/layout/dialog_country_code_search.xml" value="0.221875" />
         <entry key="app/src/main/res/layout/dialog_country_searchable.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/dialog_delete.xml" value="0.39955357142857145" />
@@ -174,12 +175,13 @@
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_registry.xml" value="0.307518115942029" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.625" />
-        <entry key="app/src/main/res/layout/fragment_settings_account.xml" value="0.18229166666666666" />
+        <entry key="app/src/main/res/layout/fragment_settings_account.xml" value="0.5402843601895735" />
         <entry key="app/src/main/res/layout/fragment_settings_blocker.xml" value="0.18229166666666666" />
-        <entry key="app/src/main/res/layout/fragment_settings_language.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_settings_language.xml" value="0.42892156862745096" />
         <entry key="app/src/main/res/layout/fragment_settings_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_settings_privacy.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/fragment_settings_review.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/fragment_settings_theme.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.4886025768087215" />
         <entry key="app/src/main/res/layout/fragment_single_filter_details.xml" value="0.10235507246376811" />
         <entry key="app/src/main/res/layout/fragment_single_on_boarding.xml" value="0.24444444444444444" />

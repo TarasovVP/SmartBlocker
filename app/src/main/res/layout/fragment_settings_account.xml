@@ -6,160 +6,98 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:padding="@dimen/padding_16">
+        android:paddingHorizontal="@dimen/padding_16">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/account_details_main_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_20"
-                android:gravity="center"
-                android:paddingVertical="@dimen/padding_20"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/account_details_log_out_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_25"
-                android:text="@string/log_out_title"
-                app:layout_constraintTop_toBottomOf="@+id/account_details_main_title" />
-
-            <Button
-                android:id="@+id/account_details_log_out"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_10"
-                android:text="@string/sign_out"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/account_details_log_out_title" />
-
-            <TextView
-                android:id="@+id/account_details_delete_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
-                android:text="@string/delete_account_title"
-                app:layout_constraintTop_toBottomOf="@+id/account_details_log_out" />
-
-            <Button
-                android:id="@+id/account_details_delete_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/delete_acc"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/account_details_delete_title" />
-
-            <TextView
-                android:id="@+id/account_details_new_password_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_25"
-                android:text="@string/change_password"
-                app:layout_constraintTop_toBottomOf="@+id/account_details_delete_btn" />
-
-            <CheckBox
-                android:id="@+id/account_details_new_password_check"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:button="@drawable/selector_expanded_check_box"
-                android:layoutDirection="rtl"
-                android:text="@string/change_password_btn"
-                app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_title" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/account_details_change_password_container"
+                android:id="@+id/settings_account_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_check">
+                android:padding="@dimen/padding_16"
+                android:background="@drawable/bg_rounded"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/account_details_current_password_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/settings_account_avatar"
+                    android:layout_width="@dimen/margin_50"
+                    android:layout_height="@dimen/margin_50"
+                    android:background="@color/light_steel_blue"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/settings_account_name"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:passwordToggleEnabled="true">
+                    app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
-                    <EditText
-                        android:id="@+id/account_details_current_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enter_current_password"
-                        android:inputType="textPassword"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/account_details_new_password_create_container"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/settings_account_name"
+                    android:layout_width="@dimen/size_0"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
-                    app:layout_constraintTop_toBottomOf="@+id/account_details_current_password_container"
-                    app:passwordToggleEnabled="true">
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginStart="@dimen/margin_16"
+                    app:layout_constraintBottom_toTopOf="@+id/settings_account_log_out"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/settings_account_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/settings_account_avatar" />
 
-                    <EditText
-                        android:id="@+id/account_details_new_password_create"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enter_new_password"
-                        android:inputType="textPassword" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/account_details_new_password_confirm_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8"
-                    app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_create_container"
-                    app:passwordToggleEnabled="true">
-
-                    <EditText
-                        android:id="@+id/account_details_new_password_confirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/confirm_new_password"
-                        android:inputType="textPassword" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/account_details_new_password_btn"
+                <TextView
+                    android:id="@+id/settings_account_log_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/button_bg"
+                    android:text="@string/sign_out"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:text="@string/ok"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/account_details_new_password_confirm_container" />
+                    app:layout_constraintBottom_toBottomOf="@+id/settings_account_avatar"
+                    app:layout_constraintStart_toStartOf="@+id/settings_account_name"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_account_name" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/settings_account_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/delete_account_title"
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_container" />
+
+            <TextView
+                android:id="@+id/settings_account_change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/change_password"
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_delete" />
 
             <include
                 android:id="@+id/include_empty_state"
                 layout="@layout/include_empty_state"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/login_button"/>
+                app:layout_constraintBottom_toTopOf="@+id/settings_account_login"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/settings_account_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:text="@string/login"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
