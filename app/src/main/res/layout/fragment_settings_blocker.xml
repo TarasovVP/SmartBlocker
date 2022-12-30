@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:padding="@dimen/padding_16">
+        android:paddingHorizontal="@dimen/padding_16">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -18,14 +18,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:background="@drawable/bg_rounded"
-                android:padding="@dimen/padding_16"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_16"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/settings_blocker_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Фильтровать звонки"
+                    android:text="@string/settings_blocker_title"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
@@ -41,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:textSize="@dimen/text_size_10"
-                    android:text="Программа будет фильтровать все вызовы согласно ваших фильтров"
+                    android:text="@string/settings_blocker_off"
                     app:layout_constraintTop_toBottomOf="@+id/settings_blocker_divider" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -52,14 +53,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:background="@drawable/bg_rounded"
-                android:padding="@dimen/padding_16"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_16"
                 app:layout_constraintTop_toBottomOf="@+id/settings_blocker_container">
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/settings_blocker_hidden_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Блокировать скрытые номера"
+                    android:text="@string/settings_block_hidden_title"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
@@ -75,7 +77,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:textSize="@dimen/text_size_10"
-                    android:text="Программа не будет фильтровать скрытые номера"
+                    android:minLines="2"
+                    android:text="@string/settings_block_hidden_off"
                     app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_divider" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

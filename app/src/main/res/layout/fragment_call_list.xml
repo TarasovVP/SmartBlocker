@@ -17,7 +17,7 @@
             android:enabled="false"
             android:drawablePadding="5dp"
             android:text="@string/filter_no_filter"
-            android:textColor="@color/enable_bg_selector"
+            android:textColor="@color/selector_enable_bg"
             android:button="@drawable/filter_selector"
             android:singleLine="true"
             android:ellipsize="marquee"

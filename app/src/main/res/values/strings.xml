@@ -254,4 +254,10 @@
     <string name="day">Светлая</string>
     <string name="night">Темная</string>
     <string name="auto">Согласно настроек телефона</string>
+    <string name="settings_blocker_title">Фильтровать входящие вызовы</string>
+    <string name="settings_blocker_on">Smart Blocker будет управлять входящими вызовами согласно ваших фильтров</string>
+    <string name="settings_blocker_off">Smart Blocker не будет управлять входящими вызовами согласно ваших фильтров</string>
+    <string name="settings_block_hidden_title">Блокировать скрытые номера</string>
+    <string name="settings_block_hidden_on">Smart Blocker будет блокировать скрытые номера</string>
+    <string name="settings_block_hidden_off">Smart Blocker не будет блокировать скрытые номера</string>
 </resources>

@@ -109,6 +109,10 @@
         <entry key="app/src/main/res/drawable/ic_start.xml" value="0.234375" />
         <entry key="app/src/main/res/drawable/ic_stop.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_success.xml" value="0.158" />
+        <entry key="app/src/main/res/drawable/ic_switch_thumb_disable.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/ic_switch_thumb_enable.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/ic_switch_track_disable.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/ic_switch_track_enable.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_test.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_white_filter.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_white_filter_inactive.xml" value="0.18" />
@@ -117,7 +121,11 @@
         <entry key="app/src/main/res/drawable/main_bg.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/main_bg2.xml" value="0.154" />
         <entry key="app/src/main/res/drawable/on_boarding_button_bg.xml" value="0.215625" />
+        <entry key="app/src/main/res/drawable/selector_check_box.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/selector_radio_group.xml" value="0.1635" />
+        <entry key="app/src/main/res/drawable/selector_switch_thumb.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/selector_switch_track.xml" value="0.2785" />
+        <entry key="app/src/main/res/drawable/selector_switch_view.xml" value="0.2785" />
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/switch_view_selector.xml" value="0.1695" />
@@ -176,7 +184,7 @@
         <entry key="app/src/main/res/layout/fragment_registry.xml" value="0.307518115942029" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.625" />
         <entry key="app/src/main/res/layout/fragment_settings_account.xml" value="0.5402843601895735" />
-        <entry key="app/src/main/res/layout/fragment_settings_blocker.xml" value="0.498546511627907" />
+        <entry key="app/src/main/res/layout/fragment_settings_blocker.xml" value="1.5" />
         <entry key="app/src/main/res/layout/fragment_settings_language.xml" value="0.42892156862745096" />
         <entry key="app/src/main/res/layout/fragment_settings_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_settings_privacy.xml" value="0.24947916666666667" />
