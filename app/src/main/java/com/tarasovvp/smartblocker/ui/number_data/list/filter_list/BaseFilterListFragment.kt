@@ -15,9 +15,11 @@ import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
+import com.tarasovvp.smartblocker.ui.number_data.list.contact_list.ContactListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
@@ -101,7 +103,11 @@ open class BaseFilterListFragment :
             })
         }
         binding?.filterListInfo?.setSafeOnClickListener {
-            binding?.filterListInfo?.showPopUpWindow(if (this is BlockerListFragment) Info.INFO_BLOCKER_LIST else Info.INFO_PERMISSION_LIST)
+            if (this is BlockerListFragment) {
+                findNavController().navigate(BlockerListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_BLOCKER_LIST.title), description =  getString(Info.INFO_CONTACT_LIST.description))))
+            } else {
+                findNavController().navigate(PermissionListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_PERMISSION_LIST.title), description =  getString(Info.INFO_CONTACT_LIST.description))))
+            }
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
             startNextScreen(Filter().apply {

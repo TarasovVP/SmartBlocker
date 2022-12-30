@@ -16,6 +16,7 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
@@ -107,7 +108,7 @@ class CallListFragment :
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray()))
         }
         binding?.callListInfo?.setSafeOnClickListener {
-            binding?.callListInfo?.showPopUpWindow(Info.INFO_CALL_LIST)
+            findNavController().navigate(CallListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_CALL_LIST.title), description =  getString(Info.INFO_CALL_LIST.description))))
         }
     }
 

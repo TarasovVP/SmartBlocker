@@ -11,6 +11,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentContactListBinding
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Contact
+import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
 import com.tarasovvp.smartblocker.ui.number_data.list.call_list.CallListFragmentDirections
@@ -79,7 +80,7 @@ open class ContactListFragment :
                     .toIntArray()))
         }
         binding?.contactListInfo?.setSafeOnClickListener {
-            binding?.contactListInfo?.showPopUpWindow(Info.INFO_CONTACT_LIST)
+            findNavController().navigate(ContactListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_CONTACT_LIST.title), description =  getString(Info.INFO_CONTACT_LIST.description))))
         }
     }
 

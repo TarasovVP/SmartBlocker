@@ -1,38 +1,29 @@
 package com.tarasovvp.smartblocker.enums
 
-import android.content.Context
-import android.text.Spanned
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.extensions.htmlWithImages
 
 enum class Info(
-    val descriptionResource: Int,
-    val iconResource: Int,
+    val description: Int,
+    val title: Int,
 ) {
     INFO_BLOCKER_LIST(R.string.info_blockers_list,
-        R.drawable.ic_assistant_info),
+        R.string.blocker_list),
     INFO_PERMISSION_LIST(R.string.empty_state_permissions_description,
-        R.drawable.ic_assistant_info),
+        R.string.permission_list),
     INFO_CALL_LIST(R.string.empty_state_contacts_description,
-        R.drawable.ic_assistant_info),
+        R.string.all_call_log_list),
     INFO_CONTACT_LIST(R.string.empty_state_calls_description,
-        R.drawable.ic_assistant_info),
+        R.string.contact_list),
     INFO_FILTER_ADD_FULL(R.string.filter_full_number_description,
-        R.drawable.ic_assistant_info),
+        R.string.add),
     INFO_FILTER_ADD_START(R.string.filter_start_description,
-        R.drawable.ic_assistant_info),
+        R.string.condition_start),
     INFO_FILTER_ADD_CONTAIN(R.string.filter_contain_description,
-        R.drawable.ic_assistant_info),
+        R.string.condition_contain),
     INFO_NUMBER_DATA_DETAIL(R.string.number_data_detail_info,
-        R.drawable.ic_assistant_info),
+        R.string.details_),
     INFO_FILTER_DETAIL(R.string.empty_state_account_description,
-        R.drawable.ic_assistant_info),
+        R.string.details_),
     INFO_BLOCKED_CALL_DETAIL(R.string.empty_state_filters_by_contact_description,
-        R.drawable.ic_assistant_info),
-    INFO_SETTINGS(R.string.empty_state_contacts_by_blocker_description,
-        R.drawable.ic_assistant_info);
-
-    fun getHtmlWithImages(context: Context): Spanned {
-        return context.htmlWithImages(context.getString(descriptionResource))
-    }
+        R.string.details_)
 }

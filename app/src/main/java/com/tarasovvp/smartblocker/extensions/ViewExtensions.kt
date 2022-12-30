@@ -1,19 +1,22 @@
 package com.tarasovvp.smartblocker.extensions
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.TextAppearanceSpan
 import android.view.*
-import android.widget.*
+import android.webkit.WebSettings
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter
@@ -24,10 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.databinding.PopUpWindowInfoBinding
 import com.tarasovvp.smartblocker.databinding.SnackBarInfoBinding
-import com.tarasovvp.smartblocker.enums.Info
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 
 fun View.showMessage(message: String, isError: Boolean) {
@@ -51,28 +51,6 @@ fun View.showMessage(message: String, isError: Boolean) {
                 view.layoutParams = this
             }
         }.show()
-}
-
-fun View.showPopUpWindow(info: Info) {
-    val popupView = PopUpWindowInfoBinding.inflate(LayoutInflater.from(context))
-    info.descriptionResource
-    popupView.info = info
-    popupView.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-    val height = View.MeasureSpec.makeMeasureSpec((Resources.getSystem().displayMetrics.heightPixels * 0.8).toInt(), View.MeasureSpec.AT_MOST)
-    val popupWindow = PopupWindow(
-        popupView.root,
-        (Resources.getSystem().displayMetrics.widthPixels * 0.9).toInt(),
-        ActionBar.LayoutParams.WRAP_CONTENT,
-        true
-    )
-    popupWindow.elevation = 2f
-    popupWindow.showAtLocation(this,
-        Gravity.TOP,
-        0,
-        context.dpToPx(80f).toInt())
-    popupView.popUpWindowClose.setSafeOnClickListener {
-        popupWindow.dismiss()
-    }
 }
 
 fun <T> ViewGroup.getViewsFromLayout(
@@ -257,4 +235,28 @@ fun EditText.setupClearButtonWithAction() {
         }
         return@OnTouchListener false
     })
+}
+
+fun WebSettings.initWebSettings() {
+    javaScriptEnabled = true
+    cacheMode = WebSettings.LOAD_DEFAULT
+    setSupportZoom(true)
+    builtInZoomControls = true
+    displayZoomControls = true
+    textZoom = 125
+    blockNetworkImage = false
+    loadsImagesAutomatically = true
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        safeBrowsingEnabled = true
+    }
+    useWideViewPort = true
+    loadWithOverviewMode = true
+    javaScriptCanOpenWindowsAutomatically = true
+    domStorageEnabled = true
+    setSupportMultipleWindows(true)
+    loadWithOverviewMode = true
+    allowContentAccess = true
+    setGeolocationEnabled(true)
+    allowUniversalAccessFromFileURLs = true
+    allowFileAccess = true
 }

@@ -52,6 +52,9 @@
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
@@ -70,6 +73,9 @@
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
@@ -96,6 +102,9 @@
             app:destination="@id/permissionListFragment"
             app:popUpTo="@id/blockerListFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
@@ -132,6 +141,9 @@
             app:destination="@id/permissionListFragment"
             app:popUpTo="@id/blockerListFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
@@ -149,6 +161,9 @@
         <action
             android:id="@+id/startNumberDataFilteringDialog"
             app:destination="@id/numberDataFilteringDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
@@ -169,6 +184,9 @@
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
@@ -187,8 +205,18 @@
             android:id="@+id/startFilterDetailFragment"
             app:destination="@id/filterDetailsFragment" />
         <action
-            android:id="@+id/startCallListFragment"
-            app:destination="@id/callListFragment" />
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.info.InfoFragment" >
+        <argument
+            android:name="info"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.smartblocker.models.InfoData"
+            app:nullable="true" />
     </fragment>
 
     <action
