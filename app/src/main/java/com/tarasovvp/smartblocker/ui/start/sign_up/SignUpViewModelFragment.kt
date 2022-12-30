@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
+class SignUpViewModelFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
     override var layoutId = R.layout.fragment_sign_up
     override val viewModelClass = SignUpViewModel::class.java

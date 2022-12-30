@@ -6,22 +6,14 @@ import androidx.databinding.ViewDataBinding
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.ui.MainActivity
 
-abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
-    BaseFragment<B, T>() {
+abstract class BaseDetailsFragment<B : ViewDataBinding, T : BaseViewModel> :
+    BaseNumberDataFragment<B, T>() {
 
-    abstract fun initViews()
-    abstract fun setClickListeners()
-    abstract fun setFragmentResultListeners()
     abstract fun createAdapter()
-    abstract fun getData()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        setClickListeners()
-        setFragmentResultListeners()
         createAdapter()
-        getData()
         setInfoMenu()
     }
 
@@ -29,7 +21,7 @@ abstract class BaseDetailFragment<B : ViewDataBinding, T : BaseViewModel> :
         (activity as MainActivity).apply {
             toolbar?.inflateMenu(R.menu.toolbar_info)
             toolbar?.setOnMenuItemClickListener {
-                //TODO implement
+                showInfoScreen()
                 return@setOnMenuItemClickListener true
             }
         }

@@ -8,7 +8,9 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.tarasovvp.smartblocker.constants.Constants.APP_EXIT
 import com.tarasovvp.smartblocker.ui.MainActivity
 
 abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
@@ -25,6 +27,7 @@ abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
             inflater, layoutId, container, false
         )
         checkBottomBarVisibility()
+        getCurrentBackStackEntry()
         return binding?.root
     }
 
@@ -40,6 +43,12 @@ abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
 
     fun showMessage(message: String, isError: Boolean) {
         (activity as MainActivity).showMessage(message, isError)
+    }
+
+    private fun getCurrentBackStackEntry() {
+        setFragmentResultListener(APP_EXIT) { _, _ ->
+            activity?.finish()
+        }
     }
 
     override fun onDestroyView() {

@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.number_data.info
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient

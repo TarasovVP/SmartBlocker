@@ -8,19 +8,23 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentNumberDataDetailBinding
 import com.tarasovvp.smartblocker.enums.FilterCondition
+import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.*
-import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
+import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
+import com.tarasovvp.smartblocker.ui.base.BaseNumberDataFragment
 import com.tarasovvp.smartblocker.ui.number_data.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.number_data.details.SingleDetailsFragment
+import com.tarasovvp.smartblocker.ui.number_data.list.call_list.CallListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class NumberDataDetailFragment :
-    BaseDetailFragment<FragmentNumberDataDetailBinding, NumberDataDetailViewModel>() {
+class NumberDataDetailsFragment :
+    BaseDetailsFragment<FragmentNumberDataDetailBinding, NumberDataDetailsViewModel>() {
 
     override var layoutId = R.layout.fragment_number_data_detail
-    override val viewModelClass = NumberDataDetailViewModel::class.java
-    private val args: NumberDataDetailFragmentArgs by navArgs()
+    override val viewModelClass = NumberDataDetailsViewModel::class.java
+    private val args: NumberDataDetailsFragmentArgs by navArgs()
+    override fun setFragmentResultListeners() = Unit
 
     private var filtersScreen: SingleDetailsFragment? = null
     private var filteredCallsScreen: SingleDetailsFragment? = null
@@ -42,11 +46,11 @@ class NumberDataDetailFragment :
 
     override fun createAdapter() {
         filtersScreen = SingleDetailsFragment {
-            findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
+            findNavController().navigate(NumberDataDetailsFragmentDirections.startFilterDetailFragment(
                 filterDetail = it as Filter))
         }
         filteredCallsScreen = SingleDetailsFragment(true) {
-            findNavController().navigate(NumberDataDetailFragmentDirections.startFilterDetailFragment(
+            findNavController().navigate(NumberDataDetailsFragmentDirections.startFilterDetailFragment(
                 filterDetail = it as Filter))
         }
         val fragmentList = arrayListOf(
@@ -124,7 +128,7 @@ class NumberDataDetailFragment :
     }
 
     private fun startAddFilterScreen() {
-        findNavController().navigate(NumberDataDetailFragmentDirections.startFilterAddFragment(
+        findNavController().navigate(NumberDataDetailsFragmentDirections.startFilterAddFragment(
             filterAdd = filter))
     }
 
@@ -154,5 +158,9 @@ class NumberDataDetailFragment :
         }
     }
 
-    override fun setFragmentResultListeners() = Unit
+    override fun showInfoScreen() {
+        findNavController().navigate(NumberDataDetailsFragmentDirections.startInfoFragment(info = InfoData(
+            title = getString(Info.INFO_NUMBER_DATA_DETAIL.title),
+            description = getString(Info.INFO_NUMBER_DATA_DETAIL.description))))
+    }
 }

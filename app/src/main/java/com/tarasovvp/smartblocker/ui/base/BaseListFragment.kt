@@ -15,7 +15,6 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.extensions.hideKeyboard
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.HeaderDataItem
@@ -27,9 +26,8 @@ import com.tarasovvp.smartblocker.ui.number_data.list.filter_list.BlockerListFra
 import com.tarasovvp.smartblocker.ui.number_data.list.filter_list.PermissionListFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 
-
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
-    BaseFragment<B, T>() {
+    BaseNumberDataFragment<B, T>() {
 
     protected val adapter: BaseAdapter<D>? by lazy { createAdapter() }
 
@@ -39,19 +37,15 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     protected var searchQuery: String? = String.EMPTY
 
     abstract fun createAdapter(): BaseAdapter<D>?
-    abstract fun initView()
     abstract fun searchDataList()
-    abstract fun getData()
     abstract fun isFiltered(): Boolean
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("adapterTAG",
             "BaseListFragment onViewCreated initView adapter $adapter itemCount ${adapter?.itemCount}")
-        initView()
         setRecyclerView()
         setSearchViewMenu()
-        getData()
         (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
             viewLifecycleOwner) {
             Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
@@ -59,10 +53,6 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        binding?.root?.hideKeyboard()
-    }
 
     private fun setRecyclerView() {
         recyclerView?.apply {
@@ -82,7 +72,8 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             Log.e("searchTAG", "BaseListFragment setSearchViewMenu searchQuery $searchQuery")
             toolbar?.inflateMenu(R.menu.toolbar_search)
             context?.let { SearchView(it) }?.apply {
-                if (this@BaseListFragment is BlockerListFragment || this@BaseListFragment is PermissionListFragment) inputType = InputType.TYPE_CLASS_NUMBER
+                if (this@BaseListFragment is BlockerListFragment || this@BaseListFragment is PermissionListFragment) inputType =
+                    InputType.TYPE_CLASS_NUMBER
                 toolbar?.menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
                     setQuery(searchQuery, false)
                     menuItem.actionView = this

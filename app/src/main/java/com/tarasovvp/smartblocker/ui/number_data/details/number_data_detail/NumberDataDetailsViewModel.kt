@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
-class NumberDataDetailViewModel(application: Application) : BaseViewModel(application) {
+class NumberDataDetailsViewModel(application: Application) : BaseViewModel(application) {
 
     private val filterRepository = FilterRepository
     private val filteredCallRepository = FilteredCallRepository

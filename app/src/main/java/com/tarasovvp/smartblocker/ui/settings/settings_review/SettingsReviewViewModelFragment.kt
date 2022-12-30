@@ -7,7 +7,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentSettingsReviewBinding
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 
-class SettingsReviewFragment :
+class SettingsReviewViewModelFragment :
     BaseFragment<FragmentSettingsReviewBinding, SettingsReviewViewModel>() {
 
     override var layoutId = R.layout.fragment_settings_review

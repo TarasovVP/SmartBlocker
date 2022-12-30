@@ -38,7 +38,7 @@ open class ContactListFragment :
         }
     }
 
-    override fun initView() {
+    override fun initViews() {
         binding?.apply {
             swipeRefresh = contactListRefresh
             recyclerView = contactListRecyclerView
@@ -46,8 +46,6 @@ open class ContactListFragment :
             contactListRecyclerView.hideKeyboardWithLayoutTouch()
         }
         setContactConditionFilter()
-        setClickListeners()
-        setFragmentResultListeners()
     }
 
     private fun setContactConditionFilter() {
@@ -70,7 +68,7 @@ open class ContactListFragment :
         }
     }
 
-    private fun setClickListeners() {
+    override fun setClickListeners() {
         binding?.contactListCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
             binding?.contactListCheck?.isChecked =
@@ -80,11 +78,11 @@ open class ContactListFragment :
                     .toIntArray()))
         }
         binding?.contactListInfo?.setSafeOnClickListener {
-            findNavController().navigate(ContactListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_CONTACT_LIST.title), description =  getString(Info.INFO_CONTACT_LIST.description))))
+            showInfoScreen()
         }
     }
 
-    private fun setFragmentResultListeners() {
+    override fun setFragmentResultListeners() {
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
             conditionFilterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
             setContactConditionFilter()
@@ -138,5 +136,11 @@ open class ContactListFragment :
     override fun getData() {
         Log.e("adapterTAG", "ContactListFragment getData()")
         viewModel.getContactList(swipeRefresh?.isRefreshing.isTrue())
+    }
+
+    override fun showInfoScreen() {
+        findNavController().navigate(ContactListFragmentDirections.startInfoFragment(info = InfoData(
+            title = getString(Info.INFO_CONTACT_LIST.title),
+            description = getString(Info.INFO_CONTACT_LIST.description))))
     }
 }

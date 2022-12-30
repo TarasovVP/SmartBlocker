@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.smartblocker.ui.start.sign_up.SignUpFragment"
+        android:name="com.tarasovvp.smartblocker.ui.start.sign_up.SignUpViewModelFragment"
         android:label="@string/sign_up" />
 
     <fragment
@@ -191,7 +191,7 @@
 
     <fragment
         android:id="@+id/numberDataDetailFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail.NumberDataDetailFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail.NumberDataDetailsFragment"
         android:label="@string/number">
         <argument
             android:name="numberData"
@@ -285,12 +285,12 @@
 
     <fragment
         android:id="@+id/settingsReviewFragment"
-        android:name="com.tarasovvp.smartblocker.ui.settings.settings_review.SettingsReviewFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.settings_review.SettingsReviewViewModelFragment"
         android:label="@string/settings_review" />
 
     <fragment
         android:id="@+id/settingsPrivacyFragment"
-        android:name="com.tarasovvp.smartblocker.ui.settings.settings_privacy.SettingsPrivacyFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.settings_privacy.SettingsPrivacyViewModelFragment"
         android:label="@string/settings_privacy" />
 
     <dialog

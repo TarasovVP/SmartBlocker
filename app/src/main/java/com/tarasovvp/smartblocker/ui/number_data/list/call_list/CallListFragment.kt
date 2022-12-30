@@ -63,7 +63,7 @@ class CallListFragment :
         }
     }
 
-    override fun initView() {
+    override fun initViews() {
         binding?.apply {
             swipeRefresh = callListRefresh
             recyclerView = callListRecyclerView
@@ -75,8 +75,6 @@ class CallListFragment :
             searchQuery = it
         }
         setCallConditionFilter()
-        setClickListeners()
-        setFragmentResultListeners()
     }
 
     private fun setCallConditionFilter() {
@@ -99,7 +97,7 @@ class CallListFragment :
         }
     }
 
-    private fun setClickListeners() {
+    override fun setClickListeners() {
         binding?.callListCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
             binding?.callListCheck?.isChecked = binding?.callListCheck?.isChecked.isTrue().not()
@@ -108,11 +106,11 @@ class CallListFragment :
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray()))
         }
         binding?.callListInfo?.setSafeOnClickListener {
-            findNavController().navigate(CallListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_CALL_LIST.title), description =  getString(Info.INFO_CALL_LIST.description))))
+            showInfoScreen()
         }
     }
 
-    private fun setFragmentResultListeners() {
+    override fun setFragmentResultListeners() {
         setFragmentResultListener(FILTER_ACTION) { _, _ ->
             viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
         }
@@ -226,5 +224,11 @@ class CallListFragment :
 
     override fun getData() {
         viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())
+    }
+
+    override fun showInfoScreen() {
+        findNavController().navigate(CallListFragmentDirections.startInfoFragment(info = InfoData(
+            title = getString(Info.INFO_CALL_LIST.title),
+            description = getString(Info.INFO_CALL_LIST.description))))
     }
 }

@@ -18,18 +18,21 @@ import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.FragmentFilterAddBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
+import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
+import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.number_data.details.NumberDataAdapter
+import com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail.NumberDataDetailsFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 open class FilterAddFragment :
-    BaseDetailFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
+    BaseDetailsFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
 
     override var layoutId = R.layout.fragment_filter_add
     override val viewModelClass = FilterAddViewModel::class.java
@@ -281,5 +284,16 @@ open class FilterAddFragment :
                 FilterAddFragmentDirections.startBlockerListFragment()
             else FilterAddFragmentDirections.startPermissionListFragment())
         }
+    }
+
+    override fun showInfoScreen() {
+        val info = when {
+            binding?.filter?.isTypeStart().isTrue() -> Info.INFO_FILTER_ADD_START
+            binding?.filter?.isTypeContain().isTrue() -> Info.INFO_FILTER_ADD_CONTAIN
+            else -> Info.INFO_FILTER_ADD_FULL
+        }
+        findNavController().navigate(NumberDataDetailsFragmentDirections.startInfoFragment(info = InfoData(
+            title = getString(info.title),
+            description = getString(info.description))))
     }
 }

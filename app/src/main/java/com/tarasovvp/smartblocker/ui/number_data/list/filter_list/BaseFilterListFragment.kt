@@ -19,7 +19,6 @@ import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.contact_list.ContactListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
@@ -58,7 +57,7 @@ open class BaseFilterListFragment :
         }
     }
 
-    override fun initView() {
+    override fun initViews() {
         Log.e("adapterTAG",
             "FilterListFragment initView selectedFilterItems $conditionFilterIndexes")
         findNavController().currentDestination?.label =
@@ -71,8 +70,6 @@ open class BaseFilterListFragment :
             filterListRecyclerView.hideKeyboardWithLayoutTouch()
         }
         setFilterConditionFilter()
-        setClickListeners()
-        setFragmentResultListeners()
     }
 
     private fun setFilterConditionFilter() {
@@ -89,7 +86,7 @@ open class BaseFilterListFragment :
         }
     }
 
-    private fun setClickListeners() {
+    override fun setClickListeners() {
         binding?.filterListFilter?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
             binding?.filterListFilter?.isChecked =
@@ -103,11 +100,7 @@ open class BaseFilterListFragment :
             })
         }
         binding?.filterListInfo?.setSafeOnClickListener {
-            if (this is BlockerListFragment) {
-                findNavController().navigate(BlockerListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_BLOCKER_LIST.title), description =  getString(Info.INFO_CONTACT_LIST.description))))
-            } else {
-                findNavController().navigate(PermissionListFragmentDirections.startInfoFragment(info = InfoData(title = getString(Info.INFO_PERMISSION_LIST.title), description =  getString(Info.INFO_CONTACT_LIST.description))))
-            }
+            showInfoScreen()
         }
         binding?.filterListFabMenu?.setFabClickListener { conditionType ->
             startNextScreen(Filter().apply {
@@ -118,7 +111,7 @@ open class BaseFilterListFragment :
         }
     }
 
-    private fun setFragmentResultListeners() {
+    override fun setFragmentResultListeners() {
         setFragmentResultListener(FILTER_ACTION) { _, _ ->
             if (BlackListerApp.instance?.isLoggedInUser().isTrue()
                 && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
@@ -273,6 +266,18 @@ open class BaseFilterListFragment :
             "FilterList getData() filterList.size ${filterList?.size} selectedFilterItems ${conditionFilterIndexes?.joinToString()}")
         viewModel.getFilterList(this is BlockerListFragment,
             swipeRefresh?.isRefreshing.isTrue())
+    }
+
+    override fun showInfoScreen() {
+        if (this is BlockerListFragment) {
+            findNavController().navigate(BlockerListFragmentDirections.startInfoFragment(info = InfoData(
+                title = getString(Info.INFO_BLOCKER_LIST.title),
+                description = getString(Info.INFO_CONTACT_LIST.description))))
+        } else {
+            findNavController().navigate(PermissionListFragmentDirections.startInfoFragment(info = InfoData(
+                title = getString(Info.INFO_PERMISSION_LIST.title),
+                description = getString(Info.INFO_CONTACT_LIST.description))))
+        }
     }
 }
 

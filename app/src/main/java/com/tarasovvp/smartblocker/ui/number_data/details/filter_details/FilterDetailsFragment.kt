@@ -11,17 +11,21 @@ import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentFilterDetailBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
+import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.base.BaseDetailFragment
+import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
+import com.tarasovvp.smartblocker.ui.base.BaseNumberDataFragment
 import com.tarasovvp.smartblocker.ui.number_data.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.number_data.details.SingleDetailsFragment
+import com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail.NumberDataDetailsFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class FilterDetailsFragment :
-    BaseDetailFragment<FragmentFilterDetailBinding, FilterDetailsViewModel>() {
+    BaseDetailsFragment<FragmentFilterDetailBinding, FilterDetailsViewModel>() {
 
     override var layoutId = R.layout.fragment_filter_detail
     override val viewModelClass = FilterDetailsViewModel::class.java
@@ -155,5 +159,11 @@ class FilterDetailsFragment :
                 else FilterDetailsFragmentDirections.startPermissionListFragment())
             }
         }
+    }
+
+    override fun showInfoScreen() {
+        findNavController().navigate(NumberDataDetailsFragmentDirections.startInfoFragment(info = InfoData(
+            title = getString(Info.INFO_FILTER_DETAIL.title),
+            description = getString(Info.INFO_FILTER_DETAIL.description))))
     }
 }
