@@ -212,9 +212,6 @@
             android:id="@+id/startSettingsThemeFragment"
             app:destination="@id/settingsThemeFragment" />
         <action
-            android:id="@+id/startSettingsEvaluateDialog"
-            app:destination="@id/settingsEvaluateDialog" />
-        <action
             android:id="@+id/startSettingsReviewFragment"
             app:destination="@id/settingsReviewFragment" />
         <action
@@ -257,10 +254,6 @@
         android:id="@+id/settingsThemeFragment"
         android:name="com.tarasovvp.smartblocker.ui.settings.settings_theme.SettingsThemeFragment"
         android:label="@string/settings_theme" />
-
-    <dialog
-        android:id="@+id/settingsEvaluateDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.SettingsEvaluateDialog" />
 
     <fragment
         android:id="@+id/settingsReviewFragment"

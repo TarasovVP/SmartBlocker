@@ -12,12 +12,14 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.END_CALL
@@ -127,5 +129,22 @@ fun ViewGroup.hideKeyboardWithLayoutTouch() {
     setOnTouchListener { v, event ->
         hideKeyboard()
         v?.onTouchEvent(event) ?: true
+    }
+}
+
+//TODO implement after releasing
+fun Activity.launchReviewFlow() {
+    ReviewManagerFactory.create(this).apply {
+        val request = requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val flow = launchReviewFlow(this@launchReviewFlow, task.result)
+                flow.addOnCompleteListener {
+
+                }
+            } else {
+
+            }
+        }
     }
 }

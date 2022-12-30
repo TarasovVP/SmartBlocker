@@ -59,7 +59,7 @@ dependencies {
     implementation 'androidx.test:rules:1.5.0'
     implementation "androidx.fragment:fragment-ktx:1.5.4"
 
-    //testing
+    //Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
@@ -68,6 +68,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
     implementation 'com.google.android.gms:play-services-auth:20.4.0'
 
+    //Review
+    implementation("com.google.android.play:review:2.0.1")
+    implementation("com.google.android.play:review-ktx:2.0.1")
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
