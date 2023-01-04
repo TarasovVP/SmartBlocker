@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredNumberDataList
 import com.tarasovvp.smartblocker.extensions.systemContactList
@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 object ContactRepository {
 
-    private val contactDao = BlackListerApp.instance?.database?.contactDao()
+    private val contactDao = SmartBlockerApp.instance?.database?.contactDao()
 
     suspend fun insertContacts(list: List<Contact>) {
         contactDao?.insertAllContacts(list)

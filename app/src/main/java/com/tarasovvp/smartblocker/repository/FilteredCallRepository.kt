@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.repository
 
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.FilteredCall
@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.models.FilteredCall
 object FilteredCallRepository {
 
     private val realDataBaseRepository = RealDataBaseRepository
-    private val filteredCallDao = BlackListerApp.instance?.database?.filteredCallDao()
+    private val filteredCallDao = SmartBlockerApp.instance?.database?.filteredCallDao()
 
     suspend fun insertAllFilteredCalls(filteredCallList: ArrayList<FilteredCall>) {
         filteredCallDao?.deleteAllFilteredCalls()
@@ -16,7 +16,7 @@ object FilteredCallRepository {
     }
 
     fun insertFilteredCall(filteredCall: FilteredCall) {
-        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilteredCall(filteredCall) {
                 filteredCallDao?.insertFilteredCall(filteredCall)
             }
@@ -38,7 +38,7 @@ object FilteredCallRepository {
     }
 
     fun deleteFilteredCalls(filteredCallList: List<Call>, result: () -> Unit) {
-        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilteredCallList(filteredCallList) {
                 filteredCallDao?.deleteFilteredCalls(filteredCallList.map { it.callId })
                 result.invoke()

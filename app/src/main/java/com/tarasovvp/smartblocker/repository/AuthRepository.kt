@@ -4,12 +4,12 @@ import android.content.Intent
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 
 object AuthRepository {
 
-    private val auth = BlackListerApp.instance?.auth
+    private val auth = SmartBlockerApp.instance?.auth
     private val currentUser = FirebaseAuth.getInstance().currentUser
 
     fun sendPasswordResetEmail(email: String, result: () -> Unit) {
@@ -93,13 +93,13 @@ object AuthRepository {
 
     fun signOut(result: () -> Unit) {
         auth?.signOut()
-        BlackListerApp.instance?.googleSignInClient?.signOut()
+        SmartBlockerApp.instance?.googleSignInClient?.signOut()
         result.invoke()
     }
 
     private fun sendExceptionBroadCast(exception: String) {
         val intent = Intent(EXCEPTION)
         intent.putExtra(EXCEPTION, exception)
-        BlackListerApp.instance?.sendBroadcast(intent)
+        SmartBlockerApp.instance?.sendBroadcast(intent)
     }
 }

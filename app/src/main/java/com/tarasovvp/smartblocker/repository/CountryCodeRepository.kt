@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.extensions.countryCodeList
 import com.tarasovvp.smartblocker.models.CountryCode
@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 object CountryCodeRepository {
 
-    private val countryCodeDao = BlackListerApp.instance?.database?.countryCodeDao()
+    private val countryCodeDao = SmartBlockerApp.instance?.database?.countryCodeDao()
 
     suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
         withContext(

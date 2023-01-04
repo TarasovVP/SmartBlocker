@@ -2,11 +2,7 @@ package com.tarasovvp.smartblocker.ui.settings.settings_review
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.BlackListerApp
-import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
-import com.tarasovvp.smartblocker.models.CountryCode
-import com.tarasovvp.smartblocker.repository.CountryCodeRepository
+import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
@@ -14,17 +10,13 @@ class SettingsReviewViewModel(application: Application) : BaseViewModel(applicat
 
     private val realDataBaseRepository = RealDataBaseRepository
 
-    val successBlockHiddenLiveData = MutableLiveData<Boolean>()
+    val successReviewLiveData = MutableLiveData<String>()
 
-    fun changeBlockHidden(blockHidden: Boolean) {
+    fun insertReview(review: Review) {
         showProgress()
         launch {
-            if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
-                realDataBaseRepository.changeBlockHidden(blockHidden) {
-                    successBlockHiddenLiveData.postValue(blockHidden)
-                }
-            } else {
-                SharedPreferencesUtil.blockHidden = blockHidden
+            realDataBaseRepository.insertReview(review) {
+                successReviewLiveData.postValue(review.message)
             }
             hideProgress()
         }

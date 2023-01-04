@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.ui.settings.settings_blocker
 
 import android.os.Bundle
 import android.view.View
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.extensions.isNotTrue
@@ -53,8 +53,8 @@ class SettingsBlockerFragment :
                 settingsBlockerHiddenDescribe.text =
                     getString(if (isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
                 if (compoundButton.isPressed) {
-                    if (BlackListerApp.instance?.isLoggedInUser()
-                            .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
+                    if (SmartBlockerApp.instance?.isLoggedInUser()
+                            .isTrue() && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
                     ) {
                         showMessage(getString(R.string.unavailable_network_repeat), true)
                     } else {

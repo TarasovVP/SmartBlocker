@@ -22,7 +22,7 @@ import com.tarasovvp.smartblocker.local.Settings
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import java.util.*
 
-class BlackListerApp : Application() {
+class SmartBlockerApp : Application() {
 
     var database: AppDatabase? = null
     var auth: FirebaseAuth? = null
@@ -61,6 +61,6 @@ class BlackListerApp : Application() {
     fun isLoggedInUser() = auth?.currentUser.isNotNull().isTrue()
 
     companion object {
-        var instance: BlackListerApp? = null
+        var instance: SmartBlockerApp? = null
     }
 }

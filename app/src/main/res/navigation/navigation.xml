@@ -285,12 +285,18 @@
 
     <fragment
         android:id="@+id/settingsReviewFragment"
-        android:name="com.tarasovvp.smartblocker.ui.settings.settings_review.SettingsReviewViewModelFragment"
-        android:label="@string/settings_review" />
+        android:name="com.tarasovvp.smartblocker.ui.settings.settings_review.SettingsReviewFragment"
+        android:label="@string/settings_review" >
+        <action
+            android:id="@+id/startLoginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@+id/mainNavigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsPrivacyFragment"
-        android:name="com.tarasovvp.smartblocker.ui.settings.settings_privacy.SettingsPrivacyViewModelFragment"
+        android:name="com.tarasovvp.smartblocker.ui.settings.settings_privacy.SettingsPrivacyFragment"
         android:label="@string/settings_privacy" />
 
     <dialog

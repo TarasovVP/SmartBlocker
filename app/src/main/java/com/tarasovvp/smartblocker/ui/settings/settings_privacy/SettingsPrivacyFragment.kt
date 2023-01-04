@@ -7,7 +7,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentSettingsPrivacyBinding
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 
-class SettingsPrivacyViewModelFragment :
+class SettingsPrivacyFragment :
     BaseFragment<FragmentSettingsPrivacyBinding, SettingsPrivacyViewModel>() {
 
     override var layoutId = R.layout.fragment_settings_privacy

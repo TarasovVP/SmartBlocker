@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isNull
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.systemLogCallList
@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 object CallRepository {
 
-    private val callDao = BlackListerApp.instance?.database?.logCallDao()
+    private val callDao = SmartBlockerApp.instance?.database?.logCallDao()
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>) {
         callDao?.insertAllLogCalls(logCallList)

@@ -2,27 +2,26 @@ package com.tarasovvp.smartblocker.repository
 
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
+import com.tarasovvp.smartblocker.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.constants.Constants.USERS
-import com.tarasovvp.smartblocker.models.Call
-import com.tarasovvp.smartblocker.models.CurrentUser
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.FilteredCall
+import com.tarasovvp.smartblocker.models.*
 
 object RealDataBaseRepository {
 
     var database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
     private var currentUserDatabase =
-        database.child(USERS).child(BlackListerApp.instance?.auth?.currentUser?.uid.orEmpty())
+        database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
+    private var reviewsDatabase = database.child(REVIEWS)
 
     fun getCurrentUser(result: (CurrentUser?) -> Unit) {
         if (currentUserDatabase.key == USERS) currentUserDatabase =
-            currentUserDatabase.child(BlackListerApp.instance?.auth?.currentUser?.uid.orEmpty())
+            currentUserDatabase.child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -108,9 +107,19 @@ object RealDataBaseRepository {
             }
     }
 
+    fun insertReview(review: Review, result: () -> Unit) {
+        reviewsDatabase.child(review.time.toString()).setValue(review)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful.not()) return@addOnCompleteListener
+                result.invoke()
+            }.addOnFailureListener {
+                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+            }
+    }
+
     private fun sendExceptionBroadCast(exception: String) {
         val intent = Intent(EXCEPTION)
         intent.putExtra(EXCEPTION, exception)
-        BlackListerApp.instance?.sendBroadcast(intent)
+        SmartBlockerApp.instance?.sendBroadcast(intent)
     }
 }

@@ -6,7 +6,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
@@ -61,8 +61,8 @@ open class FilterAddFragment :
     override fun setClickListeners() {
         binding?.apply {
             filterAddSubmit.setSafeOnClickListener {
-                if (BlackListerApp.instance?.isLoggedInUser()
-                        .isTrue() && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
+                if (SmartBlockerApp.instance?.isLoggedInUser()
+                        .isTrue() && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
                 ) {
                     showMessage(getString(R.string.unavailable_network_repeat), true)
                 } else {

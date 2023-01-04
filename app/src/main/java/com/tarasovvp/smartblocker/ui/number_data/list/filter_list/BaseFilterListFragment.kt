@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.ui.number_data.list.filter_list
 import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
@@ -113,8 +113,8 @@ open class BaseFilterListFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(FILTER_ACTION) { _, _ ->
-            if (BlackListerApp.instance?.isLoggedInUser().isTrue()
-                && BlackListerApp.instance?.isNetworkAvailable.isNotTrue()
+            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()
+                && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
             ) {
                 showMessage(getString(R.string.unavailable_network_repeat), true)
             } else {

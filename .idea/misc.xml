@@ -189,7 +189,7 @@
         <entry key="app/src/main/res/layout/fragment_settings_language.xml" value="0.42892156862745096" />
         <entry key="app/src/main/res/layout/fragment_settings_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_settings_privacy.xml" value="0.24947916666666667" />
-        <entry key="app/src/main/res/layout/fragment_settings_review.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/fragment_settings_review.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_settings_theme.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.4886025768087215" />
         <entry key="app/src/main/res/layout/fragment_single_filter_details.xml" value="0.10235507246376811" />

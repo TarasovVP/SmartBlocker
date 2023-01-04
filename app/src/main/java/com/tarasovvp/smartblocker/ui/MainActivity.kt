@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
@@ -118,13 +118,13 @@ class MainActivity : AppCompatActivity() {
         observeLiveData()
         Log.e("getAllDataTAG",
             "MainActivity isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen} isLoggedInUser ${
-                BlackListerApp.instance?.isLoggedInUser().isTrue()
+                SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             } savedInstanceState ${savedInstanceState.isNull()}")
         if (SharedPreferencesUtil.isOnBoardingSeen
-            && BlackListerApp.instance?.isLoggedInUser().isTrue()
+            && SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             && savedInstanceState.isNull()
         ) {
-            if (BlackListerApp.instance?.isNetworkAvailable.isNotTrue()) {
+            if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
                 navController?.navigate(R.id.startUnavailableNetworkDialog)
             } else {
                 if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
             navGraph.setStartDestination(
                 when {
                     SharedPreferencesUtil.isOnBoardingSeen.not() -> R.id.onBoardingFragment
-                    BlackListerApp.instance?.isLoggedInUser().isTrue() -> {
+                    SmartBlockerApp.instance?.isLoggedInUser().isTrue() -> {
                         R.id.blockerListFragment
                     }
                     else -> R.id.loginFragment
@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("getAllDataTAG",
                 "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true) isChangingConfigurations $isChangingConfigurations isFinishing $isFinishing")
             setMainProgressVisibility(true)
-            if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                 Log.e("getAllDataTAG",
                     "MainActivity getCurrentUser BlackListerApp.instance?.isLoggedInUser().isTrue() getCurrentUser()")
                 mainViewModel.getCurrentUser()

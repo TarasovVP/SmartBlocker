@@ -6,7 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.CHANGE_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.CURRENT_PASSWORD
@@ -55,11 +55,11 @@ class SettingsAccountFragment :
         binding?.apply {
             includeEmptyState.emptyState = EmptyState.EMPTY_STATE_ACCOUNT
             includeEmptyState.root.isVisible =
-                BlackListerApp.instance?.isLoggedInUser().isNotTrue()
+                SmartBlockerApp.instance?.isLoggedInUser().isNotTrue()
             settingsAccountLogin.isVisible =
-                BlackListerApp.instance?.isLoggedInUser().isNotTrue()
-            settingsAccountName.text = BlackListerApp.instance?.auth?.currentUser?.email
-            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(BlackListerApp.instance?.auth?.currentUser?.email.nameInitial()))
+                SmartBlockerApp.instance?.isLoggedInUser().isNotTrue()
+            settingsAccountName.text = SmartBlockerApp.instance?.auth?.currentUser?.email
+            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SmartBlockerApp.instance?.auth?.currentUser?.email.nameInitial()))
         }
     }
 
@@ -87,7 +87,7 @@ class SettingsAccountFragment :
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
                 SharedPreferencesUtil.clearAll()
-                BlackListerApp.instance?.database?.clearAllTables()
+                SmartBlockerApp.instance?.database?.clearAllTables()
                 showMessage(getString(R.string.operation_succeeded), false)
                 (activity as MainActivity).apply {
                     finish()

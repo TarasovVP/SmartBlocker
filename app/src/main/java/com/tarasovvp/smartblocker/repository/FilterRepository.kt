@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.repository
 
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredFilterList
 import com.tarasovvp.smartblocker.extensions.isTrue
@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 object FilterRepository {
 
     private val realDataBaseRepository = RealDataBaseRepository
-    private val filterDao = BlackListerApp.instance?.database?.filterDao()
+    private val filterDao = SmartBlockerApp.instance?.database?.filterDao()
 
     suspend fun getHashMapFromFilterList(filterList: List<Filter>): Map<String, List<Filter>> =
         withContext(Dispatchers.Default) {
@@ -39,7 +39,7 @@ object FilterRepository {
     }
 
     fun updateFilter(filter: Filter, result: () -> Unit) {
-        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilter(filter) {
                 filterDao?.updateFilter(filter)
                 result.invoke()
@@ -51,7 +51,7 @@ object FilterRepository {
     }
 
     fun insertFilter(filter: Filter, result: () -> Unit) {
-        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilter(filter) {
                 filterDao?.insertFilter(filter)
                 result.invoke()
@@ -63,7 +63,7 @@ object FilterRepository {
     }
 
     fun deleteFilterList(filterList: List<Filter>, result: () -> Unit) {
-        if (BlackListerApp.instance?.isLoggedInUser().isTrue()) {
+        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilterList(filterList) {
                 filterList.forEach { filter ->
                     filterDao?.delete(filter)

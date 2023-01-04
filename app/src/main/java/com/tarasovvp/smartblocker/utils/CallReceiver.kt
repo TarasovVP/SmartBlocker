@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
@@ -28,7 +28,7 @@ open class CallReceiver(private val phoneListener: (String) -> Unit) : Broadcast
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            BlackListerApp.instance?.apply {
+            SmartBlockerApp.instance?.apply {
                 phoneListener.invoke(String.format(this.getString(R.string.blocked_calls),
                     filteredCallRepository.allFilteredCalls()?.size))
             }

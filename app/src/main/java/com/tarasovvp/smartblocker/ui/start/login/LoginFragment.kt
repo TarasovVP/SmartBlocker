@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.constants.Constants.FORGOT_PASSWORD
@@ -60,7 +60,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.inputText()))
             }
             loginGoogleAuth.setSafeOnClickListener {
-                googleSignInLauncher.launch(BlackListerApp.instance?.googleSignInClient?.signInIntent)
+                googleSignInLauncher.launch(SmartBlockerApp.instance?.googleSignInClient?.signInIntent)
             }
         }
     }
@@ -84,7 +84,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 Log.e("authTAG",
-                    "LoginFragment successSignInLiveData auth?.uid ${BlackListerApp.instance?.auth?.uid}")
+                    "LoginFragment successSignInLiveData auth?.uid ${SmartBlockerApp.instance?.auth?.uid}")
                 (activity as MainActivity).apply {
                     Log.e("blockerTAG",
                         "LoginFragment this $this SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not() ${SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()}")
@@ -93,7 +93,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 }
                 findNavController().navigate(R.id.blockerListFragment)
                 Log.e("authTAG",
-                    "LoginFragment successSignInLiveData navigate(R.id.blackFilterListFragment) auth?.uid ${BlackListerApp.instance?.auth?.uid}")
+                    "LoginFragment successSignInLiveData navigate(R.id.blackFilterListFragment) auth?.uid ${SmartBlockerApp.instance?.auth?.uid}")
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.password_reset_text), false)

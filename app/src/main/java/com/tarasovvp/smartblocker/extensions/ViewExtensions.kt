@@ -243,7 +243,7 @@ fun WebSettings.initWebSettings() {
     setSupportZoom(true)
     builtInZoomControls = true
     displayZoomControls = true
-    textZoom = 125
+    textZoom = 225
     blockNetworkImage = false
     loadsImagesAutomatically = true
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

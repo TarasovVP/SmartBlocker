@@ -7,6 +7,7 @@ object Constants {
     const val SERVER_CLIENT_ID =
         "865166794508-5muqsbokmlifd918hpq0u1g0co38ck4c.apps.googleusercontent.com"
     const val USERS = "users"
+    const val REVIEWS = "reviews"
     const val PLUS_CHAR = '+'
     const val MASK_CHAR = '_'
     const val COUNTRY_CODE_START = "+%s"

@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.ui.settings.settings_account
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.BlackListerApp
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.repository.AuthRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
@@ -24,7 +24,7 @@ class SettingsAccountViewModel(application: Application) : BaseViewModel(applica
     fun changePassword(currentPassword: String, newPassword: String) {
         showProgress()
         authRepository.changePassword(currentPassword, newPassword) {
-            BlackListerApp.instance?.auth = null
+            SmartBlockerApp.instance?.auth = null
             successChangePasswordLiveData.postValue(true)
             hideProgress()
         }
