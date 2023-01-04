@@ -14,7 +14,6 @@ import com.tarasovvp.smartblocker.extensions.isNotTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
-import com.tarasovvp.smartblocker.ui.settings.settings_account.SettingsAccountFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
@@ -27,6 +26,7 @@ class SettingsReviewFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        setClickListeners()
     }
 
     private fun initViews() {
@@ -39,6 +39,11 @@ class SettingsReviewFragment :
             settingsReviewInput.doAfterTextChanged {
                 binding?.settingsReviewSend?.isEnabled = it.toString().isNotBlank()
             }
+        }
+    }
+
+    private fun setClickListeners() {
+        binding?.apply {
             settingsReviewSend.setSafeOnClickListener {
                 viewModel.insertReview(Review(user = SmartBlockerApp.instance?.auth?.currentUser?.email.orEmpty(),
                     message = settingsReviewInput.text.toString(),
@@ -54,7 +59,8 @@ class SettingsReviewFragment :
 
     override fun observeLiveData() {
         viewModel.successReviewLiveData.safeSingleObserve(viewLifecycleOwner) { review ->
-            showMessage(String.format(getString(R.string.settings_review_send_success), review), false)
+            showMessage(String.format(getString(R.string.settings_review_send_success), review),
+                false)
             binding?.settingsReviewInput?.text?.clear()
         }
     }
