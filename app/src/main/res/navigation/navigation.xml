@@ -240,8 +240,8 @@
             android:id="@+id/startSettingsThemeFragment"
             app:destination="@id/settingsThemeFragment" />
         <action
-            android:id="@+id/startSettingsReviewFragment"
-            app:destination="@id/settingsReviewFragment" />
+            android:id="@+id/startSettingsReviewDialog"
+            app:destination="@id/settingsReviewDialog" />
         <action
             android:id="@+id/startSettingsPrivacyFragment"
             app:destination="@id/settingsPrivacyFragment" />
@@ -283,16 +283,9 @@
         android:name="com.tarasovvp.smartblocker.ui.settings.settings_theme.SettingsThemeFragment"
         android:label="@string/settings_theme" />
 
-    <fragment
-        android:id="@+id/settingsReviewFragment"
-        android:name="com.tarasovvp.smartblocker.ui.settings.settings_review.SettingsReviewFragment"
-        android:label="@string/settings_review" >
-        <action
-            android:id="@+id/startLoginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@+id/mainNavigation"
-            app:popUpToInclusive="true" />
-    </fragment>
+    <dialog
+        android:id="@+id/settingsReviewDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.SettingsReviewDialog" />
 
     <fragment
         android:id="@+id/settingsPrivacyFragment"

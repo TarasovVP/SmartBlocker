@@ -53,4 +53,5 @@ object Constants {
     const val ASC = "ASC"
     const val FILTER_CONDITION_LIST = "filterConditionList"
     const val FILTER_ACTION = "filterAction"
+    const val SETTINGS_REVIEW = "settingsReview"
 }

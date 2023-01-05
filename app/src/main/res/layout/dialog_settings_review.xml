@@ -5,26 +5,40 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/padding_16"
+        android:layout_height="wrap_content"
         tools:context=".ui.settings.settings_list.SettingsListFragment">
+
+        <Button
+            android:id="@+id/settings_review_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_16"
+            style="@style/Button.Icon"
+            app:icon="@drawable/ic_close_small"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/settings_review_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_16"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:paddingHorizontal="@dimen/padding_16"
             android:text="@string/settings_review_title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/settings_review_input_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_marginTop="16dp"
+            android:layout_margin="16dp"
             app:counterEnabled="true"
             app:counterMaxLength="300"
             app:counterTextColor="@color/text_color_grey"
+            app:layout_constraintBottom_toTopOf="@+id/settings_review_send"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_review_title">
@@ -36,7 +50,7 @@
                 android:ems="10"
                 android:gravity="top"
                 android:hint="@string/settings_review_hint"
-                android:background="@drawable/bg_rounded"
+                android:background="@drawable/bg_   rounded"
                 android:inputType="textMultiLine"
                 android:minLines="5"
                 android:maxLines="5"
@@ -45,32 +59,16 @@
 
         <Button
             android:id="@+id/settings_review_send"
-            android:layout_width="@dimen/size_0"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
             android:enabled="false"
             android:text="@string/settings_review_send_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_review_input_layout" />
-
-        <include
-            android:id="@+id/include_empty_state"
-            layout="@layout/include_empty_state"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
-            app:layout_constraintBottom_toTopOf="@+id/settings_review_login"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/settings_review_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_24"
-            android:text="@string/login"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/settings_review_input_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
