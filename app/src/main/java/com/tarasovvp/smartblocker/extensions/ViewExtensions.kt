@@ -5,14 +5,12 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.TextAppearanceSpan
 import android.view.*
-import android.webkit.WebSettings
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -235,28 +233,4 @@ fun EditText.setupClearButtonWithAction() {
         }
         return@OnTouchListener false
     })
-}
-
-fun WebSettings.initWebSettings() {
-    javaScriptEnabled = true
-    cacheMode = WebSettings.LOAD_DEFAULT
-    setSupportZoom(true)
-    builtInZoomControls = true
-    displayZoomControls = true
-    textZoom = 115
-    blockNetworkImage = false
-    loadsImagesAutomatically = true
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        safeBrowsingEnabled = true
-    }
-    useWideViewPort = true
-    loadWithOverviewMode = true
-    javaScriptCanOpenWindowsAutomatically = true
-    domStorageEnabled = true
-    setSupportMultipleWindows(true)
-    loadWithOverviewMode = true
-    allowContentAccess = true
-    setGeolocationEnabled(true)
-    allowUniversalAccessFromFileURLs = true
-    allowFileAccess = true
 }

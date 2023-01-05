@@ -4,12 +4,17 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true" >
+        android:fillViewport="true">
 
-        <WebView
-            android:id="@+id/settings_privacy_web_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
+
+            <WebView
+                android:id="@+id/settings_privacy_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>
 </layout>

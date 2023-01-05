@@ -23,7 +23,5 @@ enum class Info(
     INFO_NUMBER_DATA_DETAIL(R.string.number_data_detail_info,
         R.string.details_),
     INFO_FILTER_DETAIL(R.string.empty_state_account_description,
-        R.string.details_),
-    INFO_BLOCKED_CALL_DETAIL(R.string.empty_state_filters_by_contact_description,
         R.string.details_)
 }
