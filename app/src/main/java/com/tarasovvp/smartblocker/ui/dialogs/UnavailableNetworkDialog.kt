@@ -14,7 +14,7 @@ class UnavailableNetworkDialog : BaseDialog<DialogInfoBinding>() {
     override fun initUI() {
         binding?.dialogInfoTitle?.text = getString(R.string.unavailable_network)
         binding?.dialogInfoConfirm?.isVisible = false
-        binding?.dialogInfoCancel?.text = getString(R.string.ok)
+        binding?.dialogInfoCancel?.text = getString(R.string.button_ok)
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
             (activity as MainActivity).finish()

@@ -2,6 +2,31 @@
     <string name="app_name">Smart Blocker</string>
     <string name="app_id">ca-app-pub-8778007212154570~7562332036</string>
 
+    <!--Buttons-->
+    <string name="button_next">Дальше</string>
+    <string name="button_accept">Принять</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="button_ok">OK</string>
+    <!--Onboarding-->
+    <string name="onboarding_intro"><![CDATA[<b>Smart Blocker</b> - приложение, которое позволяет блокировать входящие вызовы через умные фильтры.]]></string>
+    <string name="onboarding_filter_conditions"><![CDATA[Фильтровать в <b>Smart Blocker</b> можно по трем признакам:<br/><img src =\'ic_condition_full\'>Полный номер - полное совпадение с входящим вызовом;<br/><img src =\'ic_condition_start\'>Начинается - совпадение по началу номера;<br/><img src =\'ic_condition_contain\'>Содержит - совпадение фильтра в любом месте входящего вызова.]]></string>
+    <string name="onboarding_filter_types"><![CDATA[Фильтры в <b>Smart Blocker</b> бывают двух типов:<br/><img src =\'ic_blocker\'>Блокировщики  - при совпадении фильтра блокируют входящий вызов;<br/><img src =\'ic_permission\'>Допуски - при совпадении допускают входящий вызов, даже если у него есть совпадение с блокировщиком.]]></string>
+    <string name="onboarding_permissions"><![CDATA[Для корректной работы <b>Smart Blocker</b> необходимо дать необходимые разрешения. Для этого выберите “Разрешить” в системных окнах, предложенных телефоном.]]></string>
+    <!--Authorization-->
+    <string name="authorization_entrance">Вход</string>
+    <string name="authorization_with_google_account">С помощью Google</string>
+    <string name="authorization_enter">Войти</string>
+    <string name="authorization_or">Или</string>
+    <string name="authorization_email">Почта</string>
+    <string name="authorization_password">Пароль</string>
+    <string name="authorization_sign_up">Регистрация</string>
+    <string name="authorization_forgot_password">Забыли пароль?</string>
+    <string name="authorization_continue_without_account">Без регистрации</string>
+    <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Ваш пароль</string>
+    <string name="authorization_signing_up">Зарегистрироваться</string>
+
+
+
     <string name="log_list_">Log_list_</string>
     <string name="contact_list_">Contacts_</string>
     <string name="settings_">Settings_</string>
@@ -10,9 +35,8 @@
     <string name="filter_list">Numbers</string>
     <string name="settings">Settings</string>
     <string name="login">Login</string>
-    <string name="next">Next</string>
-    <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
+
+
     <string name="delete">Delete %s?</string>
     <string name="change_filter">Change to %s?</string>
     <string name="delete_menu">Delete</string>
@@ -67,7 +91,7 @@
     <string name="blocker_list">Blockers</string>
     <string name="permission_list">Permission</string>
     <string name="enter_your_email">Enter Your Email</string>
-    <string name="forgot_password">Forgot password?</string>
+
     <string name="log_out">Do you want to log out of your account?</string>
     <string name="delete_account">Do you want to delete your account?</string>
     <string name="fill_data_press_button">For %s %s, fill in the input field and press the button</string>
@@ -87,18 +111,16 @@
     <string name="white_list_empty">No whitelist matches</string>
     <string name="block_add_info">May be %s %s numbers from your contact list</string>
     <string name="progress_title">Please wait. Data is being updated.</string>
-    <string name="log_in">Log in</string>
-    <string name="with_google_account">With google account</string>
+
     <string name="or_login_with_email">Or login with email</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+
     <string name="register">Register</string>
     <string name="continue_">Continue</string>
-    <string name="continue_without_account">Continue without account</string>
+
     <string name="sign_up_with_email">Sign up with email</string>
     <string name="name">Name</string>
     <string name="repeat_password">Repeat password</string>
-    <string name="sign_up">Sign up</string>
+
     <string name="settings_language_title">Select the application language:</string>
     <string name="app_theme_title">Select an app theme:</string>
     <string name="settings_back_ground_info">If you select the background mode, the blocking will be performed even with the application closed. Otherwise, blocking will be done only when the application is running.</string>
@@ -107,7 +129,7 @@
     <string name="add_conditions_info">If no application conditions are selected, the application will block numbers that exactly match the entered number. Please note that incoming calls contain a country code. If you are not sure about the accuracy of the code, select the \'contains\'</string>
     option
     <string name="add_to_list_title">Add number to filter</string>
-    <string name="forgot_password_title">Enter your email and we send new password on it</string>
+
     <string name="can_block">blocked</string>
     <string name="can_unblock">unblocked</string>
     <string name="success_">Success</string>
@@ -140,10 +162,7 @@
     <string name="unavailable_network_repeat">No internet connection.\nTo continue, please connect to the internet and try again.</string>
     <string name="blocked_call_log">Blocked</string>
     <string name="invalid">Invalid</string>
-    <string name="onboarding_intro"><![CDATA[<b>Smart Blocker</b> - приложение, которое позволяет блокировать входящие вызовы через умные фильтры.]]></string>
-    <string name="onboarding_filter_conditions"><![CDATA[Фильтровать в <b>Smart Blocker</b> можно по трем признакам:<br/><img src =\'ic_condition_full\'>Полный номер - полное совпадение с входящим вызовом;<br/><img src =\'ic_condition_start\'>Начинается - совпадение по началу номера;<br/><img src =\'ic_condition_contain\'>Содержит - совпадение фильтра в любом месте входящего вызова.]]></string>
-    <string name="onboarding_filter_types"><![CDATA[Фильтры в <b>Smart Blocker</b> бывают двух типов:<br/><img src =\'ic_blocker\'>Блокировщики  - при совпадении фильтра блокируют входящий вызов;<br/><img src =\'ic_permission\'>Допуски - при совпадении допускают входящий вызов, даже если у него есть совпадение с блокировщиком.]]></string>
-    <string name="onboarding_permissions"><![CDATA[Для корректной работы <b>Smart Blocker</b> необходимо дать необходимые разрешения. Для этого выберите “Разрешить” в системных окнах, предложенных телефоном.]]></string>
+
     <string name="filter_update">Number %s is updated</string>
     <string name="blocker">Блокировщик</string>
     <string name="permission">Допуск</string>
@@ -169,8 +188,7 @@
     <string name="number">Номер</string>
     <string name="close">Закрыть</string>
     <string name="empty" />
-    <string name="entrance">Вход</string>
-    <string name="or">Или</string>
+
     <!--Empty state-->
     <string name="empty_state_blockers">Список блокировщиков пуст</string>
     <string name="empty_state_permissions">Список допусков пуст</string>
@@ -186,7 +204,7 @@
     <string name="info">Инфо</string>
     <string name="statement">Выписка</string>
     <string name="preview">Результат</string>
-    <string name="enter">Войти</string>
+
     <string name="blocking_history">Блокировки</string>
     <string name="blocked_by_blocker">Заблокирован фильтром</string>
     <string name="permitted_by_permission">Допущен фильтром</string>
@@ -228,7 +246,7 @@
     <string name="without_filter_call">Без совпадения с фильтром</string>
     <string name="blocker_call_value">Заблокирован фильтром:&#160;</string>
     <string name="permission_call_value">Допущен фильтром:&#160;</string>
-    <string name="accept">Принять</string>
+
     <string name="country_choose">Выберите страну</string>
     <string name="numbers">Номера</string>
     <string name="info_blockers_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>

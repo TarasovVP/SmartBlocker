@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.tarasovvp.smartblocker.ui.start.onboarding.OnBoardingFragment">
+        android:name="com.tarasovvp.smartblocker.ui.authorization.onboarding.OnBoardingFragment">
         <action
             android:id="@+id/startLoginScreen"
             app:destination="@id/loginFragment"
@@ -16,8 +16,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tarasovvp.smartblocker.ui.start.login.LoginFragment"
-        android:label="@string/log_in">
+        android:name="com.tarasovvp.smartblocker.ui.authorization.login.LoginFragment" >
         <action
             android:id="@+id/startBlockerListFragment"
             app:destination="@id/blockerListFragment"
@@ -33,8 +32,8 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.smartblocker.ui.start.sign_up.SignUpViewModelFragment"
-        android:label="@string/sign_up" />
+        android:name="com.tarasovvp.smartblocker.ui.authorization.sign_up.SignUpFragment"
+        android:label="@string/authorization_sign_up" />
 
     <fragment
         android:id="@+id/blockerListFragment"

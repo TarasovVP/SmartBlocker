@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.start.onboarding
+package com.tarasovvp.smartblocker.ui.authorization.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

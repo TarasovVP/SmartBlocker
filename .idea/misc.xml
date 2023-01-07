@@ -126,6 +126,7 @@
         <entry key="app/src/main/res/drawable/selector_switch_thumb.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/selector_switch_track.xml" value="0.2785" />
         <entry key="app/src/main/res/drawable/selector_switch_view.xml" value="0.2785" />
+        <entry key="app/src/main/res/drawable/selector_toggle_password.xml" value="0.1655" />
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/switch_view_selector.xml" value="0.1695" />
@@ -144,10 +145,11 @@
         <entry key="app/src/main/res/layout/dialog_filter_action.xml" value="0.18906394810009267" />
         <entry key="app/src/main/res/layout/dialog_filter_codition.xml" value="0.3134057971014493" />
         <entry key="app/src/main/res/layout/dialog_filter_condition.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/dialog_forgot_password.xml" value="0.4152542372881356" />
+        <entry key="app/src/main/res/layout/dialog_forgot_password.xml" value="0.335" />
         <entry key="app/src/main/res/layout/dialog_info.xml" value="0.30117753623188404" />
         <entry key="app/src/main/res/layout/dialog_number_data_filtering.xml" value="0.22708333333333333" />
         <entry key="app/src/main/res/layout/dialog_settings_evaluate.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/dialog_settings_review.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_account_details.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_add.xml" value="0.30726256983240224" />
         <entry key="app/src/main/res/layout/fragment_add_container.xml" value="0.26856884057971014" />
@@ -173,10 +175,10 @@
         <entry key="app/src/main/res/layout/fragment_full_number_add.xml" value="0.26856884057971014" />
         <entry key="app/src/main/res/layout/fragment_info.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/fragment_log_list.xml" value="0.11145833333333334" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.307518115942029" />
         <entry key="app/src/main/res/layout/fragment_number_add.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/fragment_number_data_detail.xml" value="0.19166666666666668" />
+        <entry key="app/src/main/res/layout/fragment_number_data_detail.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_number_detail.xml" value="0.13404825737265416" />
         <entry key="app/src/main/res/layout/fragment_number_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_numebr_list.xml" value="0.18645833333333334" />
@@ -191,7 +193,7 @@
         <entry key="app/src/main/res/layout/fragment_settings_privacy.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/fragment_settings_review.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_settings_theme.xml" value="0.18229166666666666" />
-        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.4886025768087215" />
+        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_single_filter_details.xml" value="0.10235507246376811" />
         <entry key="app/src/main/res/layout/fragment_single_on_boarding.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/layout/fragment_single_onboarding.xml" value="0.125" />

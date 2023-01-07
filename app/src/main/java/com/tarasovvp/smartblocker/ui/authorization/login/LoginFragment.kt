@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.start.login
+package com.tarasovvp.smartblocker.ui.authorization.login
 
 import android.os.Bundle
 import android.util.Log

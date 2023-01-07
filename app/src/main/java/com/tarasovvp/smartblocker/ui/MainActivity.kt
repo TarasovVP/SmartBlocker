@@ -116,10 +116,6 @@ class MainActivity : AppCompatActivity() {
         setBottomNavigationView()
         setOnDestinationChangedListener()
         observeLiveData()
-        Log.e("getAllDataTAG",
-            "MainActivity isOnBoardingSeen ${SharedPreferencesUtil.isOnBoardingSeen} isLoggedInUser ${
-                SmartBlockerApp.instance?.isLoggedInUser().isTrue()
-            } savedInstanceState ${savedInstanceState.isNull()}")
         if (SharedPreferencesUtil.isOnBoardingSeen
             && SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             && savedInstanceState.isNull()
@@ -191,7 +187,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("destinationTAG", "MainActivity return@addOnDestinationChangedListener after")
             toolbar?.menu?.clear()
             toolbar?.isVisible =
-                destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment
+                destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment && destination.id != R.id.signUpFragment
         }
     }
 

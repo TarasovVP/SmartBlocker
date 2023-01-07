@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.start.onboarding
+package com.tarasovvp.smartblocker.ui.authorization.onboarding
 
 import android.os.Bundle
 import android.view.View

@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.start.onboarding
+package com.tarasovvp.smartblocker.ui.authorization.onboarding
 
 import android.os.Bundle
 import android.view.View
@@ -68,8 +68,8 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
                 super.onPageSelected(position)
                 currentPosition = position
                 binding?.onBoardingButton?.text =
-                    if (position == ACCEPT_PERMISSIONS_SCREEN) getString(R.string.accept) else getString(
-                        R.string.next)
+                    if (position == ACCEPT_PERMISSIONS_SCREEN) getString(R.string.button_accept) else getString(
+                        R.string.button_next)
             }
         })
     }

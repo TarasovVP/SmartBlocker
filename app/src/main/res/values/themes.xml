@@ -115,6 +115,7 @@
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="hintEnabled">false</item>
         <item name="colorAccent">@color/cornflower_blue</item>
+        <item name="passwordToggleDrawable">@drawable/selector_toggle_password</item>
     </style>
 
     <style name="CommonThemeOverlayFilledDense">

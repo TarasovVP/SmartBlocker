@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.start.sign_up
+package com.tarasovvp.smartblocker.ui.authorization.sign_up
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
