@@ -60,7 +60,6 @@
     <string name="block_hidden">Блокировать скрытые номера</string>
     <string name="change_password_succeed">Пароль успешно изменен</string>
     <string name="passwords_different">Пароли не совпадают</string>
-    <string name="empty_state_account_description">Вы вошли незарегистрированным пользователем. Для того, чтобы получить полный доступ войдите как зарегистрированный пользователь.</string>
     <string name="other">Другое</string>
     <string name="finance">Финансовое учреждение</string>
     <string name="collectors">Коллекторы</string>
@@ -137,7 +136,6 @@
     <string name="no_country_code">Без кода</string>
     <string name="no_in_contact_list">Нет в списке контактов</string>
     <string name="invalid_phone_number">Невалидный номер</string>
-    <string name="empty_state_query_description">По данному запросу ничего не найдено</string>
     <string name="condition_dialog_title">Выберите условие</string>
     <string name="unavailable_network">Отсутстует интернет соединение.\nДля продолжения подключите интернет и перезайдите в приложение.</string>
     <string name="unavailable_network_repeat">Отсутстует интернет соединение.\nДля продолжения подключите интернет и повторите действие.</string>

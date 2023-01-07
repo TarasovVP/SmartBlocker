@@ -44,7 +44,7 @@
             android:layout_height="@dimen/size_0"
             android:layout_marginTop="@dimen/margin_8"
             android:padding="@dimen/padding_16"
-            app:imageResource="@{emptyState.iconResource}"
+            android:src="@drawable/ic_empty_state"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

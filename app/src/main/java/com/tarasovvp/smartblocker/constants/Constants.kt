@@ -21,11 +21,13 @@ object Constants {
     const val LOG_CALL_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"
     const val END_CALL = "endCall"
+    //Call type
     const val OUT_COMING_CALL = "2"
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
     const val BLOCKED_CALL = "6"
     const val PERMITTED_CALL = "11"
+
     const val TIME_FORMAT = "HH:mm:ss"
     const val DATE_FORMAT = "dd.MM.yyyy"
     const val SECOND = 1000L
@@ -37,13 +39,16 @@ object Constants {
     const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val CALL_RECEIVE = "callReceive"
     const val APP_EXIT = "appExit"
+    //App languages
     const val APP_LANG_RU = "ru"
     const val APP_LANG_UK = "uk"
     const val APP_LANG_EN = "en"
+    //Passwords
     const val FORGOT_PASSWORD = "forgotPassword"
     const val CHANGE_PASSWORD = "changePassword"
     const val CURRENT_PASSWORD = "currentPassword"
     const val NEW_PASSWORD = "newPassword"
+
     const val DELETE_USER = "deleteUser"
     const val LOG_OUT = "logOut"
     const val COUNTRY_CODE = "countryCode"

@@ -43,18 +43,10 @@ open class FilterAddFragment :
 
     override fun initViews() {
         setFilterTextChangeListener()
-        Log.e("filterAddTAG",
-            "FilterAddFragment onViewCreated before args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
         binding?.filter = args.filterAdd?.apply {
             filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
         }
-        Log.e("filterAddTAG",
-            "FilterAddFragment onViewCreated after args.filter ${args.filterAdd} binding?.filter ${binding?.filter}")
-        binding?.filterAddEmptyList?.emptyState =
-            if (binding?.filter?.isBlocker()
-                    .isTrue()
-            ) EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_BLOCKER
-            else EmptyState.EMPTY_STATE_FILTERS_CONTACTS_BY_PERMISSION
+        binding?.filterAddEmptyList?.emptyState = EmptyState.EMPTY_STATE_ADD_FILTER
         binding?.executePendingBindings()
     }
 
@@ -74,8 +66,6 @@ open class FilterAddFragment :
                 }
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {
-                Log.e("countryCodeTAG",
-                    "FilterAddDialog filterAddCountryCodeSpinner currentDestination?.displayName ${findNavController().currentDestination?.displayName}")
                 if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {
                     findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
                 }
@@ -135,8 +125,6 @@ open class FilterAddFragment :
             filterAddContactList.hideKeyboardWithLayoutTouch()
             filterAddInput.setupClearButtonWithAction()
             filterAddInput.doAfterTextChanged {
-                Log.e("filterAddTAG",
-                    "FilterAddFragment setFilterTextChangeListener before editable $it numberFormat")
                 if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull()
                         .isTrue())
                     || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart()

@@ -58,7 +58,6 @@
     <string name="block_hidden">Блокувати приховані номери</string>
     <string name="change_password_succeed">Пароль успішно змінено</string>
     <string name="passwords_different">Паролі не співпадають</string>
-    <string name="empty_state_account_description">Ви увійшли незареєстрованим користувачем. Щоб отримати повний доступ, увійдіть як зареєстрований користувач.</string>
     <string name="other">Інше</string>
     <string name="finance">Фінансова установа</string>
     <string name="collectors">Коллектори</string>
@@ -135,7 +134,6 @@
     <string name="no_country_code">Без коду</string>
     <string name="no_in_contact_list">Немає у списку контактів</string>
     <string name="invalid_phone_number">Невалідний номер</string>
-    <string name="empty_state_query_description">За цим запитом нічого не знайдено</string>
     <string name="condition_dialog_title">Виберіть умову</string>
     <string name="unavailable_network">Відсутнє інтернет-з\'єднання.\nДля продовження підключіть інтернет і перезайдіть до програми.</string>
     <string name="unavailable_network_repeat">Відсутнє з\'єднання з Інтернетом.\nДля продовження підключіть інтернет і повторіть дію.</string>

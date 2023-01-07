@@ -45,11 +45,11 @@ class NumberDataDetailsFragment :
     }
 
     override fun createAdapter() {
-        filtersScreen = SingleDetailsFragment {
+        filtersScreen = SingleDetailsFragment(NumberData::class.simpleName.orEmpty()) {
             findNavController().navigate(NumberDataDetailsFragmentDirections.startFilterDetailFragment(
                 filterDetail = it as Filter))
         }
-        filteredCallsScreen = SingleDetailsFragment(true) {
+        filteredCallsScreen = SingleDetailsFragment(FilteredCall::class.simpleName.orEmpty()) {
             findNavController().navigate(NumberDataDetailsFragmentDirections.startFilterDetailFragment(
                 filterDetail = it as Filter))
         }

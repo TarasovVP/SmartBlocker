@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilteredCall
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
@@ -89,10 +90,10 @@ class FilterDetailsFragment :
     }
 
     override fun createAdapter() {
-        numberDataScreen = SingleDetailsFragment {
+        numberDataScreen = SingleDetailsFragment(Filter::class.simpleName.orEmpty()) {
             findNavController().navigate(FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it))
         }
-        filteredCallsScreen = SingleDetailsFragment(true) {
+        filteredCallsScreen = SingleDetailsFragment(FilteredCall::class.simpleName.orEmpty()) {
             findNavController().navigate(FilterDetailsFragmentDirections.startNumberDataDetailFragment(numberData = it))
         }
         val fragmentList = arrayListOf(
