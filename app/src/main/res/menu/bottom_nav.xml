@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_permission_list"
         android:contentDescription="@string/filter_list"/>
     <item
-        android:id="@+id/callListFragment"
+        android:id="@+id/listCallFragment"
         android:title="@string/log_list"
         android:icon="@drawable/ic_call_list"
         android:contentDescription="@string/log_list"/>

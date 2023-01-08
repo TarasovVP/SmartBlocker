@@ -20,7 +20,7 @@ import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.HeaderDataItem
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.number_data.list.call_list.CallListFragment
+import com.tarasovvp.smartblocker.ui.number_data.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.ui.number_data.list.contact_list.ContactListFragment
 import com.tarasovvp.smartblocker.ui.number_data.list.filter_list.BlockerListFragment
 import com.tarasovvp.smartblocker.ui.number_data.list.filter_list.PermissionListFragment
@@ -105,7 +105,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
                 is PermissionListFragment -> EmptyState.EMPTY_STATE_PERMISSIONS
                 is ContactListFragment -> EmptyState.EMPTY_STATE_CONTACTS
-                is CallListFragment -> EmptyState.EMPTY_STATE_CALLS
+                is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS
                 else -> EmptyState.EMPTY_STATE_BLOCKERS
             } else EmptyState.EMPTY_STATE_QUERY
         if (isEmpty) {

@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.call_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_call
 
 import com.tarasovvp.smartblocker.models.Call
 

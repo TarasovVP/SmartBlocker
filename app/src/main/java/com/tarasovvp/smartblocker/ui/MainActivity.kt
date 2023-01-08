@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private var isDialog: Boolean = false
 
     var navigationScreens = arrayListOf(
-        R.id.callListFragment,
+        R.id.listCallFragment,
         R.id.contactListFragment,
         R.id.blockerListFragment,
         R.id.permissionListFragment
@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.blockerListFragment -> navController?.navigate(R.id.blockerListFragment)
                 R.id.permissionListFragment -> navController?.navigate(R.id.permissionListFragment)
                 R.id.contactListFragment -> navController?.navigate(R.id.contactListFragment)
-                R.id.callListFragment -> navController?.navigate(R.id.callListFragment)
+                R.id.listCallFragment -> navController?.navigate(R.id.listCallFragment)
             }
             return@setOnItemSelectedListener true
         }

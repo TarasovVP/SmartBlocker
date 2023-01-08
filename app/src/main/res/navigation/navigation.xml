@@ -166,8 +166,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/callListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.list.call_list.CallListFragment"
+        android:id="@+id/listCallFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.list_call.ListCallFragment"
         android:label="@string/log_list">
         <argument
             android:name="searchQuery"

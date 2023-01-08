@@ -12,10 +12,8 @@ import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
-import com.tarasovvp.smartblocker.ui.base.BaseNumberDataFragment
 import com.tarasovvp.smartblocker.ui.number_data.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.number_data.details.SingleDetailsFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.call_list.CallListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class NumberDataDetailsFragment :

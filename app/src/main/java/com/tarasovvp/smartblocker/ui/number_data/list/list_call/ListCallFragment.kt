@@ -1,6 +1,5 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.call_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_call
 
-import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,7 +10,7 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
-import com.tarasovvp.smartblocker.databinding.FragmentCallListBinding
+import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
@@ -23,24 +22,23 @@ import com.tarasovvp.smartblocker.ui.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
-class CallListFragment :
-    BaseListFragment<FragmentCallListBinding, CallListViewModel, Call>() {
+class ListCallFragment :
+    BaseListFragment<FragmentListCallBinding, ListCallViewModel, Call>() {
 
-    override var layoutId = R.layout.fragment_call_list
-    override val viewModelClass = CallListViewModel::class.java
+    override var layoutId = R.layout.fragment_list_call
+    override val viewModelClass = ListCallViewModel::class.java
 
-    private val args: CallListFragmentArgs by navArgs()
+    private val args: ListCallFragmentArgs by navArgs()
 
     private var callList: List<Call>? = null
     private var isDeleteMode = false
     private var conditionFilterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<Call>? {
-        Log.e("adapterTAG", "CallListFragment createAdapter callList?.size ${callList?.size}")
         return context?.let {
             CallAdapter(object : CallClickListener {
                 override fun onCallClick(call: Call) {
-                    findNavController().navigate(CallListFragmentDirections.startNumberDataDetailFragment(
+                    findNavController().navigate(ListCallFragmentDirections.startNumberDataDetailFragment(
                         call))
                 }
 
@@ -65,12 +63,11 @@ class CallListFragment :
 
     override fun initViews() {
         binding?.apply {
-            swipeRefresh = callListRefresh
-            recyclerView = callListRecyclerView
-            emptyStateContainer = callListEmpty
-            callListRecyclerView.hideKeyboardWithLayoutTouch()
+            swipeRefresh = listCallRefresh
+            recyclerView = listCallRecyclerView
+            emptyStateContainer = listCallEmpty
+            listCallRecyclerView.hideKeyboardWithLayoutTouch()
         }
-        Log.e("searchTAG", "CallListFragment initView args.searchQuery ${args.searchQuery}")
         args.searchQuery?.let {
             searchQuery = it
         }
@@ -79,7 +76,7 @@ class CallListFragment :
 
     private fun setCallConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
-        binding?.callListCheck?.apply {
+        binding?.listCallCheck?.apply {
             isSelected = true
             val callFilteringText = arrayListOf<String>()
             if (conditionFilterIndexes.isNullOrEmpty())
@@ -98,14 +95,14 @@ class CallListFragment :
     }
 
     override fun setClickListeners() {
-        binding?.callListCheck?.setSafeOnClickListener {
+        binding?.listCallCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
-            binding?.callListCheck?.isChecked = binding?.callListCheck?.isChecked.isTrue().not()
+            binding?.listCallCheck?.isChecked = binding?.listCallCheck?.isChecked.isTrue().not()
             findNavController().navigate(
-                CallListFragmentDirections.startNumberDataFilteringDialog(isCallList = true,
+                ListCallFragmentDirections.startNumberDataFilteringDialog(isCallList = true,
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray()))
         }
-        binding?.callListInfo?.setSafeOnClickListener {
+        binding?.listCallInfo?.setSafeOnClickListener {
             showInfoScreen()
         }
     }
@@ -122,18 +119,16 @@ class CallListFragment :
     }
 
     private fun changeDeleteMode() {
-        Log.e("destinationTAG", "CallListFragment changeDeleteMode isDeleteMode $isDeleteMode")
         isDeleteMode = isDeleteMode.not()
         (adapter as CallAdapter).apply {
-            isDeleteMode = this@CallListFragment.isDeleteMode
+            isDeleteMode = this@ListCallFragment.isDeleteMode
             recyclerView?.post {
                 adapter?.notifyDataSetChanged()
             }
         }
         (activity as MainActivity).toolbar?.apply {
-            Log.e("callTAG", "CallListFragment menu $menu")
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.callListCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.listCallCheck?.isChecked.isTrue()) R.string.log_list else R.string.blocked_call_log)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
@@ -145,12 +140,11 @@ class CallListFragment :
     }
 
     private fun setDeleteMenuClickListener() {
-        Log.e("callTAG", "CallListFragment setToolBarMenuClickListener")
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.delete_menu_item -> {
-                    this@CallListFragment.findNavController()
-                        .navigate(CallListFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE))
+                    this@ListCallFragment.findNavController()
+                        .navigate(ListCallFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE))
                     true
                 }
                 R.id.close_menu_item -> {
@@ -195,7 +189,6 @@ class CallListFragment :
     }
 
     override fun searchDataList() {
-        Log.e("callTAG", "CallListFragment searchDataList() start")
         (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredCallList = callList?.filter { call ->
             (call.callName?.lowercase(Locale.getDefault())
@@ -212,10 +205,8 @@ class CallListFragment :
                 PERMITTED_CALL.toInt()).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
-        Log.e("callTAG",
-            "CallListFragment searchDataList() filteredCallList size ${filteredCallList.size}")
-        binding?.callListCheck?.isEnabled =
-            filteredCallList.isNotEmpty() || binding?.callListCheck?.isChecked.isTrue()
+        binding?.listCallCheck?.isEnabled =
+            filteredCallList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredCallList.isEmpty())
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList, swipeRefresh?.isRefreshing.isTrue())
@@ -227,7 +218,7 @@ class CallListFragment :
     }
 
     override fun showInfoScreen() {
-        findNavController().navigate(CallListFragmentDirections.startInfoFragment(info = InfoData(
+        findNavController().navigate(ListCallFragmentDirections.startInfoFragment(info = InfoData(
             title = getString(Info.INFO_CALL_LIST.title),
             description = getString(Info.INFO_CALL_LIST.description))))
     }

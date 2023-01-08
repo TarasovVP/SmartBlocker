@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.call_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_call
 
 import android.app.Application
 import android.util.Log
@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
-class CallListViewModel(application: Application) : BaseViewModel(application) {
+class ListCallViewModel(application: Application) : BaseViewModel(application) {
 
     private val callRepository = CallRepository
     private val filteredCallRepository = FilteredCallRepository
