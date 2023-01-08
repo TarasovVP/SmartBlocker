@@ -269,8 +269,8 @@ open class FilterAddFragment :
             Log.e("destinationTAG",
                 "FilterAddFragment handleSuccessFilterAction currentDestination ${findNavController().currentDestination?.displayName}")
             findNavController().navigate(if (binding?.filter?.isBlocker().isTrue())
-                FilterAddFragmentDirections.startBlockerListFragment()
-            else FilterAddFragmentDirections.startPermissionListFragment())
+                FilterAddFragmentDirections.startListBlockerFragment()
+            else FilterAddFragmentDirections.startListPermissionFragment())
         }
     }
 

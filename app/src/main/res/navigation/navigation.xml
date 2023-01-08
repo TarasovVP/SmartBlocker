@@ -18,8 +18,8 @@
         android:id="@+id/loginFragment"
         android:name="com.tarasovvp.smartblocker.ui.authorization.login.LoginFragment" >
         <action
-            android:id="@+id/startBlockerListFragment"
-            app:destination="@id/blockerListFragment"
+            android:id="@+id/startListBlockerFragment"
+            app:destination="@id/listBlockerFragment"
             app:popUpTo="@+id/mainNavigation"
             app:popUpToInclusive="true" />
         <action
@@ -36,8 +36,8 @@
         android:label="@string/authorization_sign_up" />
 
     <fragment
-        android:id="@+id/blockerListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.list.filter_list.BlockerListFragment"
+        android:id="@+id/listBlockerFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.list_filter.ListBlockerFragment"
         android:label="@string/blocker_list">
         <action
             android:id="@+id/startFilterAddFragment"
@@ -57,8 +57,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/permissionListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.list.filter_list.PermissionListFragment"
+        android:id="@+id/listPermissionFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.list_filter.ListPermissionFragment"
         android:label="@string/permission_list">
         <action
             android:id="@+id/startFilterAddFragment"
@@ -92,14 +92,14 @@
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
         <action
-            android:id="@+id/startBlockerListFragment"
-            app:destination="@id/blockerListFragment"
-            app:popUpTo="@id/blockerListFragment"
+            android:id="@+id/startListBlockerFragment"
+            app:destination="@id/listBlockerFragment"
+            app:popUpTo="@id/listBlockerFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/startPermissionListFragment"
-            app:destination="@id/permissionListFragment"
-            app:popUpTo="@id/blockerListFragment"
+            android:id="@+id/startListPermissionFragment"
+            app:destination="@id/listPermissionFragment"
+            app:popUpTo="@id/listBlockerFragment"
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/startInfoFragment"
@@ -131,14 +131,14 @@
             android:id="@+id/startNumberDataDetailFragment"
             app:destination="@id/numberDataDetailFragment" />
         <action
-            android:id="@+id/startBlockerListFragment"
-            app:destination="@id/blockerListFragment"
-            app:popUpTo="@id/blockerListFragment"
+            android:id="@+id/startListBlockerFragment"
+            app:destination="@id/listBlockerFragment"
+            app:popUpTo="@id/listBlockerFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/startPermissionListFragment"
-            app:destination="@id/permissionListFragment"
-            app:popUpTo="@id/blockerListFragment"
+            android:id="@+id/startListPermissionFragment"
+            app:destination="@id/listPermissionFragment"
+            app:popUpTo="@id/listBlockerFragment"
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/startInfoFragment"

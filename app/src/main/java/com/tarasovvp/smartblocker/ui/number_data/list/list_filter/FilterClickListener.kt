@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.filter_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_filter
 
 import com.tarasovvp.smartblocker.models.Filter
 

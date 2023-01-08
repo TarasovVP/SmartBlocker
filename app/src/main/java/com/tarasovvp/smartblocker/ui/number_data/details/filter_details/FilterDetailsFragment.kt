@@ -156,8 +156,8 @@ class FilterDetailsFragment :
             } else {
                 findNavController().navigate(if (binding?.filter?.isBlocker()
                         .isTrue()
-                ) FilterDetailsFragmentDirections.startBlockerListFragment()
-                else FilterDetailsFragmentDirections.startPermissionListFragment())
+                ) FilterDetailsFragmentDirections.startListBlockerFragment()
+                else FilterDetailsFragmentDirections.startListPermissionFragment())
             }
         }
     }

@@ -50,7 +50,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     getAllData()
                     if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
-                findNavController().navigate(LoginFragmentDirections.startBlockerListFragment())
+                findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
             }
             loginSignUp.setSafeOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.startSignUpFragment())
@@ -86,7 +86,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     getAllData()
                     if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
-                findNavController().navigate(R.id.blockerListFragment)
+                findNavController().navigate(R.id.listBlockerFragment)
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.password_reset_text), false)

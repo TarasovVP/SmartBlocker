@@ -1,15 +1,14 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.filter_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_filter
 
-import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.databinding.FragmentFilterListBinding
+import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
@@ -22,23 +21,20 @@ import com.tarasovvp.smartblocker.ui.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
-open class BaseFilterListFragment :
-    BaseListFragment<FragmentFilterListBinding, FilterListViewModel, Filter>() {
+open class BaseListFilterFragment :
+    BaseListFragment<FragmentListFilterBinding, ListFilterViewModel, Filter>() {
 
-    override var layoutId = R.layout.fragment_filter_list
-    override val viewModelClass = FilterListViewModel::class.java
+    override var layoutId = R.layout.fragment_list_filter
+    override val viewModelClass = ListFilterViewModel::class.java
 
     private var filterList: ArrayList<Filter>? = null
     private var isDeleteMode = false
     private var conditionFilterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<Filter>? {
-        Log.e("adapterTAG", "FilterListFragment createAdapter filterList?.size ${filterList?.size}")
         return context?.let {
             FilterAdapter(object : FilterClickListener {
                 override fun onFilterClick(filter: Filter) {
-                    Log.e("filterLifeCycleTAG",
-                        "FilterListFragment onFilterClick startFilterAddFragment")
                     startNextScreen(filter)
                 }
 
@@ -58,23 +54,21 @@ open class BaseFilterListFragment :
     }
 
     override fun initViews() {
-        Log.e("adapterTAG",
-            "FilterListFragment initView selectedFilterItems $conditionFilterIndexes")
         findNavController().currentDestination?.label =
-            getString(if (this@BaseFilterListFragment is BlockerListFragment) R.string.blocker_list else R.string.permission_list)
+            getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.blocker_list else R.string.permission_list)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         binding?.apply {
-            swipeRefresh = filterListRefresh
-            recyclerView = filterListRecyclerView
-            emptyStateContainer = filterListEmpty
-            filterListRecyclerView.hideKeyboardWithLayoutTouch()
+            swipeRefresh = listFilterRefresh
+            recyclerView = listFilterRecyclerView
+            emptyStateContainer = listFilterEmpty
+            listFilterRecyclerView.hideKeyboardWithLayoutTouch()
         }
         setFilterConditionFilter()
     }
 
     private fun setFilterConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
-        binding?.filterListFilter?.apply {
+        binding?.listFilterFilter?.apply {
             isSelected = true
             text =
                 if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
@@ -87,25 +81,25 @@ open class BaseFilterListFragment :
     }
 
     override fun setClickListeners() {
-        binding?.filterListFilter?.setSafeOnClickListener {
+        binding?.listFilterFilter?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
-            binding?.filterListFilter?.isChecked =
-                binding?.filterListFilter?.isChecked.isTrue().not()
-            findNavController().navigate(if (this is BlockerListFragment) {
-                BlockerListFragmentDirections.startFilterConditionsDialog(
+            binding?.listFilterFilter?.isChecked =
+                binding?.listFilterFilter?.isChecked.isTrue().not()
+            findNavController().navigate(if (this is ListBlockerFragment) {
+                ListBlockerFragmentDirections.startFilterConditionsDialog(
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray())
             } else {
-                BlockerListFragmentDirections.startFilterConditionsDialog(
+                ListPermissionFragmentDirections.startFilterConditionsDialog(
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray())
             })
         }
-        binding?.filterListInfo?.setSafeOnClickListener {
+        binding?.listFilterInfo?.setSafeOnClickListener {
             showInfoScreen()
         }
-        binding?.filterListFabMenu?.setFabClickListener { conditionType ->
+        binding?.listFilterFabMenu?.setFabClickListener { conditionType ->
             startNextScreen(Filter().apply {
                 filterType =
-                    if (this@BaseFilterListFragment is BlockerListFragment) BLOCKER else PERMISSION
+                    if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
                 this.conditionType = conditionType
             })
         }
@@ -129,19 +123,18 @@ open class BaseFilterListFragment :
     }
 
     private fun changeDeleteMode() {
-        Log.e("destinationTAG", "FilterList changeDeleteMode isDeleteMode $isDeleteMode")
         isDeleteMode = isDeleteMode.not()
         (adapter as FilterAdapter).apply {
-            isDeleteMode = this@BaseFilterListFragment.isDeleteMode
+            isDeleteMode = this@BaseListFilterFragment.isDeleteMode
             recyclerView?.post {
                 adapter?.notifyDataSetChanged()
             }
         }
         findNavController().currentDestination?.label =
-            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlockerListFragment) R.string.blocker_list else R.string.permission_list)
+            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.blocker_list else R.string.permission_list)
         (activity as MainActivity).toolbar?.apply {
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseFilterListFragment is BlockerListFragment) R.string.blocker_list else R.string.permission_list)
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.blocker_list else R.string.permission_list)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
@@ -159,16 +152,16 @@ open class BaseFilterListFragment :
                     R.id.delete_menu_item -> {
                         // TODO add filter number
                         val direction =
-                            if (this@BaseFilterListFragment is BlockerListFragment) {
-                                BlockerListFragmentDirections.startFilterActionDialog(
+                            if (this@BaseListFilterFragment is ListBlockerFragment) {
+                                ListBlockerFragmentDirections.startFilterActionDialog(
                                     filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE)
                             } else {
-                                BlockerListFragmentDirections.startFilterActionDialog(
+                                ListPermissionFragmentDirections.startFilterActionDialog(
                                     filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE)
                             }
-                        this@BaseFilterListFragment.findNavController().navigate(direction)
+                        this@BaseListFilterFragment.findNavController().navigate(direction)
                         true
                     }
                     R.id.close_menu_item -> {
@@ -188,20 +181,20 @@ open class BaseFilterListFragment :
     }
 
     private fun startNextScreen(filter: Filter) {
-        val direction = if (this is BlockerListFragment) {
+        val direction = if (this is ListBlockerFragment) {
             if (filter.filter.isEmpty()) {
-                BlockerListFragmentDirections.startFilterAddFragment(
+                ListBlockerFragmentDirections.startFilterAddFragment(
                     filterAdd = filter)
             } else {
-                BlockerListFragmentDirections.startFilterDetailFragment(
+                ListBlockerFragmentDirections.startFilterDetailFragment(
                     filterDetail = filter)
             }
         } else {
             if (filter.filter.isEmpty()) {
-                BlockerListFragmentDirections.startFilterAddFragment(
+                ListPermissionFragmentDirections.startFilterAddFragment(
                     filterAdd = filter)
             } else {
-                BlockerListFragmentDirections.startFilterDetailFragment(
+                ListPermissionFragmentDirections.startFilterDetailFragment(
                     filterDetail = filter)
             }
         }
@@ -211,11 +204,11 @@ open class BaseFilterListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                if (this@BaseFilterListFragment.filterList == filterList) {
+                if (this@BaseListFilterFragment.filterList == filterList) {
                     checkDataListEmptiness(filterList.isNullOrEmpty())
                     return@safeSingleObserve
                 }
-                this@BaseFilterListFragment.filterList = filterList as ArrayList<Filter>
+                this@BaseListFilterFragment.filterList = filterList as ArrayList<Filter>
                 searchDataList()
             }
             filterHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
@@ -223,7 +216,7 @@ open class BaseFilterListFragment :
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).getAllData()
-                this@BaseFilterListFragment.filterList?.removeAll { it.isCheckedForDelete }
+                this@BaseListFilterFragment.filterList?.removeAll { it.isCheckedForDelete }
                 changeDeleteMode()
                 searchDataList()
             }
@@ -250,9 +243,7 @@ open class BaseFilterListFragment :
                     && filter.isTypeContain()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
-        Log.e("adapterTAG",
-            "FilterList searchDataList filteredList.size ${filteredList.size} selectedFilterItems ${conditionFilterIndexes?.joinToString()}")
-        binding?.filterListFilter?.isEnabled =
+        binding?.listFilterFilter?.isEnabled =
             filteredList.isNotEmpty() || (filteredList.isEmpty() && conditionFilterIndexes.isNullOrEmpty()
                 .not())
         checkDataListEmptiness(filteredList.isEmpty())
@@ -262,19 +253,17 @@ open class BaseFilterListFragment :
     }
 
     override fun getData() {
-        Log.e("adapterTAG",
-            "FilterList getData() filterList.size ${filterList?.size} selectedFilterItems ${conditionFilterIndexes?.joinToString()}")
-        viewModel.getFilterList(this is BlockerListFragment,
+        viewModel.getFilterList(this is ListBlockerFragment,
             swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {
-        if (this is BlockerListFragment) {
-            findNavController().navigate(BlockerListFragmentDirections.startInfoFragment(info = InfoData(
+        if (this is ListBlockerFragment) {
+            findNavController().navigate(ListBlockerFragmentDirections.startInfoFragment(info = InfoData(
                 title = getString(Info.INFO_BLOCKER_LIST.title),
                 description = getString(Info.INFO_CONTACT_LIST.description))))
         } else {
-            findNavController().navigate(PermissionListFragmentDirections.startInfoFragment(info = InfoData(
+            findNavController().navigate(ListPermissionFragmentDirections.startInfoFragment(info = InfoData(
                 title = getString(Info.INFO_PERMISSION_LIST.title),
                 description = getString(Info.INFO_CONTACT_LIST.description))))
         }

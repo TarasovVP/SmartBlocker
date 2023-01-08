@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.filter_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_filter
 
 import android.app.Application
 import android.util.Log
@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
-class FilterListViewModel(application: Application) : BaseViewModel(application) {
+class ListFilterViewModel(application: Application) : BaseViewModel(application) {
 
     val filterListLiveData = MutableLiveData<ArrayList<Filter>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()

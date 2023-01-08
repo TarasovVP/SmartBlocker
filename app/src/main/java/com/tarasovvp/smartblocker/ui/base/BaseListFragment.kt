@@ -22,8 +22,8 @@ import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.number_data.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.ui.number_data.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.filter_list.BlockerListFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.filter_list.PermissionListFragment
+import com.tarasovvp.smartblocker.ui.number_data.list.list_filter.ListBlockerFragment
+import com.tarasovvp.smartblocker.ui.number_data.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
@@ -72,7 +72,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             Log.e("searchTAG", "BaseListFragment setSearchViewMenu searchQuery $searchQuery")
             toolbar?.inflateMenu(R.menu.toolbar_search)
             context?.let { SearchView(it) }?.apply {
-                if (this@BaseListFragment is BlockerListFragment || this@BaseListFragment is PermissionListFragment) inputType =
+                if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =
                     InputType.TYPE_CLASS_NUMBER
                 toolbar?.menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
                     setQuery(searchQuery, false)
@@ -103,7 +103,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         swipeRefresh?.isVisible = isEmpty.not()
         emptyStateContainer?.emptyState =
             if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
-                is PermissionListFragment -> EmptyState.EMPTY_STATE_PERMISSIONS
+                is ListPermissionFragment -> EmptyState.EMPTY_STATE_PERMISSIONS
                 is ListContactFragment -> EmptyState.EMPTY_STATE_CONTACTS
                 is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS
                 else -> EmptyState.EMPTY_STATE_BLOCKERS

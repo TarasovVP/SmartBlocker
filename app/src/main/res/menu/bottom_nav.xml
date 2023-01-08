@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/blockerListFragment"
+        android:id="@+id/listBlockerFragment"
         android:title="@string/blocker_list"
         android:icon="@drawable/ic_blocker_list"
         android:contentDescription="@string/filter_list"/>
     <item
-        android:id="@+id/permissionListFragment"
+        android:id="@+id/listPermissionFragment"
         android:title="@string/permission_list"
         android:icon="@drawable/ic_permission_list"
         android:contentDescription="@string/filter_list"/>
