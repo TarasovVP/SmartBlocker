@@ -37,12 +37,12 @@
     <string name="empty_state_account">Вы вошли незарегистрированным пользователем</string>
     <!--Filter action-->
     <string name="filter_action_create">Создать</string>
-    <string name="filter_action_create_blocker_description">Добавить номер в блокировщики?</string>
-    <string name="filter_action_create_blocker_request">Добавить номер %s в блокировщики?</string>
-    <string name="filter_action_create_blocker_success">Номер %s добавлен в блокировщики!</string>
-    <string name="filter_action_create_permission_description">Добавить номер в допуски?</string>
-    <string name="filter_action_create_permission_request">Добавить номер %s в допуски?</string>
-    <string name="filter_action_create_permission_success">Номер %s добавлен в допуски!</string>
+    <string name="filter_action_create_blocker_description">Создать блокировщика?</string>
+    <string name="filter_action_create_blocker_request">Создать блокировщика %s?</string>
+    <string name="filter_action_create_blocker_success">Блокировщик %s создан!</string>
+    <string name="filter_action_create_permission_description">Создать допуск?</string>
+    <string name="filter_action_create_permission_request">Создать допуск %s?</string>
+    <string name="filter_action_create_permission_success">допуск %s создан!</string>
     <string name="filter_action_delete_blocker_description">Блокировщик уже существует. Удалить?</string>
     <string name="filter_action_delete_blocker_request">Удалить %s из блокировщиков?</string>
     <string name="filter_action_delete_blocker_success">%s удален из блокировщиков!</string>

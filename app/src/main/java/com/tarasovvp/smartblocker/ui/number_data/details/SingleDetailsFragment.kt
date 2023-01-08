@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.ui.number_data.details
 
 import androidx.core.view.isVisible
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.databinding.FragmentSingleFilterDetailsBinding
+import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.models.Filter
@@ -14,9 +14,9 @@ class SingleDetailsFragment(
     var dataType: String = String.EMPTY,
     var numberDataResult: (NumberData) -> Unit,
 ) :
-    BaseBindingFragment<FragmentSingleFilterDetailsBinding>() {
+    BaseBindingFragment<FragmentSingleNumberDataDetailsBinding>() {
 
-    override var layoutId = R.layout.fragment_single_filter_details
+    override var layoutId = R.layout.fragment_single_number_data_details
 
     private var numberDataAdapter: NumberDataAdapter? = null
 

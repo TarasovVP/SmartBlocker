@@ -21,7 +21,7 @@ class FloatingActionMenuView @JvmOverloads constructor(
         binding = ViewFloatingActionMenuBinding.inflate(LayoutInflater.from(context), this, true)
         binding?.apply {
             fabNew.setSafeOnClickListener {
-                fabNew.setImageResource(if (fabFull.isVisible) R.drawable.ic_add else R.drawable.ic_close)
+                fabNew.setImageResource(if (fabFull.isVisible) R.drawable.ic_create else R.drawable.ic_close)
                 if (fabFull.isVisible) fabFull.hide() else fabFull.show()
                 if (fabStart.isVisible) fabStart.hide() else fabStart.show()
                 if (fabContain.isVisible) fabContain.hide() else fabContain.show()
