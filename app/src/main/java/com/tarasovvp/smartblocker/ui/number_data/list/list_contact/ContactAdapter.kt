@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.contact_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_contact
 
 import android.util.Log
 import android.view.LayoutInflater

@@ -146,8 +146,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/contactListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.list.contact_list.ContactListFragment"
+        android:id="@+id/listContactFragment"
+        android:name="com.tarasovvp.smartblocker.ui.number_data.list.list_contact.ListContactFragment"
         android:label="@string/contact_list">
         <argument
             android:name="filter"

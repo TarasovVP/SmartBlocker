@@ -1,38 +1,34 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.contact_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_contact
 
-import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.databinding.FragmentContactListBinding
+import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.list_call.CallListFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
-open class ContactListFragment :
-    BaseListFragment<FragmentContactListBinding, ContactListViewModel, Contact>() {
+open class ListContactFragment :
+    BaseListFragment<FragmentListContactBinding, ListContactViewModel, Contact>() {
 
-    override var layoutId = R.layout.fragment_contact_list
-    override val viewModelClass = ContactListViewModel::class.java
+    override var layoutId = R.layout.fragment_list_contact
+    override val viewModelClass = ListContactViewModel::class.java
 
     private var contactList: List<Contact>? = null
     private var conditionFilterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<Contact>? {
-        Log.e("adapterTAG",
-            "ContactListFragment createAdapter  contactList?.size ${contactList?.size}")
         return context?.let {
             ContactAdapter { numberData ->
-                findNavController().navigate(ContactListFragmentDirections.startNumberDataDetailFragment(
+                findNavController().navigate(ListContactFragmentDirections.startNumberDataDetailFragment(
                     numberData))
             }
         }
@@ -40,17 +36,17 @@ open class ContactListFragment :
 
     override fun initViews() {
         binding?.apply {
-            swipeRefresh = contactListRefresh
-            recyclerView = contactListRecyclerView
-            emptyStateContainer = contactListEmpty
-            contactListRecyclerView.hideKeyboardWithLayoutTouch()
+            swipeRefresh = listContactRefresh
+            recyclerView = listContactRecyclerView
+            emptyStateContainer = listContactEmpty
+            listContactRecyclerView.hideKeyboardWithLayoutTouch()
         }
         setContactConditionFilter()
     }
 
     private fun setContactConditionFilter() {
         conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
-        binding?.contactListCheck?.apply {
+        binding?.listContactCheck?.apply {
             isSelected = true
             val callFilteringText = arrayListOf<String>()
             if (conditionFilterIndexes.isNullOrEmpty())
@@ -69,15 +65,15 @@ open class ContactListFragment :
     }
 
     override fun setClickListeners() {
-        binding?.contactListCheck?.setSafeOnClickListener {
+        binding?.listContactCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
-            binding?.contactListCheck?.isChecked =
-                binding?.contactListCheck?.isChecked.isTrue().not()
+            binding?.listContactCheck?.isChecked =
+                binding?.listContactCheck?.isChecked.isTrue().not()
             findNavController().navigate(
-                CallListFragmentDirections.startNumberDataFilteringDialog(filteringList = conditionFilterIndexes.orEmpty()
+                ListContactFragmentDirections.startNumberDataFilteringDialog(filteringList = conditionFilterIndexes.orEmpty()
                     .toIntArray()))
         }
-        binding?.contactListInfo?.setSafeOnClickListener {
+        binding?.listContactInfo?.setSafeOnClickListener {
             showInfoScreen()
         }
     }
@@ -93,11 +89,11 @@ open class ContactListFragment :
     override fun observeLiveData() {
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                if (contactList == this@ContactListFragment.contactList) {
+                if (contactList == this@ListContactFragment.contactList) {
                     checkDataListEmptiness(contactList.isEmpty())
                     return@safeSingleObserve
                 }
-                this@ContactListFragment.contactList = contactList
+                this@ListContactFragment.contactList = contactList
                 searchDataList()
             }
             contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { contactHashMap ->
@@ -124,22 +120,19 @@ open class ContactListFragment :
                 PERMISSION).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
-        Log.e("adapterTAG",
-            "ContactListFragment searchDataList filteredContactList.size ${filteredContactList.size} contactListCheck?.isChecked ${binding?.contactListCheck?.isChecked.isTrue()}")
-        binding?.contactListCheck?.isEnabled =
-            filteredContactList.isNotEmpty() || binding?.contactListCheck?.isChecked.isTrue()
+        binding?.listContactCheck?.isEnabled =
+            filteredContactList.isNotEmpty() || binding?.listContactCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredContactList.isEmpty())
         viewModel.getHashMapFromContactList(filteredContactList,
             swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun getData() {
-        Log.e("adapterTAG", "ContactListFragment getData()")
         viewModel.getContactList(swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {
-        findNavController().navigate(ContactListFragmentDirections.startInfoFragment(info = InfoData(
+        findNavController().navigate(ListContactFragmentDirections.startInfoFragment(info = InfoData(
             title = getString(Info.INFO_CONTACT_LIST.title),
             description = getString(Info.INFO_CONTACT_LIST.description))))
     }

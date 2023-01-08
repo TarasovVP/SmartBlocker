@@ -5,46 +5,47 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/padding_16"
         android:paddingTop="@dimen/padding_8"
-        tools:context=".ui.number_data.list.contact_list.ContactListFragment">
+        tools:context=".ui.number_data.list.list_contact.ListContactFragment">
 
         <CheckBox
-            android:id="@+id/contact_list_check"
+            android:id="@+id/list_contact_check"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_5"
             android:enabled="false"
             android:drawablePadding="5dp"
+            android:layout_marginHorizontal="@dimen/margin_16"
             android:text="@string/filter_no_filter"
             android:textColor="@color/selector_enable_bg"
             android:button="@drawable/filter_selector"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit ="marquee_forever"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/contact_list_info"
+            app:layout_constraintEnd_toStartOf="@+id/list_contact_info"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/contact_list_info"
+            android:id="@+id/list_contact_info"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_0"
             style="@style/Button.Icon"
             app:icon="@drawable/ic_info"
-            app:layout_constraintTop_toTopOf="@+id/contact_list_check"
-            app:layout_constraintBottom_toBottomOf="@+id/contact_list_check"
+            app:layout_constraintTop_toTopOf="@+id/list_contact_check"
+            app:layout_constraintBottom_toBottomOf="@+id/list_contact_check"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/contact_list_check"/>
+            app:layout_constraintStart_toEndOf="@+id/list_contact_check"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/contact_list_refresh"
+            android:id="@+id/list_contact_refresh"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
+            android:layout_marginHorizontal="@dimen/margin_16"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contact_list_check">
+            app:layout_constraintTop_toBottomOf="@+id/list_contact_check">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/contact_list_recycler_view"
+                android:id="@+id/list_contact_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="@dimen/padding_8"
@@ -53,11 +54,12 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <include
-            android:id="@+id/contact_list_empty"
+            android:id="@+id/list_contact_empty"
             layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
-            app:layout_constraintTop_toBottomOf="@+id/contact_list_check"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:layout_constraintTop_toBottomOf="@+id/list_contact_check"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

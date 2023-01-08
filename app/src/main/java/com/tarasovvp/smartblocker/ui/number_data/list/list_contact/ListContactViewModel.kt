@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.ui.number_data.list.contact_list
+package com.tarasovvp.smartblocker.ui.number_data.list.list_contact
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
-class ContactListViewModel(application: Application) : BaseViewModel(application) {
+class ListContactViewModel(application: Application) : BaseViewModel(application) {
 
     private val contactRepository = ContactRepository
 
