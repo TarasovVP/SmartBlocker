@@ -159,7 +159,7 @@ data class Filter(
 
     @Exclude
     fun isAddFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_ADD || filterAction == FilterAction.FILTER_ACTION_PERMISSION_ADD
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
     }
 
     @Exclude

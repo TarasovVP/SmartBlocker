@@ -15,7 +15,7 @@ enum class Info(
     INFO_CONTACT_LIST(R.string.empty_state_calls,
         R.string.contact_list),
     INFO_FILTER_ADD_FULL(R.string.filter_full_number_description,
-        R.string.add),
+        R.string.filter_action_create),
     INFO_FILTER_ADD_START(R.string.filter_start_description,
         R.string.condition_start),
     INFO_FILTER_ADD_CONTAIN(R.string.filter_contain_description,

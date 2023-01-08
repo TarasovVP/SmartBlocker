@@ -150,15 +150,12 @@ open class BaseListFilterFragment :
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.delete_menu_item -> {
-                        // TODO add filter number
                         val direction =
                             if (this@BaseListFilterFragment is ListBlockerFragment) {
                                 ListBlockerFragmentDirections.startFilterActionDialog(
-                                    filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE)
                             } else {
                                 ListPermissionFragmentDirections.startFilterActionDialog(
-                                    filterNumber = "",
                                     filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE)
                             }
                         this@BaseListFilterFragment.findNavController().navigate(direction)

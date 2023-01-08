@@ -133,7 +133,7 @@ class NumberDataDetailsFragment :
     private fun setAddFilterConditions(isShown: Boolean) {
         binding?.apply {
             numberDataDetailAddFilter.text =
-                getString(if (isShown) R.string.add else R.string.close)
+                getString(if (isShown) R.string.filter_action_create else R.string.close)
             if (isShown) numberDataDetailAddFilterFull.hide() else numberDataDetailAddFilterFull.show()
             if (isShown) numberDataDetailAddFilterStart.hide() else numberDataDetailAddFilterStart.show()
             if (isShown) numberDataDetailAddFilterContain.hide() else numberDataDetailAddFilterContain.show()

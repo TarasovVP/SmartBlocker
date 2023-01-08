@@ -62,7 +62,7 @@ open class FilterAddFragment :
                         filterNumber = filter?.addFilter(),
                         filterAction = filter?.filterAction ?: if (filter?.isBlocker()
                                 .isTrue()
-                        ) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD))
+                        ) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE))
                 }
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {
@@ -105,8 +105,8 @@ open class FilterAddFragment :
                         this.filter = addFilter()
                         this.filterAction = filterAction
                     })
-                    FilterAction.FILTER_ACTION_BLOCKER_ADD,
-                    FilterAction.FILTER_ACTION_PERMISSION_ADD,
+                    FilterAction.FILTER_ACTION_BLOCKER_CREATE,
+                    FilterAction.FILTER_ACTION_PERMISSION_CREATE,
                     -> viewModel.insertFilter(filter.apply {
                         numberData = filter.addFilter()
                         this.filter = addFilter()
@@ -241,7 +241,7 @@ open class FilterAddFragment :
                     "BaseAddFragment observeLiveData existingFilterLiveData existingFilter $existingFilter")
                 binding?.filter = binding?.filter?.apply {
                     filterAction = when (existingFilter.filterType) {
-                        DEFAULT_FILTER -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_ADD else FilterAction.FILTER_ACTION_PERMISSION_ADD
+                        DEFAULT_FILTER -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         filterType -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                         else -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
                     }
