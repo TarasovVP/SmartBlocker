@@ -18,7 +18,7 @@ class AccountActionDialog : BaseDialog<DialogInfoBinding>() {
 
     override fun initUI() {
         binding?.dialogInfoTitle?.text =
-            if (args.isLogOut) getString(R.string.log_out) else getString(R.string.delete_account)
+            if (args.isLogOut) getString(R.string.settings_account_log_out) else getString(R.string.settings_account_delete)
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }

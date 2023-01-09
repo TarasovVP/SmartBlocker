@@ -91,7 +91,7 @@ class SettingsAccountFragment :
                 }
             }
             successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) {
-                showMessage(String.format(getString(R.string.change_password_succeed)), false)
+                showMessage(String.format(getString(R.string.settings_account_change_password_succeed)), false)
             }
         }
     }

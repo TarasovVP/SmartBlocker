@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/button_bg"
-                    android:text="@string/settings_account_log_out"
+                    android:text="@string/settings_account_log_out_title"
                     android:layout_marginTop="@dimen/margin_8"
                     app:layout_constraintBottom_toBottomOf="@+id/settings_account_avatar"
                     app:layout_constraintStart_toStartOf="@+id/settings_account_name"
@@ -78,7 +78,7 @@
                 android:background="@drawable/bg_rounded"
                 android:paddingHorizontal="@dimen/padding_16"
                 android:paddingVertical="@dimen/padding_10"
-                android:text="@string/change_password"
+                android:text="@string/settings_account_change_password_title"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_delete" />
 
             <include

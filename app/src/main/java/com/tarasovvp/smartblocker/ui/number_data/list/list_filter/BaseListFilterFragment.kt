@@ -55,7 +55,7 @@ open class BaseListFilterFragment :
 
     override fun initViews() {
         findNavController().currentDestination?.label =
-            getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.blocker_list else R.string.permission_list)
+            getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
         (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         binding?.apply {
             swipeRefresh = listFilterRefresh
@@ -131,10 +131,10 @@ open class BaseListFilterFragment :
             }
         }
         findNavController().currentDestination?.label =
-            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.blocker_list else R.string.permission_list)
+            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
         (activity as MainActivity).toolbar?.apply {
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.blocker_list else R.string.permission_list)
+                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
