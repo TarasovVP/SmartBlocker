@@ -32,8 +32,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.smartblocker.ui.authorization.sign_up.SignUpFragment"
-        android:label="@string/authorization_sign_up" />
+        android:name="com.tarasovvp.smartblocker.ui.authorization.sign_up.SignUpFragment" />
 
     <fragment
         android:id="@+id/listBlockerFragment"
@@ -109,7 +108,7 @@
     <fragment
         android:id="@+id/filterAddFragment"
         android:name="com.tarasovvp.smartblocker.ui.number_data.details.filter_add.FilterAddFragment"
-        android:label="@string/adding">
+        android:label="@string/creating">
         <argument
             android:name="filterAdd"
             android:defaultValue="@null"
@@ -168,7 +167,7 @@
     <fragment
         android:id="@+id/listCallFragment"
         android:name="com.tarasovvp.smartblocker.ui.number_data.list.list_call.ListCallFragment"
-        android:label="@string/log_list">
+        android:label="@string/call_list">
         <argument
             android:name="searchQuery"
             android:defaultValue="@null"

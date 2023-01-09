@@ -24,6 +24,23 @@
     <string name="authorization_continue_without_account">Без регистрации</string>
     <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Ваш пароль</string>
     <string name="authorization_signing_up">Зарегистрироваться</string>
+    <!--Filter type-->
+    <string name="blocker">Блокировщик</string>
+    <string name="permission">Допуск</string>
+    <!--Filter condition-->
+    <string name="condition_full">Полный номер</string>
+    <string name="condition_start">Начинается</string>
+    <string name="condition_contain">Содержит</string>
+    <!--Info-->
+    <string name="info_blocker_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>Для удобства поиска можно воспользоваться поисковиком <img src =\'ic_search\'>, чтоб отобрать блокировщик по номеру<br/>или фильтром <img src =\'ic_filter_list\'> - для отбора по типу блокировки<br/>Быстрый клик по блокировщику переносит на экран с деталямиДолгий клик открывает меню удаления <img src =\'ic_delete\'><br/>Если необходимо добавить новый блокировщик - нажмите кнопку с плюсом внизу <img src =\'test_button\'> и выберите тип блокировки</p>]]></string>
+    <string name="info_number_details"><![CDATA[На экране “Номер” вы увидите список фильтров, у которых нашлись совпадения с номером. Первый из списка - повлияет на номер при входящем вызове.<br/><br/><u>Приоритетность расположения фильтров:</u><br/>* Количество символов в фильтре(чем больше тем выше)<br/>* При одинаковом количестве начало совпадения в номере(чем раньше тем выше)<br/><u>Пример:</u><br/>Номер: +380502711344<br/>Список фильтров:<br/>1. <img src =\'ic_condition_full\'>Полный номер <b>+380502711344</b><br/>совпадение <b>+380502711344</b> (13 символов)<br/>2. <img src =\'ic_condition_start\'>Начинается <b>+38050</b><br/>совпадение <b>+38050</b>2711344 (6 символов)<br/>3. <img src =\'ic_condition_contain\'>Содержит <b>711344</b><br/>совпадение +380502<b>711344</b> (6 символов, более позднее совпадение)<br/>4. <img src =\'ic_condition_start\'>Начинается <b>+3805</b><br/>совпадение <b>+3805</b>02711344 (5 символов)<br/>5. <img src =\'ic_condition_contain\'>Содержит <b>7113</b><br/>совпадение +380502<b>7113</b>44 (4 символа)<br/>6. <img src =\'ic_condition_contain\'>Содержит <b>1344</b><br/>совпадение +38050271<b>1344</b> (4 символа, более позднее совпадение)]]></string>
+    <string name="info_permission_list">info_permission_list</string>
+    <string name="info_call_list">info_call_list</string>
+    <string name="info_contact_list">info_contact_list</string>
+    <string name="info_condition_full">info_condition_full</string>
+    <string name="info_condition_start">info_condition_start</string>
+    <string name="info_condition_contain">info_condition_contain</string>
+    <string name="info_filter_details">info_filter</string>
     <!--Empty state-->
     <string name="empty_state_blockers">Список блокировщиков пуст</string>
     <string name="empty_state_permissions">Список допусков пуст</string>
@@ -55,174 +72,90 @@
     <string name="filter_action_transfer_permission_description">Допуск уже существует. Сделать блокировщиком?</string>
     <string name="filter_action_transfer_permission_request">Переместить номер %s в допуски?</string>
     <string name="filter_action_transfer_permission_success">Номер %s перемещен в допуски!</string>
+    <!--List screens-->
+    <string name="blocker_list">Блокировщики</string>
+    <string name="permission_list">Допуски</string>
+    <string name="call_list">Вызовы</string>
+    <string name="contact_list">Контакты</string>
 
+    <!--Details screens-->
+    <string name="creating">Добавление</string>
+    <string name="number">Номер</string>
 
-    <string name="log_list_">Log_list_</string>
-    <string name="contact_list_">Contacts_</string>
-    <string name="settings_">Settings_</string>
-    <string name="log_list">Call log</string>
-    <string name="contact_list">Contacts</string>
-    <string name="filter_list">Numbers</string>
+    <!--Settings screens-->
     <string name="settings">Settings</string>
-    <string name="login">Login</string>
+    <string name="settings_blocker">Настройки блокировщика</string>
+    <string name="settings_account">Ваш аккаунт</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_theme">Выбор темы</string>
+    <string name="settings_privacy">Политика конфиденциальности</string>
+    <!--Settings account-->
+    <string name="settings_account_log_out">Выйти</string>
+    <string name="settings_account_change_password">Удалить аккаунт</string>
+    <string name="settings_account_delete_title">Сменить пароль</string>
+
+    <string name="change_password_succeed">Password changed successfully</string>
+    <string name="enter_current_password">Enter current password</string>
+    <string name="enter_new_password">Enter new password</string>
 
 
-    <string name="delete">Delete %s?</string>
-    <string name="change_filter">Change to %s?</string>
+
+
     <string name="delete_menu">Delete</string>
     <string name="give_all_permissions">Give all permissions to continue</string>
-    <string name="bg_work_on">Working in the background</string>
-    <string name="avoid_call">"BlackLister will save you from intrusive calls"</string>
-    <string name="receive_notifications">BlackLister will warn you about the severity of incoming calls</string>
     <string name="smart_blocker_is_on">Unwanted call protection enabled</string>
     <string name="search">Search</string>
-    <string name="list_empty">List is empty</string>
     <string name="exit_application">Do you want to exit the application?</string>
-    <string name="sign_out">Log out</string>
-    <string name="delete_acc">Delete</string>
-    <string name="welcome">Welcome %s!</string>
+
     <string name="operation_succeeded">Operation completed successfully</string>
-    <string name="rename_succeed">Name %s set successfully</string>
     <string name="password_reset_text">A confirmation email has been sent. Check your inbox.</string>
     <string name="success_sign_up">Sign up successful! Sign in.</string>
-    <string name="add_black_filter">Add BlackNumber</string>
 
-    <string name="enter_login_password">Enter your login and password</string>
-    <string name="all_call_log_list">All call log list</string>
-    <string name="edit">Edit</string>
     <string name="change">Change</string>
-    <string name="delete_filter_from_list">Remove %s from blockers?</string>
-    <string name="add_contact_to_blocker">Do you want to blockers %s?</string>
-    <string name="details">Details</string>
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_filter">Enter number</string>
-    <string name="condition_contain">Contains</string>
-    <string name="condition_start">Begins</string>
-    <string name="filter_end">Ends</string>
+
+
     <string name="filter_no_filter">No filter</string>
+
     <string name="russian">Russian</string>
     <string name="ukrainian">Ukrainian</string>
     <string name="english">English</string>
-    <string name="enter_new_name">Enter new name</string>
-    <string name="enter_current_password">Enter current password</string>
-    <string name="enter_new_password">Enter new password</string>
-    <string name="confirm_new_password">Confirm new password</string>
-    <string name="change_name">Change name</string>
-    <string name="change_password">Change password</string>
-    <string name="block_hidden">Block hidden numbers</string>
-    <string name="change_password_succeed">Password changed successfully</string>
-    <string name="passwords_different">Passwords don\'t match</string>
-    <string name="other">Other</string>
-    <string name="finance">Financial institution</string>
-    <string name="collectors">Collectors</string>
-    <string name="spam">Spam</string>
-    <string name="fraud">Fraud</string>
-    <string name="privates">Private</string>
-    <string name="blocker_list">Blockers</string>
-    <string name="permission_list">Permission</string>
+
+
+
+
+
+
     <string name="enter_your_email">Enter Your Email</string>
 
     <string name="log_out">Do you want to log out of your account?</string>
     <string name="delete_account">Do you want to delete your account?</string>
-    <string name="fill_data_press_button">For %s %s, fill in the input field and press the button</string>
-    <string name="edit_filter">edit number</string>
-    <string name="black">black</string>
-    <string name="filter_added">Number %s is added</string>
-    <string name="black_list_criteria">Blacklist match criteria</string>
-    <string name="white_list_criteria">Whitelist match criteria</string>
-    <string name="add_filter">Add to filter</string>
-    <string name="choose_all">Select All</string>
-    <string name="hidden">Hidden</string>
     <string name="blocked_calls">%s calls blocked</string>
-    <string name="add_filter_message">To add a filter, enter the numbers in the input field, check the conditions for applying (if necessary) and click the confirm button</string>
-    <string name="add_filter_with_filter_message">To add the %s filter, check the application conditions (if necessary) and press the confirm button</string>
-    <string name="edit_filter_with_filter_message">To edit the filter %s, change the application conditions and press the confirm button</string>
-    <string name="black_list_empty">No blacklist matches</string>
-    <string name="white_list_empty">No whitelist matches</string>
-    <string name="block_add_info">May be %s %s numbers from your contact list</string>
-    <string name="progress_title">Please wait. Data is being updated.</string>
 
-    <string name="or_login_with_email">Or login with email</string>
 
-    <string name="register">Register</string>
-    <string name="continue_">Continue</string>
-
-    <string name="sign_up_with_email">Sign up with email</string>
-    <string name="name">Name</string>
-    <string name="repeat_password">Repeat password</string>
-
-    <string name="settings_language_title">Select the application language:</string>
-    <string name="app_theme_title">Select an app theme:</string>
-    <string name="settings_back_ground_info">If you select the background mode, the blocking will be performed even with the application closed. Otherwise, blocking will be done only when the application is running.</string>
-    <string name="change_back_ground">Select an operation mode</string>
-    <string name="add_conditions_title">Select application conditions</string>
-    <string name="add_conditions_info">If no application conditions are selected, the application will block numbers that exactly match the entered number. Please note that incoming calls contain a country code. If you are not sure about the accuracy of the code, select the \'contains\'</string>
-    option
-    <string name="add_to_list_title">Add number to filter</string>
-
-    <string name="can_block">blocked</string>
-    <string name="can_unblock">unblocked</string>
-    <string name="success_">Success</string>
-    <string name="change_turn_block">Blocker operation</string>
-    <string name="turn_on">Enabled</string>
-    <string name="turn_off">Turn off</string>
-    <string name="back_ground">Only when app is enabled</string>
-    <string name="fore_ground">Foreground</string>
-    <string name="details_">Details…</string>
-    <string name="log_out_title">Log out and reset all settings</string>
-    <string name="delete_account_title">Delete account completely</string>
-    <string name="change_password_btn">Change</string>
-    <string name="call_deleting">Deleting a call</string>
     <string name="call_delete_info">Only numbers blocked by the application can be deleted. To edit the call list, go to the phone log</string>
-    <string name="contact_by_filter_list_title">This combination has an effect on %s conflicts</string>
-    <string name="condition_full">Full number</string>
+
     <string name="filter">Filter</string>
-    <string name="choose_least_one_filter">Choose at least one filter</string>
     <string name="delete_">Delete?</string>
-    <string name="contact_filter_match">Found %s matches from %s</string>
-    <string name="blocked_calls_history">Blocked calls history</string>
-    <string name="only_black_list">Only with lock detection</string>
-    <string name="empty_state_title">There is nothing in %s.</string>
-    <string name="data_collecting">Information collection</string>
-    <string name="no_country_code">No code</string>
-    <string name="no_in_contact_list">Not in contact list</string>
-    <string name="invalid_phone_number">Invalid phone number</string>
     <string name="condition_dialog_title">Select a condition</string>
     <string name="unavailable_network">No internet connection.\nTo continue, connect to the internet and re-login to the app.</string>
     <string name="unavailable_network_repeat">No internet connection.\nTo continue, please connect to the internet and try again.</string>
     <string name="blocked_call_log">Blocked</string>
-    <string name="invalid">Invalid</string>
-
-    <string name="filter_update">Number %s is updated</string>
-    <string name="blocker">Блокировщик</string>
-    <string name="permission">Допуск</string>
 
 
     <string name="filter_description_invalid">Номер не валидный</string>
 
-    <string name="filter_description_title">%s (%s)</string>
-    <string name="filter_full_number_description">Для добавления полного номера выберите код страны, введите номер согласно маски, нажмите кнопку "Добавить"</string>
-    <string name="filter_start_description">Для добавления старта номера выберите код страны и/или введите номер не более предложеного маской, нажмите кнопку "Добавить"</string>
-    <string name="filter_contain_description">Для добавления номера "Содержит" введите любой номер, нажмите кнопку "Добавить"</string>
-    <string name="contact_list_with_blocker">Контакты, которым будет запрещен входящий вызов этим блокировщиком</string>
-    <string name="contact_list_with_allow">Контакты, которым будет разрешен входящий вызов этим допуском</string>
-    <string name="contact">Контакт</string>
-    <string name="call">Вызов</string>
-    <string name="contact_list_with_contact">Список фильтров и блокировщиков, которые повлияли на статус контакта</string>
-
     <string name="number_not_from_contacts">Номера нет в контактах</string>
     <string name="number_from_call_log">Номер из журнала вызовов</string>
-    <string name="number">Номер</string>
+
     <string name="close">Закрыть</string>
     <string name="empty" />
 
 
 
     <string name="info">Инфо</string>
-    <string name="statement">Выписка</string>
-    <string name="preview">Результат</string>
 
-    <string name="blocking_history">Блокировки</string>
     <string name="blocked_by_blocker">Заблокирован фильтром</string>
     <string name="permitted_by_permission">Допущен фильтром</string>
     <string name="with_blocker">C фильтром-блокировщиком</string>
@@ -236,8 +169,6 @@
     <string name="update_calls">Обновление списка звонков</string>
     <string name="update_data">Обновление данных</string>
 
-    <string name="transfer_to_blocker">Перейти в блокировщики?</string>
-    <string name="transfer_to_permission">Перейти в допуски?</string>
     <string name="number_value">number %s </string>
     <string name="update_filters">Обновление фильтров</string>
     <string name="blocker_filtered_contacts">Повлияет на %s номеров</string>
@@ -247,31 +178,13 @@
     <string name="without_filter">Без признаков фильтра</string>
     <string name="blocker_indication_value">Будет заблокирован фильтром:&#160;</string>
     <string name="permission_indication_value">Будет допущен фильтром:&#160;</string>
-    <string name="blocker_indication_value_sign">Признак блокировщика:&#160;</string>
-    <string name="permission_indication_value_sign">Признак допуска:&#160;</string>
     <string name="without_filter_call">Без совпадения с фильтром</string>
     <string name="blocker_call_value">Заблокирован фильтром:&#160;</string>
     <string name="permission_call_value">Допущен фильтром:&#160;</string>
 
     <string name="country_choose">Выберите страну</string>
-    <string name="numbers">Номера</string>
-    <string name="info_blockers_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>
-Для удобства поиска можно воспользоваться поисковиком <img src =\'ic_search\'>, чтоб отобрать блокировщик по номеру<br/>
-или фильтром <img src =\'ic_filter_list\'> - для отбора по типу блокировки<br/>
-Быстрый клик по блокировщику переносит на экран с деталями
-Долгий клик открывает меню удаления <img src =\'ic_delete\'><br/>
-Если необходимо добавить новый блокировщик - нажмите кнопку с плюсом внизу <img src =\'test_button\'> и выберите тип блокировки</p>]]></string>
-    <string name="number_data_detail_info"><![CDATA[На экране “Номер” вы увидите список фильтров, у которых нашлись совпадения с номером. Первый из списка - повлияет на номер при входящем вызове.<br/><br/><u>Приоритетность расположения фильтров:</u><br/>* Количество символов в фильтре(чем больше тем выше)<br/>* При одинаковом количестве начало совпадения в номере(чем раньше тем выше)<br/><u>Пример:</u><br/>Номер: +380502711344<br/>Список фильтров:<br/>1. <img src =\'ic_condition_full\'>Полный номер <b>+380502711344</b><br/>совпадение <b>+380502711344</b> (13 символов)<br/>2. <img src =\'ic_condition_start\'>Начинается <b>+38050</b><br/>совпадение <b>+38050</b>2711344 (6 символов)<br/>3. <img src =\'ic_condition_contain\'>Содержит <b>711344</b><br/>совпадение +380502<b>711344</b> (6 символов, более позднее совпадение)<br/>4. <img src =\'ic_condition_start\'>Начинается <b>+3805</b><br/>совпадение <b>+3805</b>02711344 (5 символов)<br/>5. <img src =\'ic_condition_contain\'>Содержит <b>7113</b><br/>совпадение +380502<b>7113</b>44 (4 символа)<br/>6. <img src =\'ic_condition_contain\'>Содержит <b>1344</b><br/>совпадение +38050271<b>1344</b> (4 символа, более позднее совпадение)]]></string>
-    <string name="adding">Добавление</string>
-    <string name="delete_black_list">Видалити із чорного списку</string>
-    <string name="add_black_list">Додати до чорного списку</string>
-    <string name="settings_blocker">Настройки блокировщика</string>
-    <string name="settings_account">Ваш аккаунт</string>
-    <string name="settings_language">Язык</string>
-    <string name="settings_theme">Выбор темы</string>
-    <string name="settings_evaluate">Оценить приложение</string>
-    <string name="settings_review">Написать разработчику</string>
-    <string name="settings_privacy">Политика конфиденциальности</string>
+
+
     <string name="day">Светлая</string>
     <string name="night">Темная</string>
     <string name="auto">Согласно настроек телефона</string>

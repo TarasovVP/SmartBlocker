@@ -4,15 +4,15 @@
         android:id="@+id/listBlockerFragment"
         android:title="@string/blocker_list"
         android:icon="@drawable/ic_blocker_list"
-        android:contentDescription="@string/filter_list"/>
+        android:contentDescription="@string/blocker_list"/>
     <item
         android:id="@+id/listPermissionFragment"
         android:title="@string/permission_list"
         android:icon="@drawable/ic_permission_list"
-        android:contentDescription="@string/filter_list"/>
+        android:contentDescription="@string/ic_permission_list"/>
     <item
         android:id="@+id/listCallFragment"
-        android:title="@string/log_list"
+        android:title="@string/call_list"
         android:icon="@drawable/ic_call_list"
         android:contentDescription="@string/log_list"/>
     <item

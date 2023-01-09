@@ -42,12 +42,8 @@ class SettingsAccountFragment :
             viewModel.deleteUser()
         }
         setFragmentResultListener(CHANGE_PASSWORD) { _, bundle ->
-            if(bundle.getString(CURRENT_PASSWORD, String.EMPTY).isEmpty() || bundle.getString(NEW_PASSWORD, String.EMPTY).isEmpty()) {
-                showMessage(getString(R.string.passwords_different), true)
-            } else {
-                viewModel.changePassword(bundle.getString(CURRENT_PASSWORD, String.EMPTY),
-                    bundle.getString(NEW_PASSWORD, String.EMPTY))
-            }
+            viewModel.changePassword(bundle.getString(CURRENT_PASSWORD, String.EMPTY),
+                bundle.getString(NEW_PASSWORD, String.EMPTY))
         }
     }
 
