@@ -23,7 +23,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:drawableEnd="@drawable/ic_flag_ru"
-                    android:text="@string/russian" />
+                    android:text="@string/settings_language_russian" />
 
                 <RadioButton
                     android:id="@+id/settings_languages_rb_uk"
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:drawableEnd="@drawable/ic_flag_ua"
-                    android:text="@string/ukrainian" />
+                    android:text="@string/settings_language_ukrainian" />
 
                 <RadioButton
                     android:id="@+id/settings_languages_rb_en"
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:drawableEnd="@drawable/ic_flag_us"
-                    android:text="@string/english" />
+                    android:text="@string/settings_language_english" />
             </RadioGroup>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

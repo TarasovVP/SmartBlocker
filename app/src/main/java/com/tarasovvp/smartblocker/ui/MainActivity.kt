@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
         }
         registerReceiver(callHandleReceiver, IntentFilter(Constants.CALL_RECEIVE))
         exceptionReceiver = ExceptionReceiver { exception ->
-            Log.e("exceptionTAG", "MainActivity exceptionReceiver exception $exception")
             mainViewModel.exceptionLiveData.postValue(exception)
             setProgressVisibility(false)
         }

@@ -86,6 +86,7 @@
     <string name="settings_account">Ваш аккаунт</string>
     <string name="settings_language">Язык</string>
     <string name="settings_theme">Выбор темы</string>
+    <string name="settings_review">Написать разработчику</string>
     <string name="settings_privacy">Политика конфиденциальности</string>
     <!--Settings blocker-->
     <string name="settings_blocker_title">Фильтровать входящие вызовы</string>
@@ -140,8 +141,6 @@
     <string name="filter_no_filter">No filter</string>
 
     <string name="enter_your_email">Enter Your Email</string>
-
-    <string name="blocked_calls">%s calls blocked</string>
 
     <string name="call_delete_info">Only numbers blocked by the application can be deleted. To edit the call list, go to the phone log</string>
 

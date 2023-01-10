@@ -12,7 +12,6 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -82,7 +81,6 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
     builder.setSmallIcon(R.drawable.ic_logo)
         .setColor(ContextCompat.getColor(this, R.color.blue))
         .setContentTitle(getString(R.string.smart_blocker_is_on))
-        .setContentText("")
         .setContentIntent(pendingIntent)
 
     return builder
