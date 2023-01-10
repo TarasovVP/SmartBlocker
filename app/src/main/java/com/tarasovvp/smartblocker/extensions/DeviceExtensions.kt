@@ -80,7 +80,7 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
 
     builder.setSmallIcon(R.drawable.ic_logo)
         .setColor(ContextCompat.getColor(this, R.color.blue))
-        .setContentTitle(getString(R.string.smart_blocker_is_on))
+        .setContentTitle(getString(R.string.app_is_active))
         .setContentIntent(pendingIntent)
 
     return builder

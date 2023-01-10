@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_16"
-                android:text="@string/condition_dialog_title"
+                android:text="@string/filter_condition_title"
                 android:textSize="@dimen/text_size_14"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +46,7 @@
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_16"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@string/condition_full"
+                android:text="@string/filter_condition_full"
                 android:checked="@{filteringList.contains(0)}"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_title" />
 
@@ -57,7 +57,7 @@
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@string/condition_start"
+                android:text="@string/filter_condition_start"
                 android:checked="@{filteringList.contains(1)}"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_full" />
 
@@ -68,7 +68,7 @@
                 android:paddingVertical="@dimen/padding_5"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@string/condition_contain"
+                android:text="@string/filter_condition_contain"
                 android:checked="@{filteringList.contains(2)}"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_filter_condition_start" />
 

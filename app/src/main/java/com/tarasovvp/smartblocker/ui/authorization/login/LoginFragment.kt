@@ -38,7 +38,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             if (email.isNotEmpty()) {
                 viewModel.sendPasswordResetEmail(email)
             } else {
-                showMessage(getString(R.string.enter_your_email), true)
+                showMessage(getString(R.string.authorization_enter_email), true)
             }
         }
     }
@@ -89,7 +89,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(R.id.listBlockerFragment)
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
-                showMessage(getString(R.string.password_reset_text), false)
+                showMessage(getString(R.string.authorization_password_reset_success), false)
             }
         }
     }

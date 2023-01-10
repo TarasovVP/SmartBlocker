@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false).isTrue()) {
-                Toast.makeText(this, getString(R.string.give_all_permissions), Toast.LENGTH_SHORT)
+                Toast.makeText(this, getString(R.string.app_need_permissions), Toast.LENGTH_SHORT)
                     .show()
             } else {
                 getAllData()

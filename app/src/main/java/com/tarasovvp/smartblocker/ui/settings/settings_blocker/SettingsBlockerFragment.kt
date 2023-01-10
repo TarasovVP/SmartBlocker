@@ -56,7 +56,7 @@ class SettingsBlockerFragment :
                     if (SmartBlockerApp.instance?.isLoggedInUser()
                             .isTrue() && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
                     ) {
-                        showMessage(getString(R.string.unavailable_network_repeat), true)
+                        showMessage(getString(R.string.app_network_unavailable_repeat), true)
                     } else {
                         viewModel.changeBlockHidden(isChecked.not())
                         binding?.settingsBlockerHiddenSwitch?.isEnabled = false

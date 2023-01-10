@@ -71,7 +71,7 @@
                 app:layout_constraintStart_toStartOf="@+id/item_contact_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
-                app:mainText="@{ contact.nameEmpty ? @string/number_not_from_contacts : contact.name}"
+                app:mainText="@{ contact.nameEmpty ? @string/details_number_not_from_contacts : contact.name}"
                 app:searchText="@{contact.searchText}" />
 
             <View

@@ -73,7 +73,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
                     progressStatusLiveData.postValue(mainProgress.apply {
                         progressDescription =
-                            getApplication<Application>().getString(R.string.update_contacts)
+                            getApplication<Application>().getString(R.string.progress_update_contacts)
                         progressMax = size
                         progressPosition = position
                     })
@@ -86,7 +86,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
                     progressStatusLiveData.postValue(mainProgress.apply {
                         progressDescription =
-                            getApplication<Application>().getString(R.string.update_calls)
+                            getApplication<Application>().getString(R.string.progress_update_calls)
                         progressMax = size
                         progressPosition = position
                     })
@@ -99,7 +99,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                 filter.filteredContacts = contactList.filter { it.filter == filter }.size.toString()
                 progressStatusLiveData.postValue(mainProgress.apply {
                     progressDescription =
-                        getApplication<Application>().getString(R.string.update_filters)
+                        getApplication<Application>().getString(R.string.progress_update_filters)
                     progressMax = filterList.size
                     progressPosition = index
                 })
@@ -109,7 +109,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
             progressStatusLiveData.postValue(mainProgress.apply {
-                progressDescription = getApplication<Application>().getString(R.string.update_data)
+                progressDescription = getApplication<Application>().getString(R.string.progress_update_data)
                 progressMax = 0
                 progressPosition = 0
             })

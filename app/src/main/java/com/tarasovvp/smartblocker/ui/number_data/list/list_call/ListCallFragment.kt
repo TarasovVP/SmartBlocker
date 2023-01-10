@@ -83,9 +83,9 @@ class ListCallFragment :
                 callFilteringText.add(getString(R.string.filter_no_filter))
             else {
                 if (conditionFilterIndexes?.contains(BLOCKED_CALL.toInt()).isTrue())
-                    callFilteringText.add(context.getString(R.string.by_blocker_filter))
+                    callFilteringText.add(context.getString(R.string.filter_call_blocked))
                 if (conditionFilterIndexes?.contains(PERMITTED_CALL.toInt()).isTrue())
-                    callFilteringText.add(context.getString(R.string.by_permission_filter))
+                    callFilteringText.add(context.getString(R.string.filter_call_blocked))
             }
             text = callFilteringText.joinToString()
             isChecked = conditionFilterIndexes.isNullOrEmpty().not()
@@ -128,7 +128,7 @@ class ListCallFragment :
         }
         (activity as MainActivity).toolbar?.apply {
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (binding?.listCallCheck?.isChecked.isTrue()) R.string.list_call else R.string.blocked_call_log)
+                if (isDeleteMode) getString(R.string.delete_) else getString(R.string.list_call)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)

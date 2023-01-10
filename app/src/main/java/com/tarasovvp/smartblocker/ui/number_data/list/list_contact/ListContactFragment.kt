@@ -53,9 +53,9 @@ open class ListContactFragment :
                 callFilteringText.add(getString(R.string.filter_no_filter))
             else {
                 if (conditionFilterIndexes?.contains(BLOCKER).isTrue())
-                    callFilteringText.add(context.getString(R.string.with_blocker_filter))
+                    callFilteringText.add(context.getString(R.string.filter_contact_blocker))
                 if (conditionFilterIndexes?.contains(PERMISSION).isTrue())
-                    callFilteringText.add(context.getString(R.string.with_permission_filter))
+                    callFilteringText.add(context.getString(R.string.filter_contact_permission))
             }
             text = callFilteringText.joinToString()
             isChecked = conditionFilterIndexes.isNullOrEmpty().not()

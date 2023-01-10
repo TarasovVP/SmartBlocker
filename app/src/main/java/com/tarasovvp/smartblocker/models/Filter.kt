@@ -46,8 +46,8 @@ data class Filter(
     @Exclude
     fun filterTypeTitle(): Int {
         return when (filterType) {
-            PERMISSION -> R.string.permission
-            else -> R.string.blocker
+            PERMISSION -> R.string.filter_type_permission
+            else -> R.string.filter_type_blocker
         }
     }
 

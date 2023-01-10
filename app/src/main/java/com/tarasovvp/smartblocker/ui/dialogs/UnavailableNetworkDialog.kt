@@ -12,7 +12,7 @@ class UnavailableNetworkDialog : BaseDialog<DialogInfoBinding>() {
     override var layoutId = R.layout.dialog_info
 
     override fun initUI() {
-        binding?.dialogInfoTitle?.text = getString(R.string.unavailable_network)
+        binding?.dialogInfoTitle?.text = getString(R.string.authorization_network_unavailable)
         binding?.dialogInfoConfirm?.isVisible = false
         binding?.dialogInfoCancel?.text = getString(R.string.button_ok)
         binding?.dialogInfoCancel?.setSafeOnClickListener {

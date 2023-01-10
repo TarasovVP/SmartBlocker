@@ -110,7 +110,7 @@ open class BaseListFilterFragment :
             if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()
                 && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
             ) {
-                showMessage(getString(R.string.unavailable_network_repeat), true)
+                showMessage(getString(R.string.app_network_unavailable_repeat), true)
             } else {
                 viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
             }

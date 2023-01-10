@@ -25,7 +25,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false).isTrue()) {
-                showMessage(getString(R.string.give_all_permissions), false)
+                showMessage(getString(R.string.app_need_permissions), false)
             } else {
                 startLoginScreen()
             }

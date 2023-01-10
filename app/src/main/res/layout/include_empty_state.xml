@@ -21,7 +21,7 @@
             android:id="@+id/empty_state_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{emptyState.description  == 0 ? @string/empty : context.getString(emptyState.description)}"
+            android:text="@{emptyState.description  == 0 ? `` : context.getString(emptyState.description)}"
             android:gravity="center"
             android:background="@drawable/bg_rounded"
             android:minLines="5"

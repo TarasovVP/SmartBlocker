@@ -13,7 +13,7 @@ class AppExitDialog : BaseDialog<DialogInfoBinding>() {
     override var layoutId = R.layout.dialog_info
 
     override fun initUI() {
-        binding?.dialogInfoTitle?.text = getString(R.string.exit_application)
+        binding?.dialogInfoTitle?.text = getString(R.string.app_exit)
         binding?.dialogInfoCancel?.setSafeOnClickListener {
             dismiss()
         }

@@ -9,17 +9,17 @@ enum class FilterCondition(
     val smallPermissionIcon: Int,
     var index: Int,
 ) {
-    FILTER_CONDITION_FULL(R.string.condition_full,
+    FILTER_CONDITION_FULL(R.string.filter_condition_full,
         R.drawable.ic_condition_full,
         R.drawable.ic_condition_full_blocker_small,
         R.drawable.ic_condition_full_permission_small,
         0),
-    FILTER_CONDITION_START(R.string.condition_start,
+    FILTER_CONDITION_START(R.string.filter_condition_start,
         R.drawable.ic_condition_start,
         R.drawable.ic_condition_start_blocker_small,
         R.drawable.ic_condition_start_permission_small,
         1),
-    FILTER_CONDITION_CONTAIN(R.string.condition_contain,
+    FILTER_CONDITION_CONTAIN(R.string.filter_condition_contain,
         R.drawable.ic_condition_contain,
         R.drawable.ic_condition_contain_blocker_small,
         R.drawable.ic_condition_contain_permission_small,
@@ -27,7 +27,7 @@ enum class FilterCondition(
 
     companion object {
         fun getTitleByIndex(index: Int): Int =
-            values().find { it.index == index }?.title ?: R.string.condition_full
+            values().find { it.index == index }?.title ?: R.string.filter_condition_full
 
         fun getMainIconByIndex(index: Int): Int =
             values().find { it.index == index }?.mainIcon ?: R.drawable.ic_condition_full
