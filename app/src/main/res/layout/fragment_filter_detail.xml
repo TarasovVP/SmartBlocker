@@ -34,7 +34,7 @@
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
             style="@style/StrokeButton"
-            android:text="@string/change"
+            android:text="@string/filter_action_transfer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter_detail_delete_filter"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
@@ -44,7 +44,7 @@
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
             android:layout_marginStart="@dimen/margin_8"
-            android:text="@string/delete_"
+            android:text="@string/filter_action_delete"
             app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/filter_detail_change_filter"

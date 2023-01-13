@@ -20,8 +20,8 @@ enum class Info(
         R.string.filter_condition_start),
     INFO_FILTER_ADD_CONTAIN(R.string.info_condition_contain,
         R.string.filter_condition_contain),
-    INFO_NUMBER_DATA_DETAIL(R.string.info_number_details,
+    INFO_NUMBER_DATA_DETAILS(R.string.info_number_details,
         R.string.details_number),
-    INFO_FILTER_DETAIL(R.string.info_filter_details,
+    INFO_FILTER_DETAILS(R.string.info_filter_details,
         R.string.details_filter)
 }

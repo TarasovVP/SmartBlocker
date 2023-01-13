@@ -258,11 +258,11 @@ open class BaseListFilterFragment :
         if (this is ListBlockerFragment) {
             findNavController().navigate(ListBlockerFragmentDirections.startInfoFragment(info = InfoData(
                 title = getString(Info.INFO_BLOCKER_LIST.title),
-                description = getString(Info.INFO_CONTACT_LIST.description))))
+                description = getString(Info.INFO_BLOCKER_LIST.description))))
         } else {
             findNavController().navigate(ListPermissionFragmentDirections.startInfoFragment(info = InfoData(
                 title = getString(Info.INFO_PERMISSION_LIST.title),
-                description = getString(Info.INFO_CONTACT_LIST.description))))
+                description = getString(Info.INFO_PERMISSION_LIST.description))))
         }
     }
 }
