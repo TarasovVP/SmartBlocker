@@ -7,13 +7,13 @@ import androidx.core.content.ContextCompat
 import androidx.room.Embedded
 import androidx.room.Ignore
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.OUT_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
+import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
 import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.android.parcel.Parcelize
 
@@ -57,7 +57,7 @@ open class Call(
     }
 
     fun timeFromCallDate(): String? {
-        return callDate?.toDateFromMilliseconds(Constants.TIME_FORMAT)
+        return callDate?.toDateFromMilliseconds(TIME_FORMAT)
     }
 
     fun dateFromCallDate(): String? {
