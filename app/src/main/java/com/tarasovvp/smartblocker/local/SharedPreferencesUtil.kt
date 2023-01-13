@@ -1,12 +1,12 @@
 package com.tarasovvp.smartblocker.local
 
 import androidx.appcompat.app.AppCompatDelegate
+import com.tarasovvp.smartblocker.constants.Constants.APP_LANG
+import com.tarasovvp.smartblocker.constants.Constants.APP_THEME
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
+import com.tarasovvp.smartblocker.constants.Constants.BLOCK_TURN_OFF
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
-import com.tarasovvp.smartblocker.local.Settings.APP_LANG
-import com.tarasovvp.smartblocker.local.Settings.APP_THEME
-import com.tarasovvp.smartblocker.local.Settings.BLOCK_TURN_OFF
-import com.tarasovvp.smartblocker.local.Settings.ON_BOARDING_SEEN
+import com.tarasovvp.smartblocker.constants.Constants.ON_BOARDING_SEEN
 import com.tarasovvp.smartblocker.local.Settings.clearSharedPreferences
 import com.tarasovvp.smartblocker.local.Settings.loadBoolean
 import com.tarasovvp.smartblocker.local.Settings.loadInt

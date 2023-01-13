@@ -4,6 +4,8 @@ import android.os.Parcelable
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
+import com.tarasovvp.smartblocker.constants.Constants.NUMBER_DATA_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.models.HeaderDataItem
 import com.tarasovvp.smartblocker.models.NumberData
@@ -65,8 +67,4 @@ abstract class BaseAdapter<D : NumberData> :
     @Parcelize
     open class HeaderData : NumberData(), Parcelable
 
-    companion object {
-        const val NUMBER_DATA_TYPE = 0
-        const val HEADER_TYPE = 1
-    }
 }

@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.enums
 
 import com.tarasovvp.smartblocker.R
 
+//TODO complete??
 enum class FilterCondition(
     val title: Int,
     val mainIcon: Int,

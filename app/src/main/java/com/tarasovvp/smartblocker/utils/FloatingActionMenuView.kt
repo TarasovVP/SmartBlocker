@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ViewFloatingActionMenuBinding
 import com.tarasovvp.smartblocker.enums.FilterCondition
-
+//TODO transfer to list filter
 class FloatingActionMenuView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

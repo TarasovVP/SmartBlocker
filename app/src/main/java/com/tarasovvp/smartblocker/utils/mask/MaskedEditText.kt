@@ -15,6 +15,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.core.content.ContextCompat
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
+import com.tarasovvp.smartblocker.constants.Constants.SPACE
 import com.tarasovvp.smartblocker.extensions.*
 
 class MaskedEditText @JvmOverloads constructor(
@@ -381,9 +382,5 @@ class MaskedEditText @JvmOverloads constructor(
             string = builder.toString()
         }
         return string
-    }
-
-    companion object {
-        const val SPACE = " "
     }
 }

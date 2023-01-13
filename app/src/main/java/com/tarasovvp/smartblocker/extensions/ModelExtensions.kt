@@ -10,7 +10,6 @@ import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
-import android.util.Log
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.smartblocker.R
@@ -125,8 +124,6 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
             val filteredCall = cursor.createCallObject(true) as FilteredCall
-            Log.e("blockTAG",
-                "Extensions deleteLastMissedCall number ${filteredCall.number} type ${filteredCall.type} time ${filteredCall.callDate} currentTimeMillis ${System.currentTimeMillis()}")
             if (number == filteredCall.number) {
                 CoroutineScope(Dispatchers.IO).launch {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {
@@ -139,16 +136,11 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
                 }
                 if (filter?.isBlocker().isTrue()) {
                     try {
-                        Log.e("blockTAG",
-                            "Extensions deleteLastMissedCall phone == number && type == REJECTED_CALL number $number name ${filteredCall.callName} time ${filteredCall.callDate} phone ${filteredCall.number} type ${filteredCall.type} id ${filteredCall.callId}")
                         this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
                             "${CALL_ID}'${filteredCall.callId}'",
                             null)
-                        Log.e("blockTAG",
-                            "Extensions delete callId ${filteredCall.callId}")
                     } catch (e: java.lang.Exception) {
                         e.printStackTrace()
-                        Log.e("blockTAG", "Extensions delete Exception ${e.localizedMessage}")
                     }
                 }
                 break

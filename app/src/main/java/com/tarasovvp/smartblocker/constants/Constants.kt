@@ -55,6 +55,9 @@ object Constants {
     const val MASK_CHAR = '_'
     const val COUNTRY_CODE_START = "+%s"
     const val COUNTRY_CODE = "countryCode"
+    const val SPACE = " "
+    const val NUMBER_DATA_TYPE = 0
+    const val HEADER_TYPE = 1
     //DateTime
     const val TIME_FORMAT = "HH:mm:ss"
     const val DATE_FORMAT = "dd.MM.yyyy"
@@ -65,4 +68,8 @@ object Constants {
     const val APP_LANG_EN = "en"
     //Settings
     const val SETTINGS_REVIEW = "settingsReview"
+    const val ON_BOARDING_SEEN = "onBoardingSeen"
+    const val APP_LANG = "appLang"
+    const val APP_THEME = "appTheme"
+    const val BLOCK_TURN_OFF = "blockTurnOff"
 }
