@@ -33,7 +33,6 @@ class FilterDetailsViewModel(application: Application) : BaseViewModel(applicati
         launch {
             val calls = async { callRepository.getQueryCallList(filter) }
             val contacts = async { contactRepository.getAllContacts() }
-            awaitAll(calls, contacts)
             val callList = calls.await().orEmpty()
             val contactList = contacts.await().orEmpty()
             val numberDataList = ArrayList<NumberData>().apply {

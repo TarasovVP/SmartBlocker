@@ -82,7 +82,7 @@ open class FilterAddFragment :
                 binding?.filter?.countryCode?.let { setCountryCode(it) }
             }
         } else {
-            binding?.filterAddInput?.hint = getString(R.string.enter_filter)
+            binding?.filterAddInput?.hint = getString(R.string.creating_filter_enter_hint)
         }
     }
 

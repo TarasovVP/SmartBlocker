@@ -131,10 +131,10 @@ open class BaseListFilterFragment :
             }
         }
         findNavController().currentDestination?.label =
-            if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
+            if (isDeleteMode) getString(R.string.list_delete) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
         (activity as MainActivity).toolbar?.apply {
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
+                if (isDeleteMode) getString(R.string.list_delete) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)

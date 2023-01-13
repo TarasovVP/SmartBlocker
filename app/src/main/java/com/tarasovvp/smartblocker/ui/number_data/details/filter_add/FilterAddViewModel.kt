@@ -43,7 +43,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
         launch {
             val contacts = async { contactRepository.getAllContacts() }
             val calls = async { callRepository.getAllCallsNumbers() }
-            awaitAll(contacts, calls)
             val contactList = contacts.await().orEmpty()
             val callList = calls.await().orEmpty()
             Log.e("filterAddTAG",

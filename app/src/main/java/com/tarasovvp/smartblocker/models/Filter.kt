@@ -75,16 +75,16 @@ data class Filter(
     @Exclude
     fun filteredContactsText(): Int {
         return when (filterType) {
-            PERMISSION -> R.string.permission_filtered_contacts
-            else -> R.string.blocker_filtered_contacts
+            PERMISSION -> R.string.details_number_permit_contacts
+            else -> R.string.details_number_block_contacts
         }
     }
 
     @Exclude
     fun filteredCallsText(): Int {
         return when (filterType) {
-            PERMISSION -> R.string.permission_filtered_calls
-            else -> R.string.blocker_filtered_calls
+            PERMISSION -> R.string.details_number_permittes_calls
+            else -> R.string.details_number_blocked_calls
         }
     }
 

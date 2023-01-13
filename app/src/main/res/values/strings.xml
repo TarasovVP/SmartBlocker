@@ -32,6 +32,7 @@
     <string name="authorization_password_reset_success">Подтверждающее письмо отправлено на ваш Email. Проверьте во входящих.</string>
     <string name="authorization_signing_up">Зарегистрироваться</string>
     <string name="authorization_network_unavailable">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и совершите повторный вход.</string>
+    <string name="authorizatiion_sign_up_success">Sign up successful! Sign in.</string>
     <!--Filter type-->
     <string name="filter_type_blocker">Блокировщик</string>
     <string name="filter_type_permission">Допуск</string>
@@ -47,18 +48,21 @@
     <string name="filter_action_create_permission_description">Создать допуск?</string>
     <string name="filter_action_create_permission_request">Создать допуск %s?</string>
     <string name="filter_action_create_permission_success">Допуск %s создан!</string>
+    <string name="filter_action_delete">Delete</string>
     <string name="filter_action_delete_blocker_description">Блокировщик уже существует. Удалить?</string>
     <string name="filter_action_delete_blocker_request">Удалить %s из блокировщиков?</string>
     <string name="filter_action_delete_blocker_success">%s удален из блокировщиков!</string>
     <string name="filter_action_delete_permission_description">Допуск уже существует. Удалить?</string>
     <string name="filter_action_delete_permission_request">Удалить %s из допусков?</string>
     <string name="filter_action_delete_permission_success">%s удален из допусков!</string>
+    <string name="filter_action_transfer">Изменить</string>
     <string name="filter_action_transfer_blocker_description">Блокировщик уже существует. Сделать допуском?</string>
     <string name="filter_action_transfer_blocker_request">Переместить номер %s в блокировщики?</string>
     <string name="filter_action_transfer_blocker_success">Номер %s перемещен в блокировщики!</string>
     <string name="filter_action_transfer_permission_description">Допуск уже существует. Сделать блокировщиком?</string>
     <string name="filter_action_transfer_permission_request">Переместить номер %s в допуски?</string>
     <string name="filter_action_transfer_permission_success">Номер %s перемещен в допуски!</string>
+    <string name="filter_action_number_value">номер %s </string>
     <!--Info-->
     <string name="info_blocker_list"><![CDATA[<p>На этом экране вы сможете просмотреть список всех добавленных блокировщиков<br/>Для удобства поиска можно воспользоваться поисковиком <img src =\'ic_search\'>, чтоб отобрать блокировщик по номеру<br/>или фильтром <img src =\'ic_filter_list\'> - для отбора по типу блокировки<br/>Быстрый клик по блокировщику переносит на экран с деталямиДолгий клик открывает меню удаления <img src =\'ic_delete\'><br/>Если необходимо добавить новый блокировщик - нажмите кнопку с плюсом внизу <img src =\'test_button\'> и выберите тип блокировки</p>]]></string>
     <string name="info_number_details"><![CDATA[На экране “Номер” вы увидите список фильтров, у которых нашлись совпадения с номером. Первый из списка - повлияет на номер при входящем вызове.<br/><br/><u>Приоритетность расположения фильтров:</u><br/>* Количество символов в фильтре(чем больше тем выше)<br/>* При одинаковом количестве начало совпадения в номере(чем раньше тем выше)<br/><u>Пример:</u><br/>Номер: +380502711344<br/>Список фильтров:<br/>1. <img src =\'ic_condition_full\'>Полный номер <b>+380502711344</b><br/>совпадение <b>+380502711344</b> (13 символов)<br/>2. <img src =\'ic_condition_start\'>Начинается <b>+38050</b><br/>совпадение <b>+38050</b>2711344 (6 символов)<br/>3. <img src =\'ic_condition_contain\'>Содержит <b>711344</b><br/>совпадение +380502<b>711344</b> (6 символов, более позднее совпадение)<br/>4. <img src =\'ic_condition_start\'>Начинается <b>+3805</b><br/>совпадение <b>+3805</b>02711344 (5 символов)<br/>5. <img src =\'ic_condition_contain\'>Содержит <b>7113</b><br/>совпадение +380502<b>7113</b>44 (4 символа)<br/>6. <img src =\'ic_condition_contain\'>Содержит <b>1344</b><br/>совпадение +38050271<b>1344</b> (4 символа, более позднее совпадение)]]></string>
@@ -91,13 +95,30 @@
     <string name="list_permission">Допуски</string>
     <string name="list_call">Вызовы</string>
     <string name="list_contact">Контакты</string>
-    <!--Details screens-->
-    <string name="creating_filter">Добавление</string>
+    <string name="list_delete">Удалить?</string>
+    <string name="list_call_delete_info">Можно удалить только заблокированные номера</string>
+    <string name="list_search_hint">Номер или имя</string>
+    <!--Creating filter-->
+    <string name="creating_filter">Создание</string>
+    <string name="creating_filter_enter_hint">Введите номер</string>
     <string name="creating_country_code_title">Выберите страну</string>
+    <string name="creating_filter_invalid">Номер не валидный</string>
+    <!--Details number-->
     <string name="details_number">Номер</string>
     <string name="details_number_not_from_contacts">Номера нет в контактах</string>
     <string name="details_number_from_call_log">Номер из журнала вызовов</string>
     <string name="details_filter">Фильтр</string>
+    <string name="details_number_block_contacts">Заблокирует %s номеров</string>
+    <string name="details_number_permit_contacts">Допустит %s номеров</string>
+    <string name="details_number_blocked_calls">Заблокировано %s звонков</string>
+    <string name="details_number_permittes_calls">Допущено %s звонков</string>
+    <string name="details_number_contact_without_filter">Без признаков фильтра</string>
+    <string name="details_number_block_with_filter">Будет заблокирован фильтром:&#160;</string>
+    <string name="details_number_permit_with_filter">Будет допущен фильтром:&#160;</string>
+    <string name="details_number_call_without_filter">Без совпадения с фильтром</string>
+    <string name="details_number_blocked_by_filter">Заблокирован фильтром:&#160;</string>
+    <string name="details_number_permitted_by_filter">Допущен фильтром:&#160;</string>
+    <string name="number_details_close">Закрыть</string>
     <!--Settings screens-->
     <string name="settings">Settings</string>
     <string name="settings_blocker">Настройки блокировщика</string>
@@ -122,6 +143,7 @@
     <string name="settings_account_change_password_succeed">Пароль успешно изменен</string>
     <string name="settings_account_log_out">Вы действительно хотите разлогиниться?</string>
     <string name="settings_account_delete">Вы действительно хотите удалить аккаунт?</string>
+    <string name="settings_account_success">Операция выполнена успешно</string>
     <!--Settings language-->
     <string name="settings_language_russian">Русский</string>
     <string name="settings_language_ukrainian">Украинский</string>
@@ -144,56 +166,9 @@
     <string name="filter_call_permitted">Допущен фильтром</string>
     <string name="filter_contact_blocker">C признаком блокировщика</string>
     <string name="filter_contact_permission">C признаком допуска</string>
-    <!--View description-->
-    <string name="close">Закрыть</string>
-    <string name="info">Инфо</string>
-    <string name="delete">Удалить</string>
-
-
-
-
-
-
-
-    <string name="search">Search</string>
-
-    <string name="operation_succeeded">Operation completed successfully</string>
-
-
-    <string name="delete_menu">Delete</string>
-    <string name="change">Change</string>
-
-    <string name="enter_phone_number">Enter phone number</string>
-    <string name="enter_filter">Enter number</string>
-
-
-    <string name="delete_">Delete?</string>
-
-    <string name="call_delete_info">Only numbers blocked by the application can be deleted. To edit the call list, go to the phone log</string>
-
-    <string name="filter_description_invalid">Номер не валидный</string>
-
-    <string name="number_value">number %s </string>
-
-    <string name="blocker_filtered_contacts">Повлияет на %s номеров</string>
-    <string name="permission_filtered_contacts">Повлияет на %s номеров</string>
-
-    <string name="blocker_filtered_calls">Заблокировано %s звонков</string>
-    <string name="permission_filtered_calls">Допущено %s звонков</string>
-
-    <string name="without_filter">Без признаков фильтра</string>
-    <string name="blocker_indication_value">Будет заблокирован фильтром:&#160;</string>
-    <string name="permission_indication_value">Будет допущен фильтром:&#160;</string>
-
-    <string name="without_filter_call">Без совпадения с фильтром</string>
-    <string name="blocker_call_value">Заблокирован фильтром:&#160;</string>
-    <string name="permission_call_value">Допущен фильтром:&#160;</string>
-
-    <!--??-->
-    <string name="success_sign_up">Sign up successful! Sign in.</string>
-
-
-
-
-
+    <!--Menu item-->
+    <string name="menu_close">Close</string>
+    <string name="menu_info">Info</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_search">Search</string>
 </resources>

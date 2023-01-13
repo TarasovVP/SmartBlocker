@@ -99,17 +99,17 @@ open class Call(
     fun callFilterTitle(): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
-                filter?.isPermission().isTrue() -> R.string.permission_indication_value
-                filter?.isBlocker().isTrue() -> R.string.blocker_indication_value
-                else -> R.string.without_filter
+                filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
+                filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
+                else -> R.string.details_number_contact_without_filter
             }
         } else {
             when {
                 this is FilteredCall && filtered?.isBlocker()
-                    .isTrue() -> R.string.blocker_call_value
+                    .isTrue() -> R.string.details_number_blocked_by_filter
                 this is FilteredCall && filtered?.isPermission()
-                    .isTrue() -> R.string.permission_call_value
-                else -> R.string.without_filter_call
+                    .isTrue() -> R.string.details_number_permitted_by_filter
+                else -> R.string.details_number_call_without_filter
             }
         }
     }

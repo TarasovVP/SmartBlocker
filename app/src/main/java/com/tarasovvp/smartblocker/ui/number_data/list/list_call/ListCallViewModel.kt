@@ -26,7 +26,6 @@ class ListCallViewModel(application: Application) : BaseViewModel(application) {
         launch {
             val logCalls = async { callRepository.getAllLogCalls() }
             val filteredCalls = async { filteredCallRepository.allFilteredCalls() }
-            awaitAll(logCalls, filteredCalls)
             val filteredCallList = filteredCalls.await().orEmpty()
             val logCallList = logCalls.await().orEmpty()
             val callList = ArrayList<Call>().apply {

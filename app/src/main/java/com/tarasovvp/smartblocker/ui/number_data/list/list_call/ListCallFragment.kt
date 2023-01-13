@@ -55,7 +55,7 @@ class ListCallFragment :
                 }
 
                 override fun onCallDeleteInfoClick() {
-                    showMessage(getString(R.string.call_delete_info), true)
+                    showMessage(getString(R.string.list_call_delete_info), true)
                 }
             })
         }
@@ -128,7 +128,7 @@ class ListCallFragment :
         }
         (activity as MainActivity).toolbar?.apply {
             title =
-                if (isDeleteMode) getString(R.string.delete_) else getString(R.string.list_call)
+                if (isDeleteMode) getString(R.string.list_delete) else getString(R.string.list_call)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)

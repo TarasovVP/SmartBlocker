@@ -80,7 +80,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                     menuItem.isVisible = adapter?.itemCount.orZero() > 0
                     isIconified = searchQuery.isNullOrEmpty()
                 }
-                queryHint = getString(R.string.enter_phone_number)
+                queryHint = getString(R.string.list_search_hint)
                 setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
                     searchQuery = it
                     searchDataList()

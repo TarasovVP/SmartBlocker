@@ -19,7 +19,6 @@ import com.tarasovvp.smartblocker.models.FilteredCall
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
-import com.tarasovvp.smartblocker.ui.base.BaseNumberDataFragment
 import com.tarasovvp.smartblocker.ui.number_data.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.number_data.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail.NumberDataDetailsFragmentDirections
@@ -85,7 +84,7 @@ class FilterDetailsFragment :
 
     private fun startFilterActionDialog(filterAction: FilterAction) {
         findNavController().navigate(FilterDetailsFragmentDirections.startFilterActionDialog(
-            filterNumber = String.format(getString(R.string.number_value), binding?.filter?.filter),
+            filterNumber = String.format(getString(R.string.filter_action_number_value), binding?.filter?.filter),
             filterAction = filterAction))
     }
 
