@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.ui.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
@@ -19,9 +18,6 @@ abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("filterLifeCycleTAG",
-            "BaseFragment onViewCreated this $this savedInstanceState $savedInstanceState")
-
         observeLiveData()
         setProgressVisibility()
     }

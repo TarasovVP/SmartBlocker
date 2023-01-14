@@ -1,14 +1,12 @@
 package com.tarasovvp.smartblocker.ui.number_data.list.list_call
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.repository.CallRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 
 class ListCallViewModel(application: Application) : BaseViewModel(application) {
 
@@ -20,8 +18,6 @@ class ListCallViewModel(application: Application) : BaseViewModel(application) {
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun getCallList(refreshing: Boolean) {
-        Log.e("adapterTAG",
-            "CallListViewModel getCallList refreshing $refreshing")
         if (refreshing.not()) showProgress()
         launch {
             val logCalls = async { callRepository.getAllLogCalls() }
@@ -40,8 +36,6 @@ class ListCallViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getHashMapFromCallList(callList: List<Call>, refreshing: Boolean) {
-        Log.e("adapterTAG",
-            "CallListViewModel getHashMapFromFilterList refreshing $refreshing")
         if (refreshing.not()) showProgress()
         launch {
             val hashMapList =

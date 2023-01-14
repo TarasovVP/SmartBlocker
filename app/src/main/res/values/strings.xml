@@ -85,6 +85,8 @@
     <string name="empty_state_filtered_calls">С такими параметрами отфильтрованных вызовов не найдено</string>
     <string name="empty_state_account">Вы вошли незарегистрированным пользователем</string>
     <!--Progress-->
+    <string name="progress_data_collect">Сбор информации</string>
+    <string name="progress_external_data_collect">Запрос внешних данных</string>
     <string name="progress_update_localizations">Обновление данных локализации</string>
     <string name="progress_update_filters">Обновление фильтров</string>
     <string name="progress_update_contacts">Обновление контактов</string>

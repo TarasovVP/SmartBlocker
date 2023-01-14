@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY

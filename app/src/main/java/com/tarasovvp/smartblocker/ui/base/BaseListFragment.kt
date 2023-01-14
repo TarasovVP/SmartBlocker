@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.ui.base
 
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -42,13 +41,10 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("adapterTAG",
-            "BaseListFragment onViewCreated initView adapter $adapter itemCount ${adapter?.itemCount}")
         setRecyclerView()
         setSearchViewMenu()
         (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
             viewLifecycleOwner) {
-            Log.e("callLogTAG", "BaseListFragment successAllDataLiveData getData()")
             this@BaseListFragment.getData()
         }
     }
@@ -61,15 +57,12 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             this.adapter = this@BaseListFragment.adapter
         }
         swipeRefresh?.setOnRefreshListener {
-            Log.e("adapterTAG",
-                "BaseListFragment setOnRefreshListener this $this itemCount ${adapter?.itemCount}")
             getData()
         }
     }
 
     private fun setSearchViewMenu() {
         (activity as MainActivity).apply {
-            Log.e("searchTAG", "BaseListFragment setSearchViewMenu searchQuery $searchQuery")
             toolbar?.inflateMenu(R.menu.toolbar_search)
             context?.let { SearchView(it) }?.apply {
                 if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =

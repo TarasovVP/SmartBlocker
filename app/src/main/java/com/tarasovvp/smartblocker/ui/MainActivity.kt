@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -170,8 +169,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setOnDestinationChangedListener() {
         navController?.addOnDestinationChangedListener { _, destination, _ ->
-            Log.e("destinationTAG",
-                "MainActivity addOnDestinationChangedListener isDialog $isDialog binding?.title ${binding?.toolbar?.title} title ${toolbar?.title} toolbar?.navigationIcon ${toolbar?.navigationIcon}")
             if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
                 toolbar?.navigationIcon = null
             } else {
@@ -183,7 +180,6 @@ class MainActivity : AppCompatActivity() {
                 isDialog = isDialog.not()
                 return@addOnDestinationChangedListener
             }
-            Log.e("destinationTAG", "MainActivity return@addOnDestinationChangedListener after")
             toolbar?.menu?.clear()
             toolbar?.isVisible =
                 destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment && destination.id != R.id.signUpFragment
@@ -215,13 +211,10 @@ class MainActivity : AppCompatActivity() {
     private fun observeLiveData() {
         with(mainViewModel) {
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
-                Log.e("getAllDataTAG", "MainActivity observeLiveData successAllDataLiveData ")
                 setMainProgressVisibility(false)
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showMessage(errorMessage, true)
-                Log.e("getAllDataTAG",
-                    "MainActivity exceptionLiveData setProgressVisibility(false)")
                 setMainProgressVisibility(false)
             }
             progressStatusLiveData.safeSingleObserve(this@MainActivity) { mainProgress ->
@@ -236,26 +229,18 @@ class MainActivity : AppCompatActivity() {
 
     fun setMainProgressVisibility(isVisible: Boolean) {
         binding?.mainProgressBarAnimation?.mainProgressBarContainer?.isVisible = isVisible
-        Log.e("getAllDataTAG", "MainActivity setMainProgressVisibility isVisible")
     }
 
     fun setProgressVisibility(isVisible: Boolean) {
-        Log.e("getAllDataTAG", "MainActivity setProgressVisibility isVisible $isVisible")
         binding?.progressBar?.isVisible = isVisible
     }
 
     fun getAllData() {
         if (checkPermissions().isTrue()) {
-            Log.e("getAllDataTAG",
-                "MainActivity getAllData if(checkPermissions()) setProgressVisibility(true) isChangingConfigurations $isChangingConfigurations isFinishing $isFinishing")
             setMainProgressVisibility(true)
             if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                Log.e("getAllDataTAG",
-                    "MainActivity getCurrentUser BlackListerApp.instance?.isLoggedInUser().isTrue() getCurrentUser()")
                 mainViewModel.getCurrentUser()
             } else {
-                Log.e("getAllDataTAG",
-                    "MainActivity getCurrentUser isLoggedInUser().not() getAllData()")
                 mainViewModel.getAllData()
             }
         } else {

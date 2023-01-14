@@ -6,7 +6,6 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -61,8 +60,6 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     fun setNumberMask(mask: String) {
-        Log.e("maskTAG",
-            "MaskedEditText setNumberMask mask $mask hint $hint")
         this.mask = mask
         if (mask.isNotBlank()) hint = mask
         cleanUp()
@@ -105,8 +102,6 @@ class MaskedEditText @JvmOverloads constructor(
                 this@MaskedEditText.setSelection(lastValidPosition())
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText cleanUp mask $mask hint $hint")
     }
 
     private fun findLastValidMaskPosition(): Int {
@@ -152,8 +147,6 @@ class MaskedEditText @JvmOverloads constructor(
         while (start > 0 && maskToRaw?.get(start) == -1) {
             start--
         }
-        Log.e("maskTAG",
-            "MaskedEditText erasingStart mask $mask hint $hint  raw ${rawText?.text}")
         return start
     }
 
@@ -161,7 +154,6 @@ class MaskedEditText @JvmOverloads constructor(
         s: CharSequence, start: Int, count: Int,
         after: Int,
     ) {
-        Log.e("maskTAG", "MaskedEditText beforeTextChanged s $s raw ${rawText?.text}")
         if (mask.isNullOrEmpty().not()) {
             if (editingBefore.not()) {
                 editingBefore = true
@@ -181,13 +173,9 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText beforeTextChanged mask $mask hint $hint  raw ${rawText?.text}")
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count1: Int) {
-        Log.e("maskTAG",
-            "MaskedEditText onTextChanged s $s start $start before $before count1 $count1  raw ${rawText?.text}")
         if (mask.isNullOrEmpty().not()) {
             var count = count1
             if (editingOnChanged.not() && editingBefore) {
@@ -209,12 +197,9 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText onTextChanged mask $mask hint $hint  raw ${rawText?.text}")
     }
 
     override fun afterTextChanged(s: Editable) {
-        Log.e("maskTAG", "MaskedEditText afterTextChanged s $s  raw ${rawText?.text}")
         if (mask.isNullOrEmpty().not()) {
             if (editingAfter.not() && editingBefore && editingOnChanged) {
                 editingAfter = true
@@ -231,8 +216,6 @@ class MaskedEditText @JvmOverloads constructor(
                 ignore = false
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText afterTextChanged mask $mask hint $hint  raw ${rawText?.text}")
     }
 
     override fun onSelectionChanged(selStart1: Int, selEnd1: Int) {
@@ -258,8 +241,6 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText onSelectionChanged mask $mask hint $hint raw ${rawText?.text}")
         super.onSelectionChanged(selStart, selEnd)
     }
 
@@ -313,8 +294,6 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText makeMaskedText mask $mask maskedText $maskedText  raw ${rawText?.text}")
         return String(maskedText)
     }
 
@@ -339,8 +318,6 @@ class MaskedEditText @JvmOverloads constructor(
                 ssb.setSpan(ForegroundColorSpan(currentHintTextColor), index, index + 1, 0)
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText makeMaskedTextWithHint mask $mask hint $hint SpannableStringBuilder $ssb  raw ${rawText?.text}")
         return ssb
     }
 
@@ -365,8 +342,6 @@ class MaskedEditText @JvmOverloads constructor(
                 range.start = newStart
             }
         }
-        Log.e("maskTAG",
-            "MaskedEditText makeMaskedTextWithHintcalculateRange mask $mask hint $hint range $range raw ${rawText?.text}")
         return range
     }
 

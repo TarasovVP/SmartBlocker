@@ -1,12 +1,12 @@
 package com.tarasovvp.smartblocker.ui.number_data.list.list_filter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
@@ -82,8 +82,6 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                     filterClickListener.onFilterDeleteCheckChange(filter)
                 }
                 executePendingBindings()
-                Log.e("adapterTAG",
-                    "FilterAdapter bindData position $position itemView $itemView")
             }
         }
     }

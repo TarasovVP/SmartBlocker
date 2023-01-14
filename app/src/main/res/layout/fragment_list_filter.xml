@@ -61,11 +61,47 @@
             app:layout_constraintTop_toBottomOf="@+id/list_filter_filter"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <com.tarasovvp.smartblocker.utils.FloatingActionMenuView
-            android:id="@+id/list_filter_fab_menu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/margin_16"/>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_condition_full"
+            android:text="@string/filter_condition_full"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_10"
+            app:layout_constraintBottom_toTopOf="@+id/fab_start"
+            app:layout_constraintEnd_toEndOf="@+id/fab_start" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_condition_start"
+            android:text="@string/filter_condition_start"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_10"
+            app:layout_constraintBottom_toTopOf="@+id/fab_contain"
+            app:layout_constraintEnd_toEndOf="@+id/fab_contain" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_contain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_condition_contain"
+            android:text="@string/filter_condition_contain"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_10"
+            app:layout_constraintBottom_toTopOf="@+id/fab_new"
+            app:layout_constraintEnd_toEndOf="@+id/fab_new"  />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_10"
+            android:src="@drawable/ic_create"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

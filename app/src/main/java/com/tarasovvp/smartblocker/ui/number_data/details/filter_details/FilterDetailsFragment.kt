@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.ui.number_data.details.filter_details
 
-import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -39,8 +38,6 @@ class FilterDetailsFragment :
             args.filterDetail?.let { filter ->
                 (activity as MainActivity).toolbar?.title = getString(filter.filterTypeTitle())
                 this.filter = filter
-                Log.e("filterDetailTAG",
-                    "FilterDetailFragment initViews after args.filter $filter binding?.filter ${this.filter}")
             }
             executePendingBindings()
         }

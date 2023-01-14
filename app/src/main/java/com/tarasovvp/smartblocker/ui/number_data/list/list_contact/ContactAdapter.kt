@@ -1,12 +1,12 @@
 package com.tarasovvp.smartblocker.ui.number_data.list.list_contact
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
@@ -69,8 +69,6 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<
                     })
                 }
                 executePendingBindings()
-                Log.e("adapterTAG",
-                    "ContactAdapter bindData itemView $itemView contact $contact")
             }
         }
     }

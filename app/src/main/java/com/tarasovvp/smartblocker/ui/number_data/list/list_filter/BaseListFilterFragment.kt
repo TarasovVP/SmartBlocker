@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.ui.number_data.list.list_filter
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
@@ -81,27 +82,49 @@ open class BaseListFilterFragment :
     }
 
     override fun setClickListeners() {
-        binding?.listFilterFilter?.setSafeOnClickListener {
-            binding?.root?.hideKeyboard()
-            binding?.listFilterFilter?.isChecked =
-                binding?.listFilterFilter?.isChecked.isTrue().not()
-            findNavController().navigate(if (this is ListBlockerFragment) {
-                ListBlockerFragmentDirections.startFilterConditionsDialog(
-                    filteringList = conditionFilterIndexes.orEmpty().toIntArray())
-            } else {
-                ListPermissionFragmentDirections.startFilterConditionsDialog(
-                    filteringList = conditionFilterIndexes.orEmpty().toIntArray())
-            })
-        }
-        binding?.listFilterInfo?.setSafeOnClickListener {
-            showInfoScreen()
-        }
-        binding?.listFilterFabMenu?.setFabClickListener { conditionType ->
-            startNextScreen(Filter().apply {
-                filterType =
-                    if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
-                this.conditionType = conditionType
-            })
+        binding?.apply {
+            listFilterFilter.setSafeOnClickListener {
+                root.hideKeyboard()
+                listFilterFilter.isChecked =
+                    listFilterFilter.isChecked.isTrue().not()
+                findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
+                    ListBlockerFragmentDirections.startFilterConditionsDialog(
+                        filteringList = conditionFilterIndexes.orEmpty().toIntArray())
+                } else {
+                    ListPermissionFragmentDirections.startFilterConditionsDialog(
+                        filteringList = conditionFilterIndexes.orEmpty().toIntArray())
+                })
+            }
+            listFilterInfo.setSafeOnClickListener {
+                showInfoScreen()
+            }
+            fabNew.setSafeOnClickListener {
+                fabNew.setImageResource(if (fabFull.isVisible) R.drawable.ic_create else R.drawable.ic_close)
+                if (fabFull.isVisible) fabFull.hide() else fabFull.show()
+                if (fabStart.isVisible) fabStart.hide() else fabStart.show()
+                if (fabContain.isVisible) fabContain.hide() else fabContain.show()
+            }
+            fabFull.setSafeOnClickListener {
+                startNextScreen(Filter().apply {
+                    filterType =
+                        if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
+                    this.conditionType = FilterCondition.FILTER_CONDITION_FULL.index
+                })
+            }
+            fabStart.setSafeOnClickListener {
+                startNextScreen(Filter().apply {
+                    filterType =
+                        if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
+                    this.conditionType = FilterCondition.FILTER_CONDITION_START.index
+                })
+            }
+            fabContain.setSafeOnClickListener {
+                startNextScreen(Filter().apply {
+                    filterType =
+                        if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
+                    this.conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index
+                })
+            }
         }
     }
 

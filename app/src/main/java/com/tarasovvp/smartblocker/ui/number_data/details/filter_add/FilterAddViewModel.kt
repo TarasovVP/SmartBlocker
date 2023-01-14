@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.ui.number_data.details.filter_add
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.EMPTY
@@ -14,7 +13,6 @@ import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 
 class FilterAddViewModel(application: Application) : BaseViewModel(application) {
 
@@ -45,8 +43,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
             val calls = async { callRepository.getAllCallsNumbers() }
             val contactList = contacts.await().orEmpty()
             val callList = calls.await().orEmpty()
-            Log.e("filterAddTAG",
-                "AddViewModel getNumberDataList callList.size ${callList.size}")
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contactList)
                 addAll(callList)
@@ -57,16 +53,12 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
                     it.numberData
                 }
             }
-            Log.e("filterAddTAG",
-                "AddViewModel getNumberDataList mainDataList?.size ${numberDataList.size}")
             numberDataListLiveData.postValue(numberDataList)
         }
     }
 
     fun checkFilterExist(filter: Filter) {
         launch {
-            Log.e("filterAddTAG",
-                "AddViewModel checkFilterExist filter $filter")
             val result = filterRepository.getFilter(filter)
             existingFilterLiveData.postValue(result ?: Filter())
         }
@@ -75,8 +67,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     fun filterNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
         showProgress()
         launch {
-            Log.e("filterAddTAG",
-                "AddViewModel filteredNumberDataList filter $filter")
             filteredNumberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
                 numberDataList))
             hideProgress()
@@ -85,8 +75,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
 
     fun insertFilter(filter: Filter) {
         launch {
-            Log.e("filterAddTAG",
-                "AddViewModel insertFilter filter $filter")
             filterRepository.insertFilter(filter) {
                 filterActionLiveData.postValue(filter)
             }
@@ -103,8 +91,6 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
 
     fun deleteFilter(filter: Filter) {
         launch {
-            Log.e("filterAddTAG",
-                "AddViewModel deleteFilter filter $filter")
             filterRepository.deleteFilterList(listOf(filter)) {
                 filterActionLiveData.postValue(filter)
             }

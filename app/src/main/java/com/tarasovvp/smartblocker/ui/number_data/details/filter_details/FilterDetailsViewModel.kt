@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.ui.number_data.details.filter_details
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.extensions.EMPTY
@@ -13,7 +12,6 @@ import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 
 class FilterDetailsViewModel(application: Application) : BaseViewModel(application) {
 
@@ -28,7 +26,6 @@ class FilterDetailsViewModel(application: Application) : BaseViewModel(applicati
     val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getQueryContactCallList(filter: Filter) {
-        Log.e("filterAddTAG", "AddViewModel checkContactListByFilter filter $filter")
         showProgress()
         launch {
             val calls = async { callRepository.getQueryCallList(filter) }
@@ -46,14 +43,11 @@ class FilterDetailsViewModel(application: Application) : BaseViewModel(applicati
                 }
             }
             filteredNumberDataList(filter, numberDataList)
-            Log.e("filterAddTAG", "AddViewModel queryContactListLiveData $filter")
         }
     }
 
     private fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
         launch {
-            Log.e("filterAddTAG",
-                "AddViewModel filteredNumberDataList filter $filter")
             numberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
                 numberDataList))
             hideProgress()
@@ -72,8 +66,6 @@ class FilterDetailsViewModel(application: Application) : BaseViewModel(applicati
     fun deleteFilter(filter: Filter) {
         showProgress()
         launch {
-            Log.e("filterAddTAG",
-                "AddViewModel deleteFilter filter $filter")
             filterRepository.deleteFilterList(listOf(filter)) {
                 filterActionLiveData.postValue(filter)
             }

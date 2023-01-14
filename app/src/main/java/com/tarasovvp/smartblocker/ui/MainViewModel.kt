@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.models.CurrentUser
@@ -25,10 +24,9 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun getCurrentUser() {
         launch {
-            Log.e("getAllDataTAG", "MainViewModel getCurrentUser")
             showProgress()
             progressStatusLiveData.postValue(mainProgress.apply {
-                progressDescription = "Сбор информацию"
+                progressDescription = getApplication<Application>().getString(R.string.progress_data_collect)
             })
             realDataBaseRepository.getCurrentUser { currentUser ->
                 insertCurrentUserData(currentUser)
@@ -40,7 +38,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         launch {
             currentUser?.let {
                 progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = "Запрос внешних данных"
+                    progressDescription = getApplication<Application>().getString(R.string.progress_external_data_collect)
                 })
                 val filters = async { filterRepository.insertAllFilters(it.filterList) }
                 val filteredCalls =
@@ -53,9 +51,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun getAllData() {
         launch {
-            Log.e("getAllDataTAG", "MainViewModel getAllData check time start")
             // init country code data
-            Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
             val countryCodeList = countryCodeRepository.getSystemCountryCodeList { size, position ->
                 progressStatusLiveData.postValue(mainProgress.apply {
                     progressDescription =
@@ -64,11 +60,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                     progressPosition = position
                 })
             }
-            Log.e("allDataTAG",
-                "MainViewModel getSystemCountryCodeList countryCodeList.size ${countryCodeList.size}")
             countryCodeRepository.insertAllCountryCodes(countryCodeList)
             // init contacts data
-            Log.e("allDataTAG", "MainViewModel getAllData getSystemContactList")
             val contactList =
                 contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
                     progressStatusLiveData.postValue(mainProgress.apply {
@@ -78,9 +71,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                         progressPosition = position
                     })
                 }
-            Log.e("allDataTAG", "MainViewModel getAllData insertContacts")
             contactRepository.insertContacts(contactList)
-            Log.e("allDataTAG", "MainViewModel getAllData getSystemLogCallList")
             // init calls data
             val callLogList =
                 logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
@@ -91,7 +82,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                         progressPosition = position
                     })
                 }
-            Log.e("allDataTAG", "MainViewModel getAllData insertAllLogCalls")
             logCallRepository.insertAllLogCalls(callLogList)
             // init filter data
             val filterList = filterRepository.allFilters() as? ArrayList
@@ -104,16 +94,13 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
                     progressPosition = index
                 })
             }
-            Log.e("allDataTAG", "MainViewModel filterList $filterList")
             filterList?.let { filterRepository.insertAllFilters(it) }
-            Log.e("allDataTAG", "MainViewModel getAllData successAllDataLiveData.postValue")
             successAllDataLiveData.postValue(true)
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressDescription = getApplication<Application>().getString(R.string.progress_update_data)
                 progressMax = 0
                 progressPosition = 0
             })
-            Log.e("getAllDataTAG", "MainViewModel getAllData check time finish")
         }
     }
 }
