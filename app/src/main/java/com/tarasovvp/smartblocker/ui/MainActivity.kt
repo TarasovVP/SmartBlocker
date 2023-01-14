@@ -17,6 +17,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.MainNavigationDirections
@@ -29,6 +32,7 @@ import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private var callIntent: Intent? = null
     private var callReceiver: CallReceiver? = null
     private var isDialog: Boolean = false
+    private var adRequest: AdRequest? = null
 
     var navigationScreens = arrayListOf(
         R.id.listCallFragment,
@@ -79,6 +84,11 @@ class MainActivity : AppCompatActivity() {
             setProgressVisibility(false)
         }
         registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
+        MobileAds.initialize(this) {}
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder().setTestDeviceIds(listOf("ABCDEF012345")).build()
+        )
+        adRequest = AdRequest.Builder().build()
     }
 
     override fun onStop() {
@@ -171,6 +181,7 @@ class MainActivity : AppCompatActivity() {
         navController?.addOnDestinationChangedListener { _, destination, _ ->
             if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
                 toolbar?.navigationIcon = null
+                adRequest?.let { binding?.adView?.loadAd(it) }
             } else {
                 if (destination.navigatorName != DIALOG && isDialog.not()) {
                     toolbar?.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
