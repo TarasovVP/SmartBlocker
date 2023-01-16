@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ads="http://schemas.android.com/tools">
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -80,9 +80,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 ads:adSize="BANNER"
-                ads:adUnitId="string/app_id"
-                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:adUnitId="@string/test_app_id"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintStart_toStartOf="parent" />
 

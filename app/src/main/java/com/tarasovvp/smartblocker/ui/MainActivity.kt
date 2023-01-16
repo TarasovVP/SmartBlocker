@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,7 +33,6 @@ import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -85,9 +85,8 @@ class MainActivity : AppCompatActivity() {
         }
         registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
         MobileAds.initialize(this) {}
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder().setTestDeviceIds(listOf("ABCDEF012345")).build()
-        )
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
+        MobileAds.setRequestConfiguration(configuration)
         adRequest = AdRequest.Builder().build()
     }
 

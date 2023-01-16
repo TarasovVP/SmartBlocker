@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Smart Blocker</string>
     <string name="app_id">ca-app-pub-8778007212154570~3428856965</string>
+    <string name="test_app_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <!--App-->
     <string name="app_is_active">Smart Blocker активирован</string>
