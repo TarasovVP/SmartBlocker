@@ -242,6 +242,7 @@ open class FilterAddFragment :
             findNavController().navigate(if (binding?.filter?.isBlocker().isTrue())
                 FilterAddFragmentDirections.startListBlockerFragment()
             else FilterAddFragmentDirections.startListPermissionFragment())
+            showInterstitial()
         }
     }
 

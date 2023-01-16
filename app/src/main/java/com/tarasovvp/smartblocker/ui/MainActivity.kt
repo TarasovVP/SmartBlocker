@@ -17,10 +17,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.MainNavigationDirections
@@ -50,6 +49,8 @@ class MainActivity : AppCompatActivity() {
     private var callReceiver: CallReceiver? = null
     private var isDialog: Boolean = false
     private var adRequest: AdRequest? = null
+    private var interstitialAd: InterstitialAd? = null
+    private var adIsLoading: Boolean = false
 
     var navigationScreens = arrayListOf(
         R.id.listCallFragment,
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
         MobileAds.setRequestConfiguration(configuration)
         adRequest = AdRequest.Builder().build()
+        loadAd()
     }
 
     override fun onStop() {
@@ -97,6 +99,21 @@ class MainActivity : AppCompatActivity() {
         callReceiver?.apply {
             unregisterReceiver(this)
         }
+    }
+
+    override fun onPause() {
+        binding?.adView?.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding?.adView?.resume()
+    }
+
+    override fun onDestroy() {
+        binding?.adView?.destroy()
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -180,7 +197,6 @@ class MainActivity : AppCompatActivity() {
         navController?.addOnDestinationChangedListener { _, destination, _ ->
             if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
                 toolbar?.navigationIcon = null
-                adRequest?.let { binding?.adView?.loadAd(it) }
             } else {
                 if (destination.navigatorName != DIALOG && isDialog.not()) {
                     toolbar?.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
@@ -193,6 +209,13 @@ class MainActivity : AppCompatActivity() {
             toolbar?.menu?.clear()
             toolbar?.isVisible =
                 destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment && destination.id != R.id.signUpFragment
+            if (toolbar?.isVisible.isTrue() && destination.id != R.id.listBlockerFragment && destination.id != R.id.listPermissionFragment) {
+                adRequest?.let {
+                    binding?.adView?.loadAd(it)
+                }
+            } else {
+                binding?.adView?.destroy()
+            }
         }
     }
 
@@ -255,6 +278,56 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())
+        }
+    }
+
+    fun showInterstitial() {
+        interstitialAd?.apply {
+            fullScreenContentCallback =
+                object : FullScreenContentCallback() {
+                    override fun onAdDismissedFullScreenContent() {
+                        interstitialAd = null
+                        loadAd()
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                        interstitialAd = null
+                    }
+
+                    override fun onAdShowedFullScreenContent() {
+                    }
+                }
+            show(this@MainActivity)
+        }
+    }
+
+    private fun loadAd() {
+
+        adRequest?.let {
+            InterstitialAd.load(
+                this,
+                "ca-app-pub-3940256099942544/1033173712",
+                it,
+                object : InterstitialAdLoadCallback() {
+                    override fun onAdFailedToLoad(adError: LoadAdError) {
+                        interstitialAd = null
+                        adIsLoading = false
+                        val error =
+                            "domain: ${adError.domain}, code: ${adError.code}, " + "message: ${adError.message}"
+                        Toast.makeText(
+                            this@MainActivity,
+                            "onAdFailedToLoad() with error $error",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+
+                    override fun onAdLoaded(ad: InterstitialAd) {
+                        interstitialAd = ad
+                        adIsLoading = false
+                    }
+                }
+            )
         }
     }
 
