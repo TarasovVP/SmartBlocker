@@ -36,6 +36,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/list_contact_check"/>
 
+        <include
+            android:id="@+id/list_contact_empty"
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:layout_constraintTop_toBottomOf="@+id/list_contact_check"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/list_contact_refresh"
             android:layout_width="match_parent"
@@ -52,15 +61,6 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <include
-            android:id="@+id/list_contact_empty"
-            layout="@layout/include_empty_state"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            app:layout_constraintTop_toBottomOf="@+id/list_contact_check"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

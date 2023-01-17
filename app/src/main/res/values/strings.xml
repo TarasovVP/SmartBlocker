@@ -33,7 +33,6 @@
     <string name="authorization_password_reset_success">Подтверждающее письмо отправлено на ваш Email. Проверьте во входящих.</string>
     <string name="authorization_signing_up">Зарегистрироваться</string>
     <string name="authorization_network_unavailable">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и совершите повторный вход.</string>
-    <string name="authorizatiion_sign_up_success">Sign up successful! Sign in.</string>
     <!--Filter type-->
     <string name="filter_type_blocker">Блокировщик</string>
     <string name="filter_type_permission">Допуск</string>

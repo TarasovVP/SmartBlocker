@@ -9,6 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSignUpBinding
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
@@ -45,8 +47,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
-                showMessage(getString(R.string.authorizatiion_sign_up_success), false)
-                findNavController().popBackStack()
+                (activity as MainActivity).apply {
+                    getAllData()
+                    if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                }
+                findNavController().navigate(R.id.listBlockerFragment)
             }
         }
     }

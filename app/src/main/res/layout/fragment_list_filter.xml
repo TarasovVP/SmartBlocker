@@ -19,7 +19,7 @@
             android:textColor="@color/selector_enable_bg"
             android:button="@drawable/filter_selector"
             android:ellipsize="marquee"
-            android:marqueeRepeatLimit ="marquee_forever"
+            android:marqueeRepeatLimit="marquee_forever"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/list_filter_info"/>
@@ -34,6 +34,15 @@
             app:layout_constraintBottom_toBottomOf="@+id/list_filter_filter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/list_filter_filter"/>
+
+        <include
+            android:id="@+id/list_filter_empty"
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:layout_constraintTop_toBottomOf="@+id/list_filter_filter"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/list_filter_refresh"
@@ -51,15 +60,6 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <include
-            android:id="@+id/list_filter_empty"
-            layout="@layout/include_empty_state"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            app:layout_constraintTop_toBottomOf="@+id/list_filter_filter"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_full"

@@ -121,6 +121,7 @@
         <item name="strokeColor">@android:color/transparent</item>
         <item name="shapeAppearance">@style/SquareShape</item>
     </style>
+
     <style name="SquareShape" parent="ShapeAppearance.Material3.LargeComponent">
         <item name="iconPadding">0dp</item>
         <item name="cornerFamily">rounded</item>
@@ -129,6 +130,7 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
+
     <style name="BottomSheetDialogStyle" parent="Theme.Material3.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ModalStyle</item>
     </style>

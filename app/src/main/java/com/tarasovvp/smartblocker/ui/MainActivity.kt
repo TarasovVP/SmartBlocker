@@ -7,11 +7,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -20,6 +23,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
@@ -191,6 +195,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.listCallFragment -> navController?.navigate(R.id.listCallFragment)
             }
             return@setOnItemSelectedListener true
+        }
+        (bottomNavigationView?.getChildAt(0) as BottomNavigationMenuView).children.forEach {
+            it.findViewById<TextView>(com.google.android.material.R.id.navigation_bar_item_large_label_view)
+                .apply {
+                    ellipsize = TextUtils.TruncateAt.MARQUEE
+                    setSingleLine()
+                }
         }
     }
 
