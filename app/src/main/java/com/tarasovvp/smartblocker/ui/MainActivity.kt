@@ -21,9 +21,9 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
@@ -86,7 +86,8 @@ class MainActivity : AppCompatActivity() {
         }
         registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
         MobileAds.initialize(this) {}
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
+        val configuration = RequestConfiguration.Builder()
+            .setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
         MobileAds.setRequestConfiguration(configuration)
         adRequest = AdRequest.Builder().build()
         loadAd()
@@ -199,7 +200,8 @@ class MainActivity : AppCompatActivity() {
                 toolbar?.navigationIcon = null
             } else {
                 if (destination.navigatorName != DIALOG && isDialog.not()) {
-                    toolbar?.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
+                    toolbar?.navigationIcon =
+                        ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
                 }
             }
             if (destination.navigatorName == DIALOG || isDialog) {
@@ -209,27 +211,35 @@ class MainActivity : AppCompatActivity() {
             toolbar?.menu?.clear()
             toolbar?.isVisible =
                 destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment && destination.id != R.id.signUpFragment
-            if (toolbar?.isVisible.isTrue() && destination.id != R.id.listBlockerFragment && destination.id != R.id.listPermissionFragment) {
+            loadAdBanner(toolbar?.isVisible.isTrue() && destination.id != R.id.listBlockerFragment && destination.id != R.id.listPermissionFragment)
+
+        }
+    }
+
+    private fun loadAdBanner(isLoading: Boolean) {
+        binding?.adView?.apply {
+            if (isLoading) {
                 adRequest?.let {
-                    binding?.adView?.loadAd(it)
+                    loadAd(it)
                 }
             } else {
-                binding?.adView?.destroy()
+                destroy()
             }
+            isVisible = isLoading
         }
     }
 
     fun startBlocker() {
-            callReceiver?.apply {
-                unregisterReceiver(this)
-                callReceiver = null
-            }
-            callIntent = Intent(this, ForegroundCallService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(callIntent)
-            } else {
-                startService(callIntent)
-            }
+        callReceiver?.apply {
+            unregisterReceiver(this)
+            callReceiver = null
+        }
+        callIntent = Intent(this, ForegroundCallService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(callIntent)
+        } else {
+            startService(callIntent)
+        }
     }
 
     fun stopBlocker() {
