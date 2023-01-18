@@ -44,7 +44,7 @@ object SharedPreferencesUtil {
             )
         }
 
-    var blockTurnOff: Boolean
+    var smartBlockerTurnOff: Boolean
         get() = loadBoolean(BLOCK_TURN_OFF)
         set(blockTurnOff) {
             saveBoolean(

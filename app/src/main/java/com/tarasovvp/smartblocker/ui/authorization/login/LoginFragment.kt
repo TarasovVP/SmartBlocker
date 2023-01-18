@@ -48,7 +48,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             loginContinueWithoutAcc.setSafeOnClickListener {
                 (activity as MainActivity).apply {
                     getAllData()
-                    if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                    if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
                 findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
             }
@@ -84,7 +84,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).apply {
                     getAllData()
-                    if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                    if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
                 findNavController().navigate(R.id.listBlockerFragment)
             }

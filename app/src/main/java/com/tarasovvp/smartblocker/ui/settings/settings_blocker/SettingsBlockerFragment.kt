@@ -20,17 +20,17 @@ class SettingsBlockerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setBlockerSettings()
+        setSmartBlockerurningOn()
         setBlockHiddenSettings()
     }
 
-    private fun setBlockerSettings() {
+    private fun setSmartBlockerurningOn() {
         binding?.apply {
-            settingsBlockerSwitch.isChecked = SharedPreferencesUtil.blockTurnOff.not()
+            settingsBlockerSwitch.isChecked = SharedPreferencesUtil.smartBlockerTurnOff.not()
             settingsBlockerDescribe.text =
                 getString(if (settingsBlockerSwitch.isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
             settingsBlockerSwitch.setOnCheckedChangeListener { _, isChecked ->
-                SharedPreferencesUtil.blockTurnOff = isChecked
+                SharedPreferencesUtil.smartBlockerTurnOff = isChecked.not()
                 settingsBlockerDescribe.text =
                     getString(if (isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
                 (activity as MainActivity).apply {

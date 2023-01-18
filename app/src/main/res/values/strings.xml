@@ -130,7 +130,7 @@
     <string name="settings_review">Написать разработчику</string>
     <string name="settings_privacy">Политика конфиденциальности</string>
     <!--Settings blocker-->
-    <string name="settings_blocker_title">Фильтровать входящие вызовы</string>
+    <string name="settings_blocker_title">Активировать Smart Blocker</string>
     <string name="settings_blocker_on">Smart Blocker будет управлять входящими вызовами согласно ваших фильтров</string>
     <string name="settings_blocker_off">Smart Blocker не будет управлять входящими вызовами согласно ваших фильтров</string>
     <string name="settings_block_hidden_title">Блокировать скрытые номера</string>

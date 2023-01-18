@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
             if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
                 navController?.navigate(R.id.startUnavailableNetworkDialog)
             } else {
-                if (SharedPreferencesUtil.blockTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 getAllData()
             }
         }
