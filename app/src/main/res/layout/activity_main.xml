@@ -77,11 +77,8 @@
 
             <com.google.android.gms.ads.AdView
                 android:id="@+id/ad_view"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
                 ads:adSize="BANNER"
                 ads:adUnitId="@string/test_app_id"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_nav"

@@ -1,9 +1,11 @@
 package com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail
 
 import android.annotation.SuppressLint
+import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentNumberDataDetailBinding
@@ -78,8 +80,11 @@ class NumberDataDetailsFragment :
     @SuppressLint("ClickableViewAccessibility")
     override fun setClickListeners() {
         binding?.apply {
-            numberDataDetailAddFilter.setSafeOnClickListener {
-                setAddFilterConditions(numberDataDetailAddFilterFull.isShown.isTrue())
+            numberDataDetailAddBlocker.setSafeOnClickListener {
+                setAddFilterConditions(true, numberDataDetailAddFilterFull.isShown.isTrue())
+            }
+            numberDataDetailAddPermission.setSafeOnClickListener {
+                setAddFilterConditions(false, numberDataDetailAddFilterFull.isShown.isTrue())
             }
             numberDataDetailAddFilterFull.setSafeOnClickListener {
                 createFilter(FilterCondition.FILTER_CONDITION_FULL.index)
@@ -130,14 +135,38 @@ class NumberDataDetailsFragment :
             filterAdd = filter))
     }
 
-    private fun setAddFilterConditions(isShown: Boolean) {
+    private fun setAddFilterConditions(isBlocker: Boolean, isShown: Boolean) {
         binding?.apply {
-            numberDataDetailAddFilter.text =
-                getString(if (isShown) R.string.filter_action_create else R.string.number_details_close)
-            if (isShown) numberDataDetailAddFilterFull.hide() else numberDataDetailAddFilterFull.show()
-            if (isShown) numberDataDetailAddFilterStart.hide() else numberDataDetailAddFilterStart.show()
-            if (isShown) numberDataDetailAddFilterContain.hide() else numberDataDetailAddFilterContain.show()
+            numberDataDetailAddBlocker.changeFilterTypeButtonState((isBlocker.not() && isShown.not()).not(), isShown.not() && isBlocker,
+                if ((isBlocker.not() && isShown.not()).not()) R.drawable.ic_blocker else R.drawable.ic_blocker_inactive)
+            numberDataDetailAddPermission.changeFilterTypeButtonState((isBlocker && isShown.not()).not(), isShown.not() && isBlocker.not(),
+                if ((isBlocker && isShown.not()).not()) R.drawable.ic_permission else R.drawable.ic_permission_inactive)
+            numberDataDetailAddFilterFull.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_FULL.smallBlockerIcon
+            else FilterCondition.FILTER_CONDITION_FULL.smallPermissionIcon, isShown)
+            numberDataDetailAddFilterStart.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_START.smallBlockerIcon
+            else FilterCondition.FILTER_CONDITION_START.smallPermissionIcon, isShown)
+            numberDataDetailAddFilterContain.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_CONTAIN.smallBlockerIcon
+            else FilterCondition.FILTER_CONDITION_CONTAIN.smallPermissionIcon, isShown)
         }
+    }
+
+    private fun Button.changeFilterTypeButtonState(
+        isButtonEnabled: Boolean,
+        isClose: Boolean,
+        intRes: Int,
+    ) {
+        isEnabled = isButtonEnabled
+        alpha = if (isButtonEnabled) 1f else 0.5f
+        setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)
+        setCompoundDrawablesWithIntrinsicBounds(0, 0, intRes, 0)
+    }
+
+    private fun ExtendedFloatingActionButton.changeFilterConditionButtonState(
+        iconRes: Int,
+        isShown: Boolean,
+    ) {
+        setIconResource(iconRes)
+        if (isShown) hide() else show()
     }
 
     override fun observeLiveData() {

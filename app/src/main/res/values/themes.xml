@@ -27,7 +27,7 @@
         <item name="android:fontFamily">@font/comfortaa_regular</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
         <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
-        <item name="extendedFloatingActionButtonStyle">@style/ExtendedFloatingActionButtonStyle</item>
+        <item name="extendedFloatingActionButtonStyle">@style/ExtendedFABStyle</item>
         <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 
@@ -143,11 +143,17 @@
         <item name="borderWidth">@dimen/size_0</item>
         <item name="tint">@color/white</item>
     </style>
-    <style name="ExtendedFloatingActionButtonStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+    <style name="ExtendedFABStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
         <item name="android:backgroundTint">@color/cornflower_blue</item>
         <item name="iconTint">@color/white</item>
         <item name="borderWidth">@dimen/size_0</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="StrokedExtendedFABStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="android:backgroundTint">@color/item_color</item>
+        <item name="android:strokeColor">@color/text_color_grey</item>
+        <item name="strokeWidth">@dimen/padding_1</item>
+        <item name="iconTint">@null</item>
     </style>
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchIcon">@drawable/ic_search</item>

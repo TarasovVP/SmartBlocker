@@ -50,33 +50,64 @@
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_item_contact" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/number_data_detail_add_filter"
+                android:id="@+id/number_data_detail_add_blocker"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                style="@style/StrokeButton"
+                android:layout_marginTop="@dimen/margin_8"
+                android:text="@string/filter_action_create"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:drawableEnd="@drawable/ic_blocker"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/number_data_detail_add_permission"
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_item_call" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/number_data_detail_add_permission"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                style="@style/StrokeButton"
+                android:text="@string/filter_action_create"
+                android:layout_marginStart="@dimen/margin_8"
+                android:drawableEnd="@drawable/ic_permission"
+                app:layout_constraintStart_toEndOf="@+id/number_data_detail_add_blocker"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/number_data_detail_add_blocker"
+                app:layout_constraintTop_toTopOf="@+id/number_data_detail_add_blocker" />
+            <ImageView
+                android:id="@+id/number_data_detail_tabs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:paddingHorizontal="@dimen/padding_30"
-                android:text="@string/filter_action_create"
+                android:src="@drawable/ic_filter_details_tab_1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_item_call" />
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_blocker"/>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/number_data_detail_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0"
+                android:paddingBottom="@dimen/padding_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_tabs" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/number_data_detail_add_filter_full"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_condition_full"
+                style="@style/StrokedExtendedFABStyle"
                 android:text="@string/filter_condition_full"
                 android:visibility="gone"
                 android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter" />
+                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_blocker" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/number_data_detail_add_filter_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_condition_start"
+                style="@style/StrokedExtendedFABStyle"
                 android:text="@string/filter_condition_start"
                 android:visibility="gone"
                 android:layout_marginTop="@dimen/margin_8"
@@ -88,30 +119,13 @@
                 android:id="@+id/number_data_detail_add_filter_contain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_condition_contain"
+                style="@style/StrokedExtendedFABStyle"
                 android:text="@string/filter_condition_contain"
                 android:visibility="gone"
                 android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter_start"  />
-
-            <ImageView
-                android:id="@+id/number_data_detail_tabs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_filter_details_tab_1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_add_filter"/>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/number_data_detail_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0"
-                android:paddingBottom="@dimen/padding_8"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_data_detail_tabs" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

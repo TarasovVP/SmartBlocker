@@ -25,12 +25,13 @@
             app:layout_constraintEnd_toStartOf="@+id/list_contact_info"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <com.google.android.material.button.MaterialButton
+        <ImageButton
             android:id="@+id/list_contact_info"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_0"
-            style="@style/Button.Icon"
-            app:icon="@drawable/ic_info"
+            android:src="@drawable/ic_info"
+            android:padding="@dimen/padding_16"
+            android:background="@color/transparent"
             app:layout_constraintTop_toTopOf="@+id/list_contact_check"
             app:layout_constraintBottom_toBottomOf="@+id/list_contact_check"
             app:layout_constraintEnd_toEndOf="parent"
