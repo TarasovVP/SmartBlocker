@@ -30,7 +30,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
 
     fun firebaseAuthWithGoogle(idToken: String) {
         showProgress()
-        authRepository.firebaseAuthWithGoogle(idToken) {
+        authRepository.signInWithGoogle(idToken) {
             successSignInLiveData.postValue(true)
             hideProgress()
         }

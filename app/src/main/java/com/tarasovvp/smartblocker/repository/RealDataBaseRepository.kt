@@ -20,8 +20,8 @@ object RealDataBaseRepository {
     private var reviewsDatabase = database.child(REVIEWS)
 
     fun getCurrentUser(result: (CurrentUser?) -> Unit) {
-        if (currentUserDatabase.key == USERS) currentUserDatabase =
-            currentUserDatabase.child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
+        if (currentUserDatabase.key != SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty()) currentUserDatabase =
+            database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener

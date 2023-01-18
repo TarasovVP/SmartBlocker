@@ -35,7 +35,7 @@ object AuthRepository {
             }
     }
 
-    fun firebaseAuthWithGoogle(idToken: String, result: () -> Unit) {
+    fun signInWithGoogle(idToken: String, result: () -> Unit) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener { task ->
@@ -92,8 +92,8 @@ object AuthRepository {
     }
 
     fun signOut(result: () -> Unit) {
-        auth?.signOut()
         SmartBlockerApp.instance?.googleSignInClient?.signOut()
+        auth?.signOut()
         result.invoke()
     }
 
