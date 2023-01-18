@@ -235,7 +235,10 @@ open class BaseListFilterFragment :
                 filterList?.let { setDataList(it) }
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as MainActivity).getAllData()
+                (activity as MainActivity).apply {
+                    showInterstitial()
+                    getAllData()
+                }
                 this@BaseListFilterFragment.filterList?.removeAll { it.isCheckedForDelete }
                 changeDeleteMode()
                 searchDataList()

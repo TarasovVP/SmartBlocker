@@ -143,6 +143,7 @@ class FilterDetailsFragment :
         (activity as MainActivity).apply {
             showMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(), binding?.filter?.filter.orEmpty()), false)
+            showInterstitial()
             getAllData()
             if (filter.isChangeFilterAction()) {
                 mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {

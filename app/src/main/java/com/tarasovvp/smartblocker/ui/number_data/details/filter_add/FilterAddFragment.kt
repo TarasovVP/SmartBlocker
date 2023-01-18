@@ -238,11 +238,11 @@ open class FilterAddFragment :
             showMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(),
                 filter.filter), false)
+            showInterstitial()
             getAllData()
             findNavController().navigate(if (binding?.filter?.isBlocker().isTrue())
                 FilterAddFragmentDirections.startListBlockerFragment()
             else FilterAddFragmentDirections.startListPermissionFragment())
-            showInterstitial()
         }
     }
 
