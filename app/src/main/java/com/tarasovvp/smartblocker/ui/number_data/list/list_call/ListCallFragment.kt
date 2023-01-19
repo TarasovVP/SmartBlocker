@@ -127,8 +127,6 @@ class ListCallFragment :
             }
         }
         (activity as MainActivity).toolbar?.apply {
-            title =
-                if (isDeleteMode) getString(R.string.list_delete) else getString(R.string.list_call)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)

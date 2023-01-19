@@ -49,7 +49,6 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         }
     }
 
-
     private fun setRecyclerView() {
         recyclerView?.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -72,12 +71,16 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                     menuItem.actionView = this
                     menuItem.isVisible = adapter?.itemCount.orZero() > 0
                     isIconified = searchQuery.isNullOrEmpty()
+                    maxWidth = Integer.MAX_VALUE
                 }
                 queryHint = getString(R.string.list_search_hint)
                 setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
                     searchQuery = it
                     searchDataList()
                 })
+                setOnQueryTextFocusChangeListener { _, hasFocus ->
+                    toolbar?.menu?.findItem(R.id.settings_menu_item)?.isVisible = hasFocus.not()
+                }
                 clearFocus()
             }
             toolbar?.setOnMenuItemClickListener { menuItem ->

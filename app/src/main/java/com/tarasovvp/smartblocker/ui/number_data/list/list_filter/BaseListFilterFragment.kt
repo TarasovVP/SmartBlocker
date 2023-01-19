@@ -153,11 +153,7 @@ open class BaseListFilterFragment :
                 adapter?.notifyDataSetChanged()
             }
         }
-        findNavController().currentDestination?.label =
-            if (isDeleteMode) getString(R.string.list_delete) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
         (activity as MainActivity).toolbar?.apply {
-            title =
-                if (isDeleteMode) getString(R.string.list_delete) else getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
@@ -176,10 +172,10 @@ open class BaseListFilterFragment :
                         val direction =
                             if (this@BaseListFilterFragment is ListBlockerFragment) {
                                 ListBlockerFragmentDirections.startFilterActionDialog(
-                                    filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE)
+                                    filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE, filterNumber = String.format(getString(R.string.list_delete_amount), filterList?.filter { it.isCheckedForDelete }.orEmpty().size))
                             } else {
                                 ListPermissionFragmentDirections.startFilterActionDialog(
-                                    filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE)
+                                    filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE, filterNumber = String.format(getString(R.string.list_delete_amount), filterList?.filter { it.isCheckedForDelete }.orEmpty().size))
                             }
                         this@BaseListFilterFragment.findNavController().navigate(direction)
                         true

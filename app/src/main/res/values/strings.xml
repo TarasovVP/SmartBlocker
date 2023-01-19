@@ -97,7 +97,6 @@
     <string name="list_permission">Допуски</string>
     <string name="list_call">Вызовы</string>
     <string name="list_contact">Контакты</string>
-    <string name="list_delete">Удалить?</string>
     <string name="list_call_delete_info">Можно удалить только заблокированные номера</string>
     <string name="list_search_hint">Номер или имя</string>
     <!--Creating filter-->
@@ -173,4 +172,5 @@
     <string name="menu_info">Info</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
+    <string name="list_delete_amount">%s фильтров</string>
 </resources>
