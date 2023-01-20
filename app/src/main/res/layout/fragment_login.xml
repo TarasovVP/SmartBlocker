@@ -35,14 +35,16 @@
                 android:text="@string/authorization_with_google_account"
                 app:layout_constraintTop_toBottomOf="@+id/login_main_title" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_google_auth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextButton"
+                app:icon="@drawable/ic_logo_google"
+                app:iconGravity="textStart"
+                app:iconPadding="10dp"
                 android:text="@string/authorization_enter"
                 android:layout_marginTop="@dimen/margin_8"
-                app:icon="@drawable/ic_logo_google"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_google_title"  />

@@ -23,7 +23,7 @@
     <string name="authorization_with_google_account">С помощью Google</string>
     <string name="authorization_enter">Войти</string>
     <string name="authorization_or">Или</string>
-    <string name="authorization_email">Почта</string>
+    <string name="authorization_email">Email</string>
     <string name="authorization_password">Пароль</string>
     <string name="authorization_sign_up">Регистрация</string>
     <string name="authorization_forgot_password">Забыли пароль?</string>

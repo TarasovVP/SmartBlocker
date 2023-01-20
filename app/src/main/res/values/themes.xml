@@ -34,8 +34,8 @@
     <style name="FilledButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:maxLines">1</item>
         <item name="cornerRadius">@dimen/margin_8</item>
-        <item name="android:paddingLeft">@dimen/padding_25</item>
-        <item name="android:paddingRight">@dimen/padding_25</item>
+        <item name="android:paddingLeft">@dimen/padding_5</item>
+        <item name="android:paddingRight">@dimen/padding_5</item>
         <item name="rippleColor">#250092D4</item>
         <item name="android:paddingTop">@dimen/padding_10</item>
         <item name="android:paddingBottom">@dimen/padding_10</item>
@@ -49,8 +49,8 @@
     <style name="StrokeButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:maxLines">1</item>
         <item name="cornerRadius">@dimen/margin_8</item>
-        <item name="android:paddingLeft">@dimen/padding_25</item>
-        <item name="android:paddingRight">@dimen/padding_25</item>
+        <item name="android:paddingLeft">@dimen/padding_5</item>
+        <item name="android:paddingRight">@dimen/padding_5</item>
         <item name="rippleColor">#250092D4</item>
         <item name="android:paddingTop">@dimen/padding_10</item>
         <item name="android:paddingBottom">@dimen/padding_10</item>
