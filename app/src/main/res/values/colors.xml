@@ -23,6 +23,7 @@
     <color name="main_bg_start">@color/hawkes_blue</color>
     <color name="main_bg_end">@color/lavender</color>
     <color name="text_color_grey">@color/comet</color>
+    <color name="text_color_black">@color/valhalla</color>
     <color name="item_color">@color/white</color>
     <color name="button_bg">@color/cornflower_blue</color>
     <color name="span_text">@color/cornflower_blue</color>

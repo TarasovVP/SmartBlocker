@@ -30,18 +30,18 @@
                 android:id="@+id/login_google_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_16"
                 android:gravity="center"
                 android:text="@string/authorization_with_google_account"
                 app:layout_constraintTop_toBottomOf="@+id/login_main_title" />
 
             <Button
                 android:id="@+id/login_google_auth"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextButton"
                 android:text="@string/authorization_enter"
-                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
                 app:icon="@drawable/ic_logo_google"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,7 @@
                 android:id="@+id/login_divider_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_40"
                 android:text="@string/authorization_or"
                 android:paddingHorizontal="@dimen/padding_10"
                 app:layout_constraintStart_toEndOf="@+id/login_left_divider"
@@ -82,7 +82,7 @@
                 android:id="@+id/login_email_input_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintTop_toBottomOf="@+id/login_divider_title">
 
                 <EditText
@@ -97,7 +97,7 @@
                 android:id="@+id/login_password_input_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toBottomOf="@+id/login_email_input_container"
                 app:passwordToggleEnabled="true">
 
@@ -113,7 +113,6 @@
                 android:id="@+id/login_forgot_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
                 android:gravity="center_vertical"
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/authorization_forgot_password"
@@ -125,9 +124,9 @@
                 android:id="@+id/login_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/authorization_sign_up"
+                android:textColor="@color/button_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
 
@@ -135,7 +134,7 @@
                 android:id="@+id/login_continue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_16"
                 android:text="@string/authorization_enter"
                 app:layout_constraintTop_toBottomOf="@+id/login_sign_up" />
 

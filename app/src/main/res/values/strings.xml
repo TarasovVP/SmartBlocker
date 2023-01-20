@@ -31,6 +31,7 @@
     <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Ваш пароль</string>
     <string name="authorization_enter_email">Введите ваш Email</string>
     <string name="authorization_password_reset_success">Подтверждающее письмо отправлено на ваш Email. Проверьте во входящих.</string>
+    <string name="authorization_entrance_title">Есть аккаунт?&#160;</string>
     <string name="authorization_signing_up">Зарегистрироваться</string>
     <string name="authorization_network_unavailable">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и совершите повторный вход.</string>
     <!--Filter type-->

@@ -29,7 +29,7 @@
                 android:id="@+id/sign_up_email_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintTop_toBottomOf="@+id/sign_up_title" >
 
                 <EditText
@@ -44,7 +44,7 @@
                 android:id="@+id/sign_up_password_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toBottomOf="@+id/sign_up_email_container"
                 app:passwordToggleEnabled="true">
 
@@ -57,12 +57,22 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/sign_up_entrance_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/padding_8"
+                android:text="@string/authorization_entrance_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_up_password_container" />
+
+            <TextView
                 android:id="@+id/sign_up_entrance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
                 android:text="@string/authorization_entrance"
-                app:layout_constraintStart_toStartOf="parent"
+                android:paddingVertical="@dimen/padding_8"
+                android:textColor="@color/button_bg"
+                app:layout_constraintStart_toEndOf="@+id/sign_up_entrance_title"
                 app:layout_constraintTop_toBottomOf="@id/sign_up_password_container" />
 
             <Button
@@ -70,10 +80,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/authorization_signing_up"
-                android:layout_marginTop="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sign_up_entrance" />
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_entrance_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
