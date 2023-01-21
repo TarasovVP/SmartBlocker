@@ -42,12 +42,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/filter_action_icon"
                 tools:text="Delete?"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/padding_1"
-                android:layout_marginVertical="@dimen/margin_8"
-                android:background="@color/sunset"
+            <Button
+                android:id="@+id/filter_action_cancel"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="@string/button_cancel"
+                style="@style/StrokeButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/filter_action_confirm"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/filter_action_description" />
+
+            <Button
+                android:id="@+id/filter_action_confirm"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                android:layout_marginStart="@dimen/margin_10"
+                android:text="@string/button_ok"
+                app:layout_constraintBottom_toBottomOf="@+id/filter_action_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/filter_action_cancel"
+                app:layout_constraintTop_toTopOf="@+id/filter_action_cancel" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

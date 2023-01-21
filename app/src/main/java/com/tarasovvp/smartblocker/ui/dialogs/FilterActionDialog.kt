@@ -1,48 +1,31 @@
 package com.tarasovvp.smartblocker.ui.dialogs
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.databinding.DialogFilterActionBinding
+import com.tarasovvp.smartblocker.ui.base.BaseDialog
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class FilterActionDialog : BottomSheetDialogFragment() {
+class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
+
+    override var layoutId = R.layout.dialog_filter_action
 
     private val args: FilterActionDialogArgs by navArgs()
 
-    private var binding: DialogFilterActionBinding? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.dialog_filter_action, container, false
-        )
-        initUI()
-        return binding?.root
-    }
-
-    private fun initUI() {
+    override fun initUI() {
         binding?.apply {
             filterAction = args.filterAction
             filterNumber = args.filterNumber
-            root.setSafeOnClickListener {
+            filterActionCancel.setSafeOnClickListener {
+                dismiss()
+            }
+            filterActionConfirm.setSafeOnClickListener {
                 dismiss()
                 setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterAction))
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 }

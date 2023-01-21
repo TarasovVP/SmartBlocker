@@ -16,15 +16,16 @@ class ChangePasswordDialog : BaseDialog<DialogChangePasswordBinding>() {
     override var layoutId = R.layout.dialog_change_password
 
     override fun initUI() {
-
-        binding?.dialogForgotPasswordCancel?.setSafeOnClickListener {
-            dismiss()
-        }
-        binding?.dialogForgotPasswordConfirm?.setSafeOnClickListener {
-            dismiss()
-            setFragmentResult(CHANGE_PASSWORD,
-                bundleOf(CURRENT_PASSWORD to binding?.dialogForgotPasswordCurrentInput.inputText(),
-                    NEW_PASSWORD to binding?.dialogForgotPasswordNewInput.inputText()))
+        binding?.apply {
+            changePasswordCancel.setSafeOnClickListener {
+                dismiss()
+            }
+            changePasswordConfirm.setSafeOnClickListener {
+                dismiss()
+                setFragmentResult(CHANGE_PASSWORD,
+                    bundleOf(CURRENT_PASSWORD to changePasswordCurrentInput.inputText(),
+                        NEW_PASSWORD to changePasswordNewInput.inputText()))
+            }
         }
     }
 }

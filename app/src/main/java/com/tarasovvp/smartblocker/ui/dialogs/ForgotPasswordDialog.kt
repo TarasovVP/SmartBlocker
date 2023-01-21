@@ -18,14 +18,16 @@ class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
     private val args: ForgotPasswordDialogArgs by navArgs()
 
     override fun initUI() {
-        binding?.dialogForgotPassEmailInput?.setText(args.email)
-        binding?.dialogForgotPasswordCancel?.setSafeOnClickListener {
-            dismiss()
-        }
-        binding?.dialogForgotPasswordConfirm?.setSafeOnClickListener {
-            dismiss()
-            setFragmentResult(FORGOT_PASSWORD,
-                bundleOf(EMAIL to binding?.dialogForgotPassEmailInput.inputText()))
+        binding?.apply {
+            forgotPassEmailInput.setText(args.email)
+            forgotPasswordCancel.setSafeOnClickListener {
+                dismiss()
+            }
+            forgotPasswordConfirm.setSafeOnClickListener {
+                dismiss()
+                setFragmentResult(FORGOT_PASSWORD,
+                    bundleOf(EMAIL to forgotPassEmailInput.inputText()))
+            }
         }
     }
 }

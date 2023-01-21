@@ -139,25 +139,9 @@ class ListCallFragment :
 
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.delete_menu_item -> {
-                    this@ListCallFragment.findNavController()
-                        .navigate(ListCallFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE))
-                    true
-                }
-                R.id.close_menu_item -> {
-                    (adapter as CallAdapter).apply {
-                        isDeleteMode = false
-                        callList?.forEach {
-                            it.isCheckedForDelete = false
-                        }
-                        changeDeleteMode()
-                        notifyDataSetChanged()
-                    }
-                    true
-                }
-                else -> return@setOnMenuItemClickListener true
-            }
+            this@ListCallFragment.findNavController()
+                .navigate(ListCallFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE))
+            true
         }
     }
 

@@ -167,31 +167,22 @@ open class BaseListFilterFragment :
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.apply {
             setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.delete_menu_item -> {
-                        val direction =
-                            if (this@BaseListFilterFragment is ListBlockerFragment) {
-                                ListBlockerFragmentDirections.startFilterActionDialog(
-                                    filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE, filterNumber = String.format(getString(R.string.list_delete_amount), filterList?.filter { it.isCheckedForDelete }.orEmpty().size))
-                            } else {
-                                ListPermissionFragmentDirections.startFilterActionDialog(
-                                    filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE, filterNumber = String.format(getString(R.string.list_delete_amount), filterList?.filter { it.isCheckedForDelete }.orEmpty().size))
-                            }
-                        this@BaseListFilterFragment.findNavController().navigate(direction)
-                        true
+                val direction =
+                    if (this@BaseListFilterFragment is ListBlockerFragment) {
+                        ListBlockerFragmentDirections.startFilterActionDialog(
+                            filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE,
+                            filterNumber = String.format(getString(R.string.list_delete_amount),
+                                filterList?.filter { it.isCheckedForDelete }
+                                    .orEmpty().size))
+                    } else {
+                        ListPermissionFragmentDirections.startFilterActionDialog(
+                            filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE,
+                            filterNumber = String.format(getString(R.string.list_delete_amount),
+                                filterList?.filter { it.isCheckedForDelete }
+                                    .orEmpty().size))
                     }
-                    R.id.close_menu_item -> {
-                        (adapter as FilterAdapter).apply {
-                            isDeleteMode = false
-                            filterList?.forEach {
-                                it.isCheckedForDelete = false
-                            }
-                            notifyDataSetChanged()
-                        }
-                        true
-                    }
-                    else -> return@setOnMenuItemClickListener true
-                }
+                this@BaseListFilterFragment.findNavController().navigate(direction)
+                true
             }
         }
     }
