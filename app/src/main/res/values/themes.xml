@@ -55,8 +55,8 @@
         <item name="android:paddingTop">@dimen/padding_10</item>
         <item name="android:paddingBottom">@dimen/padding_10</item>
         <item name="strokeWidth">@dimen/margin_2</item>
-        <item name="strokeColor">@color/selector_enable_bg</item>
-        <item name="android:textColor">@color/selector_enable_bg</item>
+        <item name="strokeColor">@color/selector_button_enable_bg</item>
+        <item name="android:textColor">@color/selector_button_enable_bg</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_size_18</item>
         <item name="android:textStyle">bold</item>
@@ -73,11 +73,26 @@
 
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textColor">@color/comet</item>>
+        <item name="buttonTint">@color/selector_check_enable_bg</item>>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
-        <item name="android:button">@drawable/selector_check_box</item>
         <item name="android:paddingEnd">@dimen/padding_10</item>
         <item name="android:paddingStart">@dimen/padding_10</item>
+    </style>
+
+    <style name="FilterCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:enabled">false</item>
+        <item name="android:textColor">@color/selector_check_enable_bg</item>>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@drawable/filter_selector</item>
+        <item name="android:padding">@dimen/padding_5</item>
+        <item name="android:layout_marginStart">@dimen/margin_16</item>
+        <item name="android:layout_marginEnd">@dimen/margin_16</item>
+        <item name="android:drawablePadding">@dimen/padding_5</item>
+        <item name="android:text">@string/filter_no_filter</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
     </style>
 
     <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
