@@ -6,7 +6,9 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
@@ -15,6 +17,8 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.android.parcel.Parcelize
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Entity
 @Parcelize
@@ -25,6 +29,7 @@ data class Filter(
     var name: String? = String.EMPTY,
     var countryCode: CountryCode = CountryCode(),
     var filterWithoutCountryCode: String = String.EMPTY,
+    var created: Long? = null
 ) : Parcelable, NumberData() {
 
     @get:Exclude
@@ -121,6 +126,11 @@ data class Filter(
             isTypeContain() -> filter
             else -> String.format("%s%s", countryCode.countryCode, filterToInput())
         }
+    }
+
+    @Exclude
+    fun filterCreatedDate(): String {
+        return SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(created)
     }
 
     @Exclude

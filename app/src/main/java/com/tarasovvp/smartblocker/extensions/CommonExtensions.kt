@@ -49,7 +49,7 @@ fun <T> MutableLiveData<T>.safeSingleObserve(owner: LifecycleOwner, observer: (t
 fun String.toDateFromMilliseconds(dateFormat: String): String {
     val millis = this.toMillisecondsFromString()
     val dateFormatter = SimpleDateFormat(dateFormat, Locale.getDefault())
-    return if (millis <= 0) "" else dateFormatter.format(Date(millis))
+    return if (millis <= 0) String.EMPTY else dateFormatter.format(Date(millis))
 }
 
 fun String.toMillisecondsFromString(): Long {

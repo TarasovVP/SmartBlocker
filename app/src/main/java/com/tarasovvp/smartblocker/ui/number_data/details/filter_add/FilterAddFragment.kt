@@ -30,6 +30,8 @@ import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.number_data.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail.NumberDataDetailsFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
+import java.util.*
+import kotlin.collections.ArrayList
 
 open class FilterAddFragment :
     BaseDetailsFragment<FragmentFilterAddBinding, FilterAddViewModel>() {
@@ -112,6 +114,7 @@ open class FilterAddFragment :
                         this.filter = addFilter()
                         filterWithoutCountryCode = extractFilterWithoutCountryCode()
                         this.filterAction = filterAction
+                        created = Date().time
                     })
                     else -> Unit
                 }
