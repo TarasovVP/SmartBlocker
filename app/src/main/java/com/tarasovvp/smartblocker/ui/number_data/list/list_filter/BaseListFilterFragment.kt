@@ -81,6 +81,48 @@ open class BaseListFilterFragment :
         }
     }
 
+    private fun changeDeleteMode() {
+        isDeleteMode = isDeleteMode.not()
+        (adapter as FilterAdapter).apply {
+            isDeleteMode = this@BaseListFilterFragment.isDeleteMode
+            recyclerView?.post {
+                adapter?.notifyDataSetChanged()
+            }
+        }
+        (activity as MainActivity).toolbar?.apply {
+            menu?.clear()
+            if (isDeleteMode) {
+                inflateMenu(R.menu.toolbar_delete)
+                setDeleteMenuClickListener()
+            } else {
+                inflateMenu(R.menu.toolbar_search)
+            }
+        }
+    }
+
+    private fun startNextScreen(filter: Filter) {
+        val direction = if (this is ListBlockerFragment) {
+            if (filter.filter.isEmpty()) {
+                filter.filterType = BLOCKER
+                ListBlockerFragmentDirections.startFilterAddFragment(
+                    filterAdd = filter)
+            } else {
+                ListBlockerFragmentDirections.startFilterDetailFragment(
+                    filterDetail = filter)
+            }
+        } else {
+            if (filter.filter.isEmpty()) {
+                filter.filterType = PERMISSION
+                ListPermissionFragmentDirections.startFilterAddFragment(
+                    filterAdd = filter)
+            } else {
+                ListPermissionFragmentDirections.startFilterDetailFragment(
+                    filterDetail = filter)
+            }
+        }
+        findNavController().navigate(direction)
+    }
+
     override fun setClickListeners() {
         binding?.apply {
             listFilterFilter.setSafeOnClickListener {
@@ -106,22 +148,16 @@ open class BaseListFilterFragment :
             }
             fabFull.setSafeOnClickListener {
                 startNextScreen(Filter().apply {
-                    filterType =
-                        if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
                     this.conditionType = FilterCondition.FILTER_CONDITION_FULL.index
                 })
             }
             fabStart.setSafeOnClickListener {
                 startNextScreen(Filter().apply {
-                    filterType =
-                        if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
                     this.conditionType = FilterCondition.FILTER_CONDITION_START.index
                 })
             }
             fabContain.setSafeOnClickListener {
                 startNextScreen(Filter().apply {
-                    filterType =
-                        if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION
                     this.conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index
                 })
             }
@@ -145,28 +181,9 @@ open class BaseListFilterFragment :
         }
     }
 
-    private fun changeDeleteMode() {
-        isDeleteMode = isDeleteMode.not()
-        (adapter as FilterAdapter).apply {
-            isDeleteMode = this@BaseListFilterFragment.isDeleteMode
-            recyclerView?.post {
-                adapter?.notifyDataSetChanged()
-            }
-        }
-        (activity as MainActivity).toolbar?.apply {
-            menu?.clear()
-            if (isDeleteMode) {
-                inflateMenu(R.menu.toolbar_delete)
-                setDeleteMenuClickListener()
-            } else {
-                inflateMenu(R.menu.toolbar_search)
-            }
-        }
-    }
-
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.apply {
-            setOnMenuItemClickListener { menuItem ->
+            setOnMenuItemClickListener {
                 val direction =
                     if (this@BaseListFilterFragment is ListBlockerFragment) {
                         ListBlockerFragmentDirections.startFilterActionDialog(
@@ -185,27 +202,6 @@ open class BaseListFilterFragment :
                 true
             }
         }
-    }
-
-    private fun startNextScreen(filter: Filter) {
-        val direction = if (this is ListBlockerFragment) {
-            if (filter.filter.isEmpty()) {
-                ListBlockerFragmentDirections.startFilterAddFragment(
-                    filterAdd = filter)
-            } else {
-                ListBlockerFragmentDirections.startFilterDetailFragment(
-                    filterDetail = filter)
-            }
-        } else {
-            if (filter.filter.isEmpty()) {
-                ListPermissionFragmentDirections.startFilterAddFragment(
-                    filterAdd = filter)
-            } else {
-                ListPermissionFragmentDirections.startFilterDetailFragment(
-                    filterDetail = filter)
-            }
-        }
-        findNavController().navigate(direction)
     }
 
     override fun observeLiveData() {
@@ -268,14 +264,12 @@ open class BaseListFilterFragment :
     }
 
     override fun showInfoScreen() {
-        if (this is ListBlockerFragment) {
-            findNavController().navigate(ListBlockerFragmentDirections.startInfoFragment(info = InfoData(
-                title = getString(Info.INFO_BLOCKER_LIST.title),
-                description = getString(Info.INFO_BLOCKER_LIST.description))))
-        } else {
-            findNavController().navigate(ListPermissionFragmentDirections.startInfoFragment(info = InfoData(
-                title = getString(Info.INFO_PERMISSION_LIST.title),
-                description = getString(Info.INFO_PERMISSION_LIST.description))))
+        InfoData(title = getString(Info.INFO_BLOCKER_LIST.title), description = getString(Info.INFO_BLOCKER_LIST.description)).apply {
+            findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
+                ListBlockerFragmentDirections.startInfoFragment(this)
+            } else {
+                ListPermissionFragmentDirections.startInfoFragment(this)
+            })
         }
     }
 }

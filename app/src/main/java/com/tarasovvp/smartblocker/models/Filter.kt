@@ -130,7 +130,7 @@ data class Filter(
 
     @Exclude
     fun filterCreatedDate(): String {
-        return SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(created)
+        return created?.let { SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(it) }.orEmpty()
     }
 
     @Exclude

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="headerDataItem"
             type="com.tarasovvp.smartblocker.models.HeaderDataItem" />
@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
-        android:layout_marginVertical="@dimen/margin_4"
         android:drawablePadding="@dimen/padding_15"
         android:text="@{headerDataItem.header}"
         app:layout_constraintBottom_toBottomOf="parent"

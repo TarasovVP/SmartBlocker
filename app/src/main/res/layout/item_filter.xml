@@ -109,15 +109,14 @@
 
             <TextView
                 android:id="@+id/item_filter_created"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_0"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/comet"
-                android:text="@{String.format(context.getString(@string/filter_action_created), filter.filterCreatedDate)}"
-                app:layout_constraintTop_toBottomOf="@+id/item_filter_divider"
+                android:text="@{String.format(@string/filter_action_created, filter.filterCreatedDate)}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_contacts"
                 app:layout_constraintTop_toTopOf="@+id/item_filter_contacts"
                 app:layout_constraintBottom_toBottomOf="@+id/item_filter_contacts"/>

@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.base
 
 import android.os.Parcelable
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
@@ -35,8 +36,14 @@ abstract class BaseAdapter<D : NumberData> :
         RecyclerView.ViewHolder(itemView) {
 
         fun bindData(position: Int) {
-            DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.headerDataItem =
-                getHeaderDataInPosition(position)
+            val header = getHeaderDataInPosition(position).header
+            DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.apply {
+                if (header.isEmpty()) {
+                    itemView.layoutParams.height = 0
+                } else {
+                    headerDataItem = getHeaderDataInPosition(position)
+                }
+            }
         }
 
     }

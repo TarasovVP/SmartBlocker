@@ -14,7 +14,7 @@ interface FilterDao {
     @Update
     fun updateFilter(filter: Filter)
 
-    @Query("SELECT * FROM filter")
+    @Query("SELECT * FROM filter ORDER BY created DESC")
     suspend fun allFilters(): List<Filter>
 
     @Query("SELECT * FROM filter WHERE filterType = :filterType")

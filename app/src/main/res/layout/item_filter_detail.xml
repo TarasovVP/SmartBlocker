@@ -84,7 +84,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_type_title" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/item_filter_detail_details"
+                android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -92,7 +93,23 @@
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@{ContextCompat.getColor(context, filter.filterDetailTint)}"
                 android:text="@{filter.filterAction == null ? String.format(context.getString(isFilteredCallDetails ? filter.filteredContactsText : filter.filteredCallsText), isFilteredCallDetails ? filter.filteredContacts : filter.filteredCalls) : context.getString(filter.filterAction.descriptionText)}"
-                app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_divider" />
+                app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_created"/>
+
+            <TextView
+                android:id="@+id/item_filter_detail_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_10"
+                android:textColor="@color/comet"
+                android:text="@{String.format(@string/filter_action_created, filter.filterCreatedDate)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_filter_detail_details"
+                app:layout_constraintTop_toTopOf="@+id/item_filter_detail_details"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_details"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

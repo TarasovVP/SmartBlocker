@@ -15,9 +15,8 @@ object FilterRepository {
 
     suspend fun getHashMapFromFilterList(filterList: List<Filter>): Map<String, List<Filter>> =
         withContext(Dispatchers.Default) {
-            filterList.groupBy { filter ->
-                if (filter.addFilter().any { it.isLetter() || it.isDigit() }) filter.addFilter()
-                    .filter { it.isLetter() || it.isDigit() }[0].toString() else String.EMPTY
+            filterList.groupBy {
+                String.EMPTY
             }
         }
 
