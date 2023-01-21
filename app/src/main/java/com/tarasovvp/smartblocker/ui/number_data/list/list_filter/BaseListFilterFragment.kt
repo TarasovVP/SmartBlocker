@@ -98,6 +98,12 @@ open class BaseListFilterFragment :
                 inflateMenu(R.menu.toolbar_search)
             }
         }
+        binding?.apply {
+            fabNew.isVisible = isDeleteMode.not()
+            if (fabFull.isShown) {
+                fabNew.performClick()
+            }
+        }
     }
 
     private fun startNextScreen(filter: Filter) {
