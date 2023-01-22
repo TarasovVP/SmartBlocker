@@ -100,7 +100,8 @@
     <string name="list_call">Вызовы</string>
     <string name="list_contact">Контакты</string>
     <string name="list_call_delete_info">Можно удалить только заблокированные номера</string>
-    <string name="list_search_hint">Номер или имя</string>
+    <string name="filter_list_search_hint">Введите номер</string>
+    <string name="list_search_hint">Введите номер или имя</string>
     <!--Creating filter-->
     <string name="creating_filter">Создание</string>
     <string name="creating_filter_enter_hint">Введите номер</string>

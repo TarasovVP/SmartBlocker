@@ -33,7 +33,7 @@ class NumberDataDetailsViewModel(application: Application) : BaseViewModel(appli
         launch {
             val filteredCallList = filteredCallRepository.filteredCallsByNumber(number)
             filteredCallList?.let { filteredCalls ->
-                filteredCallListLiveData.postValue(ArrayList(filteredCalls.sortedByDescending { it.callDate }))
+                filteredCallListLiveData.postValue(ArrayList(filteredCalls))
             }
             hideProgress()
         }

@@ -17,10 +17,10 @@ interface FilteredCallDao {
     @Query("SELECT * FROM filteredCall")
     suspend fun allFilteredCalls(): List<FilteredCall>
 
-    @Query("SELECT * FROM filteredCall WHERE filter_filter = :filter")
+    @Query("SELECT * FROM filteredCall WHERE filter_filter = :filter ORDER BY callDate DESC")
     suspend fun filteredCallsByFilter(filter: String): List<FilteredCall>
 
-    @Query("SELECT * FROM filteredCall WHERE number = :number")
+    @Query("SELECT * FROM filteredCall WHERE number = :number ORDER BY callDate DESC")
     suspend fun filteredCallsByNumber(number: String): List<FilteredCall>
 
     @Query("delete from filteredCall where callId  in (:callIdList)")

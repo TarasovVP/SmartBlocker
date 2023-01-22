@@ -58,7 +58,7 @@ class FilterDetailsViewModel(application: Application) : BaseViewModel(applicati
         launch {
             val filteredCallList = filteredCallRepository.filteredCallsByFilter(filter)
             filteredCallList?.let { filteredCalls ->
-                filteredCallListLiveData.postValue(ArrayList(filteredCalls.sortedByDescending { it.callDate }))
+                filteredCallListLiveData.postValue(ArrayList(filteredCalls))
             }
         }
     }
