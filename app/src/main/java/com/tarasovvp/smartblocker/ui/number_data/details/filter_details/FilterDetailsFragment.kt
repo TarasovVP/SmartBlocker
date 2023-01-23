@@ -130,7 +130,7 @@ class FilterDetailsFragment :
                 numberDataScreen?.updateNumberDataList(numberDataList)
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
-                binding?.filter?.filteredCalls = filteredCallList.size.toString()
+                binding?.filter?.filteredCalls = filteredCallList.size
                 filteredCallsScreen?.updateNumberDataList(filteredCallList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->

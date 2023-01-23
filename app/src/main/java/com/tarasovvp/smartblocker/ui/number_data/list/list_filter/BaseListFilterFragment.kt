@@ -190,19 +190,16 @@ open class BaseListFilterFragment :
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.apply {
             setOnMenuItemClickListener {
+                val deleteFilterCount = filterList?.filter { it.isCheckedForDelete }.orEmpty().size
                 val direction =
                     if (this@BaseListFilterFragment is ListBlockerFragment) {
                         ListBlockerFragmentDirections.startFilterActionDialog(
                             filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE,
-                            filterNumber = String.format(getString(R.string.list_delete_amount),
-                                filterList?.filter { it.isCheckedForDelete }
-                                    .orEmpty().size))
+                            filterNumber = resources.getQuantityString(R.plurals.list_delete_amount, deleteFilterCount.quantityString(), deleteFilterCount))
                     } else {
                         ListPermissionFragmentDirections.startFilterActionDialog(
                             filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                            filterNumber = String.format(getString(R.string.list_delete_amount),
-                                filterList?.filter { it.isCheckedForDelete }
-                                    .orEmpty().size))
+                            filterNumber = resources.getQuantityString(R.plurals.list_delete_amount, deleteFilterCount.quantityString(), deleteFilterCount))
                     }
                 this@BaseListFilterFragment.findNavController().navigate(direction)
                 true

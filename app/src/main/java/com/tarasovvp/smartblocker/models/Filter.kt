@@ -6,7 +6,6 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
@@ -33,10 +32,16 @@ data class Filter(
 ) : Parcelable, NumberData() {
 
     @get:Exclude
-    var filteredContacts: String = String.EMPTY
+    var filteredContacts: Int = 0
 
     @get:Exclude
-    var filteredCalls: String = String.EMPTY
+    var filteredCalls: Int = 0
+
+    @get:Exclude
+    var filteredContactsQuantity: Int = filteredContacts.quantityString()
+
+    @get:Exclude
+    var filteredCallsQuantity: Int = filteredCalls.quantityString()
 
     @get:Exclude
     var isCheckedForDelete = false
@@ -80,16 +85,16 @@ data class Filter(
     @Exclude
     fun filteredContactsText(): Int {
         return when (filterType) {
-            PERMISSION -> R.string.details_number_permit_contacts
-            else -> R.string.details_number_block_contacts
+            PERMISSION -> R.plurals.details_number_permit_contacts
+            else -> R.plurals.details_number_block_contacts
         }
     }
 
     @Exclude
     fun filteredCallsText(): Int {
         return when (filterType) {
-            PERMISSION -> R.string.details_number_permittes_calls
-            else -> R.string.details_number_blocked_calls
+            PERMISSION -> R.plurals.details_number_permitted_calls
+            else -> R.plurals.details_number_blocked_calls
         }
     }
 

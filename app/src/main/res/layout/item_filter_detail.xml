@@ -92,7 +92,7 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@{ContextCompat.getColor(context, filter.filterDetailTint)}"
-                android:text="@{filter.filterAction == null ? String.format(context.getString(isFilteredCallDetails ? filter.filteredContactsText : filter.filteredCallsText), isFilteredCallDetails ? filter.filteredContacts : filter.filteredCalls) : context.getString(filter.filterAction.descriptionText)}"
+                android:text="@{filter.filterAction == null ? String.format(context.resources.getQuantityString(isFilteredCallDetails ? filter.filteredContactsText : filter.filteredCallsText, isFilteredCallDetails ? filter.filteredContactsQuantity : filter.filteredCallsQuantity), isFilteredCallDetails ? filter.filteredContacts : filter.filteredCalls) : context.getString(filter.filterAction.descriptionText)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_created"/>
