@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="@{call.deleteMode &amp;&amp; !call.blockedCall ? 0.5f : 1f}"
-            android:padding="@dimen/padding_16">
+            android:paddingHorizontal="@dimen/padding_8"
+            android:paddingVertical="@dimen/padding_16">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_call_avatar"
@@ -36,10 +37,10 @@
                 android:background="@color/light_steel_blue"
                 android:scaleType="center"
                 app:imageUrl="@{call.photoUrl}"
-                app:layout_constraintBottom_toTopOf="@+id/item_call_divider"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_call_number"
                 app:placeHolder="@{call.placeHolder(context)}"
                 app:shapeAppearanceOverlay="@style/RoundedImageView"
                 app:tint="@color/white" />
@@ -59,7 +60,6 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@{call.highlightedSpanned}"
                 android:textSize="@dimen/text_size_16"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
@@ -72,6 +72,7 @@
                 android:text="@{call.timeFromCallDate()}"
                 android:textSize="@dimen/text_size_10"
                 android:maxLines="1"
+                android:textColor="@color/text_color_grey"
                 android:visibility="@{call.extract || call.isFilteredCallDetails ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
@@ -95,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall || call.extract ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
-                app:layout_constraintBottom_toTopOf="@+id/item_call_divider"
+                android:layout_marginTop="@dimen/margin_6"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_time" />

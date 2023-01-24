@@ -27,7 +27,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_16">
+            android:paddingHorizontal="@dimen/padding_8"
+            android:paddingVertical="@dimen/padding_16">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_filter_detail_avatar"
@@ -38,7 +39,8 @@
                 app:imageResource="@{filter.conditionTypeIcon}"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_value"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_filter_detail_value"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_type_title"
                 app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
             <ImageView
@@ -54,8 +56,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="@dimen/text_size_16"
-                android:textStyle="bold"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@{filter.addFilter}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_detail_type_title"
@@ -69,6 +69,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textColor="@color/text_color_grey"
                 android:text="@{filter == null ? filter.filter : context.getString(filter.conditionTypeName)}"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_detail_value"
                 app:layout_constraintStart_toStartOf="@id/item_filter_detail_value"

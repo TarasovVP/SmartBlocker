@@ -109,7 +109,7 @@ fun TextView.highlightText(searchText: String?, mainText: String?) {
                     Typeface.BOLD,
                     -1,
                     ColorStateList(arrayOf(intArrayOf()),
-                        intArrayOf(ContextCompat.getColor(context, R.color.span_text))),
+                        intArrayOf(ContextCompat.getColor(context, R.color.text_color_black))),
                     null)
                 setSpan(highlightSpan,
                     index,
@@ -193,7 +193,7 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
                         Typeface.BOLD,
                         -1,
                         ColorStateList(arrayOf(intArrayOf()),
-                            intArrayOf(Color.BLUE)),
+                            intArrayOf(Color.BLACK)),
                         null)
                     setSpan(highlightSpan,
                         index,

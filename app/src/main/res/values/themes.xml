@@ -74,6 +74,7 @@
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textColor">@color/comet</item>>
         <item name="buttonTint">@color/selector_check_enable_bg</item>>
+        <item name="android:button">@drawable/selector_check_box</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingEnd">@dimen/padding_10</item>
@@ -85,7 +86,7 @@
         <item name="android:textColor">@color/selector_check_enable_bg</item>>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
-        <item name="android:button">@drawable/filter_selector</item>
+        <item name="android:button">@drawable/selector_filter</item>
         <item name="android:padding">@dimen/padding_5</item>
         <item name="android:layout_marginStart">@dimen/margin_16</item>
         <item name="android:layout_marginEnd">@dimen/margin_16</item>

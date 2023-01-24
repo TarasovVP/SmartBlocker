@@ -25,7 +25,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_16">
+            android:paddingHorizontal="@dimen/padding_8"
+            android:paddingVertical="@dimen/padding_16">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_filter_avatar"
@@ -34,10 +35,10 @@
                 android:background="@color/light_steel_blue"
                 android:scaleType="center"
                 app:imageResource="@{filter.conditionTypeIcon}"
-                app:layout_constraintBottom_toTopOf="@+id/item_filter_divider"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_filter_value"
                 app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
             <ImageView
@@ -55,9 +56,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{filter.highlightedSpanned}"
-                android:textColor="@{filter.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filter.filterAction.color)}"
-                android:textSize="@dimen/text_size_16"
-                android:textStyle="bold"
+                android:textColor="@{filter.filterAction == null ? @color/text_color_black : ContextCompat.getColor(context, filter.filterAction.color)}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
@@ -69,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:layout_marginTop="@dimen/margin_8"
                 android:text="@{filter == null ? filter.filter : context.getString(filter.conditionTypeName)}"
                 android:textColor="@{filter.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filter.filterAction.color)}"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
@@ -77,11 +77,11 @@
 
             <CheckBox
                 android:id="@+id/item_filter_delete"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:checked="@{filter.checkedForDelete}"
                 android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/item_filter_divider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
