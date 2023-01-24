@@ -21,17 +21,35 @@ class FilterAddViewModel(application: Application) : BaseViewModel(application) 
     private val contactRepository = ContactRepository
     private val callRepository = CallRepository
 
+    val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val countryCodeLiveData = MutableLiveData<CountryCode>()
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
     val existingFilterLiveData = MutableLiveData<Filter>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
+    fun getCountryCodeList() {
+        launch {
+            val countryCodeList = countryCodeRepository.getAllCountryCodes()
+            countryCodeList?.apply {
+                countryCodeListLiveData.postValue(this)
+            }
+        }
+    }
+
     fun getCountryCodeWithCountry(country: String?) {
         launch {
             val countryCode =
                 country?.let { countryCodeRepository.getCountryCodeWithCountry(it) }
                     ?: CountryCode()
+            countryCodeLiveData.postValue(countryCode)
+        }
+    }
+
+    fun getCountryCodeWithCode(code: Int?) {
+        launch {
+            val countryCode =
+                code?.let { countryCodeRepository.getCountryCodeWithCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
     }

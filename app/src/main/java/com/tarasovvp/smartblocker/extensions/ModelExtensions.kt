@@ -10,6 +10,8 @@ import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.smartblocker.R
@@ -76,8 +78,7 @@ fun Context.systemCallLogCursor(): Cursor? {
         CallLog.Calls.TYPE,
         CallLog.Calls.DATE,
         CallLog.Calls.CACHED_NORMALIZED_NUMBER,
-        CallLog.Calls.COUNTRY_ISO,
-        CallLog.Calls.NUMBER_PRESENTATION)
+        CallLog.Calls.COUNTRY_ISO)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
     }
@@ -154,7 +155,7 @@ fun Context.getInitialDrawable(text: String): Drawable {
         color = Color.TRANSPARENT
         textSize = spToPx(18F)
         isFakeBoldText = true
-        typeface = Typeface.DEFAULT
+        typeface = ResourcesCompat.getFont(this@getInitialDrawable, R.font.comfortaa_regular)
         textAlign = Paint.Align.LEFT
     }
     val textBound = Rect()
@@ -167,7 +168,7 @@ fun Context.getInitialDrawable(text: String): Drawable {
         Bitmap.Config.ARGB_8888
     )
     val canvas = Canvas(initialBitmap)
-    paint.color = Color.WHITE
+    paint.color = ContextCompat.getColor(this, R.color.text_color_grey)
     paint.style = Paint.Style.FILL
     canvas.drawText(text,
         (rectSize - textWidth) / 2,

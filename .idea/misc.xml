@@ -64,6 +64,7 @@
         <entry key="app/src/main/res/drawable/ic_condition_start.xml" value="0.1925" />
         <entry key="app/src/main/res/drawable/ic_condition_start_blocker_small.xml" value="0.1925" />
         <entry key="app/src/main/res/drawable/ic_condition_start_permission_small.xml" value="0.1485" />
+        <entry key="app/src/main/res/drawable/ic_contact.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_contact_avatar.xml" value="0.2109375" />
         <entry key="app/src/main/res/drawable/ic_contact_list.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_contain.xml" value="0.234375" />
@@ -168,7 +169,7 @@
         <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.291213768115942" />
-        <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.1782477341389728" />
+        <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_filter_detail.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_filter_full_add.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_filter_list.xml" value="0.2786377708978328" />

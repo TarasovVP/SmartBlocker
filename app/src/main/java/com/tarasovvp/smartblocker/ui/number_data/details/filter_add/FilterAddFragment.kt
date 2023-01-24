@@ -40,10 +40,46 @@ open class FilterAddFragment :
     override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
 
+    private val countryCodeList: ArrayList<CountryCode> = arrayListOf()
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
 
+    override fun createAdapter() {
+        numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
+            binding?.apply {
+                binding?.filterToInput = true
+                if (filter?.isTypeContain().isTrue()) {
+                    filter = filter?.apply {
+                        this.filter =
+                            numberData.numberData.digitsTrimmed()
+                                .replace(PLUS_CHAR.toString(), String.EMPTY)
+                    }
+                } else {
+                    val phoneNumber =
+                        numberData.numberData.getPhoneNumber(filter?.countryCode?.country.orEmpty())
+                    if ((phoneNumber?.nationalNumber.toString() == filterAddInput.getRawText() &&
+                                String.format(COUNTRY_CODE_START,
+                                    phoneNumber?.countryCode.toString()) == filterAddCountryCodeValue.text.toString()).not()
+                    ) {
+                        filter = filter?.apply {
+                            this.filter =
+                                phoneNumber?.nationalNumber?.toString()
+                                    ?: numberData.numberData.digitsTrimmed()
+                        }
+                        if (phoneNumber?.countryCode.orZero() > 0) {
+                            viewModel.getCountryCodeWithCode(phoneNumber?.countryCode)
+                        }
+                    }
+                }
+            }
+        }
+        binding?.filterAddContactList?.adapter = numberDataAdapter
+    }
+
     override fun initViews() {
+        if (binding?.filter?.isTypeContain().isNotTrue()) {
+            viewModel.getCountryCodeList()
+        }
         setFilterTextChangeListener()
         binding?.filter = args.filterAdd?.apply {
             filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
@@ -69,7 +105,7 @@ open class FilterAddFragment :
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {
                 if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {
-                    findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
+                    findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog(countryCodeList = countryCodeList.toTypedArray()))
                 }
             }
         }
@@ -144,39 +180,6 @@ open class FilterAddFragment :
         }
     }
 
-    override fun createAdapter() {
-        numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
-            binding?.apply {
-                binding?.filterToInput = true
-                if (filter?.isTypeContain().isTrue()) {
-                    filter = filter?.apply {
-                        this.filter =
-                            numberData.numberData.digitsTrimmed()
-                                .replace(PLUS_CHAR.toString(), String.EMPTY)
-                    }
-                } else {
-                    val phoneNumber =
-                        numberData.numberData.getPhoneNumber(filter?.countryCode?.country.orEmpty())
-                    if ((phoneNumber?.nationalNumber.toString() == filterAddInput.getRawText() &&
-                                String.format(COUNTRY_CODE_START,
-                                    phoneNumber?.countryCode.toString()) == filterAddCountryCodeValue.text.toString()).not()
-                    ) {
-                        filter = filter?.apply {
-                            this.filter =
-                                phoneNumber?.nationalNumber?.toString()
-                                    ?: numberData.numberData.digitsTrimmed()
-                        }
-                        filterAddCountryCodeSpinner.text =
-                            if (phoneNumber?.countryCode.isNull()) binding?.filter?.countryCode?.countryCode else String.format(
-                                COUNTRY_CODE_START,
-                                phoneNumber?.countryCode.toString())
-                    }
-                }
-            }
-        }
-        binding?.filterAddContactList?.adapter = numberDataAdapter
-    }
-
     private fun setCountryCode(countryCode: CountryCode) {
         binding?.apply {
             filter = filter?.apply {
@@ -204,6 +207,11 @@ open class FilterAddFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
+            viewModel.countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+                binding?.filterAddCountryCodeSpinner?.isEnabled = countryCodeList.isNotEmpty()
+                this@FilterAddFragment.countryCodeList.clear()
+                this@FilterAddFragment.countryCodeList.addAll(countryCodeList)
+            }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
                 setCountryCode(countryCode)
             }

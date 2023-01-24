@@ -369,6 +369,12 @@
 
     <dialog
         android:id="@+id/countryCodeSearchDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog.CountryCodeSearchDialog" />
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog.CountryCodeSearchDialog" >
+        <argument
+            android:name="countryCodeList"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.smartblocker.models.CountryCode[]"
+            app:nullable="true" />
+    </dialog>
 
 </navigation>
