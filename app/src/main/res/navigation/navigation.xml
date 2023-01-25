@@ -107,8 +107,7 @@
 
     <fragment
         android:id="@+id/filterAddFragment"
-        android:name="com.tarasovvp.smartblocker.ui.number_data.details.filter_add.FilterAddFragment"
-        android:label="@string/creating_filter">
+        android:name="com.tarasovvp.smartblocker.ui.number_data.details.filter_add.FilterAddFragment" >
         <argument
             android:name="filterAdd"
             android:defaultValue="@null"

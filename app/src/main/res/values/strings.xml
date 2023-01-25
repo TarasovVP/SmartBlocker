@@ -103,7 +103,8 @@
     <string name="filter_list_search_hint">Введите номер</string>
     <string name="list_search_hint">Введите номер или имя</string>
     <!--Creating filter-->
-    <string name="creating_filter">Создание</string>
+    <string name="creating_blocker">Создание Блокировщика</string>
+    <string name="creating_permission">Создание Разрешения</string>
     <string name="creating_filter_enter_hint">Введите номер</string>
     <string name="creating_country_code_title">Выберите страну</string>
     <string name="creating_filter_invalid">Номер не валидный</string>

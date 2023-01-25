@@ -82,6 +82,7 @@ open class FilterAddFragment :
     }
 
     override fun initViews() {
+        (activity as MainActivity).toolbar?.title = getString( if (binding?.filter?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
         if (binding?.filter?.isTypeContain().isNotTrue()) {
             viewModel.getCountryCodeList()
         }

@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.ui.base
 
 import android.content.res.Resources
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -52,9 +53,8 @@ abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
                 if (this is CountryCodeSearchDialog) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
             dialog?.window?.setGravity(Gravity.CENTER)
             dialog?.window?.setBackgroundDrawable(context?.let {
-                ContextCompat.getDrawable(it,
-                    R.drawable.bg_main)
-            })
+                ContextCompat.getColor(it, R.color.transparent)
+            }?.let { ColorDrawable(it) })
             dialog?.setCancelable(true)
         }
     }
