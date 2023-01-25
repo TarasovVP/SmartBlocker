@@ -19,7 +19,7 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:text="@{countryCode.countryEmoji}"
-                android:textStyle="bold"
+                android:textColor="@color/text_color_grey"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_country_code_value"/>
@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{countryCode.countryCode}"
                 android:gravity="end|center_vertical"
+                android:textColor="@color/text_color_grey"
                 app:layout_constraintStart_toEndOf="@+id/item_country_code_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_country_code_name"

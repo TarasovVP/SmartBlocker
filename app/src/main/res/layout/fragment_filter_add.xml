@@ -5,13 +5,11 @@
     <data>
 
         <import type="android.view.View" />
-
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
             name="filterToInput"
             type="Boolean" />
-
         <variable
             name="filter"
             type="com.tarasovvp.smartblocker.models.Filter" />
@@ -40,7 +38,7 @@
             android:layout_marginHorizontal="@dimen/margin_2"
             android:layout_marginTop="@dimen/margin_8"
             app:cardCornerRadius="@dimen/padding_12"
-            app:cardElevation="@dimen/padding_1"
+            app:cardElevation="@dimen/padding_2"
             app:layout_constraintTop_toBottomOf="@id/filter_add_item_filter" >
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -18,7 +18,7 @@
 
         <Button
             android:id="@+id/on_boarding_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_next"
             android:layout_marginVertical="@dimen/margin_35"
