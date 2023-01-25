@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog
 
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -11,18 +10,16 @@ import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.safeObserve
-import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.ui.number_data.details.filter_add.FilterAddViewModel
+import com.tarasovvp.smartblocker.ui.main.number.create.CreateFilterViewModel
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
-import kotlinx.android.synthetic.main.dialog_country_code_search.*
 
 class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
 
     override var layoutId = R.layout.dialog_country_code_search
     private val viewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(activity ?: this)[FilterAddViewModel::class.java]
+        ViewModelProvider(activity ?: this)[CreateFilterViewModel::class.java]
     }
 
     private var countryCodeSearchAdapter: CountryCodeSearchAdapter? = null

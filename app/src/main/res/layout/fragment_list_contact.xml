@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/padding_8"
-        tools:context=".ui.number_data.list.list_contact.ListContactFragment">
+        tools:context=".ui.main.number.list.list_contact.ListContactFragment">
 
         <CheckBox
             android:id="@+id/list_contact_check"

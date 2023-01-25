@@ -252,16 +252,16 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
         if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()) {
             filteredList.add(numberData.apply {
                 highlightedSpanned =
-                    numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
+                    numberData.numberData.highlightedSpanned(filter?.createFilter(), null)
             })
         } else {
             val phoneNumber = numberData.numberData.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
             if (phoneNumber.isValidPhoneNumber()) {
-                if (numberData.numberData.digitsTrimmed().startsWith(filter?.addFilter().orEmpty()).isTrue()
+                if (numberData.numberData.digitsTrimmed().startsWith(filter?.createFilter().orEmpty()).isTrue()
                 )
                     filteredList.add(numberData.apply {
                         highlightedSpanned =
-                            numberData.numberData.highlightedSpanned(filter?.addFilter(), null)
+                            numberData.numberData.highlightedSpanned(filter?.createFilter(), null)
                     }) else if ((phoneNumber?.nationalNumber.toString()
                         .startsWith(filter?.extractFilterWithoutCountryCode().orEmpty())
                         .isTrue() && String.format(COUNTRY_CODE_START,
@@ -269,7 +269,7 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
                 )
                     supposedFilteredList.add(numberData.apply {
                         highlightedSpanned =
-                            numberData.numberData.highlightedSpanned(if (filter.filter == filter.addFilter()) filter.extractFilterWithoutCountryCode() else filter.filter,
+                            numberData.numberData.highlightedSpanned(if (filter.filter == filter.createFilter()) filter.extractFilterWithoutCountryCode() else filter.filter,
                                 filter.countryCode.countryCode)
                     })
             }

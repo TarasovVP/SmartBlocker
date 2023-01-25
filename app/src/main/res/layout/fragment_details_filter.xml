@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="filter"
+            type="com.tarasovvp.smartblocker.models.Filter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/padding_16">
+
+        <include
+            android:id="@+id/details_filter_item_filter"
+            layout="@layout/item_filter_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            android:layout_marginTop="@dimen/margin_8"
+            app:filter="@{filter}"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/details_filter_delete_filter"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            style="@style/StrokeButton"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:text="@string/filter_action_delete"
+            android:textColor="@color/sunset"
+            app:strokeColor="@color/sunset"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/details_filter_change_filter"
+            app:layout_constraintTop_toBottomOf="@+id/details_filter_item_filter" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/details_filter_change_filter"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="@dimen/size_0"
+            style="@style/StrokeButton"
+            android:layout_marginStart="@dimen/margin_8"
+            android:text="@string/filter_action_transfer"
+            app:layout_constraintStart_toEndOf="@+id/details_filter_delete_filter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/details_filter_delete_filter"
+            app:layout_constraintTop_toTopOf="@+id/details_filter_delete_filter" />
+
+        <ImageView
+            android:id="@+id/details_filter_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_filter_details_tab_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_filter_change_filter"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/details_filter_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:paddingBottom="@dimen/padding_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_filter_tabs" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+

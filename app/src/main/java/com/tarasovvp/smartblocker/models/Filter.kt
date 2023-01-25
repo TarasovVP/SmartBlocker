@@ -84,12 +84,12 @@ data class Filter(
 
     @Exclude
     fun filterActionTextTint(): Int {
-        return if (isAddFilterAction()) R.color.white else filterAction?.color ?: R.color.white
+        return if (isCreateFilterAction()) R.color.white else filterAction?.color ?: R.color.white
     }
 
     @Exclude
     fun filterActionBgTint(): Int {
-        return if (isAddFilterAction()) R.color.button_bg else R.color.transparent
+        return if (isCreateFilterAction()) R.color.button_bg else R.color.transparent
     }
 
     @Exclude
@@ -136,7 +136,7 @@ data class Filter(
     }
 
     @Exclude
-    fun addFilter(): String {
+    fun createFilter(): String {
         return when {
             isTypeContain() -> filter
             else -> String.format("%s%s", countryCode.countryCode, filterToInput())
@@ -151,7 +151,7 @@ data class Filter(
     @Exclude
     fun extractFilterWithoutCountryCode(): String {
         return when (filter) {
-            addFilter() -> filter.replace(countryCode.countryCode, String.EMPTY)
+            createFilter() -> filter.replace(countryCode.countryCode, String.EMPTY)
             else -> filter
         }
     }
@@ -183,7 +183,7 @@ data class Filter(
     }
 
     @Exclude
-    fun isAddFilterAction(): Boolean {
+    fun isCreateFilterAction(): Boolean {
         return filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
     }
 

@@ -57,7 +57,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@{filter.addFilter}"
+                android:text="@{filter.createFilter}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_detail_type_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_detail_avatar"

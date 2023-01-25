@@ -19,10 +19,10 @@ import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.HeaderDataItem
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
-import com.tarasovvp.smartblocker.ui.number_data.list.list_call.ListCallFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.list_filter.ListBlockerFragment
-import com.tarasovvp.smartblocker.ui.number_data.list.list_filter.ListPermissionFragment
+import com.tarasovvp.smartblocker.ui.main.number.list.list_call.ListCallFragment
+import com.tarasovvp.smartblocker.ui.main.number.list.list_contact.ListContactFragment
+import com.tarasovvp.smartblocker.ui.main.number.list.list_filter.ListBlockerFragment
+import com.tarasovvp.smartblocker.ui.main.number.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :

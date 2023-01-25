@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/padding_25"
-        tools:context=".ui.authorization.onboarding.OnBoardingFragment">
+        tools:context=".ui.main.authorization.onboarding.OnBoardingFragment">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/on_boarding_view_pager"

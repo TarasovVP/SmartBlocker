@@ -34,7 +34,7 @@ object CallRepository {
         return callDao?.queryCallList(filter.filter,
             filter.conditionType)?.distinctBy { it.number }?.filter {
             it.filter.isNull() || it.filter == filter || (it.filter?.filter?.length.orZero() < (filter.filter).length
-                    && it.number.indexOf(filter.addFilter()) < it.number.indexOf(it.filter?.filter.orEmpty()))
+                    && it.number.indexOf(filter.createFilter()) < it.number.indexOf(it.filter?.filter.orEmpty()))
         }
     }
 
