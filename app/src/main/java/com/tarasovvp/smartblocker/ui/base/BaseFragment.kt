@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.ui.MainActivity
 
-abstract class BaseFragment<B : ViewDataBinding, T : BaseViewModel> : BaseBindingFragment<B>() {
+abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : BaseBindingFragment<B>() {
 
-    abstract val viewModelClass: Class<T>
+    abstract val viewModelClass: Class<VM>
     abstract fun observeLiveData()
 
-    protected open val viewModel: T by lazy(LazyThreadSafetyMode.NONE) {
+    protected open val viewModel: VM by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this)[viewModelClass]
     }
 

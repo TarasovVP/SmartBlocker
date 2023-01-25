@@ -1,8 +1,10 @@
 package com.tarasovvp.smartblocker.ui.number_data.details.filter_add
 
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.SmartBlockerApp
@@ -40,7 +42,10 @@ open class FilterAddFragment :
     override val viewModelClass = FilterAddViewModel::class.java
     private val args: FilterAddFragmentArgs by navArgs()
 
-    private val countryCodeList: ArrayList<CountryCode> = arrayListOf()
+    override val viewModel by lazy(LazyThreadSafetyMode.NONE) {
+        ViewModelProvider(activity ?: this)[viewModelClass]
+    }
+
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
 
@@ -105,7 +110,7 @@ open class FilterAddFragment :
             }
             filterAddCountryCodeSpinner.setSafeOnClickListener {
                 if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {
-                    findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog(countryCodeList = countryCodeList.toTypedArray()))
+                    findNavController().navigate(FilterAddFragmentDirections.startCountryCodeSearchDialog())
                 }
             }
         }
@@ -207,10 +212,8 @@ open class FilterAddFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            viewModel.countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+            viewModel.countryCodeListLiveData.safeObserve(viewLifecycleOwner) { countryCodeList ->
                 binding?.filterAddCountryCodeSpinner?.isEnabled = countryCodeList.isNotEmpty()
-                this@FilterAddFragment.countryCodeList.clear()
-                this@FilterAddFragment.countryCodeList.addAll(countryCodeList)
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
                 setCountryCode(countryCode)
