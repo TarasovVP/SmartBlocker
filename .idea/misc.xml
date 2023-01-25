@@ -139,7 +139,7 @@
         <entry key="app/src/main/res/layout/dialog_add_list.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/layout/dialog_add_to_list.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/dialog_black_list_preview.xml" value="0.15715579710144928" />
-        <entry key="app/src/main/res/layout/dialog_change_password.xml" value="0.18229166666666666" />
+        <entry key="app/src/main/res/layout/dialog_change_password.xml" value="0.335" />
         <entry key="app/src/main/res/layout/dialog_country_code_search.xml" value="0.375" />
         <entry key="app/src/main/res/layout/dialog_country_searchable.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/dialog_delete.xml" value="0.39955357142857145" />
@@ -169,7 +169,7 @@
         <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.2269021739130435" />
         <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.291213768115942" />
-        <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_filter_add.xml" value="0.3676164002779708" />
         <entry key="app/src/main/res/layout/fragment_filter_detail.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_filter_full_add.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/fragment_filter_list.xml" value="0.2786377708978328" />
@@ -217,7 +217,7 @@
         <entry key="app/src/main/res/layout/item_country_code.xml" value="0.3572916666666667" />
         <entry key="app/src/main/res/layout/item_expandable_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_filter.xml" value="0.55" />
-        <entry key="app/src/main/res/layout/item_filter_detail.xml" value="0.55" />
+        <entry key="app/src/main/res/layout/item_filter_detail.xml" value="0.5297113752122241" />
         <entry key="app/src/main/res/layout/item_filter_small.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_header.xml" value="0.11734693877551021" />
         <entry key="app/src/main/res/layout/item_header_empty.xml" value="0.21145833333333333" />

@@ -4,14 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="androidx.core.content.ContextCompat" />
+
         <variable
             name="filterAction"
             type="com.tarasovvp.smartblocker.enums.FilterAction" />
+
         <variable
             name="filterNumber"
             type="String" />
     </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/padding_8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,21 +43,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:gravity="center"
-                android:textSize="@dimen/text_size_14"
                 android:text="@{String.format(context.getString(filterAction.requestText), filterNumber)}"
+                android:textSize="@dimen/text_size_14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/filter_action_icon"
-                tools:text="Delete?"/>
+                tools:text="Delete?" />
 
             <Button
                 android:id="@+id/filter_action_cancel"
+                style="@style/StrokeButton"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="@string/button_cancel"
-                style="@style/StrokeButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/filter_action_confirm"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,9 +73,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/filter_action_cancel"
                 app:layout_constraintTop_toTopOf="@+id/filter_action_cancel" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
 
 

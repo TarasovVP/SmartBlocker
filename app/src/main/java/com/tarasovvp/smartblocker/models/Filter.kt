@@ -79,7 +79,17 @@ data class Filter(
 
     @Exclude
     fun filterDetailTint(): Int {
-        return filterAction?.color ?: filterTypeTint()
+        return if (isDeleteFilterAction()) R.color.sunset else R.color.text_color_grey
+    }
+
+    @Exclude
+    fun filterActionTextTint(): Int {
+        return if (isAddFilterAction()) R.color.white else filterAction?.color ?: R.color.white
+    }
+
+    @Exclude
+    fun filterActionBgTint(): Int {
+        return if (isAddFilterAction()) R.color.button_bg else R.color.transparent
     }
 
     @Exclude
@@ -170,6 +180,16 @@ data class Filter(
     @Exclude
     fun isInvalidFilterAction(): Boolean {
         return filterAction == FilterAction.FILTER_ACTION_INVALID
+    }
+
+    @Exclude
+    fun isAddFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
+    }
+
+    @Exclude
+    fun isDeleteFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
     }
 
     @Exclude
