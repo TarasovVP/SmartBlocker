@@ -2,9 +2,11 @@ package com.tarasovvp.smartblocker.ui.number_data.details.number_data_detail
 
 import android.annotation.SuppressLint
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
@@ -150,11 +152,14 @@ class NumberDataDetailsFragment :
         }
     }
 
-    private fun Button.changeFilterTypeButtonState(
+    private fun MaterialButton.changeFilterTypeButtonState(
         isButtonEnabled: Boolean,
         isClose: Boolean,
         intRes: Int,
     ) {
+        backgroundTintList = ContextCompat.getColorStateList(context, if (isButtonEnabled) R.color.button_bg else R.color.transparent)
+        strokeColor = ContextCompat.getColorStateList(context, if (isButtonEnabled) R.color.button_bg else R.color.comet)
+        setTextColor(ContextCompat.getColorStateList(context, if (isButtonEnabled) R.color.white else R.color.comet))
         isEnabled = isButtonEnabled
         alpha = if (isButtonEnabled) 1f else 0.5f
         setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)

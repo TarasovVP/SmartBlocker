@@ -28,27 +28,30 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/filter_detail_change_filter"
+            android:id="@+id/filter_detail_delete_filter"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:layout_marginEnd="@dimen/margin_8"
             style="@style/StrokeButton"
-            android:text="@string/filter_action_transfer"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
+            android:text="@string/filter_action_delete"
+            android:textColor="@color/sunset"
+            app:strokeColor="@color/sunset"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/filter_detail_delete_filter"
+            app:layout_constraintEnd_toStartOf="@+id/filter_detail_change_filter"
             app:layout_constraintTop_toBottomOf="@+id/filter_detail_item_filter" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/filter_detail_delete_filter"
+            android:id="@+id/filter_detail_change_filter"
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
+            style="@style/StrokeButton"
             android:layout_marginStart="@dimen/margin_8"
-            android:text="@string/filter_action_delete"
-            app:layout_constraintStart_toEndOf="@+id/filter_detail_change_filter"
+            android:text="@string/filter_action_transfer"
+            app:layout_constraintStart_toEndOf="@+id/filter_detail_delete_filter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/filter_detail_change_filter"
-            app:layout_constraintTop_toTopOf="@+id/filter_detail_change_filter" />
+            app:layout_constraintBottom_toBottomOf="@+id/filter_detail_delete_filter"
+            app:layout_constraintTop_toTopOf="@+id/filter_detail_delete_filter" />
 
         <ImageView
             android:id="@+id/filter_detail_tabs"
