@@ -58,7 +58,7 @@ class SettingsBlockerFragment :
                     ) {
                         showMessage(getString(R.string.app_network_unavailable_repeat), true)
                     } else {
-                        viewModel.changeBlockHidden(isChecked.not())
+                        viewModel.changeBlockHidden(isChecked)
                         binding?.settingsBlockerHiddenSwitch?.isEnabled = false
                     }
                 }
@@ -69,12 +69,10 @@ class SettingsBlockerFragment :
     override fun observeLiveData() {
         with(viewModel) {
             successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
-                binding?.settingsBlockerHiddenSwitch?.isEnabled = true
-                binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden.not()
+                binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden
                 SharedPreferencesUtil.blockHidden = blockHidden
             }
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { error ->
-                binding?.settingsBlockerHiddenSwitch?.isEnabled = true
                 binding?.settingsBlockerHiddenSwitch?.isChecked =
                     binding?.settingsBlockerHiddenSwitch?.isChecked.isTrue().not()
                 showMessage(error, true)

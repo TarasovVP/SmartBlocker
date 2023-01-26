@@ -6,9 +6,12 @@ import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
 import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import kotlinx.coroutines.CoroutineScope
@@ -33,8 +36,12 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
-            val filter = filterRepository.queryFilter(number)
-            if (filter?.isBlocker().isTrue() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+            val filter = if (number.isEmpty() && SharedPreferencesUtil.blockHidden) {
+                Filter(filterType = BLOCKER)
+            } else {
+                filterRepository.queryFilter(number)
+            }
+            if ((filter?.isBlocker().isTrue()) && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
                 breakCall(context)
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                 delay(SECOND)

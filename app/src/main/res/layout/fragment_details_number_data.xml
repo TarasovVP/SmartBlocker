@@ -81,6 +81,15 @@
                 app:layout_constraintBottom_toBottomOf="@+id/details_number_data_create_blocker"
                 app:layout_constraintTop_toTopOf="@+id/details_number_data_create_blocker" />
 
+            <include
+                android:id="@+id/details_number_data_empty"
+                layout="@layout/include_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/details_number_data_create_blocker" />
+
             <ImageView
                 android:id="@+id/details_number_data_tabs"
                 android:layout_width="wrap_content"

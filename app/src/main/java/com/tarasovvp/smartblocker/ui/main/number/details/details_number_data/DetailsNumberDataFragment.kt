@@ -1,7 +1,9 @@
 package com.tarasovvp.smartblocker.ui.main.number.details.details_number_data
 
 import android.annotation.SuppressLint
+import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -10,6 +12,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
+import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
@@ -19,12 +22,12 @@ import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class NumberDataDetailsFragment :
-    BaseDetailsFragment<FragmentDetailsNumberDataBinding, NumberDataDetailsViewModel>() {
+class DetailsNumberDataFragment :
+    BaseDetailsFragment<FragmentDetailsNumberDataBinding, DetailsNumberDataViewModel>() {
 
     override var layoutId = R.layout.fragment_details_number_data
-    override val viewModelClass = NumberDataDetailsViewModel::class.java
-    private val args: NumberDataDetailsFragmentArgs by navArgs()
+    override val viewModelClass = DetailsNumberDataViewModel::class.java
+    private val args: DetailsNumberDataFragmentArgs by navArgs()
     override fun setFragmentResultListeners() = Unit
 
     private var filtersScreen: SingleDetailsFragment? = null
@@ -41,17 +44,37 @@ class NumberDataDetailsFragment :
                 is FilteredCall,
                 -> call = (args.numberData as Call).apply { isExtract = true }
             }
+            if (call?.number?.isEmpty().isTrue()) setHiddenCallScreen()
             executePendingBindings()
+        }
+    }
+
+    private fun setHiddenCallScreen() {
+        binding?.apply {
+            detailsNumberDataCreatePermission.isVisible = false
+            detailsNumberDataEmpty.emptyState = EmptyState.EMPTY_STATE_HIDDEN
+            detailsNumberDataEmpty.root.isVisible = true
+            detailsNumberDataTabs.isVisible = false
+            detailsNumberDataViewPager.isVisible = false
+            with(detailsNumberDataCreateBlocker) {
+                setText(R.string.settings)
+                context?.let {
+                    backgroundTintList = ContextCompat.getColorStateList(it, R.color.transparent)
+                    setTextColor(ContextCompat.getColorStateList(it, R.color.comet))
+                    strokeColor = ContextCompat.getColorStateList(it, R.color.comet)
+                    icon = ContextCompat.getDrawable(it, R.drawable.ic_settings)
+                }
+            }
         }
     }
 
     override fun createAdapter() {
         filtersScreen = SingleDetailsFragment(NumberData::class.simpleName.orEmpty()) {
-            findNavController().navigate(NumberDataDetailsFragmentDirections.startDetailsFilterFragment(
+            findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
                 filterDetails = it as Filter))
         }
         filteredCallsScreen = SingleDetailsFragment(FilteredCall::class.simpleName.orEmpty()) {
-            findNavController().navigate(NumberDataDetailsFragmentDirections.startDetailsFilterFragment(
+            findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
                 filterDetails = it as Filter))
         }
         val fragmentList = arrayListOf(
@@ -82,7 +105,11 @@ class NumberDataDetailsFragment :
     override fun setClickListeners() {
         binding?.apply {
             detailsNumberDataCreateBlocker.setSafeOnClickListener {
-                setAddFilterConditions(true, numberDataDetailAddFilterFull.isShown.isTrue())
+                if (call?.number?.isEmpty().isTrue()) {
+                    findNavController().navigate(DetailsNumberDataFragmentDirections.startSettingsBlockerFragment())
+                } else {
+                    setAddFilterConditions(true, numberDataDetailAddFilterFull.isShown.isTrue())
+                }
             }
             detailsNumberDataCreatePermission.setSafeOnClickListener {
                 setAddFilterConditions(false, numberDataDetailAddFilterFull.isShown.isTrue())
@@ -132,7 +159,7 @@ class NumberDataDetailsFragment :
     }
 
     private fun startAddFilterScreen() {
-        findNavController().navigate(NumberDataDetailsFragmentDirections.startCreateFilterFragment(
+        findNavController().navigate(DetailsNumberDataFragmentDirections.startCreateFilterFragment(
             filterCreate = filter))
     }
 
@@ -190,7 +217,7 @@ class NumberDataDetailsFragment :
     }
 
     override fun showInfoScreen() {
-        findNavController().navigate(NumberDataDetailsFragmentDirections.startInfoFragment(info = InfoData(
+        findNavController().navigate(DetailsNumberDataFragmentDirections.startInfoFragment(info = InfoData(
             title = getString(Info.INFO_NUMBER_DATA_DETAILS.title),
             description = getString(Info.INFO_NUMBER_DATA_DETAILS.description))))
     }

@@ -20,7 +20,6 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
-import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.NumberDataDetailsFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class DetailsFilterFragment :
@@ -160,7 +159,7 @@ class DetailsFilterFragment :
     }
 
     override fun showInfoScreen() {
-        findNavController().navigate(NumberDataDetailsFragmentDirections.startInfoFragment(info = InfoData(
+        findNavController().navigate(DetailsFilterFragmentDirections.startInfoFragment(info = InfoData(
             title = getString(Info.INFO_FILTER_DETAILS.title),
             description = getString(Info.INFO_FILTER_DETAILS.description))))
     }

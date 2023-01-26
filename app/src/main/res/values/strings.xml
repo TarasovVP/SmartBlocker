@@ -85,6 +85,7 @@
     <string name="empty_state_filters">По этому номеру совпадений с фильтрами не найдено</string>
     <string name="empty_state_numbers">По этому фильтру совпадений с номерами не найдено</string>
     <string name="empty_state_filtered_calls">С такими параметрами отфильтрованных вызовов не найдено</string>
+    <string name="empty_state_hidden">Управление скрытыми номерами осуществляется системными настойками. Для изменения перейдите в "Настройки"</string>
     <string name="empty_state_account">Вы вошли незарегистрированным пользователем</string>
     <!--Progress-->
     <string name="progress_data_collect">Сбор информации</string>
@@ -110,6 +111,7 @@
     <string name="creating_filter_invalid">Номер не валидный</string>
     <!--Details number-->
     <string name="details_number">Номер</string>
+    <string name="details_number_hidden">Скрытый</string>
     <string name="details_number_not_from_contacts">Номера нет в контактах</string>
     <string name="details_number_from_call_log">Номер из журнала вызовов</string>
     <string name="details_filter">Фильтр</string>
@@ -138,14 +140,17 @@
         <item quantity="other">Разрешено %s вызовов</item>
     </plurals>
     <string name="details_number_contact_without_filter">Без признаков фильтра</string>
+    <string name="details_number_hidden_on">Блокировка скрытых номеров включена</string>
+    <string name="details_number_hidden_off">Блокировка скрытых номеров отключена</string>
     <string name="details_number_block_with_filter">Будет заблокирован фильтром:&#160;</string>
     <string name="details_number_permit_with_filter">Будет разрешен фильтром:&#160;</string>
     <string name="details_number_call_without_filter">Без совпадения с фильтром</string>
     <string name="details_number_blocked_by_filter">Заблокирован фильтром:&#160;</string>
     <string name="details_number_permitted_by_filter">Разрешен фильтром:&#160;</string>
+    <string name="details_number_blocked_by_settings">Заблокирован настройками Smart Blocker</string>
     <string name="number_details_close">Закрыть</string>
     <!--Settings screens-->
-    <string name="settings">Settings</string>
+    <string name="settings">Настройки</string>
     <string name="settings_blocker">Настройки блокировщика</string>
     <string name="settings_account">Ваш аккаунт</string>
     <string name="settings_language">Язык</string>

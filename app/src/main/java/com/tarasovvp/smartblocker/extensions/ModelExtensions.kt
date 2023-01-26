@@ -131,8 +131,6 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
                         type =
                             if (filter?.isBlocker().isTrue()) BLOCKED_CALL else PERMITTED_CALL
                         this.filtered = filter
-                        callName =
-                            if (filteredCall.callName.isNullOrEmpty()) getString(R.string.details_number_not_from_contacts) else callName
                     })
                 }
                 if (filter?.isBlocker().isTrue()) {

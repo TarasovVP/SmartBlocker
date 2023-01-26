@@ -12,5 +12,6 @@ enum class EmptyState(val description: Int) {
     EMPTY_STATE_FILTERS(R.string.empty_state_filters),
     EMPTY_STATE_NUMBERS(R.string.empty_state_numbers),
     EMPTY_STATE_FILTERED_CALLS(R.string.empty_state_filtered_calls),
+    EMPTY_STATE_HIDDEN(R.string.empty_state_hidden),
     EMPTY_STATE_ACCOUNT(R.string.empty_state_account)
 }

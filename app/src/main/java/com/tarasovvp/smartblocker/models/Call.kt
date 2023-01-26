@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -101,15 +102,19 @@ open class Call(
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
+                number.isEmpty() && SharedPreferencesUtil.blockHidden -> R.string.details_number_hidden_on
+                number.isEmpty() && SharedPreferencesUtil.blockHidden.not() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {
-            when {
-                this is FilteredCall && filtered?.isBlocker()
-                    .isTrue() -> R.string.details_number_blocked_by_filter
-                this is FilteredCall && filtered?.isPermission()
-                    .isTrue() -> R.string.details_number_permitted_by_filter
-                else -> R.string.details_number_call_without_filter
+            if (this is FilteredCall) {
+                when {
+                    number.isEmpty() -> R.string.details_number_blocked_by_settings
+                    filtered?.isPermission().isTrue() -> R.string.details_number_permitted_by_filter
+                    else -> R.string.details_number_blocked_by_filter
+                }
+            } else {
+                R.string.details_number_call_without_filter
             }
         }
     }

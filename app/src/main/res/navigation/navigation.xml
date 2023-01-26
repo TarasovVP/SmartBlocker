@@ -188,7 +188,7 @@
 
     <fragment
         android:id="@+id/DetailsNumberDataFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.NumberDataDetailsFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragment"
         android:label="@string/details_number">
         <argument
             android:name="numberData"
@@ -204,6 +204,9 @@
         <action
             android:id="@+id/startInfoFragment"
             app:destination="@id/infoFragment" />
+        <action
+            android:id="@+id/startSettingsBlockerFragment"
+            app:destination="@id/settingsBlockerFragment" />
     </fragment>
 
     <fragment

@@ -29,7 +29,7 @@ import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
-import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.NumberDataDetailsFragmentDirections
+import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 import kotlin.collections.ArrayList
@@ -266,7 +266,7 @@ open class CreateFilterFragment :
             binding?.filter?.isTypeContain().isTrue() -> Info.INFO_FILTER_ADD_CONTAIN
             else -> Info.INFO_FILTER_ADD_FULL
         }
-        findNavController().navigate(NumberDataDetailsFragmentDirections.startInfoFragment(info = InfoData(
+        findNavController().navigate(DetailsNumberDataFragmentDirections.startInfoFragment(info = InfoData(
             title = getString(info.title),
             description = getString(info.description))))
     }
