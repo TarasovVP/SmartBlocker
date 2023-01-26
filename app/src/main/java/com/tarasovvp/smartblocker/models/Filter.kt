@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.models
 
+import android.content.Context
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -139,6 +140,14 @@ data class Filter(
     fun createFilter(): String {
         return when {
             isTypeContain() -> filter
+            else -> String.format("%s%s", countryCode.countryCode, filterToInput())
+        }
+    }
+
+    @Exclude
+    fun createFilterValue(context: Context): String {
+        return when {
+            isTypeContain() -> filter.ifEmpty { context.getString(R.string.creating_filter_no_data) }
             else -> String.format("%s%s", countryCode.countryCode, filterToInput())
         }
     }

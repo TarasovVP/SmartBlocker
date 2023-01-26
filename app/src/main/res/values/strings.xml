@@ -109,6 +109,7 @@
     <string name="creating_filter_enter_hint">Введите номер</string>
     <string name="creating_country_code_title">Выберите страну</string>
     <string name="creating_filter_invalid">Номер не валидный</string>
+    <string name="creating_filter_no_data">Нет данных</string>
     <!--Details number-->
     <string name="details_number">Номер</string>
     <string name="details_number_hidden">Скрытый</string>

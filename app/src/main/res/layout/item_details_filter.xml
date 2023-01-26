@@ -31,40 +31,40 @@
             android:paddingVertical="@dimen/padding_16">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/item_filter_detail_avatar"
+                android:id="@+id/item_details_filter_avatar"
                 android:layout_width="@dimen/margin_50"
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/light_steel_blue"
                 android:scaleType="center"
                 app:imageResource="@{filter.conditionTypeIcon}"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_value"
+                app:layout_constraintEnd_toStartOf="@+id/item_details_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/item_filter_detail_value"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_type_title"
+                app:layout_constraintTop_toTopOf="@+id/item_details_filter_value"
+                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_type_title"
                 app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
             <ImageView
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
                 app:imageResource="@{filter.filterTypeIcon}"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/item_filter_detail_avatar" />
+                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_details_filter_avatar" />
 
             <TextView
-                android:id="@+id/item_filter_detail_value"
+                android:id="@+id/item_details_filter_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@{filter.createFilter}"
-                app:layout_constraintBottom_toTopOf="@+id/item_filter_detail_type_title"
+                android:text="@{filter.createFilterValue(context)}"
+                app:layout_constraintBottom_toTopOf="@+id/item_details_filter_type_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_filter_detail_avatar"
+                app:layout_constraintStart_toEndOf="@+id/item_details_filter_avatar"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/item_filter_detail_type_title"
+                android:id="@+id/item_details_filter_type_title"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -72,21 +72,21 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="@color/text_color_grey"
                 android:text="@{filter == null ? filter.filter : context.getString(filter.conditionTypeName)}"
-                app:layout_constraintEnd_toEndOf="@+id/item_filter_detail_value"
-                app:layout_constraintStart_toStartOf="@id/item_filter_detail_value"
-                app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_value"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_avatar"/>
+                app:layout_constraintEnd_toEndOf="@+id/item_details_filter_value"
+                app:layout_constraintStart_toStartOf="@id/item_details_filter_value"
+                app:layout_constraintTop_toBottomOf="@+id/item_details_filter_value"
+                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_avatar"/>
 
             <View
-                android:id="@+id/item_filter_detail_divider"
+                android:id="@+id/item_details_filter_divider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/padding_1"
                 android:background="@color/light_steel_blue"
                 android:layout_marginTop="@dimen/margin_8"
-                app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_type_title" />
+                app:layout_constraintTop_toBottomOf="@+id/item_details_filter_type_title" />
 
             <TextView
-                android:id="@+id/item_filter_detail_details"
+                android:id="@+id/item_details_filter_details"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -95,12 +95,12 @@
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@{ContextCompat.getColor(context, filter.filterDetailTint)}"
                 android:text="@{filter.filterAction == null ? String.format(context.resources.getQuantityString(isFilteredCallDetails ? filter.filteredContactsText : filter.filteredCallsText, isFilteredCallDetails ? filter.filteredContactsQuantity : filter.filteredCallsQuantity), isFilteredCallDetails ? filter.filteredContacts : filter.filteredCalls) : context.getString(filter.filterAction.descriptionText)}"
-                app:layout_constraintTop_toBottomOf="@+id/item_filter_detail_divider"
+                app:layout_constraintTop_toBottomOf="@+id/item_details_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_detail_created"/>
+                app:layout_constraintEnd_toStartOf="@+id/item_details_filter_created"/>
 
             <TextView
-                android:id="@+id/item_filter_detail_created"
+                android:id="@+id/item_details_filter_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -109,9 +109,9 @@
                 android:textColor="@color/comet"
                 android:text="@{filter.created == 0 ? `` : String.format(@string/filter_action_created, filter.filterCreatedDate)}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_filter_detail_details"
-                app:layout_constraintTop_toTopOf="@+id/item_filter_detail_details"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_detail_details"/>
+                app:layout_constraintStart_toEndOf="@+id/item_details_filter_details"
+                app:layout_constraintTop_toTopOf="@+id/item_details_filter_details"
+                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_details"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

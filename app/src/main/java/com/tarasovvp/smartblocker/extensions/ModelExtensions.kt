@@ -32,7 +32,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
 
-
 fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
