@@ -52,7 +52,7 @@
 
             <Button
                 android:id="@+id/filter_action_cancel"
-                style="@style/StrokeButton"
+                style="@style/StrokeButtonSmallStyle"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_24"
@@ -67,6 +67,7 @@
                 android:id="@+id/filter_action_confirm"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
+                style="@style/FilledButtonSmallStyle"
                 android:layout_marginStart="@dimen/margin_8"
                 android:text="@string/button_ok"
                 app:layout_constraintBottom_toBottomOf="@+id/filter_action_cancel"

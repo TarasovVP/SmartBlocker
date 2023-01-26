@@ -146,7 +146,7 @@
                 android:id="@+id/login_continue_without_acc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/StrokeButton"
+                style="@style/StrokeButtonStyle"
                 android:layout_marginTop="@dimen/margin_24"
                 android:text="@string/authorization_continue_without_account"
                 app:layout_constraintTop_toBottomOf="@+id/login_continue" />

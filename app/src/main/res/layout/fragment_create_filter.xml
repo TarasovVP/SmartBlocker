@@ -100,7 +100,7 @@
             android:id="@+id/create_filter_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/StrokeButton"
+            style="@style/StrokeButtonStyle"
             android:alpha="@{filter.invalidFilterAction ? 0.5f : 1f}"
             android:enabled="@{!filter.invalidFilterAction}"
             android:text="@{filter.filterAction.title}"

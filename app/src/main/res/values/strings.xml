@@ -139,10 +139,10 @@
     </plurals>
     <string name="details_number_contact_without_filter">Без признаков фильтра</string>
     <string name="details_number_block_with_filter">Будет заблокирован фильтром:&#160;</string>
-    <string name="details_number_permit_with_filter">Будет допущен фильтром:&#160;</string>
+    <string name="details_number_permit_with_filter">Будет разрешен фильтром:&#160;</string>
     <string name="details_number_call_without_filter">Без совпадения с фильтром</string>
     <string name="details_number_blocked_by_filter">Заблокирован фильтром:&#160;</string>
-    <string name="details_number_permitted_by_filter">Допущен фильтром:&#160;</string>
+    <string name="details_number_permitted_by_filter">Разрешен фильтром:&#160;</string>
     <string name="number_details_close">Закрыть</string>
     <!--Settings screens-->
     <string name="settings">Settings</string>
