@@ -191,15 +191,16 @@ open class BaseListFilterFragment :
         (activity as MainActivity).toolbar?.apply {
             setOnMenuItemClickListener {
                 val deleteFilterCount = filterList?.filter { it.isCheckedForDelete }.orEmpty().size
+                val firstFilter = filterList?.firstOrNull { it.isCheckedForDelete } as Filter
+                val filter = firstFilter.apply {
+                    filterAction = if (firstFilter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                    filter = if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_delete_amount, deleteFilterCount.quantityString(), deleteFilterCount) else filterList?.firstOrNull { it.isCheckedForDelete }?.filter.orEmpty()
+                }
                 val direction =
                     if (this@BaseListFilterFragment is ListBlockerFragment) {
-                        ListBlockerFragmentDirections.startFilterActionDialog(
-                            filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE,
-                            filterNumber = resources.getQuantityString(R.plurals.list_delete_amount, deleteFilterCount.quantityString(), deleteFilterCount))
+                        ListBlockerFragmentDirections.startFilterActionDialog(filter)
                     } else {
-                        ListPermissionFragmentDirections.startFilterActionDialog(
-                            filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                            filterNumber = resources.getQuantityString(R.plurals.list_delete_amount, deleteFilterCount.quantityString(), deleteFilterCount))
+                        ListPermissionFragmentDirections.startFilterActionDialog(filter)
                     }
                 this@BaseListFilterFragment.findNavController().navigate(direction)
                 true

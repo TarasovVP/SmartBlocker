@@ -80,8 +80,10 @@ class DetailsFilterFragment :
 
     private fun startFilterActionDialog(filterAction: FilterAction) {
         findNavController().navigate(DetailsFilterFragmentDirections.startFilterActionDialog(
-            filterNumber = String.format(getString(R.string.filter_action_number_value), binding?.filter?.filter),
-            filterAction = filterAction))
+            filter = binding?.filter?.apply {
+                filter = String.format(getString(R.string.filter_action_number_value), binding?.filter?.filter)
+                this@apply.filterAction = filterAction
+            }))
     }
 
     override fun createAdapter() {

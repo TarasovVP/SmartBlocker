@@ -38,23 +38,6 @@
             app:layout_constraintTop_toBottomOf="@+id/list_filter_filter"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/list_filter_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list_filter_filter">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_filter_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/padding_8"
-                android:clipToPadding="false"
-                android:scrollbars="vertical" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_full"
             android:layout_width="wrap_content"
@@ -97,6 +80,23 @@
             android:src="@drawable/ic_create"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/list_filter_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_filter_filter">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_filter_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/padding_8"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

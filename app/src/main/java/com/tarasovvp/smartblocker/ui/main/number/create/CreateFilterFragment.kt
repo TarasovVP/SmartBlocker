@@ -102,12 +102,12 @@ open class CreateFilterFragment :
                     showMessage(getString(R.string.app_network_unavailable_repeat), true)
                 } else {
                     findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(
-                        filterNumber = filter?.createFilter(),
-                        filterAction = filter?.filterAction ?: if (filter?.isBlocker()
-                                .isTrue()
-                        ) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE))
+                        filter = filter?.apply {
+                            filter = createFilter()
+                            filterAction = filterAction ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                        }))
                 }
-            }
+                }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
                 if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {
                     findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
@@ -249,9 +249,8 @@ open class CreateFilterFragment :
 
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
-                .orEmpty(),
-                filter.filter), false)
+            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }.orEmpty(),
+                filter.filter, getString(filter.conditionTypeName())), false)
             showInterstitial()
             getAllData()
             findNavController().navigate(if (binding?.filter?.isBlocker().isTrue())

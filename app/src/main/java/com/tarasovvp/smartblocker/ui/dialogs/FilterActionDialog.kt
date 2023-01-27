@@ -23,7 +23,7 @@ class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
             }
             filterActionConfirm.setSafeOnClickListener {
                 dismiss()
-                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filter.filterAction))
+                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filter?.filterAction))
             }
         }
     }

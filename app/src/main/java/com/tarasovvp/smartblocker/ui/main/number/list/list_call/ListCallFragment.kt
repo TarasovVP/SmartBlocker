@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
@@ -139,8 +140,9 @@ class ListCallFragment :
 
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
-            this@ListCallFragment.findNavController()
-                .navigate(ListCallFragmentDirections.startFilterActionDialog(filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE))
+            this@ListCallFragment.findNavController().navigate(ListCallFragmentDirections.startFilterActionDialog(filter = Filter().apply {
+                    filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE
+                } ))
             true
         }
     }
