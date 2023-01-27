@@ -49,6 +49,7 @@
                 android:id="@+id/bottom_nav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:theme="@style/BottomNavViewStyle"
                 android:visibility="gone"
                 app:itemBackground="@color/selector_bottom_nav_bg"
                 app:itemIconTint="@color/selector_bottom_nav_color"

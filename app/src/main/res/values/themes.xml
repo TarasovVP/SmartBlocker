@@ -37,6 +37,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="BottomNavViewStyle" parent="">
+        <item name="motionDurationLong1">0</item>
+    </style>
+
     <style name="BaseButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
