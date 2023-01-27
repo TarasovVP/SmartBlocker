@@ -23,10 +23,10 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : BaseBindi
     }
 
     private fun setProgressVisibility() {
-        viewModel.isProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
+        viewModel.isProgressProcessLiveData.safeSingleObserve(viewLifecycleOwner) { isVisible ->
             (activity as MainActivity).setProgressVisibility(isVisible)
         }
-        viewModel.isMainProgressProcess.safeSingleObserve(viewLifecycleOwner) { isVisible ->
+        viewModel.isMainProgressProcessLiveData.safeSingleObserve(viewLifecycleOwner) { isVisible ->
             (activity as MainActivity).setMainProgressVisibility(isVisible)
         }
     }

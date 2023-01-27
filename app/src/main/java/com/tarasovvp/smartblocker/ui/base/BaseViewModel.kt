@@ -13,16 +13,16 @@ import kotlinx.coroutines.Job
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
     val exceptionLiveData = MutableLiveData<String>()
-    val isProgressProcess = MediatorLiveData<Boolean>()
-    val isMainProgressProcess = MediatorLiveData<Boolean>()
+    val isProgressProcessLiveData = MediatorLiveData<Boolean>()
+    val isMainProgressProcessLiveData = MediatorLiveData<Boolean>()
     val progressStatusLiveData = MutableLiveData<MainProgress>()
 
     fun showProgress() {
-        isProgressProcess.postValue(true)
+        isProgressProcessLiveData.postValue(true)
     }
 
     fun hideProgress() {
-        isProgressProcess.postValue(false)
+        isProgressProcessLiveData.postValue(false)
     }
 
     protected fun launch(

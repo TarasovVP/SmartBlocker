@@ -41,8 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:textSize="@dimen/text_size_10"
                     android:text="@string/settings_blocker_off"
+                    android:textSize="@dimen/text_size_10"
                     app:layout_constraintTop_toBottomOf="@+id/settings_blocker_divider" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -57,28 +57,37 @@
                 android:paddingBottom="@dimen/padding_16"
                 app:layout_constraintTop_toBottomOf="@+id/settings_blocker_container">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/settings_blocker_hidden_switch"
+                <FrameLayout
+                    android:id="@+id/settings_blocker_hidden_switch_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_block_hidden_title"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/settings_blocker_hidden_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:text="@string/settings_block_hidden_title" />
+                </FrameLayout>
 
                 <View
                     android:id="@+id/settings_blocker_hidden_divider"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/padding_1"
                     android:background="@color/light_steel_blue"
-                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_switch" />
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_switch_container" />
 
                 <TextView
                     android:id="@+id/settings_blocker_hidden_describe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:textSize="@dimen/text_size_10"
                     android:minLines="2"
                     android:text="@string/settings_block_hidden_off"
+                    android:textSize="@dimen/text_size_10"
                     app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_divider" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

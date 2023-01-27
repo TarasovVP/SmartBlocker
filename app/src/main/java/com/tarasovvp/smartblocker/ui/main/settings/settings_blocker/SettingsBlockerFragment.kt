@@ -11,6 +11,7 @@ import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
+import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class SettingsBlockerFragment :
     BaseFragment<FragmentSettingsBlockerBinding, SettingsBlockerViewModel>() {
@@ -49,18 +50,11 @@ class SettingsBlockerFragment :
             settingsBlockerHiddenSwitch.isChecked = SharedPreferencesUtil.blockHidden
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
-            settingsBlockerHiddenSwitch.setOnCheckedChangeListener { compoundButton, isChecked ->
-                settingsBlockerHiddenDescribe.text =
-                    getString(if (isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
-                if (compoundButton.isPressed) {
-                    if (SmartBlockerApp.instance?.isLoggedInUser()
-                            .isTrue() && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
-                    ) {
-                        showMessage(getString(R.string.app_network_unavailable_repeat), true)
-                    } else {
-                        viewModel.changeBlockHidden(isChecked)
-                        binding?.settingsBlockerHiddenSwitch?.isEnabled = false
-                    }
+            settingsBlockerHiddenSwitchContainer.setSafeOnClickListener {
+                if (SmartBlockerApp.instance?.isLoggedInUser().isTrue() && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
+                    showMessage(getString(R.string.app_network_unavailable_repeat), true)
+                } else {
+                    viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked.not())
                 }
             }
         }
@@ -69,6 +63,8 @@ class SettingsBlockerFragment :
     override fun observeLiveData() {
         with(viewModel) {
             successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
+                binding?.settingsBlockerHiddenDescribe?.text =
+                    getString(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
                 binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden
                 SharedPreferencesUtil.blockHidden = blockHidden
             }
