@@ -268,7 +268,7 @@ class MainActivity : AppCompatActivity() {
                 setMainProgressVisibility(false)
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
-                showMessage(errorMessage, true)
+                showInfoMessage(errorMessage, true)
                 setMainProgressVisibility(false)
             }
             progressStatusLiveData.safeSingleObserve(this@MainActivity) { mainProgress ->
@@ -277,8 +277,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showMessage(message: String, isError: Boolean) {
-        binding?.hostMainFragment?.showMessage(message, isError)
+    fun showInfoMessage(message: String, isError: Boolean) {
+        this.showMessage(message, isError)
     }
 
     fun setMainProgressVisibility(isVisible: Boolean) {

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/padding_8">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_main"
+            android:padding="@dimen/padding_16">
+
+            <TextView
+                android:id="@+id/dialog_confirm_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_14"
+                app:layout_constraintBottom_toTopOf="@+id/dialog_confirm_cancel"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/dialog_confirm_cancel"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                style="@style/StrokeButtonSmallStyle"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="@string/button_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_confirm_submit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_confirm_title" />
+
+            <Button
+                android:id="@+id/dialog_confirm_submit"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                style="@style/FilledButtonSmallStyle"
+                android:layout_marginStart="@dimen/margin_10"
+                android:text="@string/button_ok"
+                app:layout_constraintBottom_toBottomOf="@+id/dialog_confirm_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/dialog_confirm_cancel"
+                app:layout_constraintTop_toTopOf="@+id/dialog_confirm_cancel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
+
+
+

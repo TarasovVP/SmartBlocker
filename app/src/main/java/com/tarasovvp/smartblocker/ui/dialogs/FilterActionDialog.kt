@@ -17,14 +17,13 @@ class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
 
     override fun initUI() {
         binding?.apply {
-            filterAction = args.filterAction
-            filterNumber = args.filterNumber
+            filter = args.filter
             filterActionCancel.setSafeOnClickListener {
                 dismiss()
             }
             filterActionConfirm.setSafeOnClickListener {
                 dismiss()
-                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterAction))
+                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filter.filterAction))
             }
         }
     }

@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.ui.main.settings.settings_blocker
 
 import android.os.Bundle
 import android.view.View
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.extensions.isNotTrue
 import com.tarasovvp.smartblocker.extensions.isTrue
@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
+
 
 class SettingsBlockerFragment :
     BaseFragment<FragmentSettingsBlockerBinding, SettingsBlockerViewModel>() {

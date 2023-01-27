@@ -42,7 +42,7 @@ abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
     }
 
     fun showMessage(message: String, isError: Boolean) {
-        (activity as MainActivity).showMessage(message, isError)
+        (activity as MainActivity).showInfoMessage(message, isError)
     }
 
     private fun getCurrentBackStackEntry() {

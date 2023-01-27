@@ -140,7 +140,7 @@ class DetailsFilterFragment :
 
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
+            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(), binding?.filter?.filter.orEmpty()), false)
             showInterstitial()
             getAllData()

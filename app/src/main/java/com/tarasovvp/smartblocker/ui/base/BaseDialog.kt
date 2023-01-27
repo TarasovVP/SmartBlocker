@@ -49,7 +49,7 @@ abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
             desiredHeight?.let { binding?.root?.measure(it, View.MeasureSpec.UNSPECIFIED) }
             val width = Resources.getSystem().displayMetrics.widthPixels
             val height = Resources.getSystem().displayMetrics.heightPixels
-            dialog?.window?.setLayout((width * 0.85).toInt(),
+            dialog?.window?.setLayout((width * 0.9).toInt(),
                 if (this is CountryCodeSearchDialog) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
             dialog?.window?.setGravity(Gravity.CENTER)
             dialog?.window?.setBackgroundDrawable(context?.let {

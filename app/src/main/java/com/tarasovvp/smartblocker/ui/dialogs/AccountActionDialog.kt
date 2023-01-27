@@ -6,23 +6,23 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.DELETE_USER
 import com.tarasovvp.smartblocker.constants.Constants.LOG_OUT
-import com.tarasovvp.smartblocker.databinding.DialogInfoBinding
+import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
-class AccountActionDialog : BaseDialog<DialogInfoBinding>() {
+class AccountActionDialog : BaseDialog<DialogConfirmBinding>() {
 
     private val args: AccountActionDialogArgs by navArgs()
 
-    override var layoutId = R.layout.dialog_info
+    override var layoutId = R.layout.dialog_confirm
 
     override fun initUI() {
-        binding?.dialogInfoTitle?.text =
+        binding?.dialogConfirmTitle?.text =
             if (args.isLogOut) getString(R.string.settings_account_log_out) else getString(R.string.settings_account_delete)
-        binding?.dialogInfoCancel?.setSafeOnClickListener {
+        binding?.dialogConfirmCancel?.setSafeOnClickListener {
             dismiss()
         }
-        binding?.dialogInfoConfirm?.setSafeOnClickListener {
+        binding?.dialogConfirmSubmit?.setSafeOnClickListener {
             dismiss()
             setFragmentResult(if (args.isLogOut) LOG_OUT else DELETE_USER, bundleOf())
         }

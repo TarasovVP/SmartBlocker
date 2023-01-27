@@ -1,54 +1,54 @@
 package com.tarasovvp.smartblocker.extensions
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.TextAppearanceSpan
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.snackbar.Snackbar
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.databinding.SnackBarInfoBinding
+import com.tarasovvp.smartblocker.constants.Constants.SECOND
+import com.tarasovvp.smartblocker.databinding.DialogInfoBinding
 
 
-fun View.showMessage(message: String, isError: Boolean) {
-    Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
-        .apply {
-            view.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
-            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).isInvisible =
-                true
-            val snackView = SnackBarInfoBinding.inflate(LayoutInflater.from(context))
-            snackView.snackBarInfoIcon.setImageResource(if (isError) R.drawable.ic_result_error else R.drawable.ic_result_success)
-            snackView.snackBarInfoDescription.text = message
-            (view as Snackbar.SnackbarLayout).addView(snackView.root)
-            (snackView.root.layoutParams as FrameLayout.LayoutParams).apply {
-                gravity = Gravity.CENTER
-                width = FrameLayout.LayoutParams.MATCH_PARENT
-                height = FrameLayout.LayoutParams.WRAP_CONTENT
-                setMargins(context.dpToPx(16f).toInt(),
-                    context.dpToPx(4f).toInt(),
-                    context.dpToPx(16f).toInt(),
-                    context.dpToPx(4f).toInt())
-                view.layoutParams = this
-            }
-        }.show()
+fun Activity.showMessage(message: String, isError: Boolean) {
+    val dialogView = DialogInfoBinding.inflate(LayoutInflater.from(this))
+    dialogView.dialogInfoIcon.setImageResource(if (isError) R.drawable.ic_result_error else R.drawable.ic_result_success)
+    dialogView.dialogInfoDescription.text = message
+    val dialog = AlertDialog.Builder(this).setView(dialogView.root).create()
+    dialog.show()
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.window?.attributes?.apply {
+        this.width = (Resources.getSystem().displayMetrics.widthPixels * 0.9).toInt()
+        dialog.window?.attributes = this
+    }
+    Handler(Looper.getMainLooper()).postDelayed({
+        dialog.dismiss()
+    }, SECOND * 2)
 }
 
 fun <T> ViewGroup.getViewsFromLayout(

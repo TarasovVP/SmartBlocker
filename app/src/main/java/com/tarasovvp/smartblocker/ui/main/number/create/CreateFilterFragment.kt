@@ -249,7 +249,7 @@ open class CreateFilterFragment :
 
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
+            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(),
                 filter.filter), false)
             showInterstitial()
