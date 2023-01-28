@@ -6,8 +6,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
@@ -32,7 +32,6 @@ import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 open class CreateFilterFragment :
     BaseDetailsFragment<FragmentCreateFilterBinding, CreateFilterViewModel>() {
@@ -81,7 +80,9 @@ open class CreateFilterFragment :
     }
 
     override fun initViews() {
-        (activity as MainActivity).toolbar?.title = getString( if (binding?.filter?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
+        (activity as MainActivity).toolbar?.title = getString(if (binding?.filter?.isBlocker()
+                .isTrue()
+        ) R.string.creating_blocker else R.string.creating_permission)
         if (binding?.filter?.isTypeContain().isNotTrue()) {
             viewModel.getCountryCodeList()
         }
@@ -104,10 +105,11 @@ open class CreateFilterFragment :
                     findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(
                         filter = filter?.apply {
                             filter = createFilter()
-                            filterAction = filterAction ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                            filterAction = filterAction
+                                ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         }))
                 }
-                }
+            }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
                 if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {
                     findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
@@ -176,8 +178,9 @@ open class CreateFilterFragment :
                 ) return@doAfterTextChanged
                 filterToInput = false
                 filter = filter?.apply {
-                    filter = createFilterInput.inputText().replace(MASK_CHAR.toString(), String.EMPTY)
-                        .replace(SPACE, String.EMPTY)
+                    filter =
+                        createFilterInput.inputText().replace(MASK_CHAR.toString(), String.EMPTY)
+                            .replace(SPACE, String.EMPTY)
                     viewModel.checkFilterExist(this)
                 }
                 viewModel.filterNumberDataList(filter, numberDataList)
@@ -249,7 +252,8 @@ open class CreateFilterFragment :
 
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }.orEmpty(),
+            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
+                .orEmpty(),
                 filter.filter, getString(filter.conditionTypeName())), false)
             showInterstitial()
             getAllData()

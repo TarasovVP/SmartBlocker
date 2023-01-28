@@ -39,8 +39,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             findNavController().navigateUp()
         }
         binding?.signUpContinue?.setSafeOnClickListener {
-                viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),
-                    binding?.signUpPassword.inputText())
+            viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),
+                binding?.signUpPassword.inputText())
         }
     }
 

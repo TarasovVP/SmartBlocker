@@ -193,8 +193,12 @@ open class BaseListFilterFragment :
                 val deleteFilterCount = filterList?.filter { it.isCheckedForDelete }.orEmpty().size
                 val firstFilter = filterList?.firstOrNull { it.isCheckedForDelete } as Filter
                 val filter = firstFilter.apply {
-                    filterAction = if (firstFilter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                    filter = if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_delete_amount, deleteFilterCount.quantityString(), deleteFilterCount) else filterList?.firstOrNull { it.isCheckedForDelete }?.filter.orEmpty()
+                    filterAction =
+                        if (firstFilter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                    filter =
+                        if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_delete_amount,
+                            deleteFilterCount.quantityString(),
+                            deleteFilterCount) else filterList?.firstOrNull { it.isCheckedForDelete }?.filter.orEmpty()
                 }
                 val direction =
                     if (this@BaseListFilterFragment is ListBlockerFragment) {
@@ -268,7 +272,8 @@ open class BaseListFilterFragment :
     }
 
     override fun showInfoScreen() {
-        InfoData(title = getString(Info.INFO_BLOCKER_LIST.title), description = getString(Info.INFO_BLOCKER_LIST.description)).apply {
+        InfoData(title = getString(Info.INFO_BLOCKER_LIST.title),
+            description = getString(Info.INFO_BLOCKER_LIST.description)).apply {
             findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
                 ListBlockerFragmentDirections.startInfoFragment(this)
             } else {

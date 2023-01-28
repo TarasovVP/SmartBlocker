@@ -50,7 +50,8 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
                             || it.country.lowercase().contains(searchText.toString().lowercase())
                 }
             countryCodeSearchAdapter?.notifyDataSetChanged()
-            binding?.countryCodeEmpty?.root?.isVisible = countryCodeSearchAdapter?.countryCodeList.orEmpty().isEmpty()
+            binding?.countryCodeEmpty?.root?.isVisible =
+                countryCodeSearchAdapter?.countryCodeList.orEmpty().isEmpty()
         }
     }
 }

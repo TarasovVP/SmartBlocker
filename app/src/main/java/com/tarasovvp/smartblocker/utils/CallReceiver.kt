@@ -41,7 +41,9 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
             } else {
                 filterRepository.queryFilter(number)
             }
-            if ((filter?.isBlocker().isTrue()) && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+            if ((filter?.isBlocker()
+                    .isTrue()) && telephony.callState == TelephonyManager.CALL_STATE_RINGING
+            ) {
                 breakCall(context)
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                 delay(SECOND)

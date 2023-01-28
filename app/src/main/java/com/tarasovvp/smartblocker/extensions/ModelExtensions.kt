@@ -246,15 +246,19 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
         numberData.highlightedSpanned = numberData.numberData.highlightedSpanned(String.EMPTY, null)
-        if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()) {
+        if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed()
+                .contains(filter?.filter.orEmpty()).isTrue()
+        ) {
             filteredList.add(numberData.apply {
                 highlightedSpanned =
                     numberData.numberData.highlightedSpanned(filter?.createFilter(), null)
             })
         } else {
-            val phoneNumber = numberData.numberData.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
+            val phoneNumber = numberData.numberData.digitsTrimmed()
+                .getPhoneNumber(filter?.countryCode?.country.orEmpty())
             if (phoneNumber.isValidPhoneNumber()) {
-                if (numberData.numberData.digitsTrimmed().startsWith(filter?.createFilter().orEmpty()).isTrue()
+                if (numberData.numberData.digitsTrimmed()
+                        .startsWith(filter?.createFilter().orEmpty()).isTrue()
                 )
                     filteredList.add(numberData.apply {
                         highlightedSpanned =
@@ -281,7 +285,8 @@ fun List<Filter>.filteredFilterList(number: String): List<Filter> {
     forEach { filter ->
         val phoneNumber = number.getPhoneNumber(filter.countryCode.country)
         when {
-            filter.isTypeContain() && number.contains(filter.filter) -> filteredFilterList.add(filter)
+            filter.isTypeContain() && number.contains(filter.filter) -> filteredFilterList.add(
+                filter)
             filter.isTypeStart() && (number.startsWith(filter.filter) || (phoneNumber.isValidPhoneNumber() && phoneNumber?.nationalNumber.toString()
                 .startsWith(filter.filterWithoutCountryCode))) -> filteredFilterList.add(filter)
             filter.isTypeFull() && (number == filter.filter || (phoneNumber.isValidPhoneNumber()
@@ -289,5 +294,6 @@ fun List<Filter>.filteredFilterList(number: String): List<Filter> {
                     )) -> filteredFilterList.add(filter)
         }
     }
-    return filteredFilterList.sortedWith(compareBy({ it.filter.length }, { -number.indexOf(it.filter) })).reversed()
+    return filteredFilterList.sortedWith(compareBy({ it.filter.length },
+        { -number.indexOf(it.filter) })).reversed()
 }

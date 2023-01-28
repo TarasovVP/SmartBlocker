@@ -6,8 +6,8 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.CHANGE_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.CURRENT_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.DELETE_USER
@@ -90,7 +90,8 @@ class SettingsAccountFragment :
                 }
             }
             successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) {
-                showMessage(String.format(getString(R.string.settings_account_change_password_succeed)), false)
+                showMessage(String.format(getString(R.string.settings_account_change_password_succeed)),
+                    false)
             }
         }
     }

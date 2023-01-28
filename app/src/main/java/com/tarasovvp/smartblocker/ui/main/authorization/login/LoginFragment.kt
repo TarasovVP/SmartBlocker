@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding

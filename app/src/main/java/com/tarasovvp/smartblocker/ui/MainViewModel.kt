@@ -26,7 +26,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         launch {
             showProgress()
             progressStatusLiveData.postValue(mainProgress.apply {
-                progressDescription = getApplication<Application>().getString(R.string.progress_data_collect)
+                progressDescription =
+                    getApplication<Application>().getString(R.string.progress_data_collect)
             })
             realDataBaseRepository.getCurrentUser { currentUser ->
                 insertCurrentUserData(currentUser)
@@ -38,7 +39,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         launch {
             currentUser?.let {
                 progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription = getApplication<Application>().getString(R.string.progress_external_data_collect)
+                    progressDescription =
+                        getApplication<Application>().getString(R.string.progress_external_data_collect)
                 })
                 val filters = async { filterRepository.insertAllFilters(it.filterList) }
                 val filteredCalls =
@@ -97,7 +99,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             filterList?.let { filterRepository.insertAllFilters(it) }
             successAllDataLiveData.postValue(true)
             progressStatusLiveData.postValue(mainProgress.apply {
-                progressDescription = getApplication<Application>().getString(R.string.progress_update_data)
+                progressDescription =
+                    getApplication<Application>().getString(R.string.progress_update_data)
                 progressMax = 0
                 progressPosition = 0
             })

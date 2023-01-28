@@ -2,13 +2,11 @@ package com.tarasovvp.smartblocker.ui.base
 
 import android.os.Parcelable
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.constants.Constants.NUMBER_DATA_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
-import com.tarasovvp.smartblocker.extensions.isNotNull
 import com.tarasovvp.smartblocker.models.HeaderDataItem
 import com.tarasovvp.smartblocker.models.NumberData
 import kotlinx.android.parcel.Parcelize

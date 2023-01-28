@@ -81,17 +81,20 @@ class DetailsFilterFragment :
     private fun startFilterActionDialog(filterAction: FilterAction) {
         findNavController().navigate(DetailsFilterFragmentDirections.startFilterActionDialog(
             filter = binding?.filter?.apply {
-                filter = String.format(getString(R.string.filter_action_number_value), binding?.filter?.filter)
+                filter = String.format(getString(R.string.filter_action_number_value),
+                    binding?.filter?.filter)
                 this@apply.filterAction = filterAction
             }))
     }
 
     override fun createAdapter() {
         numberDataScreen = SingleDetailsFragment(Filter::class.simpleName.orEmpty()) {
-            findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(numberData = it))
+            findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
+                numberData = it))
         }
         filteredCallsScreen = SingleDetailsFragment(FilteredCall::class.simpleName.orEmpty()) {
-            findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(numberData = it))
+            findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
+                numberData = it))
         }
         val fragmentList = arrayListOf(
             numberDataScreen,

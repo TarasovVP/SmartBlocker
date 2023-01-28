@@ -28,7 +28,7 @@ class SingleDetailsFragment(
                 }.apply {
                     this.isFilteredCallDetails = dataType == FilteredCall::class.simpleName
                 }
-            filterDetailsNumberListEmpty.emptyState = when(dataType) {
+            filterDetailsNumberListEmpty.emptyState = when (dataType) {
                 Filter::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS
                 NumberData::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS
                 else -> EmptyState.EMPTY_STATE_FILTERED_CALLS

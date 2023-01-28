@@ -71,8 +71,8 @@ fun Boolean?.isNotTrue() = this != true
 
 fun Int?.orZero() = this ?: 0
 
-fun Int.quantityString() : Int {
-    return when(if (this > 20) this % 10 else this) {
+fun Int.quantityString(): Int {
+    return when (if (this > 20) this % 10 else this) {
         1 -> 1
         2, 3, 4 -> 2
         else -> 5
@@ -95,7 +95,7 @@ fun String.flagEmoji(): String {
 }
 
 fun String.flagDrawable(): Int {
-    return when(this) {
+    return when (this) {
         APP_LANG_UK -> R.drawable.ic_flag_ua
         APP_LANG_RU -> R.drawable.ic_flag_ru
         else -> R.drawable.ic_flag_us

@@ -140,9 +140,10 @@ class ListCallFragment :
 
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
-            this@ListCallFragment.findNavController().navigate(ListCallFragmentDirections.startFilterActionDialog(filter = Filter().apply {
+            this@ListCallFragment.findNavController()
+                .navigate(ListCallFragmentDirections.startFilterActionDialog(filter = Filter().apply {
                     filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE
-                } ))
+                }))
             true
         }
     }

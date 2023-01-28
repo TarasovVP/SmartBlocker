@@ -15,7 +15,7 @@ class SettingsBlockerViewModel(application: Application) : BaseViewModel(applica
 
     fun changeBlockHidden(blockHidden: Boolean) {
         showProgress()
-        launch ({ throwable, _ ->
+        launch({ throwable, _ ->
             exceptionLiveData.postValue(throwable.localizedMessage)
             successBlockHiddenLiveData.postValue(blockHidden.not())
             hideProgress()

@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.ui.main.number.details.details_number_data
 
 import android.annotation.SuppressLint
-import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -165,9 +164,11 @@ class DetailsNumberDataFragment :
 
     private fun setAddFilterConditions(isBlocker: Boolean, isShown: Boolean) {
         binding?.apply {
-            detailsNumberDataCreateBlocker.changeFilterTypeButtonState((isBlocker.not() && isShown.not()).not(), isShown.not() && isBlocker,
+            detailsNumberDataCreateBlocker.changeFilterTypeButtonState((isBlocker.not() && isShown.not()).not(),
+                isShown.not() && isBlocker,
                 if ((isBlocker.not() && isShown.not()).not()) R.drawable.ic_blocker else R.drawable.ic_blocker_inactive)
-            detailsNumberDataCreatePermission.changeFilterTypeButtonState((isBlocker && isShown.not()).not(), isShown.not() && isBlocker.not(),
+            detailsNumberDataCreatePermission.changeFilterTypeButtonState((isBlocker && isShown.not()).not(),
+                isShown.not() && isBlocker.not(),
                 if ((isBlocker && isShown.not()).not()) R.drawable.ic_permission else R.drawable.ic_permission_inactive)
             numberDataDetailAddFilterFull.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_FULL.smallBlockerIcon
             else FilterCondition.FILTER_CONDITION_FULL.smallPermissionIcon, isShown)
@@ -183,9 +184,12 @@ class DetailsNumberDataFragment :
         isClose: Boolean,
         intRes: Int,
     ) {
-        backgroundTintList = ContextCompat.getColorStateList(context, if (isButtonEnabled) R.color.button_bg else R.color.transparent)
-        strokeColor = ContextCompat.getColorStateList(context, if (isButtonEnabled) R.color.button_bg else R.color.comet)
-        setTextColor(ContextCompat.getColorStateList(context, if (isButtonEnabled) R.color.white else R.color.comet))
+        backgroundTintList = ContextCompat.getColorStateList(context,
+            if (isButtonEnabled) R.color.button_bg else R.color.transparent)
+        strokeColor = ContextCompat.getColorStateList(context,
+            if (isButtonEnabled) R.color.button_bg else R.color.comet)
+        setTextColor(ContextCompat.getColorStateList(context,
+            if (isButtonEnabled) R.color.white else R.color.comet))
         isEnabled = isButtonEnabled
         alpha = if (isButtonEnabled) 1f else 0.5f
         setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)

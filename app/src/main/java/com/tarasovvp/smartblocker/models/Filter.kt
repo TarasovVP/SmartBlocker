@@ -29,7 +29,7 @@ data class Filter(
     var name: String? = String.EMPTY,
     var countryCode: CountryCode = CountryCode(),
     var filterWithoutCountryCode: String = String.EMPTY,
-    var created: Long? = null
+    var created: Long? = null,
 ) : Parcelable, NumberData() {
 
     @get:Exclude
@@ -154,7 +154,8 @@ data class Filter(
 
     @Exclude
     fun filterCreatedDate(): String {
-        return created?.let { SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(it) }.orEmpty()
+        return created?.let { SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(it) }
+            .orEmpty()
     }
 
     @Exclude
@@ -233,7 +234,7 @@ data class Filter(
 
     override fun equals(other: Any?): Boolean {
         return if (other is Filter) {
-            this.filter == other.filter && this.conditionType == other.conditionType && this.filterType == other.filterType
+            this.filter == other.filter && this.conditionType == other.conditionType && this.filterType == other.filterType && this.filteredContacts == other.filteredContacts
         } else {
             false
         }
@@ -243,6 +244,7 @@ data class Filter(
         var result = filter.hashCode()
         result = 31 * result + conditionType
         result = 31 * result + filterType
+        result = 31 * result + filteredContacts
         return result
     }
 }
