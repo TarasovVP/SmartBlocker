@@ -84,7 +84,6 @@ class SettingsAccountFragment :
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
                 SharedPreferencesUtil.clearAll()
                 SmartBlockerApp.instance?.database?.clearAllTables()
-                showMessage(getString(R.string.settings_account_success), false)
                 (activity as MainActivity).apply {
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))

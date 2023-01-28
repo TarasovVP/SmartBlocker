@@ -38,7 +38,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/margin_16"
                 app:counterEnabled="true"
                 app:counterMaxLength="300"
                 app:counterTextColor="@color/text_color_grey"

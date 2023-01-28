@@ -55,8 +55,6 @@
                     app:layout_constraintBottom_toBottomOf="@+id/settings_account_avatar"
                     app:layout_constraintStart_toStartOf="@+id/settings_account_name"
                     app:layout_constraintTop_toBottomOf="@+id/settings_account_name" />
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -91,7 +89,7 @@
 
             <Button
                 android:id="@+id/settings_account_login"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_24"
                 android:text="@string/authorization_enter"

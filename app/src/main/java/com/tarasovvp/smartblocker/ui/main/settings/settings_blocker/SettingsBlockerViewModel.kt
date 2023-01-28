@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 
@@ -26,7 +25,7 @@ class SettingsBlockerViewModel(application: Application) : BaseViewModel(applica
                     successBlockHiddenLiveData.postValue(blockHidden)
                 }
             } else {
-                SharedPreferencesUtil.blockHidden = blockHidden
+                successBlockHiddenLiveData.postValue(blockHidden)
             }
             hideProgress()
         })

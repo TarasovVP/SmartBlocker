@@ -52,7 +52,7 @@ class SettingsBlockerFragment :
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
             settingsBlockerHiddenSwitchContainer.setSafeOnClickListener {
-                if (SmartBlockerApp.instance?.isLoggedInUser().isTrue() && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
+                if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
                     showMessage(getString(R.string.app_network_unavailable_repeat), true)
                 } else {
                     viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked.not())
