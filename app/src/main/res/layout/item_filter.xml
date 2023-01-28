@@ -18,8 +18,10 @@
         android:layout_marginHorizontal="@dimen/margin_2"
         android:layout_marginTop="@dimen/margin_8"
         android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         app:strokeWidth="@dimen/padding_1"
-        app:cardCornerRadius="@dimen/padding_12"
+        app:cardCornerRadius="@dimen/padding_8"
         app:cardElevation="@dimen/padding_1">
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -16,7 +16,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/list_filter_info"/>
 
-
         <ImageButton
             android:id="@+id/list_filter_info"
             android:layout_width="wrap_content"

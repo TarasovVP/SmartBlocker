@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.constants.Constants.NUMBER_DATA_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
+import com.tarasovvp.smartblocker.extensions.isNotNull
 import com.tarasovvp.smartblocker.models.HeaderDataItem
 import com.tarasovvp.smartblocker.models.NumberData
 import kotlinx.android.parcel.Parcelize
@@ -36,14 +37,8 @@ abstract class BaseAdapter<D : NumberData> :
         RecyclerView.ViewHolder(itemView) {
 
         fun bindData(position: Int) {
-            val header = getHeaderDataInPosition(position).header
-            DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.apply {
-                if (header.isEmpty()) {
-                    itemView.layoutParams.height = 0
-                } else {
-                    headerDataItem = getHeaderDataInPosition(position)
-                }
-            }
+            DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.headerDataItem =
+                getHeaderDataInPosition(position)
         }
 
     }
@@ -52,9 +47,9 @@ abstract class BaseAdapter<D : NumberData> :
         return mData?.size ?: 0
     }
 
-    fun setHeaderAndData(dataList: List<D>, header: HeaderData) {
+    fun setHeaderAndData(dataList: List<D>, header: HeaderDataItem) {
         mData = mData ?: ArrayList()
-        mData?.add(header)
+        if (header.header.isNotEmpty()) mData?.add(header)
         mData?.addAll(dataList as Collection<NumberData>)
     }
 
