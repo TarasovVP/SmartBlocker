@@ -43,7 +43,7 @@ class DetailsNumberDataFragment :
                 is FilteredCall,
                 -> call = (args.numberData as Call).apply { isExtract = true }
             }
-            if (call?.number?.isEmpty().isTrue()) setHiddenCallScreen()
+            if (call?.callId.orZero() > 0 && call?.number?.isEmpty().isTrue()) setHiddenCallScreen()
             executePendingBindings()
         }
     }
@@ -104,7 +104,7 @@ class DetailsNumberDataFragment :
     override fun setClickListeners() {
         binding?.apply {
             detailsNumberDataCreateBlocker.setSafeOnClickListener {
-                if (call?.number?.isEmpty().isTrue()) {
+                if (call?.callId.orZero() > 0 && call?.number?.isEmpty().isTrue()) {
                     findNavController().navigate(DetailsNumberDataFragmentDirections.startSettingsBlockerFragment())
                 } else {
                     setAddFilterConditions(true, numberDataDetailAddFilterFull.isShown.isTrue())
