@@ -155,7 +155,6 @@
                 android:text="@{call.callFilterValue}"
                 android:textColor="@{ContextCompat.getColor(context, call.callFilterTint)}"
                 android:textSize="@dimen/text_size_10"
-                android:visibility="@{call.filteredNullOrEmpty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_call_filter_title"

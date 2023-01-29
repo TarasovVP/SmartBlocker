@@ -45,7 +45,7 @@
             android:id="@+id/details_filter_change_filter"
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
-            style="@style/StrokeButtonStyle"
+            style="@style/FilledButtonStyle"
             android:layout_marginStart="@dimen/margin_8"
             android:text="@string/filter_action_transfer"
             app:layout_constraintStart_toEndOf="@+id/details_filter_delete_filter"

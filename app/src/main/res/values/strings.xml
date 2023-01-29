@@ -85,7 +85,7 @@
     <string name="empty_state_filters">По этому номеру совпадений с фильтрами не найдено</string>
     <string name="empty_state_numbers">По этому фильтру совпадений с номерами не найдено</string>
     <string name="empty_state_filtered_calls">С такими параметрами отфильтрованных вызовов не найдено</string>
-    <string name="empty_state_hidden">Управление скрытыми номерами осуществляется системными настойками. Для изменения перейдите в "Настройки"</string>
+    <string name="empty_state_hidden">Управление скрытыми номерами осуществляется системными настройками. Для изменения перейдите в "Настройки"</string>
     <string name="empty_state_account">Вы вошли незарегистрированным пользователем</string>
     <!--Progress-->
     <string name="progress_data_collect">Сбор информации</string>
