@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.extensions
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build.VERSION.SDK_INT
@@ -15,8 +16,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_UK
+import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import kotlinx.coroutines.*
 import java.io.Serializable
@@ -103,6 +106,11 @@ fun String.flagDrawable(): Int {
 }
 
 fun String?.digitsTrimmed() = this?.filter { it.isDigit() || it == PLUS_CHAR }.orEmpty()
+
+fun String.sendExceptionBroadCast() {
+    val intent = Intent(EXCEPTION).putExtra(EXCEPTION, this)
+    SmartBlockerApp.instance?.sendBroadcast(intent)
+}
 
 fun Context.dpToPx(dp: Float): Float {
     return dp * (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)

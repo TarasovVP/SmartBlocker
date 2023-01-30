@@ -13,10 +13,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.database.AppDatabase
-import com.tarasovvp.smartblocker.extensions.createNotificationChannel
-import com.tarasovvp.smartblocker.extensions.isNotNull
-import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.extensions.registerForNetworkUpdates
+import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.Settings
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import java.util.*
@@ -57,6 +54,13 @@ class SmartBlockerApp : Application() {
     }
 
     fun isLoggedInUser() = auth?.currentUser.isNotNull().isTrue()
+
+    fun checkNetworkAvailable() {
+        if (isNetworkAvailable.isNotTrue()) {
+            baseContext?.getString(R.string.app_network_unavailable_repeat).orEmpty().sendExceptionBroadCast()
+            return
+        }
+    }
 
     companion object {
         var instance: SmartBlockerApp? = null

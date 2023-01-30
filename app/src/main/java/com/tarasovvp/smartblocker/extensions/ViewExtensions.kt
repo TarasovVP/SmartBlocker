@@ -36,6 +36,7 @@ import com.tarasovvp.smartblocker.databinding.DialogInfoBinding
 
 
 fun Activity.showMessage(message: String, isError: Boolean) {
+    if (isFinishing) return
     val dialogView = DialogInfoBinding.inflate(LayoutInflater.from(this))
     dialogView.dialogInfoIcon.setImageResource(if (isError) R.drawable.ic_result_error else R.drawable.ic_result_success)
     dialogView.dialogInfoDescription.text = message

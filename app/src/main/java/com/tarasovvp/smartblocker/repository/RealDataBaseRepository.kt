@@ -1,18 +1,14 @@
 package com.tarasovvp.smartblocker.repository
 
-import android.app.Application
-import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
-import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
-import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.constants.Constants.USERS
-import com.tarasovvp.smartblocker.extensions.isNotTrue
+import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.models.*
 
 object RealDataBaseRepository {
@@ -47,23 +43,23 @@ object RealDataBaseRepository {
                 }
                 result.invoke(currentUser)
             }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+                it.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     fun insertFilter(filter: Filter, result: () -> Unit) {
-        checkNetworkAvailable()
+        SmartBlockerApp.instance?.checkNetworkAvailable()
         currentUserDatabase.child(FILTER_LIST).child(filter.filter).setValue(filter)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+                it.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     fun deleteFilterList(filterList: List<Filter>, result: () -> Unit) {
-        checkNetworkAvailable()
+        SmartBlockerApp.instance?.checkNetworkAvailable()
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -73,24 +69,24 @@ object RealDataBaseRepository {
                 }
                 result.invoke()
             }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+                it.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
-        checkNetworkAvailable()
+        SmartBlockerApp.instance?.checkNetworkAvailable()
         currentUserDatabase.child(FILTERED_CALL_LIST).child(filteredCall.callId.toString())
             .setValue(filteredCall)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+                it.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     fun deleteFilteredCallList(filteredCallList: List<Call>, result: () -> Unit) {
-        checkNetworkAvailable()
+        SmartBlockerApp.instance?.checkNetworkAvailable()
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -100,42 +96,29 @@ object RealDataBaseRepository {
                 }
                 result.invoke()
             }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+               it.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
-        checkNetworkAvailable()
+        SmartBlockerApp.instance?.checkNetworkAvailable()
         currentUserDatabase.child(BLOCK_HIDDEN).setValue(blockUnanimous)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+                it.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     fun insertReview(review: Review, result: () -> Unit) {
-        checkNetworkAvailable()
+        SmartBlockerApp.instance?.checkNetworkAvailable()
         reviewsDatabase.child(review.time.toString()).setValue(review)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
             }.addOnFailureListener {
-                sendExceptionBroadCast(it.localizedMessage.orEmpty())
+                it.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
-    }
-
-    private fun checkNetworkAvailable() {
-        if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
-            sendExceptionBroadCast(SmartBlockerApp.instance?.baseContext?.getString(R.string.app_network_unavailable_repeat).orEmpty())
-            return
-        }
-    }
-
-    private fun sendExceptionBroadCast(exception: String) {
-        val intent = Intent(EXCEPTION)
-        intent.putExtra(EXCEPTION, exception)
-        SmartBlockerApp.instance?.sendBroadcast(intent)
     }
 }

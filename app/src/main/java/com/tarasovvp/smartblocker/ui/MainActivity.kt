@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -65,8 +64,7 @@ class MainActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false).isTrue()) {
-                Toast.makeText(this, getString(R.string.app_need_permissions), Toast.LENGTH_SHORT)
-                    .show()
+                showInfoMessage(getString(R.string.app_need_permissions), true)
             } else {
                 getAllData()
             }
@@ -335,12 +333,7 @@ class MainActivity : AppCompatActivity() {
                         adIsLoading = false
                         val error =
                             "domain: ${adError.domain}, code: ${adError.code}, " + "message: ${adError.message}"
-                        Toast.makeText(
-                            this@MainActivity,
-                            "onAdFailedToLoad() with error $error",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        showInfoMessage("onAdFailedToLoad() with error $error", true)
                     }
 
                     override fun onAdLoaded(ad: InterstitialAd) {
