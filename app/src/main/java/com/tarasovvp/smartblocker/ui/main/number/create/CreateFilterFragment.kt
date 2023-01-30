@@ -73,6 +73,7 @@ open class CreateFilterFragment :
                             viewModel.getCountryCodeWithCode(phoneNumber?.countryCode)
                         }
                     }
+                    binding?.executePendingBindings()
                 }
             }
         }
