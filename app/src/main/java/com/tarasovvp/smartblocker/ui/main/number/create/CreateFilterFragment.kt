@@ -98,18 +98,12 @@ open class CreateFilterFragment :
     override fun setClickListeners() {
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
-                if (SmartBlockerApp.instance?.isLoggedInUser()
-                        .isTrue() && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
-                ) {
-                    showMessage(getString(R.string.app_network_unavailable_repeat), true)
-                } else {
                     findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(
                         filter = filter?.apply {
                             filter = createFilter()
                             filterAction = filterAction
                                 ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         }))
-                }
             }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
                 if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {

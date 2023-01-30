@@ -172,13 +172,7 @@ open class BaseListFilterFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(FILTER_ACTION) { _, _ ->
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()
-                && SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()
-            ) {
-                showMessage(getString(R.string.app_network_unavailable_repeat), true)
-            } else {
                 viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
-            }
         }
         setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
             conditionFilterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)
