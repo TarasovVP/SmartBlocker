@@ -8,6 +8,7 @@ import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.constants.Constants.USERS
+import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.models.*
 
@@ -48,7 +49,7 @@ object RealDataBaseRepository {
     }
 
     fun insertFilter(filter: Filter, result: () -> Unit) {
-        SmartBlockerApp.instance?.checkNetworkAvailable()
+        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTER_LIST).child(filter.filter).setValue(filter)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -59,7 +60,7 @@ object RealDataBaseRepository {
     }
 
     fun deleteFilterList(filterList: List<Filter>, result: () -> Unit) {
-        SmartBlockerApp.instance?.checkNetworkAvailable()
+        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -74,7 +75,7 @@ object RealDataBaseRepository {
     }
 
     fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
-        SmartBlockerApp.instance?.checkNetworkAvailable()
+        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTERED_CALL_LIST).child(filteredCall.callId.toString())
             .setValue(filteredCall)
             .addOnCompleteListener { task ->
@@ -86,7 +87,7 @@ object RealDataBaseRepository {
     }
 
     fun deleteFilteredCallList(filteredCallList: List<Call>, result: () -> Unit) {
-        SmartBlockerApp.instance?.checkNetworkAvailable()
+        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -101,7 +102,7 @@ object RealDataBaseRepository {
     }
 
     fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
-        SmartBlockerApp.instance?.checkNetworkAvailable()
+        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(BLOCK_HIDDEN).setValue(blockUnanimous)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -112,7 +113,7 @@ object RealDataBaseRepository {
     }
 
     fun insertReview(review: Review, result: () -> Unit) {
-        SmartBlockerApp.instance?.checkNetworkAvailable()
+        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         reviewsDatabase.child(review.time.toString()).setValue(review)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
