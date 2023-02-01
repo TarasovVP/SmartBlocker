@@ -81,8 +81,6 @@ class DetailsFilterFragment :
     private fun startFilterActionDialog(filterAction: FilterAction) {
         findNavController().navigate(DetailsFilterFragmentDirections.startFilterActionDialog(
             filter = binding?.filter?.apply {
-                filter = String.format(getString(R.string.filter_action_number_value),
-                    binding?.filter?.filter)
                 this@apply.filterAction = filterAction
             }))
     }
@@ -147,6 +145,7 @@ class DetailsFilterFragment :
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(), binding?.filter?.filter.orEmpty()), false)
+            //TODO
             //showInterstitial()
             getAllData()
             if (filter.isChangeFilterAction()) {
