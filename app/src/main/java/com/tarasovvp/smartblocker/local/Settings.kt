@@ -57,8 +57,4 @@ object Settings {
             false
         ) ?: false
     }
-
-    fun clearSharedPreferences() {
-        sharedPreferences?.edit()?.clear()?.apply()
-    }
 }

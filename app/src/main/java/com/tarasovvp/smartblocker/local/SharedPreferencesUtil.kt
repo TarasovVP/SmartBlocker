@@ -7,7 +7,6 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_TURN_OFF
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.constants.Constants.ON_BOARDING_SEEN
-import com.tarasovvp.smartblocker.local.Settings.clearSharedPreferences
 import com.tarasovvp.smartblocker.local.Settings.loadBoolean
 import com.tarasovvp.smartblocker.local.Settings.loadInt
 import com.tarasovvp.smartblocker.local.Settings.loadString
@@ -70,11 +69,4 @@ object SharedPreferencesUtil {
                 countryCode
             )
         }
-
-    fun clearAll() {
-        val appTheme = appTheme
-        clearSharedPreferences()
-        isOnBoardingSeen = true
-        SharedPreferencesUtil.appTheme = appTheme
-    }
 }

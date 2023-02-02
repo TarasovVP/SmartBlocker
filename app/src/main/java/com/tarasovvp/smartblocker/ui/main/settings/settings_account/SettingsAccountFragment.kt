@@ -82,7 +82,6 @@ class SettingsAccountFragment :
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
-                SharedPreferencesUtil.clearAll()
                 SmartBlockerApp.instance?.database?.clearAllTables()
                 (activity as MainActivity).apply {
                     finish()
