@@ -39,12 +39,6 @@ data class Filter(
     var filteredCalls: Int = 0
 
     @get:Exclude
-    var filteredContactsQuantity: Int = filteredContacts.quantityString()
-
-    @get:Exclude
-    var filteredCallsQuantity: Int = filteredCalls.quantityString()
-
-    @get:Exclude
     var isCheckedForDelete = false
 
     @get:Exclude
@@ -94,19 +88,19 @@ data class Filter(
     }
 
     @Exclude
-    fun filteredContactsText(): Int {
-        return when (filterType) {
+    fun filteredContactsText(context: Context): String {
+        return context.resources.getQuantityString(when (filterType) {
             PERMISSION -> R.plurals.details_number_permit_contacts
             else -> R.plurals.details_number_block_contacts
-        }
+        }, filteredContacts.quantityString(), filteredContacts)
     }
 
     @Exclude
-    fun filteredCallsText(): Int {
-        return when (filterType) {
+    fun filteredCallsText(context: Context): String {
+        return context.resources.getQuantityString(when (filterType) {
             PERMISSION -> R.plurals.details_number_permitted_calls
             else -> R.plurals.details_number_blocked_calls
-        }
+        }, filteredCalls.quantityString(), filteredCalls)
     }
 
     @Exclude

@@ -72,7 +72,9 @@ object SharedPreferencesUtil {
         }
 
     fun clearAll() {
+        val appTheme = appTheme
         clearSharedPreferences()
         isOnBoardingSeen = true
+        SharedPreferencesUtil.appTheme = appTheme
     }
 }

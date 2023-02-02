@@ -104,7 +104,7 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@{filter.blocker ? @color/sunset : @color/islamic_green}"
-                android:text="@{String.format(context.resources.getQuantityString(filter.filteredContactsText, filter.filteredContactsQuantity), filter.filteredContacts)}"
+                android:text="@{filter.filteredContactsText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_created"/>
