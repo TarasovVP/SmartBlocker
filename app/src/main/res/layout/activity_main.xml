@@ -35,11 +35,12 @@
                 android:id="@+id/host_main_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/size_0"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar_divider" />
 
             <View
+                android:id="@+id/bottom_nav_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1.5dp"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
@@ -55,7 +56,7 @@
                 app:itemIconTint="@color/selector_bottom_nav_color"
                 app:itemTextColor="@color/selector_bottom_nav_color"
                 app:labelVisibilityMode="labeled"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/ad_view"
                 app:layout_constraintTop_toBottomOf="@+id/host_main_fragment"
                 app:menu="@menu/bottom_nav" />
 
@@ -84,9 +85,9 @@
                 android:layout_height="wrap_content"
                 ads:adSize="BANNER"
                 ads:adUnitId="@string/test_app_id"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintStart_toStartOf="parent" />
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/bottom_nav"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

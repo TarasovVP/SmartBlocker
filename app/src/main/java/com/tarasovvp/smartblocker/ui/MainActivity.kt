@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
     private var navController: NavController? = null
     var bottomNavigationView: BottomNavigationView? = null
+    var bottomNavigationDivider: View? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
 
     val mainViewModel: MainViewModel by viewModels()
@@ -182,6 +184,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomNavigationView() {
         bottomNavigationView = binding?.bottomNav
+        bottomNavigationDivider = binding?.bottomNavDivider
         navController?.let { bottomNavigationView?.setupWithNavController(it) }
         bottomNavigationView?.setOnItemReselectedListener {
         }
@@ -220,7 +223,7 @@ class MainActivity : AppCompatActivity() {
             toolbar?.menu?.clear()
             toolbar?.isVisible =
                 destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment && destination.id != R.id.signUpFragment
-            loadAdBanner(toolbar?.isVisible.isTrue() && destination.id != R.id.listBlockerFragment && destination.id != R.id.listPermissionFragment)
+            loadAdBanner(toolbar?.isVisible.isTrue() && navigationScreens.contains(destination.id).not())
 
         }
     }

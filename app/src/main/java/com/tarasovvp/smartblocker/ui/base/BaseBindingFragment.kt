@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.constants.Constants.APP_EXIT
+import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.ui.MainActivity
 
 abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
@@ -38,6 +39,7 @@ abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
             } catch (e: Exception) {
                 false
             }
+            bottomNavigationDivider?.isVisible = bottomNavigationView?.isVisible.isTrue()
         }
     }
 
