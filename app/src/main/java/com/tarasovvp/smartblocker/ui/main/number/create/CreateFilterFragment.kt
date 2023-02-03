@@ -55,7 +55,6 @@ open class CreateFilterFragment :
     }
 
     override fun createAdapter() {
-        Log.e("createFilterTAG", "CreateFilterFragment createAdapter")
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
             binding?.apply {
                 binding?.filterToInput = true
@@ -90,22 +89,21 @@ open class CreateFilterFragment :
 
     override fun initViews() {
         Log.e("createFilterTAG", "CreateFilterFragment initViews")
-        if (binding?.filter?.isTypeContain().isNotTrue()) {
-            viewModel.getCountryCodeList()
-        }
-        setFilterTextChangeListener()
         binding?.filter = args.filterCreate?.apply {
             filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
         }
         (activity as MainActivity).toolbar?.title = getString(if (binding?.filter?.isBlocker()
                 .isTrue()
         ) R.string.creating_blocker else R.string.creating_permission)
+        if (binding?.filter?.isTypeContain().isNotTrue()) {
+            viewModel.getCountryCodeList()
+        }
+        setFilterTextChangeListener()
         binding?.createFilterEmptyList?.emptyState = EmptyState.EMPTY_STATE_ADD_FILTER
         binding?.executePendingBindings()
     }
 
     override fun setClickListeners() {
-        Log.e("createFilterTAG", "CreateFilterFragment setClickListeners")
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
                     findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(
@@ -138,7 +136,6 @@ open class CreateFilterFragment :
     }
 
     override fun setFragmentResultListeners() {
-        Log.e("createFilterTAG", "CreateFilterFragment setFragmentResultListeners")
         binding?.filter?.let { filter ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
                 bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
@@ -173,7 +170,6 @@ open class CreateFilterFragment :
     }
 
     private fun setFilterTextChangeListener() {
-        Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener")
         binding?.apply {
             container.hideKeyboardWithLayoutTouch()
             createFilterNumberList.hideKeyboardWithLayoutTouch()
@@ -185,6 +181,7 @@ open class CreateFilterFragment :
                     || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart()
                         .isTrue())
                 ) return@doAfterTextChanged
+                Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
                 filter = filter?.apply {
                     filter = createFilterInput.getRawText()
