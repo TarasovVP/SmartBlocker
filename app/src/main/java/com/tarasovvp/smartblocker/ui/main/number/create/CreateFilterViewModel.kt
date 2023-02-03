@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.ui.main.number.create
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.EMPTY
@@ -29,6 +30,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getCountryCodeList() {
+        Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeList")
         launch {
             val countryCodeList = countryCodeRepository.getAllCountryCodes()
             countryCodeList?.apply {
@@ -38,6 +40,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun getCountryCodeWithCountry(country: String?) {
+        Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeWithCountry country $country")
         launch {
             val countryCode =
                 country?.let { countryCodeRepository.getCountryCodeWithCountry(it) }
@@ -47,6 +50,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun getCountryCodeWithCode(code: Int?) {
+        Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeWithCode code $code")
         launch {
             val countryCode =
                 code?.let { countryCodeRepository.getCountryCodeWithCode(it) } ?: CountryCode()
@@ -55,7 +59,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun getNumberDataList() {
-        showProgress()
+        Log.e("createFilterTAG", "CreateFilterViewModel getNumberDataList showProgress")
         launch {
             val contacts = async { contactRepository.getAllContacts() }
             val calls = async { callRepository.getAllCallsNumbers() }
@@ -76,6 +80,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun checkFilterExist(filter: Filter) {
+        Log.e("createFilterTAG", "CreateFilterViewModel checkFilterExist filter?.filter ${filter.filter} createFilter ${filter.createFilter()}")
         launch {
             val result = filterRepository.getFilter(filter)
             existingFilterLiveData.postValue(result ?: Filter())
@@ -83,15 +88,18 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun filterNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
+        Log.e("createFilterTAG", "CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filter?.filter} createFilter ${filter?.createFilter()} numberDataList.size ${numberDataList.size}")
         showProgress()
         launch {
-            filteredNumberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
-                numberDataList))
+            val filteredNumberDataList = contactRepository.filteredNumberDataList(filter, numberDataList)
+            filteredNumberDataListLiveData.postValue(filteredNumberDataList)
             hideProgress()
+            Log.e("createFilterTAG", "CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size}")
         }
     }
 
     fun createFilter(filter: Filter) {
+        Log.e("createFilterTAG", "CreateFilterViewModel createFilter createFilter ${filter.createFilter()}")
         launch {
             filterRepository.insertFilter(filter) {
                 filterActionLiveData.postValue(filter)
@@ -100,6 +108,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun updateFilter(filter: Filter) {
+        Log.e("createFilterTAG", "CreateFilterViewModel updateFilter")
         launch {
             filterRepository.updateFilter(filter) {
                 filterActionLiveData.postValue(filter)
@@ -108,6 +117,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun deleteFilter(filter: Filter) {
+        Log.e("createFilterTAG", "CreateFilterViewModel deleteFilter")
         launch {
             filterRepository.deleteFilterList(listOf(filter)) {
                 filterActionLiveData.postValue(filter)

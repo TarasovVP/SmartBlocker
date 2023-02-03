@@ -1,5 +1,7 @@
 package com.tarasovvp.smartblocker.ui.main.number.create
 
+import android.content.Context
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -47,7 +49,13 @@ open class CreateFilterFragment :
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context as MainActivity).setMainProgressVisibility(true)
+    }
+
     override fun createAdapter() {
+        Log.e("createFilterTAG", "CreateFilterFragment createAdapter")
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
             binding?.apply {
                 binding?.filterToInput = true
@@ -81,6 +89,7 @@ open class CreateFilterFragment :
     }
 
     override fun initViews() {
+        Log.e("createFilterTAG", "CreateFilterFragment initViews")
         if (binding?.filter?.isTypeContain().isNotTrue()) {
             viewModel.getCountryCodeList()
         }
@@ -96,6 +105,7 @@ open class CreateFilterFragment :
     }
 
     override fun setClickListeners() {
+        Log.e("createFilterTAG", "CreateFilterFragment setClickListeners")
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
                     findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(
@@ -114,6 +124,7 @@ open class CreateFilterFragment :
     }
 
     override fun getData() {
+        Log.e("createFilterTAG", "CreateFilterFragment getData")
         viewModel.getNumberDataList()
         if (binding?.filter?.isTypeContain().isNotTrue()) {
             if (binding?.filter?.countryCode?.countryCode.isNullOrEmpty()) {
@@ -127,6 +138,7 @@ open class CreateFilterFragment :
     }
 
     override fun setFragmentResultListeners() {
+        Log.e("createFilterTAG", "CreateFilterFragment setFragmentResultListeners")
         binding?.filter?.let { filter ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
                 bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
@@ -161,11 +173,13 @@ open class CreateFilterFragment :
     }
 
     private fun setFilterTextChangeListener() {
+        Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener")
         binding?.apply {
             container.hideKeyboardWithLayoutTouch()
             createFilterNumberList.hideKeyboardWithLayoutTouch()
             createFilterInput.setupClearButtonWithAction()
             createFilterInput.doAfterTextChanged {
+                Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener doAfterTextChanged it $it")
                 if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull()
                         .isTrue())
                     || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart()
@@ -173,9 +187,7 @@ open class CreateFilterFragment :
                 ) return@doAfterTextChanged
                 filterToInput = false
                 filter = filter?.apply {
-                    filter =
-                        createFilterInput.inputText().replace(MASK_CHAR.toString(), String.EMPTY)
-                            .replace(SPACE, String.EMPTY)
+                    filter = createFilterInput.getRawText()
                     viewModel.checkFilterExist(this)
                 }
                 viewModel.filterNumberDataList(filter, numberDataList)
@@ -184,6 +196,7 @@ open class CreateFilterFragment :
     }
 
     private fun setCountryCode(countryCode: CountryCode) {
+        Log.e("createFilterTAG", "CreateFilterFragment setCountryCode countryCode.country ${countryCode.country}")
         binding?.apply {
             filter = filter?.apply {
                 this.countryCode = countryCode
@@ -199,6 +212,7 @@ open class CreateFilterFragment :
     }
 
     private fun filterNumberDataList(filteredList: ArrayList<NumberData>) {
+        Log.e("createFilterTAG", "CreateFilterFragment filterNumberDataList filteredList ${filteredList.size}")
         binding?.apply {
             numberDataAdapter?.numberDataList = filteredList
             numberDataAdapter?.notifyDataSetChanged()
@@ -210,13 +224,16 @@ open class CreateFilterFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            viewModel.countryCodeListLiveData.safeObserve(viewLifecycleOwner) { countryCodeList ->
+            viewModel.countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData countryCodeListLiveData")
                 binding?.createFilterCountryCodeSpinner?.isEnabled = countryCodeList.isNotEmpty()
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
+                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData countryCodeLiveData")
                 setCountryCode(countryCode)
             }
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
+                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData numberDataListLiveData")
                 this@CreateFilterFragment.numberDataList = ArrayList(numberDataList)
                 if (binding?.filter?.isTypeContain().isTrue().not()) {
                     filterNumberDataList(binding?.filter, this@CreateFilterFragment.numberDataList)
@@ -226,8 +243,10 @@ open class CreateFilterFragment :
                 }
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
+                (context as MainActivity).setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
+                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData existingFilterLiveData")
                 binding?.filter = binding?.filter?.apply {
                     filterAction = when (existingFilter.filterType) {
                         DEFAULT_FILTER -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
@@ -237,15 +256,18 @@ open class CreateFilterFragment :
                 }
             }
             filteredNumberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredNumberDataList ->
+                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData filteredNumberDataListLiveData")
                 filterNumberDataList(filteredNumberDataList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
+                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData filterActionLiveData")
                 handleSuccessFilterAction(filter)
             }
         }
     }
 
     private fun handleSuccessFilterAction(filter: Filter) {
+        Log.e("createFilterTAG", "CreateFilterFragment handleSuccessFilterAction")
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(),
@@ -259,6 +281,7 @@ open class CreateFilterFragment :
     }
 
     override fun showInfoScreen() {
+        Log.e("createFilterTAG", "CreateFilterFragment showInfoScreen")
         val info = when {
             binding?.filter?.isTypeStart().isTrue() -> Info.INFO_FILTER_ADD_START
             binding?.filter?.isTypeContain().isTrue() -> Info.INFO_FILTER_ADD_CONTAIN
