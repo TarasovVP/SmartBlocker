@@ -81,9 +81,6 @@ open class CreateFilterFragment :
     }
 
     override fun initViews() {
-        (activity as MainActivity).toolbar?.title = getString(if (binding?.filter?.isBlocker()
-                .isTrue()
-        ) R.string.creating_blocker else R.string.creating_permission)
         if (binding?.filter?.isTypeContain().isNotTrue()) {
             viewModel.getCountryCodeList()
         }
@@ -91,6 +88,9 @@ open class CreateFilterFragment :
         binding?.filter = args.filterCreate?.apply {
             filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
         }
+        (activity as MainActivity).toolbar?.title = getString(if (binding?.filter?.isBlocker()
+                .isTrue()
+        ) R.string.creating_blocker else R.string.creating_permission)
         binding?.createFilterEmptyList?.emptyState = EmptyState.EMPTY_STATE_ADD_FILTER
         binding?.executePendingBindings()
     }

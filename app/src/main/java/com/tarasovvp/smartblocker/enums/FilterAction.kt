@@ -14,7 +14,7 @@ enum class FilterAction(
     FILTER_ACTION_INVALID(R.string.filter_action_create,
         R.color.comet,
         R.drawable.ic_blocker_inactive,
-        R.string.creating_filter_invalid,
+        R.string.filter_action_create_number_invalid,
         0,
         0),
     FILTER_ACTION_BLOCKER_CREATE(R.string.filter_action_create,

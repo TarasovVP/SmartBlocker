@@ -43,6 +43,9 @@
     <string name="filter_condition_contain">Содержит</string>
     <!--Filter action-->
     <string name="filter_action_create">Создать</string>
+    <string name="filter_action_create_number_incomplete">Номер неполный</string>
+    <string name="filter_action_create_number_invalid">Номер невалидный</string>
+    <string name="filter_action_create_number_empty">Номер пустой</string>
     <string name="filter_action_create_blocker_description">Создать блокировщик?</string>
     <string name="filter_action_create_blocker_request">Создать фильтр %s с типом Блокировщик и признаком %s?</string>
     <string name="filter_action_create_blocker_success">Фильтр %s с типом Блокировщик и признаком %s создан!</string>
@@ -107,7 +110,6 @@
     <string name="creating_permission">Создание Разрешения</string>
     <string name="creating_filter_enter_hint">Введите номер</string>
     <string name="creating_country_code_title">Выберите страну</string>
-    <string name="creating_filter_invalid">Номер не валидный</string>
     <string name="creating_filter_no_data">Нет данных</string>
     <!--Details number-->
     <string name="details_number">Номер</string>

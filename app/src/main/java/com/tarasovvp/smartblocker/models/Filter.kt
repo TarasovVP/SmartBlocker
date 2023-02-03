@@ -104,6 +104,21 @@ data class Filter(
     }
 
     @Exclude
+    fun filterActionText(context: Context): String {
+        return filterAction?.let { action ->
+            context.getString(if (isInvalidFilterAction()) {
+                when {
+                    isTypeContain() && filter.isEmpty() -> R.string.filter_action_create_number_empty
+                    isTypeFull() && filter.length < countryCode.numberFormat.digitsTrimmed().length -> R.string.filter_action_create_number_incomplete
+                    else -> action.descriptionText
+                }
+            } else {
+                action.descriptionText
+            })
+        }.orEmpty()
+    }
+
+    @Exclude
     fun conditionTypeName(): Int {
         return FilterCondition.getTitleByIndex(conditionType)
     }
