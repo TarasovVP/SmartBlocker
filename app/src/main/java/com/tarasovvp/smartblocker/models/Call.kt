@@ -93,8 +93,12 @@ open class Call(
         return filter?.filter.isNullOrEmpty().isTrue()
     }
 
-    fun isFilteredNullOrEmpty(): Boolean {
-        return this is FilteredCall && filtered?.filter.isNullOrEmpty().isTrue()
+    private fun isFilteredNullOrEmpty(): Boolean {
+        return this is FilteredCall && filtered?.filter.isNullOrEmpty()
+    }
+
+    fun isBlockedCallDelete(): Boolean {
+        return this is FilteredCall && (filtered?.filter.isNullOrEmpty().not() || number.isEmpty()) && filtered?.isBlocker().isTrue() && isDeleteMode
     }
 
     fun callFilterTitle(): Int {

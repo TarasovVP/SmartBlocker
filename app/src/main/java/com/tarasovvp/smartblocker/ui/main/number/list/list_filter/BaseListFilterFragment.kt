@@ -4,7 +4,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_CONDITION_LIST
@@ -95,7 +94,7 @@ open class BaseListFilterFragment :
                 inflateMenu(R.menu.toolbar_delete)
                 setDeleteMenuClickListener()
             } else {
-                inflateMenu(R.menu.toolbar_search)
+                setSearchViewMenu()
             }
         }
         binding?.apply {
@@ -190,7 +189,7 @@ open class BaseListFilterFragment :
                     filterAction =
                         if (firstFilter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                     filter =
-                        if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_delete_amount,
+                        if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.filter_list_delete_amount,
                             deleteFilterCount.quantityString(),
                             deleteFilterCount) else filterList?.firstOrNull { it.isCheckedForDelete }?.filter.orEmpty()
                 }

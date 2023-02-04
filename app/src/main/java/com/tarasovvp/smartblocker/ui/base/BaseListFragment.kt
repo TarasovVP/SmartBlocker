@@ -60,7 +60,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         }
     }
 
-    private fun setSearchViewMenu() {
+    protected fun setSearchViewMenu() {
         (activity as MainActivity).apply {
             toolbar?.inflateMenu(R.menu.toolbar_search)
             context?.let { SearchView(it) }?.apply {

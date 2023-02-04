@@ -140,6 +140,7 @@
         <entry key="app/src/main/res/layout/dialog_add_to_list.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/dialog_black_list_preview.xml" value="0.15715579710144928" />
         <entry key="app/src/main/res/layout/dialog_change_password.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/dialog_confirm.xml" value="0.234375" />
         <entry key="app/src/main/res/layout/dialog_country_code_search.xml" value="0.375" />
         <entry key="app/src/main/res/layout/dialog_country_searchable.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/dialog_delete.xml" value="0.39955357142857145" />

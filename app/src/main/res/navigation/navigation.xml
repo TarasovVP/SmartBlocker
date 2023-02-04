@@ -179,8 +179,8 @@
             android:id="@+id/startNumberDataFilteringDialog"
             app:destination="@id/numberDataFilteringDialog" />
         <action
-            android:id="@+id/startFilterActionDialog"
-            app:destination="@id/filterActionDialog" />
+            android:id="@+id/startBlockedCallDeleteDialog"
+            app:destination="@id/blockedCallDeleteDialog" />
         <action
             android:id="@+id/startInfoFragment"
             app:destination="@id/infoFragment" />
@@ -363,6 +363,16 @@
             android:name="filter"
             android:defaultValue="@null"
             app:argType="com.tarasovvp.smartblocker.models.Filter"
+            app:nullable="true" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/blockedCallDeleteDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.BlockedCallDeleteDialog">
+        <argument
+            android:name="callDelete"
+            android:defaultValue="@null"
+            app:argType="string"
             app:nullable="true" />
     </dialog>
 

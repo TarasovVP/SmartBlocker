@@ -7,15 +7,13 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
+import com.tarasovvp.smartblocker.constants.Constants.CALL_DELETE
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
-import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Call
-import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
@@ -109,7 +107,7 @@ class ListCallFragment :
     }
 
     override fun setFragmentResultListeners() {
-        setFragmentResultListener(FILTER_ACTION) { _, _ ->
+        setFragmentResultListener(CALL_DELETE) { _, _ ->
             viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
@@ -133,17 +131,22 @@ class ListCallFragment :
                 inflateMenu(R.menu.toolbar_delete)
                 setDeleteMenuClickListener()
             } else {
-                inflateMenu(R.menu.toolbar_search)
+                setSearchViewMenu()
             }
         }
     }
 
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
-            this@ListCallFragment.findNavController()
-                .navigate(ListCallFragmentDirections.startFilterActionDialog(filter = Filter().apply {
-                    filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE
-                }))
+            if (menuItem.itemId == R.id.delete_menu_item) {
+                val deleteCallCount = callList?.filter { it.isCheckedForDelete }.orEmpty().size
+                this@ListCallFragment.findNavController()
+                    .navigate(ListCallFragmentDirections.startBlockedCallDeleteDialog(callDelete =
+                    resources.getQuantityString(R.plurals.call_list_delete_amount,
+                        deleteCallCount.quantityString(),
+                        if (deleteCallCount > 1) deleteCallCount else if (callList?.firstOrNull { it.isCheckedForDelete }?.number.isNullOrEmpty()) getString(
+                            R.string.details_number_hidden) else callList?.firstOrNull { it.isCheckedForDelete }?.number)))
+            }
             true
         }
     }

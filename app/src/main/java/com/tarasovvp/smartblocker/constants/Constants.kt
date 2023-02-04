@@ -57,6 +57,7 @@ object Constants {
     const val PERMISSION = 2
     const val FILTER_CONDITION_LIST = "filterConditionList"
     const val FILTER_ACTION = "filterAction"
+    const val CALL_DELETE = "callDelete"
 
     //Number
     const val PLUS_CHAR = '+'

@@ -203,9 +203,13 @@
     <string name="menu_info">Info</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
-    <plurals name="list_delete_amount">
+    <plurals name="filter_list_delete_amount">
         <item quantity="one">%s фильтр</item>
         <item quantity="few">%s фильтра</item>
         <item quantity="other">%s фильтров</item>
+    </plurals>
+    <plurals name="call_list_delete_amount">
+        <item quantity="one">Удалить заблокированный вызов %s из журнала?</item>
+        <item quantity="other">Удалить %s заблокированных вызовов из журнала?</item>
     </plurals>
 </resources>
