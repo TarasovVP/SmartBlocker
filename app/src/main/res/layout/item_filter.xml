@@ -59,7 +59,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{filter.highlightedSpanned}"
-                android:textColor="@{filter.filterAction == null ? @color/text_color_black : ContextCompat.getColor(context, filter.filterAction.color)}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
