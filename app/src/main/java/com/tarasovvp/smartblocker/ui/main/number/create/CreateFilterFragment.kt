@@ -32,7 +32,6 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
 open class CreateFilterFragment :

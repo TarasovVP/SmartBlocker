@@ -21,7 +21,6 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 

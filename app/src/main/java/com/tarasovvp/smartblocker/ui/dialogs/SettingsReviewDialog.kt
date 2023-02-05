@@ -6,8 +6,8 @@ import androidx.fragment.app.setFragmentResult
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.DialogSettingsReviewBinding
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class SettingsReviewDialog :
     BaseDialog<DialogSettingsReviewBinding>() {

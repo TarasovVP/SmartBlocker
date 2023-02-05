@@ -7,8 +7,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.databinding.DialogFilterConditionBinding
 import com.tarasovvp.smartblocker.enums.FilterCondition
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class FilterConditionsDialog : BaseDialog<DialogFilterConditionBinding>() {
 

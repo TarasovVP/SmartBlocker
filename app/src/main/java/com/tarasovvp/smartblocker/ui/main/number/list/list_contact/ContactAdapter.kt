@@ -11,9 +11,9 @@ import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<Contact>() {
 

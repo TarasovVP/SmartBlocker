@@ -10,10 +10,10 @@ import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.safeObserve
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
 import com.tarasovvp.smartblocker.ui.main.number.create.CreateFilterViewModel
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
 

@@ -11,11 +11,11 @@ import com.tarasovvp.smartblocker.databinding.FragmentOnBoardingBinding
 import com.tarasovvp.smartblocker.enums.OnBoarding
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.orZero
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 

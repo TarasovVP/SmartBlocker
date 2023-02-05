@@ -6,8 +6,8 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.databinding.DialogFilterActionBinding
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
 

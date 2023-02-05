@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
@@ -34,6 +35,17 @@ import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.databinding.DialogInfoBinding
 
+private var lastClickTime = 0L
+
+fun View.setSafeOnClickListener(action: () -> Unit) {
+    setOnClickListener {
+        SystemClock.elapsedRealtime().takeIf { it - lastClickTime > 500L }
+            ?.run {
+                action()
+                lastClickTime = this
+            }
+    }
+}
 
 fun Activity.showMessage(message: String, isError: Boolean) {
     if (isFinishing) return

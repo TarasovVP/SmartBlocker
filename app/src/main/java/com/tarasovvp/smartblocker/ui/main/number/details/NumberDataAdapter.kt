@@ -13,11 +13,11 @@ import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.orZero
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class NumberDataAdapter(
     var numberDataList: ArrayList<NumberData>? = null,

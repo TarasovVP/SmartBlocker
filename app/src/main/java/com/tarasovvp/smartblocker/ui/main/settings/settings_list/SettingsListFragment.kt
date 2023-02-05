@@ -14,7 +14,6 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
 class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsListViewModel>() {
@@ -31,8 +30,8 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
                 0)
             settingsReview.isVisible = SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             container.getViewsFromLayout(TextView::class.java).forEach {
-                it.setSafeOnClickListener { view ->
-                    val direction = when (view.id) {
+                it.setSafeOnClickListener {
+                    val direction = when (it.id) {
                         settingsAccount.id -> SettingsListFragmentDirections.startSettingsAccountFragment()
                         settingsLanguage.id -> SettingsListFragmentDirections.startSettingsLanguageFragment()
                         settingsTheme.id -> SettingsListFragmentDirections.startSettingsThemeFragment()

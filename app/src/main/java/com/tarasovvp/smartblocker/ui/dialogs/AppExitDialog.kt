@@ -5,8 +5,8 @@ import androidx.fragment.app.setFragmentResult
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.APP_EXIT
 import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class AppExitDialog : BaseDialog<DialogConfirmBinding>() {
 

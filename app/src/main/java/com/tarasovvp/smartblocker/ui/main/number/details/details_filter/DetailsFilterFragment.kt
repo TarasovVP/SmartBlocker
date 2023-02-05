@@ -13,6 +13,7 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.FilteredCall
 import com.tarasovvp.smartblocker.models.InfoData
@@ -20,7 +21,6 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class DetailsFilterFragment :
     BaseDetailsFragment<FragmentDetailsFilterBinding, DetailsFilterViewModel>() {

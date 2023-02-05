@@ -10,8 +10,8 @@ import com.tarasovvp.smartblocker.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.databinding.DialogNumberDataFilteringBinding
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>() {
 

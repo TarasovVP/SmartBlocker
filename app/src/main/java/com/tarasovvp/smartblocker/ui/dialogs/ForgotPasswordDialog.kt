@@ -8,8 +8,8 @@ import com.tarasovvp.smartblocker.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.databinding.DialogForgotPasswordBinding
 import com.tarasovvp.smartblocker.extensions.inputText
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
 

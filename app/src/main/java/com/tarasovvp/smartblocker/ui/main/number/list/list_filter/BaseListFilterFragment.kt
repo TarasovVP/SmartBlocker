@@ -18,7 +18,6 @@ import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 import java.util.*
 
 open class BaseListFilterFragment :

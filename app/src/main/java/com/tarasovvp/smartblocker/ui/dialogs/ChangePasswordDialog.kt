@@ -8,8 +8,8 @@ import com.tarasovvp.smartblocker.constants.Constants.CURRENT_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.NEW_PASSWORD
 import com.tarasovvp.smartblocker.databinding.DialogChangePasswordBinding
 import com.tarasovvp.smartblocker.extensions.inputText
+import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
-import com.tarasovvp.smartblocker.utils.setSafeOnClickListener
 
 class ChangePasswordDialog : BaseDialog<DialogChangePasswordBinding>() {
 
