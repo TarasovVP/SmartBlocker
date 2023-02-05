@@ -165,7 +165,7 @@ fun Context.getInitialDrawable(text: String): Drawable {
         Bitmap.Config.ARGB_8888
     )
     val canvas = Canvas(initialBitmap)
-    paint.color = ContextCompat.getColor(this, R.color.text_color_grey)
+    paint.color = ContextCompat.getColor(this, R.color.comet)
     paint.style = Paint.Style.FILL
     canvas.drawText(text,
         (rectSize - textWidth) / 2,

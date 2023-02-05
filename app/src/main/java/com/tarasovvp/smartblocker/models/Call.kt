@@ -148,7 +148,7 @@ open class Call(
                 .isTrue() -> R.color.islamic_green
             isExtract && filter?.isBlocker().isTrue() -> R.color.sunset
             isExtract && filter?.isPermission().isTrue() -> R.color.islamic_green
-            else -> R.color.comet
+            else -> R.color.text_color_grey
         }
     }
 }

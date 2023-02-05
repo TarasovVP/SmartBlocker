@@ -91,7 +91,7 @@
                 android:textSize="@dimen/text_size_10"
                 android:layout_marginTop="@dimen/margin_5"
                 android:text="@{contact.filterNullOrEmpty ? @string/details_number_contact_without_filter : contact.filter.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
-                android:textColor="@{contact.filterNullOrEmpty ? @color/comet : contact.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:textColor="@{contact.filterNullOrEmpty ? @color/text_color_grey : contact.filter.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"/>
