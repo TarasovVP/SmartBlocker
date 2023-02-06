@@ -149,7 +149,7 @@
     <string name="details_number_call_without_filter">Без совпадения с фильтром</string>
     <string name="details_number_blocked_by_filter">Заблокирован фильтром:&#160;</string>
     <string name="details_number_permitted_by_filter">Разрешен фильтром:&#160;</string>
-    <string name="details_number_blocked_by_settings">Заблокирован настройками Smart Blocker</string>
+    <string name="details_number_blocked_by_settings">Заблокирован настройками Smart Blocker&#160;</string>
     <string name="number_details_close">Закрыть</string>
     <!--Settings screens-->
     <string name="settings">Настройки</string>

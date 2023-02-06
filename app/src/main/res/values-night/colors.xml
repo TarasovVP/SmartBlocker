@@ -2,12 +2,13 @@
 <resources>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="blue">#267DFF</color>
 
     //custom project colors
     <color name="main_bg_start">@color/tiber</color>
     <color name="main_bg_end">@color/cyprus</color>
     <color name="text_color_grey">@color/light_steel_blue</color>
+    <color name="text_color_black">@color/white</color>
     <color name="item_color">@color/valhalla</color>
+    <color name="white_bg">@color/cyprus</color>
 </resources>

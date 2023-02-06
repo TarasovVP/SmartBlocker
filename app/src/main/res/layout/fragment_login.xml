@@ -142,6 +142,37 @@
                 android:text="@string/authorization_enter"
                 app:layout_constraintTop_toBottomOf="@+id/login_sign_up" />
 
+            <View
+                android:id="@+id/login_left_divider_unauthorized"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_1"
+                android:background="@color/cornflower_blue"
+                app:layout_constraintTop_toTopOf="@+id/login_divider_title_unauthorized"
+                app:layout_constraintBottom_toBottomOf="@+id/login_divider_title_unauthorized"
+                app:layout_constraintEnd_toStartOf="@+id/login_divider_title_unauthorized"
+                app:layout_constraintStart_toStartOf="parent"  />
+
+            <TextView
+                android:id="@+id/login_divider_title_unauthorized"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_40"
+                android:text="@string/authorization_or"
+                android:paddingHorizontal="@dimen/padding_10"
+                app:layout_constraintStart_toEndOf="@+id/login_left_divider_unauthorized"
+                app:layout_constraintEnd_toStartOf="@+id/login_right_divider_unauthorized"
+                app:layout_constraintTop_toBottomOf="@id/login_continue" />
+
+            <View
+                android:id="@+id/login_right_divider_unauthorized"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/cornflower_blue"
+                app:layout_constraintTop_toTopOf="@+id/login_divider_title_unauthorized"
+                app:layout_constraintBottom_toBottomOf="@+id/login_divider_title_unauthorized"
+                app:layout_constraintStart_toEndOf="@+id/login_divider_title_unauthorized"
+                app:layout_constraintEnd_toEndOf="parent"  />
+
             <Button
                 android:id="@+id/login_continue_without_acc"
                 android:layout_width="match_parent"
@@ -149,7 +180,7 @@
                 style="@style/StrokeButtonStyle"
                 android:layout_marginTop="@dimen/margin_24"
                 android:text="@string/authorization_continue_without_account"
-                app:layout_constraintTop_toBottomOf="@+id/login_continue" />
+                app:layout_constraintTop_toBottomOf="@+id/login_divider_title_unauthorized" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

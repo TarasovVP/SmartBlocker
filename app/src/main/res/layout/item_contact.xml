@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_16"
                 android:text="@{contact.highlightedSpanned}"
+                android:textColor="@color/text_color_grey"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
