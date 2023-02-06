@@ -58,9 +58,10 @@ class DetailsNumberDataFragment :
                 setText(R.string.settings)
                 context?.let {
                     backgroundTintList = ContextCompat.getColorStateList(it, R.color.transparent)
-                    setTextColor(ContextCompat.getColorStateList(it, R.color.comet))
-                    strokeColor = ContextCompat.getColorStateList(it, R.color.comet)
+                    setTextColor(ContextCompat.getColorStateList(it, R.color.text_color_grey))
+                    strokeColor = ContextCompat.getColorStateList(it, R.color.text_color_grey)
                     icon = ContextCompat.getDrawable(it, R.drawable.ic_settings)
+                    iconTint = ContextCompat.getColorStateList(it, R.color.text_color_grey)
                 }
             }
         }
@@ -164,11 +165,9 @@ class DetailsNumberDataFragment :
     private fun setAddFilterConditions(isBlocker: Boolean, isShown: Boolean) {
         binding?.apply {
             detailsNumberDataCreateBlocker.changeFilterTypeButtonState((isBlocker.not() && isShown.not()).not(),
-                isShown.not() && isBlocker,
-                if ((isBlocker.not() && isShown.not()).not()) R.drawable.ic_blocker else R.drawable.ic_blocker_inactive)
+                isShown.not() && isBlocker)
             detailsNumberDataCreatePermission.changeFilterTypeButtonState((isBlocker && isShown.not()).not(),
-                isShown.not() && isBlocker.not(),
-                if ((isBlocker && isShown.not()).not()) R.drawable.ic_permission else R.drawable.ic_permission_inactive)
+                isShown.not() && isBlocker.not())
             numberDataDetailAddFilterFull.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_FULL.smallBlockerIcon
             else FilterCondition.FILTER_CONDITION_FULL.smallPermissionIcon, isShown)
             numberDataDetailAddFilterStart.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_START.smallBlockerIcon
@@ -180,19 +179,19 @@ class DetailsNumberDataFragment :
 
     private fun MaterialButton.changeFilterTypeButtonState(
         isButtonEnabled: Boolean,
-        isClose: Boolean,
-        intRes: Int,
+        isClose: Boolean
     ) {
         backgroundTintList = ContextCompat.getColorStateList(context,
             if (isButtonEnabled) R.color.button_bg else R.color.transparent)
         strokeColor = ContextCompat.getColorStateList(context,
             if (isButtonEnabled) R.color.button_bg else R.color.comet)
+        compoundDrawables.onEach { iconTint = ContextCompat.getColorStateList(context,
+            if (isButtonEnabled) R.color.white else R.color.comet) }
         setTextColor(ContextCompat.getColorStateList(context,
             if (isButtonEnabled) R.color.white else R.color.comet))
         isEnabled = isButtonEnabled
         alpha = if (isButtonEnabled) 1f else 0.5f
         setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)
-        setCompoundDrawablesWithIntrinsicBounds(0, 0, intRes, 0)
     }
 
     private fun ExtendedFloatingActionButton.changeFilterConditionButtonState(
