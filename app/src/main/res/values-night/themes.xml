@@ -21,6 +21,7 @@
         <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
         <item name="extendedFloatingActionButtonStyle">@style/ExtendedFABStyle</item>
         <item name="searchViewStyle">@style/SearchViewStyle</item>
+        <item name="materialCardViewStyle">@style/CardViewStyle</item>
     </style>
 
 </resources>

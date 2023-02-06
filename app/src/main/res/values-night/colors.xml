@@ -9,6 +9,6 @@
     <color name="main_bg_end">@color/cyprus</color>
     <color name="text_color_grey">@color/light_steel_blue</color>
     <color name="text_color_black">@color/white</color>
-    <color name="item_color">@color/valhalla</color>
+    <color name="item_color">@color/cyprus</color>
     <color name="white_bg">@color/cyprus</color>
 </resources>
