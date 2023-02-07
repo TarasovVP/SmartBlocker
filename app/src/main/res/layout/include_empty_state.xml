@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_main"
-        android:paddingVertical="@dimen/padding_16"
+        android:paddingVertical="@dimen/padding_8"
         android:visibility="gone">
 
         <TextView
@@ -24,9 +24,10 @@
             android:layout_height="wrap_content"
             android:text="@{emptyState.description  == 0 ? `` : context.getString(emptyState.description)}"
             android:gravity="center"
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_16"
             android:background="@drawable/bg_rounded"
             android:minLines="5"
-            android:padding="@dimen/padding_10"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView

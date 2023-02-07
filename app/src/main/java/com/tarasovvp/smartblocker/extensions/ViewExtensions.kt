@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
@@ -102,7 +103,7 @@ fun ImageView.loadCircleImage(imageUrl: String?, placeHolder: Drawable?) {
     Glide
         .with(this.context)
         .load(imageUrl)
-        .apply(RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.ALL)
+        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(placeHolder)
             .error(placeHolder))
         .into(this)
@@ -206,7 +207,9 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
                         Typeface.BOLD,
                         -1,
                         ColorStateList(arrayOf(intArrayOf()),
-                            intArrayOf(Color.BLACK)),
+                            SmartBlockerApp.instance?.baseContext?.let {
+                                ContextCompat.getColor(it, R.color.text_color_black)
+                            }?.let { intArrayOf(it) }),
                         null)
                     setSpan(highlightSpan,
                         index,

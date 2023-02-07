@@ -22,7 +22,9 @@
             android:textSize="@dimen/text_size_16"
             android:minLines="5"
             android:background="@drawable/bg_rounded"
-            android:padding="@dimen/padding_10"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_16"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/single_on_boarding_tooltip_arrow"/>
 
