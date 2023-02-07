@@ -13,6 +13,7 @@
     <color name="cyprus">#08172B</color>
     <color name="comet">#636076</color>
     <color name="cornflower_blue">#6480E2</color>
+    <color name="midnight_blue">#11315B</color>
     <color name="sunset">#C84747</color>
     <color name="light_steel_blue">#B4C5E3</color>
     <color name="valhalla">#211F2E</color>
@@ -27,5 +28,7 @@
     <color name="item_color">@color/white</color>
     <color name="button_bg">@color/cornflower_blue</color>
     <color name="span_text">@color/cornflower_blue</color>
-    <color name="white_bg">@color/white</color>
+    <color name="input_bg">@color/white</color>
+    <color name="avatar_bg">@color/light_steel_blue</color>
+    <color name="avatar_icon_bg">@color/comet</color>
 </resources>

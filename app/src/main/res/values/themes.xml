@@ -65,7 +65,7 @@
 
     <style name="FilledButtonStyle" parent="BaseButtonStyle">
         <item name="backgroundTint">@color/button_bg</item>
-        <item name="android:textColor">@color/white_bg</item>
+        <item name="android:textColor">@color/item_color</item>
         <item name="android:textSize">@dimen/text_size_18</item>
     </style>
 
@@ -85,7 +85,7 @@
     </style>
 
     <style name="TextButton" parent="FilledButtonStyle">
-        <item name="backgroundTint">@color/white_bg</item>
+        <item name="backgroundTint">@color/item_color</item>
         <item name="android:textColor">@color/text_color_black</item>
         <item name="iconTint">@null</item>
         <item name="android:elevation">@dimen/margin_2</item>
@@ -150,7 +150,7 @@
         <item name="hintEnabled">false</item>
         <item name="colorAccent">@color/cornflower_blue</item>
         <item name="passwordToggleDrawable">@drawable/selector_toggle_password</item>
-        <item name="boxBackgroundColor">@color/white_bg</item>
+        <item name="boxBackgroundColor">@color/input_bg</item>
     </style>
 
     <style name="CommonThemeOverlayFilledDense">
@@ -159,7 +159,7 @@
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:paddingStart">@dimen/padding_5</item>
         <item name="android:paddingEnd">@dimen/padding_5</item>
-        <item name="boxBackgroundColor">@color/white_bg</item>
+        <item name="boxBackgroundColor">@color/item_color</item>
     </style>
 
     <style name="Button.Icon" parent="Widget.Material3.Button.IconButton">
