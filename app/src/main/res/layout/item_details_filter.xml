@@ -107,7 +107,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_10"
-                android:textColor="@color/comet"
+                android:textColor="@color/text_color_grey"
                 android:text="@{filter.created == 0 ? `` : String.format(@string/filter_action_created, filter.filterCreatedDate)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_details_filter_details"

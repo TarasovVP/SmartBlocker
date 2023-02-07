@@ -13,10 +13,10 @@
         android:pathData="M9.044,7.539L9.044,7.539A1.074,1.074 0,0 1,10.119 8.613L10.119,13.512A1.074,1.074 0,0 1,9.044 14.586L9.044,14.586A1.074,1.074 0,0 1,7.97 13.512L7.97,8.613A1.074,1.074 0,0 1,9.044 7.539z"
         android:strokeWidth="0.5"
         android:fillColor="#00000000"
-        android:strokeColor="#B4C5E3"/>
+        android:strokeColor="@color/sunset"/>
     <path
         android:pathData="M15.018,7.539L15.018,7.539A1.074,1.074 0,0 1,16.092 8.613L16.092,13.512A1.074,1.074 0,0 1,15.018 14.586L15.018,14.586A1.074,1.074 0,0 1,13.944 13.512L13.944,8.613A1.074,1.074 0,0 1,15.018 7.539z"
         android:strokeWidth="0.5"
         android:fillColor="#00000000"
-        android:strokeColor="#B4C5E3"/>
+        android:strokeColor="@color/sunset"/>
 </vector>

@@ -10,7 +10,8 @@
     <color name="hawkes_blue">#F1F4F9</color>
     <color name="lavender">#F7F8FD</color>
     <color name="tiber">#11203A</color>
-    <color name="cyprus">#08172B</color>
+    <color name="cyprus">#0B1F39</color>
+    <color name="sapphire">#071D39</color>
     <color name="comet">#636076</color>
     <color name="cornflower_blue">#6480E2</color>
     <color name="midnight_blue">#11315B</color>
@@ -18,7 +19,6 @@
     <color name="light_steel_blue">#B4C5E3</color>
     <color name="valhalla">#211F2E</color>
     <color name="islamic_green">#06AA0E</color>
-
 
     //custom project colors
     <color name="main_bg_start">@color/hawkes_blue</color>

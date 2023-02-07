@@ -9,7 +9,7 @@
     <color name="main_bg_end">@color/cyprus</color>
     <color name="text_color_grey">@color/light_steel_blue</color>
     <color name="text_color_black">@color/white</color>
-    <color name="item_color">@color/cyprus</color>
+    <color name="item_color">#021228</color>
     <color name="input_bg">@color/midnight_blue</color>
     <color name="avatar_bg">@color/midnight_blue</color>
     <color name="avatar_icon_bg">@color/light_steel_blue</color>

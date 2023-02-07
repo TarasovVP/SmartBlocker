@@ -32,8 +32,8 @@ class SettingsThemeFragment :
                     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 }
             }
-            AppCompatDelegate.setDefaultNightMode(mode)
             SharedPreferencesUtil.appTheme = mode
+            AppCompatDelegate.setDefaultNightMode(mode)
         }
     }
 }

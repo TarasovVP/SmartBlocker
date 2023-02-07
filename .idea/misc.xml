@@ -44,14 +44,22 @@
         <entry key="app/src/main/res/drawable/ic_block.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/drawable/ic_blocked_call.xml" value="0.125" />
         <entry key="app/src/main/res/drawable/ic_blocked_call_list.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/ic_blocker.xml" value="0.132" />
         <entry key="app/src/main/res/drawable/ic_blocker_list.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/ic_blocker_white.xml" value="0.132" />
         <entry key="app/src/main/res/drawable/ic_boy.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_call.xml" value="0.132" />
+        <entry key="app/src/main/res/drawable/ic_call_blocked.xml" value="0.132" />
+        <entry key="app/src/main/res/drawable/ic_call_incoming.xml" value="0.132" />
         <entry key="app/src/main/res/drawable/ic_call_list.xml" value="0.1805" />
         <entry key="app/src/main/res/drawable/ic_call_log.xml" value="0.1695" />
+        <entry key="app/src/main/res/drawable/ic_call_missed.xml" value="0.132" />
+        <entry key="app/src/main/res/drawable/ic_call_outcoming.xml" value="0.132" />
         <entry key="app/src/main/res/drawable/ic_call_permitted.xml" value="0.149" />
+        <entry key="app/src/main/res/drawable/ic_call_rejected.xml" value="0.132" />
         <entry key="app/src/main/res/drawable/ic_check_box_checked.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/ic_check_box_unchecked.xml" value="0.12" />
+        <entry key="app/src/main/res/drawable/ic_clear.xml" value="0.132" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_close_small.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/ic_condition_contain.xml" value="0.1925" />
@@ -99,6 +107,7 @@
         <entry key="app/src/main/res/drawable/ic_missed_call.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/drawable/ic_notifications.xml" value="0.1712962962962963" />
         <entry key="app/src/main/res/drawable/ic_outcoming_call.xml" value="0.2682291666666667" />
+        <entry key="app/src/main/res/drawable/ic_permission_inactive.xml" value="0.132" />
         <entry key="app/src/main/res/drawable/ic_permission_list.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/ic_rejected_call.xml" value="0.1695" />

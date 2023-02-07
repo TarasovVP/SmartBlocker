@@ -45,9 +45,7 @@ class SmartBlockerApp : Application() {
         createNotificationChannel()
         if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang =
             Locale.getDefault().language
-        SharedPreferencesUtil.appTheme.apply {
-            AppCompatDelegate.setDefaultNightMode(this)
-        }
+        AppCompatDelegate.setDefaultNightMode(SharedPreferencesUtil.appTheme)
         registerForNetworkUpdates { isAvailable ->
             isNetworkAvailable = isAvailable
         }
