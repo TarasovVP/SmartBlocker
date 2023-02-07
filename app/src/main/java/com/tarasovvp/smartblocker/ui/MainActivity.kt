@@ -288,6 +288,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setProgressVisibility(isVisible: Boolean) {
+        if (navController?.currentDestination?.id == R.id.loginFragment) return
         binding?.progressBar?.isVisible = isVisible
     }
 
