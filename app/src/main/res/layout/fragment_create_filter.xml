@@ -101,6 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/StrokeButtonStyle"
+            android:layout_marginTop="@dimen/margin_8"
             android:alpha="@{filter.invalidFilterAction ? 0.5f : 1f}"
             android:enabled="@{!filter.invalidFilterAction}"
             android:text="@{filter.filterAction.title}"

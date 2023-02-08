@@ -84,4 +84,8 @@ object Constants {
     const val APP_LANG = "appLang"
     const val APP_THEME = "appTheme"
     const val BLOCK_TURN_OFF = "blockTurnOff"
+
+    //WebView
+    const val DARK_MODE_TEXT = "javascript:document.body.style.setProperty(\"color\", \"white\");"
+    const val WHITE_MODE_TEXT = "javascript:document.body.style.setProperty(\"color\", \"black\");"
 }

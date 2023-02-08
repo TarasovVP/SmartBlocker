@@ -1,7 +1,9 @@
 package com.tarasovvp.smartblocker.extensions
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build.VERSION.SDK_INT
@@ -10,6 +12,8 @@ import android.os.Parcelable
 import android.text.Spanned
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
 import androidx.core.text.parseAsHtml
 import androidx.lifecycle.LifecycleOwner
@@ -17,6 +21,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
@@ -131,6 +136,23 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
             ColorDrawable(Color.TRANSPARENT)
         }
     })
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+fun WebView.initWebView(webUrl: String, onPageFinished: () -> Unit) {
+        setBackgroundColor(Color.TRANSPARENT)
+        settings.javaScriptEnabled = true
+        webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
+            }
+            override fun onPageFinished(view: WebView, url: String) {
+                loadUrl(
+                    if (context.isDarkMode().isTrue()) Constants.DARK_MODE_TEXT else Constants.WHITE_MODE_TEXT
+                )
+                onPageFinished.invoke()
+            }
+        }
+    loadData(webUrl, "text/html; charset=utf-8", "UTF-8")
 }
 
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {

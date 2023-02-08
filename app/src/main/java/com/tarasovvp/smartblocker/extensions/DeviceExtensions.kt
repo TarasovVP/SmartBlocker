@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Network
@@ -115,6 +116,13 @@ fun Context.setAppLocale(language: String): Context {
     config.setLocale(locale)
     config.setLayoutDirection(locale)
     return createConfigurationContext(config)
+}
+
+fun Context.isDarkMode(): Boolean {
+    return when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+        Configuration.UI_MODE_NIGHT_YES -> true
+        else -> false
+    }
 }
 
 fun View.hideKeyboard() {
