@@ -7,6 +7,7 @@
         <entry key="../../.gradle/caches/transforms-3/539dedf4db2a966ad233aa0d2bf8dc72/transformed/appcompat-1.3.0/res/drawable/abc_ic_clear_material.xml" value="0.24375" />
         <entry key="../../Library/Android/sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/drawable-night/bg_main.xml" value="0.1295" />
+        <entry key="app/src/main/res/drawable-night/bg_splash.xml" value="0.1435" />
         <entry key="app/src/main/res/drawable-night/ic_splash.xml" value="0.18" />
         <entry key="app/src/main/res/drawable-night/item_bg.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable-night/main_bg.xml" value="0.1685" />
