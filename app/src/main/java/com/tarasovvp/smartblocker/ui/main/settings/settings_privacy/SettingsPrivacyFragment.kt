@@ -15,9 +15,11 @@ class SettingsPrivacyFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).setProgressVisibility(true)
-        binding?.settingsPrivacyWebView?.initWebView(getString(R.string.privacy_policy)) {
-            (activity as MainActivity).setProgressVisibility(false)
+        (activity as MainActivity).apply {
+            setProgressVisibility(true)
+            binding?.settingsPrivacyWebView?.initWebView(getString(R.string.privacy_policy)) {
+                setProgressVisibility(false)
+            }
         }
     }
 

@@ -24,7 +24,10 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_UK
+import com.tarasovvp.smartblocker.constants.Constants.DRAWABLE
+import com.tarasovvp.smartblocker.constants.Constants.ENCODING
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
+import com.tarasovvp.smartblocker.constants.Constants.MIME_TYPE
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import kotlinx.coroutines.*
 import java.io.Serializable
@@ -125,9 +128,10 @@ fun Context.spToPx(sp: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
 }
 
+@SuppressLint("DiscouragedApi")
 fun Context.htmlWithImages(htmlText: String): Spanned {
     return htmlText.parseAsHtml(imageGetter = {
-        val resourceId = resources.getIdentifier(it, "drawable", packageName)
+        val resourceId = resources.getIdentifier(it, DRAWABLE, packageName)
         if (resourceId > 0) {
             val drawable = ContextCompat.getDrawable(this, resourceId)
             drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
@@ -152,7 +156,7 @@ fun WebView.initWebView(webUrl: String, onPageFinished: () -> Unit) {
                 onPageFinished.invoke()
             }
         }
-    loadData(webUrl, "text/html; charset=utf-8", "UTF-8")
+    loadData(webUrl, MIME_TYPE, ENCODING)
 }
 
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {

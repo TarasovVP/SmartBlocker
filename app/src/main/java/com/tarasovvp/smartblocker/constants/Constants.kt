@@ -86,6 +86,9 @@ object Constants {
     const val BLOCK_TURN_OFF = "blockTurnOff"
 
     //WebView
+    const val MIME_TYPE = "text/html; charset=utf-8"
+    const val ENCODING = "UTF-8"
+    const val DRAWABLE = "drawable"
     const val DARK_MODE_TEXT = "javascript:document.body.style.setProperty(\"color\", \"white\");"
     const val WHITE_MODE_TEXT = "javascript:document.body.style.setProperty(\"color\", \"black\");"
 }
