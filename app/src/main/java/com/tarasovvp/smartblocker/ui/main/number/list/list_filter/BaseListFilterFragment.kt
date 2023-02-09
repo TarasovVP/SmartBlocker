@@ -265,13 +265,12 @@ open class BaseListFilterFragment :
     }
 
     override fun showInfoScreen() {
-        InfoData(title = getString(Info.INFO_BLOCKER_LIST.title),
-            description = getString(OnBoarding.BLACK_WHITE_LIST.description)).apply {
-            findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
-                ListBlockerFragmentDirections.startInfoFragment(this)
-            } else {
-                ListPermissionFragmentDirections.startInfoFragment(this)
-            })
+        if (this@BaseListFilterFragment is ListBlockerFragment) {
+            findNavController().navigate(ListBlockerFragmentDirections.startInfoFragment(InfoData(title = getString(Info.INFO_BLOCKER_LIST.title),
+                description = getString(Info.INFO_BLOCKER_LIST.description))))
+        } else {
+            findNavController().navigate(ListPermissionFragmentDirections.startInfoFragment(InfoData(title = getString(Info.INFO_PERMISSION_LIST.title),
+                description = getString(Info.INFO_PERMISSION_LIST.description))))
         }
     }
 }

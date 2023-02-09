@@ -18,8 +18,4 @@ enum class OnBoarding(val description: Int, val mainImage: Int, val tabImage: In
     ACCESS_PERMISSIONS(R.string.onboarding_permissions,
         R.drawable.ic_access_permissions,
         R.drawable.ic_tab_last);
-
-    fun getHtmlWithImages(context: Context): Spanned {
-        return context.htmlWithImages(context.getString(description))
-    }
 }

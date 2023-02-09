@@ -13,7 +13,6 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.TextViewLinkHandler
 
-
 class InfoFragment :
     BaseBindingFragment<FragmentInfoBinding>() {
 
