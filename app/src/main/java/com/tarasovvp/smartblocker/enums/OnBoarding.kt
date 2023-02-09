@@ -5,7 +5,7 @@ import android.text.Spanned
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.extensions.htmlWithImages
 
-enum class OnBoarding(private val description: Int, val mainImage: Int, val tabImage: Int) {
+enum class OnBoarding(val description: Int, val mainImage: Int, val tabImage: Int) {
     INNER_DATA_ACCESS(R.string.onboarding_intro,
         R.drawable.ic_inner_data_access,
         R.drawable.ic_tab_first),

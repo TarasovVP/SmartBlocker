@@ -6,15 +6,12 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <FrameLayout
+        <TextView
+            android:id="@+id/info_web_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <WebView
-                android:id="@+id/info_web_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
+            android:layout_height="match_parent"
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_8"/>
 
     </androidx.core.widget.NestedScrollView>
 </layout>

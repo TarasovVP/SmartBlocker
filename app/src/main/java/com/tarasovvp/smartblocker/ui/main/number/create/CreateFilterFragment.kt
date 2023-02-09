@@ -9,15 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
-import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.constants.Constants.SPACE
 import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
@@ -279,9 +276,9 @@ open class CreateFilterFragment :
     override fun showInfoScreen() {
         Log.e("createFilterTAG", "CreateFilterFragment showInfoScreen")
         val info = when {
-            binding?.filter?.isTypeStart().isTrue() -> Info.INFO_FILTER_ADD_START
-            binding?.filter?.isTypeContain().isTrue() -> Info.INFO_FILTER_ADD_CONTAIN
-            else -> Info.INFO_FILTER_ADD_FULL
+            binding?.filter?.isTypeStart().isTrue() -> Info.INFO_CREATE_FILTER_START
+            binding?.filter?.isTypeContain().isTrue() -> Info.INFO_CREATE_FILTER_CONTAIN
+            else -> Info.INFO_CREATE_FILTER_FULL
         }
         findNavController().navigate(DetailsNumberDataFragmentDirections.startInfoFragment(info = InfoData(
             title = getString(info.title),

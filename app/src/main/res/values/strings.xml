@@ -15,7 +15,7 @@
     <string name="button_ok">OK</string>
     <!--Onboarding-->
     <string name="onboarding_intro"><![CDATA[<b>Smart Blocker</b> - приложение, которое позволяет блокировать входящие вызовы через умные фильтры.]]></string>
-    <string name="onboarding_filter_conditions"><![CDATA[Фильтровать в <b>Smart Blocker</b> можно по трем признакам:<br/><img src =\'ic_condition_full\'>Полный номер - полное совпадение с входящим вызовом;<br/><img src =\'ic_condition_start\'>Начинается - совпадение по началу номера;<br/><img src =\'ic_condition_contain\'>Содержит - совпадение фильтра в любом месте входящего вызова.]]></string>
+    <string name="onboarding_filter_conditions"><![CDATA[Фильтровать в <b>Smart Blocker</b> можно по трем признакам:<br/><img src =\'ic_condition_full\'>Полный номер - полное совпадение с входящим вызовом;<br/><img src =\'ic_condition_start\'>Начинается - совпадение по началу номера;<br/><img src =\'ic_condition_contain\'>Содержит - совпадение фильтра в любом месте входящего вызова. <a href="INFO_CREATE_FILTER_FULL">Google</a>]]></string>
     <string name="onboarding_filter_types"><![CDATA[Фильтры в <b>Smart Blocker</b> бывают двух типов:<br/><img src =\'ic_blocker\'>Блокировщики  - при совпадении фильтра блокируют входящий вызов;<br/><img src =\'ic_permission\'>Разрешения - при совпадении разрешают входящий вызов, даже если у него есть совпадение с блокировщиком.]]></string>
     <string name="onboarding_permissions"><![CDATA[Для корректной работы <b>Smart Blocker</b> необходимо дать необходимые разрешения. Для этого выберите “Разрешить” в системных окнах, предложенных телефоном.]]></string>
     <!--Authorization-->

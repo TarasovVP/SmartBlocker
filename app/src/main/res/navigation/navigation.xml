@@ -217,6 +217,9 @@
             android:defaultValue="@null"
             app:argType="com.tarasovvp.smartblocker.models.InfoData"
             app:nullable="true" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <action

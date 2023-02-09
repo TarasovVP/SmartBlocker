@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
+import com.tarasovvp.smartblocker.enums.OnBoarding
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.InfoData
@@ -265,7 +266,7 @@ open class BaseListFilterFragment :
 
     override fun showInfoScreen() {
         InfoData(title = getString(Info.INFO_BLOCKER_LIST.title),
-            description = getString(Info.INFO_BLOCKER_LIST.description)).apply {
+            description = getString(OnBoarding.BLACK_WHITE_LIST.description)).apply {
             findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
                 ListBlockerFragmentDirections.startInfoFragment(this)
             } else {

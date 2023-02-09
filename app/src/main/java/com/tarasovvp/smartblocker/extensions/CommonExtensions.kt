@@ -156,7 +156,7 @@ fun WebView.initWebView(webUrl: String, onPageFinished: () -> Unit) {
                 onPageFinished.invoke()
             }
         }
-    loadData(webUrl, MIME_TYPE, ENCODING)
+    loadDataWithBaseURL("file:///android_res/drawable/", webUrl, MIME_TYPE, ENCODING, null)
 }
 
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {

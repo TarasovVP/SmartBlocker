@@ -164,7 +164,7 @@ class DetailsFilterFragment :
 
     override fun showInfoScreen() {
         findNavController().navigate(DetailsFilterFragmentDirections.startInfoFragment(info = InfoData(
-            title = getString(Info.INFO_FILTER_DETAILS.title),
-            description = getString(Info.INFO_FILTER_DETAILS.description))))
+            title = getString(Info.INFO_DETAILS_FILTER.title),
+            description = getString(Info.INFO_DETAILS_FILTER.description))))
     }
 }
