@@ -15,9 +15,9 @@
     <string name="button_ok">OK</string>
     <!--Onboarding-->
     <string name="onboarding_intro">Привет! Я - Smart Blocker. Я буду Вашим помощником в блокировании нежелательных звонков и в этом мне помогут мои умные фильтры.</string>
-    <string name="onboarding_filter_conditions">Умные фильтры будут анализировать звонки по заданным Вами признакам и блокировать или разрешать входящие вызовы.</string>
+    <string name="onboarding_filter_conditions">Умные фильтры будут анализировать входящие вызовы по заданным Вами признакам и блокировать или разрешать их.</string>
     <string name="onboarding_filter_types">Я всегда готов помочь разобраться в том, как я работаю. Для этого найдите иконку инфо и по ней перейдите на экран с инструкцией.</string>
-    <string name="onboarding_permissions">Для корректной работы мне нужны необходимые разрешения. Для этого выберите “Разрешить” в запрашиваемых телефонах системных окнах.</string>
+    <string name="onboarding_permissions">Для корректной работы телефон запросит необходимые разрешения. Для этого выберите “Разрешить” в системных окнах.</string>
     <!--Authorization-->
     <string name="authorization_entrance">Вход</string>
     <string name="authorization_with_google_account">С помощью Google</string>
