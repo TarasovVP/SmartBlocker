@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.dialogs
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
@@ -22,7 +23,7 @@ class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
                 dismiss()
             }
             filterActionConfirm.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
                 setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filter?.filterAction))
             }
         }

@@ -150,7 +150,9 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
                 Typeface.ITALIC,
                 -1,
                 ColorStateList(arrayOf(intArrayOf()),
-                    intArrayOf(Color.LTGRAY)),
+                    SmartBlockerApp.instance?.baseContext?.let {
+                        ContextCompat.getColor(it, R.color.text_color_black)
+                    }?.let { intArrayOf(it) }),
                 null)
             setSpan(highlightSpan,
                 0,

@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.dialogs
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.DELETE_USER
@@ -23,7 +24,7 @@ class AccountActionDialog : BaseDialog<DialogConfirmBinding>() {
             dismiss()
         }
         binding?.dialogConfirmSubmit?.setSafeOnClickListener {
-            dismiss()
+            findNavController().navigateUp()
             setFragmentResult(if (args.isLogOut) LOG_OUT else DELETE_USER, bundleOf())
         }
     }

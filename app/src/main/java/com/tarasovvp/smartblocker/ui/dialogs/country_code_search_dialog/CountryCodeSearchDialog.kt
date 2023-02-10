@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
@@ -27,8 +28,8 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
     override fun initUI() {
         countryCodeSearchAdapter =
             CountryCodeSearchAdapter(arrayListOf()) { countryCode ->
+                findNavController().navigateUp()
                 setFragmentResult(COUNTRY_CODE, bundleOf(COUNTRY_CODE to countryCode))
-                dismiss()
             }
         binding?.countryCodeSearchList?.adapter = countryCodeSearchAdapter
         binding?.countryCodeEmpty?.emptyState = EmptyState.EMPTY_STATE_QUERY

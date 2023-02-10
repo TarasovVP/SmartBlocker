@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui.dialogs
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.DialogSettingsReviewBinding
@@ -33,7 +34,7 @@ class SettingsReviewDialog :
                 isInactive = it.isNullOrEmpty()
             }
             settingsReviewSend.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
                 setFragmentResult(SETTINGS_REVIEW,
                     bundleOf(SETTINGS_REVIEW to settingsReviewInput.text.toString()))
             }

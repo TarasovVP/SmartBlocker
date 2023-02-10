@@ -4,6 +4,7 @@ import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.CHANGE_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.CURRENT_PASSWORD
@@ -35,7 +36,7 @@ class ChangePasswordDialog : BaseDialog<DialogChangePasswordBinding>() {
                 }
             }
             changePasswordConfirm.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
                 setFragmentResult(CHANGE_PASSWORD,
                     bundleOf(CURRENT_PASSWORD to changePasswordCurrentInput.inputText(),
                         NEW_PASSWORD to changePasswordNewInput.inputText()))

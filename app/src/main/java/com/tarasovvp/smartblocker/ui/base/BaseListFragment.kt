@@ -1,10 +1,14 @@
 package com.tarasovvp.smartblocker.ui.base
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.core.view.marginEnd
+import androidx.core.view.setPadding
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,34 +65,48 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     }
 
     protected fun setSearchViewMenu() {
-        (activity as MainActivity).apply {
-            toolbar?.inflateMenu(R.menu.toolbar_search)
-            context?.let { SearchView(it) }?.apply {
-                if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =
-                    InputType.TYPE_CLASS_NUMBER
-                toolbar?.menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
-                    setQuery(searchQuery, false)
-                    menuItem.actionView = this
-                    menuItem.isVisible = adapter?.itemCount.orZero() > 0
-                    isIconified = searchQuery.isNullOrEmpty()
-                    maxWidth = Integer.MAX_VALUE
+        with(activity as MainActivity) {
+            toolbar?.apply {
+                inflateMenu(R.menu.toolbar_search)
+                setPadding(0,0,0,0)
+                SearchView(this@with).apply {
+                    if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =
+                        InputType.TYPE_CLASS_NUMBER
+                    findViewById<AutoCompleteTextView>(androidx.appcompat.R.id.search_src_text)?.apply {
+                        textSize = 16f
+                        setBackgroundColor(Color.RED)
+                    }
+                    menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
+                        setQuery(searchQuery, false)
+                        menuItem.actionView = this
+                        menuItem.isVisible = adapter?.itemCount.orZero() > 0
+                        isIconified = searchQuery.isNullOrEmpty()
+                        maxWidth = Integer.MAX_VALUE
+                    }
+                    queryHint =
+                        getString(if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) R.string.filter_list_search_hint else R.string.list_search_hint)
+                    setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
+                        searchQuery = it
+                        searchDataList()
+                    })
+                    val contentInsetLeft = contentInsetLeft
+                    setOnQueryTextFocusChangeListener { _, hasFocus ->
+                        menu?.findItem(R.id.settings_menu_item)?.isVisible = hasFocus.not()
+                        setContentInsetsAbsolute(if (hasFocus) 0 else contentInsetLeft,
+                            contentInsetRight)
+                        setPadding(if (hasFocus) contentInsetLeft else 0,
+                            0,
+                            if (hasFocus) contentInsetLeft else 0,
+                            0)
+                    }
+                    clearFocus()
                 }
-                queryHint =
-                    getString(if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) R.string.filter_list_search_hint else R.string.list_search_hint)
-                setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
-                    searchQuery = it
-                    searchDataList()
-                })
-                setOnQueryTextFocusChangeListener { _, hasFocus ->
-                    toolbar?.menu?.findItem(R.id.settings_menu_item)?.isVisible = hasFocus.not()
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem?.itemId) {
+                        R.id.settings_menu_item -> findNavController().navigate(R.id.startSettingsListFragment)
+                    }
+                    return@setOnMenuItemClickListener true
                 }
-                clearFocus()
-            }
-            toolbar?.setOnMenuItemClickListener { menuItem ->
-                when (menuItem?.itemId) {
-                    R.id.settings_menu_item -> findNavController().navigate(R.id.startSettingsListFragment)
-                }
-                return@setOnMenuItemClickListener true
             }
         }
     }

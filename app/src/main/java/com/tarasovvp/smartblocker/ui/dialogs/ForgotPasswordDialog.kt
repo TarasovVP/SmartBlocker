@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui.dialogs
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.EMAIL
@@ -35,7 +36,7 @@ class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
                 isInactive = it.isNullOrEmpty()
             }
             forgotPasswordConfirm.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
                 setFragmentResult(FORGOT_PASSWORD,
                     bundleOf(EMAIL to forgotPassEmailInput.inputText()))
             }

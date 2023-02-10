@@ -67,7 +67,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 getAllData()
                 if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
             }
-            findNavController().navigate(R.id.listBlockerFragment)
+            findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
         }
     }
 

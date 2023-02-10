@@ -10,7 +10,7 @@
     <string name="app_network_unavailable_repeat">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и повторите действие.</string>
     <!--Buttons-->
     <string name="button_next">Дальше</string>
-    <string name="button_accept">Принять</string>
+    <string name="button_accept">Разрешить</string>
     <string name="button_cancel">Отмена</string>
     <string name="button_ok">OK</string>
     <!--Onboarding-->

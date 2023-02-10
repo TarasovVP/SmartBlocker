@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Blacklister" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -12,6 +12,7 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <item name="android:statusBarColor" >@color/item_color</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="android:textColor">@color/text_color_black</item>
         <item name="android:editTextColor">@color/text_color_grey</item>

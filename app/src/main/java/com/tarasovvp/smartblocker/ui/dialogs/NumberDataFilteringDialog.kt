@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.dialogs
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
@@ -27,7 +28,7 @@ class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>()
                 dismiss()
             }
             dialogNumberDataConfirm.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
                 setFragmentResult(FILTER_CONDITION_LIST,
                     bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
                         if (dialogNumberDataWithBlocker.isChecked) add(BLOCKER)

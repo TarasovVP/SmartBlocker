@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.dialogs
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.CALL_DELETE
@@ -24,7 +25,7 @@ class BlockedCallDeleteDialog : BaseDialog<DialogConfirmBinding>() {
                 dismiss()
             }
             dialogConfirmSubmit.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
                 setFragmentResult(FILTER_ACTION, bundleOf(CALL_DELETE to true))
             }
         }

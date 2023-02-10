@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.dialogs
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_CONDITION_LIST
@@ -23,7 +24,7 @@ class FilterConditionsDialog : BaseDialog<DialogFilterConditionBinding>() {
                 dismiss()
             }
             dialogFilterConditionConfirm.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
                 setFragmentResult(FILTER_CONDITION_LIST,
                     bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
                         if (dialogFilterConditionFull.isChecked) add(FilterCondition.FILTER_CONDITION_FULL.index)
