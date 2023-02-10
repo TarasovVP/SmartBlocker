@@ -22,6 +22,16 @@ class SettingsReviewDialog :
             settingsReviewCancel.setSafeOnClickListener {
                 dismiss()
             }
+            setConfirmButton()
+        }
+    }
+
+    private fun setConfirmButton() {
+        binding?.apply {
+            isInactive = settingsReviewInput.text.isNullOrEmpty()
+            settingsReviewInput.doAfterTextChanged {
+                isInactive = it.isNullOrEmpty()
+            }
             settingsReviewSend.setSafeOnClickListener {
                 dismiss()
                 setFragmentResult(SETTINGS_REVIEW,

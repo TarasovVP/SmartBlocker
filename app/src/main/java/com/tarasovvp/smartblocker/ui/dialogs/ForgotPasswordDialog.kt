@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.ui.dialogs
 
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
@@ -22,6 +23,16 @@ class ForgotPasswordDialog : BaseDialog<DialogForgotPasswordBinding>() {
             forgotPassEmailInput.setText(args.email)
             forgotPasswordCancel.setSafeOnClickListener {
                 dismiss()
+            }
+            setConfirmButton()
+        }
+    }
+
+    private fun setConfirmButton() {
+        binding?.apply {
+            isInactive = forgotPassEmailInput.text.isNullOrEmpty()
+            forgotPassEmailInput.doAfterTextChanged {
+                isInactive = it.isNullOrEmpty()
             }
             forgotPasswordConfirm.setSafeOnClickListener {
                 dismiss()

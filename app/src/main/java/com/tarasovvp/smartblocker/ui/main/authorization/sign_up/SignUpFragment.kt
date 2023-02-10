@@ -22,24 +22,24 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
-        initContinueButton(binding?.container?.getViewsFromLayout(EditText::class.java))
-
-    }
-
-    private fun initContinueButton(editTextList: ArrayList<EditText>?) {
-        binding?.signUpContinue?.isEnabled = editTextList?.none { it.text.isNullOrEmpty() }.isTrue()
-        editTextList?.onEach { editText ->
-            editText.doAfterTextChanged {
-                binding?.signUpContinue?.isEnabled =
-                    editTextList.none { it.text.isNullOrEmpty() }.isTrue()
-            }
-        }
+        setContinueButton(binding?.container?.getViewsFromLayout(EditText::class.java))
         binding?.signUpEntrance?.setSafeOnClickListener {
             findNavController().navigateUp()
         }
-        binding?.signUpContinue?.setSafeOnClickListener {
-            viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),
-                binding?.signUpPassword.inputText())
+    }
+
+    private fun setContinueButton(editTextList: ArrayList<EditText>?) {
+        binding?.apply {
+            isInactive = editTextList?.any { it.text.isNullOrEmpty() }.isTrue()
+            editTextList?.onEach { editText ->
+                editText.doAfterTextChanged {
+                    isInactive = editTextList.any { it.text.isNullOrEmpty() }.isTrue()
+                }
+            }
+            binding?.signUpContinue?.setSafeOnClickListener {
+                viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),
+                    binding?.signUpPassword.inputText())
+            }
         }
     }
 

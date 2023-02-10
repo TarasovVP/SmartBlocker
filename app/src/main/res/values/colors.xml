@@ -13,6 +13,7 @@
     <color name="cyprus">#0B1F39</color>
     <color name="sapphire">#071D39</color>
     <color name="comet">#636076</color>
+    <color name="ghost">#B1B0BB</color>
     <color name="cornflower_blue">#6480E2</color>
     <color name="midnight_blue">#11315B</color>
     <color name="sunset">#C84747</color>
@@ -32,4 +33,5 @@
     <color name="avatar_bg">@color/light_steel_blue</color>
     <color name="avatar_icon_bg">@color/comet</color>
     <color name="google_button_stroke">@color/white</color>
+    <color name="inactive_bg">@color/comet</color>
 </resources>

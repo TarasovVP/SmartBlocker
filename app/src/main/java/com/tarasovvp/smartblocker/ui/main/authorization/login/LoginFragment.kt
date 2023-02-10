@@ -65,10 +65,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private fun setLoginButton(editTextList: ArrayList<EditText>?) {
         binding?.apply {
-            loginContinue.isEnabled = editTextList?.none { it.text.isNullOrEmpty() }.isTrue()
+            isInactive = editTextList?.any { it.text.isNullOrEmpty() }.isTrue()
             editTextList?.onEach { editText ->
                 editText.doAfterTextChanged {
-                    loginContinue.isEnabled = editTextList.none { it.text.isNullOrEmpty() }.isTrue()
+                    isInactive = editTextList.any { it.text.isNullOrEmpty() }.isTrue()
                 }
             }
             loginContinue.setSafeOnClickListener {
