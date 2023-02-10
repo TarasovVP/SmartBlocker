@@ -30,6 +30,7 @@ object Constants {
     //Auth
     const val SERVER_CLIENT_ID =
         "865166794508-5muqsbokmlifd918hpq0u1g0co38ck4c.apps.googleusercontent.com"
+    const val UNAUTHORIZED_ENTER = "unauthorizedEnter"
     const val EMAIL = "email"
     const val DELETE_USER = "deleteUser"
     const val LOG_OUT = "logOut"

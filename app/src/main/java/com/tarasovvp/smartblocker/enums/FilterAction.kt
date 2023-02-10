@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.enums
 
 import com.tarasovvp.smartblocker.R
 
-//TODO complete??
 enum class FilterAction(
     val title: Int,
     val color: Int,

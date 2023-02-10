@@ -28,6 +28,9 @@
         <action
             android:id="@+id/startForgotPasswordDialog"
             app:destination="@id/forgotPasswordDialog" />
+        <action
+            android:id="@+id/startUnauthorizedEnterDialog"
+            app:destination="@id/unauthorizedEnterDialog" />
     </fragment>
 
     <fragment
@@ -339,6 +342,10 @@
             app:argType="string"
             app:nullable="true" />
     </dialog>
+
+    <dialog
+        android:id="@+id/unauthorizedEnterDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.UnauthorizedEnterDialog" />
 
     <dialog
         android:id="@+id/changePasswordDialog"

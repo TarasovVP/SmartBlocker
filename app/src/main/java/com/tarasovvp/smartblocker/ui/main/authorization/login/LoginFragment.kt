@@ -16,6 +16,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.constants.Constants.FORGOT_PASSWORD
+import com.tarasovvp.smartblocker.constants.Constants.UNAUTHORIZED_ENTER
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
@@ -30,26 +31,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setOnClickListeners()
+        setOnFragmentResultListeners()
         setLoginButton(binding?.container?.getViewsFromLayout(EditText::class.java))
         (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
-        setFragmentResultListener(FORGOT_PASSWORD) { _, bundle ->
-            val email = bundle.getString(EMAIL, String.EMPTY)
-            if (email.isNotEmpty()) {
-                viewModel.sendPasswordResetEmail(email)
-            } else {
-                showMessage(getString(R.string.authorization_enter_email), true)
-            }
-        }
     }
 
     private fun setOnClickListeners() {
         binding?.apply {
             loginContinueWithoutAcc.setSafeOnClickListener {
-                (activity as MainActivity).apply {
-                    getAllData()
-                    if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
-                }
-                findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
+                findNavController().navigate(LoginFragmentDirections.startUnauthorizedEnterDialog())
             }
             loginSignUp.setSafeOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.startSignUpFragment())
@@ -60,6 +50,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             loginGoogleAuth.setSafeOnClickListener {
                 googleSignInLauncher.launch(SmartBlockerApp.instance?.googleSignInClient?.signInIntent)
             }
+        }
+    }
+
+    private fun setOnFragmentResultListeners() {
+        setFragmentResultListener(FORGOT_PASSWORD) { _, bundle ->
+            val email = bundle.getString(EMAIL, String.EMPTY)
+            if (email.isNotEmpty()) {
+                viewModel.sendPasswordResetEmail(email)
+            } else {
+                showMessage(getString(R.string.authorization_enter_email), true)
+            }
+        }
+        setFragmentResultListener(UNAUTHORIZED_ENTER) { _, _ ->
+            (activity as MainActivity).apply {
+                getAllData()
+                if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+            }
+            findNavController().navigate(R.id.listBlockerFragment)
         }
     }
 

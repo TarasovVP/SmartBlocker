@@ -203,6 +203,7 @@
     <string name="menu_info">Info</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
+    <string name="unauthorized_enter">У авторизованного пользователя ограниченный функционал, в том числе нет доступа к хранению данных в удаленном доступе. Все равно войти?</string>
     <plurals name="filter_list_delete_amount">
         <item quantity="one">%s фильтр</item>
         <item quantity="few">%s фильтра</item>
