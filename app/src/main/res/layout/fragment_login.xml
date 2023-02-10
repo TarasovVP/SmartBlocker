@@ -178,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/StrokeButtonStyle"
-                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_16"
                 android:text="@string/authorization_continue_without_account"
                 app:layout_constraintTop_toBottomOf="@+id/login_divider_title_unauthorized" />
 

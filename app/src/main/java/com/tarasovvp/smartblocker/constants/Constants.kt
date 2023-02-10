@@ -89,6 +89,7 @@ object Constants {
     const val MIME_TYPE = "text/html; charset=utf-8"
     const val ENCODING = "UTF-8"
     const val DRAWABLE = "drawable"
+    const val DRAWABLE_RES = "\"file:///android_res/drawable/\""
     const val DARK_MODE_TEXT = "javascript:document.body.style.setProperty(\"color\", \"white\");"
     const val WHITE_MODE_TEXT = "javascript:document.body.style.setProperty(\"color\", \"black\");"
 }

@@ -13,4 +13,5 @@
     <color name="input_bg">@color/midnight_blue</color>
     <color name="avatar_bg">@color/midnight_blue</color>
     <color name="avatar_icon_bg">@color/light_steel_blue</color>
+    <color name="google_button_stroke">@color/light_steel_blue</color>
 </resources>

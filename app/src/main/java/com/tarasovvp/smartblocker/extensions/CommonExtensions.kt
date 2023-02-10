@@ -25,6 +25,7 @@ import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.constants.Constants.DRAWABLE
+import com.tarasovvp.smartblocker.constants.Constants.DRAWABLE_RES
 import com.tarasovvp.smartblocker.constants.Constants.ENCODING
 import com.tarasovvp.smartblocker.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.constants.Constants.MIME_TYPE
@@ -33,6 +34,7 @@ import kotlinx.coroutines.*
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
@@ -144,19 +146,22 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
 
 @SuppressLint("SetJavaScriptEnabled")
 fun WebView.initWebView(webUrl: String, onPageFinished: () -> Unit) {
-        setBackgroundColor(Color.TRANSPARENT)
-        settings.javaScriptEnabled = true
-        webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
-            }
-            override fun onPageFinished(view: WebView, url: String) {
-                loadUrl(
-                    if (context.isDarkMode().isTrue()) Constants.DARK_MODE_TEXT else Constants.WHITE_MODE_TEXT
-                )
-                onPageFinished.invoke()
-            }
+    setBackgroundColor(Color.TRANSPARENT)
+    settings.javaScriptEnabled = true
+    webViewClient = object : WebViewClient() {
+        override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         }
-    loadDataWithBaseURL("file:///android_res/drawable/", webUrl, MIME_TYPE, ENCODING, null)
+
+        override fun onPageFinished(view: WebView, url: String) {
+            loadUrl(
+                if (context.isDarkMode()
+                        .isTrue()
+                ) Constants.DARK_MODE_TEXT else Constants.WHITE_MODE_TEXT
+            )
+            onPageFinished.invoke()
+        }
+    }
+    loadDataWithBaseURL(DRAWABLE_RES, webUrl, MIME_TYPE, ENCODING, null)
 }
 
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {

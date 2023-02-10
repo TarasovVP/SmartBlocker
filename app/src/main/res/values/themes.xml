@@ -91,7 +91,7 @@
         <item name="android:elevation">@dimen/margin_2</item>
         <item name="android:textSize">@dimen/text_size_18</item>
         <item name="android:textStyle">bold</item>
-        <item name="strokeColor">@color/text_color_grey</item>
+        <item name="strokeColor">@color/google_button_stroke</item>
         <item name="strokeWidth">@dimen/padding_1</item>
     </style>
 
