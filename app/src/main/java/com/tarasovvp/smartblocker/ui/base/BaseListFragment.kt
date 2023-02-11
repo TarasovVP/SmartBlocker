@@ -18,6 +18,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.dpToPx
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.models.HeaderDataItem
@@ -68,13 +69,11 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         with(activity as MainActivity) {
             toolbar?.apply {
                 inflateMenu(R.menu.toolbar_search)
-                setPadding(0,0,0,0)
                 SearchView(this@with).apply {
                     if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =
                         InputType.TYPE_CLASS_NUMBER
                     findViewById<AutoCompleteTextView>(androidx.appcompat.R.id.search_src_text)?.apply {
                         textSize = 16f
-                        setBackgroundColor(Color.RED)
                     }
                     menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
                         setQuery(searchQuery, false)
@@ -94,9 +93,9 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                         menu?.findItem(R.id.settings_menu_item)?.isVisible = hasFocus.not()
                         setContentInsetsAbsolute(if (hasFocus) 0 else contentInsetLeft,
                             contentInsetRight)
-                        setPadding(if (hasFocus) contentInsetLeft else 0,
+                        setPadding(if (hasFocus) dpToPx(8f).toInt() else 0,
                             0,
-                            if (hasFocus) contentInsetLeft else 0,
+                            if (hasFocus) dpToPx(10f).toInt() else 0,
                             0)
                     }
                     clearFocus()
