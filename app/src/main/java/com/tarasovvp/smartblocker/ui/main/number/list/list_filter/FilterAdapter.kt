@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui.main.number.list.list_filter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
@@ -60,7 +61,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
                 filter.isDeleteMode = isDeleteMode
                 filter.searchText = searchQuery
-                filter.highlightedSpanned = filter.filter.highlightedSpanned(searchQuery, null)
+                filter.highlightedSpanned = filter.filter.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 this.filter = filter
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {

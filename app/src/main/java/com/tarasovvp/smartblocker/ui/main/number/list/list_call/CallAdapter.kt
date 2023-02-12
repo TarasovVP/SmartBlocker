@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui.main.number.list.list_call
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
@@ -63,7 +64,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 call.isDeleteMode = isDeleteMode
                 call.searchText = searchQuery
-                call.highlightedSpanned = call.number.highlightedSpanned(searchQuery, null)
+                call.highlightedSpanned = call.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 call.isExtract = false
                 this.call = call
                 root.setSafeOnClickListener {
@@ -77,7 +78,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                         callClickListener.onCallClick(call.apply {
                             searchText = String.EMPTY
                             call.highlightedSpanned =
-                                call.number.highlightedSpanned(String.EMPTY, null)
+                                call.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         })
                     }
                 }

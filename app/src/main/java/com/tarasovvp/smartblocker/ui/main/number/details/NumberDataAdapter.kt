@@ -65,7 +65,7 @@ class NumberDataAdapter(
             binding?.apply {
                 this.filter = filter?.apply {
                     highlightedSpanned =
-                        highlightedSpanned ?: filter.filter.highlightedSpanned(String.EMPTY, null)
+                        highlightedSpanned ?: filter.filter.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,
@@ -89,7 +89,7 @@ class NumberDataAdapter(
                     contact?.let { it1 ->
                         numberDataClick.invoke(it1.apply {
                             searchText = String.EMPTY
-                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null)
+                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         })
                     }
                 }
@@ -107,12 +107,12 @@ class NumberDataAdapter(
                 this.call?.isExtract = isFilteredCallDetails.not()
                 this.call?.isFilteredCallDetails = isFilteredCallDetails
                 this.call?.highlightedSpanned = this.call?.highlightedSpanned
-                    ?: this.call?.number.highlightedSpanned(String.EMPTY, null)
+                    ?: this.call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {
                     call?.let { it1 ->
                         numberDataClick.invoke(it1.apply {
                             searchText = String.EMPTY
-                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null)
+                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         })
                     }
                 }

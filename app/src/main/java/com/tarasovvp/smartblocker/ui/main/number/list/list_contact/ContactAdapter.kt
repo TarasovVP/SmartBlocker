@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui.main.number.list.list_contact
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
@@ -59,13 +60,13 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<
             val contact = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
                 contact.searchText = searchQuery
-                contact.highlightedSpanned = contact.number.highlightedSpanned(searchQuery, null)
+                contact.highlightedSpanned = contact.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 this.contact = contact
                 root.setSafeOnClickListener {
                     contactClick.invoke(contact.apply {
                         searchText = String.EMPTY
                         contact.highlightedSpanned =
-                            contact.number.highlightedSpanned(String.EMPTY, null)
+                            contact.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                     })
                 }
                 executePendingBindings()

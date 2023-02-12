@@ -51,10 +51,11 @@ object ContactRepository {
     suspend fun filteredNumberDataList(
         filter: Filter?,
         numberDataList: ArrayList<NumberData>,
+        color: Int
     ): ArrayList<NumberData> =
         withContext(
             Dispatchers.Default
         ) {
-            numberDataList.filteredNumberDataList(filter)
+            numberDataList.filteredNumberDataList(filter, color)
         }
 }

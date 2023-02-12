@@ -139,7 +139,7 @@ fun TextView.highlightText(searchText: String?, mainText: String?) {
     }
 }
 
-fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?): SpannableString {
+fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?, color: Int): SpannableString {
     val mainText = if (countryCode.isNullOrEmpty().not()) {
         String.format("%s? %s", countryCode, this)
     } else this
@@ -149,10 +149,7 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
             val highlightSpan = TextAppearanceSpan(null,
                 Typeface.ITALIC,
                 -1,
-                ColorStateList(arrayOf(intArrayOf()),
-                    SmartBlockerApp.instance?.baseContext?.let {
-                        ContextCompat.getColor(it, R.color.text_color_black)
-                    }?.let { intArrayOf(it) }),
+                ColorStateList(arrayOf(intArrayOf()), intArrayOf(color)),
                 null)
             setSpan(highlightSpan,
                 0,
@@ -208,10 +205,7 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?):
                     val highlightSpan = TextAppearanceSpan(null,
                         Typeface.BOLD,
                         -1,
-                        ColorStateList(arrayOf(intArrayOf()),
-                            SmartBlockerApp.instance?.baseContext?.let {
-                                ContextCompat.getColor(it, R.color.text_color_black)
-                            }?.let { intArrayOf(it) }),
+                        ColorStateList(arrayOf(intArrayOf()), intArrayOf(color)),
                         null)
                     setSpan(highlightSpan,
                         index,

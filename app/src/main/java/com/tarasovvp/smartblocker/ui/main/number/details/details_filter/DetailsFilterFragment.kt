@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.ui.main.number.details.details_filter
 
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -121,7 +122,7 @@ class DetailsFilterFragment :
 
     override fun getData() {
         binding?.filter?.let {
-            viewModel.getQueryContactCallList(it)
+            context?.let { context -> viewModel.getQueryContactCallList(it, ContextCompat.getColor(context, R.color.text_color_black)) }
             viewModel.filteredCallsByFilter(it.filter)
         }
     }
@@ -151,12 +152,10 @@ class DetailsFilterFragment :
             if (filter.isChangeFilterAction()) {
                 mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                     initViews()
-                    viewModel.getQueryContactCallList(filter)
+                    context?.let { context -> viewModel.getQueryContactCallList(filter, ContextCompat.getColor(context, R.color.text_color_black)) }
                 }
             } else {
-                findNavController().navigate(if (binding?.filter?.isBlocker()
-                        .isTrue()
-                ) DetailsFilterFragmentDirections.startListBlockerFragment()
+                findNavController().navigate(if (binding?.filter?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
                 else DetailsFilterFragmentDirections.startListPermissionFragment())
             }
         }

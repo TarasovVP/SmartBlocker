@@ -25,7 +25,7 @@ class DetailsFilterViewModel(application: Application) : BaseViewModel(applicati
 
     val filterActionLiveData = MutableLiveData<Filter>()
 
-    fun getQueryContactCallList(filter: Filter) {
+    fun getQueryContactCallList(filter: Filter, color: Int) {
         showProgress()
         launch {
             val calls = async { callRepository.getQueryCallList(filter) }
@@ -42,14 +42,14 @@ class DetailsFilterViewModel(application: Application) : BaseViewModel(applicati
                     it.numberData
                 }
             }
-            filteredNumberDataList(filter, numberDataList)
+            filteredNumberDataList(filter, numberDataList, color)
         }
     }
 
-    private fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
+    private fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) {
         launch {
             numberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
-                numberDataList))
+                numberDataList, color))
             hideProgress()
         }
     }

@@ -241,17 +241,17 @@ fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
     }
 }
 
-fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<NumberData> {
+fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): ArrayList<NumberData> {
     val filteredList = arrayListOf<NumberData>()
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
-        numberData.highlightedSpanned = numberData.numberData.highlightedSpanned(String.EMPTY, null)
+        numberData.highlightedSpanned = numberData.numberData.highlightedSpanned(String.EMPTY, null, color)
         if (filter?.isTypeContain().isTrue() && numberData.numberData.digitsTrimmed()
                 .contains(filter?.filter.orEmpty()).isTrue()
         ) {
             filteredList.add(numberData.apply {
                 highlightedSpanned =
-                    numberData.numberData.highlightedSpanned(filter?.createFilter(), null)
+                    numberData.numberData.highlightedSpanned(filter?.createFilter(), null, color)
             })
         } else {
             val phoneNumber = numberData.numberData.digitsTrimmed()
@@ -262,7 +262,7 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
                 )
                     filteredList.add(numberData.apply {
                         highlightedSpanned =
-                            numberData.numberData.highlightedSpanned(filter?.createFilter(), null)
+                            numberData.numberData.highlightedSpanned(filter?.createFilter(), null, color)
                     }) else if ((phoneNumber?.nationalNumber.toString()
                         .startsWith(filter?.extractFilterWithoutCountryCode().orEmpty())
                         .isTrue() && String.format(COUNTRY_CODE_START,
@@ -270,8 +270,8 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?): ArrayList<Num
                 )
                     supposedFilteredList.add(numberData.apply {
                         highlightedSpanned =
-                            numberData.numberData.highlightedSpanned(if (filter.filter == filter.createFilter()) filter.extractFilterWithoutCountryCode() else filter.filter,
-                                filter.countryCode.countryCode)
+                                numberData.numberData.highlightedSpanned(if (filter.filter == filter.createFilter())
+                                    filter.extractFilterWithoutCountryCode() else filter.filter, filter.countryCode.countryCode, color)
                     })
             }
         }

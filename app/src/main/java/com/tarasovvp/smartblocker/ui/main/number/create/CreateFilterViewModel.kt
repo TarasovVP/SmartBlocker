@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.extensions.isDarkMode
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
@@ -87,14 +88,14 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
         }
     }
 
-    fun filterNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>) {
+    fun filterNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) {
         Log.e("createFilterTAG", "CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filter?.filter} createFilter ${filter?.createFilter()} numberDataList.size ${numberDataList.size}")
         showProgress()
         launch {
-            val filteredNumberDataList = contactRepository.filteredNumberDataList(filter, numberDataList)
+            val filteredNumberDataList = contactRepository.filteredNumberDataList(filter, numberDataList, color)
             filteredNumberDataListLiveData.postValue(filteredNumberDataList)
             hideProgress()
-            Log.e("createFilterTAG", "CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size}")
+            Log.e("createFilterTAG", "CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}")
         }
     }
 

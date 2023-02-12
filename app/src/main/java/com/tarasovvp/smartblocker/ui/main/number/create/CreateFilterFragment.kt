@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.main.number.create
 
 import android.content.Context
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -183,7 +184,8 @@ open class CreateFilterFragment :
                     filter = createFilterInput.getRawText()
                     viewModel.checkFilterExist(this)
                 }
-                viewModel.filterNumberDataList(filter, numberDataList)
+                context?.let {viewModel.filterNumberDataList(filter, numberDataList,
+                    ContextCompat.getColor(it, R.color.text_color_black)) }
             }
         }
     }
@@ -200,7 +202,8 @@ open class CreateFilterFragment :
                 }
             }
             createFilterCountryCodeSpinner.text = countryCode.countryEmoji()
-            viewModel.filterNumberDataList(filter, numberDataList)
+            context?.let {viewModel.filterNumberDataList(filter, numberDataList,
+                ContextCompat.getColor(it, R.color.text_color_black)) }
         }
     }
 
@@ -229,7 +232,8 @@ open class CreateFilterFragment :
                 Log.e("createFilterTAG", "CreateFilterFragment observeLiveData numberDataListLiveData")
                 this@CreateFilterFragment.numberDataList = ArrayList(numberDataList)
                 if (binding?.filter?.isTypeContain().isTrue().not()) {
-                    filterNumberDataList(binding?.filter, this@CreateFilterFragment.numberDataList)
+                    context?.let {viewModel.filterNumberDataList(binding?.filter, this@CreateFilterFragment.numberDataList,
+                        ContextCompat.getColor(it, R.color.text_color_black)) }
                 } else {
                     numberDataAdapter?.numberDataList = this@CreateFilterFragment.numberDataList
                     numberDataAdapter?.notifyDataSetChanged()
