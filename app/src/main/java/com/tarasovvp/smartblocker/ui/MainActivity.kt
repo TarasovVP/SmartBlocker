@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_Blacklister)
+        setTheme(R.style.Theme_SmartBlocker)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding?.mainSplash?.addAnimatorListener(object : Animator.AnimatorListener {

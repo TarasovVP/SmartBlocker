@@ -105,7 +105,7 @@
                 android:id="@+id/item_call_filter_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@{call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
+                android:drawableStart="@{call.filterNotNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
                 android:gravity="center_vertical|end"
                 android:text="@{call.filterValue}"
                 android:textColor="@{call.filter.blocker ? @color/sunset : @color/islamic_green}"

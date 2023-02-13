@@ -3,9 +3,7 @@ package com.tarasovvp.smartblocker.ui.main.settings.settings_blocker
 import android.os.Bundle
 import android.view.View
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
-import com.tarasovvp.smartblocker.extensions.isNotTrue
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener

@@ -11,8 +11,8 @@ import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 
 class SingleDetailsFragment(
-    var dataType: String = String.EMPTY,
-    var numberDataResult: (NumberData) -> Unit,
+    private var dataType: String = String.EMPTY,
+    private var numberDataResult: (NumberData) -> Unit,
 ) :
     BaseBindingFragment<FragmentSingleNumberDataDetailsBinding>() {
 

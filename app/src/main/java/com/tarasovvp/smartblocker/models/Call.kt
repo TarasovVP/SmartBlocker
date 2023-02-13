@@ -89,7 +89,7 @@ open class Call(
         return filter?.filter.orEmpty()
     }
 
-    fun isFilterNullOrEmpty(): Boolean {
+    fun isFilterNotNullOrEmpty(): Boolean {
         return filter?.filter.isNullOrEmpty().isTrue()
     }
 
@@ -127,7 +127,7 @@ open class Call(
         return when {
             isFilteredCallDetails -> dateTimeFromCallDate()
             isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() -> filtered?.filter.orEmpty()
-            isExtract && isFilterNullOrEmpty().not() -> filter?.filter.orEmpty()
+            isExtract && isFilterNotNullOrEmpty().not() -> filter?.filter.orEmpty()
             else -> String.EMPTY
         }
     }
@@ -136,7 +136,7 @@ open class Call(
         return when {
             isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty() -> R.drawable.ic_settings_small
             isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() -> filtered?.conditionTypeSmallIcon()
-            isExtract && isFilterNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
+            isExtract && isFilterNotNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
             else -> null
         }
     }

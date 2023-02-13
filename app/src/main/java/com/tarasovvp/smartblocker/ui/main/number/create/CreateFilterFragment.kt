@@ -184,8 +184,9 @@ open class CreateFilterFragment :
                     filter = createFilterInput.getRawText()
                     viewModel.checkFilterExist(this)
                 }
-                context?.let {viewModel.filterNumberDataList(filter, numberDataList,
-                    ContextCompat.getColor(it, R.color.text_color_black)) }
+                context?.let { context ->
+                    viewModel.filterNumberDataList(filter, numberDataList,
+                    ContextCompat.getColor(context, R.color.text_color_black)) }
             }
         }
     }

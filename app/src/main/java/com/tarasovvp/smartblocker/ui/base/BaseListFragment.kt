@@ -1,14 +1,11 @@
 package com.tarasovvp.smartblocker.ui.base
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
-import androidx.core.view.marginEnd
-import androidx.core.view.setPadding
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager

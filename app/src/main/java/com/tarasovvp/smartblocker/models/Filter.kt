@@ -125,13 +125,13 @@ data class Filter(
 
     @Exclude
     fun conditionTypeFullHint(): String {
-        return countryCode.numberFormat.replace(Regex("[0-9]"), MASK_CHAR.toString())
+        return countryCode.numberFormat.replace(Regex("\\d"), MASK_CHAR.toString())
     }
 
     @Exclude
     fun conditionTypeStartHint(): String {
         return countryCode.numberFormat.filter { it.isDigit() }
-            .replace(Regex("[0-9]"), MASK_CHAR.toString())
+            .replace(Regex("\\d"), MASK_CHAR.toString())
             .replaceFirst(MASK_CHAR.toString(), String.EMPTY)
     }
 

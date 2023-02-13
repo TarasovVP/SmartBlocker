@@ -11,7 +11,6 @@
     <color name="lavender">#F7F8FD</color>
     <color name="tiber">#11203A</color>
     <color name="cyprus">#0B1F39</color>
-    <color name="sapphire">#071D39</color>
     <color name="comet">#636076</color>
     <color name="ghost">#B1B0BB</color>
     <color name="cornflower_blue">#6480E2</color>
@@ -28,7 +27,6 @@
     <color name="text_color_black">@color/valhalla</color>
     <color name="item_color">@color/white</color>
     <color name="button_bg">@color/cornflower_blue</color>
-    <color name="span_text">@color/cornflower_blue</color>
     <color name="input_bg">@color/white</color>
     <color name="avatar_bg">@color/light_steel_blue</color>
     <color name="avatar_icon_bg">@color/comet</color>

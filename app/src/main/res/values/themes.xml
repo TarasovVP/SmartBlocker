@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Blacklister" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.SmartBlocker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/teal_700</item>
@@ -199,13 +199,6 @@
         <item name="iconTint">@color/white</item>
         <item name="borderWidth">@dimen/size_0</item>
         <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="StrokedExtendedFABStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
-        <item name="android:backgroundTint">@color/item_color</item>
-        <item name="android:strokeColor">@color/text_color_grey</item>
-        <item name="strokeWidth">@dimen/padding_1</item>
-        <item name="iconTint">@null</item>
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">

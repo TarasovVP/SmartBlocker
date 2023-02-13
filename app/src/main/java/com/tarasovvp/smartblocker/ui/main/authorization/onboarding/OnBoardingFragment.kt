@@ -46,10 +46,10 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 
     private fun initViewPager() {
         val fragmentList = arrayListOf(
-            SingleOnBoardingFragment.newInstance(OnBoarding.INNER_DATA_ACCESS),
-            SingleOnBoardingFragment.newInstance(OnBoarding.BLACK_WHITE_LIST),
-            SingleOnBoardingFragment.newInstance(OnBoarding.AUTHORIZED_USER),
-            SingleOnBoardingFragment.newInstance(OnBoarding.ACCESS_PERMISSIONS)
+            SingleOnBoardingFragment.newInstance(OnBoarding.ONBOARDING_INTRO),
+            SingleOnBoardingFragment.newInstance(OnBoarding.ONBOARDING_FILTER_CONDITIONS),
+            SingleOnBoardingFragment.newInstance(OnBoarding.ONBOARDING_INFO),
+            SingleOnBoardingFragment.newInstance(OnBoarding.ONBOARDING_PERMISSIONS)
         )
 
         val adapter = activity?.supportFragmentManager?.let { fragmentManager ->

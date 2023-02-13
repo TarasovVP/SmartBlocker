@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.tarasovvp.smartblocker">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -19,7 +18,7 @@
         android:name="com.tarasovvp.smartblocker.SmartBlockerApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Blacklister"
+        android:theme="@style/Theme.SmartBlocker"
         tools:ignore="AllowBackup"
         android:dataExtractionRules="@xml/data_extraction_rules">
         <activity

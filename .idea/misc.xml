@@ -104,6 +104,7 @@
         <entry key="app/src/main/res/drawable/ic_incoming_call.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_inner_data_access.xml" value="0.1695" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/ic_logo.xml" value="0.1695" />
         <entry key="app/src/main/res/drawable/ic_missed_call.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/drawable/ic_notifications.xml" value="0.1712962962962963" />
@@ -279,5 +280,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.039957768212458375" />
+      </ProjectState>
+    </option>
   </component>
 </project>

@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
-import com.tarasovvp.smartblocker.enums.OnBoarding
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.InfoData
@@ -251,8 +250,8 @@ open class BaseListFilterFragment :
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         binding?.listFilterFilter?.isEnabled =
-            filteredList.isNotEmpty() || (filteredList.isEmpty() && conditionFilterIndexes.isNullOrEmpty()
-                .not())
+            filteredList.isNotEmpty() || conditionFilterIndexes.isNullOrEmpty()
+                .not()
         checkDataListEmptiness(filteredList.isEmpty())
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList, swipeRefresh?.isRefreshing.isTrue())

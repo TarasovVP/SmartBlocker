@@ -16,7 +16,7 @@
     <!--Onboarding-->
     <string name="onboarding_intro">Привет! Я - Smart Blocker. Я буду Вашим помощником в блокировании нежелательных звонков и в этом мне помогут мои умные фильтры.</string>
     <string name="onboarding_filter_conditions">Умные фильтры будут анализировать входящие вызовы по заданным Вами признакам и блокировать или разрешать их.</string>
-    <string name="onboarding_filter_types">Я всегда готов помочь разобраться в том, как я работаю. Для этого найдите иконку <font color='blue'>&#9432;</font> и по ней перейдите на экран с инструкцией.</string>
+    <string name="onboarding_info">Я всегда готов помочь разобраться в том, как я работаю. Для этого найдите иконку <small><font color='blue'>&#9432;</font></small> и по ней перейдите на экран с инструкцией.</string>
     <string name="onboarding_permissions">Для корректной работы телефон запросит необходимые разрешения. Для этого выберите “Разрешить” в системных окнах.</string>
     <!--Authorization-->
     <string name="authorization_entrance">Вход</string>
@@ -175,7 +175,6 @@
     <string name="settings_account_change_password_succeed">Пароль успешно изменен</string>
     <string name="settings_account_log_out">Вы действительно хотите разлогиниться?</string>
     <string name="settings_account_delete">Вы действительно хотите удалить аккаунт?</string>
-    <string name="settings_account_success">Операция выполнена успешно</string>
     <!--Settings language-->
     <string name="settings_language_russian">Русский</string>
     <string name="settings_language_ukrainian">Украинский</string>
@@ -199,7 +198,6 @@
     <string name="filter_contact_blocker">C признаком блокировщика</string>
     <string name="filter_contact_permission">C признаком разрешения</string>
     <!--Menu item-->
-    <string name="menu_close">Close</string>
     <string name="menu_info">Info</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>

@@ -298,12 +298,12 @@ class MaskedEditText @JvmOverloads constructor(
 
     private fun makeMaskedTextWithHint(): CharSequence {
         val ssb = SpannableStringBuilder()
-        var mtrv: Int
+        var position: Int
         mask?.forEachIndexed { index, char ->
-            mtrv = maskToRaw?.get(index).orZero()
-            if (mtrv != -1) {
-                if (mtrv < rawText?.length().orZero()) {
-                    rawText?.charAt(mtrv)?.let { ssb.append(it) }
+            position = maskToRaw?.get(index).orZero()
+            if (position != -1) {
+                if (position < rawText?.length().orZero()) {
+                    rawText?.charAt(position)?.let { ssb.append(it) }
                 } else {
                     hint?.get(index)?.let { ssb.append(it) }
                 }
