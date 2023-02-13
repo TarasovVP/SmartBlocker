@@ -80,6 +80,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 }
             }
             loginContinue.setSafeOnClickListener {
+                binding?.root?.hideKeyboard()
                 viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
                     loginPasswordInput.inputText())
             }

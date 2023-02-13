@@ -37,6 +37,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                 }
             }
             binding?.signUpContinue?.setSafeOnClickListener {
+                binding?.root?.hideKeyboard()
                 viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),
                     binding?.signUpPassword.inputText())
             }
