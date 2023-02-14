@@ -11,11 +11,11 @@ import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
 
-class BlockedCallDeleteDialog : BaseDialog<DialogConfirmBinding>() {
+class FilteredCallDeleteDialog : BaseDialog<DialogConfirmBinding>() {
 
     override var layoutId = R.layout.dialog_confirm
 
-    private val args: BlockedCallDeleteDialogArgs by navArgs()
+    private val args: FilteredCallDeleteDialogArgs by navArgs()
 
     override fun initUI() {
         binding?.apply {

@@ -100,11 +100,20 @@
     <!--List screens-->
     <string name="list_blocker">Блокировщики</string>
     <string name="list_permission">Разрешения</string>
-    <string name="list_call">Вызовы</string>
+    <plurals name="list_filter_delete_amount">
+        <item quantity="one">%s фильтр</item>
+        <item quantity="few">%s фильтра</item>
+        <item quantity="other">%s фильтров</item>
+    </plurals>
+    <string name="list_filter_search_hint">Введите номер</string>
+    <string name="list_call">Журнал</string>
+    <string name="list_call_delete_info">Можно удалить только отфильтрованные вызовы</string>
+    <plurals name="list_call_delete_amount">
+        <item quantity="one">Удалить отфильтрованный вызов %s из журнала?</item>
+        <item quantity="other">Удалить %s отфильтрованный вызовов из журнала?</item>
+    </plurals>
     <string name="list_contact">Контакты</string>
-    <string name="list_call_delete_info">Можно удалить только заблокированные номера</string>
-    <string name="filter_list_search_hint">Введите номер</string>
-    <string name="list_search_hint">Введите номер или имя</string>
+    <string name="list_number_search_hint">Введите номер или имя</string>
     <!--Creating filter-->
     <string name="creating_blocker">Создание Блокировщика</string>
     <string name="creating_permission">Создание Разрешения</string>
@@ -202,13 +211,5 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
     <string name="unauthorized_enter">У авторизованного пользователя ограниченный функционал, в том числе нет доступа к хранению данных в удаленном доступе. Все равно войти?</string>
-    <plurals name="filter_list_delete_amount">
-        <item quantity="one">%s фильтр</item>
-        <item quantity="few">%s фильтра</item>
-        <item quantity="other">%s фильтров</item>
-    </plurals>
-    <plurals name="call_list_delete_amount">
-        <item quantity="one">Удалить заблокированный вызов %s из журнала?</item>
-        <item quantity="other">Удалить %s заблокированных вызовов из журнала?</item>
-    </plurals>
+
 </resources>

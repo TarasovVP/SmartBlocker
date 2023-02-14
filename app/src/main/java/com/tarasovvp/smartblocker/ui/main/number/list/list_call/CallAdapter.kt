@@ -69,7 +69,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                 this.call = call
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        if (call.isBlockedCall()) {
+                        if (call.isFilteredNotNullOrEmpty()) {
                             itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
                         } else {
                             callClickListener.onCallDeleteInfoClick()
@@ -84,8 +84,8 @@ class CallAdapter(val callClickListener: CallClickListener) :
                 }
                 root.setOnLongClickListener {
                     if (call.isDeleteMode.not()) {
-                        if (call.isBlockedCall()) {
-                            call.isCheckedForDelete = call.isBlockedCall()
+                        if (call.isFilteredNotNullOrEmpty()) {
+                            call.isCheckedForDelete = call.isFilteredNotNullOrEmpty()
                             callClickListener.onCallLongClick()
                         } else {
                             callClickListener.onCallDeleteInfoClick()

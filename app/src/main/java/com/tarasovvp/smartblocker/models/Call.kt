@@ -89,16 +89,16 @@ open class Call(
         return filter?.filter.orEmpty()
     }
 
-    fun isFilterNotNullOrEmpty(): Boolean {
+    fun isFilterNullOrEmpty(): Boolean {
         return filter?.filter.isNullOrEmpty().isTrue()
     }
 
-    private fun isFilteredNullOrEmpty(): Boolean {
-        return this is FilteredCall && filtered?.filter.isNullOrEmpty()
+    fun isFilteredNotNullOrEmpty(): Boolean {
+        return this is FilteredCall && filtered?.filter.isNullOrEmpty().not()
     }
 
-    fun isBlockedCallDelete(): Boolean {
-        return this is FilteredCall && (filtered?.filter.isNullOrEmpty().not() || number.isEmpty()) && filtered?.isBlocker().isTrue() && isDeleteMode
+    fun isFilteredCallDelete(): Boolean {
+        return this is FilteredCall && (isFilteredNotNullOrEmpty() || number.isEmpty()) && isDeleteMode
     }
 
     fun callFilterTitle(): Int {
@@ -126,17 +126,17 @@ open class Call(
     fun callFilterValue(): String {
         return when {
             isFilteredCallDetails -> dateTimeFromCallDate()
-            isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() -> filtered?.filter.orEmpty()
-            isExtract && isFilterNotNullOrEmpty().not() -> filter?.filter.orEmpty()
+            isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty() -> filtered?.filter.orEmpty()
+            isExtract && isFilterNullOrEmpty().not() -> filter?.filter.orEmpty()
             else -> String.EMPTY
         }
     }
 
     fun callFilterIcon(): Int? {
         return when {
-            isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty() -> R.drawable.ic_settings_small
-            isExtract.not() && this is FilteredCall && isFilteredNullOrEmpty().not() -> filtered?.conditionTypeSmallIcon()
-            isExtract && isFilterNotNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
+            isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty().not() -> R.drawable.ic_settings_small
+            isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty() -> filtered?.conditionTypeSmallIcon()
+            isExtract && isFilterNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
             else -> null
         }
     }

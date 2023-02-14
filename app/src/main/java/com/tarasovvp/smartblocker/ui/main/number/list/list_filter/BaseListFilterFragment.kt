@@ -188,7 +188,7 @@ open class BaseListFilterFragment :
                     filterAction =
                         if (firstFilter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                     filter =
-                        if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.filter_list_delete_amount,
+                        if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_filter_delete_amount,
                             deleteFilterCount.quantityString(),
                             deleteFilterCount) else filterList?.firstOrNull { it.isCheckedForDelete }?.filter.orEmpty()
                 }

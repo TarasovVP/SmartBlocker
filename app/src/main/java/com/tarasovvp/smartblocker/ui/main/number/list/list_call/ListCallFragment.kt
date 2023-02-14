@@ -83,7 +83,7 @@ class ListCallFragment :
                 if (conditionFilterIndexes?.contains(BLOCKED_CALL.toInt()).isTrue())
                     callFilteringText.add(context.getString(R.string.filter_call_blocked))
                 if (conditionFilterIndexes?.contains(PERMITTED_CALL.toInt()).isTrue())
-                    callFilteringText.add(context.getString(R.string.filter_call_blocked))
+                    callFilteringText.add(context.getString(R.string.filter_call_permitted))
             }
             text = callFilteringText.joinToString()
             isChecked = conditionFilterIndexes.isNullOrEmpty().not()
@@ -140,8 +140,8 @@ class ListCallFragment :
             if (menuItem.itemId == R.id.delete_menu_item) {
                 val deleteCallCount = callList?.filter { it.isCheckedForDelete }.orEmpty().size
                 this@ListCallFragment.findNavController()
-                    .navigate(ListCallFragmentDirections.startBlockedCallDeleteDialog(callDelete =
-                    resources.getQuantityString(R.plurals.call_list_delete_amount,
+                    .navigate(ListCallFragmentDirections.startFilteredCallDeleteDialog(callDelete =
+                    resources.getQuantityString(R.plurals.list_call_delete_amount,
                         deleteCallCount.quantityString(),
                         if (deleteCallCount > 1) deleteCallCount else if (callList?.firstOrNull { it.isCheckedForDelete }?.number.isNullOrEmpty()) getString(
                             R.string.details_number_hidden) else callList?.firstOrNull { it.isCheckedForDelete }?.number)))

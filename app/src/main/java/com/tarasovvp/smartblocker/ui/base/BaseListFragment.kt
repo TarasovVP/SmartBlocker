@@ -80,7 +80,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                         maxWidth = Integer.MAX_VALUE
                     }
                     queryHint =
-                        getString(if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) R.string.filter_list_search_hint else R.string.list_search_hint)
+                        getString(if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) R.string.list_filter_search_hint else R.string.list_number_search_hint)
                     setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
                         searchQuery = it
                         searchDataList()

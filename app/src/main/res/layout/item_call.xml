@@ -26,7 +26,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="@{call.deleteMode &amp;&amp; !call.blockedCall ? 0.5f : 1f}"
+            android:alpha="@{call.deleteMode &amp;&amp; !call.filteredNotNullOrEmpty ? 0.5f : 1f}"
             android:paddingHorizontal="@dimen/padding_8"
             android:paddingVertical="@dimen/padding_16">
 
@@ -38,7 +38,6 @@
                 android:scaleType="center"
                 app:imageUrl="@{call.photoUrl}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_number"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_number"
                 app:placeHolder="@{call.placeHolder(context)}"
@@ -59,7 +58,7 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@{call.number.empty ? @string/details_number_hidden : call.highlightedSpanned}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
-                app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_time"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,7 +70,7 @@
                 android:text="@{call.timeFromCallDate()}"
                 android:textColor="@color/text_color_grey"
                 android:textSize="@dimen/text_size_10"
-                android:visibility="@{call.extract || call.isFilteredCallDetails || call.blockedCallDelete ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.extract || call.isFilteredCallDetails || call.filteredCallDelete ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -95,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_6"
-                android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall || call.extract ? View.GONE : View.VISIBLE}"
+                android:visibility="@{call.deleteMode &amp;&amp; call.filteredNotNullOrEmpty || call.extract ? View.GONE : View.VISIBLE}"
                 app:imageResource="@{call.callIcon()}"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
@@ -105,7 +104,7 @@
                 android:id="@+id/item_call_filter_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@{call.filterNotNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
+                android:drawableStart="@{call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
                 android:gravity="center_vertical|end"
                 android:text="@{call.filterValue}"
                 android:textColor="@{call.filter.blocker ? @color/sunset : @color/islamic_green}"
@@ -121,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:checked="@{call.checkedForDelete}"
                 android:padding="@dimen/padding_8"
-                android:visibility="@{call.deleteMode &amp;&amp; call.blockedCall ? View.VISIBLE : View.GONE, default=gone}"
+                android:visibility="@{call.deleteMode &amp;&amp; call.filteredNotNullOrEmpty ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
