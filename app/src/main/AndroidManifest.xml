@@ -19,13 +19,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartBlocker"
-        tools:ignore="AllowBackup"
         android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
             android:name="com.tarasovvp.smartblocker.ui.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

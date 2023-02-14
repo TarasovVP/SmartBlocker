@@ -111,7 +111,7 @@ fun String.flagDrawable(): Int {
     return when (this) {
         APP_LANG_UK -> R.drawable.ic_flag_ua
         APP_LANG_RU -> R.drawable.ic_flag_ru
-        else -> R.drawable.ic_flag_us
+        else -> R.drawable.ic_flag_en
     }
 }
 
