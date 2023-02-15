@@ -21,7 +21,6 @@ import com.tarasovvp.smartblocker.constants.Constants.CALL_ID
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DESC
 import com.tarasovvp.smartblocker.constants.Constants.LOG_CALL_CALL
-import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.repository.FilterRepository
@@ -127,8 +126,9 @@ fun Context.writeFilteredCall(number: String, filter: Filter?) {
             if (number == filteredCall.number) {
                 CoroutineScope(Dispatchers.IO).launch {
                     FilteredCallRepository.insertFilteredCall(filteredCall.apply {
-                        type =
-                            if (filter?.isBlocker().isTrue()) BLOCKED_CALL else PERMITTED_CALL
+                        if (filter?.isBlocker().isTrue()) {
+                            type = BLOCKED_CALL
+                        }
                         this.filtered = filter
                     })
                 }

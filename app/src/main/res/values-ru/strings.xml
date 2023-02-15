@@ -203,7 +203,7 @@
     <string name="filter_no_filter">Без фильтрации</string>
     <string name="filter_condition_title">Фильтровать по:</string>
     <string name="filter_call_blocked">Заблокирован фильтром</string>
-    <string name="filter_call_permitted">Допущен фильтром</string>
+    <string name="filter_call_permitted">Разрешен фильтром</string>
     <string name="filter_contact_blocker">C признаком блокировщика</string>
     <string name="filter_contact_permission">C признаком разрешения</string>
     <!--Menu item-->

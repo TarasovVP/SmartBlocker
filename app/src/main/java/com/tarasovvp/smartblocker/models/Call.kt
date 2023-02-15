@@ -10,13 +10,13 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
-import com.tarasovvp.smartblocker.constants.Constants.OUT_COMING_CALL
+import com.tarasovvp.smartblocker.constants.Constants.IN_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 open class Call(
@@ -48,12 +48,11 @@ open class Call(
 
     fun callIcon(): Int {
         return when (type) {
-            OUT_COMING_CALL -> R.drawable.ic_call_outcoming
-            MISSED_CALL -> R.drawable.ic_call_missed
-            REJECTED_CALL -> R.drawable.ic_call_rejected
+            IN_COMING_CALL -> if (isFilteredNotNullOrEmpty()) R.drawable.ic_call_incoming_permitted else R.drawable.ic_call_incoming
+            MISSED_CALL -> if (isFilteredNotNullOrEmpty()) R.drawable.ic_call_missed_permitted else R.drawable.ic_call_missed
+            REJECTED_CALL -> if (isFilteredNotNullOrEmpty()) R.drawable.ic_call_rejected_permitted else R.drawable.ic_call_rejected
             BLOCKED_CALL -> R.drawable.ic_call_blocked
-            PERMITTED_CALL -> R.drawable.ic_call_permitted
-            else -> R.drawable.ic_call_incoming
+            else -> R.drawable.ic_call_outcoming
         }
     }
 
@@ -82,7 +81,7 @@ open class Call(
     }
 
     fun isPermittedCall(): Boolean {
-        return type == PERMITTED_CALL
+        return isFilteredNotNullOrEmpty() && isBlockedCall().not()
     }
 
     fun filterValue(): String {
