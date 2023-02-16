@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.repository.AuthRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LoginViewModel(application: Application) : BaseViewModel(application) {
-
-    private val authRepository = AuthRepository
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    application: Application,
+    private val authRepository: AuthRepository
+) : BaseViewModel(application) {
 
     val successPasswordResetLiveData = MutableLiveData<Boolean>()
     val successSignInLiveData = MutableLiveData<Boolean>()

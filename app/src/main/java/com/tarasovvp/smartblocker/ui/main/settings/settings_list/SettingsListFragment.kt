@@ -14,8 +14,10 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsListViewModel>() {
 
     override var layoutId = R.layout.fragment_settings_list

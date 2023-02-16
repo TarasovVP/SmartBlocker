@@ -6,10 +6,14 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SettingsBlockerViewModel(application: Application) : BaseViewModel(application) {
-
-    private val realDataBaseRepository = RealDataBaseRepository
+@HiltViewModel
+class SettingsBlockerViewModel @Inject constructor(
+    application: Application,
+    private val realDataBaseRepository: RealDataBaseRepository
+) : BaseViewModel(application) {
 
     val successBlockHiddenLiveData = MutableLiveData<Boolean>()
 

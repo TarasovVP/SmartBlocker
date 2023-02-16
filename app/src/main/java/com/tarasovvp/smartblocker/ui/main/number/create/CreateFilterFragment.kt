@@ -30,8 +30,10 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 open class CreateFilterFragment :
     BaseDetailsFragment<FragmentCreateFilterBinding, CreateFilterViewModel>() {
 
@@ -48,7 +50,7 @@ open class CreateFilterFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context as MainActivity).setMainProgressVisibility(true)
+        (activity as MainActivity).setMainProgressVisibility(true)
     }
 
     override fun createAdapter() {
@@ -241,7 +243,7 @@ open class CreateFilterFragment :
                 }
                 binding?.filterToInput = true
                 binding?.filter = binding?.filter
-                (context as MainActivity).setMainProgressVisibility(false)
+                (activity as MainActivity).setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
                 Log.e("createFilterTAG", "CreateFilterFragment observeLiveData existingFilterLiveData")

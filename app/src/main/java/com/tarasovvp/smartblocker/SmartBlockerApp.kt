@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.room.Room
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -11,15 +10,15 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.tarasovvp.smartblocker.database.AppDatabase
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.Settings
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import dagger.hilt.android.HiltAndroidApp
 import java.util.*
 
+@HiltAndroidApp
 class SmartBlockerApp : Application() {
 
-    var database: AppDatabase? = null
     var auth: FirebaseAuth? = null
     var googleSignInClient: GoogleSignInClient? = null
     var isNetworkAvailable: Boolean? = null
@@ -27,10 +26,6 @@ class SmartBlockerApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        database = Room.databaseBuilder(this, AppDatabase::class.java, packageName)
-            .fallbackToDestructiveMigration()
-            .allowMainThreadQueries()
-            .build()
         auth = Firebase.auth
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(BuildConfig.SERVER_CLIENT_ID)

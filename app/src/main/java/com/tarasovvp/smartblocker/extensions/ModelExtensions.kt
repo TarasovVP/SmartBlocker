@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
 
-fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
+fun Context.systemContactList(filterRepository: FilterRepository, result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Contacts.DISPLAY_NAME,
@@ -59,7 +59,7 @@ fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
             ).apply {
                 numberData = contactCursor.getString(3).digitsTrimmed()
                 CoroutineScope(Dispatchers.IO).launch {
-                    filter = FilterRepository.queryFilter(numberData)
+                    filter = filterRepository.queryFilter(numberData)
                 }
             })
             result.invoke(cursor.count, contactList.size)
@@ -102,9 +102,10 @@ fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
         logCall.photoUrl = this.getString(7)
     }
     logCall.numberData = this.getString(2)
-    CoroutineScope(Dispatchers.IO).launch {
-        logCall.filter = FilterRepository.queryFilter(logCall.numberData)
-    }
+    //TODO
+    /*CoroutineScope(Dispatchers.IO).launch {
+        logCall.filter = filterRepository.queryFilter(logCall.numberData)
+    }*/
     return logCall
 }
 
@@ -119,13 +120,17 @@ fun Context.systemLogCallList(result: (Int, Int) -> Unit): ArrayList<LogCall> {
     return logCallList
 }
 
-fun Context.writeFilteredCall(number: String, filter: Filter?) {
+fun Context.writeFilteredCall(
+    number: String,
+    filter: Filter?,
+    filteredCallRepository: FilteredCallRepository
+) {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
             val filteredCall = cursor.createCallObject(true) as FilteredCall
             if (number == filteredCall.number) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    FilteredCallRepository.insertFilteredCall(filteredCall.apply {
+                    filteredCallRepository.insertFilteredCall(filteredCall.apply {
                         if (filter?.isBlocker().isTrue()) {
                             type = BLOCKED_CALL
                         }

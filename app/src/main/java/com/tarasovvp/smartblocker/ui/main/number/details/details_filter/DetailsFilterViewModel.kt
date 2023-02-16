@@ -11,14 +11,18 @@ import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import javax.inject.Inject
 
-class DetailsFilterViewModel(application: Application) : BaseViewModel(application) {
-
-    private val contactRepository = ContactRepository
-    private val filterRepository = FilterRepository
-    private val callRepository = CallRepository
-    private val filteredCallRepository = FilteredCallRepository
+@HiltViewModel
+class DetailsFilterViewModel @Inject constructor(
+    application: Application,
+    private val contactRepository: ContactRepository,
+    private val filterRepository: FilterRepository,
+    private val callRepository: CallRepository,
+    private val filteredCallRepository: FilteredCallRepository
+) : BaseViewModel(application) {
 
     val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filteredCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
@@ -30,8 +34,8 @@ class DetailsFilterViewModel(application: Application) : BaseViewModel(applicati
         launch {
             val calls = async { callRepository.getQueryCallList(filter) }
             val contacts = async { contactRepository.getAllContacts() }
-            val callList = calls.await().orEmpty()
-            val contactList = contacts.await().orEmpty()
+            val callList = calls.await()
+            val contactList = contacts.await()
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(callList)
                 addAll(contactList)
@@ -46,10 +50,18 @@ class DetailsFilterViewModel(application: Application) : BaseViewModel(applicati
         }
     }
 
-    private fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) {
+    private fun filteredNumberDataList(
+        filter: Filter?,
+        numberDataList: ArrayList<NumberData>,
+        color: Int,
+    ) {
         launch {
-            numberDataListLiveData.postValue(contactRepository.filteredNumberDataList(filter,
-                numberDataList, color))
+            numberDataListLiveData.postValue(
+                contactRepository.filteredNumberDataList(
+                    filter,
+                    numberDataList, color
+                )
+            )
             hideProgress()
         }
     }
@@ -57,7 +69,7 @@ class DetailsFilterViewModel(application: Application) : BaseViewModel(applicati
     fun filteredCallsByFilter(filter: String) {
         launch {
             val filteredCallList = filteredCallRepository.filteredCallsByFilter(filter)
-            filteredCallList?.let { filteredCalls ->
+            filteredCallList.let { filteredCalls ->
                 filteredCallListLiveData.postValue(ArrayList(filteredCalls))
             }
         }

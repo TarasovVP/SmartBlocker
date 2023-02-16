@@ -7,16 +7,21 @@ import com.tarasovvp.smartblocker.models.CurrentUser
 import com.tarasovvp.smartblocker.models.MainProgress
 import com.tarasovvp.smartblocker.repository.*
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : BaseViewModel(application) {
-    private val filterRepository = FilterRepository
-    private val filteredCallRepository = FilteredCallRepository
-    private val countryCodeRepository = CountryCodeRepository
-    private val logCallRepository = CallRepository
-    private val contactRepository = ContactRepository
-    private val realDataBaseRepository = RealDataBaseRepository
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    application: Application,
+    private val contactRepository: ContactRepository,
+    private val countryCodeRepository: CountryCodeRepository,
+    private val filterRepository: FilterRepository,
+    private val logCallRepository: CallRepository,
+    private val filteredCallRepository: FilteredCallRepository,
+    private val realDataBaseRepository: RealDataBaseRepository
+) : BaseViewModel(application) {
 
     val successAllDataLiveData = MutableLiveData<Boolean>()
 
@@ -65,7 +70,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             countryCodeRepository.insertAllCountryCodes(countryCodeList)
             // init contacts data
             val contactList =
-                contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
+                contactRepository.getSystemContactList(getApplication<Application>(), filterRepository) { size, position ->
                     progressStatusLiveData.postValue(mainProgress.apply {
                         progressDescription =
                             getApplication<Application>().getString(R.string.progress_update_contacts)

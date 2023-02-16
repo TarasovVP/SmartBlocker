@@ -13,8 +13,10 @@ import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 open class ListContactFragment :
     BaseListFragment<FragmentListContactBinding, ListContactViewModel, Contact>() {
 

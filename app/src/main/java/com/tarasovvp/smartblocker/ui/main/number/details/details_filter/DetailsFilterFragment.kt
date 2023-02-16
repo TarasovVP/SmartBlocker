@@ -22,7 +22,9 @@ import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsFilterFragment :
     BaseDetailsFragment<FragmentDetailsFilterBinding, DetailsFilterViewModel>() {
 
@@ -146,7 +148,7 @@ class DetailsFilterFragment :
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(), binding?.filter?.filter.orEmpty()), false)
-            //TODO
+            //TODO interstitial
             //showInterstitial()
             getAllData()
             if (filter.isChangeFilterAction()) {

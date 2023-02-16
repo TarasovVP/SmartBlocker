@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SettingsListViewModel(application: Application) : BaseViewModel(application) {
-
-    private val realDataBaseRepository = RealDataBaseRepository
+@HiltViewModel
+class SettingsListViewModel @Inject constructor(
+    application: Application,
+    private val realDataBaseRepository: RealDataBaseRepository
+) : BaseViewModel(application) {
 
     val successReviewLiveData = MutableLiveData<String>()
 

@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.repository
 
-import com.google.firebase.database.FirebaseDatabase
-import com.tarasovvp.smartblocker.BuildConfig
+import com.google.firebase.database.DatabaseReference
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALL_LIST
@@ -11,10 +10,10 @@ import com.tarasovvp.smartblocker.constants.Constants.USERS
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.models.*
+import javax.inject.Inject
 
-object RealDataBaseRepository {
+class RealDataBaseRepository @Inject constructor(private val database: DatabaseReference) {
 
-    var database = FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference
     private var currentUserDatabase =
         database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
     private var reviewsDatabase = database.child(REVIEWS)

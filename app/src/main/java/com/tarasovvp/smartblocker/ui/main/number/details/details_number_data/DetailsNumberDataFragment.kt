@@ -19,7 +19,9 @@ import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsNumberDataFragment :
     BaseDetailsFragment<FragmentDetailsNumberDataBinding, DetailsNumberDataViewModel>() {
 

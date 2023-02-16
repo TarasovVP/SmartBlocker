@@ -7,14 +7,17 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ListFilterViewModel(application: Application) : BaseViewModel(application) {
+@HiltViewModel
+class ListFilterViewModel @Inject constructor(
+    application: Application,
+    private val filterRepository: FilterRepository
+) : BaseViewModel(application) {
 
     val filterListLiveData = MutableLiveData<ArrayList<Filter>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
-
-    private val filterRepository = FilterRepository
-
     val filterHashMapLiveData = MutableLiveData<Map<String, List<Filter>>?>()
 
     fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {

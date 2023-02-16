@@ -13,12 +13,15 @@ import com.tarasovvp.smartblocker.constants.Constants.CURRENT_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.DELETE_USER
 import com.tarasovvp.smartblocker.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.constants.Constants.NEW_PASSWORD
+import com.tarasovvp.smartblocker.database.AppDatabase
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsAccountFragment :
     BaseFragment<FragmentSettingsAccountBinding, SettingsAccountViewModel>() {
 
@@ -80,7 +83,7 @@ class SettingsAccountFragment :
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
-                SmartBlockerApp.instance?.database?.clearAllTables()
+                context?.let { context -> AppDatabase.getDatabase(context).clearAllTables() }
                 (activity as MainActivity).apply {
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))

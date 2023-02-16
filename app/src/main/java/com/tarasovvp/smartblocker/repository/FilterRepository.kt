@@ -1,17 +1,19 @@
 package com.tarasovvp.smartblocker.repository
 
 import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.database.dao.FilterDao
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredFilterList
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.models.Filter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-object FilterRepository {
-
-    private val realDataBaseRepository = RealDataBaseRepository
-    private val filterDao = SmartBlockerApp.instance?.database?.filterDao()
+class FilterRepository @Inject constructor(
+    private val filterDao: FilterDao,
+    private val realDataBaseRepository: RealDataBaseRepository,
+) {
 
     suspend fun getHashMapFromFilterList(filterList: List<Filter>): Map<String, List<Filter>> =
         withContext(Dispatchers.Default) {
@@ -21,30 +23,30 @@ object FilterRepository {
         }
 
     suspend fun insertAllFilters(filterList: ArrayList<Filter>) {
-        filterDao?.deleteAllFilters()
-        filterDao?.insertAllFilters(filterList)
+        filterDao.deleteAllFilters()
+        filterDao.insertAllFilters(filterList)
     }
 
-    suspend fun allFilters(): List<Filter>? {
-        return filterDao?.allFilters()
+    suspend fun allFilters(): List<Filter> {
+        return filterDao.allFilters()
     }
 
-    suspend fun allFiltersByType(filterType: Int): List<Filter>? {
-        return filterDao?.allFiltersByType(filterType)
+    suspend fun allFiltersByType(filterType: Int): List<Filter> {
+        return filterDao.allFiltersByType(filterType)
     }
 
     suspend fun getFilter(filter: Filter): Filter? {
-        return filterDao?.getFilter(filter.createFilter(), filter.conditionType)
+        return filterDao.getFilter(filter.createFilter(), filter.conditionType)
     }
 
     fun updateFilter(filter: Filter, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilter(filter) {
-                filterDao?.updateFilter(filter)
+                filterDao.updateFilter(filter)
                 result.invoke()
             }
         } else {
-            filterDao?.updateFilter(filter)
+            filterDao.updateFilter(filter)
             result.invoke()
         }
     }
@@ -52,11 +54,11 @@ object FilterRepository {
     fun insertFilter(filter: Filter, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilter(filter) {
-                filterDao?.insertFilter(filter)
+                filterDao.insertFilter(filter)
                 result.invoke()
             }
         } else {
-            filterDao?.insertFilter(filter)
+            filterDao.insertFilter(filter)
             result.invoke()
         }
     }
@@ -65,31 +67,31 @@ object FilterRepository {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilterList(filterList) {
                 filterList.forEach { filter ->
-                    filterDao?.delete(filter)
+                    filterDao.delete(filter)
                 }
                 result.invoke()
             }
         } else {
             filterList.forEach { whiteFilter ->
-                filterDao?.delete(whiteFilter)
+                filterDao.delete(whiteFilter)
             }
             result.invoke()
         }
     }
 
-    suspend fun queryFilterList(number: String): List<Filter>? {
-        val filterList = filterDao?.allFilters()
-        return filterList?.filteredFilterList(number)
+    suspend fun queryFilterList(number: String): List<Filter> {
+        val filterList = filterDao.allFilters()
+        return filterList.filteredFilterList(number)
     }
 
     suspend fun queryFilter(number: String): Filter? {
-        val filterList = filterDao?.queryFullMatchFilterList(number)
+        val filterList = filterDao.queryFullMatchFilterList(number)
         val maxLengthFilterList =
-            filterList?.filter { filter -> filter.filter.length == filterList.maxByOrNull { it.filter.length }?.filter?.length }
-        return if (maxLengthFilterList.orEmpty().size > 1) maxLengthFilterList.orEmpty()
+            filterList.filter { filter -> filter.filter.length == filterList.maxByOrNull { it.filter.length }?.filter?.length }
+        return if (maxLengthFilterList.size > 1) maxLengthFilterList
             .minByOrNull {
                 number.indexOf(it.filter)
-            } else maxLengthFilterList.orEmpty().firstOrNull()
+            } else maxLengthFilterList.firstOrNull()
     }
 
 }

@@ -10,7 +10,9 @@ import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsBlockerFragment :
     BaseFragment<FragmentSettingsBlockerBinding, SettingsBlockerViewModel>() {
 

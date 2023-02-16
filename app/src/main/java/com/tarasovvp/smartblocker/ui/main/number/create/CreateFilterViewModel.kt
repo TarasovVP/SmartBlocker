@@ -14,14 +14,18 @@ import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import javax.inject.Inject
 
-class CreateFilterViewModel(application: Application) : BaseViewModel(application) {
-
-    private val countryCodeRepository = CountryCodeRepository
-    private val filterRepository = FilterRepository
-    private val contactRepository = ContactRepository
-    private val callRepository = CallRepository
+@HiltViewModel
+class CreateFilterViewModel @Inject constructor(
+    application: Application,
+    private val contactRepository: ContactRepository,
+    private val countryCodeRepository: CountryCodeRepository,
+    private val filterRepository: FilterRepository,
+    private val callRepository: CallRepository
+) : BaseViewModel(application) {
 
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val countryCodeLiveData = MutableLiveData<CountryCode>()
@@ -34,7 +38,7 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
         Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeList")
         launch {
             val countryCodeList = countryCodeRepository.getAllCountryCodes()
-            countryCodeList?.apply {
+            countryCodeList.apply {
                 countryCodeListLiveData.postValue(this)
             }
         }
@@ -64,8 +68,8 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
         launch {
             val contacts = async { contactRepository.getAllContacts() }
             val calls = async { callRepository.getAllCallsNumbers() }
-            val contactList = contacts.await().orEmpty()
-            val callList = calls.await().orEmpty()
+            val contactList = contacts.await()
+            val callList = calls.await()
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contactList)
                 addAll(callList)
@@ -81,7 +85,10 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun checkFilterExist(filter: Filter) {
-        Log.e("createFilterTAG", "CreateFilterViewModel checkFilterExist filter?.filter ${filter.filter} createFilter ${filter.createFilter()}")
+        Log.e(
+            "createFilterTAG",
+            "CreateFilterViewModel checkFilterExist filter?.filter ${filter.filter} createFilter ${filter.createFilter()}"
+        )
         launch {
             val result = filterRepository.getFilter(filter)
             existingFilterLiveData.postValue(result ?: Filter())
@@ -89,18 +96,28 @@ class CreateFilterViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun filterNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) {
-        Log.e("createFilterTAG", "CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filter?.filter} createFilter ${filter?.createFilter()} numberDataList.size ${numberDataList.size}")
+        Log.e(
+            "createFilterTAG",
+            "CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filter?.filter} createFilter ${filter?.createFilter()} numberDataList.size ${numberDataList.size}"
+        )
         showProgress()
         launch {
-            val filteredNumberDataList = contactRepository.filteredNumberDataList(filter, numberDataList, color)
+            val filteredNumberDataList =
+                contactRepository.filteredNumberDataList(filter, numberDataList, color)
             filteredNumberDataListLiveData.postValue(filteredNumberDataList)
             hideProgress()
-            Log.e("createFilterTAG", "CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}")
+            Log.e(
+                "createFilterTAG",
+                "CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}"
+            )
         }
     }
 
     fun createFilter(filter: Filter) {
-        Log.e("createFilterTAG", "CreateFilterViewModel createFilter createFilter ${filter.createFilter()}")
+        Log.e(
+            "createFilterTAG",
+            "CreateFilterViewModel createFilter createFilter ${filter.createFilter()}"
+        )
         launch {
             filterRepository.insertFilter(filter) {
                 filterActionLiveData.postValue(filter)

@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.database.dao.ContactDao
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredNumberDataList
 import com.tarasovvp.smartblocker.extensions.systemContactList
@@ -10,31 +10,32 @@ import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-object ContactRepository {
-
-    private val contactDao = SmartBlockerApp.instance?.database?.contactDao()
-
+class ContactRepository @Inject constructor(
+    private val contactDao:  ContactDao
+) {
     suspend fun insertContacts(list: List<Contact>) {
-        contactDao?.insertAllContacts(list)
+        contactDao.insertAllContacts(list)
     }
 
-    suspend fun getAllContacts(): List<Contact>? =
+    suspend fun getAllContacts(): List<Contact> =
         withContext(
             Dispatchers.Default
         ) {
-            contactDao?.getAllContacts()
+            contactDao.getAllContacts()
         }
 
 
     suspend fun getSystemContactList(
         context: Context,
+        filterRepository: FilterRepository,
         result: (Int, Int) -> Unit,
     ): ArrayList<Contact> =
         withContext(
             Dispatchers.Default
         ) {
-            context.systemContactList { size, position ->
+            context.systemContactList(filterRepository) { size, position ->
                 result.invoke(size, position)
             }
         }

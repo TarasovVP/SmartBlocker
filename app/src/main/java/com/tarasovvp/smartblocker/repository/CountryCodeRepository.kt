@@ -1,16 +1,17 @@
 package com.tarasovvp.smartblocker.repository
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
+import com.tarasovvp.smartblocker.database.dao.CountryCodeDao
 import com.tarasovvp.smartblocker.extensions.countryCodeList
 import com.tarasovvp.smartblocker.models.CountryCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-object CountryCodeRepository {
-
-    private val countryCodeDao = SmartBlockerApp.instance?.database?.countryCodeDao()
+class CountryCodeRepository @Inject constructor(
+    private val countryCodeDao: CountryCodeDao,
+) {
 
     suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
         withContext(
@@ -22,22 +23,26 @@ object CountryCodeRepository {
         }
 
     suspend fun insertAllCountryCodes(list: List<CountryCode>) {
-        countryCodeDao?.insertAllCountryCode(list)
+        countryCodeDao.insertAllCountryCode(list)
     }
 
-    suspend fun getAllCountryCodes(): List<CountryCode>? =
+    suspend fun getAllCountryCodes(): List<CountryCode> =
         withContext(
             Dispatchers.Default
         ) {
-            countryCodeDao?.getAllCountryCodes()
+            countryCodeDao.getAllCountryCodes()
         }
 
     suspend fun getCountryCodeWithCountry(country: String): CountryCode? {
-        return countryCodeDao?.getCountryCodeWithCountry(country.uppercase())
+        return countryCodeDao.getCountryCodeWithCountry(country.uppercase())
     }
 
     suspend fun getCountryCodeWithCode(code: Int): CountryCode? {
-        return countryCodeDao?.getCountryCodeWithCode(String.format(COUNTRY_CODE_START,
-            code.toString()))
+        return countryCodeDao.getCountryCodeWithCode(
+            String.format(
+                COUNTRY_CODE_START,
+                code.toString()
+            )
+        )
     }
 }

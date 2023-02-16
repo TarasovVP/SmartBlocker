@@ -37,8 +37,10 @@ import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
@@ -91,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
         registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
         MobileAds.initialize(this) {}
+        //TODO
         val configuration = RequestConfiguration.Builder()
             .setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
         MobileAds.setRequestConfiguration(configuration)
@@ -325,6 +328,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadAd() {
 
         adRequest?.let {
+            //TODO interstitial
             InterstitialAd.load(
                 this,
                 BuildConfig.INTERSTITIAL_AD,
@@ -347,6 +351,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //TODO
     override fun onBackPressed() {
         if (navController?.isBackPressedScreen().isTrue()) {
             navController?.navigate(MainNavigationDirections.startAppExitDialog())

@@ -6,11 +6,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
+import javax.inject.Inject
 
-object AuthRepository {
-
-    private val auth = SmartBlockerApp.instance?.auth
-    private val currentUser = FirebaseAuth.getInstance().currentUser
+class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
 
     fun sendPasswordResetEmail(email: String, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
@@ -89,8 +87,9 @@ object AuthRepository {
 
     fun deleteUser(result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        currentUser?.delete()?.addOnCompleteListener { task ->
+        auth?.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                SmartBlockerApp.instance?.googleSignInClient?.signOut()
                 result.invoke()
             } else {
                 task.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()

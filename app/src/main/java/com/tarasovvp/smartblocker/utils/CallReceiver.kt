@@ -13,15 +13,23 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.repository.FilterRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiver() {
 
-    private val filterRepository = FilterRepository
+    @Inject
+    lateinit var filterRepository: FilterRepository
+
+    @Inject
+    lateinit var filteredCallRepository: FilteredCallRepository
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -48,7 +56,7 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                 delay(SECOND)
                 if (filter.isNotNull()) {
-                    context.writeFilteredCall(number, filter)
+                    context.writeFilteredCall(number, filter, filteredCallRepository)
                     phoneListener.invoke()
                 }
                 context.sendBroadcast(Intent(CALL_RECEIVE))
