@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.repository
 
 import com.google.firebase.database.FirebaseDatabase
+import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
@@ -14,7 +14,7 @@ import com.tarasovvp.smartblocker.models.*
 
 object RealDataBaseRepository {
 
-    var database = FirebaseDatabase.getInstance(Constants.REALTIME_DATABASE).reference
+    var database = FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference
     private var currentUserDatabase =
         database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
     private var reviewsDatabase = database.child(REVIEWS)

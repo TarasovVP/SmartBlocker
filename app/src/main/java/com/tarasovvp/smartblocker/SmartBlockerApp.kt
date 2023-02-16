@@ -11,7 +11,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.database.AppDatabase
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.Settings
@@ -34,7 +33,7 @@ class SmartBlockerApp : Application() {
             .build()
         auth = Firebase.auth
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(Constants.SERVER_CLIENT_ID)
+            .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
             .requestEmail()
             .build()
 

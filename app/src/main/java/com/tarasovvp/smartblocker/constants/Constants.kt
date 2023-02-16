@@ -28,8 +28,6 @@ object Constants {
     const val FOREGROUND_ID = 99
 
     //Auth
-    const val SERVER_CLIENT_ID =
-        "865166794508-5muqsbokmlifd918hpq0u1g0co38ck4c.apps.googleusercontent.com"
     const val UNAUTHORIZED_ENTER = "unauthorizedEnter"
     const val EMAIL = "email"
     const val DELETE_USER = "deleteUser"
@@ -42,8 +40,6 @@ object Constants {
     const val NEW_PASSWORD = "newPassword"
 
     //Real data base
-    const val REALTIME_DATABASE =
-        "https://smart-blocker-db809-default-rtdb.europe-west1.firebasedatabase.app"
     const val USERS = "users"
     const val REVIEWS = "reviews"
     const val BLOCK_HIDDEN = "blockHidden"

@@ -25,6 +25,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
@@ -326,7 +327,7 @@ class MainActivity : AppCompatActivity() {
         adRequest?.let {
             InterstitialAd.load(
                 this,
-                "ca-app-pub-3940256099942544/1033173712",
+                BuildConfig.INTERSTITIAL_AD,
                 it,
                 object : InterstitialAdLoadCallback() {
                     override fun onAdFailedToLoad(adError: LoadAdError) {
