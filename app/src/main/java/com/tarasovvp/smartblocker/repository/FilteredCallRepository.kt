@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class FilteredCallRepository @Inject constructor(
     private val filteredCallDao: FilteredCallDao,
-    private val realDataBaseRepository: RealDataBaseRepository,
+    private val realDataBaseRepository: RealDataBaseRepository
 ) {
 
     suspend fun insertAllFilteredCalls(filteredCallList: ArrayList<FilteredCall>) {

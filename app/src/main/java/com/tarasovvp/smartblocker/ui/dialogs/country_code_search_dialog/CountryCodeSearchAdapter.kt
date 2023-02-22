@@ -13,7 +13,7 @@ import com.tarasovvp.smartblocker.models.CountryCode
 
 class CountryCodeSearchAdapter(
     var countryCodeList: List<CountryCode>? = null,
-    private val countryCodeClick: (CountryCode) -> Unit,
+    private val countryCodeClick: (CountryCode) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

@@ -21,7 +21,7 @@ import com.tarasovvp.smartblocker.models.NumberData
 
 class NumberDataAdapter(
     var numberDataList: ArrayList<NumberData>? = null,
-    private val numberDataClick: (NumberData) -> Unit,
+    private val numberDataClick: (NumberData) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

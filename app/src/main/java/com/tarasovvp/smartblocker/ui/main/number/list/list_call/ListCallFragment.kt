@@ -166,9 +166,11 @@ class ListCallFragment :
                 callHashMap?.let { setDataList(it) }
             }
             successDeleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (callList as ArrayList<Call>).removeAll { it.isCheckedForDelete }
+                (activity as MainActivity).apply {
+                    showInterstitial()
+                    getAllData()
+                }
                 changeDeleteMode()
-                searchDataList()
             }
         }
     }

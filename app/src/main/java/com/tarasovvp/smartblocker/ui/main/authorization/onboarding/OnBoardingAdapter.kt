@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class OnBoardingAdapter(
     list: ArrayList<SingleOnBoardingFragment>,
     fm: FragmentManager,
-    lifecycle: Lifecycle,
+    lifecycle: Lifecycle
 ) : FragmentStateAdapter(fm, lifecycle) {
 
     private val fragmentList = list

@@ -7,7 +7,7 @@ enum class FilterCondition(
     val mainIcon: Int,
     val smallBlockerIcon: Int,
     val smallPermissionIcon: Int,
-    var index: Int,
+    var index: Int
 ) {
     FILTER_CONDITION_FULL(R.string.filter_condition_full,
         R.drawable.ic_condition_full,

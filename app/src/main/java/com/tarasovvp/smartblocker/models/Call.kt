@@ -28,7 +28,7 @@ open class Call(
     var callDate: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
-    @Embedded(prefix = "filter_") var filter: Filter? = Filter(),
+    @Embedded(prefix = "filter_") var filter: Filter? = Filter()
 ) : Parcelable, NumberData() {
     @Ignore
     var isCheckedForDelete = false

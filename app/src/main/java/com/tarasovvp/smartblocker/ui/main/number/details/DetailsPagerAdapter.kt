@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class DetailsPagerAdapter(
     list: ArrayList<SingleDetailsFragment?>,
     fm: FragmentManager,
-    lifecycle: Lifecycle,
+    lifecycle: Lifecycle
 ) : FragmentStateAdapter(fm, lifecycle) {
 
     private val fragmentList = list

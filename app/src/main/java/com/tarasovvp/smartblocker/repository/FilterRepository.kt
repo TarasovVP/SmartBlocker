@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class FilterRepository @Inject constructor(
     private val filterDao: FilterDao,
-    private val realDataBaseRepository: RealDataBaseRepository,
+    private val realDataBaseRepository: RealDataBaseRepository
 ) {
 
     suspend fun getHashMapFromFilterList(filterList: List<Filter>): Map<String, List<Filter>> =

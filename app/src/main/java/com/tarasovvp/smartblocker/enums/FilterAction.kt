@@ -8,7 +8,7 @@ enum class FilterAction(
     val icon: Int,
     val descriptionText: Int,
     val requestText: Int,
-    val successText: Int,
+    val successText: Int
 ) {
     FILTER_ACTION_INVALID(R.string.filter_action_create,
         R.color.inactive_bg,

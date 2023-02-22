@@ -65,14 +65,14 @@ fun Activity.showMessage(message: String, isError: Boolean) {
 }
 
 fun <T> ViewGroup.getViewsFromLayout(
-    viewType: Class<T>,
+    viewType: Class<T>
 ): ArrayList<T> {
     return this.getViewsFromLayout(ArrayList(), viewType)
 }
 
 private fun <T> ViewGroup.getViewsFromLayout(
     views: ArrayList<T>,
-    viewType: Class<T>,
+    viewType: Class<T>
 ): ArrayList<T> {
     val childCount = this.childCount
     for (i in 0 until childCount) {

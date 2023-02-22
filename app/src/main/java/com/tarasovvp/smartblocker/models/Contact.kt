@@ -17,7 +17,7 @@ data class Contact(
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var number: String = String.EMPTY,
-    var filter: Filter? = Filter(),
+    var filter: Filter? = Filter()
 ) : Parcelable, NumberData() {
 
     var trimmedPhone = number.digitsTrimmed()

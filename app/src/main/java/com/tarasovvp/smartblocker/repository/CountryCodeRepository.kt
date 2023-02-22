@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CountryCodeRepository @Inject constructor(
-    private val countryCodeDao: CountryCodeDao,
+    private val countryCodeDao: CountryCodeDao
 ) {
 
     suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =

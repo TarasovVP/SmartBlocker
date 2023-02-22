@@ -7,5 +7,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class InfoData(
     var title: String = String.EMPTY,
-    var description: String = String.EMPTY,
+    var description: String = String.EMPTY
 ) : Parcelable

@@ -18,7 +18,7 @@ import com.tarasovvp.smartblocker.constants.Constants.SPACE
 import com.tarasovvp.smartblocker.extensions.*
 
 class MaskedEditText @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null,
+    context: Context, attrs: AttributeSet? = null
 ) : androidx.appcompat.widget.AppCompatEditText(context, attrs), TextWatcher {
 
     private var focusChangeListener: OnFocusChangeListener? = null

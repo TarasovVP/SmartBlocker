@@ -7,5 +7,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class HeaderDataItem(
-    val header: String = String.EMPTY,
+    val header: String = String.EMPTY
 ) : BaseAdapter.HeaderData(), Parcelable

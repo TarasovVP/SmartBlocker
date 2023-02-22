@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.R
 
 enum class Info(
     val description: Int,
-    val title: Int,
+    val title: Int
 ) {
     INFO_BLOCKER_LIST(R.string.info_blocker_list,
         R.string.list_blocker),

@@ -38,7 +38,7 @@ import java.util.*
 
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
-    block: suspend CoroutineScope.() -> Unit,
+    block: suspend CoroutineScope.() -> Unit
 ): Job =
     launch(CoroutineExceptionHandler { _, exception ->
         onError(exception, block)

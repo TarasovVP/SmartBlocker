@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 
 class SingleDetailsFragment(
     private var dataType: String = String.EMPTY,
-    private var numberDataResult: (NumberData) -> Unit,
+    private var numberDataResult: (NumberData) -> Unit
 ) :
     BaseBindingFragment<FragmentSingleNumberDataDetailsBinding>() {
 

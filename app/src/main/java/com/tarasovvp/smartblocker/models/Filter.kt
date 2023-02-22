@@ -29,7 +29,7 @@ data class Filter(
     var name: String? = String.EMPTY,
     var countryCode: CountryCode = CountryCode(),
     var filterWithoutCountryCode: String = String.EMPTY,
-    var created: Long? = null,
+    var created: Long? = null
 ) : Parcelable, NumberData() {
 
     @get:Exclude

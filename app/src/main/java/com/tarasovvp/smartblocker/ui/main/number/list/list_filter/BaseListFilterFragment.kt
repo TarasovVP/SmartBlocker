@@ -224,9 +224,7 @@ open class BaseListFilterFragment :
                     showInterstitial()
                     getAllData()
                 }
-                this@BaseListFilterFragment.filterList?.removeAll { it.isCheckedForDelete }
                 changeDeleteMode()
-                searchDataList()
             }
         }
     }
