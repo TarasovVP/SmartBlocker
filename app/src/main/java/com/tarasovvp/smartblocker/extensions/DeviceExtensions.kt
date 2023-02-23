@@ -65,6 +65,7 @@ fun Context.createNotificationChannel() {
         channel.lightColor = Color.BLUE
         channel.importance = NotificationManager.IMPORTANCE_NONE
         channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        channel.setShowBadge(false)
         val service = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(channel)
     }
