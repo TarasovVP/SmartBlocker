@@ -19,7 +19,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.END_CALL
@@ -85,6 +89,14 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
         .setContentIntent(pendingIntent)
 
     return builder
+}
+
+fun Context.googleSignInClient() : GoogleSignInClient {
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
+        .requestEmail()
+        .build()
+    return GoogleSignIn.getClient(this, gso)
 }
 
 fun Context.breakCallNougatAndLower() {

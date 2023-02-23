@@ -3,9 +3,7 @@ package com.tarasovvp.smartblocker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -27,12 +25,7 @@ class SmartBlockerApp : Application() {
         super.onCreate()
         instance = this
         auth = Firebase.auth
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient = this.googleSignInClient()
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)
         Settings.loadSettingsHelper(this, this.packageName)
@@ -49,7 +42,8 @@ class SmartBlockerApp : Application() {
 
     fun checkNetworkAvailable(): Boolean {
         if (isNetworkAvailable.isNotTrue()) {
-            baseContext?.getString(R.string.app_network_unavailable_repeat).orEmpty().sendExceptionBroadCast()
+            baseContext?.getString(R.string.app_network_unavailable_repeat).orEmpty()
+                .sendExceptionBroadCast()
             return true
         }
         return false
