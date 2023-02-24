@@ -1,19 +1,20 @@
-package com.tarasovvp.smartblocker.repository
+package com.tarasovvp.smartblocker.repository.implementations
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.database.dao.CountryCodeDao
 import com.tarasovvp.smartblocker.extensions.countryCodeList
 import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.repository.interfaces.CountryCodeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class CountryCodeRepository @Inject constructor(
+class CountryCodeRepositoryImpl @Inject constructor(
     private val countryCodeDao: CountryCodeDao
-) {
+) : CountryCodeRepository {
 
-    suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
+    override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
         withContext(
             Dispatchers.Default
         ) {
@@ -22,22 +23,22 @@ class CountryCodeRepository @Inject constructor(
             }
         }
 
-    suspend fun insertAllCountryCodes(list: List<CountryCode>) {
+    override suspend fun insertAllCountryCodes(list: List<CountryCode>) {
         countryCodeDao.insertAllCountryCode(list)
     }
 
-    suspend fun getAllCountryCodes(): List<CountryCode> =
+    override suspend fun getAllCountryCodes(): List<CountryCode> =
         withContext(
             Dispatchers.Default
         ) {
             countryCodeDao.getAllCountryCodes()
         }
 
-    suspend fun getCountryCodeWithCountry(country: String): CountryCode? {
+    override suspend fun getCountryCodeWithCountry(country: String): CountryCode? {
         return countryCodeDao.getCountryCodeWithCountry(country.uppercase())
     }
 
-    suspend fun getCountryCodeWithCode(code: Int): CountryCode? {
+    override suspend fun getCountryCodeWithCode(code: Int): CountryCode? {
         return countryCodeDao.getCountryCodeWithCode(
             String.format(
                 COUNTRY_CODE_START,

@@ -12,8 +12,8 @@ import com.tarasovvp.smartblocker.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
 import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.repository.FilterRepository
-import com.tarasovvp.smartblocker.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.repository.interfaces.FilterRepository
+import com.tarasovvp.smartblocker.repository.interfaces.FilteredCallRepository
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

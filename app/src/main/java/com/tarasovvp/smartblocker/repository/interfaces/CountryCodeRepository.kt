@@ -1,0 +1,16 @@
+package com.tarasovvp.smartblocker.repository.interfaces
+
+import com.tarasovvp.smartblocker.models.CountryCode
+
+interface CountryCodeRepository {
+
+    suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode>
+
+    suspend fun insertAllCountryCodes(list: List<CountryCode>)
+
+    suspend fun getAllCountryCodes(): List<CountryCode>
+
+    suspend fun getCountryCodeWithCountry(country: String): CountryCode?
+
+    suspend fun getCountryCodeWithCode(code: Int): CountryCode?
+}

@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.repository
+package com.tarasovvp.smartblocker.repository.implementations
 
 import android.content.Context
 import com.tarasovvp.smartblocker.database.dao.ContactDao
@@ -8,18 +8,20 @@ import com.tarasovvp.smartblocker.extensions.systemContactList
 import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.repository.interfaces.ContactRepository
+import com.tarasovvp.smartblocker.repository.interfaces.FilterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class ContactRepository @Inject constructor(
+class ContactRepositoryImpl @Inject constructor(
     private val contactDao:  ContactDao
-) {
-    suspend fun insertContacts(list: List<Contact>) {
+) : ContactRepository {
+    override suspend fun insertContacts(list: List<Contact>) {
         contactDao.insertAllContacts(list)
     }
 
-    suspend fun getAllContacts(): List<Contact> =
+    override suspend fun getAllContacts(): List<Contact> =
         withContext(
             Dispatchers.Default
         ) {
@@ -27,7 +29,7 @@ class ContactRepository @Inject constructor(
         }
 
 
-    suspend fun getSystemContactList(
+    override suspend fun getSystemContactList(
         context: Context,
         filterRepository: FilterRepository,
         result: (Int, Int) -> Unit,
@@ -40,7 +42,7 @@ class ContactRepository @Inject constructor(
             }
         }
 
-    suspend fun getHashMapFromContactList(contactList: List<Contact>): Map<String, List<Contact>> =
+    override suspend fun getHashMapFromContactList(contactList: List<Contact>): Map<String, List<Contact>> =
         withContext(
             Dispatchers.Default
         ) {
@@ -49,7 +51,7 @@ class ContactRepository @Inject constructor(
             }
         }
 
-    suspend fun filteredNumberDataList(
+    override suspend fun filteredNumberDataList(
         filter: Filter?,
         numberDataList: ArrayList<NumberData>,
         color: Int

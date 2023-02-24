@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.repository
+package com.tarasovvp.smartblocker.repository.implementations
 
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -6,11 +6,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
+import com.tarasovvp.smartblocker.repository.interfaces.AuthRepository
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
+class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : AuthRepository {
 
-    fun sendPasswordResetEmail(email: String, result: () -> Unit) {
+    override fun sendPasswordResetEmail(email: String, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         auth?.sendPasswordResetEmail(email)
             ?.addOnCompleteListener { task ->
@@ -22,7 +23,7 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
             }
     }
 
-    fun signInWithEmailAndPassword(email: String, password: String, result: () -> Unit) {
+    override fun signInWithEmailAndPassword(email: String, password: String, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         auth?.signInWithEmailAndPassword(email, password)
             ?.addOnCompleteListener { task ->
@@ -35,7 +36,7 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
             }
     }
 
-    fun signInWithGoogle(idToken: String, result: () -> Unit) {
+    override fun signInWithGoogle(idToken: String, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth?.signInWithCredential(credential)
@@ -48,7 +49,7 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
             }
     }
 
-    fun createUserWithEmailAndPassword(
+    override fun createUserWithEmailAndPassword(
         email: String,
         password: String,
         result: () -> Unit,
@@ -64,7 +65,7 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
             }
     }
 
-    fun changePassword(currentPassword: String, newPassword: String, result: () -> Unit) {
+    override fun changePassword(currentPassword: String, newPassword: String, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         val user = FirebaseAuth.getInstance().currentUser
         val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), currentPassword)
@@ -85,7 +86,7 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
             }
     }
 
-    fun deleteUser(result: () -> Unit) {
+    override fun deleteUser(result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         auth?.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -97,7 +98,7 @@ class AuthRepository @Inject constructor(private val auth: FirebaseAuth?){
         }
     }
 
-    fun signOut(result: () -> Unit) {
+    override fun signOut(result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         SmartBlockerApp.instance?.googleSignInClient?.signOut()
         auth?.signOut()

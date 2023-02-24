@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.InfoData
+import com.tarasovvp.smartblocker.models.LogCall
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
@@ -109,6 +110,12 @@ class ListCallFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(CALL_DELETE) { _, _ ->
+            val callListToDelete = arrayListOf<Call>().apply {
+                callList?.forEach { call ->
+                    if (call.isDeleteMode && call.isBlockedCall()) add(call)
+                    if (call.isDeleteMode && call is LogCall) add(call)
+                }
+            }
             viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->

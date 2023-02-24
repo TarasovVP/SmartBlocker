@@ -2,11 +2,13 @@ package com.tarasovvp.smartblocker.di
 
 import android.content.Context
 import com.google.firebase.database.FirebaseDatabase
-import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.database.AppDatabase
 import com.tarasovvp.smartblocker.database.dao.*
 import com.tarasovvp.smartblocker.repository.*
+import com.tarasovvp.smartblocker.repository.implementations.*
+import com.tarasovvp.smartblocker.repository.interfaces.*
+import com.tarasovvp.smartblocker.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,8 +31,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactRepository(contactDao: ContactDao) =
-        ContactRepository(contactDao)
+    fun provideContactRepository(contactDao: ContactDao) : ContactRepository {
+        return ContactRepositoryImpl(contactDao)
+    }
 
     @Singleton
     @Provides
@@ -38,8 +41,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeRepository(countryCodeDao: CountryCodeDao) =
-        CountryCodeRepository(countryCodeDao)
+    fun provideCountryCodeRepository(countryCodeDao: CountryCodeDao) : CountryCodeRepository {
+        return CountryCodeRepositoryImpl(countryCodeDao)
+    }
 
     @Singleton
     @Provides
@@ -50,8 +54,9 @@ object AppModule {
     fun provideFilterRepository(
         filterDao: FilterDao,
         realDataBaseRepository: RealDataBaseRepository,
-    ) =
-        FilterRepository(filterDao, realDataBaseRepository)
+    ) : FilterRepository {
+        return FilterRepositoryImpl(filterDao, realDataBaseRepository)
+    }
 
     @Singleton
     @Provides
@@ -59,8 +64,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLogCallRepository(logCallDao: LogCallDao) =
-        CallRepository(logCallDao)
+    fun provideLogCallRepository(logCallDao: LogCallDao) : CallRepository {
+        return CallRepositoryImpl(logCallDao)
+    }
 
     @Singleton
     @Provides
@@ -69,19 +75,19 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFilteredCallRepository(
-        filteredCallDao: FilteredCallDao,
-        realDataBaseRepository: RealDataBaseRepository,
-    ) =
-        FilteredCallRepository(filteredCallDao, realDataBaseRepository)
+        filteredCallDao: FilteredCallDao, realDataBaseRepository: RealDataBaseRepository) : FilteredCallRepository {
+        return  FilteredCallRepositoryImpl(filteredCallDao, realDataBaseRepository)
+    }
 
     @Singleton
     @Provides
-    fun provideAuthRepository() =
-        AuthRepository(SmartBlockerApp.instance?.auth)
+    fun provideAuthRepository() : AuthRepository {
+        return AuthRepositoryImpl(SmartBlockerApp.instance?.auth)
+    }
 
     @Singleton
     @Provides
-    fun provideRealDataBaseRepository() =
-        RealDataBaseRepository(FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference)
-
+    fun provideRealDataBaseRepository() : RealDataBaseRepository {
+        return RealDataBaseRepositoryImpl(FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference)
+    }
 }

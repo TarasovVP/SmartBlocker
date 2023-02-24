@@ -6,10 +6,10 @@ import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
-import com.tarasovvp.smartblocker.repository.CallRepository
-import com.tarasovvp.smartblocker.repository.ContactRepository
-import com.tarasovvp.smartblocker.repository.FilterRepository
-import com.tarasovvp.smartblocker.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.repository.interfaces.CallRepository
+import com.tarasovvp.smartblocker.repository.interfaces.ContactRepository
+import com.tarasovvp.smartblocker.repository.interfaces.FilterRepository
+import com.tarasovvp.smartblocker.repository.interfaces.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async

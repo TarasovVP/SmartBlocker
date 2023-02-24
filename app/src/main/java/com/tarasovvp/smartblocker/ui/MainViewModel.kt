@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.models.CurrentUser
 import com.tarasovvp.smartblocker.models.MainProgress
-import com.tarasovvp.smartblocker.repository.*
+import com.tarasovvp.smartblocker.repository.interfaces.*
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
