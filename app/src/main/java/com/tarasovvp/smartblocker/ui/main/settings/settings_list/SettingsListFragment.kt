@@ -11,11 +11,12 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsListViewModel>() {
@@ -28,7 +29,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
         binding?.apply {
             settingsLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language,
                 0,
-                SharedPreferencesUtil.appLang.orEmpty().flagDrawable(),
+                SharedPrefs.appLang.orEmpty().flagDrawable(),
                 0)
             settingsReview.isVisible = SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             container.getViewsFromLayout(TextView::class.java).forEach {

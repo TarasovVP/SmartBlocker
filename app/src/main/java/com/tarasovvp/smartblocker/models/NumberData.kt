@@ -5,7 +5,7 @@ import android.text.SpannableString
 import androidx.room.Ignore
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 open class NumberData : Parcelable {

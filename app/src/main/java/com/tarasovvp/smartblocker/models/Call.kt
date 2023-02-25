@@ -11,12 +11,13 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.IN_COMING_CALL
-import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import javax.inject.Inject
 
 @Parcelize
 open class Call(
@@ -30,6 +31,7 @@ open class Call(
     var countryIso: String? = String.EMPTY,
     @Embedded(prefix = "filter_") var filter: Filter? = Filter()
 ) : Parcelable, NumberData() {
+
     @Ignore
     var isCheckedForDelete = false
 
@@ -105,8 +107,8 @@ open class Call(
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
-                number.isEmpty() && SharedPreferencesUtil.blockHidden -> R.string.details_number_hidden_on
-                number.isEmpty() && SharedPreferencesUtil.blockHidden.not() -> R.string.details_number_hidden_off
+                number.isEmpty() && SharedPrefs.blockHidden -> R.string.details_number_hidden_on
+                number.isEmpty() && SharedPrefs.blockHidden.not() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {

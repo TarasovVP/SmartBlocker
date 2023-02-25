@@ -12,14 +12,16 @@ import com.tarasovvp.smartblocker.enums.OnBoarding
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray
+import javax.inject.Inject
 
 class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 
     override var layoutId = R.layout.fragment_on_boarding
+
     private var currentPosition = 0
 
     private val requestPermissionLauncher =
@@ -83,7 +85,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
     }
 
     private fun startLoginScreen() {
-        SharedPreferencesUtil.isOnBoardingSeen = true
+        SharedPrefs.isOnBoardingSeen = true
         findNavController().navigate(R.id.startLoginScreen)
     }
 

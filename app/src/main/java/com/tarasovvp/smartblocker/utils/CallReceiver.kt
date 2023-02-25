@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
@@ -44,7 +44,7 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
-            val filter = if (number.isEmpty() && SharedPreferencesUtil.blockHidden) {
+            val filter = if (number.isEmpty() && SharedPrefs.blockHidden) {
                 Filter(filterType = BLOCKER)
             } else {
                 filterRepository.queryFilter(number)

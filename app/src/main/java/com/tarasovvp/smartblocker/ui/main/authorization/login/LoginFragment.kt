@@ -19,10 +19,11 @@ import com.tarasovvp.smartblocker.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.UNAUTHORIZED_ENTER
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
@@ -67,7 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         setFragmentResultListener(UNAUTHORIZED_ENTER) { _, _ ->
             (activity as MainActivity).apply {
                 getAllData()
-                if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
             }
             findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
         }
@@ -94,7 +95,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).apply {
                     getAllData()
-                    if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                    if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 }
                 findNavController().navigate(R.id.listBlockerFragment)
             }

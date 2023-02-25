@@ -33,7 +33,7 @@ import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
@@ -76,13 +76,13 @@ class MainActivity : AppCompatActivity() {
         }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPreferencesUtil.appLang
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPrefs.appLang
             ?: Locale.getDefault().language)))
     }
 
     override fun onStart() {
         super.onStart()
-        SharedPreferencesUtil.countryCode = SharedPreferencesUtil.countryCode ?: getUserCountry()
+        SharedPrefs.countryCode = SharedPrefs.countryCode ?: getUserCountry()
         callHandleReceiver = CallHandleReceiver {
             mainViewModel.getAllData()
         }
@@ -146,14 +146,14 @@ class MainActivity : AppCompatActivity() {
         setBottomNavigationView()
         setOnDestinationChangedListener()
         observeLiveData()
-        if (SharedPreferencesUtil.isOnBoardingSeen
+        if (SharedPrefs.isOnBoardingSeen
             && SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             && savedInstanceState.isNull()
         ) {
             if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
                 navController?.navigate(R.id.startUnavailableNetworkDialog)
             } else {
-                if (SharedPreferencesUtil.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
                 getAllData()
             }
         }
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
                 when {
-                    SharedPreferencesUtil.isOnBoardingSeen.not() -> R.id.onBoardingFragment
+                    SharedPrefs.isOnBoardingSeen.not() -> R.id.onBoardingFragment
                     SmartBlockerApp.instance?.isLoggedInUser().isTrue() -> {
                         R.id.listBlockerFragment
                     }

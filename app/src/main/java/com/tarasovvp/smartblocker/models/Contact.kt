@@ -8,7 +8,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.extensions.*
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Entity
 @Parcelize

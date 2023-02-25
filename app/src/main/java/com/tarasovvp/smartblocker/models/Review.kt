@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.models
 
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Review(

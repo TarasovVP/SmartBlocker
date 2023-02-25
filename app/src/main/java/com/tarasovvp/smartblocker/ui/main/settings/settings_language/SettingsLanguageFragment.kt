@@ -5,9 +5,10 @@ import android.view.View
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsLanguageBinding
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
+import javax.inject.Inject
 
 class SettingsLanguageFragment :
     BaseBindingFragment<FragmentSettingsLanguageBinding>() {
@@ -16,7 +17,7 @@ class SettingsLanguageFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val radioButtonId = when (SharedPreferencesUtil.appLang) {
+        val radioButtonId = when (SharedPrefs.appLang) {
             Constants.APP_LANG_UK -> R.id.settings_languages_rb_uk
             Constants.APP_LANG_RU -> R.id.settings_languages_rb_ru
             else -> R.id.settings_languages_rb_en
@@ -28,7 +29,7 @@ class SettingsLanguageFragment :
                 R.id.settings_languages_rb_ru -> Constants.APP_LANG_RU
                 else -> Constants.APP_LANG_EN
             }
-            SharedPreferencesUtil.appLang = appLang
+            SharedPrefs.appLang = appLang
             (activity as MainActivity).apply {
                 recreate()
             }

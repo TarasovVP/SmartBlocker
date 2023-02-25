@@ -21,7 +21,7 @@ import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.InfoData
@@ -32,6 +32,7 @@ import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 open class CreateFilterFragment :
@@ -39,6 +40,7 @@ open class CreateFilterFragment :
 
     override var layoutId = R.layout.fragment_create_filter
     override val viewModelClass = CreateFilterViewModel::class.java
+
     private val args: CreateFilterFragmentArgs by navArgs()
 
     override val viewModel by lazy(LazyThreadSafetyMode.NONE) {
@@ -125,7 +127,7 @@ open class CreateFilterFragment :
         viewModel.getNumberDataList()
         if (binding?.filter?.isTypeContain().isNotTrue()) {
             if (binding?.filter?.countryCode?.countryCode.isNullOrEmpty()) {
-                viewModel.getCountryCodeWithCountry(SharedPreferencesUtil.countryCode)
+                viewModel.getCountryCodeWithCountry(SharedPrefs.countryCode)
             } else {
                 binding?.filter?.countryCode?.let { setCountryCode(it) }
             }

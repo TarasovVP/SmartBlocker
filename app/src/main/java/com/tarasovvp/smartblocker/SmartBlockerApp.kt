@@ -9,13 +9,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.Settings
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import dagger.hilt.android.HiltAndroidApp
 import java.util.*
+import javax.inject.Inject
 
 @HiltAndroidApp
 class SmartBlockerApp : Application() {
+
 
     var auth: FirebaseAuth? = null
     var googleSignInClient: GoogleSignInClient? = null
@@ -26,13 +27,12 @@ class SmartBlockerApp : Application() {
         instance = this
         auth = Firebase.auth
         googleSignInClient = this.googleSignInClient()
+        SharedPrefs.init(this)
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)
-        Settings.loadSettingsHelper(this, this.packageName)
         createNotificationChannel()
-        if (SharedPreferencesUtil.appLang.isNullOrEmpty()) SharedPreferencesUtil.appLang =
-            Locale.getDefault().language
-        AppCompatDelegate.setDefaultNightMode(SharedPreferencesUtil.appTheme)
+        if (SharedPrefs.appLang.isNullOrEmpty()) SharedPrefs.appLang = Locale.getDefault().language
+        AppCompatDelegate.setDefaultNightMode(SharedPrefs.appTheme)
         registerForNetworkUpdates { isAvailable ->
             isNetworkAvailable = isAvailable
         }

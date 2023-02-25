@@ -5,8 +5,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsThemeBinding
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
+import javax.inject.Inject
 
 class SettingsThemeFragment :
     BaseBindingFragment<FragmentSettingsThemeBinding>() {
@@ -15,7 +16,7 @@ class SettingsThemeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        when (SharedPreferencesUtil.appTheme) {
+        when (SharedPrefs.appTheme) {
             AppCompatDelegate.MODE_NIGHT_YES -> binding?.appThemeNight?.isChecked = true
             AppCompatDelegate.MODE_NIGHT_NO -> binding?.appThemeDay?.isChecked = true
             else -> binding?.appAuto?.isChecked = true
@@ -32,7 +33,7 @@ class SettingsThemeFragment :
                     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 }
             }
-            SharedPreferencesUtil.appTheme = mode
+            SharedPrefs.appTheme = mode
             AppCompatDelegate.setDefaultNightMode(mode)
         }
     }

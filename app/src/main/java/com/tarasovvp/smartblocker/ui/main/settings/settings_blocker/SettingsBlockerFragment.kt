@@ -7,10 +7,11 @@ import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.local.SharedPreferencesUtil
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsBlockerFragment :
@@ -27,11 +28,11 @@ class SettingsBlockerFragment :
 
     private fun setSmartBlockerOnSettings() {
         binding?.apply {
-            settingsBlockerSwitch.isChecked = SharedPreferencesUtil.smartBlockerTurnOff.not()
+            settingsBlockerSwitch.isChecked = SharedPrefs.smartBlockerTurnOff.not()
             settingsBlockerDescribe.text =
                 getString(if (settingsBlockerSwitch.isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
             settingsBlockerSwitch.setOnCheckedChangeListener { _, isChecked ->
-                SharedPreferencesUtil.smartBlockerTurnOff = isChecked.not()
+                SharedPrefs.smartBlockerTurnOff = isChecked.not()
                 settingsBlockerDescribe.text =
                     getString(if (isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
                 (activity as MainActivity).apply {
@@ -47,7 +48,7 @@ class SettingsBlockerFragment :
 
     private fun setBlockHiddenSettings() {
         binding?.apply {
-            settingsBlockerHiddenSwitch.isChecked = SharedPreferencesUtil.blockHidden
+            settingsBlockerHiddenSwitch.isChecked = SharedPrefs.blockHidden
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
             settingsBlockerHiddenSwitchContainer.setSafeOnClickListener {
@@ -62,7 +63,7 @@ class SettingsBlockerFragment :
                 binding?.settingsBlockerHiddenDescribe?.text =
                     getString(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
                 binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden
-                SharedPreferencesUtil.blockHidden = blockHidden
+                SharedPrefs.blockHidden = blockHidden
             }
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { error ->
                 binding?.settingsBlockerHiddenSwitch?.isChecked =
