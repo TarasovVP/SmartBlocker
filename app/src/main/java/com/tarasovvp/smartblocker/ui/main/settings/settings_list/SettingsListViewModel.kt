@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.ui.main.settings.settings_list
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.models.Review
-import com.tarasovvp.smartblocker.repository.interfaces.RealDataBaseRepository
+import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

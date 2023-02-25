@@ -6,8 +6,7 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.database.AppDatabase
 import com.tarasovvp.smartblocker.database.dao.*
 import com.tarasovvp.smartblocker.repository.*
-import com.tarasovvp.smartblocker.repository.implementations.*
-import com.tarasovvp.smartblocker.repository.interfaces.*
+import com.tarasovvp.smartblocker.repositoryImpl.*
 import com.tarasovvp.smartblocker.BuildConfig
 import dagger.Module
 import dagger.Provides

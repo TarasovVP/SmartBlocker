@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.repository.interfaces
+package com.tarasovvp.smartblocker.repository
 
 interface AuthRepository {
 

@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.repository.implementations
+package com.tarasovvp.smartblocker.repositoryImpl
 
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -6,7 +6,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
-import com.tarasovvp.smartblocker.repository.interfaces.AuthRepository
+import com.tarasovvp.smartblocker.repository.AuthRepository
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : AuthRepository {

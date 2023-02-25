@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.repository.implementations
+package com.tarasovvp.smartblocker.repositoryImpl
 
 import com.google.firebase.database.DatabaseReference
 import com.tarasovvp.smartblocker.SmartBlockerApp
@@ -10,10 +10,11 @@ import com.tarasovvp.smartblocker.constants.Constants.USERS
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.models.*
-import com.tarasovvp.smartblocker.repository.interfaces.RealDataBaseRepository
+import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import javax.inject.Inject
 
-class RealDataBaseRepositoryImpl @Inject constructor(private val database: DatabaseReference) : RealDataBaseRepository {
+class RealDataBaseRepositoryImpl @Inject constructor(private val database: DatabaseReference) :
+    RealDataBaseRepository {
 
     private var currentUserDatabase =
         database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())

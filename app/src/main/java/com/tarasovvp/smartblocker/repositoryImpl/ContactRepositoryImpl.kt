@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.repository.implementations
+package com.tarasovvp.smartblocker.repositoryImpl
 
 import android.content.Context
 import com.tarasovvp.smartblocker.database.dao.ContactDao
@@ -8,8 +8,8 @@ import com.tarasovvp.smartblocker.extensions.systemContactList
 import com.tarasovvp.smartblocker.models.Contact
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
-import com.tarasovvp.smartblocker.repository.interfaces.ContactRepository
-import com.tarasovvp.smartblocker.repository.interfaces.FilterRepository
+import com.tarasovvp.smartblocker.repository.ContactRepository
+import com.tarasovvp.smartblocker.repository.FilterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

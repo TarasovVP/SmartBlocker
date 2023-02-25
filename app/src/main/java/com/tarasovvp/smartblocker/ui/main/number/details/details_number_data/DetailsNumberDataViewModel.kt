@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.NumberData
-import com.tarasovvp.smartblocker.repository.interfaces.CountryCodeRepository
-import com.tarasovvp.smartblocker.repository.interfaces.FilterRepository
-import com.tarasovvp.smartblocker.repository.interfaces.FilteredCallRepository
+import com.tarasovvp.smartblocker.repository.CountryCodeRepository
+import com.tarasovvp.smartblocker.repository.FilterRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

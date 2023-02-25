@@ -1,12 +1,12 @@
-package com.tarasovvp.smartblocker.repository.implementations
+package com.tarasovvp.smartblocker.repositoryImpl
 
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.FilteredCall
-import com.tarasovvp.smartblocker.repository.interfaces.FilteredCallRepository
-import com.tarasovvp.smartblocker.repository.interfaces.RealDataBaseRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import javax.inject.Inject
 
 class FilteredCallRepositoryImpl @Inject constructor(

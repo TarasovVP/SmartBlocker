@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.repository.interfaces.FilterRepository
+import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

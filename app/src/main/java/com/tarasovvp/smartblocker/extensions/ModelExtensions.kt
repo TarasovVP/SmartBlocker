@@ -23,8 +23,8 @@ import com.tarasovvp.smartblocker.constants.Constants.DESC
 import com.tarasovvp.smartblocker.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.models.*
-import com.tarasovvp.smartblocker.repository.interfaces.FilterRepository
-import com.tarasovvp.smartblocker.repository.interfaces.FilteredCallRepository
+import com.tarasovvp.smartblocker.repository.FilterRepository
+import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

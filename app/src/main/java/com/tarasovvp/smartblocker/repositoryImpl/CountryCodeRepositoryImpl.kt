@@ -1,11 +1,11 @@
-package com.tarasovvp.smartblocker.repository.implementations
+package com.tarasovvp.smartblocker.repositoryImpl
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.database.dao.CountryCodeDao
 import com.tarasovvp.smartblocker.extensions.countryCodeList
 import com.tarasovvp.smartblocker.models.CountryCode
-import com.tarasovvp.smartblocker.repository.interfaces.CountryCodeRepository
+import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
