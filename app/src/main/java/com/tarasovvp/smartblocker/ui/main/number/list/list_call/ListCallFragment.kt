@@ -112,8 +112,8 @@ class ListCallFragment :
         setFragmentResultListener(CALL_DELETE) { _, _ ->
             val callListToDelete = arrayListOf<Call>().apply {
                 callList?.forEach { call ->
-                    if (call.isDeleteMode && call.isBlockedCall()) add(call)
-                    if (call.isDeleteMode && call is LogCall) add(call)
+                    if (call.isCheckedForDelete && call.isBlockedCall()) add(call)
+                    if (call.isCheckedForDelete && call is LogCall) add(call)
                 }
             }
             viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
