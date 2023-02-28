@@ -89,8 +89,8 @@ fun Context.systemCallLogCursor(): Cursor? {
     )
 }
 
-fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
-    val logCall = if (isBlockedCall) FilteredCall() else LogCall()
+fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
+    val logCall = if (isFilteredCall) FilteredCall() else LogCall()
     logCall.callId = this.getInt(0)
     logCall.callName = this.getString(1)
     logCall.number = this.getString(2)
@@ -102,18 +102,18 @@ fun Cursor.createCallObject(isBlockedCall: Boolean): Call {
         logCall.photoUrl = this.getString(7)
     }
     logCall.numberData = this.getString(2)
-    //TODO
-    /*CoroutineScope(Dispatchers.IO).launch {
-        logCall.filter = filterRepository.queryFilter(logCall.numberData)
-    }*/
     return logCall
 }
 
-fun Context.systemLogCallList(result: (Int, Int) -> Unit): ArrayList<LogCall> {
+fun Context.systemLogCallList(filterRepository: FilterRepository, result: (Int, Int) -> Unit): ArrayList<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
-            logCallList.add((callLogCursor.createCallObject(false) as LogCall))
+            val logCall = callLogCursor.createCallObject(false) as LogCall
+            CoroutineScope(Dispatchers.IO).launch {
+                logCall.filter = filterRepository.queryFilter(logCall.numberData)
+            }
+            logCallList.add(logCall)
             result.invoke(callLogCursor.count, logCallList.size)
         }
     }

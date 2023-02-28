@@ -9,11 +9,12 @@ import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.LogCall
 import com.tarasovvp.smartblocker.repository.CallRepository
+import com.tarasovvp.smartblocker.repository.FilterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class CallRepositoryImpl @Inject constructor(private val callDao: LogCallDao) : CallRepository {
+class CallRepositoryImpl @Inject constructor(private val callDao: LogCallDao, private val filterRepository: FilterRepository) : CallRepository {
 
     override suspend fun insertAllLogCalls(logCallList: List<LogCall>) {
         callDao.insertAllLogCalls(logCallList)
@@ -42,7 +43,7 @@ class CallRepositoryImpl @Inject constructor(private val callDao: LogCallDao) : 
         withContext(
             Dispatchers.Default
         ) {
-            context.systemLogCallList { size, position ->
+            context.systemLogCallList(filterRepository) { size, position ->
                 result.invoke(size, position)
             }
         }

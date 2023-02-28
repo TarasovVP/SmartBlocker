@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        SharedPrefs.countryCode = SharedPrefs.countryCode ?: getUserCountry()
+        SharedPrefs.countryCode = SharedPrefs.countryCode.takeIf { it.isNullOrEmpty().not() } ?: getUserCountry()
         callHandleReceiver = CallHandleReceiver {
             mainViewModel.getAllData()
         }

@@ -177,15 +177,14 @@ open class CreateFilterFragment :
             createFilterInput.setupClearButtonWithAction()
             createFilterInput.doAfterTextChanged {
                 Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener doAfterTextChanged it $it")
-                if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull()
-                        .isTrue())
-                    || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart()
-                        .isTrue())
+                if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull().isTrue())
+                    || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart().isTrue())
                 ) return@doAfterTextChanged
                 Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
                 filter = filter?.apply {
-                    filter = createFilterInput.getRawText()
+                    filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY)
+                        .replace(Constants.SPACE, String.EMPTY)
                     viewModel.checkFilterExist(this)
                 }
                 context?.let { context ->

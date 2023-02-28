@@ -6,6 +6,7 @@ import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import androidx.room.Embedded
 import androidx.room.Ignore
+import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
@@ -31,21 +32,26 @@ open class Call(
 ) : Parcelable, NumberData() {
 
     @Ignore
+    @get:Exclude
     var isCheckedForDelete = false
 
     @Ignore
+    @get:Exclude
     var isDeleteMode = false
 
     @Ignore
+    @get:Exclude
     var isExtract = false
 
     @Ignore
+    @get:Exclude
     var isFilteredCallDetails = false
 
+    @Exclude
     fun isNameEmpty(): Boolean {
         return callName.isNullOrEmpty()
     }
-
+    @Exclude
     fun callIcon(): Int {
         return when (type) {
             IN_COMING_CALL -> if (isFilteredNotNullOrEmpty()) R.drawable.ic_call_incoming_permitted else R.drawable.ic_call_incoming
@@ -55,15 +61,15 @@ open class Call(
             else -> R.drawable.ic_call_outcoming
         }
     }
-
+    @Exclude
     fun timeFromCallDate(): String? {
         return callDate?.toDateFromMilliseconds(TIME_FORMAT)
     }
-
+    @Exclude
     fun dateFromCallDate(): String? {
         return callDate?.toDateFromMilliseconds(DATE_FORMAT)
     }
-
+    @Exclude
     fun placeHolder(context: Context): Drawable? {
         return if (callName.isNullOrEmpty()) ContextCompat.getDrawable(context,
             R.drawable.ic_call) else if (callName.nameInitial()
@@ -71,35 +77,35 @@ open class Call(
         ) ContextCompat.getDrawable(context,
             R.drawable.ic_contact) else context.getInitialDrawable(callName.nameInitial())
     }
-
+    @Exclude
     private fun dateTimeFromCallDate(): String {
         return String.format("%s, %s", dateFromCallDate(), timeFromCallDate())
     }
-
+    @Exclude
     fun isBlockedCall(): Boolean {
         return type == BLOCKED_CALL
     }
-
+    @Exclude
     fun isPermittedCall(): Boolean {
         return isFilteredNotNullOrEmpty() && isBlockedCall().not()
     }
-
+    @Exclude
     fun filterValue(): String {
         return filter?.filter.orEmpty()
     }
-
+    @Exclude
     fun isFilterNullOrEmpty(): Boolean {
         return filter?.filter.isNullOrEmpty().isTrue()
     }
-
+    @Exclude
     fun isFilteredNotNullOrEmpty(): Boolean {
         return this is FilteredCall && filtered?.filter.isNullOrEmpty().not()
     }
-
+    @Exclude
     fun isFilteredCallDelete(): Boolean {
         return this is FilteredCall && (isFilteredNotNullOrEmpty() || number.isEmpty()) && isDeleteMode
     }
-
+    @Exclude
     fun callFilterTitle(): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
@@ -121,7 +127,7 @@ open class Call(
             }
         }
     }
-
+    @Exclude
     fun callFilterValue(): String {
         return when {
             isFilteredCallDetails -> dateTimeFromCallDate()
@@ -130,7 +136,7 @@ open class Call(
             else -> String.EMPTY
         }
     }
-
+    @Exclude
     fun callFilterIcon(): Int? {
         return when {
             isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty().not() -> R.drawable.ic_settings_small
@@ -139,7 +145,7 @@ open class Call(
             else -> null
         }
     }
-
+    @Exclude
     fun callFilterTint(): Int {
         return when {
             isExtract.not() && this is FilteredCall && filtered?.isBlocker()
