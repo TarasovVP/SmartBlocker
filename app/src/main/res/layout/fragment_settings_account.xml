@@ -58,17 +58,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/settings_account_delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
-                android:background="@drawable/bg_rounded"
-                android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
-                android:text="@string/settings_account_delete_title"
-                app:layout_constraintTop_toBottomOf="@+id/settings_account_container" />
-
-            <TextView
                 android:id="@+id/settings_account_change_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,7 +66,18 @@
                 android:paddingHorizontal="@dimen/padding_16"
                 android:paddingVertical="@dimen/padding_10"
                 android:text="@string/settings_account_change_password_title"
-                app:layout_constraintTop_toBottomOf="@+id/settings_account_delete" />
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_container" />
+
+            <TextView
+                android:id="@+id/settings_account_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_account_delete_title"
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_change_password" />
 
             <include
                 android:id="@+id/include_empty_state"

@@ -127,6 +127,7 @@ class ListCallFragment :
 
     private fun changeDeleteMode() {
         isDeleteMode = isDeleteMode.not()
+        binding?.listCallCheck?.isEnabled = isDeleteMode.not()
         (adapter as CallAdapter).apply {
             isDeleteMode = this@ListCallFragment.isDeleteMode
             recyclerView?.post {

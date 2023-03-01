@@ -83,6 +83,7 @@ open class BaseListFilterFragment :
 
     private fun changeDeleteMode() {
         isDeleteMode = isDeleteMode.not()
+        binding?.listFilterFilter?.isEnabled = isDeleteMode.not()
         (adapter as FilterAdapter).apply {
             isDeleteMode = this@BaseListFilterFragment.isDeleteMode
             recyclerView?.post {
