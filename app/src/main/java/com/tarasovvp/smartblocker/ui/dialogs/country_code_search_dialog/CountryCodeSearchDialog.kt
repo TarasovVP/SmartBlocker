@@ -37,11 +37,11 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
             dismiss()
         }
         viewModel.countryCodeListLiveData.safeObserve(viewLifecycleOwner) { countryCodeList ->
-            setCountryCodeSearchAdapter(countryCodeList)
+            setCountryCodeSearchList(countryCodeList)
         }
     }
 
-    private fun setCountryCodeSearchAdapter(countryCodeList: List<CountryCode>) {
+    private fun setCountryCodeSearchList(countryCodeList: List<CountryCode>) {
         countryCodeSearchAdapter?.countryCodeList = countryCodeList
         binding?.countryCodeEmpty?.root?.isVisible = countryCodeList.isEmpty()
         binding?.countryCodeSearchInput?.doAfterTextChanged { searchText ->

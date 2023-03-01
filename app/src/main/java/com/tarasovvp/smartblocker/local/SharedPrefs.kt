@@ -34,7 +34,7 @@ object SharedPrefs {
 
     var appTheme: Int
         get() = get(APP_THEME, Int::class.java)
-        set(appLang) {
+        set(appTheme) {
             put(APP_THEME, appTheme)
         }
 

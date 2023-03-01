@@ -12,21 +12,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/item_color"
-            android:padding="@dimen/padding_8">
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_16">
 
             <TextView
                 android:id="@+id/item_country_code_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:text="@{countryCode.countryEmoji}"
+                android:text="@{countryCode.countryNameEmoji}"
                 android:textColor="@color/text_color_grey"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_country_code_value"/>
 
             <TextView
                 android:id="@+id/item_country_code_value"
-                android:layout_width="@dimen/size_0"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{countryCode.countryCode}"
                 android:gravity="end|center_vertical"
