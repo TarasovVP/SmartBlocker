@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.models.CurrentUser
@@ -80,6 +81,7 @@ class MainViewModel @Inject constructor(
                 }
             contactRepository.insertContacts(contactList)
             // init calls data
+            Log.e("callTAG", "MainViewModel callLogList start")
             val callLogList =
                 logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
                     progressStatusLiveData.postValue(mainProgress.apply {
@@ -90,6 +92,7 @@ class MainViewModel @Inject constructor(
                     })
                 }
             logCallRepository.insertAllLogCalls(callLogList)
+            Log.e("callTAG", "MainViewModel callLogList finish")
             // init filter data
             val filterList = filterRepository.allFilters() as? ArrayList
             filterList?.forEachIndexed { index, filter ->

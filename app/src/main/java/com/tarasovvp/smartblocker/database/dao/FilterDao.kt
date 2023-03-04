@@ -14,21 +14,21 @@ interface FilterDao {
     @Update
     fun updateFilter(filter: Filter)
 
-    @Query("SELECT * FROM filter ORDER BY created DESC")
+    @Query("SELECT * FROM filters ORDER BY created DESC")
     suspend fun allFilters(): List<Filter>
 
-    @Query("SELECT * FROM filter WHERE filterType = :filterType")
+    @Query("SELECT * FROM filters WHERE filterType = :filterType")
     suspend fun allFiltersByType(filterType: Int): List<Filter>
 
-    @Query("SELECT * FROM filter WHERE filter = :filter AND conditionType = :conditionType")
+    @Query("SELECT * FROM filters WHERE filter = :filter AND conditionType = :conditionType")
     suspend fun getFilter(filter: String, conditionType: Int): Filter?
 
-    @Query("SELECT * FROM filter WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2)")
+    @Query("SELECT * FROM filters WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2)")
     suspend fun queryFullMatchFilterList(number: String): List<Filter>
 
     @Delete
     fun delete(filter: Filter)
 
-    @Query("DELETE FROM filter")
+    @Query("DELETE FROM filters")
     suspend fun deleteAllFilters()
 }

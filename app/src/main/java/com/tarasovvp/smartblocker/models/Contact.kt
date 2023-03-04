@@ -7,10 +7,11 @@ import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.CONTACTS
 import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.parcelize.Parcelize
 
-@Entity
+@Entity(tableName = CONTACTS)
 @Parcelize
 data class Contact(
     @PrimaryKey var id: String = String.EMPTY,

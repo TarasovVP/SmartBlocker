@@ -25,7 +25,7 @@ class ContactRepositoryImpl @Inject constructor(
         withContext(
             Dispatchers.Default
         ) {
-            contactDao.getAllContacts()
+            contactDao.getContactsWithFilters()
         }
 
 

@@ -39,6 +39,12 @@ object Constants {
     const val CURRENT_PASSWORD = "currentPassword"
     const val NEW_PASSWORD = "newPassword"
 
+    //Data base
+    const val CONTACTS = "contacts"
+    const val FILTERS = "filters"
+    const val LOG_CALLS = "logCalls"
+    const val FILTERED_CALLS = "filteredCalls"
+
     //Real data base
     const val USERS = "users"
     const val REVIEWS = "reviews"
