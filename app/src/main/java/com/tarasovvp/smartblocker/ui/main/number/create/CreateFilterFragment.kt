@@ -186,6 +186,7 @@ open class CreateFilterFragment :
                     filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY)
                         .replace(Constants.SPACE, String.EMPTY)
                     viewModel.checkFilterExist(this)
+                    viewModel.getFilterWithCountryCode(this)
                 }
                 context?.let { context ->
                     viewModel.filterNumberDataList(filter, numberDataList,

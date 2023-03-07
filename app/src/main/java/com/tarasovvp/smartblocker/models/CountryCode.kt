@@ -4,12 +4,13 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
+import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODES
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-@Entity
+@Entity(tableName = COUNTRY_CODES)
 @Parcelize
 class CountryCode(
     @PrimaryKey var country: String = String.EMPTY,

@@ -7,11 +7,11 @@
         <import type="android.view.View" />
 
         <variable
-            name="call"
-            type="com.tarasovvp.smartblocker.models.Call" />
+            name="callWithFilter"
+            type="com.tarasovvp.smartblocker.models.CallWithFilter" />
         <variable
-            name="contact"
-            type="com.tarasovvp.smartblocker.models.Contact" />
+            name="contactWithFilter"
+            type="com.tarasovvp.smartblocker.models.ContactWithFilter" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -34,8 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
-                app:contact="@{contact}"
-                android:visibility="@{contact.number == `` ? View.GONE : View.VISIBLE, default=gone}"
+                app:contactWithFilter="@{contactWithFilter}"
+                android:visibility="@{contactWithFilter.contact.number == `` ? View.GONE : View.VISIBLE, default=gone}"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <include
@@ -45,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_2"
                 android:layout_marginTop="@dimen/margin_8"
-                app:call="@{call}"
-                android:visibility="@{call.number == `` ? View.GONE : View.VISIBLE, default=invisible}"
+                app:callWithFilter="@{callWithFilter}"
+                android:visibility="@{callWithFilter.call.number == `` ? View.GONE : View.VISIBLE, default=invisible}"
                 app:layout_constraintTop_toBottomOf="@+id/details_number_data_item_contact" />
 
             <com.google.android.material.button.MaterialButton

@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(
     private val contactRepository: ContactRepository,
     private val countryCodeRepository: CountryCodeRepository,
     private val filterRepository: FilterRepository,
-    private val logCallRepository: CallRepository,
+    private val logCallRepository: LogCallRepository,
     private val filteredCallRepository: FilteredCallRepository,
     private val realDataBaseRepository: RealDataBaseRepository
 ) : BaseViewModel(application) {
@@ -93,10 +93,22 @@ class MainViewModel @Inject constructor(
                 }
             logCallRepository.insertAllLogCalls(callLogList)
             Log.e("callTAG", "MainViewModel callLogList finish")
+            // init filtered calls data
+            val filteredCallList = filteredCallRepository.allFilteredCalls() as ArrayList
+            filteredCallList.forEachIndexed { index, filteredCall ->
+                progressStatusLiveData.postValue(mainProgress.apply {
+                    progressDescription =
+                        getApplication<Application>().getString(R.string.progress_update_filtered_calls)
+                    progressMax = filteredCallList.size
+                    progressPosition = index
+                    filteredCall.filter = filteredCall.number.let { filterRepository.queryFilter(it) }?.filter
+                })
+            }
+            filteredCallRepository.insertAllFilteredCalls(filteredCallList)
             // init filter data
             val filterList = filterRepository.allFilters() as? ArrayList
             filterList?.forEachIndexed { index, filter ->
-                filter.filteredContacts = contactList.filter { it.filter == filter }.size
+                filter.filteredContacts = contactList.filter { it.filter == filter.filter }.size
                 progressStatusLiveData.postValue(mainProgress.apply {
                     progressDescription =
                         getApplication<Application>().getString(R.string.progress_update_filters)

@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
-import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.FilteredCall
+import com.tarasovvp.smartblocker.models.FilteredCallWithFilter
 
 interface FilteredCallRepository {
 
@@ -11,9 +11,11 @@ interface FilteredCallRepository {
 
     suspend fun allFilteredCalls(): List<FilteredCall>
 
-    suspend fun filteredCallsByFilter(filter: String): List<FilteredCall>
+    suspend fun allFilteredCallWithFilter(): List<FilteredCallWithFilter>
 
-    suspend fun filteredCallsByNumber(number: String): List<FilteredCall>
+    suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter>
 
-    fun deleteFilteredCalls(filteredCallList: List<Call>, result: () -> Unit)
+    suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter>
+
+    fun deleteFilteredCalls(filteredCallIdList: List<Int>, result: () -> Unit)
 }

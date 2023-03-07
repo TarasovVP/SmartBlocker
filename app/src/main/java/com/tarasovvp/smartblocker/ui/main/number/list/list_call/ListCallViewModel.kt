@@ -3,7 +3,9 @@ package com.tarasovvp.smartblocker.ui.main.number.list.list_call
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.models.Call
-import com.tarasovvp.smartblocker.repository.CallRepository
+import com.tarasovvp.smartblocker.models.CallWithFilter
+import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,48 +15,48 @@ import javax.inject.Inject
 @HiltViewModel
 class ListCallViewModel @Inject constructor(
     application: Application,
-    private val callRepository: CallRepository,
+    private val logCallRepository: LogCallRepository,
     private val filteredCallRepository: FilteredCallRepository
 ) : BaseViewModel(application) {
 
-    val callListLiveData = MutableLiveData<List<Call>>()
-    val callHashMapLiveData = MutableLiveData<Map<String, List<Call>>?>()
+    val callListLiveData = MutableLiveData<List<CallWithFilter>>()
+    val callHashMapLiveData = MutableLiveData<Map<String, List<CallWithFilter>>?>()
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun getCallList(refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
-            val logCalls = async { callRepository.getAllLogCalls() }
-            val filteredCalls = async { filteredCallRepository.allFilteredCalls() }
+            val logCalls = async { logCallRepository.getAllLogCallWithFilter() }
+            val filteredCalls = async { filteredCallRepository.allFilteredCallWithFilter() }
             val filteredCallList = filteredCalls.await()
             val logCallList = logCalls.await()
-            val callList = ArrayList<Call>().apply {
+            val callList = ArrayList<CallWithFilter>().apply {
                 addAll(filteredCallList)
                 addAll(logCallList)
             }
             callListLiveData.postValue(callList.distinctBy {
-                it.callId
+                it.call?.callId
             })
             hideProgress()
         }
     }
 
-    fun getHashMapFromCallList(callList: List<Call>, refreshing: Boolean) {
+    fun getHashMapFromCallList(callList: List<CallWithFilter>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
             val hashMapList =
-                callRepository.getHashMapFromCallList(callList.sortedByDescending {
-                    it.callDate
+                logCallRepository.getHashMapFromCallList(callList.sortedByDescending {
+                    it.call?.callDate
                 })
             callHashMapLiveData.postValue(hashMapList)
             hideProgress()
         }
     }
 
-    fun deleteCallList(callList: List<Call>) {
+    fun deleteCallList(filteredCallIdList: List<Int>) {
         showProgress()
         launch {
-            filteredCallRepository.deleteFilteredCalls(callList) {
+            filteredCallRepository.deleteFilteredCalls(filteredCallIdList) {
                 successDeleteNumberLiveData.postValue(true)
                 hideProgress()
             }

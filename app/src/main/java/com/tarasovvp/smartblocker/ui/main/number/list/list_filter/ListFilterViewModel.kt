@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.ui.main.number.list.list_filter
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
@@ -26,6 +27,7 @@ class ListFilterViewModel @Inject constructor(
             val filterArrayList =
                 filterRepository.allFiltersByType(if (isBlackList) BLOCKER else PERMISSION) as ArrayList
             filterListLiveData.postValue(filterArrayList)
+            Log.e("filterTAG", "ListFilterViewModel getFilterList $filterArrayList")
             hideProgress()
         }
     }

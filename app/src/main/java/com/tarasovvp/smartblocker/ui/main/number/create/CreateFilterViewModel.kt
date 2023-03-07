@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.extensions.isDarkMode
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
-import com.tarasovvp.smartblocker.repository.CallRepository
+import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
@@ -24,7 +24,7 @@ class CreateFilterViewModel @Inject constructor(
     private val contactRepository: ContactRepository,
     private val countryCodeRepository: CountryCodeRepository,
     private val filterRepository: FilterRepository,
-    private val callRepository: CallRepository
+    private val logCallRepository: LogCallRepository
 ) : BaseViewModel(application) {
 
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
@@ -66,15 +66,15 @@ class CreateFilterViewModel @Inject constructor(
     fun getNumberDataList() {
         Log.e("createFilterTAG", "CreateFilterViewModel getNumberDataList showProgress")
         launch {
-            val contacts = async { contactRepository.getAllContacts() }
-            val calls = async { callRepository.getAllCallsNumbers() }
+            val contacts = async { contactRepository.getContactsWithFilters() }
+            val calls = async { logCallRepository.allCallNumberWithFilter() }
             val contactList = contacts.await()
             val callList = calls.await()
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contactList)
                 addAll(callList)
                 sortBy {
-                    it.numberData.replace(PLUS_CHAR.toString(), String.EMPTY)
+                    it.numberData?.replace(PLUS_CHAR.toString(), String.EMPTY)
                 }
                 distinctBy {
                     it.numberData
@@ -92,6 +92,18 @@ class CreateFilterViewModel @Inject constructor(
         launch {
             val result = filterRepository.getFilter(filter)
             existingFilterLiveData.postValue(result ?: Filter())
+        }
+    }
+
+    fun getFilterWithCountryCode(filter: Filter) {
+        launch {
+            val filterWithCountryCode = filterRepository.getFilterWithCountryCode(filter.apply {
+                country = countryCode.country
+            })
+            Log.e(
+                "createFilterTAG",
+                "CreateFilterViewModel getFilterWithCountryCode filter ${filter.createFilter()} filterWithCountryCode $filterWithCountryCode"
+            )
         }
     }
 
@@ -114,9 +126,10 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun createFilter(filter: Filter) {
+        filter.country = filter.countryCode.country
         Log.e(
             "createFilterTAG",
-            "CreateFilterViewModel createFilter createFilter ${filter.createFilter()}"
+            "CreateFilterViewModel createFilter createFilter ${filter.createFilter()} filter.country ${filter.country}"
         )
         launch {
             filterRepository.insertFilter(filter) {

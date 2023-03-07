@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
-import com.tarasovvp.smartblocker.repository.CallRepository
+import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
@@ -20,7 +20,7 @@ class DetailsFilterViewModel @Inject constructor(
     application: Application,
     private val contactRepository: ContactRepository,
     private val filterRepository: FilterRepository,
-    private val callRepository: CallRepository,
+    private val logCallRepository: LogCallRepository,
     private val filteredCallRepository: FilteredCallRepository
 ) : BaseViewModel(application) {
 
@@ -32,15 +32,15 @@ class DetailsFilterViewModel @Inject constructor(
     fun getQueryContactCallList(filter: Filter, color: Int) {
         showProgress()
         launch {
-            val calls = async { callRepository.getQueryCallList(filter) }
-            val contacts = async { contactRepository.getAllContacts() }
+            val calls = async { logCallRepository.getQueryCallList(filter.filter) }
+            val contacts = async { contactRepository.getContactsWithFilters() }
             val callList = calls.await()
             val contactList = contacts.await()
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(callList)
                 addAll(contactList)
                 sortBy {
-                    it.numberData.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
+                    it.numberData?.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
                 }
                 distinctBy {
                     it.numberData

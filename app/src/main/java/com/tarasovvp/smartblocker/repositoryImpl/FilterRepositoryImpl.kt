@@ -3,9 +3,9 @@ package com.tarasovvp.smartblocker.repositoryImpl
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.database.dao.FilterDao
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.extensions.filteredFilterList
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilterWithCountryCode
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +40,11 @@ class FilterRepositoryImpl @Inject constructor(
     override suspend fun getFilter(filter: Filter): Filter? {
         return filterDao.getFilter(filter.createFilter(), filter.conditionType)
     }
+
+    override suspend fun getFilterWithCountryCode(filter: Filter): FilterWithCountryCode? {
+        return filterDao.getFilterWithCountryCode(filter.createFilter())
+    }
+
 
     override fun updateFilter(filter: Filter, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
@@ -82,18 +87,14 @@ class FilterRepositoryImpl @Inject constructor(
     }
 
     override suspend fun queryFilterList(number: String): List<Filter> {
-        val filterList = filterDao.allFilters()
-        return filterList.filteredFilterList(number)
+        return filterDao.queryFullMatchFilterList(number).sortedWith(
+            compareByDescending<Filter> { it.filter.length }
+                .thenBy { number.indexOf(it.filter) }
+        )
     }
 
     override suspend fun queryFilter(number: String): Filter? {
-        val filterList = filterDao.queryFullMatchFilterList(number)
-        val maxLengthFilterList =
-            filterList.filter { filter -> filter.filter.length == filterList.maxByOrNull { it.filter.length }?.filter?.length }
-        return if (maxLengthFilterList.size > 1) maxLengthFilterList
-            .minByOrNull {
-                number.indexOf(it.filter)
-            } else maxLengthFilterList.firstOrNull()
+        return queryFilterList(number).firstOrNull()
     }
 
 }

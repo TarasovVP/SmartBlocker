@@ -1,14 +1,17 @@
 package com.tarasovvp.smartblocker.models
 
 import android.os.Parcelable
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
+import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALLS
+import com.tarasovvp.smartblocker.extensions.EMPTY
 import kotlinx.parcelize.Parcelize
 
-@Entity
+@Entity(tableName = FILTERED_CALLS)
 @Parcelize
 data class FilteredCall(
     @PrimaryKey override var callId: Int = 0,
-    @Embedded(prefix = "filtered_") var filtered: Filter? = Filter()
+    var filterNumber: String = String.EMPTY,
+    var conditionType: Int = DEFAULT_FILTER,
 ) : Call(), Parcelable

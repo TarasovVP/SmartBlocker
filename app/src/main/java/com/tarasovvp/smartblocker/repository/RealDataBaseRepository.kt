@@ -12,7 +12,7 @@ interface RealDataBaseRepository {
 
     fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit)
 
-    fun deleteFilteredCallList(filteredCallList: List<Call>, result: () -> Unit)
+    fun deleteFilteredCallList(filteredCallIdList: List<String>, result: () -> Unit)
 
     fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit)
 

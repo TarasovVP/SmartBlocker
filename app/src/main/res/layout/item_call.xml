@@ -8,8 +8,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="call"
-            type="com.tarasovvp.smartblocker.models.Call" />
+            name="callWithFilter"
+            type="com.tarasovvp.smartblocker.models.CallWithFilter" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -26,7 +26,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="@{call.deleteMode &amp;&amp; !call.filteredNotNullOrEmpty ? 0.5f : 1f}"
+            android:alpha="@{callWithFilter.call.deleteMode &amp;&amp; !callWithFilter.call.filteredNotNullOrEmpty ? 0.5f : 1f}"
             android:paddingHorizontal="@dimen/padding_8"
             android:paddingVertical="@dimen/padding_16">
 
@@ -36,18 +36,18 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageUrl="@{call.photoUrl}"
+                app:imageUrl="@{callWithFilter.call.photoUrl}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_number"
-                app:placeHolder="@{call.placeHolder(context)}"
+                app:placeHolder="@{callWithFilter.call.placeHolder(context)}"
                 app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
             <ImageView
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                android:visibility="@{!call.extract || call.filter.filterType == 0 ? View.GONE : View.VISIBLE}"
-                app:imageResource="@{call.filter.filterTypeIcon}"
+                android:visibility="@{!callWithFilter.call.extract || callWithFilter.filter.filterType == 0 ? View.GONE : View.VISIBLE}"
+                app:imageResource="@{callWithFilter.filter.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
 
@@ -56,7 +56,7 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@{call.number.empty ? @string/details_number_hidden : call.highlightedSpanned}"
+                android:text="@{callWithFilter.call.number.empty ? @string/details_number_hidden : callWithFilter.highlightedSpanned}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_time"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
@@ -67,10 +67,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="@{call.timeFromCallDate()}"
+                android:text="@{callWithFilter.call.timeFromCallDate()}"
                 android:textColor="@color/text_color_grey"
                 android:textSize="@dimen/text_size_10"
-                android:visibility="@{call.extract || call.isFilteredCallDetails || call.filteredCallDelete ? View.GONE : View.VISIBLE}"
+                android:visibility="@{callWithFilter.call.extract || callWithFilter.call.isFilteredCallDetails || callWithFilter.call.filteredCallDelete ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -86,16 +86,16 @@
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:mainText="@{call.nameEmpty ? call.isExtract ? @string/details_number_from_call_log : @string/details_number_not_from_contacts : call.callName}"
-                app:searchText="@{call.searchText}" />
+                app:mainText="@{callWithFilter.call.nameEmpty ? callWithFilter.call.isExtract ? @string/details_number_from_call_log : @string/details_number_not_from_contacts : callWithFilter.call.callName}"
+                app:searchText="@{callWithFilter.searchText}" />
 
             <ImageView
                 android:id="@+id/item_call_type_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_6"
-                android:visibility="@{call.deleteMode &amp;&amp; call.filteredNotNullOrEmpty || call.extract ? View.GONE : View.VISIBLE}"
-                app:imageResource="@{call.callIcon()}"
+                android:visibility="@{callWithFilter.call.deleteMode &amp;&amp; callWithFilter.call.filteredNotNullOrEmpty || callWithFilter.call.extract ? View.GONE : View.VISIBLE}"
+                app:imageResource="@{callWithFilter.call.callIcon()}"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_time" />
@@ -104,10 +104,10 @@
                 android:id="@+id/item_call_filter_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@{call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, call.filter.conditionTypeSmallIcon)}"
+                android:drawableStart="@{callWithFilter.call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, callWithFilter.filter.conditionTypeSmallIcon)}"
                 android:gravity="center_vertical|end"
-                android:text="@{call.filterValue}"
-                android:textColor="@{call.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{callWithFilter.call.filterValue}"
+                android:textColor="@{callWithFilter.filter.blocker ? @color/sunset : @color/islamic_green}"
                 android:textSize="@dimen/text_size_10"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
@@ -118,9 +118,9 @@
                 android:id="@+id/item_call_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@{call.checkedForDelete}"
+                android:checked="@{callWithFilter.call.checkedForDelete}"
                 android:padding="@dimen/padding_8"
-                android:visibility="@{call.deleteMode &amp;&amp; call.filteredNotNullOrEmpty ? View.VISIBLE : View.GONE, default=gone}"
+                android:visibility="@{callWithFilter.call.deleteMode &amp;&amp; callWithFilter.call.filteredNotNullOrEmpty ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
@@ -138,8 +138,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{call.callFilterTitle}"
-                android:textColor="@{ContextCompat.getColor(context, call.callFilterTint)}"
+                android:text="@{callWithFilter.call.callFilterTitle}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.call.callFilterTint)}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_divider" />
@@ -148,11 +148,11 @@
                 android:id="@+id/item_call_filter_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
-                android:drawableStart="@{call.callFilterIcon == null || call.isFilteredCallDetails ? null : ContextCompat.getDrawable(context, call.callFilterIcon)}"
+                android:drawableStart="@{callWithFilter.call.callFilterIcon == null || callWithFilter.call.isFilteredCallDetails ? null : ContextCompat.getDrawable(context, callWithFilter.call.callFilterIcon)}"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{call.callFilterValue}"
-                android:textColor="@{ContextCompat.getColor(context, call.callFilterTint)}"
+                android:text="@{callWithFilter.call.callFilterValue}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.call.callFilterTint)}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"

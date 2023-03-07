@@ -6,6 +6,7 @@ import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredNumberDataList
 import com.tarasovvp.smartblocker.extensions.systemContactList
 import com.tarasovvp.smartblocker.models.Contact
+import com.tarasovvp.smartblocker.models.ContactWithFilter
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.ContactRepository
@@ -21,13 +22,12 @@ class ContactRepositoryImpl @Inject constructor(
         contactDao.insertAllContacts(list)
     }
 
-    override suspend fun getAllContacts(): List<Contact> =
+    override suspend fun getContactsWithFilters(): List<ContactWithFilter> =
         withContext(
             Dispatchers.Default
         ) {
             contactDao.getContactsWithFilters()
         }
-
 
     override suspend fun getSystemContactList(
         context: Context,
@@ -42,12 +42,12 @@ class ContactRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun getHashMapFromContactList(contactList: List<Contact>): Map<String, List<Contact>> =
+    override suspend fun getHashMapFromContactList(contactList: List<ContactWithFilter>): Map<String, List<ContactWithFilter>> =
         withContext(
             Dispatchers.Default
         ) {
             contactList.groupBy {
-                if (it.name.isNullOrEmpty()) String.EMPTY else it.name?.get(0).toString()
+                if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
             }
         }
 

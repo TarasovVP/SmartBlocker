@@ -3,8 +3,8 @@ package com.tarasovvp.smartblocker.repositoryImpl
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.FilteredCall
+import com.tarasovvp.smartblocker.models.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import javax.inject.Inject
@@ -33,22 +33,26 @@ class FilteredCallRepositoryImpl @Inject constructor(
         return filteredCallDao.allFilteredCalls()
     }
 
-    override suspend fun filteredCallsByFilter(filter: String): List<FilteredCall> {
+    override suspend fun allFilteredCallWithFilter(): List<FilteredCallWithFilter> {
+        return filteredCallDao.allFilteredCallWithFilter()
+    }
+
+    override suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter> {
         return filteredCallDao.filteredCallsByFilter(filter)
     }
 
-    override suspend fun filteredCallsByNumber(number: String): List<FilteredCall> {
+    override suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter> {
         return filteredCallDao.filteredCallsByNumber(number)
     }
 
-    override fun deleteFilteredCalls(filteredCallList: List<Call>, result: () -> Unit) {
+    override fun deleteFilteredCalls(filteredCallIdList: List<Int>, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-            realDataBaseRepository.deleteFilteredCallList(filteredCallList) {
-                filteredCallDao.deleteFilteredCalls(filteredCallList.map { it.callId })
+            realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map { it.toString() }) {
+                filteredCallDao.deleteFilteredCalls(filteredCallIdList)
                 result.invoke()
             }
         } else {
-            filteredCallDao.deleteFilteredCalls(filteredCallList.map { it.callId })
+            filteredCallDao.deleteFilteredCalls(filteredCallIdList)
             result.invoke()
         }
     }

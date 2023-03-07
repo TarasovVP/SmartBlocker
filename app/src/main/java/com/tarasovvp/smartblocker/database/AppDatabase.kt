@@ -4,16 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.tarasovvp.smartblocker.database.dao.*
 import com.tarasovvp.smartblocker.models.*
 
 @Database(
     entities = [LogCall::class, FilteredCall::class, Contact::class, Filter::class, CountryCode::class],
+    views = [ContactWithFilter::class, LogCallWithFilter::class, FilteredCallWithFilter::class],
     version = 1,
     exportSchema = false
 )
-@TypeConverters(CountryCodeConverter::class, FilterConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun logCallDao(): LogCallDao
     abstract fun filteredCallDao(): FilteredCallDao

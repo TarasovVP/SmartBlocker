@@ -42,8 +42,9 @@ object Constants {
     //Data base
     const val CONTACTS = "contacts"
     const val FILTERS = "filters"
-    const val LOG_CALLS = "logCalls"
-    const val FILTERED_CALLS = "filteredCalls"
+    const val LOG_CALLS = "log_calls"
+    const val FILTERED_CALLS = "filtered_calls"
+    const val COUNTRY_CODES = "country_codes"
 
     //Real data base
     const val USERS = "users"

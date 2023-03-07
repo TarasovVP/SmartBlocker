@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.tarasovvp.smartblocker.models.FilteredCall
+import com.tarasovvp.smartblocker.models.FilteredCallWithFilter
 
 @Dao
 interface FilteredCallDao {
@@ -14,18 +15,21 @@ interface FilteredCallDao {
     @Insert
     fun insertFilteredCall(filteredCall: FilteredCall?)
 
-    @Query("SELECT * FROM filteredCall")
+    @Query("SELECT * FROM filtered_calls")
     suspend fun allFilteredCalls(): List<FilteredCall>
 
-    @Query("SELECT * FROM filteredCall WHERE filter_filter = :filter ORDER BY callDate DESC")
-    suspend fun filteredCallsByFilter(filter: String): List<FilteredCall>
+    @Query("SELECT * FROM FilteredCallWithFilter")
+    suspend fun allFilteredCallWithFilter(): List<FilteredCallWithFilter>
 
-    @Query("SELECT * FROM filteredCall WHERE number = :number ORDER BY callDate DESC")
-    suspend fun filteredCallsByNumber(number: String): List<FilteredCall>
+    @Query("SELECT * FROM FilteredCallWithFilter WHERE filter = :filter ORDER BY callDate DESC")
+    suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter>
 
-    @Query("delete from filteredCall where callId  in (:callIdList)")
+    @Query("SELECT * FROM FilteredCallWithFilter WHERE number = :number ORDER BY callDate DESC")
+    suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter>
+
+    @Query("delete from filtered_calls where callId  in (:callIdList)")
     fun deleteFilteredCalls(callIdList: List<Int>)
 
-    @Query("delete from filteredCall")
+    @Query("delete from filtered_calls")
     fun deleteAllFilteredCalls()
 }

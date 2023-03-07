@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.ui.main.number.list.list_call
 
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
@@ -13,9 +12,8 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.CallWithFilter
 import com.tarasovvp.smartblocker.models.InfoData
-import com.tarasovvp.smartblocker.models.LogCall
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
@@ -24,33 +22,31 @@ import java.util.*
 
 @AndroidEntryPoint
 class ListCallFragment :
-    BaseListFragment<FragmentListCallBinding, ListCallViewModel, Call>() {
+    BaseListFragment<FragmentListCallBinding, ListCallViewModel, CallWithFilter>() {
 
     override var layoutId = R.layout.fragment_list_call
     override val viewModelClass = ListCallViewModel::class.java
 
-    private val args: ListCallFragmentArgs by navArgs()
-
-    private var callList: List<Call>? = null
+    private var callWithFilterList: List<CallWithFilter>? = null
     private var isDeleteMode = false
     private var conditionFilterIndexes: ArrayList<Int>? = null
 
-    override fun createAdapter(): BaseAdapter<Call>? {
+    override fun createAdapter(): BaseAdapter<CallWithFilter>? {
         return context?.let {
             CallAdapter(object : CallClickListener {
-                override fun onCallClick(call: Call) {
+                override fun onCallClick(callWithFilter: CallWithFilter) {
                     findNavController().navigate(ListCallFragmentDirections.startDetailsNumberDataFragment(
-                        call))
+                        callWithFilter))
                 }
 
                 override fun onCallLongClick() {
                     changeDeleteMode()
                 }
 
-                override fun onCallDeleteCheckChange(call: Call) {
-                    callList?.find { it.callDate == call.callDate }?.isCheckedForDelete =
-                        call.isCheckedForDelete
-                    if (callList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode) {
+                override fun onCallDeleteCheckChange(callWithFilter: CallWithFilter) {
+                    callWithFilterList?.find { it.call?.callDate == callWithFilter.call?.callDate }?.call?.isCheckedForDelete =
+                        callWithFilter.call?.isCheckedForDelete.isTrue()
+                    if (callWithFilterList?.any { it.call?.isCheckedForDelete.isTrue() }.isNotTrue() && isDeleteMode) {
                         changeDeleteMode()
                     }
                 }
@@ -68,9 +64,6 @@ class ListCallFragment :
             recyclerView = listCallRecyclerView
             emptyStateContainer = listCallEmpty
             listCallRecyclerView.hideKeyboardWithLayoutTouch()
-        }
-        args.searchQuery?.let {
-            searchQuery = it
         }
         setCallConditionFilter()
     }
@@ -110,13 +103,7 @@ class ListCallFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(CALL_DELETE) { _, _ ->
-            val callListToDelete = arrayListOf<Call>().apply {
-                callList?.forEach { call ->
-                    if (call.isCheckedForDelete && call.isBlockedCall()) add(call)
-                    if (call.isCheckedForDelete && call is LogCall) add(call)
-                }
-            }
-            viewModel.deleteCallList(callList?.filter { it.isCheckedForDelete }.orEmpty())
+            callWithFilterList?.filter { it.call?.isCheckedForDelete.isTrue() }?.map { it.call?.callId.orZero() }?.let { viewModel.deleteCallList(it) }
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
             conditionFilterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
@@ -148,13 +135,13 @@ class ListCallFragment :
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.delete_menu_item) {
-                val deleteCallCount = callList?.filter { it.isCheckedForDelete }.orEmpty().size
+                val deleteCallCount = callWithFilterList?.filter { it.call?.isCheckedForDelete.isTrue() }.orEmpty().size
                 this@ListCallFragment.findNavController()
                     .navigate(ListCallFragmentDirections.startFilteredCallDeleteDialog(callDelete =
                     resources.getQuantityString(R.plurals.list_call_delete_amount,
                         deleteCallCount.quantityString(),
-                        if (deleteCallCount > 1) deleteCallCount else if (callList?.firstOrNull { it.isCheckedForDelete }?.number.isNullOrEmpty()) getString(
-                            R.string.details_number_hidden) else callList?.firstOrNull { it.isCheckedForDelete }?.number)))
+                        if (deleteCallCount > 1) deleteCallCount else if (callWithFilterList?.firstOrNull { it.call?.isCheckedForDelete.isTrue() }?.call?.number.isNullOrEmpty()) getString(
+                            R.string.details_number_hidden) else callWithFilterList?.firstOrNull { it.call?.isCheckedForDelete.isTrue() }?.call?.number)))
             }
             true
         }
@@ -163,11 +150,11 @@ class ListCallFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callListLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
-                if (callListData == callList) {
+                if (callListData == callWithFilterList) {
                     checkDataListEmptiness(callListData.isEmpty())
                     return@safeSingleObserve
                 }
-                callList = callListData
+                callWithFilterList = callListData
                 searchDataList()
             }
             callHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { callHashMap ->
@@ -189,18 +176,18 @@ class ListCallFragment :
 
     override fun searchDataList() {
         (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
-        val filteredCallList = callList?.filter { call ->
-            (call.callName?.lowercase(Locale.getDefault())
+        val filteredCallList = callWithFilterList?.filter { callWithFilter ->
+            (callWithFilter.call?.callName?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
-                    || call.number.lowercase(Locale.getDefault())
-                .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-                    && (call.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(
+                    || callWithFilter.call?.number?.lowercase(Locale.getDefault())
+                ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
+                    && (callWithFilter.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(
                 BLOCKER).isTrue() ||
-                    call.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
+                    callWithFilter.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
                 PERMISSION).isTrue() ||
-                    call.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(
+                    callWithFilter.call?.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(
                 BLOCKED_CALL.toInt()).isTrue() ||
-                    call.isPermittedCall().isTrue() && conditionFilterIndexes?.contains(
+                    callWithFilter.call?.isPermittedCall().isTrue() && conditionFilterIndexes?.contains(
                 PERMITTED_CALL.toInt()).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()

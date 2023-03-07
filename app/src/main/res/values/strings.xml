@@ -96,6 +96,7 @@
     <string name="progress_update_filters">Обновление фильтров</string>
     <string name="progress_update_contacts">Обновление контактов</string>
     <string name="progress_update_calls">Обновление списка звонков</string>
+    <string name="progress_update_filtered_calls">Обновление списка отфильтрованных звонков</string>
     <string name="progress_update_data">Обновление данных</string>
     <!--List screens-->
     <string name="list_blocker">Блокировщики</string>

@@ -18,8 +18,8 @@ data class Contact(
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var number: String = String.EMPTY,
-    var filter: Filter? = Filter()
-) : Parcelable, NumberData() {
+    var filter: String = String.EMPTY
+) : Parcelable {
 
     var trimmedPhone = number.digitsTrimmed()
 
@@ -33,6 +33,6 @@ data class Contact(
     }
 
     fun isFilterNullOrEmpty(): Boolean {
-        return filter?.filter.isNullOrEmpty().isTrue()
+        return filter.isEmpty()
     }
 }

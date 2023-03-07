@@ -150,11 +150,6 @@
         android:id="@+id/listContactFragment"
         android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_contact.ListContactFragment"
         android:label="@string/list_contact">
-        <argument
-            android:name="filter"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.models.Filter"
-            app:nullable="true" />
         <action
             android:id="@+id/startDetailsNumberDataFragment"
             app:destination="@id/DetailsNumberDataFragment" />
@@ -170,11 +165,6 @@
         android:id="@+id/listCallFragment"
         android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_call.ListCallFragment"
         android:label="@string/list_call">
-        <argument
-            android:name="searchQuery"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
         <action
             android:id="@+id/startDetailsNumberDataFragment"
             app:destination="@id/DetailsNumberDataFragment" />

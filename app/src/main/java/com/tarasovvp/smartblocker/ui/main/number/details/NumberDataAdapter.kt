@@ -14,10 +14,7 @@ import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.models.Call
-import com.tarasovvp.smartblocker.models.Contact
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.models.*
 
 class NumberDataAdapter(
     var numberDataList: ArrayList<NumberData>? = null,
@@ -29,17 +26,17 @@ class NumberDataAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            Contact::class.java.simpleName.hashCode() -> ContactViewHolder(
+            ContactWithFilter::class.java.simpleName.hashCode() -> ContactViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_contact, parent, false)
             )
-            Filter::class.java.simpleName.hashCode() -> FilterViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_filter, parent, false)
-            )
-            else -> CallViewHolder(
+            CallWithFilter::class.java.simpleName.hashCode() -> CallViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_call, parent, false)
+            )
+            else -> FilterViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_filter, parent, false)
             )
         }
     }
@@ -53,8 +50,8 @@ class NumberDataAdapter(
         val numberData = numberDataList?.get(position)
         when (holder) {
             is FilterViewHolder -> holder.bindData(numberData as? Filter)
-            is ContactViewHolder -> holder.bindData(numberData as? Contact)
-            is CallViewHolder -> holder.bindData(numberData as? Call)
+            is ContactViewHolder -> holder.bindData(numberData as? ContactWithFilter)
+            is CallViewHolder -> holder.bindData(numberData as? CallWithFilter)
         }
     }
 
@@ -82,16 +79,14 @@ class NumberDataAdapter(
     internal inner class ContactViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemContactBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(contact: Contact?) {
+        fun bindData(contactWithFilter: ContactWithFilter?) {
             binding?.apply {
-                this.contact = contact
+                this.contactWithFilter = contactWithFilter
                 root.setSafeOnClickListener {
-                    contact?.let { it1 ->
-                        numberDataClick.invoke(it1.apply {
-                            searchText = String.EMPTY
-                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                        })
-                    }
+                    contactWithFilter?.let { it1 -> numberDataClick.invoke(it1.apply {
+                        searchText = String.EMPTY
+                        highlightedSpanned = contact?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                    }) }
                 }
                 executePendingBindings()
             }
@@ -101,19 +96,18 @@ class NumberDataAdapter(
     internal inner class CallViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemCallBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(call: Call?) {
+        fun bindData(callWithFilter: CallWithFilter?) {
             binding?.apply {
-                this.call = call
-                this.call?.isExtract = isFilteredCallDetails.not()
-                this.call?.isFilteredCallDetails = isFilteredCallDetails
-                this.call?.highlightedSpanned = this.call?.highlightedSpanned
-                    ?: this.call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                this.callWithFilter = callWithFilter
+                this.callWithFilter?.call?.isExtract = isFilteredCallDetails.not()
+                this.callWithFilter?.call?.isFilteredCallDetails = isFilteredCallDetails
+                this.callWithFilter?.highlightedSpanned = this.callWithFilter?.highlightedSpanned
+                    ?: this.callWithFilter?.call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {
-                    call?.let { it1 ->
-                        numberDataClick.invoke(it1.apply {
-                            searchText = String.EMPTY
-                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                        })
+                    this.callWithFilter?.apply {
+                        searchText = String.EMPTY
+                        highlightedSpanned = call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        numberDataClick.invoke(this)
                     }
                 }
                 executePendingBindings()

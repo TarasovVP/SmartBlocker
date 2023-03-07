@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.database.dao
 
 import androidx.room.*
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilterWithCountryCode
 
 @Dao
 interface FilterDao {
@@ -22,6 +23,10 @@ interface FilterDao {
 
     @Query("SELECT * FROM filters WHERE filter = :filter AND conditionType = :conditionType")
     suspend fun getFilter(filter: String, conditionType: Int): Filter?
+
+    @Transaction
+    @Query("SELECT * FROM filters LEFT JOIN country_codes ON country_codes.country = filters.country WHERE filters.filter = :filter")
+    fun getFilterWithCountryCode(filter: String): FilterWithCountryCode?
 
     @Query("SELECT * FROM filters WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2)")
     suspend fun queryFullMatchFilterList(number: String): List<Filter>

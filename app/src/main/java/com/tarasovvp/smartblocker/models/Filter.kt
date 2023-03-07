@@ -2,9 +2,7 @@ package com.tarasovvp.smartblocker.models
 
 import android.content.Context
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
@@ -29,6 +27,8 @@ data class Filter(
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
+    var country: String = String.EMPTY,
+    @Embedded(prefix = "filter_")
     var countryCode: CountryCode = CountryCode(),
     var filterWithoutCountryCode: String = String.EMPTY,
     var created: Long? = null

@@ -36,15 +36,13 @@ class DetailsNumberDataFragment :
 
     override fun initViews() {
         binding?.apply {
-            contact = Contact()
-            call = Call()
+            contactWithFilter = ContactWithFilter()
+            callWithFilter = CallWithFilter()
             when (args.numberData) {
-                is Contact -> contact = args.numberData as Contact
-                is LogCall,
-                is FilteredCall,
-                -> call = (args.numberData as Call).apply { isExtract = true }
+                is ContactWithFilter -> contactWithFilter = args.numberData as ContactWithFilter
+                is CallWithFilter, -> callWithFilter = (args.numberData as CallWithFilter).apply { call?.isExtract = true }
             }
-            if (call?.callId.orZero() > 0 && call?.number?.isEmpty().isTrue()) setHiddenCallScreen()
+            if (callWithFilter?.call?.callId.orZero() > 0 && callWithFilter?.call?.number?.isEmpty().isTrue()) setHiddenCallScreen()
             executePendingBindings()
         }
     }
@@ -106,7 +104,7 @@ class DetailsNumberDataFragment :
     override fun setClickListeners() {
         binding?.apply {
             detailsNumberDataCreateBlocker.setSafeOnClickListener {
-                if (call?.callId.orZero() > 0 && call?.number?.isEmpty().isTrue()) {
+                if (callWithFilter?.call?.callId.orZero() > 0 && callWithFilter?.call?.number?.isEmpty().isTrue()) {
                     findNavController().navigate(DetailsNumberDataFragmentDirections.startSettingsBlockerFragment())
                 } else {
                     setAddFilterConditions(true, numberDataDetailAddFilterFull.isShown.isTrue())
@@ -129,10 +127,8 @@ class DetailsNumberDataFragment :
 
     override fun getData() {
         val number = when (args.numberData) {
-            is Contact -> binding?.contact?.trimmedPhone.orEmpty()
-            is LogCall,
-            is FilteredCall,
-            -> binding?.call?.number.orEmpty()
+            is ContactWithFilter -> binding?.contactWithFilter?.contact?.trimmedPhone.orEmpty()
+            is CallWithFilter -> binding?.callWithFilter?.call?.number.orEmpty()
             else -> String.EMPTY
         }
         viewModel.filterListWithNumber(number)
@@ -140,7 +136,7 @@ class DetailsNumberDataFragment :
     }
 
     private fun getNumber(): String {
-        return if (binding?.contact?.numberData.isNullOrEmpty()) binding?.call?.number.orEmpty() else binding?.contact?.trimmedPhone.orEmpty()
+        return if (binding?.contactWithFilter?.numberData.isNullOrEmpty()) binding?.callWithFilter?.call?.number.orEmpty() else binding?.contactWithFilter?.contact?.trimmedPhone.orEmpty()
     }
 
     private fun createFilter(conditionIndex: Int) {

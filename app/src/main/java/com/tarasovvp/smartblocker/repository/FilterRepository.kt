@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilterWithCountryCode
 
 interface FilterRepository {
 
@@ -13,6 +14,8 @@ interface FilterRepository {
     suspend fun allFiltersByType(filterType: Int): List<Filter>
 
     suspend fun getFilter(filter: Filter): Filter?
+
+    suspend fun getFilterWithCountryCode(filter: Filter): FilterWithCountryCode?
 
     fun updateFilter(filter: Filter, result: () -> Unit)
 

@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 open class NumberData : Parcelable {
-    var numberData: String = String.EMPTY
+    var numberData: String? = String.EMPTY
 
     @get:Exclude
     @Ignore

@@ -13,10 +13,10 @@ import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.models.Contact
+import com.tarasovvp.smartblocker.models.ContactWithFilter
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 
-class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<Contact>() {
+class ContactAdapter(private val contactClick: (ContactWithFilter) -> Unit) : BaseAdapter<ContactWithFilter>() {
 
     var searchQuery = String.EMPTY
 
@@ -57,16 +57,15 @@ class ContactAdapter(private val contactClick: (Contact) -> Unit) : BaseAdapter<
         RecyclerView.ViewHolder(itemView) {
 
         fun bindData(position: Int) {
-            val contact = getDataInPosition(position)
+            val contactWithFilter = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
-                contact.searchText = searchQuery
-                contact.highlightedSpanned = contact.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                this.contact = contact
+                contactWithFilter.searchText = searchQuery
+                contactWithFilter.highlightedSpanned =  contactWithFilter.contact?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                this.contactWithFilter = contactWithFilter
                 root.setSafeOnClickListener {
-                    contactClick.invoke(contact.apply {
-                        searchText = String.EMPTY
-                        contact.highlightedSpanned =
-                            contact.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                    contactClick.invoke(contactWithFilter.apply {
+                            searchText = String.EMPTY
+                            highlightedSpanned = contact?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                     })
                 }
                 executePendingBindings()

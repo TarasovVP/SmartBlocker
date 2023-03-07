@@ -1,10 +1,10 @@
 package com.tarasovvp.smartblocker.ui.main.number.list.list_call
 
-import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.CallWithFilter
 
 interface CallClickListener {
-    fun onCallClick(call: Call)
+    fun onCallClick(callWithFilter: CallWithFilter)
     fun onCallLongClick()
-    fun onCallDeleteCheckChange(call: Call)
+    fun onCallDeleteCheckChange(callWithFilter: CallWithFilter)
     fun onCallDeleteInfoClick()
 }

@@ -87,14 +87,13 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun deleteFilteredCallList(filteredCallList: List<Call>, result: () -> Unit) {
+    override fun deleteFilteredCallList(filteredCallIdList: List<String>, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTERED_CALL_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
-                    if (filteredCallList.map { it.callId.toString() }
-                            .contains(snapshot.key)) snapshot.ref.removeValue()
+                    if (filteredCallIdList.contains(snapshot.key)) snapshot.ref.removeValue()
                 }
                 result.invoke()
             }.addOnFailureListener {

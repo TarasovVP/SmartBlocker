@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.models.Contact
+import com.tarasovvp.smartblocker.models.ContactWithFilter
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment
@@ -18,15 +18,15 @@ import java.util.*
 
 @AndroidEntryPoint
 open class ListContactFragment :
-    BaseListFragment<FragmentListContactBinding, ListContactViewModel, Contact>() {
+    BaseListFragment<FragmentListContactBinding, ListContactViewModel, ContactWithFilter>() {
 
     override var layoutId = R.layout.fragment_list_contact
     override val viewModelClass = ListContactViewModel::class.java
 
-    private var contactList: List<Contact>? = null
+    private var contactWithFilterList: List<ContactWithFilter>? = null
     private var conditionFilterIndexes: ArrayList<Int>? = null
 
-    override fun createAdapter(): BaseAdapter<Contact>? {
+    override fun createAdapter(): BaseAdapter<ContactWithFilter>? {
         return context?.let {
             ContactAdapter { numberData ->
                 findNavController().navigate(ListContactFragmentDirections.startDetailsNumberDataFragment(
@@ -90,11 +90,11 @@ open class ListContactFragment :
     override fun observeLiveData() {
         with(viewModel) {
             contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                if (contactList == this@ListContactFragment.contactList) {
+                if (contactList == this@ListContactFragment.contactWithFilterList) {
                     checkDataListEmptiness(contactList.isEmpty())
                     return@safeSingleObserve
                 }
-                this@ListContactFragment.contactList = contactList
+                this@ListContactFragment.contactWithFilterList = contactList
                 searchDataList()
             }
             contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { contactHashMap ->
@@ -109,15 +109,15 @@ open class ListContactFragment :
 
     override fun searchDataList() {
         (adapter as? ContactAdapter)?.searchQuery = searchQuery.orEmpty()
-        val filteredContactList = contactList?.filter { contact ->
-            (contact.name?.lowercase(Locale.getDefault())?.contains(
+        val filteredContactList = contactWithFilterList?.filter { contactWithFilter ->
+            (contactWithFilter.contact?.name?.lowercase(Locale.getDefault())?.contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ).isTrue() || contact.trimmedPhone.lowercase(Locale.getDefault()).contains(
+            ).isTrue() || contactWithFilter.contact?.trimmedPhone?.lowercase(Locale.getDefault())?.contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
-                .isTrue()) && (contact.filter?.isBlocker()
+                .isTrue()) && (contactWithFilter.filter?.isBlocker()
                 .isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
-                    contact.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
+                    contactWithFilter.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
                 PERMISSION).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
@@ -129,7 +129,7 @@ open class ListContactFragment :
     }
 
     override fun getData() {
-        viewModel.getContactList(swipeRefresh?.isRefreshing.isTrue())
+        viewModel.getContactsWithFilters(swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {

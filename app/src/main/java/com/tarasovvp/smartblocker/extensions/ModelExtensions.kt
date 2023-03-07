@@ -57,9 +57,8 @@ fun Context.systemContactList(filterRepository: FilterRepository, result: (Int, 
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
             ).apply {
-                numberData = contactCursor.getString(3).digitsTrimmed()
                 CoroutineScope(Dispatchers.IO).launch {
-                    filter = filterRepository.queryFilter(numberData)
+                    filter = filterRepository.queryFilter(number.digitsTrimmed())?.filter.orEmpty()
                 }
             })
             result.invoke(cursor.count, contactList.size)
@@ -101,7 +100,6 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         logCall.photoUrl = this.getString(7)
     }
-    logCall.numberData = this.getString(2)
     return logCall
 }
 
@@ -111,7 +109,7 @@ fun Context.systemLogCallList(filterRepository: FilterRepository, result: (Int, 
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             CoroutineScope(Dispatchers.IO).launch {
-                logCall.filter = filterRepository.queryFilter(logCall.numberData)
+                logCall.filter = filterRepository.queryFilter(logCall.number)?.filter
             }
             logCallList.add(logCall)
             result.invoke(callLogCursor.count, logCallList.size)
@@ -134,7 +132,8 @@ fun Context.writeFilteredCall(
                         if (filter?.isBlocker().isTrue()) {
                             type = BLOCKED_CALL
                         }
-                        this.filtered = filter
+                        this.filterNumber = filter?.filter.orEmpty()
+                        this.conditionType = filter?.conditionType.orZero()
                     })
                 }
                 if (filter?.isBlocker().isTrue()) {
@@ -283,22 +282,4 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): A
     }
     filteredList.addAll(supposedFilteredList)
     return filteredList
-}
-
-fun List<Filter>.filteredFilterList(number: String): List<Filter> {
-    val filteredFilterList = arrayListOf<Filter>()
-    forEach { filter ->
-        val phoneNumber = number.getPhoneNumber(filter.countryCode.country)
-        when {
-            filter.isTypeContain() && number.contains(filter.filter) -> filteredFilterList.add(
-                filter)
-            filter.isTypeStart() && (number.startsWith(filter.filter) || (phoneNumber.isValidPhoneNumber() && phoneNumber?.nationalNumber.toString()
-                .startsWith(filter.filterWithoutCountryCode))) -> filteredFilterList.add(filter)
-            filter.isTypeFull() && (number == filter.filter || (phoneNumber.isValidPhoneNumber()
-                    && phoneNumber?.nationalNumber.toString() == filter.filterWithoutCountryCode
-                    )) -> filteredFilterList.add(filter)
-        }
-    }
-    return filteredFilterList.sortedWith(compareBy({ it.filter.length },
-        { -number.indexOf(it.filter) })).reversed()
 }
