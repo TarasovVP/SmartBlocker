@@ -128,11 +128,11 @@ open class Call(
     }
 
     @Exclude
-    fun callFilterTitle(): Int {
+    fun callFilterTitle(filter: Filter?): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
-                /*filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
-                filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter*/
+                filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
+                filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
                 number.isEmpty() && SharedPrefs.blockHidden -> R.string.details_number_hidden_on
                 number.isEmpty() && SharedPrefs.blockHidden.not() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
@@ -151,22 +151,22 @@ open class Call(
     }
 
     @Exclude
-    fun callFilterIcon(): Int? {
+    fun callFilterIcon(filter: Filter?): Int? {
         return when {
             isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty().not() -> R.drawable.ic_settings_small
             isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty() -> FilterCondition.getSmallIconByIndex(conditionType, isBlockedCall())
-            //isExtract && isFilterNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
+            isExtract && isFilterNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
             else -> null
         }
     }
 
     @Exclude
-    fun callFilterTint(): Int {
+    fun callFilterTint(filter: Filter?): Int {
         return when {
             isExtract.not() && this is FilteredCall && isBlockedCall() -> R.color.sunset
             isExtract.not() && this is FilteredCall && isBlockedCall().not() -> R.color.islamic_green
-            /*isExtract && filter?.isBlocker().isTrue() -> R.color.sunset
-            isExtract && filter?.isPermission().isTrue() -> R.color.islamic_green*/
+            isExtract && filter?.isBlocker().isTrue() -> R.color.sunset
+            isExtract && filter?.isPermission().isTrue() -> R.color.islamic_green
             else -> R.color.text_color_grey
         }
     }

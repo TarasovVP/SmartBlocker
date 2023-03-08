@@ -94,7 +94,7 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
-                android:textColor="@{ContextCompat.getColor(context, filter.filterDetailTint)}"
+                android:textColor="@{ContextCompat.getColor(context, filter.filterAction == null ? filter.filterTypeTint : filter.filterDetailTint)}"
                 android:text="@{filter.filterAction == null ? isFilteredCallDetails ? filter.filteredContactsText(context) : filter.filteredCallsText(context) : filter.filterActionText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_details_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
