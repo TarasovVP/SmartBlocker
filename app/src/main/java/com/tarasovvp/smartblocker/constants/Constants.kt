@@ -71,6 +71,7 @@ object Constants {
     const val SPACE = " "
     const val NUMBER_DATA_TYPE = 0
     const val HEADER_TYPE = 1
+    const val NUMBER_TYPE = "numberType"
 
     //DateTime
     const val TIME_FORMAT = "HH:mm:ss"

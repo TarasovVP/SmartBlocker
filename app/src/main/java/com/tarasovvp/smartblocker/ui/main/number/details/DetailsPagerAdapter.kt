@@ -18,7 +18,7 @@ class DetailsPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragmentList[position] ?: SingleDetailsFragment {}
+        return fragmentList[position] ?: SingleDetailsFragment()
     }
 
 }

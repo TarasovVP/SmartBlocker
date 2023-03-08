@@ -30,6 +30,7 @@ class NumberDataAdapter(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_contact, parent, false)
             )
+            LogCallWithFilter::class.java.simpleName.hashCode(),
             CallWithFilter::class.java.simpleName.hashCode() -> CallViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_call, parent, false)

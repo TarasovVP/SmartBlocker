@@ -18,6 +18,7 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
+import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,14 +69,20 @@ class DetailsNumberDataFragment :
     }
 
     override fun createAdapter() {
-        filtersScreen = SingleDetailsFragment(NumberData::class.simpleName.orEmpty()) {
-            findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                filterDetails = it as Filter))
-        }
-        filteredCallsScreen = SingleDetailsFragment(FilteredCall::class.simpleName.orEmpty()) {
-            findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                filterDetails = it as Filter))
-        }
+        filtersScreen = SingleDetailsFragment.newInstance(NumberData::class.simpleName.orEmpty())
+        filtersScreen?.setNumberDataClick(object : NumberDataClickListener {
+            override fun onNumberDataClick(numberData: NumberData) {
+                findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
+                    filterDetails = numberData as Filter))
+            }
+        })
+        filteredCallsScreen = SingleDetailsFragment.newInstance(FilteredCall::class.simpleName.orEmpty())
+        filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
+            override fun onNumberDataClick(numberData: NumberData) {
+                findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
+                    filterDetails = numberData as Filter))
+            }
+        })
         val fragmentList = arrayListOf(
             filtersScreen,
             filteredCallsScreen

@@ -76,9 +76,6 @@ class CreateFilterViewModel @Inject constructor(
                 sortBy {
                     it.numberData?.replace(PLUS_CHAR.toString(), String.EMPTY)
                 }
-                distinctBy {
-                    it.numberData
-                }
             }
             numberDataListLiveData.postValue(numberDataList)
         }

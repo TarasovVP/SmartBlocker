@@ -18,9 +18,11 @@ import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.FilteredCall
 import com.tarasovvp.smartblocker.models.InfoData
+import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
+import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,14 +91,20 @@ class DetailsFilterFragment :
     }
 
     override fun createAdapter() {
-        numberDataScreen = SingleDetailsFragment(Filter::class.simpleName.orEmpty()) {
-            findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
-                numberData = it))
-        }
-        filteredCallsScreen = SingleDetailsFragment(FilteredCall::class.simpleName.orEmpty()) {
-            findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
-                numberData = it))
-        }
+        numberDataScreen = SingleDetailsFragment.newInstance(Filter::class.simpleName.orEmpty())
+        numberDataScreen?.setNumberDataClick(object : NumberDataClickListener {
+            override fun onNumberDataClick(numberData: NumberData) {
+                findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
+                    numberData = numberData))
+            }
+        })
+        filteredCallsScreen = SingleDetailsFragment.newInstance(FilteredCall::class.simpleName.orEmpty())
+        filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
+            override fun onNumberDataClick(numberData: NumberData) {
+                findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
+                    numberData = numberData))
+            }
+        })
         val fragmentList = arrayListOf(
             numberDataScreen,
             filteredCallsScreen
