@@ -123,6 +123,8 @@
     <string name="creating_filter_no_data">Нет данных</string>
     <!--Details number-->
     <string name="details_number">Номер</string>
+    <string name="details_number_incomplete">Неполный</string>
+    <string name="details_number_invalid">Невалидный</string>
     <string name="details_number_hidden">Скрытый</string>
     <string name="details_number_not_from_contacts">Номера нет в контактах</string>
     <string name="details_number_from_call_log">Номер из журнала вызовов</string>

@@ -58,7 +58,7 @@ fun Context.systemContactList(filterRepository: FilterRepository, result: (Int, 
                 number = contactCursor.getString(3),
             ).apply {
                 CoroutineScope(Dispatchers.IO).launch {
-                    filter = filterRepository.queryFilter(number.digitsTrimmed())?.filter.orEmpty()
+                    filter = filterRepository.queryFilter(phoneNumberValue())?.filter.orEmpty()
                 }
             })
             result.invoke(cursor.count, contactList.size)
@@ -245,6 +245,7 @@ fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
     }
 }
 
+//TODO simplify
 fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): ArrayList<NumberData> {
     val filteredList = arrayListOf<NumberData>()
     val supposedFilteredList = arrayListOf<NumberData>()
@@ -279,4 +280,23 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): A
     }
     filteredList.addAll(supposedFilteredList)
     return filteredList
+}
+
+fun NumberData.highlightFilterSpanned(filter: Filter?, color: Int) {
+    val number = when (this) {
+        is ContactWithFilter -> contact?.number
+        is LogCallWithFilter -> call?.number
+        else -> String.EMPTY
+    }
+    highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, color)
+    if (filter?.isTypeContain().isTrue() && number.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()) {
+            highlightedSpanned = number.highlightedSpanned(filter?.createFilter(), null, color)
+    } else {
+        val phoneNumber = number.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
+        if (phoneNumber.isValidPhoneNumber()) {
+            if (number.digitsTrimmed().startsWith(filter?.createFilter().orEmpty()).isTrue()) highlightedSpanned = number.highlightedSpanned(filter?.createFilter(), null, color)
+            else if ((phoneNumber?.nationalNumber.toString().startsWith(filter?.extractFilterWithoutCountryCode().orEmpty()).isTrue() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode) == filter?.countryCode?.countryCode))
+                highlightedSpanned = number.highlightedSpanned(if (filter.filter == filter.createFilter()) filter.extractFilterWithoutCountryCode() else filter.filter, filter.countryCode.countryCode, color)
+        }
+    }
 }

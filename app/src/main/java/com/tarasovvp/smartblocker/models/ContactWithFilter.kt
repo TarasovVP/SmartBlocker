@@ -16,4 +16,6 @@ data class ContactWithFilter(
         entityColumn = "filter"
     )
     var filter: Filter? = Filter()
-) : Parcelable, NumberData()
+) : Parcelable, NumberData() {
+
+}

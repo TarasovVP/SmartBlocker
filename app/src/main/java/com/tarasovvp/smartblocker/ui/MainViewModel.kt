@@ -4,6 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.OUT_GOING_CALL
+import com.tarasovvp.smartblocker.extensions.isValidPhoneNumber
 import com.tarasovvp.smartblocker.models.CurrentUser
 import com.tarasovvp.smartblocker.models.MainProgress
 import com.tarasovvp.smartblocker.repository.*
@@ -80,7 +82,6 @@ class MainViewModel @Inject constructor(
                     })
                 }
             contactRepository.insertContacts(contactList)
-            // init calls data
             Log.e("callTAG", "MainViewModel callLogList start")
             val callLogList =
                 logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
@@ -108,7 +109,7 @@ class MainViewModel @Inject constructor(
             // init filter data
             val filterList = filterRepository.allFilters() as? ArrayList
             filterList?.forEachIndexed { index, filter ->
-                filter.filteredContacts = contactList.filter { it.filter == filter.filter }.size
+                filter.filteredContacts = contactList.filter { it.filter == filter.filter }.size + callLogList.filter { it.type != OUT_GOING_CALL && it.filter == filter.filter }.distinctBy { it.number }.size
                 progressStatusLiveData.postValue(mainProgress.apply {
                     progressDescription =
                         getApplication<Application>().getString(R.string.progress_update_filters)

@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
@@ -134,7 +135,7 @@ class DetailsNumberDataFragment :
 
     override fun getData() {
         val number = when (args.numberData) {
-            is ContactWithFilter -> binding?.contactWithFilter?.contact?.trimmedPhone.orEmpty()
+            is ContactWithFilter -> binding?.contactWithFilter?.contact?.phoneNumberValue().orEmpty()
             is CallWithFilter -> binding?.callWithFilter?.call?.number.orEmpty()
             else -> String.EMPTY
         }

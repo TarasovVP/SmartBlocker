@@ -1,14 +1,20 @@
 package com.tarasovvp.smartblocker.models
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.CONTACTS
+import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.local.SharedPrefs
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = CONTACTS)
@@ -35,4 +41,22 @@ data class Contact(
     fun isFilterNullOrEmpty(): Boolean {
         return filter.isEmpty()
     }
+
+    private fun phoneNumber(): PhoneNumber? {
+        return SharedPrefs.countryCode?.let { trimmedPhone.getPhoneNumber(it.uppercase()) }
+    }
+
+    fun phoneNumberValue(): String {
+        val phoneNumber = phoneNumber()
+        return if (phoneNumber.isValidPhoneNumber()) String.format("+%s%s", phoneNumber?.countryCode, phoneNumber?.nationalNumber) else number
+    }
+
+    fun phoneNumberValidity(): Int? {
+        return when {
+            phoneNumber().isValidPhoneNumber().not() -> R.string.details_number_invalid
+            number.startsWith(PLUS_CHAR).not() -> R.string.details_number_incomplete
+            else -> null
+        }
+    }
+
 }
