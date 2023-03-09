@@ -35,17 +35,26 @@ class DetailsNumberDataFragment :
     private var filtersScreen: SingleDetailsFragment? = null
     private var filteredCallsScreen: SingleDetailsFragment? = null
     private var filter: Filter? = null
+    private var isHiddenCall = false
 
     override fun initViews() {
         binding?.apply {
-            contactWithFilter = ContactWithFilter()
-            callWithFilter = CallWithFilter()
-            when (args.numberData) {
-                is ContactWithFilter -> contactWithFilter = args.numberData as ContactWithFilter
-                is CallWithFilter, -> callWithFilter = (args.numberData as CallWithFilter).apply { call?.isExtract = true }
+            contactWithFilter = if (args.numberData is CallWithFilter) {
+                val callWithFilter = args.numberData as? CallWithFilter
+                isHiddenCall = callWithFilter?.call?.callId.orZero() > 0
+                        && callWithFilter?.call?.number?.isEmpty().isTrue()
+                ContactWithFilter(filter = callWithFilter?.filter,
+                    contact = Contact(name = getString(R.string.details_number_from_call_log),
+                    photoUrl = callWithFilter?.call?.photoUrl,
+                    number = callWithFilter?.call?.number.orEmpty(),
+                filter = callWithFilter?.filter?.filter.orEmpty()))
+            } else {
+                args.numberData as ContactWithFilter
             }
-            if (callWithFilter?.call?.callId.orZero() > 0 && callWithFilter?.call?.number?.isEmpty().isTrue()) setHiddenCallScreen()
+            detailsNumberDataItemContact.root.isEnabled = false
+            context?.let { contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned(contactWithFilter?.filter, ContextCompat.getColor(it, R.color.sunset)) }
             executePendingBindings()
+            if (isHiddenCall) setHiddenCallScreen()
         }
     }
 
@@ -56,6 +65,8 @@ class DetailsNumberDataFragment :
             detailsNumberDataEmpty.root.isVisible = true
             detailsNumberDataTabs.isVisible = false
             detailsNumberDataViewPager.isVisible = false
+            detailsNumberDataItemContact.itemContactNumber.setText(R.string.details_number_hidden)
+            detailsNumberDataItemContact.itemContactFilterTitle.setText(if (SharedPrefs.blockHidden) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
             with(detailsNumberDataCreateBlocker) {
                 setText(R.string.settings)
                 context?.let {
@@ -73,15 +84,22 @@ class DetailsNumberDataFragment :
         filtersScreen = SingleDetailsFragment.newInstance(NumberData::class.simpleName.orEmpty())
         filtersScreen?.setNumberDataClick(object : NumberDataClickListener {
             override fun onNumberDataClick(numberData: NumberData) {
-                findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                    filterDetails = numberData as Filter))
+                findNavController().navigate(
+                    DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
+                        filterDetails = numberData as Filter
+                    )
+                )
             }
         })
-        filteredCallsScreen = SingleDetailsFragment.newInstance(FilteredCall::class.simpleName.orEmpty())
+        filteredCallsScreen =
+            SingleDetailsFragment.newInstance(FilteredCall::class.simpleName.orEmpty())
         filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
             override fun onNumberDataClick(numberData: NumberData) {
-                findNavController().navigate(DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                    filterDetails = numberData as Filter))
+                findNavController().navigate(
+                    DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
+                        filterDetails = numberData as Filter
+                    )
+                )
             }
         })
         val fragmentList = arrayListOf(
@@ -112,7 +130,7 @@ class DetailsNumberDataFragment :
     override fun setClickListeners() {
         binding?.apply {
             detailsNumberDataCreateBlocker.setSafeOnClickListener {
-                if (callWithFilter?.call?.callId.orZero() > 0 && callWithFilter?.call?.number?.isEmpty().isTrue()) {
+                if (isHiddenCall) {
                     findNavController().navigate(DetailsNumberDataFragmentDirections.startSettingsBlockerFragment())
                 } else {
                     setAddFilterConditions(true, numberDataDetailAddFilterFull.isShown.isTrue())
@@ -134,28 +152,23 @@ class DetailsNumberDataFragment :
     }
 
     override fun getData() {
-        val number = when (args.numberData) {
-            is ContactWithFilter -> binding?.contactWithFilter?.contact?.phoneNumberValue().orEmpty()
-            is CallWithFilter -> binding?.callWithFilter?.call?.number.orEmpty()
-            else -> String.EMPTY
-        }
-        viewModel.filterListWithNumber(number)
-        viewModel.filteredCallsByNumber(number)
-    }
-
-    private fun getNumber(): String {
-        return if (binding?.contactWithFilter?.numberData.isNullOrEmpty()) binding?.callWithFilter?.call?.number.orEmpty() else binding?.contactWithFilter?.contact?.trimmedPhone.orEmpty()
+        viewModel.filterListWithNumber(binding?.contactWithFilter?.contact?.phoneNumberValue().orEmpty())
+        viewModel.filteredCallsByNumber(binding?.contactWithFilter?.contact?.phoneNumberValue().orEmpty())
     }
 
     private fun createFilter(conditionIndex: Int) {
-        val number = getNumber()
-        filter = Filter(filter = number,
+        val number = binding?.contactWithFilter?.contact?.number.orEmpty()
+        filter = Filter(
+            filter = number,
             conditionType = conditionIndex,
-            filterType = Constants.BLOCKER)
+            filterType = Constants.BLOCKER
+        )
         val phoneNumber = if (number.getPhoneNumber(String.EMPTY)
                 .isNull()
-        ) number.getPhoneNumber(context?.getUserCountry().orEmpty()
-            .uppercase()) else number.getPhoneNumber(String.EMPTY)
+        ) number.getPhoneNumber(
+            context?.getUserCountry().orEmpty()
+                .uppercase()
+        ) else number.getPhoneNumber(String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
             startAddFilterScreen()
         } else {
@@ -164,37 +177,62 @@ class DetailsNumberDataFragment :
     }
 
     private fun startAddFilterScreen() {
-        findNavController().navigate(DetailsNumberDataFragmentDirections.startCreateFilterFragment(
-            filterCreate = filter))
+        findNavController().navigate(
+            DetailsNumberDataFragmentDirections.startCreateFilterFragment(
+                filterCreate = filter
+            )
+        )
     }
 
     private fun setAddFilterConditions(isBlocker: Boolean, isShown: Boolean) {
         binding?.apply {
-            detailsNumberDataCreateBlocker.changeFilterTypeButtonState((isBlocker.not() && isShown.not()).not(),
-                isShown.not() && isBlocker)
-            detailsNumberDataCreatePermission.changeFilterTypeButtonState((isBlocker && isShown.not()).not(),
-                isShown.not() && isBlocker.not())
-            numberDataDetailAddFilterFull.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_FULL.smallBlockerIcon
-            else FilterCondition.FILTER_CONDITION_FULL.smallPermissionIcon, isShown)
-            numberDataDetailAddFilterStart.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_START.smallBlockerIcon
-            else FilterCondition.FILTER_CONDITION_START.smallPermissionIcon, isShown)
-            numberDataDetailAddFilterContain.changeFilterConditionButtonState(if (isBlocker) FilterCondition.FILTER_CONDITION_CONTAIN.smallBlockerIcon
-            else FilterCondition.FILTER_CONDITION_CONTAIN.smallPermissionIcon, isShown)
+            detailsNumberDataCreateBlocker.changeFilterTypeButtonState(
+                (isBlocker.not() && isShown.not()).not(),
+                isShown.not() && isBlocker
+            )
+            detailsNumberDataCreatePermission.changeFilterTypeButtonState(
+                (isBlocker && isShown.not()).not(),
+                isShown.not() && isBlocker.not()
+            )
+            numberDataDetailAddFilterFull.changeFilterConditionButtonState(
+                if (isBlocker) FilterCondition.FILTER_CONDITION_FULL.smallBlockerIcon
+                else FilterCondition.FILTER_CONDITION_FULL.smallPermissionIcon, isShown
+            )
+            numberDataDetailAddFilterStart.changeFilterConditionButtonState(
+                if (isBlocker) FilterCondition.FILTER_CONDITION_START.smallBlockerIcon
+                else FilterCondition.FILTER_CONDITION_START.smallPermissionIcon, isShown
+            )
+            numberDataDetailAddFilterContain.changeFilterConditionButtonState(
+                if (isBlocker) FilterCondition.FILTER_CONDITION_CONTAIN.smallBlockerIcon
+                else FilterCondition.FILTER_CONDITION_CONTAIN.smallPermissionIcon, isShown
+            )
         }
     }
 
     private fun MaterialButton.changeFilterTypeButtonState(
         isButtonEnabled: Boolean,
-        isClose: Boolean
+        isClose: Boolean,
     ) {
-        backgroundTintList = ContextCompat.getColorStateList(context,
-            if (isButtonEnabled) R.color.button_bg else R.color.transparent)
-        strokeColor = ContextCompat.getColorStateList(context,
-            if (isButtonEnabled) R.color.button_bg else R.color.comet)
-        compoundDrawables.onEach { iconTint = ContextCompat.getColorStateList(context,
-            if (isButtonEnabled) R.color.white else R.color.comet) }
-        setTextColor(ContextCompat.getColorStateList(context,
-            if (isButtonEnabled) R.color.white else R.color.comet))
+        backgroundTintList = ContextCompat.getColorStateList(
+            context,
+            if (isButtonEnabled) R.color.button_bg else R.color.transparent
+        )
+        strokeColor = ContextCompat.getColorStateList(
+            context,
+            if (isButtonEnabled) R.color.button_bg else R.color.comet
+        )
+        compoundDrawables.onEach {
+            iconTint = ContextCompat.getColorStateList(
+                context,
+                if (isButtonEnabled) R.color.white else R.color.comet
+            )
+        }
+        setTextColor(
+            ContextCompat.getColorStateList(
+                context,
+                if (isButtonEnabled) R.color.white else R.color.comet
+            )
+        )
         isEnabled = isButtonEnabled
         alpha = if (isButtonEnabled) 1f else 0.5f
         setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)
@@ -225,8 +263,13 @@ class DetailsNumberDataFragment :
     }
 
     override fun showInfoScreen() {
-        findNavController().navigate(DetailsNumberDataFragmentDirections.startInfoFragment(info = InfoData(
-            title = getString(Info.INFO_DETAILS_NUMBER_DATA.title),
-            description = getString(Info.INFO_DETAILS_NUMBER_DATA.description))))
+        findNavController().navigate(
+            DetailsNumberDataFragmentDirections.startInfoFragment(
+                info = InfoData(
+                    title = getString(Info.INFO_DETAILS_NUMBER_DATA.title),
+                    description = getString(Info.INFO_DETAILS_NUMBER_DATA.description)
+                )
+            )
+        )
     }
 }

@@ -109,7 +109,7 @@ class MainViewModel @Inject constructor(
             // init filter data
             val filterList = filterRepository.allFilters() as? ArrayList
             filterList?.forEachIndexed { index, filter ->
-                filter.filteredContacts = contactList.filter { it.filter == filter.filter }.size + callLogList.filter { it.type != OUT_GOING_CALL && it.filter == filter.filter }.distinctBy { it.number }.size
+                filter.filteredContacts = contactList.filter { it.filter == filter.filter }.size + callLogList.filter { it.filter == filter.filter }.distinctBy { it.number }.size
                 progressStatusLiveData.postValue(mainProgress.apply {
                     progressDescription =
                         getApplication<Application>().getString(R.string.progress_update_filters)

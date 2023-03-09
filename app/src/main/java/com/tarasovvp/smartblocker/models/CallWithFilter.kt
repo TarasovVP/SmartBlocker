@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.models
 
 import android.os.Parcelable
-import androidx.room.DatabaseView
 import androidx.room.Embedded
 import androidx.room.Relation
 import kotlinx.parcelize.Parcelize

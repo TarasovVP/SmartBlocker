@@ -12,4 +12,8 @@ interface ContactDao {
     @Transaction
     @Query("SELECT * FROM ContactWithFilter")
     suspend fun getContactsWithFilters(): List<ContactWithFilter>
+
+    @Transaction
+    @Query("SELECT * FROM ContactWithFilter WHERE filter = :filter")
+    suspend fun getContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
 }

@@ -2,9 +2,10 @@ package com.tarasovvp.smartblocker.ui.main.number.details.details_filter
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.models.ContactWithFilter
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.LogCallWithFilter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository
@@ -32,18 +33,15 @@ class DetailsFilterViewModel @Inject constructor(
     fun getQueryContactCallList(filter: Filter, color: Int) {
         showProgress()
         launch {
-            val calls = async { logCallRepository.getQueryCallList(filter.filter) }
-            val contacts = async { contactRepository.getContactsWithFilters() }
+            val calls = async { logCallRepository.getLogCallWithFilterByFilter(filter.filter) }
+            val contacts = async { contactRepository.getContactsWithFilterByFilter(filter.filter) }
             val callList = calls.await()
             val contactList = contacts.await()
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(callList)
                 addAll(contactList)
                 sortBy {
-                    it.numberData?.replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
-                }
-                distinctBy {
-                    it.numberData
+                    if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
                 }
             }
             filteredNumberDataList(filter, numberDataList, color)

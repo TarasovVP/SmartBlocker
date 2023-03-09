@@ -1,14 +1,11 @@
 package com.tarasovvp.smartblocker.models
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.CONTACTS
@@ -42,7 +39,7 @@ data class Contact(
         return filter.isEmpty()
     }
 
-    private fun phoneNumber(): PhoneNumber? {
+    fun phoneNumber(): PhoneNumber? {
         return SharedPrefs.countryCode?.let { trimmedPhone.getPhoneNumber(it.uppercase()) }
     }
 

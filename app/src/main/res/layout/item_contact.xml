@@ -80,7 +80,7 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="@color/text_color_grey"
-                app:layout_constraintEnd_toEndOf="@+id/item_contact_number"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/item_contact_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"

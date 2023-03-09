@@ -9,9 +9,9 @@ interface LogCallRepository {
 
     suspend fun getAllLogCallWithFilter(): List<LogCallWithFilter>
 
-    suspend fun allCallNumberWithFilter(): List<LogCallWithFilter>
+    suspend fun getLogCallWithFilterByFilter(filter: String): List<LogCallWithFilter>
 
-    suspend fun getQueryCallList(filter: String): List<LogCallWithFilter>
+    suspend fun allCallNumberWithFilter(): List<LogCallWithFilter>
 
     suspend fun getSystemLogCallList(context: Context, result: (Int, Int) -> Unit) : ArrayList<LogCall>
 

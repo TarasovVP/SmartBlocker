@@ -10,6 +10,7 @@ import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
+import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.i18n.phonenumbers.PhoneNumberUtil
@@ -109,7 +110,7 @@ fun Context.systemLogCallList(filterRepository: FilterRepository, result: (Int, 
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             CoroutineScope(Dispatchers.IO).launch {
-                logCall.filter = filterRepository.queryFilter(logCall.number)?.filter
+                logCall.filter = filterRepository.queryFilter(logCall.phoneNumberValue())?.filter
             }
             logCallList.add(logCall)
             result.invoke(callLogCursor.count, logCallList.size)
@@ -245,58 +246,35 @@ fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
     }
 }
 
-//TODO simplify
 fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): ArrayList<NumberData> {
     val filteredList = arrayListOf<NumberData>()
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
-        val number = when (numberData) {
-            is ContactWithFilter -> numberData.contact?.number
-            is LogCallWithFilter -> numberData.call?.number
-            else -> String.EMPTY
-        }
-        numberData.highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, color)
-        if (filter?.isTypeContain().isTrue() && number.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()) {
-            filteredList.add(numberData.apply {
-                highlightedSpanned = number.highlightedSpanned(filter?.createFilter(), null, color)
-            })
+        numberData.highlightedSpanned = numberData.highlightedSpanned(filter,color)
+        if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR).isTrue().not() ) {
+            supposedFilteredList.add(numberData)
         } else {
-            val phoneNumber = number.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
-            if (phoneNumber.isValidPhoneNumber()) {
-                if (number.digitsTrimmed().startsWith(filter?.createFilter().orEmpty()).isTrue())
-                    filteredList.add(numberData.apply {
-                        highlightedSpanned = number.highlightedSpanned(filter?.createFilter(), null, color)
-                    }) else if ((phoneNumber?.nationalNumber.toString()
-                        .startsWith(filter?.extractFilterWithoutCountryCode().orEmpty())
-                        .isTrue() && String.format(COUNTRY_CODE_START,
-                        phoneNumber?.countryCode) == filter?.countryCode?.countryCode)
-                )
-                    supposedFilteredList.add(numberData.apply {
-                        highlightedSpanned = number.highlightedSpanned(if (filter.filter == filter.createFilter())
-                                    filter.extractFilterWithoutCountryCode() else filter.filter, filter.countryCode.countryCode, color)
-                    })
-            }
+            filteredList.add(numberData)
         }
     }
     filteredList.addAll(supposedFilteredList)
     return filteredList
 }
 
-fun NumberData.highlightFilterSpanned(filter: Filter?, color: Int) {
-    val number = when (this) {
-        is ContactWithFilter -> contact?.number
-        is LogCallWithFilter -> call?.number
-        else -> String.EMPTY
-    }
-    highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, color)
-    if (filter?.isTypeContain().isTrue() && number.digitsTrimmed().contains(filter?.filter.orEmpty()).isTrue()) {
-            highlightedSpanned = number.highlightedSpanned(filter?.createFilter(), null, color)
-    } else {
-        val phoneNumber = number.digitsTrimmed().getPhoneNumber(filter?.countryCode?.country.orEmpty())
-        if (phoneNumber.isValidPhoneNumber()) {
-            if (number.digitsTrimmed().startsWith(filter?.createFilter().orEmpty()).isTrue()) highlightedSpanned = number.highlightedSpanned(filter?.createFilter(), null, color)
-            else if ((phoneNumber?.nationalNumber.toString().startsWith(filter?.extractFilterWithoutCountryCode().orEmpty()).isTrue() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode) == filter?.countryCode?.countryCode))
-                highlightedSpanned = number.highlightedSpanned(if (filter.filter == filter.createFilter()) filter.extractFilterWithoutCountryCode() else filter.filter, filter.countryCode.countryCode, color)
+fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString? {
+    if (this is CallWithFilter) {
+        return when {
+            filter?.filter.isNullOrEmpty() -> call?.number.highlightedSpanned(String.EMPTY, null, color)
+            else -> call?.number.highlightedSpanned(filter?.filter, null, Color.RED)
         }
     }
+    if (this is ContactWithFilter) {
+        return when {
+            filter?.filter.isNullOrEmpty() -> contact?.number.highlightedSpanned(String.EMPTY, null, color)
+            filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isNotTrue() -> contact?.number.highlightedSpanned(filter?.filter, filter?.countryCode?.countryCode, color)
+            filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
+            else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+        }
+    }
+    return null
 }

@@ -2,8 +2,6 @@ package com.tarasovvp.smartblocker.repositoryImpl
 
 import android.content.Context
 import com.tarasovvp.smartblocker.database.dao.LogCallDao
-import com.tarasovvp.smartblocker.extensions.isNull
-import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.systemLogCallList
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.repository.LogCallRepository
@@ -29,9 +27,8 @@ class LogCallRepositoryImpl @Inject constructor(private val callDao: LogCallDao,
         return callDao.allCallNumberWithFilter().distinctBy { it.call?.number }
     }
 
-    override suspend fun getQueryCallList(filter: String): List<LogCallWithFilter> {
-        return callDao.queryCallList(filter).distinctBy { it.call?.number }
-    }
+    override suspend fun getLogCallWithFilterByFilter(filter: String) = callDao.queryCallList(filter).distinctBy { it.call?.number }
+
 
     override suspend fun getSystemLogCallList(context: Context, result: (Int, Int) -> Unit): ArrayList<LogCall> =
         withContext(
