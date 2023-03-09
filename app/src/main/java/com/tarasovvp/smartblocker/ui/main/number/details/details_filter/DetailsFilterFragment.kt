@@ -15,10 +15,7 @@ import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.FilteredCall
-import com.tarasovvp.smartblocker.models.InfoData
-import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
@@ -98,7 +95,7 @@ class DetailsFilterFragment :
                     numberData = numberData))
             }
         })
-        filteredCallsScreen = SingleDetailsFragment.newInstance(FilteredCall::class.simpleName.orEmpty())
+        filteredCallsScreen = SingleDetailsFragment.newInstance(FilteredCallWithFilter::class.simpleName.orEmpty())
         filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
             override fun onNumberDataClick(numberData: NumberData) {
                 findNavController().navigate(DetailsFilterFragmentDirections.startDetailsNumberDataFragment(

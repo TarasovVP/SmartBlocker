@@ -133,8 +133,9 @@ fun Context.writeFilteredCall(
                         if (filter?.isBlocker().isTrue()) {
                             type = BLOCKED_CALL
                         }
-                        this.filterNumber = filter?.filter.orEmpty()
+                        this.filteredNumber = filter?.filter.orEmpty()
                         this.conditionType = filter?.conditionType.orZero()
+                        this.isFilteredCall = true
                     })
                 }
                 if (filter?.isBlocker().isTrue()) {

@@ -69,7 +69,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                 this.callWithFilter = callWithFilter
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        if (callWithFilter.call?.isFilteredNotNullOrEmpty().isTrue()) {
+                        if (callWithFilter.call?.isCallFiltered().isTrue()) {
                             itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
                         } else {
                             callClickListener.onCallDeleteInfoClick()
@@ -84,8 +84,8 @@ class CallAdapter(val callClickListener: CallClickListener) :
                 }
                 root.setOnLongClickListener {
                     if (callWithFilter.call?.isDeleteMode.isTrue().not()) {
-                        if (callWithFilter.call?.isFilteredNotNullOrEmpty().isTrue()) {
-                            callWithFilter.call?.isCheckedForDelete = callWithFilter.call?.isFilteredNotNullOrEmpty().isTrue()
+                        if (callWithFilter.call?.isCallFiltered().isTrue()) {
+                            callWithFilter.call?.isCheckedForDelete = callWithFilter.call?.isCallFiltered().isTrue()
                             callClickListener.onCallLongClick()
                         } else {
                             callClickListener.onCallDeleteInfoClick()

@@ -9,11 +9,11 @@ import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
+import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.IN_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
-import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import kotlinx.parcelize.Parcelize
@@ -28,7 +28,10 @@ open class Call(
     var callDate: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var countryIso: String? = String.EMPTY,
-    var filter: String? = String.EMPTY
+    var filter: String? = String.EMPTY,
+    var isFilteredCall: Boolean? = false,
+    var filteredNumber: String = String.EMPTY,
+    var conditionType: Int = DEFAULT_FILTER,
 ) : Parcelable {
 
     @Ignore
@@ -55,9 +58,9 @@ open class Call(
     @Exclude
     fun callIcon(): Int {
         return when (type) {
-            IN_COMING_CALL -> if (isFilteredNotNullOrEmpty()) R.drawable.ic_call_incoming_permitted else R.drawable.ic_call_incoming
-            MISSED_CALL -> if (isFilteredNotNullOrEmpty()) R.drawable.ic_call_missed_permitted else R.drawable.ic_call_missed
-            REJECTED_CALL -> if (isFilteredNotNullOrEmpty()) R.drawable.ic_call_rejected_permitted else R.drawable.ic_call_rejected
+            IN_COMING_CALL -> if (isCallFiltered()) R.drawable.ic_call_incoming_permitted else R.drawable.ic_call_incoming
+            MISSED_CALL -> if (isCallFiltered()) R.drawable.ic_call_missed_permitted else R.drawable.ic_call_missed
+            REJECTED_CALL -> if (isCallFiltered()) R.drawable.ic_call_rejected_permitted else R.drawable.ic_call_rejected
             BLOCKED_CALL -> R.drawable.ic_call_blocked
             else -> R.drawable.ic_call_outcoming
         }
@@ -94,7 +97,7 @@ open class Call(
 
     @Exclude
     fun isPermittedCall(): Boolean {
-        return isFilteredNotNullOrEmpty() && isBlockedCall().not()
+        return isCallFiltered() && isBlockedCall().not()
     }
 
     @Exclude
@@ -108,20 +111,20 @@ open class Call(
     }
 
     @Exclude
-    fun isFilteredNotNullOrEmpty(): Boolean {
-        return this is FilteredCall && filterNumber.isNotEmpty()
+    fun isCallFiltered(): Boolean {
+        return isFilteredCall.isTrue() || isFilteredCallDetails
     }
 
     @Exclude
     fun isFilteredCallDelete(): Boolean {
-        return this is FilteredCall && (isFilteredNotNullOrEmpty() || number.isEmpty()) && isDeleteMode
+        return (isCallFiltered() || number.isEmpty()) && isDeleteMode
     }
 
     @Exclude
     fun callFilterValue(): String {
         return when {
             isFilteredCallDetails -> dateTimeFromCallDate()
-            isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty() -> filterNumber
+            isExtract.not() && isCallFiltered() -> filteredNumber
             isExtract && isFilterNullOrEmpty().not() -> filter.orEmpty()
             else -> String.EMPTY
         }
@@ -138,10 +141,10 @@ open class Call(
                 else -> R.string.details_number_contact_without_filter
             }
         } else {
-            if (this is FilteredCall) {
+            if (isCallFiltered()) {
                 when {
                     number.isEmpty() -> R.string.details_number_blocked_by_settings
-                    isBlockedCall().not() -> R.string.details_number_permitted_by_filter
+                    isPermittedCall() -> R.string.details_number_permitted_by_filter
                     else -> R.string.details_number_blocked_by_filter
                 }
             } else {
@@ -153,9 +156,8 @@ open class Call(
     @Exclude
     fun callFilterIcon(filter: Filter?): Int? {
         return when {
-            isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty().not() -> R.drawable.ic_settings_small
-            isExtract.not() && this is FilteredCall && isFilteredNotNullOrEmpty() -> FilterCondition.getSmallIconByIndex(conditionType, isBlockedCall())
-            isExtract && isFilterNullOrEmpty().not() -> filter?.conditionTypeSmallIcon()
+            isExtract.not() && isCallFiltered() && filteredNumber.isNullOrEmpty() -> R.drawable.ic_settings_small
+            isCallFiltered() -> filter?.conditionTypeSmallIcon()
             else -> null
         }
     }
@@ -163,8 +165,8 @@ open class Call(
     @Exclude
     fun callFilterTint(filter: Filter?): Int {
         return when {
-            isExtract.not() && this is FilteredCall && isBlockedCall() -> R.color.sunset
-            isExtract.not() && this is FilteredCall && isBlockedCall().not() -> R.color.islamic_green
+            isCallFiltered() && isBlockedCall() -> R.color.sunset
+            isCallFiltered() && isPermittedCall() -> R.color.islamic_green
             isExtract && filter?.isBlocker().isTrue() -> R.color.sunset
             isExtract && filter?.isPermission().isTrue() -> R.color.islamic_green
             else -> R.color.text_color_grey

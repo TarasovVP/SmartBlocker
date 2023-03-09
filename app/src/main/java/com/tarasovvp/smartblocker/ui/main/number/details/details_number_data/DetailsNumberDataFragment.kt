@@ -92,16 +92,7 @@ class DetailsNumberDataFragment :
             }
         })
         filteredCallsScreen =
-            SingleDetailsFragment.newInstance(FilteredCall::class.simpleName.orEmpty())
-        filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
-            override fun onNumberDataClick(numberData: NumberData) {
-                findNavController().navigate(
-                    DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                        filterDetails = numberData as Filter
-                    )
-                )
-            }
-        })
+            SingleDetailsFragment.newInstance(FilteredCallWithFilter::class.simpleName.orEmpty())
         val fragmentList = arrayListOf(
             filtersScreen,
             filteredCallsScreen

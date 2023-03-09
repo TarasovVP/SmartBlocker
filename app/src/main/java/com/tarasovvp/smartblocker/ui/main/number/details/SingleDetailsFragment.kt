@@ -8,6 +8,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBin
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 
@@ -26,7 +27,7 @@ class SingleDetailsFragment :
                 numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
                     numberDataClickListener?.onNumberDataClick(numberData)
                 }.apply {
-                    this.isFilteredCallDetails = isFilteredCallDetails.isTrue()
+                    this.isFilteredCallDetails = numberType == FilteredCallWithFilter::class.simpleName
                 }
             filterDetailsNumberListEmpty.emptyState = when (numberType) {
                 Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS
