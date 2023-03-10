@@ -14,8 +14,13 @@ import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
+import com.tarasovvp.smartblocker.local.DataStorePrefsImpl
 import com.tarasovvp.smartblocker.models.CallWithFilter
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class CallAdapter(val callClickListener: CallClickListener) :
     BaseAdapter<CallWithFilter>() {
@@ -67,6 +72,11 @@ class CallAdapter(val callClickListener: CallClickListener) :
                 callWithFilter.highlightedSpanned = callWithFilter.call?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 callWithFilter.call?.isExtract = false
                 this.callWithFilter = callWithFilter
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dataStorePrefsImpl = DataStorePrefsImpl(itemView.context)
+                    callWithFilter.call?.callFilterTitle(callWithFilter.filter, dataStorePrefsImpl.isBlockHidden().first().isTrue())
+                        ?.let { itemCallFilterTitle.setText(it) }
+                }
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
                         if (callWithFilter.call?.isCallFiltered().isTrue()) {

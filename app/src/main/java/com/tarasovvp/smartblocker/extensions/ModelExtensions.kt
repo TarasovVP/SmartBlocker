@@ -23,11 +23,13 @@ import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DESC
 import com.tarasovvp.smartblocker.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.local.DataStorePrefsImpl
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
@@ -110,7 +112,8 @@ fun Context.systemLogCallList(filterRepository: FilterRepository, result: (Int, 
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             CoroutineScope(Dispatchers.IO).launch {
-                logCall.filter = filterRepository.queryFilter(logCall.phoneNumberValue())?.filter?.filter
+                val dataStorePrefs = DataStorePrefsImpl(this@systemLogCallList)
+                logCall.filter = filterRepository.queryFilter(logCall.phoneNumberValue(dataStorePrefs.getCountry().firstOrNull()))?.filter?.filter
             }
             logCallList.add(logCall)
             result.invoke(callLogCursor.count, logCallList.size)

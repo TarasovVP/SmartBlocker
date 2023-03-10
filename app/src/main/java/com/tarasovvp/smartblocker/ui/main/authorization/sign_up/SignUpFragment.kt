@@ -5,14 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSignUpBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,6 +23,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
     override var layoutId = R.layout.fragment_sign_up
     override val viewModelClass = SignUpViewModel::class.java
+
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,7 +58,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).apply {
                     getAllData()
-                    if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                    lifecycleScope.launch {
+                        if (dataStorePrefs.isSmartBlockerTurnOff().first().isNotTrue() && isBlockerLaunched().not()) startBlocker()
+                    }
                 }
                 findNavController().navigate(R.id.listBlockerFragment)
             }

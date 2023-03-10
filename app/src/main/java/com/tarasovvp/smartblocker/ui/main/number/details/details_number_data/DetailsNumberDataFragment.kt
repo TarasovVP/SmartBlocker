@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui.main.number.details.details_number_data
 import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -15,13 +16,16 @@ import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsNumberDataFragment :
@@ -29,13 +33,18 @@ class DetailsNumberDataFragment :
 
     override var layoutId = R.layout.fragment_details_number_data
     override val viewModelClass = DetailsNumberDataViewModel::class.java
+
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
+
     private val args: DetailsNumberDataFragmentArgs by navArgs()
-    override fun setFragmentResultListeners() = Unit
 
     private var filtersScreen: SingleDetailsFragment? = null
     private var filteredCallsScreen: SingleDetailsFragment? = null
     private var filterWithCountryCode: FilterWithCountryCode? = null
     private var isHiddenCall = false
+
+    override fun setFragmentResultListeners() = Unit
 
     override fun initViews() {
         binding?.apply {
@@ -66,7 +75,9 @@ class DetailsNumberDataFragment :
             detailsNumberDataTabs.isVisible = false
             detailsNumberDataViewPager.isVisible = false
             detailsNumberDataItemContact.itemContactNumber.setText(R.string.details_number_hidden)
-            detailsNumberDataItemContact.itemContactFilterTitle.setText(if (SharedPrefs.blockHidden) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
+            lifecycleScope.launch {
+                detailsNumberDataItemContact.itemContactFilterTitle.setText(if (dataStorePrefs.isBlockHidden().first().isTrue()) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
+            }
             with(detailsNumberDataCreateBlocker) {
                 setText(R.string.settings)
                 context?.let {
@@ -153,7 +164,8 @@ class DetailsNumberDataFragment :
             filter = number,
             conditionType = conditionIndex,
             filterType = Constants.BLOCKER
-        ))
+        )
+        )
         val phoneNumber = if (number.getPhoneNumber(String.EMPTY)
                 .isNull()
         ) number.getPhoneNumber(

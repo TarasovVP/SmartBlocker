@@ -7,11 +7,12 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
-import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
+import com.tarasovvp.smartblocker.constants.Constants.COUNTRY
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
@@ -21,13 +22,15 @@ import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -38,11 +41,14 @@ open class CreateFilterFragment :
     override var layoutId = R.layout.fragment_create_filter
     override val viewModelClass = CreateFilterViewModel::class.java
 
-    private val args: CreateFilterFragmentArgs by navArgs()
-
     override val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(activity ?: this)[viewModelClass]
     }
+
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
+
+    private val args: CreateFilterFragmentArgs by navArgs()
 
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
@@ -129,7 +135,9 @@ open class CreateFilterFragment :
         viewModel.getNumberDataList()
         if (binding?.filterWithCountryCode?.filter?.isTypeContain().isNotTrue()) {
             if (binding?.filterWithCountryCode?.countryCode?.countryCode.isNullOrEmpty()) {
-                viewModel.getCountryCodeWithCountry(SharedPrefs.countryCode)
+                lifecycleScope.launch {
+                    viewModel.getCountryCodeWithCountry(dataStorePrefs.getCountry().first())
+                }
             } else {
                 binding?.filterWithCountryCode?.countryCode?.let { setCountryCode(it) }
             }
@@ -140,8 +148,8 @@ open class CreateFilterFragment :
 
     override fun setFragmentResultListeners() {
         binding?.filterWithCountryCode?.let { filter ->
-            setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
-                bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
+            setFragmentResultListener(COUNTRY) { _, bundle ->
+                bundle.parcelable<CountryCode>(COUNTRY)?.let { setCountryCode(it) }
             }
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction =

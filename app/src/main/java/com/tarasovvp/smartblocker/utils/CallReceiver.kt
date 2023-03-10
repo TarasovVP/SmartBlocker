@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,6 +31,9 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
 
     @Inject
     lateinit var filteredCallRepository: FilteredCallRepository
+
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -43,8 +47,9 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
         if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
+
         CoroutineScope(Dispatchers.IO).launch {
-            val filter = if (number.isEmpty() && SharedPrefs.blockHidden) {
+            val filter = if (number.isEmpty() && dataStorePrefs.isBlockHidden().first().isTrue()) {
                 Filter(filterType = BLOCKER)
             } else {
                 filterRepository.queryFilter(number)?.filter

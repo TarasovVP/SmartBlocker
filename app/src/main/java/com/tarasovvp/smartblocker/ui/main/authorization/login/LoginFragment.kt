@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -19,10 +20,12 @@ import com.tarasovvp.smartblocker.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.constants.Constants.UNAUTHORIZED_ENTER
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,6 +33,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override var layoutId = R.layout.fragment_login
     override val viewModelClass = LoginViewModel::class.java
+
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,7 +74,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         setFragmentResultListener(UNAUTHORIZED_ENTER) { _, _ ->
             (activity as MainActivity).apply {
                 getAllData()
-                if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                lifecycleScope.launch {
+                    if (dataStorePrefs.isSmartBlockerTurnOff().first().isNotTrue() && isBlockerLaunched().not()) startBlocker()
+                }
             }
             findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
         }
@@ -95,7 +103,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).apply {
                     getAllData()
-                    if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                    lifecycleScope.launch {
+                        if (dataStorePrefs.isSmartBlockerTurnOff().first().isNotTrue() && isBlockerLaunched().not()) startBlocker()
+                    }
                 }
                 findNavController().navigate(R.id.listBlockerFragment)
             }

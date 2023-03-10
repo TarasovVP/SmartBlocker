@@ -8,6 +8,8 @@ import com.tarasovvp.smartblocker.database.dao.*
 import com.tarasovvp.smartblocker.repository.*
 import com.tarasovvp.smartblocker.repositoryImpl.*
 import com.tarasovvp.smartblocker.BuildConfig
+import com.tarasovvp.smartblocker.local.DataStorePrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefsImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +20,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideDataStorePrefs(@ApplicationContext context: Context): DataStorePrefs {
+        return DataStorePrefsImpl(context)
+    }
 
     @Singleton
     @Provides

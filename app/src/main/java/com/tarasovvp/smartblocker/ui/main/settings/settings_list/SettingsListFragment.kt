@@ -5,16 +5,19 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -24,13 +27,18 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
     override var layoutId = R.layout.fragment_settings_list
     override val viewModelClass = SettingsListViewModel::class.java
 
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
-            settingsLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language,
-                0,
-                SharedPrefs.appLang.orEmpty().flagDrawable(),
-                0)
+            lifecycleScope.launch {
+                settingsLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language,
+                    0,
+                   dataStorePrefs.getAppLang().first().orEmpty().flagDrawable(),
+                    0)
+            }
             settingsReview.isVisible = SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener {

@@ -9,7 +9,12 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemCountryCodeBinding
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
+import com.tarasovvp.smartblocker.local.DataStorePrefsImpl
 import com.tarasovvp.smartblocker.models.CountryCode
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class CountryCodeSearchAdapter(
     var countryCodeList: List<CountryCode>? = null,
@@ -36,6 +41,10 @@ class CountryCodeSearchAdapter(
         var binding: ItemCountryCodeBinding? = DataBindingUtil.bind(itemView)
         fun bindData(countryCode: CountryCode?) {
             binding?.countryCode = countryCode
+            CoroutineScope(Dispatchers.IO).launch {
+                val dataStorePrefsImpl = DataStorePrefsImpl(itemView.context)
+                binding?.itemCountryCodeName?.text = countryCode?.countryNameEmoji(dataStorePrefsImpl.getAppLang().first().orEmpty())
+            }
             binding?.root?.setSafeOnClickListener {
                 countryCode?.let { it1 -> countryCodeClick.invoke(it1) }
             }

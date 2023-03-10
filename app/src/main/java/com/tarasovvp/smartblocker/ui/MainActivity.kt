@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -33,24 +34,35 @@ import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefsImpl
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var binding: ActivityMainBinding? = null
-    private var navController: NavController? = null
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
+
+    val mainViewModel: MainViewModel by viewModels()
+
     var bottomNavigationView: BottomNavigationView? = null
     var bottomNavigationDivider: View? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
 
-    val mainViewModel: MainViewModel by viewModels()
-
+    private var binding: ActivityMainBinding? = null
+    private var navController: NavController? = null
     private var exceptionReceiver: ExceptionReceiver? = null
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
@@ -76,13 +88,21 @@ class MainActivity : AppCompatActivity() {
         }
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(SharedPrefs.appLang
-            ?: Locale.getDefault().language)))
+        val appLang = runBlocking {
+            getAppLang(newBase)
+        }
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(appLang ?: Locale.getDefault().language)))
+    }
+
+    private suspend fun getAppLang(context: Context): String? {
+        return withContext(Dispatchers.IO) {
+            val dataStorePrefs = DataStorePrefsImpl(context)
+            dataStorePrefs.getAppLang().first()
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        SharedPrefs.countryCode = SharedPrefs.countryCode.takeIf { it.isNullOrEmpty().not() } ?: getUserCountry()
         callHandleReceiver = CallHandleReceiver {
             mainViewModel.getAllData()
         }
@@ -146,15 +166,20 @@ class MainActivity : AppCompatActivity() {
         setBottomNavigationView()
         setOnDestinationChangedListener()
         observeLiveData()
-        if (SharedPrefs.isOnBoardingSeen
-            && SmartBlockerApp.instance?.isLoggedInUser().isTrue()
-            && savedInstanceState.isNull()
-        ) {
-            if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
-                navController?.navigate(R.id.startUnavailableNetworkDialog)
-            } else {
-                if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
-                getAllData()
+        lifecycleScope.launch {
+            if (dataStorePrefs.isOnBoardingSeen().first().isTrue()
+                && SmartBlockerApp.instance?.isLoggedInUser().isTrue()
+                && savedInstanceState.isNull()
+            ) {
+                if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
+                    navController?.navigate(R.id.startUnavailableNetworkDialog)
+                } else {
+                    if (dataStorePrefs.isSmartBlockerTurnOff().first().isTrue() && isBlockerLaunched().not()) startBlocker()
+                    getAllData()
+                }
+            }
+            (dataStorePrefs.getCountry().firstOrNull() ?: getUserCountry())?.let {
+                dataStorePrefs.saveCountry(it)
             }
         }
     }
@@ -165,15 +190,17 @@ class MainActivity : AppCompatActivity() {
         ) as NavHostFragment).navController
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
-            navGraph.setStartDestination(
-                when {
-                    SharedPrefs.isOnBoardingSeen.not() -> R.id.onBoardingFragment
-                    SmartBlockerApp.instance?.isLoggedInUser().isTrue() -> {
-                        R.id.listBlockerFragment
+            lifecycleScope.launch {
+                navGraph.setStartDestination(
+                    when {
+                        dataStorePrefs.isOnBoardingSeen().first().isNotTrue() -> R.id.onBoardingFragment
+                        SmartBlockerApp.instance?.isLoggedInUser().isTrue() -> {
+                            R.id.listBlockerFragment
+                        }
+                        else -> R.id.loginFragment
                     }
-                    else -> R.id.loginFragment
-                }
-            )
+                )
+            }
             this.graph = navGraph
         }
     }

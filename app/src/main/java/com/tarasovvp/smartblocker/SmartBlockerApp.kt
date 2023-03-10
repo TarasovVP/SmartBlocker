@@ -9,14 +9,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
 @HiltAndroidApp
 class SmartBlockerApp : Application() {
 
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
 
     var auth: FirebaseAuth? = null
     var googleSignInClient: GoogleSignInClient? = null
@@ -27,12 +32,15 @@ class SmartBlockerApp : Application() {
         instance = this
         auth = Firebase.auth
         googleSignInClient = this.googleSignInClient()
-        SharedPrefs.init(this)
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)
         createNotificationChannel()
-        if (SharedPrefs.appLang.isNullOrEmpty()) SharedPrefs.appLang = Locale.getDefault().language
-        AppCompatDelegate.setDefaultNightMode(SharedPrefs.appTheme)
+        runBlocking {
+            if (dataStorePrefs.getAppLang().firstOrNull().isNullOrEmpty()) dataStorePrefs.saveAppLang(Locale.getDefault().language)
+           dataStorePrefs.getAppTheme().map {
+               it?.let { it1 -> AppCompatDelegate.setDefaultNightMode(it1) }
+           }
+        }
         registerForNetworkUpdates { isAvailable ->
             isNetworkAvailable = isAvailable
         }
