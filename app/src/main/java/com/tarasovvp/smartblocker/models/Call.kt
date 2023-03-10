@@ -156,7 +156,7 @@ open class Call(
     @Exclude
     fun callFilterIcon(filter: Filter?): Int? {
         return when {
-            isExtract.not() && isCallFiltered() && filteredNumber.isNullOrEmpty() -> R.drawable.ic_settings_small
+            isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
             isCallFiltered() -> filter?.conditionTypeSmallIcon()
             else -> null
         }

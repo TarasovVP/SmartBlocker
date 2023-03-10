@@ -17,7 +17,7 @@ class FilterRepositoryImpl @Inject constructor(
     private val realDataBaseRepository: RealDataBaseRepository
 ) : FilterRepository {
 
-    override suspend fun getHashMapFromFilterList(filterList: List<Filter>): Map<String, List<Filter>> =
+    override suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>> =
         withContext(Dispatchers.Default) {
             filterList.groupBy {
                 String.EMPTY
@@ -33,18 +33,17 @@ class FilterRepositoryImpl @Inject constructor(
         return filterDao.allFilters()
     }
 
-    override suspend fun allFiltersByType(filterType: Int): List<Filter> {
+    override suspend fun allFilterWithCountryCode(): List<FilterWithCountryCode> {
+        return filterDao.allFilterWithCountryCode()
+    }
+
+    override suspend fun allFiltersByType(filterType: Int): List<FilterWithCountryCode> {
         return filterDao.allFiltersByType(filterType)
     }
 
-    override suspend fun getFilter(filter: Filter): Filter? {
-        return filterDao.getFilter(filter.createFilter(), filter.conditionType)
+    override suspend fun getFilter(filter: FilterWithCountryCode): FilterWithCountryCode? {
+        return filterDao.getFilter(filter.createFilter())
     }
-
-    override suspend fun getFilterWithCountryCode(filter: Filter): FilterWithCountryCode? {
-        return filterDao.getFilterWithCountryCode(filter.createFilter())
-    }
-
 
     override fun updateFilter(filter: Filter, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
@@ -70,30 +69,30 @@ class FilterRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteFilterList(filterList: List<Filter>, result: () -> Unit) {
+    override fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilterList(filterList) {
                 filterList.forEach { filter ->
-                    filterDao.delete(filter)
+                    filter?.let { filterDao.delete(it) }
                 }
                 result.invoke()
             }
         } else {
-            filterList.forEach { whiteFilter ->
-                filterDao.delete(whiteFilter)
+            filterList.forEach { filter ->
+                filter?.let { filterDao.delete(it) }
             }
             result.invoke()
         }
     }
 
-    override suspend fun queryFilterList(number: String): List<Filter> {
+    override suspend fun queryFilterList(number: String): List<FilterWithCountryCode> {
         return filterDao.queryFullMatchFilterList(number).sortedWith(
-            compareByDescending<Filter> { it.filter.length }
-                .thenBy { number.indexOf(it.filter) }
+            compareByDescending<FilterWithCountryCode> { it.filter?.filter?.length }
+                .thenBy { number.indexOf(it.filter?.filter.orEmpty()) }
         )
     }
 
-    override suspend fun queryFilter(number: String): Filter? {
+    override suspend fun queryFilter(number: String): FilterWithCountryCode? {
         return queryFilterList(number).firstOrNull()
     }
 

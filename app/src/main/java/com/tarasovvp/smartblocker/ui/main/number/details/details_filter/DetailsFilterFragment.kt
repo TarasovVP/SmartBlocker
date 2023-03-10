@@ -12,9 +12,7 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsFilterBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
-import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.extensions.safeSingleObserve
-import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
+import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
@@ -36,27 +34,27 @@ class DetailsFilterFragment :
 
     override fun initViews() {
         binding?.apply {
-            args.filterDetails?.let { filter ->
-                (activity as MainActivity).toolbar?.title = getString(filter.filterTypeTitle())
-                this.filter = filter
+            args.filterWithCountryCode?.let { filterWithCountryCode ->
+                (activity as MainActivity).toolbar?.title = getString(filterWithCountryCode.filter?.filterTypeTitle().orZero())
+                this.filterWithCountryCode = filterWithCountryCode
             }
             executePendingBindings()
         }
     }
 
     override fun setFragmentResultListeners() {
-        binding?.filter?.let { filter ->
+        binding?.filterWithCountryCode?.let { filter ->
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
-                when (val filterAction = bundle.getSerializable(FILTER_ACTION) as FilterAction) {
+                when (val filterAction = bundle.serializable(FILTER_ACTION) as? FilterAction) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-                    -> viewModel.updateFilter(filter.apply {
+                    -> viewModel.updateFilter(filter.filter?.apply {
                         filterType = if (this.isBlocker()) PERMISSION else BLOCKER
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                    -> viewModel.deleteFilter(filter.apply {
+                    -> viewModel.deleteFilter(filter.filter?.apply {
                         this.filterAction = filterAction
                     })
                     else -> Unit
@@ -68,12 +66,12 @@ class DetailsFilterFragment :
     override fun setClickListeners() {
         binding?.apply {
             detailsFilterChangeFilter.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlocker()
+                startFilterActionDialog(if (filterWithCountryCode?.filter?.isBlocker()
                         .isTrue()
                 ) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
             }
             detailsFilterDeleteFilter.setSafeOnClickListener {
-                startFilterActionDialog(if (filter?.isBlocker()
+                startFilterActionDialog(if (filterWithCountryCode?.filter?.isBlocker()
                         .isTrue()
                 ) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
             }
@@ -82,8 +80,8 @@ class DetailsFilterFragment :
 
     private fun startFilterActionDialog(filterAction: FilterAction) {
         findNavController().navigate(DetailsFilterFragmentDirections.startFilterActionDialog(
-            filter = binding?.filter?.apply {
-                this@apply.filterAction = filterAction
+            filterWithCountryCode = binding?.filterWithCountryCode?.apply {
+                this@apply.filter?.filterAction = filterAction
             }))
     }
 
@@ -128,7 +126,7 @@ class DetailsFilterFragment :
     }
 
     override fun getData() {
-        binding?.filter?.let {
+        binding?.filterWithCountryCode?.filter?.let {
             context?.let { context -> viewModel.getQueryContactCallList(it, ContextCompat.getColor(context, R.color.text_color_black)) }
             viewModel.filteredCallsByFilter(it.filter)
         }
@@ -140,7 +138,7 @@ class DetailsFilterFragment :
                 numberDataScreen?.updateNumberDataList(numberDataList)
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
-                binding?.filter?.filteredCalls = filteredCallList.size
+                binding?.filterWithCountryCode?.filter?.filteredCalls = filteredCallList.size
                 filteredCallsScreen?.updateNumberDataList(filteredCallList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
@@ -152,7 +150,7 @@ class DetailsFilterFragment :
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
-                .orEmpty(), binding?.filter?.filter.orEmpty()), false)
+                .orEmpty(), binding?.filterWithCountryCode?.filter?.filter.orEmpty()), false)
             //TODO interstitial
             //showInterstitial()
             getAllData()
@@ -162,7 +160,7 @@ class DetailsFilterFragment :
                     context?.let { context -> viewModel.getQueryContactCallList(filter, ContextCompat.getColor(context, R.color.text_color_black)) }
                 }
             } else {
-                findNavController().navigate(if (binding?.filter?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
+                findNavController().navigate(if (binding?.filterWithCountryCode?.filter?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
                 else DetailsFilterFragmentDirections.startListPermissionFragment())
             }
         }

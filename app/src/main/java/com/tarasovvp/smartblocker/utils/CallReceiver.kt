@@ -47,7 +47,7 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
             val filter = if (number.isEmpty() && SharedPrefs.blockHidden) {
                 Filter(filterType = BLOCKER)
             } else {
-                filterRepository.queryFilter(number)
+                filterRepository.queryFilter(number)?.filter
             }
             if ((filter?.isBlocker()
                     .isTrue()) && telephony.callState == TelephonyManager.CALL_STATE_RINGING

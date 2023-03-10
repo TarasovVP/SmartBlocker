@@ -20,7 +20,7 @@ class SingleDetailsFragment :
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataClickListener: NumberDataClickListener? = null
 
-    fun updateNumberDataList(numberDataList: ArrayList<NumberData>) {
+    fun updateNumberDataList(numberDataList: ArrayList<NumberData>, isFilteredCallItemDisable: Boolean = false) {
         val numberType = arguments?.getString(NUMBER_TYPE)
         binding?.apply {
             singleFilterDetailsList.adapter =
@@ -28,6 +28,7 @@ class SingleDetailsFragment :
                     numberDataClickListener?.onNumberDataClick(numberData)
                 }.apply {
                     this.isFilteredCallDetails = numberType == FilteredCallWithFilter::class.simpleName
+                    this.isFilteredCallItemDisable = isFilteredCallItemDisable
                 }
             filterDetailsNumberListEmpty.emptyState = when (numberType) {
                 Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS

@@ -34,7 +34,7 @@ class DetailsNumberDataFragment :
 
     private var filtersScreen: SingleDetailsFragment? = null
     private var filteredCallsScreen: SingleDetailsFragment? = null
-    private var filter: Filter? = null
+    private var filterWithCountryCode: FilterWithCountryCode? = null
     private var isHiddenCall = false
 
     override fun initViews() {
@@ -86,7 +86,7 @@ class DetailsNumberDataFragment :
             override fun onNumberDataClick(numberData: NumberData) {
                 findNavController().navigate(
                     DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                        filterDetails = numberData as Filter
+                        filterWithCountryCode = numberData as FilterWithCountryCode
                     )
                 )
             }
@@ -149,11 +149,11 @@ class DetailsNumberDataFragment :
 
     private fun createFilter(conditionIndex: Int) {
         val number = binding?.contactWithFilter?.contact?.number.orEmpty()
-        filter = Filter(
+        filterWithCountryCode = FilterWithCountryCode(filter = Filter(
             filter = number,
             conditionType = conditionIndex,
             filterType = Constants.BLOCKER
-        )
+        ))
         val phoneNumber = if (number.getPhoneNumber(String.EMPTY)
                 .isNull()
         ) number.getPhoneNumber(
@@ -170,7 +170,7 @@ class DetailsNumberDataFragment :
     private fun startAddFilterScreen() {
         findNavController().navigate(
             DetailsNumberDataFragmentDirections.startCreateFilterFragment(
-                filterCreate = filter
+                filterWithCountryCode = filterWithCountryCode
             )
         )
     }
@@ -243,11 +243,12 @@ class DetailsNumberDataFragment :
                 filtersScreen?.updateNumberDataList(filterList)
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
-                filteredCallsScreen?.updateNumberDataList(filteredCallList)
+                filteredCallsScreen?.updateNumberDataList(filteredCallList, true)
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
-                filter?.countryCode = countryCode
-                filter?.filter = filter?.filterToInput().orEmpty()
+                filterWithCountryCode?.filter?.country = countryCode.country
+                filterWithCountryCode?.countryCode = countryCode
+                filterWithCountryCode?.filter?.filter = filterWithCountryCode?.filterToInput().orEmpty()
                 startAddFilterScreen()
             }
         }

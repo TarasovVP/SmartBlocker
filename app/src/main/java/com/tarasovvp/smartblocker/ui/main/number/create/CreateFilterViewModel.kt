@@ -3,12 +3,11 @@ package com.tarasovvp.smartblocker.ui.main.number.create
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.isDarkMode
-import com.tarasovvp.smartblocker.models.CountryCode
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.CountryCodeRepository
@@ -30,7 +29,7 @@ class CreateFilterViewModel @Inject constructor(
     val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val countryCodeLiveData = MutableLiveData<CountryCode>()
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
-    val existingFilterLiveData = MutableLiveData<Filter>()
+    val existingFilterLiveData = MutableLiveData<FilterWithCountryCode>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
@@ -74,45 +73,33 @@ class CreateFilterViewModel @Inject constructor(
                 addAll(contactList)
                 addAll(callList)
                 sortBy {
-                    it.numberData?.replace(PLUS_CHAR.toString(), String.EMPTY)
+                    if (it is ContactWithFilter) it.contact?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else if (it is LogCallWithFilter) it.call?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else String.EMPTY
                 }
             }
             numberDataListLiveData.postValue(numberDataList)
         }
     }
 
-    fun checkFilterExist(filter: Filter) {
+    fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode) {
         Log.e(
             "createFilterTAG",
-            "CreateFilterViewModel checkFilterExist filter?.filter ${filter.filter} createFilter ${filter.createFilter()}"
+            "CreateFilterViewModel checkFilterExist filter?.filter ${filterWithCountryCode.filter} createFilter ${filterWithCountryCode.createFilter()}"
         )
         launch {
-            val result = filterRepository.getFilter(filter)
-            existingFilterLiveData.postValue(result ?: Filter())
+            val result = filterRepository.getFilter(filterWithCountryCode)
+            existingFilterLiveData.postValue(result ?: FilterWithCountryCode(Filter(filterType = DEFAULT_FILTER)))
         }
     }
 
-    fun getFilterWithCountryCode(filter: Filter) {
-        launch {
-            val filterWithCountryCode = filterRepository.getFilterWithCountryCode(filter.apply {
-                country = countryCode.country
-            })
-            Log.e(
-                "createFilterTAG",
-                "CreateFilterViewModel getFilterWithCountryCode filter ${filter.createFilter()} filterWithCountryCode $filterWithCountryCode"
-            )
-        }
-    }
-
-    fun filterNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) {
+    fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int) {
         Log.e(
             "createFilterTAG",
-            "CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filter?.filter} createFilter ${filter?.createFilter()} numberDataList.size ${numberDataList.size}"
+            "CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} createFilter ${filterWithCountryCode?.createFilter()} numberDataList.size ${numberDataList.size}"
         )
         showProgress()
         launch {
             val filteredNumberDataList =
-                contactRepository.filteredNumberDataList(filter, numberDataList, color)
+                contactRepository.filteredNumberDataList(filterWithCountryCode?.filter, numberDataList, color)
             filteredNumberDataListLiveData.postValue(filteredNumberDataList)
             hideProgress()
             Log.e(
@@ -122,33 +109,38 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun createFilter(filter: Filter) {
-        filter.country = filter.countryCode.country
+    fun createFilter(filter: Filter?) {
         Log.e(
             "createFilterTAG",
-            "CreateFilterViewModel createFilter createFilter ${filter.createFilter()} filter.country ${filter.country}"
+            "CreateFilterViewModel createFilter createFilter $filter filter.country ${filter?.country}"
         )
         launch {
-            filterRepository.insertFilter(filter) {
-                filterActionLiveData.postValue(filter)
+            filter?.let {
+                filterRepository.insertFilter(it) {
+                    filterActionLiveData.postValue(it)
+                }
             }
         }
     }
 
-    fun updateFilter(filter: Filter) {
+    fun updateFilter(filter: Filter?) {
         Log.e("createFilterTAG", "CreateFilterViewModel updateFilter")
         launch {
-            filterRepository.updateFilter(filter) {
-                filterActionLiveData.postValue(filter)
+            filter?.let {
+                filterRepository.updateFilter(it) {
+                    filterActionLiveData.postValue(it)
+                }
             }
         }
     }
 
-    fun deleteFilter(filter: Filter) {
+    fun deleteFilter(filter: Filter?) {
         Log.e("createFilterTAG", "CreateFilterViewModel deleteFilter")
         launch {
-            filterRepository.deleteFilterList(listOf(filter)) {
-                filterActionLiveData.postValue(filter)
+            filter?.let {
+                filterRepository.deleteFilterList(listOf(it)) {
+                    filterActionLiveData.postValue(it)
+                }
             }
         }
     }

@@ -13,7 +13,9 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilterWithCountryCode
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
@@ -23,19 +25,19 @@ import java.util.*
 
 @AndroidEntryPoint
 open class BaseListFilterFragment :
-    BaseListFragment<FragmentListFilterBinding, ListFilterViewModel, Filter>() {
+    BaseListFragment<FragmentListFilterBinding, ListFilterViewModel, FilterWithCountryCode>() {
 
     override var layoutId = R.layout.fragment_list_filter
     override val viewModelClass = ListFilterViewModel::class.java
 
-    private var filterList: ArrayList<Filter>? = null
+    private var filterWithCountryCodeList: ArrayList<FilterWithCountryCode>? = null
     private var isDeleteMode = false
     private var conditionFilterIndexes: ArrayList<Int>? = null
 
-    override fun createAdapter(): BaseAdapter<Filter>? {
+    override fun createAdapter(): BaseAdapter<FilterWithCountryCode>? {
         return context?.let {
             FilterAdapter(object : FilterClickListener {
-                override fun onFilterClick(filter: Filter) {
+                override fun onFilterClick(filter: FilterWithCountryCode) {
                     startNextScreen(filter)
                 }
 
@@ -43,10 +45,10 @@ open class BaseListFilterFragment :
                     changeDeleteMode()
                 }
 
-                override fun onFilterDeleteCheckChange(filter: Filter) {
-                    filterList?.find { it.filter == filter.filter }?.isCheckedForDelete =
-                        filter.isCheckedForDelete
-                    if (filterList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode) {
+                override fun onFilterDeleteCheckChange(filterWithCountryCode: FilterWithCountryCode) {
+                    filterWithCountryCodeList?.find { it.filter == filterWithCountryCode.filter }?.filter?.isCheckedForDelete =
+                        filterWithCountryCode.filter?.isCheckedForDelete.isTrue()
+                    if (filterWithCountryCodeList?.any { it.filter?.isCheckedForDelete.isTrue() }.isNotTrue() && isDeleteMode) {
                         changeDeleteMode()
                     }
                 }
@@ -107,24 +109,24 @@ open class BaseListFilterFragment :
         }
     }
 
-    private fun startNextScreen(filter: Filter) {
+    private fun startNextScreen(filterWithCountryCode: FilterWithCountryCode) {
         val direction = if (this is ListBlockerFragment) {
-            if (filter.filter.isEmpty()) {
-                filter.filterType = BLOCKER
+            if (filterWithCountryCode.filter?.filter.orEmpty().isEmpty()) {
+                filterWithCountryCode.filter?.filterType = BLOCKER
                 ListBlockerFragmentDirections.startCreateFilterFragment(
-                    filterCreate = filter)
+                    filterWithCountryCode = filterWithCountryCode)
             } else {
                 ListBlockerFragmentDirections.startDetailsFilterFragment(
-                    filterDetails = filter)
+                    filterWithCountryCode = filterWithCountryCode)
             }
         } else {
-            if (filter.filter.isEmpty()) {
-                filter.filterType = PERMISSION
+            if (filterWithCountryCode.filter?.filter.orEmpty().isEmpty()) {
+                filterWithCountryCode.filter?.filterType = PERMISSION
                 ListPermissionFragmentDirections.startCreateFilterFragment(
-                    filterCreate = filter)
+                    filterWithCountryCode = filterWithCountryCode)
             } else {
                 ListPermissionFragmentDirections.startDetailsFilterFragment(
-                    filterDetails = filter)
+                    filterWithCountryCode = filterWithCountryCode)
             }
         }
         findNavController().navigate(direction)
@@ -154,18 +156,21 @@ open class BaseListFilterFragment :
                 if (fabContain.isVisible) fabContain.hide() else fabContain.show()
             }
             fabFull.setSafeOnClickListener {
-                startNextScreen(Filter().apply {
-                    this.conditionType = FilterCondition.FILTER_CONDITION_FULL.index
+                startNextScreen(FilterWithCountryCode().apply {
+                    filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.index)
+                    countryCode = CountryCode()
                 })
             }
             fabStart.setSafeOnClickListener {
-                startNextScreen(Filter().apply {
-                    this.conditionType = FilterCondition.FILTER_CONDITION_START.index
+                startNextScreen(FilterWithCountryCode().apply {
+                    filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.index)
+                    countryCode = CountryCode()
                 })
             }
             fabContain.setSafeOnClickListener {
-                startNextScreen(Filter().apply {
-                    this.conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index
+                startNextScreen(FilterWithCountryCode().apply {
+                    filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)
+                    countryCode = CountryCode()
                 })
             }
         }
@@ -173,7 +178,9 @@ open class BaseListFilterFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(FILTER_ACTION) { _, _ ->
-                viewModel.deleteFilterList(filterList?.filter { it.isCheckedForDelete }.orEmpty())
+            val checkedFilterList = filterWithCountryCodeList?.filter { it.filter?.isCheckedForDelete.isTrue() }.orEmpty()
+            val mappedFilterList = checkedFilterList.map { it.filter }
+            viewModel.deleteFilterList(mappedFilterList)
         }
         setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
             conditionFilterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)
@@ -185,21 +192,21 @@ open class BaseListFilterFragment :
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.apply {
             setOnMenuItemClickListener {
-                val deleteFilterCount = filterList?.filter { it.isCheckedForDelete }.orEmpty().size
-                val firstFilter = filterList?.firstOrNull { it.isCheckedForDelete } as Filter
-                val filter = firstFilter.apply {
-                    filterAction =
-                        if (firstFilter.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                    filter =
+                val deleteFilterCount = filterWithCountryCodeList?.filter { it.filter?.isCheckedForDelete.isTrue() }.orEmpty().size
+                val firstFilterWithCountryCode = filterWithCountryCodeList?.firstOrNull { it.filter?.isCheckedForDelete.isTrue() } as FilterWithCountryCode
+                val filterWithCountryCode = firstFilterWithCountryCode.apply {
+                    filter?.filterAction =
+                        if (firstFilterWithCountryCode.filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                    filter?.filter =
                         if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_filter_delete_amount,
                             deleteFilterCount.quantityString(),
-                            deleteFilterCount) else filterList?.firstOrNull { it.isCheckedForDelete }?.filter.orEmpty()
+                            deleteFilterCount) else filterWithCountryCodeList?.firstOrNull { it.filter?.isCheckedForDelete.isTrue() }?.filter?.filter.orEmpty()
                 }
                 val direction =
                     if (this@BaseListFilterFragment is ListBlockerFragment) {
-                        ListBlockerFragmentDirections.startFilterActionDialog(filter)
+                        ListBlockerFragmentDirections.startFilterActionDialog(filterWithCountryCode)
                     } else {
-                        ListPermissionFragmentDirections.startFilterActionDialog(filter)
+                        ListPermissionFragmentDirections.startFilterActionDialog(filterWithCountryCode)
                     }
                 this@BaseListFilterFragment.findNavController().navigate(direction)
                 true
@@ -210,11 +217,11 @@ open class BaseListFilterFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                if (this@BaseListFilterFragment.filterList == filterList) {
+                if (this@BaseListFilterFragment.filterWithCountryCodeList == filterList) {
                     checkDataListEmptiness(filterList.isNullOrEmpty())
                     return@safeSingleObserve
                 }
-                this@BaseListFilterFragment.filterList = filterList as ArrayList<Filter>
+                this@BaseListFilterFragment.filterWithCountryCodeList = filterList as ArrayList<FilterWithCountryCode>
                 searchDataList()
             }
             filterHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
@@ -236,18 +243,18 @@ open class BaseListFilterFragment :
 
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
-        val filteredList = filterList?.filter { filter ->
-            filter.filter.lowercase(Locale.getDefault())
+        val filteredList = filterWithCountryCodeList?.filter { filter ->
+            filter.filter?.filter.orEmpty().lowercase(Locale.getDefault())
                 .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty())
                     && (conditionFilterIndexes?.contains(FilterCondition.FILTER_CONDITION_FULL.index)
                 .isTrue()
-                    && filter.isTypeFull()
+                    && filter.filter?.isTypeFull().isTrue()
                     || conditionFilterIndexes?.contains(FilterCondition.FILTER_CONDITION_START.index)
                 .isTrue()
-                    && filter.isTypeStart()
+                    && filter.filter?.isTypeStart().isTrue()
                     || conditionFilterIndexes?.contains(FilterCondition.FILTER_CONDITION_CONTAIN.index)
                 .isTrue()
-                    && filter.isTypeContain()
+                    && filter.filter?.isTypeContain().isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         binding?.listFilterFilter?.isEnabled =

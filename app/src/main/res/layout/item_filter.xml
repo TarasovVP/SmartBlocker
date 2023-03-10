@@ -7,8 +7,8 @@
         <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
         <variable
-            name="filter"
-            type="com.tarasovvp.smartblocker.models.Filter" />
+            name="filterWithCountryCode"
+            type="com.tarasovvp.smartblocker.models.FilterWithCountryCode" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -35,7 +35,7 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageResource="@{filter.conditionTypeIcon}"
+                app:imageResource="@{filterWithCountryCode.filter.conditionTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_filter_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
             <ImageView
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                app:imageResource="@{filter.filterTypeIcon}"
+                app:imageResource="@{filterWithCountryCode.filter.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
 
@@ -56,7 +56,7 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{filter.highlightedSpanned}"
+                android:text="@{filterWithCountryCode.highlightedSpanned}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
@@ -69,8 +69,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
-                android:text="@{filter == null ? filter.filter : context.getString(filter.conditionTypeName)}"
-                android:textColor="@{filter.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filter.filterAction.color)}"
+                android:text="@{filterWithCountryCode.filter == null ? filterWithCountryCode.filter.filter : context.getString(filterWithCountryCode.filter.conditionTypeName)}"
+                android:textColor="@{filterWithCountryCode.filter.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCode.filter.filterAction.color)}"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_filter_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_value" />
@@ -79,8 +79,8 @@
                 android:id="@+id/item_filter_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@{filter.checkedForDelete}"
-                android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
+                android:checked="@{filterWithCountryCode.filter.checkedForDelete}"
+                android:visibility="@{filterWithCountryCode.filter.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_divider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -101,8 +101,8 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
-                android:textColor="@{filter.blocker ? @color/sunset : @color/islamic_green}"
-                android:text="@{filter.filteredContactsText(context)}"
+                android:textColor="@{filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{filterWithCountryCode.filter.filteredContactsText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_created"/>
@@ -115,7 +115,7 @@
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/text_color_grey"
-                android:text="@{String.format(@string/filter_action_created, filter.filterCreatedDate)}"
+                android:text="@{String.format(@string/filter_action_created, filterWithCountryCode.filter.filterCreatedDate)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_contacts"
                 app:layout_constraintTop_toTopOf="@+id/item_filter_contacts"

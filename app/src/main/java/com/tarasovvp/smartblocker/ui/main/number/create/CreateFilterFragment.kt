@@ -22,10 +22,7 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
-import com.tarasovvp.smartblocker.models.CountryCode
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.InfoData
-import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
@@ -57,25 +54,30 @@ open class CreateFilterFragment :
 
     override fun createAdapter() {
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
+            val number = when (numberData) {
+                is ContactWithFilter -> numberData.contact?.number
+                is LogCallWithFilter -> numberData.call?.number
+                else -> String.EMPTY
+            }
             binding?.apply {
                 binding?.filterToInput = true
-                if (filter?.isTypeContain().isTrue()) {
-                    filter = filter?.apply {
+                if (filterWithCountryCode?.filter?.isTypeContain().isTrue()) {
+                    filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
                         this.filter =
-                            numberData.numberData.digitsTrimmed()
+                            number.digitsTrimmed()
                                 .replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
                 } else {
                     val phoneNumber =
-                        numberData.numberData.getPhoneNumber(filter?.countryCode?.country.orEmpty())
+                        number.getPhoneNumber(filterWithCountryCode?.countryCode?.country.orEmpty())
                     if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() &&
                                 String.format(COUNTRY_CODE_START,
                                     phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()
                     ) {
-                        filter = filter?.apply {
+                        filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
                             this.filter =
                                 phoneNumber?.nationalNumber?.toString()
-                                    ?: numberData.numberData.digitsTrimmed()
+                                    ?: number.digitsTrimmed()
                         }
                         if (phoneNumber?.countryCode.orZero() > 0) {
                             viewModel.getCountryCodeWithCode(phoneNumber?.countryCode)
@@ -90,13 +92,13 @@ open class CreateFilterFragment :
 
     override fun initViews() {
         Log.e("createFilterTAG", "CreateFilterFragment initViews")
-        binding?.filter = args.filterCreate?.apply {
-            filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
+        binding?.filterWithCountryCode = args.filterWithCountryCode?.apply {
+            filter?.filterAction = filter?.filterAction ?: FilterAction.FILTER_ACTION_INVALID
         }
-        (activity as MainActivity).toolbar?.title = getString(if (binding?.filter?.isBlocker()
+        (activity as MainActivity).toolbar?.title = getString(if (binding?.filterWithCountryCode?.filter?.isBlocker()
                 .isTrue()
         ) R.string.creating_blocker else R.string.creating_permission)
-        if (binding?.filter?.isTypeContain().isNotTrue()) {
+        if (binding?.filterWithCountryCode?.filter?.isTypeContain().isNotTrue()) {
             viewModel.getCountryCodeList()
         }
         setFilterTextChangeListener()
@@ -108,10 +110,10 @@ open class CreateFilterFragment :
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
                     findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(
-                        filter = filter?.apply {
-                            filter = createFilter()
-                            filterAction = filterAction
-                                ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                        filterWithCountryCode = filterWithCountryCode?.apply {
+                            filter?.filter = filterWithCountryCode?.createFilter().orEmpty()
+                            filter?.filterAction = filter?.filterAction
+                                ?: if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         }))
             }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
@@ -125,11 +127,11 @@ open class CreateFilterFragment :
     override fun getData() {
         Log.e("createFilterTAG", "CreateFilterFragment getData")
         viewModel.getNumberDataList()
-        if (binding?.filter?.isTypeContain().isNotTrue()) {
-            if (binding?.filter?.countryCode?.countryCode.isNullOrEmpty()) {
+        if (binding?.filterWithCountryCode?.filter?.isTypeContain().isNotTrue()) {
+            if (binding?.filterWithCountryCode?.countryCode?.countryCode.isNullOrEmpty()) {
                 viewModel.getCountryCodeWithCountry(SharedPrefs.countryCode)
             } else {
-                binding?.filter?.countryCode?.let { setCountryCode(it) }
+                binding?.filterWithCountryCode?.countryCode?.let { setCountryCode(it) }
             }
         } else {
             binding?.createFilterInput?.hint = getString(R.string.creating_filter_enter_hint)
@@ -137,7 +139,7 @@ open class CreateFilterFragment :
     }
 
     override fun setFragmentResultListeners() {
-        binding?.filter?.let { filter ->
+        binding?.filterWithCountryCode?.let { filter ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
                 bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
             }
@@ -146,23 +148,23 @@ open class CreateFilterFragment :
                     bundle.serializable<FilterAction>(FILTER_ACTION)) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-                    -> viewModel.updateFilter(filter.apply {
+                    -> viewModel.updateFilter(filter.filter?.apply {
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                    -> viewModel.deleteFilter(filter.apply {
-                        this.filter = createFilter()
+                    -> viewModel.deleteFilter(filter.filter?.apply {
+                        this.filter = filter.createFilter()
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_CREATE,
                     FilterAction.FILTER_ACTION_PERMISSION_CREATE,
-                    -> viewModel.createFilter(filter.apply {
-                        numberData = filter.createFilter()
-                        this.filter = createFilter()
-                        filterWithoutCountryCode = extractFilterWithoutCountryCode()
+                    -> viewModel.createFilter(filter.filter?.apply {
+                        this.filter = filter.createFilter()
+                        filterWithoutCountryCode = filter.extractFilterWithoutCountryCode()
                         this.filterAction = filterAction
                         created = Date().time
+                        country = filter.countryCode?.country.orEmpty()
                     })
                     else -> Unit
                 }
@@ -177,19 +179,18 @@ open class CreateFilterFragment :
             createFilterInput.setupClearButtonWithAction()
             createFilterInput.doAfterTextChanged {
                 Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener doAfterTextChanged it $it")
-                if ((filter?.conditionTypeFullHint() == it.toString() && filter?.isTypeFull().isTrue())
-                    || (filter?.conditionTypeStartHint() == it.toString() && filter?.isTypeStart().isTrue())
+                if ((filterWithCountryCode?.conditionTypeFullHint() == it.toString() && filterWithCountryCode?.filter?.isTypeFull().isTrue())
+                    || (filterWithCountryCode?.conditionTypeStartHint() == it.toString() && filterWithCountryCode?.filter?.isTypeStart().isTrue())
                 ) return@doAfterTextChanged
                 Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
-                filter = filter?.apply {
-                    filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY)
+                filterWithCountryCode = filterWithCountryCode?.apply {
+                    filter?.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY)
                         .replace(Constants.SPACE, String.EMPTY)
                     viewModel.checkFilterExist(this)
-                    viewModel.getFilterWithCountryCode(this)
                 }
                 context?.let { context ->
-                    viewModel.filterNumberDataList(filter, numberDataList,
+                    viewModel.filterNumberDataList(filterWithCountryCode, numberDataList,
                     ContextCompat.getColor(context, R.color.text_color_black)) }
             }
         }
@@ -198,16 +199,16 @@ open class CreateFilterFragment :
     private fun setCountryCode(countryCode: CountryCode) {
         Log.e("createFilterTAG", "CreateFilterFragment setCountryCode countryCode.country ${countryCode.country}")
         binding?.apply {
-            filter = filter?.apply {
-                this.countryCode = countryCode
+            filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
+                filterWithCountryCode?.countryCode = countryCode
                 if (isTypeFull().isTrue()) {
-                    createFilterInput.setNumberMask(conditionTypeFullHint())
+                    createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeFullHint().orEmpty())
                 } else if (isTypeStart().isTrue()) {
-                    createFilterInput.setNumberMask(conditionTypeStartHint())
+                    createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeStartHint().orEmpty())
                 }
             }
             createFilterCountryCodeSpinner.text = countryCode.countryEmoji()
-            context?.let {viewModel.filterNumberDataList(filter, numberDataList,
+            context?.let {viewModel.filterNumberDataList(filterWithCountryCode, numberDataList,
                 ContextCompat.getColor(it, R.color.text_color_black)) }
         }
     }
@@ -236,22 +237,22 @@ open class CreateFilterFragment :
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 Log.e("createFilterTAG", "CreateFilterFragment observeLiveData numberDataListLiveData")
                 this@CreateFilterFragment.numberDataList = ArrayList(numberDataList)
-                if (binding?.filter?.isTypeContain().isTrue().not()) {
-                    context?.let {viewModel.filterNumberDataList(binding?.filter, this@CreateFilterFragment.numberDataList,
+                if (binding?.filterWithCountryCode?.filter?.isTypeContain().isTrue().not()) {
+                    context?.let {viewModel.filterNumberDataList(binding?.filterWithCountryCode, this@CreateFilterFragment.numberDataList,
                         ContextCompat.getColor(it, R.color.text_color_black)) }
                 } else {
                     numberDataAdapter?.numberDataList = this@CreateFilterFragment.numberDataList
                     numberDataAdapter?.notifyDataSetChanged()
                 }
                 binding?.filterToInput = true
-                binding?.filter = binding?.filter
+                binding?.filterWithCountryCode?.filter = binding?.filterWithCountryCode?.filter
                 (activity as MainActivity).setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
-                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData existingFilterLiveData")
-                binding?.filter = binding?.filter?.apply {
-                    filterAction = when (existingFilter.filterType) {
-                        DEFAULT_FILTER -> if (isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter")
+                binding?.filterWithCountryCode?.filter = binding?.filterWithCountryCode?.filter?.apply {
+                    filterAction = when (existingFilter.filter?.filterType) {
+                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         filterType -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                         else -> if (isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
                     }
@@ -276,7 +277,7 @@ open class CreateFilterFragment :
                 filter.filter, getString(filter.conditionTypeName())), false)
             showInterstitial()
             getAllData()
-            findNavController().navigate(if (binding?.filter?.isBlocker().isTrue())
+            findNavController().navigate(if (binding?.filterWithCountryCode?.filter?.isBlocker().isTrue())
                 CreateFilterFragmentDirections.startListBlockerFragment()
             else CreateFilterFragmentDirections.startListPermissionFragment())
         }
@@ -285,8 +286,8 @@ open class CreateFilterFragment :
     override fun showInfoScreen() {
         Log.e("createFilterTAG", "CreateFilterFragment showInfoScreen")
         val info = when {
-            binding?.filter?.isTypeStart().isTrue() -> Info.INFO_CREATE_FILTER_START
-            binding?.filter?.isTypeContain().isTrue() -> Info.INFO_CREATE_FILTER_CONTAIN
+            binding?.filterWithCountryCode?.filter?.isTypeStart().isTrue() -> Info.INFO_CREATE_FILTER_START
+            binding?.filterWithCountryCode?.filter?.isTypeContain().isTrue() -> Info.INFO_CREATE_FILTER_CONTAIN
             else -> Info.INFO_CREATE_FILTER_FULL
         }
         findNavController().navigate(DetailsNumberDataFragmentDirections.startInfoFragment(info = InfoData(

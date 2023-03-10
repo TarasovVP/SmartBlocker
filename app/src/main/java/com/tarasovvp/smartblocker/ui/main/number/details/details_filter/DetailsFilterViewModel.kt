@@ -73,21 +73,25 @@ class DetailsFilterViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilter(filter: Filter) {
+    fun deleteFilter(filter: Filter?) {
         showProgress()
         launch {
-            filterRepository.deleteFilterList(listOf(filter)) {
-                filterActionLiveData.postValue(filter)
+            filter?.let {
+                filterRepository.deleteFilterList(listOf(it)) {
+                    filterActionLiveData.postValue(it)
+                }
             }
             hideProgress()
         }
     }
 
-    fun updateFilter(filter: Filter) {
+    fun updateFilter(filter: Filter?) {
         showProgress()
         launch {
-            filterRepository.updateFilter(filter) {
-                filterActionLiveData.postValue(filter)
+            filter?.let {
+                filterRepository.updateFilter(it) {
+                    filterActionLiveData.postValue(it)
+                }
             }
             hideProgress()
         }

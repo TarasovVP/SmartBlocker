@@ -23,6 +23,7 @@ class NumberDataAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isFilteredCallDetails: Boolean = false
+    var isFilteredCallItemDisable: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -51,7 +52,7 @@ class NumberDataAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val numberData = numberDataList?.get(position)
         when (holder) {
-            is FilterViewHolder -> holder.bindData(numberData as? Filter)
+            is FilterViewHolder -> holder.bindData(numberData as? FilterWithCountryCode)
             is ContactViewHolder -> holder.bindData(numberData as? ContactWithFilter)
             is CallViewHolder -> holder.bindData(numberData as? CallWithFilter)
         }
@@ -60,18 +61,18 @@ class NumberDataAdapter(
     internal inner class FilterViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemFilterBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(filter: Filter?) {
+        fun bindData(filterWithCountryCode: FilterWithCountryCode?) {
             binding?.apply {
-                this.filter = filter?.apply {
+                this.filterWithCountryCode = filterWithCountryCode?.apply {
                     highlightedSpanned =
-                        highlightedSpanned ?: filter.filter.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        highlightedSpanned ?: filterWithCountryCode.highlightedSpanned(filterWithCountryCode.filter, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,
-                    if (adapterPosition == 0) filter?.filterTypeTint() ?: R.color.transparent
+                    if (adapterPosition == 0) filterWithCountryCode?.filter?.filterTypeTint() ?: R.color.transparent
                     else R.color.transparent)
                 root.setSafeOnClickListener {
-                    filter?.let { it1 -> numberDataClick.invoke(it1) }
+                    filterWithCountryCode?.let { it1 -> numberDataClick.invoke(it1) }
                 }
                 executePendingBindings()
             }
@@ -100,6 +101,7 @@ class NumberDataAdapter(
         var binding: ItemCallBinding? = DataBindingUtil.bind(itemView)
         fun bindData(callWithFilter: CallWithFilter?) {
             binding?.apply {
+                root.isEnabled = isFilteredCallItemDisable.not()
                 this.callWithFilter = callWithFilter
                 this.callWithFilter?.call?.isExtract = isFilteredCallDetails.not()
                 this.callWithFilter?.call?.isFilteredCallDetails = isFilteredCallDetails

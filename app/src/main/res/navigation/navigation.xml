@@ -83,9 +83,9 @@
         android:id="@+id/detailsFilterFragment"
         android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_filter.DetailsFilterFragment">
         <argument
-            android:name="filterDetails"
+            android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.models.Filter"
+            app:argType="com.tarasovvp.smartblocker.models.FilterWithCountryCode"
             app:nullable="true" />
         <action
             android:id="@+id/startDetailsNumberDataFragment"
@@ -112,9 +112,9 @@
         android:id="@+id/createFilterFragment"
         android:name="com.tarasovvp.smartblocker.ui.main.number.create.CreateFilterFragment" >
         <argument
-            android:name="filterCreate"
+            android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.models.Filter"
+            app:argType="com.tarasovvp.smartblocker.models.FilterWithCountryCode"
             app:nullable="true" />
         <action
             android:id="@+id/startCountryCodeSearchDialog"
@@ -360,9 +360,9 @@
         android:id="@+id/filterActionDialog"
         android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterActionDialog">
         <argument
-            android:name="filter"
+            android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.models.Filter"
+            app:argType="com.tarasovvp.smartblocker.models.FilterWithCountryCode"
             app:nullable="true" />
     </dialog>
 

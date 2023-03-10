@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilterWithCountryCode
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,9 +18,9 @@ class ListFilterViewModel @Inject constructor(
     private val filterRepository: FilterRepository
 ) : BaseViewModel(application) {
 
-    val filterListLiveData = MutableLiveData<ArrayList<Filter>?>()
+    val filterListLiveData = MutableLiveData<ArrayList<FilterWithCountryCode>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
-    val filterHashMapLiveData = MutableLiveData<Map<String, List<Filter>>?>()
+    val filterHashMapLiveData = MutableLiveData<Map<String, List<FilterWithCountryCode>>?>()
 
     fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
@@ -32,7 +33,7 @@ class ListFilterViewModel @Inject constructor(
         }
     }
 
-    fun getHashMapFromFilterList(filterList: List<Filter>, refreshing: Boolean) {
+    fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
             filterHashMapLiveData.postValue(
@@ -42,7 +43,7 @@ class ListFilterViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilterList(filterList: List<Filter>) {
+    fun deleteFilterList(filterList: List<Filter?>) {
         showProgress()
         launch {
             filterRepository.deleteFilterList(filterList) {

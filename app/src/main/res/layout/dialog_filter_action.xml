@@ -8,8 +8,8 @@
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
-            name="filter"
-            type="com.tarasovvp.smartblocker.models.Filter" />
+            name="filterWithCountryCode"
+            type="com.tarasovvp.smartblocker.models.FilterWithCountryCode" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -27,7 +27,7 @@
                 android:id="@+id/filter_action_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@{ContextCompat.getDrawable(context, filter.filterAction.icon)}"
+                android:src="@{ContextCompat.getDrawable(context, filterWithCountryCode.filter.filterAction.icon)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:gravity="center"
-                android:text="@{String.format(context.getString(filter.filterAction.requestText), filter.filter, context.getString(filter.conditionTypeName))}"
+                android:text="@{String.format(context.getString(filterWithCountryCode.filter.filterAction.requestText), filterWithCountryCode.filter.filter, context.getString(filterWithCountryCode.filter.conditionTypeName))}"
                 android:textSize="@dimen/text_size_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

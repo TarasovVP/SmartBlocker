@@ -1,9 +1,9 @@
 package com.tarasovvp.smartblocker.ui.main.number.list.list_filter
 
-import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.models.FilterWithCountryCode
 
 interface FilterClickListener {
-    fun onFilterClick(filter: Filter)
+    fun onFilterClick(filter: FilterWithCountryCode)
     fun onFilterLongClick()
-    fun onFilterDeleteCheckChange(filter: Filter)
+    fun onFilterDeleteCheckChange(filter: FilterWithCountryCode)
 }

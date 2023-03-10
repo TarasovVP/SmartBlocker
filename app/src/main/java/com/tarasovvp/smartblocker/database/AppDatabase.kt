@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.models.*
 
 @Database(
     entities = [LogCall::class, FilteredCall::class, Contact::class, Filter::class, CountryCode::class],
-    views = [ContactWithFilter::class, LogCallWithFilter::class, FilteredCallWithFilter::class],
+    views = [ContactWithFilter::class, LogCallWithFilter::class, FilteredCallWithFilter::class, FilterWithCountryCode::class],
     version = 1,
     exportSchema = false
 )

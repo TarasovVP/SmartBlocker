@@ -11,8 +11,8 @@
             name="filterToInput"
             type="Boolean" />
         <variable
-            name="filter"
-            type="com.tarasovvp.smartblocker.models.Filter" />
+            name="filterWithCountryCode"
+            type="com.tarasovvp.smartblocker.models.FilterWithCountryCode" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_2"
             android:layout_marginTop="@dimen/margin_8"
-            app:filter="@{filter}"
+            app:filterWithCountryCode="@{filterWithCountryCode}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
@@ -55,7 +55,7 @@
                     android:gravity="center_vertical"
                     android:textColor="@color/text_color_grey"
                     android:enabled="false"
-                    android:visibility="@{filter.typeContain ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{filterWithCountryCode.filter.typeContain ? View.GONE : View.VISIBLE}"
                     app:drawableEndCompat="@drawable/ic_drop_down"
                     app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
                     app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +67,7 @@
                     android:layout_height="@dimen/size_0"
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/padding_8"
-                    android:text="@{filter.countryCode.countryCode}"
+                    android:text="@{filterWithCountryCode.countryCode.countryCode}"
                     android:textColor="@color/text_color_grey"
                     android:textSize="@dimen/text_size_16"
                     app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
@@ -92,7 +92,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/create_filter_country_code_value"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:text="@{filter.filterToInput()}" />
+                    app:text="@{filterWithCountryCode.filterToInput()}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -102,12 +102,12 @@
             android:layout_height="wrap_content"
             style="@style/StrokeButtonStyle"
             android:layout_marginTop="@dimen/margin_8"
-            android:alpha="@{filter.invalidFilterAction ? 0.5f : 1f}"
-            android:enabled="@{!filter.invalidFilterAction}"
-            android:text="@{filter.filterAction.title}"
-            android:textColor="@{ContextCompat.getColor(context, filter.filterActionTextTint)}"
-            app:strokeColor="@{ContextCompat.getColor(context, filter.filterAction.color)}"
-            android:backgroundTint="@{ContextCompat.getColor(context, filter.filterActionBgTint)}"
+            android:alpha="@{filterWithCountryCode.filter.invalidFilterAction ? 0.5f : 1f}"
+            android:enabled="@{!filterWithCountryCode.filter.invalidFilterAction}"
+            android:text="@{filterWithCountryCode.filter.filterAction.title}"
+            android:textColor="@{ContextCompat.getColor(context, filterWithCountryCode.filter.filterActionTextTint)}"
+            app:strokeColor="@{ContextCompat.getColor(context, filterWithCountryCode.filter.filterAction.color)}"
+            android:backgroundTint="@{ContextCompat.getColor(context, filterWithCountryCode.filter.filterActionBgTint)}"
             android:layout_marginHorizontal="@dimen/margin_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

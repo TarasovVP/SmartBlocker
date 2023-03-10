@@ -59,7 +59,7 @@ fun Context.systemContactList(filterRepository: FilterRepository, result: (Int, 
                 number = contactCursor.getString(3),
             ).apply {
                 CoroutineScope(Dispatchers.IO).launch {
-                    filter = filterRepository.queryFilter(phoneNumberValue())?.filter.orEmpty()
+                    filter = filterRepository.queryFilter(phoneNumberValue())?.filter?.filter.orEmpty()
                 }
             })
             result.invoke(cursor.count, contactList.size)
@@ -110,7 +110,7 @@ fun Context.systemLogCallList(filterRepository: FilterRepository, result: (Int, 
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             CoroutineScope(Dispatchers.IO).launch {
-                logCall.filter = filterRepository.queryFilter(logCall.phoneNumberValue())?.filter
+                logCall.filter = filterRepository.queryFilter(logCall.phoneNumberValue())?.filter?.filter
             }
             logCallList.add(logCall)
             result.invoke(callLogCursor.count, logCallList.size)
@@ -272,7 +272,7 @@ fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString?
     if (this is ContactWithFilter) {
         return when {
             filter?.filter.isNullOrEmpty() -> contact?.number.highlightedSpanned(String.EMPTY, null, color)
-            filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isNotTrue() -> contact?.number.highlightedSpanned(filter?.filter, filter?.countryCode?.countryCode, color)
+            filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isNotTrue() -> contact?.number.highlightedSpanned(filter?.filter, filter?.country, color)
             filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
             else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
         }

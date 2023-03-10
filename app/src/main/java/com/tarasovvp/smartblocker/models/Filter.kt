@@ -5,14 +5,11 @@ import android.os.Parcelable
 import androidx.room.*
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.FILTERS
-import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
@@ -28,11 +25,9 @@ data class Filter(
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
     var country: String = String.EMPTY,
-    @Embedded(prefix = "filter_")
-    var countryCode: CountryCode = CountryCode(),
     var filterWithoutCountryCode: String = String.EMPTY,
     var created: Long? = null
-) : Parcelable, NumberData() {
+) : Parcelable {
 
     @get:Exclude
     var filteredContacts: Int = 0
@@ -106,35 +101,8 @@ data class Filter(
     }
 
     @Exclude
-    fun filterActionText(context: Context): String {
-        return filterAction?.let { action ->
-            context.getString(if (isInvalidFilterAction()) {
-                when {
-                    isTypeContain() && filter.isEmpty() -> R.string.filter_action_create_number_empty
-                    isTypeFull() && filter.length < countryCode.numberFormat.digitsTrimmed().length -> R.string.filter_action_create_number_incomplete
-                    else -> action.descriptionText
-                }
-            } else {
-                action.descriptionText
-            })
-        }.orEmpty()
-    }
-
-    @Exclude
     fun conditionTypeName(): Int {
         return FilterCondition.getTitleByIndex(conditionType)
-    }
-
-    @Exclude
-    fun conditionTypeFullHint(): String {
-        return countryCode.numberFormat.replace(Regex("\\d"), MASK_CHAR.toString())
-    }
-
-    @Exclude
-    fun conditionTypeStartHint(): String {
-        return countryCode.numberFormat.filter { it.isDigit() }
-            .replace(Regex("\\d"), MASK_CHAR.toString())
-            .replaceFirst(MASK_CHAR.toString(), String.EMPTY)
     }
 
     @Exclude
@@ -148,54 +116,9 @@ data class Filter(
     }
 
     @Exclude
-    fun createFilter(): String {
-        return when {
-            isTypeContain() -> filter
-            else -> String.format("%s%s", countryCode.countryCode, filterToInput())
-        }
-    }
-
-    @Exclude
-    fun createFilterValue(context: Context): String {
-        return when {
-            isTypeContain() -> filter.ifEmpty { context.getString(R.string.creating_filter_no_data) }
-            else -> String.format("%s%s", countryCode.countryCode, filterToInput())
-        }
-    }
-
-    @Exclude
     fun filterCreatedDate(): String {
         return created?.let { SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(it) }
             .orEmpty()
-    }
-
-    @Exclude
-    fun extractFilterWithoutCountryCode(): String {
-        return when (filter) {
-            createFilter() -> filter.replace(countryCode.countryCode, String.EMPTY)
-            else -> filter
-        }
-    }
-
-    @Exclude
-    fun filterToInput(): String {
-        return when (conditionType) {
-            FilterCondition.FILTER_CONDITION_FULL.index -> if (filter.getPhoneNumber(countryCode.country)
-                    .isNull()
-            )
-                filter.digitsTrimmed()
-                    .replace(PLUS_CHAR.toString(), String.EMPTY) else filter.getPhoneNumber(
-                countryCode.country)?.nationalNumber.toString()
-            FilterCondition.FILTER_CONDITION_START.index -> filter.replaceFirst(countryCode.countryCode,
-                String.EMPTY)
-            else -> filter.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
-        }
-    }
-
-    @Exclude
-    fun isInValidPhoneNumber(): Boolean {
-        return (isTypeFull() && filter.isValidPhoneNumber(countryCode.country).not())
-                || (isTypeStart().not() && filter.isEmpty())
     }
 
     @Exclude

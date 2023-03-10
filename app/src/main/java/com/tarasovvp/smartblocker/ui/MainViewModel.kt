@@ -102,7 +102,7 @@ class MainViewModel @Inject constructor(
                         getApplication<Application>().getString(R.string.progress_update_filtered_calls)
                     progressMax = filteredCallList.size
                     progressPosition = index
-                    filteredCall.filter = filteredCall.number.let { filterRepository.queryFilter(it) }?.filter
+                    filteredCall.filter = filteredCall.number.let { filterRepository.queryFilter(it) }?.filter?.filter
                 })
             }
             filteredCallRepository.insertAllFilteredCalls(filteredCallList)

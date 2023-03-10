@@ -5,25 +5,25 @@ import com.tarasovvp.smartblocker.models.FilterWithCountryCode
 
 interface FilterRepository {
 
-    suspend fun getHashMapFromFilterList(filterList: List<Filter>): Map<String, List<Filter>>
+    suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>>
 
     suspend fun insertAllFilters(filterList: ArrayList<Filter>)
 
     suspend fun allFilters(): List<Filter>
 
-    suspend fun allFiltersByType(filterType: Int): List<Filter>
+    suspend fun allFilterWithCountryCode(): List<FilterWithCountryCode>
 
-    suspend fun getFilter(filter: Filter): Filter?
+    suspend fun allFiltersByType(filterType: Int): List<FilterWithCountryCode>
 
-    suspend fun getFilterWithCountryCode(filter: Filter): FilterWithCountryCode?
+    suspend fun getFilter(filter: FilterWithCountryCode): FilterWithCountryCode?
 
     fun updateFilter(filter: Filter, result: () -> Unit)
 
     fun insertFilter(filter: Filter, result: () -> Unit)
 
-    fun deleteFilterList(filterList: List<Filter>, result: () -> Unit)
+    fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit)
 
-    suspend fun queryFilterList(number: String): List<Filter>
+    suspend fun queryFilterList(number: String): List<FilterWithCountryCode>
 
-    suspend fun queryFilter(number: String): Filter?
+    suspend fun queryFilter(number: String): FilterWithCountryCode?
 }

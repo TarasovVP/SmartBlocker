@@ -8,7 +8,7 @@ interface RealDataBaseRepository {
 
     fun insertFilter(filter: Filter, result: () -> Unit)
 
-    fun deleteFilterList(filterList: List<Filter>, result: () -> Unit)
+    fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit)
 
     fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit)
 
