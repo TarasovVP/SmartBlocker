@@ -19,7 +19,6 @@
                 android:id="@+id/item_country_code_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:text="@{countryCode.countryNameEmoji}"
                 android:textColor="@color/text_color_grey"
                 android:maxLines="1"
                 android:ellipsize="end"

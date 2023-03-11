@@ -15,7 +15,6 @@ import com.tarasovvp.smartblocker.constants.Constants.IN_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -136,13 +135,13 @@ open class Call(
     }
 
     @Exclude
-    fun callFilterTitle(filter: Filter?): Int {
+    fun callFilterTitle(filter: Filter?, isBlockHidden: Boolean): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
-                number.isEmpty() && SharedPrefs.blockHidden -> R.string.details_number_hidden_on
-                number.isEmpty() && SharedPrefs.blockHidden.not() -> R.string.details_number_hidden_off
+                number.isEmpty() && isBlockHidden -> R.string.details_number_hidden_on
+                number.isEmpty() && isBlockHidden.not() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {

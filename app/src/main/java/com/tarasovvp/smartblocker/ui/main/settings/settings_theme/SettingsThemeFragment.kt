@@ -3,10 +3,13 @@ package com.tarasovvp.smartblocker.ui.main.settings.settings_theme
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsThemeBinding
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsThemeFragment :
@@ -14,12 +17,17 @@ class SettingsThemeFragment :
 
     override var layoutId = R.layout.fragment_settings_theme
 
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        when (SharedPrefs.appTheme) {
-            AppCompatDelegate.MODE_NIGHT_YES -> binding?.appThemeNight?.isChecked = true
-            AppCompatDelegate.MODE_NIGHT_NO -> binding?.appThemeDay?.isChecked = true
-            else -> binding?.appAuto?.isChecked = true
+        lifecycleScope.launch {
+            when (dataStorePrefs.getAppTheme().first()) {
+                AppCompatDelegate.MODE_NIGHT_YES -> binding?.appThemeNight?.isChecked = true
+                AppCompatDelegate.MODE_NIGHT_NO -> binding?.appThemeDay?.isChecked = true
+                else -> binding?.appAuto?.isChecked = true
+            }
         }
         binding?.appTheme?.setOnCheckedChangeListener { _, checkedId ->
             val mode = when (checkedId) {
@@ -33,7 +41,9 @@ class SettingsThemeFragment :
                     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 }
             }
-            SharedPrefs.appTheme = mode
+            lifecycleScope.launch {
+                dataStorePrefs.saveAppTheme(mode)
+            }
             AppCompatDelegate.setDefaultNightMode(mode)
         }
     }

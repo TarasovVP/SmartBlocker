@@ -2,15 +2,19 @@ package com.tarasovvp.smartblocker.ui.main.settings.settings_blocker
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
+import com.tarasovvp.smartblocker.extensions.isNotTrue
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,6 +24,9 @@ class SettingsBlockerFragment :
     override var layoutId = R.layout.fragment_settings_blocker
     override val viewModelClass = SettingsBlockerViewModel::class.java
 
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setSmartBlockerOnSettings()
@@ -28,11 +35,15 @@ class SettingsBlockerFragment :
 
     private fun setSmartBlockerOnSettings() {
         binding?.apply {
-            settingsBlockerSwitch.isChecked = SharedPrefs.smartBlockerTurnOff.not()
+            lifecycleScope.launch {
+                settingsBlockerSwitch.isChecked = dataStorePrefs.isSmartBlockerTurnOff().first().isNotTrue()
+            }
             settingsBlockerDescribe.text =
                 getString(if (settingsBlockerSwitch.isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
             settingsBlockerSwitch.setOnCheckedChangeListener { _, isChecked ->
-                SharedPrefs.smartBlockerTurnOff = isChecked.not()
+                lifecycleScope.launch {
+                    dataStorePrefs.saveIsSmartBlockerTurnOff(isChecked.not())
+                }
                 settingsBlockerDescribe.text =
                     getString(if (isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
                 (activity as MainActivity).apply {
@@ -48,7 +59,9 @@ class SettingsBlockerFragment :
 
     private fun setBlockHiddenSettings() {
         binding?.apply {
-            settingsBlockerHiddenSwitch.isChecked = SharedPrefs.blockHidden
+            lifecycleScope.launch {
+                settingsBlockerHiddenSwitch.isChecked = dataStorePrefs.isBlockHidden().first().isTrue()
+            }
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
             settingsBlockerHiddenSwitchContainer.setSafeOnClickListener {
@@ -63,7 +76,9 @@ class SettingsBlockerFragment :
                 binding?.settingsBlockerHiddenDescribe?.text =
                     getString(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
                 binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden
-                SharedPrefs.blockHidden = blockHidden
+                lifecycleScope.launch {
+                    dataStorePrefs.saveIsBlockHidden(blockHidden)
+                }
             }
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { error ->
                 binding?.settingsBlockerHiddenSwitch?.isChecked =

@@ -7,7 +7,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
+import com.tarasovvp.smartblocker.constants.Constants.COUNTRY
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.safeObserve
@@ -29,7 +29,7 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
         countryCodeSearchAdapter =
             CountryCodeSearchAdapter(arrayListOf()) { countryCode ->
                 findNavController().navigateUp()
-                setFragmentResult(COUNTRY_CODE, bundleOf(COUNTRY_CODE to countryCode))
+                setFragmentResult(COUNTRY, bundleOf(COUNTRY to countryCode))
             }
         binding?.countryCodeSearchList?.adapter = countryCodeSearchAdapter
         binding?.countryCodeEmpty?.emptyState = EmptyState.EMPTY_STATE_QUERY

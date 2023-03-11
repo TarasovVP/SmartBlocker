@@ -68,7 +68,7 @@ object Constants {
     const val PLUS_CHAR = '+'
     const val MASK_CHAR = '_'
     const val COUNTRY_CODE_START = "+%s"
-    const val COUNTRY_CODE = "countryCode"
+    const val COUNTRY = "countryCode"
     const val SPACE = " "
     const val NUMBER_DATA_TYPE = 0
     const val HEADER_TYPE = 1

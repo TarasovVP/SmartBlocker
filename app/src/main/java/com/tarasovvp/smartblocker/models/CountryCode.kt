@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODES
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.local.SharedPrefs
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -22,5 +21,5 @@ class CountryCode(
     fun countryEmoji(): String = String.format("%s %s", flagEmoji, country)
 
     @Exclude
-    fun countryNameEmoji(): String = String.format("%s %s", flagEmoji, Locale(SharedPrefs.appLang.orEmpty(), country).displayCountry)
+    fun countryNameEmoji(appLang: String): String = String.format("%s %s", flagEmoji, Locale(appLang, country).displayCountry)
 }

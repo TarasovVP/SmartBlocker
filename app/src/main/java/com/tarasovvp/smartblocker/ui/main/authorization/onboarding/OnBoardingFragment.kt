@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.ui.main.authorization.onboarding
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.R
@@ -12,15 +13,19 @@ import com.tarasovvp.smartblocker.enums.OnBoarding
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.local.DataStorePrefs
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 
     override var layoutId = R.layout.fragment_on_boarding
+
+    @Inject
+    lateinit var dataStorePrefs: DataStorePrefs
 
     private var currentPosition = 0
 
@@ -85,7 +90,9 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
     }
 
     private fun startLoginScreen() {
-        SharedPrefs.isOnBoardingSeen = true
+        lifecycleScope.launch {
+            dataStorePrefs.saveIsOnBoardingSeen(true)
+        }
         findNavController().navigate(R.id.startLoginScreen)
     }
 

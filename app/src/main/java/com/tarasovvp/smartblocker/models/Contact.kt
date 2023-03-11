@@ -11,7 +11,6 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.CONTACTS
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.local.SharedPrefs
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -42,7 +41,8 @@ data class Contact(
     }
 
     fun phoneNumber(): PhoneNumber? {
-        return SharedPrefs.countryCode?.let { trimmedPhone.getPhoneNumber(it.uppercase()) }
+        //TODO SharedPrefs.countryCode?.let { trimmedPhone.getPhoneNumber(it.uppercase()) }
+        return trimmedPhone.getPhoneNumber("UA")
     }
 
     fun phoneNumberValue(): String {
