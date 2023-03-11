@@ -13,5 +13,5 @@ open class CallWithFilter(
         parentColumn = "filter",
         entityColumn = "filter"
     )
-    var filter: Filter? = Filter()
+    var filterWithCountryCode: FilterWithCountryCode? = FilterWithCountryCode()
 ) : Parcelable, NumberData()

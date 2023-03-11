@@ -263,19 +263,24 @@ fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): A
 }
 
 fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString? {
-    if (this is CallWithFilter) {
-        return when {
-            filter?.filter.isNullOrEmpty() -> call?.number.highlightedSpanned(String.EMPTY, null, color)
-            else -> call?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+    when (this) {
+        is CallWithFilter -> {
+            return when {
+                filter?.filter.isNullOrEmpty() -> call?.number.highlightedSpanned(String.EMPTY, null, color)
+                else -> call?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+            }
         }
-    }
-    if (this is ContactWithFilter) {
-        return when {
-            filter?.filter.isNullOrEmpty() -> contact?.number.highlightedSpanned(String.EMPTY, null, color)
-            filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isNotTrue() -> contact?.number.highlightedSpanned(filter?.filter, filter?.country, color)
-            filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
-            else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+        is ContactWithFilter -> {
+            return when {
+                filter?.filter.isNullOrEmpty() -> contact?.number.highlightedSpanned(String.EMPTY, null, color)
+                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isNotTrue() -> contact?.number.highlightedSpanned(filter?.filter, filter?.country, color)
+                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
+                else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+            }
         }
+        is FilterWithCountryCode -> {
+            return filter?.filter.highlightedSpanned(String.EMPTY, null, color)
+        }
+        else -> return null
     }
-    return null
 }

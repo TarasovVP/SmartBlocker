@@ -7,7 +7,7 @@ import androidx.room.Relation
 import com.tarasovvp.smartblocker.extensions.*
 import kotlinx.parcelize.Parcelize
 
-@DatabaseView("SELECT * FROM contacts LEFT JOIN filters ON contacts.filter = filters.filter")
+@DatabaseView("SELECT * FROM contacts LEFT JOIN filters ON contacts.filter = filters.filter LEFT JOIN FilterWithCountryCode ON filters.filter = FilterWithCountryCode.filter")
 @Parcelize
 data class ContactWithFilter(
     @Embedded
@@ -16,5 +16,5 @@ data class ContactWithFilter(
         parentColumn = "filter",
         entityColumn = "filter"
     )
-    var filter: Filter? = Filter()
+    var filterWithCountryCode: FilterWithCountryCode? = FilterWithCountryCode()
 ) : Parcelable, NumberData()

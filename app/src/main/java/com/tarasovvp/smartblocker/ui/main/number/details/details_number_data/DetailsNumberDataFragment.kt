@@ -43,16 +43,16 @@ class DetailsNumberDataFragment :
                 val callWithFilter = args.numberData as? CallWithFilter
                 isHiddenCall = callWithFilter?.call?.callId.orZero() > 0
                         && callWithFilter?.call?.number?.isEmpty().isTrue()
-                ContactWithFilter(filter = callWithFilter?.filter,
+                ContactWithFilter(filterWithCountryCode = callWithFilter?.filterWithCountryCode,
                     contact = Contact(name = getString(R.string.details_number_from_call_log),
                     photoUrl = callWithFilter?.call?.photoUrl,
                     number = callWithFilter?.call?.number.orEmpty(),
-                filter = callWithFilter?.filter?.filter.orEmpty()))
+                filter = callWithFilter?.filterWithCountryCode?.filter?.filter.orEmpty()))
             } else {
                 args.numberData as ContactWithFilter
             }
             detailsNumberDataItemContact.root.isEnabled = false
-            context?.let { contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned(contactWithFilter?.filter, ContextCompat.getColor(it, R.color.sunset)) }
+            context?.let { contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned(contactWithFilter?.filterWithCountryCode?.filter, ContextCompat.getColor(it, R.color.sunset)) }
             executePendingBindings()
             if (isHiddenCall) setHiddenCallScreen()
         }

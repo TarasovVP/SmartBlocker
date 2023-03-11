@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <data>
         <import type="androidx.core.content.ContextCompat" />
@@ -46,7 +45,7 @@
             <ImageView
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                app:imageResource="@{contactWithFilter.filter.filterTypeIcon}"
+                app:imageResource="@{contactWithFilter.filterWithCountryCode.filter.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
 
@@ -101,8 +100,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_10"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? @string/details_number_contact_without_filter : contactWithFilter.filter.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
-                android:textColor="@{contactWithFilter.contact.filterNullOrEmpty ? @color/text_color_grey : contactWithFilter.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? @string/details_number_contact_without_filter : contactWithFilter.filterWithCountryCode.filter.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
+                android:textColor="@{contactWithFilter.contact.filterNullOrEmpty ? @color/text_color_grey : contactWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"/>
@@ -112,13 +111,13 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
                 android:textSize="@dimen/text_size_10"
-                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? `` : contactWithFilter.filter.filter}"
-                android:textColor="@{contactWithFilter.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? `` : contactWithFilter.filterWithCountryCode.filter.filter}"
+                android:textColor="@{contactWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toTopOf="@+id/item_contact_filter_title"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_filter_title"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:drawableStart="@{contactWithFilter.contact.filterNullOrEmpty ? null :  ContextCompat.getDrawable(context, contactWithFilter.filter.conditionTypeSmallIcon)}" />
+                android:drawableStart="@{contactWithFilter.contact.filterNullOrEmpty ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon)}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

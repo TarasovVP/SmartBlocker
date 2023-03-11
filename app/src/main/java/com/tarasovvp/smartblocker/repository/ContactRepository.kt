@@ -1,10 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.models.Contact
-import com.tarasovvp.smartblocker.models.ContactWithFilter
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.models.*
 
 interface ContactRepository {
     suspend fun getSystemContactList(context: Context, filterRepository: FilterRepository, result: (Int, Int) -> Unit): ArrayList<Contact>

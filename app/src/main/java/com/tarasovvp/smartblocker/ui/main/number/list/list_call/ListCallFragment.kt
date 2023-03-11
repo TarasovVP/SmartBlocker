@@ -181,9 +181,9 @@ class ListCallFragment :
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
                     || callWithFilter.call?.number?.lowercase(Locale.getDefault())
                 ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-                    && (callWithFilter.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(
+                    && (callWithFilter.filterWithCountryCode?.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(
                 BLOCKER).isTrue() ||
-                    callWithFilter.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
+                    callWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
                 PERMISSION).isTrue() ||
                     callWithFilter.call?.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(
                 BLOCKED_CALL.toInt()).isTrue() ||

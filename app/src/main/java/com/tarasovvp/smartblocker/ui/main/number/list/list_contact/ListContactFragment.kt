@@ -115,9 +115,9 @@ open class ListContactFragment :
             ).isTrue() || contactWithFilter.contact?.trimmedPhone?.lowercase(Locale.getDefault())?.contains(
                 searchQuery?.lowercase(Locale.getDefault()).orEmpty()
             )
-                .isTrue()) && (contactWithFilter.filter?.isBlocker()
+                .isTrue()) && (contactWithFilter.filterWithCountryCode?.filter?.isBlocker()
                 .isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
-                    contactWithFilter.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
+                    contactWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
                 PERMISSION).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()

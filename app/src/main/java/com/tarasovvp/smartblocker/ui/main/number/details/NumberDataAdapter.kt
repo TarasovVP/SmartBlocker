@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.ui.main.number.details
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +66,7 @@ class NumberDataAdapter(
             binding?.apply {
                 this.filterWithCountryCode = filterWithCountryCode?.apply {
                     highlightedSpanned =
-                        highlightedSpanned ?: filterWithCountryCode.highlightedSpanned(filterWithCountryCode.filter, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        highlightedSpanned ?: filterWithCountryCode.highlightedSpanned(filterWithCountryCode.filter, Color.GREEN)
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,

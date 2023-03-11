@@ -5,10 +5,7 @@ import com.tarasovvp.smartblocker.database.dao.ContactDao
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredNumberDataList
 import com.tarasovvp.smartblocker.extensions.systemContactList
-import com.tarasovvp.smartblocker.models.Contact
-import com.tarasovvp.smartblocker.models.ContactWithFilter
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.NumberData
+import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.repository.ContactRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import kotlinx.coroutines.Dispatchers
