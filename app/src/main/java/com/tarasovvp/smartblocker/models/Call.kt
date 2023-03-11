@@ -16,6 +16,7 @@ import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -34,18 +35,22 @@ open class Call(
     var conditionType: Int = DEFAULT_FILTER,
 ) : Parcelable {
 
+    @IgnoredOnParcel
     @Ignore
     @get:Exclude
     var isCheckedForDelete = false
 
+    @IgnoredOnParcel
     @Ignore
     @get:Exclude
     var isDeleteMode = false
 
+    @IgnoredOnParcel
     @Ignore
     @get:Exclude
     var isExtract = false
 
+    @IgnoredOnParcel
     @Ignore
     @get:Exclude
     var isFilteredCallDetails = false

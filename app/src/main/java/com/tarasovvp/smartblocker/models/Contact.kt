@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.constants.Constants.CONTACTS
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = CONTACTS)
@@ -24,6 +25,7 @@ data class Contact(
     var filter: String = String.EMPTY
 ) : Parcelable {
 
+    @IgnoredOnParcel
     var trimmedPhone = number.digitsTrimmed()
 
     fun isNameEmpty(): Boolean {
