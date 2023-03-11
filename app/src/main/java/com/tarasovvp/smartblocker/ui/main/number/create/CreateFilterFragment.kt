@@ -165,6 +165,7 @@ open class CreateFilterFragment :
                         this.filterAction = filterAction
                         created = Date().time
                         country = filter.countryCode?.country.orEmpty()
+                        countryCode = filter.countryCode?.countryCode.orEmpty()
                     })
                     else -> Unit
                 }

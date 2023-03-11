@@ -13,6 +13,7 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,22 +26,28 @@ data class Filter(
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
     var country: String = String.EMPTY,
+    var countryCode: String = String.EMPTY,
     var filterWithoutCountryCode: String = String.EMPTY,
     var created: Long? = null
 ) : Parcelable {
 
+    @IgnoredOnParcel
     @get:Exclude
     var filteredContacts: Int = 0
 
+    @IgnoredOnParcel
     @get:Exclude
     var filteredCalls: Int = 0
 
+    @IgnoredOnParcel
     @get:Exclude
     var isCheckedForDelete = false
 
+    @IgnoredOnParcel
     @get:Exclude
     var isDeleteMode = false
 
+    @IgnoredOnParcel
     @Ignore
     @get:Exclude
     var filterAction: FilterAction? = null
