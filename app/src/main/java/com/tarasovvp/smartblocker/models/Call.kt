@@ -162,18 +162,15 @@ open class Call(
     fun callFilterIcon(filter: Filter?): Int? {
         return when {
             isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
-            isCallFiltered() -> filter?.conditionTypeSmallIcon()
-            else -> null
+            else -> filter?.conditionTypeSmallIcon()
         }
     }
 
     @Exclude
     fun callFilterTint(filter: Filter?): Int {
         return when {
-            isCallFiltered() && isBlockedCall() -> R.color.sunset
-            isCallFiltered() && isPermittedCall() -> R.color.islamic_green
-            isExtract && filter?.isBlocker().isTrue() -> R.color.sunset
-            isExtract && filter?.isPermission().isTrue() -> R.color.islamic_green
+            (isCallFiltered() && isBlockedCall()) || (isExtract && filter?.isBlocker().isTrue()) -> R.color.sunset
+            (isCallFiltered() && isPermittedCall()) || (isExtract && filter?.isPermission().isTrue()) -> R.color.islamic_green
             else -> R.color.text_color_grey
         }
     }
