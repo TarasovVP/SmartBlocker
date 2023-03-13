@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
+import com.tarasovvp.smartblocker.ui.MainActivity
 
 object TestUtils {
 
@@ -19,14 +20,14 @@ object TestUtils {
         val startActivityIntent = Intent.makeMainActivity(
             ComponentName(
                 ApplicationProvider.getApplicationContext(),
-                HiltTestActivity::class.java
+                MainActivity::class.java
             )
         ).putExtra(
             "androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
             themeResId
         )
 
-        ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
+        ActivityScenario.launch<MainActivity>(startActivityIntent).onActivity { activity ->
             val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
                 Preconditions.checkNotNull(T::class.java.classLoader) as ClassLoader,
                 T::class.java.name

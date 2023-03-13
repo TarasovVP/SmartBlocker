@@ -21,7 +21,7 @@ object SharedPrefs {
         sharedPref = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
     }
 
-    var isOnBoardingSeen: Boolean
+    var isOnBoardingSeen: Boolean?
         get() = get(ON_BOARDING_SEEN, Boolean::class.java)
         set(isOnBoardingSeen) {
             put(ON_BOARDING_SEEN, isOnBoardingSeen)
@@ -33,19 +33,19 @@ object SharedPrefs {
             put(APP_LANG, appLang)
         }
 
-    var appTheme: Int
+    var appTheme: Int?
         get() = get(APP_THEME, Int::class.java)
         set(appTheme) {
             put(APP_THEME, appTheme)
         }
 
-    var smartBlockerTurnOff: Boolean
+    var smartBlockerTurnOff: Boolean?
         get() = get(BLOCK_TURN_OFF, Boolean::class.java)
         set(blockTurnOff) {
             put(BLOCK_TURN_OFF, blockTurnOff)
         }
 
-    var blockHidden: Boolean
+    var blockHidden: Boolean?
         get() = get(BLOCK_HIDDEN, Boolean::class.java)
         set(blockHidden) {
             put(BLOCK_HIDDEN, blockHidden)

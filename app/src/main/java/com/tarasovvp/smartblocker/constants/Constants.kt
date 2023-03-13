@@ -29,6 +29,7 @@ object Constants {
     const val FOREGROUND_ID = 99
 
     //Auth
+    const val ON_BOARDING_PAGE = "onBoardingPage"
     const val UNAUTHORIZED_ENTER = "unauthorizedEnter"
     const val EMAIL = "email"
     const val DELETE_USER = "deleteUser"

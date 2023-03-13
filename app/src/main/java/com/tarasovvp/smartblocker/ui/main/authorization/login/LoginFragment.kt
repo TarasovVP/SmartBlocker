@@ -68,7 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         setFragmentResultListener(UNAUTHORIZED_ENTER) { _, _ ->
             (activity as MainActivity).apply {
                 getAllData()
-                if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()
             }
             findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
         }
@@ -95,7 +95,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).apply {
                     getAllData()
-                    if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                    if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()
                 }
                 findNavController().navigate(R.id.listBlockerFragment)
             }

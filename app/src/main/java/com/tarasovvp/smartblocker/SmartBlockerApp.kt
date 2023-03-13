@@ -32,7 +32,7 @@ class SmartBlockerApp : Application() {
         FirebaseAnalytics.getInstance(this)
         createNotificationChannel()
         if (SharedPrefs.appLang.isNullOrEmpty()) SharedPrefs.appLang = Locale.getDefault().language
-        AppCompatDelegate.setDefaultNightMode(SharedPrefs.appTheme)
+        SharedPrefs.appTheme?.let { AppCompatDelegate.setDefaultNightMode(it) }
         registerForNetworkUpdates { isAvailable ->
             isNetworkAvailable = isAvailable
         }

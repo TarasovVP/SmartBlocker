@@ -7,10 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
-import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.extensions.parcelable
-import com.tarasovvp.smartblocker.extensions.safeSingleObserve
-import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
+import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.ui.MainActivity
@@ -33,7 +30,7 @@ class SettingsBlockerFragment :
 
     private fun setSmartBlockerOnSettings() {
         binding?.apply {
-            settingsBlockerSwitch.isChecked = SharedPrefs.smartBlockerTurnOff.not()
+            settingsBlockerSwitch.isChecked = SharedPrefs.smartBlockerTurnOff.isNotTrue()
             settingsBlockerDescribe.text =
                 getString(if (settingsBlockerSwitch.isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
             settingsBlockerSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -53,7 +50,7 @@ class SettingsBlockerFragment :
 
     private fun setBlockHiddenSettings() {
         binding?.apply {
-            settingsBlockerHiddenSwitch.isChecked = SharedPrefs.blockHidden
+            settingsBlockerHiddenSwitch.isChecked = SharedPrefs.blockHidden.isTrue()
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
             settingsBlockerHiddenSwitch.setSafeOnClickListener {

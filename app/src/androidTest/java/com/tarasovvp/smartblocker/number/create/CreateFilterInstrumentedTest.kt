@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.authorization.login
+package com.tarasovvp.smartblocker.number.create
 
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -17,7 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class LoginInstrumentedTest {
+class CreateFilterInstrumentedTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)

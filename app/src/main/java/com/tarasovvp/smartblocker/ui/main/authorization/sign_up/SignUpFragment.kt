@@ -52,7 +52,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as MainActivity).apply {
                     getAllData()
-                    if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                    if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()
                 }
                 findNavController().navigate(R.id.listBlockerFragment)
             }

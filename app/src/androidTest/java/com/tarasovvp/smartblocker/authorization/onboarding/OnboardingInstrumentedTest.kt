@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.settings.settings_language
+package com.tarasovvp.smartblocker.authorization.onboarding
 
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.ui.main.settings.settings_language.SettingsLanguageFragment
+import com.tarasovvp.smartblocker.ui.main.authorization.onboarding.OnBoardingFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
@@ -17,7 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SettingsLanguageInstrumentedTest {
+class OnboardingInstrumentedTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -29,9 +29,9 @@ class SettingsLanguageInstrumentedTest {
         InstrumentationRegistry.getInstrumentation().targetContext?.let {
             navController = TestNavHostController(it)
         }
-        launchFragmentInHiltContainer<SettingsLanguageFragment> {
+        launchFragmentInHiltContainer<OnBoardingFragment> {
             navController?.setGraph(R.navigation.navigation)
-            navController?.setCurrentDestination(R.id.settingsLanguageFragment)
+            navController?.setCurrentDestination(R.id.onBoardingFragment)
             Navigation.setViewNavController(requireView(), navController)
         }
     }
@@ -40,8 +40,8 @@ class SettingsLanguageInstrumentedTest {
      *
      */
     @Test
-    fun checkSettingsLanguagesRg() {
-        onView(withId(R.id.settings_languages_rg)).check(matches(isDisplayed()))
+    fun checkOnBoardingViewPager() {
+        onView(withId(R.id.on_boarding_view_pager)).check(matches(isDisplayed()))
 
     }
 
@@ -49,25 +49,9 @@ class SettingsLanguageInstrumentedTest {
      *
      */
     @Test
-    fun checkSettingsLanguagesRbRu() {
-        onView(withId(R.id.settings_languages_rb_ru)).check(matches(isDisplayed()))
+    fun checkOnBoardingButton() {
+        onView(withId(R.id.on_boarding_button)).check(matches(isDisplayed()))
 
-    }
-
-    /**
-     *
-     */
-    @Test
-    fun checkSettingsLanguagesRbUk() {
-        onView(withId(R.id.settings_languages_rb_uk)).check(matches(isDisplayed()))
-    }
-
-    /**
-     *
-     */
-    @Test
-    fun checkSettingsLanguagesRbEn() {
-        onView(withId(R.id.settings_languages_rb_en)).check(matches(isDisplayed()))
     }
 
     @After

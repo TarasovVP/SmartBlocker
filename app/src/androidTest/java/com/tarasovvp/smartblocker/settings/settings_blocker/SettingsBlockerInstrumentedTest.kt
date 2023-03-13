@@ -1,7 +1,5 @@
 package com.tarasovvp.smartblocker.settings.settings_blocker
 
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
@@ -9,30 +7,32 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.ui.main.settings.settings_blocker.SettingsBlockerFragment
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(androidx.test.ext.junit.runners.AndroidJUnit4::class)
-open class SettingsBlockerInstrumentedTest {
+@HiltAndroidTest
+class SettingsBlockerInstrumentedTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     private var navController: TestNavHostController? = null
-    private var scenario: FragmentScenario<SettingsBlockerFragment>? = null
 
     @Before
     fun setUp() {
         InstrumentationRegistry.getInstrumentation().targetContext?.let {
             navController = TestNavHostController(it)
         }
-        scenario =
-            launchFragmentInContainer(
-                themeResId = R.style.Theme_SmartBlocker)
-        scenario?.onFragment { fragment ->
+        launchFragmentInHiltContainer<SettingsBlockerFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.settingsBlockerFragment)
-            Navigation.setViewNavController(fragment.requireView(), navController)
+            Navigation.setViewNavController(requireView(), navController)
         }
     }
 
@@ -145,6 +145,5 @@ open class SettingsBlockerInstrumentedTest {
     @After
     fun tearDown() {
         navController = null
-        scenario = null
     }
 }

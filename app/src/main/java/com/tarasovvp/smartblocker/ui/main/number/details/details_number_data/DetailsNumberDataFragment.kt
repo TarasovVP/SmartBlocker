@@ -66,7 +66,7 @@ class DetailsNumberDataFragment :
             detailsNumberDataTabs.isVisible = false
             detailsNumberDataViewPager.isVisible = false
             detailsNumberDataItemContact.itemContactNumber.setText(R.string.details_number_hidden)
-            detailsNumberDataItemContact.itemContactFilterTitle.setText(if (SharedPrefs.blockHidden) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
+            detailsNumberDataItemContact.itemContactFilterTitle.setText(if (SharedPrefs.blockHidden.isTrue()) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
             with(detailsNumberDataCreateBlocker) {
                 setText(R.string.settings)
                 context?.let {

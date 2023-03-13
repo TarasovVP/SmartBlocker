@@ -44,7 +44,7 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
-            val filter = if (number.isEmpty() && SharedPrefs.blockHidden) {
+            val filter = if (number.isEmpty() && SharedPrefs.blockHidden.isTrue()) {
                 Filter(filterType = BLOCKER)
             } else {
                 filterRepository.queryFilter(number)?.filter

@@ -141,8 +141,8 @@ open class Call(
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
-                number.isEmpty() && SharedPrefs.blockHidden -> R.string.details_number_hidden_on
-                number.isEmpty() && SharedPrefs.blockHidden.not() -> R.string.details_number_hidden_off
+                number.isEmpty() && SharedPrefs.blockHidden.isTrue() -> R.string.details_number_hidden_on
+                number.isEmpty() && SharedPrefs.blockHidden.isNotTrue() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {

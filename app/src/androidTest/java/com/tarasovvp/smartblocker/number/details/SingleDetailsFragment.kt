@@ -6,7 +6,6 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
-import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.models.Filter
 import com.tarasovvp.smartblocker.models.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.models.NumberData

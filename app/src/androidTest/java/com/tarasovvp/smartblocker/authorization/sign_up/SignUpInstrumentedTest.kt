@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.settings.settings_language
+package com.tarasovvp.smartblocker.authorization.sign_up
 
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.ui.main.settings.settings_language.SettingsLanguageFragment
+import com.tarasovvp.smartblocker.ui.main.authorization.sign_up.SignUpFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
@@ -17,7 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SettingsLanguageInstrumentedTest {
+class SignUpInstrumentedTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -29,9 +29,9 @@ class SettingsLanguageInstrumentedTest {
         InstrumentationRegistry.getInstrumentation().targetContext?.let {
             navController = TestNavHostController(it)
         }
-        launchFragmentInHiltContainer<SettingsLanguageFragment> {
+        launchFragmentInHiltContainer<SignUpFragment> {
             navController?.setGraph(R.navigation.navigation)
-            navController?.setCurrentDestination(R.id.settingsLanguageFragment)
+            navController?.setCurrentDestination(R.id.signUpFragment)
             Navigation.setViewNavController(requireView(), navController)
         }
     }
@@ -40,8 +40,8 @@ class SettingsLanguageInstrumentedTest {
      *
      */
     @Test
-    fun checkSettingsLanguagesRg() {
-        onView(withId(R.id.settings_languages_rg)).check(matches(isDisplayed()))
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed()))
 
     }
 
@@ -49,8 +49,8 @@ class SettingsLanguageInstrumentedTest {
      *
      */
     @Test
-    fun checkSettingsLanguagesRbRu() {
-        onView(withId(R.id.settings_languages_rb_ru)).check(matches(isDisplayed()))
+    fun checkSignUpTitle() {
+        onView(withId(R.id.sign_up_title)).check(matches(isDisplayed()))
 
     }
 
@@ -58,16 +58,35 @@ class SettingsLanguageInstrumentedTest {
      *
      */
     @Test
-    fun checkSettingsLanguagesRbUk() {
-        onView(withId(R.id.settings_languages_rb_uk)).check(matches(isDisplayed()))
+    fun checkSignUpEmail() {
+        onView(withId(R.id.sign_up_email_container)).check(matches(isDisplayed()))
+        onView(withId(R.id.sign_up_email)).check(matches(isDisplayed()))
     }
 
     /**
      *
      */
     @Test
-    fun checkSettingsLanguagesRbEn() {
-        onView(withId(R.id.settings_languages_rb_en)).check(matches(isDisplayed()))
+    fun checkSignUpPassword() {
+        onView(withId(R.id.sign_up_password_container)).check(matches(isDisplayed()))
+        onView(withId(R.id.sign_up_password)).check(matches(isDisplayed()))
+    }
+
+    /**
+     *
+     */
+    @Test
+    fun checkSignUpEntranceTitle() {
+        onView(withId(R.id.sign_up_entrance_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.sign_up_entrance)).check(matches(isDisplayed()))
+    }
+
+    /**
+     *
+     */
+    @Test
+    fun checkSignUpContinue() {
+        onView(withId(R.id.sign_up_continue)).check(matches(isDisplayed()))
     }
 
     @After

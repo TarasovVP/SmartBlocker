@@ -32,7 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tarasovvp.smartblocker.HiltTestActivity" />
 
         <service android:name="com.tarasovvp.smartblocker.utils.ForegroundCallService"/>
 

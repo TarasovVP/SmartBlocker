@@ -142,14 +142,14 @@ class MainActivity : AppCompatActivity() {
         setBottomNavigationView()
         setOnDestinationChangedListener()
         observeLiveData()
-        if (SharedPrefs.isOnBoardingSeen
+        if (SharedPrefs.isOnBoardingSeen.isTrue()
             && SmartBlockerApp.instance?.isLoggedInUser().isTrue()
             && savedInstanceState.isNull()
         ) {
             if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
                 navController?.navigate(R.id.startUnavailableNetworkDialog)
             } else {
-                if (SharedPrefs.smartBlockerTurnOff.not() && isBlockerLaunched().not()) startBlocker()
+                if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()
                 getAllData()
             }
         }
@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity() {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
                 when {
-                    SharedPrefs.isOnBoardingSeen.not() -> R.id.onBoardingFragment
+                    SharedPrefs.isOnBoardingSeen.isNotTrue() -> R.id.onBoardingFragment
                     SmartBlockerApp.instance?.isLoggedInUser().isTrue() -> {
                         R.id.listBlockerFragment
                     }
