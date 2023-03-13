@@ -57,7 +57,7 @@ object Constants {
     const val ASC = "ASC"
 
     //Filter
-    const val DEFAULT_FILTER = 0
+    const val DEFAULT_FILTER = -1
     const val BLOCKER = 1
     const val PERMISSION = 2
     const val FILTER_CONDITION_LIST = "filterConditionList"
@@ -68,6 +68,7 @@ object Constants {
     const val PLUS_CHAR = '+'
     const val MASK_CHAR = '_'
     const val COUNTRY_CODE_START = "+%s"
+    const val COUNTRY = "country"
     const val COUNTRY_CODE = "countryCode"
     const val SPACE = " "
     const val NUMBER_DATA_TYPE = 0

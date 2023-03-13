@@ -54,7 +54,6 @@
                     android:drawablePadding="@dimen/padding_8"
                     android:gravity="center_vertical"
                     android:textColor="@color/text_color_grey"
-                    android:enabled="false"
                     android:visibility="@{filterWithCountryCode.filter.typeContain ? View.GONE : View.VISIBLE}"
                     app:drawableEndCompat="@drawable/ic_drop_down"
                     app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"

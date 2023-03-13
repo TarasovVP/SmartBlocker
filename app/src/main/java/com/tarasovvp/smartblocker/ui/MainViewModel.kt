@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.OUT_GOING_CALL
+import com.tarasovvp.smartblocker.extensions.getUserCountry
 import com.tarasovvp.smartblocker.extensions.isValidPhoneNumber
+import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.models.CurrentUser
 import com.tarasovvp.smartblocker.models.MainProgress
 import com.tarasovvp.smartblocker.repository.*
@@ -69,6 +72,9 @@ class MainViewModel @Inject constructor(
                     progressMax = size
                     progressPosition = position
                 })
+            }
+            if (SharedPrefs.countryCode.isNullOrEmpty()) {
+                SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == SharedPrefs.country?.uppercase() }?.countryCode
             }
             countryCodeRepository.insertAllCountryCodes(countryCodeList)
             // init contacts data

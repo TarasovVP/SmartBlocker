@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
     private var exceptionReceiver: ExceptionReceiver? = null
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
-    private var callReceiver: CallReceiver? = null
     private var isDialog: Boolean = false
     private var adRequest: AdRequest? = null
     private var interstitialAd: InterstitialAd? = null
@@ -82,7 +81,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        SharedPrefs.countryCode = SharedPrefs.countryCode.takeIf { it.isNullOrEmpty().not() } ?: getUserCountry()
         callHandleReceiver = CallHandleReceiver {
             mainViewModel.getAllData()
         }
@@ -105,9 +103,6 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         unregisterReceiver(callHandleReceiver)
         unregisterReceiver(exceptionReceiver)
-        callReceiver?.apply {
-            unregisterReceiver(this)
-        }
     }
 
     override fun onPause() {
@@ -141,6 +136,7 @@ class MainActivity : AppCompatActivity() {
             override fun onAnimationRepeat(p0: Animator) {
             }
         })
+        SharedPrefs.country = SharedPrefs.country.takeIf { it.isNullOrEmpty().not() } ?: getUserCountry()
         setNavController()
         setToolBar()
         setBottomNavigationView()
@@ -244,10 +240,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startBlocker() {
-        callReceiver?.apply {
-            unregisterReceiver(this)
-            callReceiver = null
-        }
         callIntent = Intent(this, ForegroundCallService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(callIntent)
@@ -257,12 +249,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun stopBlocker() {
-        if (callReceiver.isNotNull()) unregisterReceiver(callReceiver)
         if (callIntent.isNotNull()) stopService(callIntent)
     }
 
     fun isBlockerLaunched(): Boolean {
-        return callReceiver.isNotNull() || callIntent.isNotNull()
+        return callIntent.isNotNull()
     }
 
     private fun observeLiveData() {

@@ -26,22 +26,11 @@ class CreateFilterViewModel @Inject constructor(
     private val logCallRepository: LogCallRepository
 ) : BaseViewModel(application) {
 
-    val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
     val countryCodeLiveData = MutableLiveData<CountryCode>()
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
     val existingFilterLiveData = MutableLiveData<FilterWithCountryCode>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
-
-    fun getCountryCodeList() {
-        Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeList")
-        launch {
-            val countryCodeList = countryCodeRepository.getAllCountryCodes()
-            countryCodeList.apply {
-                countryCodeListLiveData.postValue(this)
-            }
-        }
-    }
 
     fun getCountryCodeWithCountry(country: String?) {
         Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeWithCountry country $country")

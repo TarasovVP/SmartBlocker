@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.constants.Constants.APP_THEME
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.constants.Constants.BLOCK_TURN_OFF
+import com.tarasovvp.smartblocker.constants.Constants.COUNTRY
 import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.constants.Constants.ON_BOARDING_SEEN
 import com.tarasovvp.smartblocker.extensions.EMPTY
@@ -48,6 +49,12 @@ object SharedPrefs {
         get() = get(BLOCK_HIDDEN, Boolean::class.java)
         set(blockHidden) {
             put(BLOCK_HIDDEN, blockHidden)
+        }
+
+    var country: String?
+        get() = get(COUNTRY, String::class.java)
+        set(countryCode) {
+            put(COUNTRY, countryCode)
         }
 
     var countryCode: String?

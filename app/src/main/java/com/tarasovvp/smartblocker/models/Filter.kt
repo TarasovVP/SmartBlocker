@@ -25,6 +25,7 @@ data class Filter(
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
     var name: String? = String.EMPTY,
+    var countryCode: String = String.EMPTY,
     var country: String = String.EMPTY,
     var filterWithoutCountryCode: String = String.EMPTY,
     var created: Long? = null

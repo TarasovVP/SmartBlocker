@@ -2,16 +2,20 @@ package com.tarasovvp.smartblocker.ui.main.settings.settings_blocker
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.extensions.isTrue
+import com.tarasovvp.smartblocker.extensions.parcelable
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.local.SharedPrefs
+import com.tarasovvp.smartblocker.models.CountryCode
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsBlockerFragment :
@@ -24,6 +28,7 @@ class SettingsBlockerFragment :
         super.onViewCreated(view, savedInstanceState)
         setSmartBlockerOnSettings()
         setBlockHiddenSettings()
+        viewModel.getCountryCodeWithCountry(SharedPrefs.country)
     }
 
     private fun setSmartBlockerOnSettings() {
@@ -51,8 +56,25 @@ class SettingsBlockerFragment :
             settingsBlockerHiddenSwitch.isChecked = SharedPrefs.blockHidden
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
-            settingsBlockerHiddenSwitchContainer.setSafeOnClickListener {
-                    viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked.not())
+            settingsBlockerHiddenSwitch.setSafeOnClickListener {
+                viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked.not())
+            }
+        }
+    }
+
+    private fun setCountryCodeSettings(countryCode: CountryCode) {
+        setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
+            bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let {
+                SharedPrefs.countryCode = it.countryCode
+                SharedPrefs.country = it.country
+                setCountryCodeSettings(it)
+                (activity as? MainActivity)?.getAllData()
+            }
+        }
+        binding?.apply {
+            settingsBlockerCountry.text = countryCode.countryEmoji()
+            settingsBlockerCountry.setSafeOnClickListener {
+                findNavController().navigate(SettingsBlockerFragmentDirections.startCountryCodeSearchDialog())
             }
         }
     }
@@ -69,6 +91,9 @@ class SettingsBlockerFragment :
                 binding?.settingsBlockerHiddenSwitch?.isChecked =
                     binding?.settingsBlockerHiddenSwitch?.isChecked.isTrue().not()
                 showMessage(error, true)
+            }
+            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
+                setCountryCodeSettings(countryCode)
             }
         }
     }

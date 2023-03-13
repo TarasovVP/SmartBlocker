@@ -162,7 +162,8 @@ open class Call(
     fun callFilterIcon(filter: Filter?): Int? {
         return when {
             isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
-            else -> filter?.conditionTypeSmallIcon()
+            isCallFiltered() -> filter?.conditionTypeSmallIcon()
+            else -> null
         }
     }
 

@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
@@ -29,7 +28,6 @@ import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 open class CreateFilterFragment :
@@ -39,10 +37,6 @@ open class CreateFilterFragment :
     override val viewModelClass = CreateFilterViewModel::class.java
 
     private val args: CreateFilterFragmentArgs by navArgs()
-
-    override val viewModel by lazy(LazyThreadSafetyMode.NONE) {
-        ViewModelProvider(activity ?: this)[viewModelClass]
-    }
 
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataList: ArrayList<NumberData> = ArrayList()
@@ -98,9 +92,6 @@ open class CreateFilterFragment :
         (activity as MainActivity).toolbar?.title = getString(if (binding?.filterWithCountryCode?.filter?.isBlocker()
                 .isTrue()
         ) R.string.creating_blocker else R.string.creating_permission)
-        if (binding?.filterWithCountryCode?.filter?.isTypeContain().isNotTrue()) {
-            viewModel.getCountryCodeList()
-        }
         setFilterTextChangeListener()
         binding?.createFilterEmptyList?.emptyState = EmptyState.EMPTY_STATE_ADD_FILTER
         binding?.executePendingBindings()
@@ -129,7 +120,7 @@ open class CreateFilterFragment :
         viewModel.getNumberDataList()
         if (binding?.filterWithCountryCode?.filter?.isTypeContain().isNotTrue()) {
             if (binding?.filterWithCountryCode?.countryCode?.countryCode.isNullOrEmpty()) {
-                viewModel.getCountryCodeWithCountry(SharedPrefs.countryCode)
+                viewModel.getCountryCodeWithCountry(SharedPrefs.country)
             } else {
                 binding?.filterWithCountryCode?.countryCode?.let { setCountryCode(it) }
             }
@@ -165,6 +156,7 @@ open class CreateFilterFragment :
                         this.filterAction = filterAction
                         created = Date().time
                         country = filter.countryCode?.country.orEmpty()
+                        countryCode = filter.countryCode?.countryCode.orEmpty()
                     })
                     else -> Unit
                 }
@@ -226,10 +218,6 @@ open class CreateFilterFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            viewModel.countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
-                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData countryCodeListLiveData")
-                binding?.createFilterCountryCodeSpinner?.isEnabled = countryCodeList.isNotEmpty()
-            }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
                 Log.e("createFilterTAG", "CreateFilterFragment observeLiveData countryCodeLiveData")
                 setCountryCode(countryCode)

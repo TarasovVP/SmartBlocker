@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.smartblocker.constants.Constants.LOG_CALLS
 import com.tarasovvp.smartblocker.extensions.getPhoneNumber
 import com.tarasovvp.smartblocker.extensions.isValidPhoneNumber
@@ -18,7 +17,7 @@ data class LogCall(
 ) : Call(), Parcelable {
 
     fun phoneNumberValue(): String {
-        val phoneNumber = SharedPrefs.countryCode?.let { number.getPhoneNumber(it.uppercase()) }
+        val phoneNumber = SharedPrefs.country?.let { number.getPhoneNumber(it.uppercase()) }
         return if (phoneNumber.isValidPhoneNumber()) String.format("+%s%s", phoneNumber?.countryCode, phoneNumber?.nationalNumber) else number
     }
 }

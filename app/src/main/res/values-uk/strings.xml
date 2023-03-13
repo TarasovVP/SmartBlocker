@@ -178,6 +178,8 @@
     <string name="settings_block_hidden_title">Блокировать скрытые номера</string>
     <string name="settings_block_hidden_on">Smart Blocker будет блокировать скрытые номера</string>
     <string name="settings_block_hidden_off">Smart Blocker не будет блокировать скрытые номера</string>
+    <string name="settings_block_country_title">Страна по умолчанию</string>
+    <string name="settings_block_country_description">Эта информация нужна что бы Smart Blocker подставил код страны в неполных номерах. Чтоб изменить нажмите на флаг страны.</string>
     <!--Settings account-->
     <string name="settings_account_log_out_title">Выйти</string>
     <string name="settings_account_change_password_title">Сменить пароль</string>

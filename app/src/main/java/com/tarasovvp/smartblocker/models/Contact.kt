@@ -42,7 +42,7 @@ data class Contact(
     }
 
     fun phoneNumber(): PhoneNumber? {
-        return SharedPrefs.countryCode?.let { trimmedPhone.getPhoneNumber(it.uppercase()) }
+        return SharedPrefs.country?.let { trimmedPhone.getPhoneNumber(it.uppercase()) }
     }
 
     fun phoneNumberValue(): String {
