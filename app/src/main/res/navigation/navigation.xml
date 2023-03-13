@@ -89,7 +89,7 @@
             app:nullable="true" />
         <action
             android:id="@+id/startDetailsNumberDataFragment"
-            app:destination="@id/DetailsNumberDataFragment" />
+            app:destination="@id/detailsNumberDataFragment" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
@@ -130,7 +130,7 @@
             app:destination="@id/detailsFilterFragment" />
         <action
             android:id="@+id/startDetailsNumberDataFragment"
-            app:destination="@id/DetailsNumberDataFragment" />
+            app:destination="@id/detailsNumberDataFragment" />
         <action
             android:id="@+id/startListBlockerFragment"
             app:destination="@id/listBlockerFragment"
@@ -152,7 +152,7 @@
         android:label="@string/list_contact">
         <action
             android:id="@+id/startDetailsNumberDataFragment"
-            app:destination="@id/DetailsNumberDataFragment" />
+            app:destination="@id/detailsNumberDataFragment" />
         <action
             android:id="@+id/startNumberDataFilteringDialog"
             app:destination="@id/numberDataFilteringDialog" />
@@ -167,7 +167,7 @@
         android:label="@string/list_call">
         <action
             android:id="@+id/startDetailsNumberDataFragment"
-            app:destination="@id/DetailsNumberDataFragment" />
+            app:destination="@id/detailsNumberDataFragment" />
         <action
             android:id="@+id/startNumberDataFilteringDialog"
             app:destination="@id/numberDataFilteringDialog" />
@@ -180,7 +180,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/DetailsNumberDataFragment"
+        android:id="@+id/detailsNumberDataFragment"
         android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragment"
         android:label="@string/details_number">
         <argument
