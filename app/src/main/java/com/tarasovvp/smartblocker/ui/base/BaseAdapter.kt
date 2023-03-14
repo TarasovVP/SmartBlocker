@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.constants.Constants.NUMBER_DATA_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.models.HeaderDataItem
 import com.tarasovvp.smartblocker.models.NumberData
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 abstract class BaseAdapter<D : NumberData> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

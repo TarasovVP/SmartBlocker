@@ -37,8 +37,8 @@ open class BaseListFilterFragment :
     override fun createAdapter(): BaseAdapter<FilterWithCountryCode>? {
         return context?.let {
             FilterAdapter(object : FilterClickListener {
-                override fun onFilterClick(filter: FilterWithCountryCode) {
-                    startNextScreen(filter)
+                override fun onFilterClick(filterWithCountryCode: FilterWithCountryCode) {
+                    startNextScreen(filterWithCountryCode)
                 }
 
                 override fun onFilterLongClick() {
