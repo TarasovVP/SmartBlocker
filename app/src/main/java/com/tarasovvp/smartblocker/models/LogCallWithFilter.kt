@@ -1,6 +1,9 @@
 package com.tarasovvp.smartblocker.models
 
+import android.os.Parcelable
 import androidx.room.DatabaseView
+import kotlinx.parcelize.Parcelize
 
 @DatabaseView("SELECT * FROM log_calls LEFT JOIN filters ON log_calls.filter = filters.filter LEFT JOIN FilterWithCountryCode ON filters.filter = FilterWithCountryCode.filter")
-class LogCallWithFilter: CallWithFilter()
+@Parcelize
+class LogCallWithFilter : Parcelable, CallWithFilter()
