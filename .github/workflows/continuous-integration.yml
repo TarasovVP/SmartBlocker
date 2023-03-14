@@ -24,8 +24,8 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleDebug assembleAndroidTest
 
-    - name: Run instrumental tests
-      run: ./gradlew connectedAndroidTest
-      
     - name: Run Lint
       run: ./gradlew lintDebug
+
+    - name: Run instrumental tests
+      run: ./gradlew connectedAndroidTest
