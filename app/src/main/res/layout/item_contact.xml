@@ -1,65 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <data>
+        <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
+
         <variable
-            name="contact"
-            type="com.tarasovvp.blacklister.model.Contact" />
+            name="contactWithFilter"
+            type="com.tarasovvp.smartblocker.models.ContactWithFilter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_5"
-        android:background="@drawable/item_bg"
-        android:padding="@dimen/padding_16">
+        android:layout_marginHorizontal="@dimen/margin_2"
+        android:layout_marginTop="@dimen/margin_8"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/padding_8"
+        app:cardElevation="@dimen/padding_1">
 
-        <ImageView
-            android:id="@+id/item_contact_avatar"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            app:circleImageUrl="@{contact.photoUrl}"
-            app:nameInitial="@{contact.nameInitial}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_contact_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/item_contact_name"
-            android:layout_width="@dimen/size_0"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            android:ellipsize="end"
-            android:gravity="top"
-            android:maxLines="1"
-            android:text="@{contact.name}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingHorizontal="@dimen/padding_8"
+            android:paddingVertical="@dimen/padding_16">
 
-        <TextView
-            android:id="@+id/item_contact_number"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            android:layout_marginTop="@dimen/margin_8"
-            android:text="@{contact.phoneListSize()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_contact_type"
-            app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/item_contact_name" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/item_contact_avatar"
+                android:layout_width="@dimen/margin_50"
+                android:layout_height="@dimen/margin_50"
+                android:background="@color/avatar_bg"
+                android:scaleType="center"
+                app:imageUrl="@{contactWithFilter.contact.photoUrl}"
+                app:placeHolder="@{contactWithFilter.contact.placeHolder(context)}"
+                app:shapeAppearanceOverlay="@style/RoundedImageView"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_contact_number" />
 
-        <ImageView
-            android:id="@+id/item_contact_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:imageResource="@{contact.contactTypeIcon()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                app:imageResource="@{contactWithFilter.filterWithCountryCode.filter.filterTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/item_contact_number"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:text="@{contactWithFilter.highlightedSpanned}"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_contact_avatar"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_validity"
+                app:layout_constraintBottom_toTopOf="@+id/item_contact_name" />
+
+            <TextView
+                android:id="@+id/item_contact_validity"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_0"
+                android:text="@{contactWithFilter.contact.phoneNumberValidity() == null ? `` : context.getString(contactWithFilter.contact.phoneNumberValidity())}"
+                android:textColor="@color/text_color_grey"
+                android:textSize="@dimen/text_size_10"
+                app:layout_constraintTop_toTopOf="@+id/item_contact_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_number" />
+
+            <TextView
+                android:id="@+id/item_contact_name"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textColor="@color/text_color_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/item_contact_number"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_number"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
+                app:mainText="@{ contactWithFilter.contact.nameEmpty ? @string/details_number_not_from_contacts : contactWithFilter.contact.name}"
+                app:searchText="@{contactWithFilter.searchText}" />
+
+            <View
+                android:id="@+id/item_contact_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_1"
+                android:background="@color/light_steel_blue"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_name" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_contact_filter_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_10"
+                android:layout_marginTop="@dimen/margin_5"
+                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? @string/details_number_contact_without_filter : contactWithFilter.filterWithCountryCode.filter.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
+                android:textColor="@{contactWithFilter.contact.filterNullOrEmpty ? @color/text_color_grey : contactWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
+                app:layout_constraintTop_toBottomOf="@+id/item_contact_divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_contact_filter_value"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                android:textSize="@dimen/text_size_10"
+                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? `` : contactWithFilter.filterWithCountryCode.filter.filter}"
+                android:textColor="@{contactWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
+                app:layout_constraintTop_toTopOf="@+id/item_contact_filter_title"
+                app:layout_constraintBottom_toBottomOf="@+id/item_contact_filter_title"
+                app:layout_constraintStart_toEndOf="@+id/item_contact_filter_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:drawableStart="@{contactWithFilter.contact.filterNullOrEmpty ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon)}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

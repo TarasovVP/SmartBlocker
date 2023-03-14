@@ -2,13 +2,23 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="isInactive"
+            type="Boolean" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:padding="@dimen/padding_16">
+        android:paddingHorizontal="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_16">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -16,46 +26,78 @@
                 android:id="@+id/sign_up_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_35"
+                android:layout_marginTop="@dimen/margin_56"
+                android:textSize="@dimen/text_size_18"
                 android:gravity="center"
-                android:text="@string/sign_up_with_email"
+                android:textStyle="bold"
+                android:text="@string/authorization_sign_up"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/sign_up_email"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_up_email_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                app:layout_constraintTop_toBottomOf="@id/sign_up_title" />
+                android:layout_marginTop="@dimen/margin_16"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_title" >
 
-            <EditText
-                android:id="@+id/sign_up_password"
+                <EditText
+                    android:id="@+id/sign_up_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/authorization_email"
+                    android:autofillHints="emailAddress"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_up_password_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@id/sign_up_email" />
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_email_container"
+                app:passwordToggleEnabled="true">
 
-            <EditText
-                android:id="@+id/sign_up_repeat_password"
-                android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/sign_up_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/authorization_password"
+                    android:autofillHints="password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/sign_up_entrance_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_15"
-                android:hint="@string/repeat_password"
-                android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@id/sign_up_password" />
+                android:paddingVertical="@dimen/padding_8"
+                android:text="@string/authorization_entrance_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_up_password_container" />
 
-            <Button
+            <TextView
+                android:id="@+id/sign_up_entrance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/authorization_entrance"
+                android:paddingVertical="@dimen/padding_8"
+                android:textColor="@color/button_bg"
+                app:layout_constraintStart_toEndOf="@+id/sign_up_entrance_title"
+                app:layout_constraintTop_toBottomOf="@id/sign_up_password_container" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_up_continue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sign_up"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sign_up_repeat_password"
-                app:layout_constraintVertical_bias="1" />
+                style="@style/StrokeButtonStyle"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/authorization_signing_up"
+                android:alpha="@{isInactive ? 0.5f : 1f}"
+                android:enabled="@{!isInactive}"
+                app:strokeColor="@color/selector_button_enable_bg"
+                android:textColor="@{isInactive ? @color/inactive_bg : @color/white}"
+                android:backgroundTint="@{isInactive ? @color/transparent : @color/button_bg}"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_entrance_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

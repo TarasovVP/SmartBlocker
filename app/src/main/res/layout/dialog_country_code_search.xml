@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/padding_8">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/padding_16">
+
+            <TextView
+                android:id="@+id/country_code_search_title"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:text="@string/creating_country_code_title"
+                android:paddingHorizontal="@dimen/margin_20"
+                android:textSize="@dimen/text_size_16"
+                app:layout_constraintEnd_toStartOf="@+id/country_code_search_cancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/country_code_search_cancel"
+                app:layout_constraintBottom_toBottomOf="@+id/country_code_search_cancel"/>
+
+            <Button
+                android:id="@+id/country_code_search_cancel"
+                style="@style/Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_8"
+                android:paddingTop="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_8"
+                app:icon="@drawable/ic_close_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/country_code_search_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:background="@drawable/bg_rounded_top"
+                app:endIconDrawable="@drawable/ic_search"
+                app:endIconMode="custom"
+                app:endIconTint="@color/text_color_grey"
+                app:layout_constraintTop_toBottomOf="@+id/country_code_search_cancel">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/country_code_search_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="@dimen/text_size_16"
+                    android:hint="@string/creating_country_code_hint"
+                    android:importantForAutofill="no"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:id="@+id/country_code_search_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_1"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:background="@color/light_steel_blue"
+                app:layout_constraintTop_toBottomOf="@+id/country_code_search_container" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/country_code_search_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:background="@drawable/bg_rounded_bottom"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/country_code_search_divider" />
+
+            <include
+                android:id="@+id/country_code_empty"
+                layout="@layout/include_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/country_code_search_container" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

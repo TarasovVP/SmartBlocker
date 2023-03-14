@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/padding_8" >
+
+        <CheckBox
+            android:id="@+id/list_call_check"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            style="@style/FilterCheckBox"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/list_call_info"/>
+
+        <ImageButton
+            android:id="@+id/list_call_info"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_0"
+            android:src="@drawable/ic_info"
+            android:padding="@dimen/padding_16"
+            android:background="@color/transparent"
+            app:layout_constraintTop_toTopOf="@+id/list_call_check"
+            app:layout_constraintBottom_toBottomOf="@+id/list_call_check"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/list_call_check"/>
+
+        <include
+            android:id="@+id/list_call_empty"
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:layout_constraintTop_toBottomOf="@+id/list_call_check"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/list_call_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_call_check">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_call_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/padding_8"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

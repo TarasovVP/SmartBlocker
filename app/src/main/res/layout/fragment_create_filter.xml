@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="filterToInput"
+            type="Boolean" />
+        <variable
+            name="filterWithCountryCode"
+            type="com.tarasovvp.smartblocker.models.FilterWithCountryCode" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/padding_14">
+
+        <include
+            android:id="@+id/create_filter_item_filter"
+            layout="@layout/item_details_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            android:layout_marginTop="@dimen/margin_8"
+            app:filterWithCountryCode="@{filterWithCountryCode}"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/create_filter_input_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            android:layout_marginTop="@dimen/margin_8"
+            app:cardCornerRadius="@dimen/padding_12"
+            app:cardElevation="@dimen/padding_2"
+            app:layout_constraintTop_toBottomOf="@id/create_filter_item_filter" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16">
+
+                <TextView
+                    android:id="@+id/create_filter_country_code_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_0"
+                    android:drawablePadding="@dimen/padding_8"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_color_grey"
+                    android:visibility="@{filterWithCountryCode.filter.typeContain ? View.GONE : View.VISIBLE}"
+                    app:drawableEndCompat="@drawable/ic_drop_down"
+                    app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/create_filter_input" />
+
+                <TextView
+                    android:id="@+id/create_filter_country_code_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_0"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding_8"
+                    android:text="@{filterWithCountryCode.countryCode.countryCode}"
+                    android:textColor="@color/text_color_grey"
+                    android:textSize="@dimen/text_size_16"
+                    app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
+                    app:layout_constraintEnd_toStartOf="@+id/create_filter_input"
+                    app:layout_constraintStart_toEndOf="@+id/create_filter_country_code_spinner"
+                    app:layout_constraintTop_toTopOf="@+id/create_filter_input" />
+
+                <com.tarasovvp.smartblocker.utils.mask.MaskedEditText
+                    android:id="@+id/create_filter_input"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/padding_5"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_size_16"
+                    app:filterToInput="@{filterToInput}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/create_filter_country_code_value"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:text="@{filterWithCountryCode.filterToInput()}" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/create_filter_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/StrokeButtonStyle"
+            android:layout_marginTop="@dimen/margin_8"
+            android:alpha="@{filterWithCountryCode.filter.invalidFilterAction ? 0.5f : 1f}"
+            android:enabled="@{!filterWithCountryCode.filter.invalidFilterAction}"
+            android:text="@{filterWithCountryCode.filter.filterAction.title}"
+            android:textColor="@{ContextCompat.getColor(context, filterWithCountryCode.filter.filterActionTextTint)}"
+            app:strokeColor="@{ContextCompat.getColor(context, filterWithCountryCode.filter.filterAction.color)}"
+            android:backgroundTint="@{ContextCompat.getColor(context, filterWithCountryCode.filter.filterActionBgTint)}"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_filter_input_container" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/create_filter_number_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            android:paddingBottom="@dimen/padding_8"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_filter_submit" />
+
+        <include
+            android:id="@+id/create_filter_empty_list"
+            layout="@layout/include_empty_state"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/margin_2"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_filter_submit" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

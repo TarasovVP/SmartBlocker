@@ -3,104 +3,162 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
+
         <variable
-            name="call"
-            type="com.tarasovvp.blacklister.model.Call" />
+            name="callWithFilter"
+            type="com.tarasovvp.smartblocker.models.CallWithFilter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_5"
-        android:background="@drawable/item_bg"
-        android:padding="@dimen/padding_16">
+        android:layout_marginHorizontal="@dimen/margin_2"
+        android:layout_marginTop="@dimen/margin_8"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/padding_8"
+        app:cardElevation="@dimen/padding_1">
 
-        <ImageView
-            android:id="@+id/item_call_avatar"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_avatar"
-            app:circleImageUrl="@{call.photoUrl}"
-            app:nameInitial="@{call.nameInitial}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_call_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/item_call_name"
-            android:layout_width="@dimen/size_0"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            android:ellipsize="end"
-            android:gravity="top"
-            android:maxLines="1"
-            android:text="@{call.numberEmpty ? @string/hidden : call.name}"
-            android:visibility="@{call.nameEmpty &amp;&amp; !call.numberEmpty ? View.GONE : View.VISIBLE}"
-            app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
-            app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-            app:layout_constraintTop_toTopOf="@+id/item_call_avatar"
-            app:layout_constraintBottom_toTopOf="@+id/item_call_number"/>
+            android:alpha="@{callWithFilter.call.deleteMode &amp;&amp; !callWithFilter.call.callFiltered ? 0.5f : 1f}"
+            android:paddingHorizontal="@dimen/padding_8"
+            android:paddingVertical="@dimen/padding_16">
 
-        <TextView
-            android:id="@+id/item_call_number"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            android:layout_marginTop="@dimen/margin_4"
-            android:text="@{call.number}"
-            android:visibility="@{call.numberEmpty ? View.GONE : View.VISIBLE}"
-            app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
-            app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/item_call_name"
-            app:layout_constraintBottom_toTopOf="@+id/item_call_time"/>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/item_call_avatar"
+                android:layout_width="@dimen/margin_50"
+                android:layout_height="@dimen/margin_50"
+                android:background="@color/avatar_bg"
+                android:scaleType="center"
+                app:imageUrl="@{callWithFilter.call.photoUrl}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_call_number"
+                app:placeHolder="@{callWithFilter.call.placeHolder(context)}"
+                app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
-        <TextView
-            android:id="@+id/item_call_time"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_8"
-            android:layout_marginTop="@dimen/margin_4"
-            android:textSize="@dimen/text_size_10"
-            android:text="@{call.dateTimeFromTime()}"
-            app:layout_constraintEnd_toStartOf="@+id/item_call_type_icon"
-            app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/item_call_number"
-            app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"/>
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:visibility="@{!callWithFilter.call.extract || callWithFilter.filterWithCountryCode.filter.filterType == 0 ? View.GONE : View.VISIBLE}"
+                app:imageResource="@{callWithFilter.filterWithCountryCode.filter.filterTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
 
-        <ImageView
-            android:id="@+id/item_call_type_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{!call.deleteMode ? View.VISIBLE : View.GONE}"
-            app:imageResource="@{call.callIcon()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_call_time"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/item_call_number"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:text="@{callWithFilter.call.number.empty ? @string/details_number_hidden : callWithFilter.highlightedSpanned}"
+                app:layout_constraintBottom_toTopOf="@+id/item_call_name"
+                app:layout_constraintEnd_toStartOf="@+id/item_call_time"
+                app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/item_call_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{call.deleteMode &amp;&amp; call.isBlockedType() ? View.VISIBLE : View.GONE}"
-            android:checked="@{call.checkedForDelete}"
-            app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-            app:layout_constraintEnd_toStartOf="@+id/item_call_delete_info"
-            app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
+            <TextView
+                android:id="@+id/item_call_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@{callWithFilter.call.timeFromCallDate()}"
+                android:textColor="@color/text_color_grey"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="@{callWithFilter.call.extract || callWithFilter.call.isFilteredCallDetails || callWithFilter.call.filteredCallDelete ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_call_number"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/item_call_delete_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_info"
-            android:visibility="@{call.deleteMode &amp;&amp; !call.isBlockedType() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
+            <TextView
+                android:id="@+id/item_call_name"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_color_grey"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_number"
+                app:layout_constraintStart_toStartOf="@+id/item_call_number"
+                app:layout_constraintTop_toBottomOf="@+id/item_call_number"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:mainText="@{callWithFilter.call.nameEmpty ? callWithFilter.call.isExtract ? @string/details_number_from_call_log : @string/details_number_not_from_contacts : callWithFilter.call.callName}"
+                app:searchText="@{callWithFilter.searchText}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/item_call_type_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_6"
+                android:visibility="@{callWithFilter.call.deleteMode &amp;&amp; callWithFilter.call.callFiltered || callWithFilter.call.extract ? View.GONE : View.VISIBLE}"
+                app:imageResource="@{callWithFilter.call.callIcon()}"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
+                app:layout_constraintStart_toEndOf="@+id/item_call_number"
+                app:layout_constraintTop_toBottomOf="@+id/item_call_time" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_call_filter_condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@{callWithFilter.call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, callWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon)}"
+                android:gravity="center_vertical|end"
+                android:text="@{callWithFilter.call.filterValue}"
+                android:textColor="@{callWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
+                app:layout_constraintEnd_toEndOf="@+id/item_call_type_icon"
+                app:layout_constraintTop_toTopOf="@+id/item_call_name" />
+
+            <CheckBox
+                android:id="@+id/item_call_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@{callWithFilter.call.checkedForDelete}"
+                android:padding="@dimen/padding_8"
+                android:visibility="@{callWithFilter.call.deleteMode &amp;&amp; callWithFilter.call.callFiltered ? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_call_avatar" />
+
+            <View
+                android:id="@+id/item_call_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_1"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@color/light_steel_blue"
+                app:layout_constraintTop_toBottomOf="@+id/item_call_name" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_call_filter_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_5"
+                android:text="@{callWithFilter.call.callFilterTitle(callWithFilter.filterWithCountryCode.filter)}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.call.callFilterTint(callWithFilter.filterWithCountryCode.filter))}"
+                android:textSize="@dimen/text_size_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_call_divider" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_call_filter_value"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                android:drawableStart="@{callWithFilter.call.callFilterIcon(callWithFilter.filterWithCountryCode.filter) == null ? null : ContextCompat.getDrawable(context, callWithFilter.call.callFilterIcon(callWithFilter.filterWithCountryCode.filter))}"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{callWithFilter.call.callFilterValue}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.call.callFilterTint(callWithFilter.filterWithCountryCode.filter))}"
+                android:textSize="@dimen/text_size_10"
+                app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_call_filter_title"
+                app:layout_constraintTop_toTopOf="@+id/item_call_filter_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
-

@@ -2,29 +2,56 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="emptyState"
+            type="com.tarasovvp.smartblocker.enums.EmptyState" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/empty_state_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" >
+        android:background="@drawable/bg_main"
+        android:paddingVertical="@dimen/padding_8"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/empty_state_title"
+            android:id="@+id/empty_state_description"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:text="@{emptyState.description  == 0 ? `` : context.getString(emptyState.description)}"
             android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/empty_state_icon"/>
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_16"
+            android:background="@drawable/bg_rounded"
+            android:minLines="5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/empty_state_tooltip_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_tooltip_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintTop_toBottomOf="@+id/empty_state_description" />
 
         <ImageView
             android:id="@+id/empty_state_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginTop="@dimen/margin_8"
+            android:padding="@dimen/padding_16"
             android:src="@drawable/ic_empty_state"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/empty_state_tooltip_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

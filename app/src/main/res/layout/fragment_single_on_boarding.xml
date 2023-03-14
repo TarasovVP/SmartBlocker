@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="onBoarding"
+            type="com.tarasovvp.smartblocker.enums.OnBoarding" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/single_on_boarding_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{onBoarding.description}"
+            android:textSize="@dimen/text_size_16"
+            android:minLines="6"
+            android:maxLines="6"
+            android:ellipsize="end"
+            android:background="@drawable/bg_rounded"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_8"
+            android:paddingHorizontal="@dimen/padding_16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/single_on_boarding_tooltip_arrow"/>
+
+        <ImageView
+            android:id="@+id/single_on_boarding_tooltip_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_tooltip_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintTop_toBottomOf="@+id/single_on_boarding_title" />
+
+        <ImageView
+            android:id="@+id/single_on_boarding_icon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginTop="@dimen/margin_5"
+            app:imageResource="@{onBoarding.mainImage}"
+            app:layout_constraintBottom_toTopOf="@+id/single_on_boarding_tab_layout"
+            app:layout_constraintTop_toBottomOf="@+id/single_on_boarding_tooltip_arrow" />
+
+        <ImageView
+            android:id="@+id/single_on_boarding_tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:imageResource="@{onBoarding.tabImage}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/single_on_boarding_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -2,49 +2,95 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_16"
-        tools:context=".ui.settings.settings_list.SettingsListFragment">
+        android:fillViewport="true"
+        android:paddingHorizontal="@dimen/padding_16">
 
-        <TextView
-            android:id="@+id/settings_list_block_settings"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20"
-            android:paddingVertical="@dimen/padding_20"
-            android:text="@string/block_settings"
-            app:drawableEndCompat="@drawable/ic_arrow_forward"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/settings_list_account_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/padding_20"
-            android:text="@string/personal_details"
-            app:drawableEndCompat="@drawable/ic_arrow_forward"
-            app:layout_constraintTop_toBottomOf="@+id/settings_list_block_settings" />
+            <TextView
+                android:id="@+id/settings_blocker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_blocker"
+                app:drawableStartCompat="@drawable/ic_settings_blocker"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/settings_list_app_language"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/padding_20"
-            android:text="@string/app_language"
-            app:drawableEndCompat="@drawable/ic_arrow_forward"
-            app:layout_constraintTop_toBottomOf="@+id/settings_list_account_details" />
+            <TextView
+                android:id="@+id/settings_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_account"
+                app:drawableStartCompat="@drawable/ic_settings_account"
+                app:layout_constraintTop_toBottomOf="@+id/settings_blocker" />
 
-        <TextView
-            android:id="@+id/settings_list_app_theme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/padding_20"
-            android:text="@string/app_theme"
-            app:drawableEndCompat="@drawable/ic_arrow_forward"
-            app:layout_constraintTop_toBottomOf="@+id/settings_list_app_language" />
+            <TextView
+                android:id="@+id/settings_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_language"
+                app:drawableStartCompat="@drawable/ic_settings_language"
+                app:layout_constraintTop_toBottomOf="@+id/settings_account" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/settings_theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_theme"
+                app:drawableStartCompat="@drawable/ic_settings_theme"
+                app:layout_constraintTop_toBottomOf="@+id/settings_language" />
+
+            <TextView
+                android:id="@+id/settings_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_review"
+                app:drawableStartCompat="@drawable/ic_settings_review"
+                app:layout_constraintTop_toBottomOf="@+id/settings_theme" />
+
+            <TextView
+                android:id="@+id/settings_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_privacy"
+                app:drawableStartCompat="@drawable/ic_settings_privacy"
+                app:layout_constraintTop_toBottomOf="@+id/settings_review" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

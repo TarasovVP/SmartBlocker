@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/blackFilterListFragment"
-        android:title="@string/black_list"
-        android:icon="@drawable/ic_block"
-        android:contentDescription="@string/filter_list"/>
+        android:id="@+id/listBlockerFragment"
+        android:title="@string/list_blocker"
+        android:icon="@drawable/ic_blocker_list"
+        android:contentDescription="@string/list_blocker"/>
     <item
-        android:id="@+id/whiteFilterListFragment"
-        android:title="@string/white_list"
-        android:icon="@drawable/ic_white_filter"
-        android:contentDescription="@string/filter_list"/>
+        android:id="@+id/listPermissionFragment"
+        android:title="@string/list_permission"
+        android:icon="@drawable/ic_permission_list"
+        android:contentDescription="@string/list_permission"/>
     <item
-        android:id="@+id/contactListFragment"
-        android:title="@string/contact_list"
+        android:id="@+id/listCallFragment"
+        android:title="@string/list_call"
+        android:icon="@drawable/ic_call"
+        android:contentDescription="@string/list_call"/>
+    <item
+        android:id="@+id/listContactFragment"
+        android:title="@string/list_contact"
         android:icon="@drawable/ic_contact_list"
-        android:contentDescription="@string/contact_list"/>
-    <item
-        android:id="@+id/callListFragment"
-        android:title="@string/log_list"
-        android:icon="@drawable/ic_call_log"
-        android:contentDescription="@string/log_list"/>
+        android:contentDescription="@string/list_contact"/>
 </menu>

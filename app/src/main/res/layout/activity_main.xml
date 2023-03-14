@@ -1,94 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_10"
-            app:layout_constraintBottom_toTopOf="@+id/toolbar_divider"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@color/main_color" />
-
-        <View
-            android:id="@+id/toolbar_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/main_color"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/host_main_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_divider" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:itemBackground="@color/midnight_blue"
-            app:itemIconTint="@color/bottom_nav_color_selector"
-            app:itemTextColor="@color/bottom_nav_color_selector"
-            app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/host_main_fragment"
-            app:menu="@menu/bottom_nav" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_progress_bar_container"
+            android:id="@+id/mainContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/progress_bg"
-            android:clickable="true"
-            android:elevation="@dimen/margin_10"
-            android:focusable="true"
+            android:background="@drawable/bg_main"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/main_progress_bar_title"
-                android:layout_width="wrap_content"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16"
-                android:text="@string/progress_title"
-                app:layout_constraintBottom_toTopOf="@+id/main_progress_bar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:titleTextAppearance="@style/ToolbarTextStyle"
+                app:layout_constraintBottom_toTopOf="@+id/toolbar_divider"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="@color/text_color_grey" />
+
+            <View
+                android:id="@+id/toolbar_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_steel_blue"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/host_main_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_divider" />
+
+            <View
+                android:id="@+id/bottom_nav_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1.5dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+                android:background="@drawable/shadow" />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/BottomNavViewStyle"
+                android:visibility="gone"
+                app:itemBackground="@color/selector_bottom_nav_bg"
+                app:itemIconTint="@color/selector_bottom_nav_color"
+                app:itemTextColor="@color/selector_bottom_nav_color"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toTopOf="@+id/ad_view"
+                app:layout_constraintTop_toBottomOf="@+id/host_main_fragment"
+                app:menu="@menu/bottom_nav" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/main_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:lottie_autoPlay="true"
-                app:lottie_rawRes="@raw/data"
-                app:lottie_loop="true"
+                android:id="@+id/progress_bar"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                android:visibility="gone"
+                app:layout_constraintWidth_percent="0.75"
+                app:layout_constraintHeight_percent="0.75"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/progress" />
+
+            <include
+                android:id="@+id/main_progress_bar_animation"
+                layout="@layout/include_main_progress" />
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/ad_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/test_app_id"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/bottom_nav"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/main_splash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/splash" />
+
+    </FrameLayout>
 </layout>

@@ -3,52 +3,124 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
         <variable
-            name="filter"
-            type="com.tarasovvp.blacklister.model.Filter" />
+            name="filterWithCountryCode"
+            type="com.tarasovvp.smartblocker.models.FilterWithCountryCode" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/item_filter_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_2"
         android:layout_marginTop="@dimen/margin_8"
-        android:background="@drawable/item_bg"
-        android:padding="@dimen/padding_16">
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:strokeColor="@color/item_color"
+        app:strokeWidth="@dimen/padding_1">
 
-        <TextView
-            android:id="@+id/item_filter_value"
-            android:layout_width="@dimen/size_0"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="top"
-            android:maxLines="1"
-            android:text="@{filter.filter}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_type"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingHorizontal="@dimen/padding_8"
+            android:paddingVertical="@dimen/padding_16">
 
-        <ImageView
-            android:id="@+id/item_filter_type"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_start"
-            android:visibility="@{!filter.deleteMode ? View.VISIBLE : View.GONE}"
-            app:imageResource="@{filter.filterTypeIcon()}"
-            app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
-            app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
-            app:layout_constraintTop_toTopOf="@+id/item_filter_value" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/item_filter_avatar"
+                android:layout_width="@dimen/margin_50"
+                android:layout_height="@dimen/margin_50"
+                android:background="@color/avatar_bg"
+                android:scaleType="center"
+                app:imageResource="@{filterWithCountryCode.filter.conditionTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_name"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_filter_value"
+                app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
-        <CheckBox
-            android:id="@+id/item_filter_delete"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:visibility="@{filter.deleteMode ? View.VISIBLE : View.GONE}"
-            android:checked="@{filter.checkedForDelete}"
-            app:layout_constraintBottom_toBottomOf="@+id/item_filter_value"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/item_filter_value" />
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                app:imageResource="@{filterWithCountryCode.filter.filterTypeIcon}"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/item_filter_value"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{filterWithCountryCode.highlightedSpanned}"
+                app:layout_constraintBottom_toTopOf="@+id/item_filter_name"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
+                app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_filter_name"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/margin_8"
+                android:text="@{filterWithCountryCode.filter == null ? filterWithCountryCode.filter.filter : context.getString(filterWithCountryCode.filter.conditionTypeName)}"
+                android:textColor="@{filterWithCountryCode.filter.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCode.filter.filterAction.color)}"
+                app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
+                app:layout_constraintStart_toStartOf="@id/item_filter_value"
+                app:layout_constraintTop_toBottomOf="@+id/item_filter_value" />
+
+            <CheckBox
+                android:id="@+id/item_filter_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@{filterWithCountryCode.filter.checkedForDelete}"
+                android:visibility="@{filterWithCountryCode.filter.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintBottom_toTopOf="@+id/item_filter_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/item_filter_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_1"
+                android:background="@color/light_steel_blue"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/item_filter_name" />
+
+            <TextView
+                android:id="@+id/item_filter_contacts"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/margin_5"
+                android:textSize="@dimen/text_size_10"
+                android:textColor="@{filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{filterWithCountryCode.filter.filteredContactsText(context)}"
+                app:layout_constraintTop_toBottomOf="@+id/item_filter_divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_created"/>
+
+            <TextView
+                android:id="@+id/item_filter_created"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_0"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/text_size_10"
+                android:textColor="@color/text_color_grey"
+                android:text="@{String.format(@string/filter_action_created, filterWithCountryCode.filter.filterCreatedDate)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_filter_contacts"
+                app:layout_constraintTop_toTopOf="@+id/item_filter_contacts"
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_contacts"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

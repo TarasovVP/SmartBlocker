@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="grey">#989595</color>
     <color name="blue">#267DFF</color>
-    <color name="progress_bg">#80000000</color>
-    <color name="disable_color">#32989595</color>
-    <color name="divider">#2C3AFA</color>
+    <color name="transparent">#00000000</color>
 
     //custom colors
-    <color name="midnight_blue">#102B58</color>
-    <color name="alice_blue">#F6F9FF</color>
-    <color name="tangaroa">#1C2739</color>
-    <color name="neon_blue">#2C3AFA</color>
+    <color name="hawkes_blue">#F1F4F9</color>
     <color name="lavender">#F7F8FD</color>
+    <color name="tiber">#11203A</color>
+    <color name="cyprus">#0B1F39</color>
+    <color name="comet">#636076</color>
+    <color name="ghost">#B1B0BB</color>
+    <color name="cornflower_blue">#6480E2</color>
+    <color name="midnight_blue">#11315B</color>
+    <color name="sunset">#C84747</color>
+    <color name="light_steel_blue">#B4C5E3</color>
+    <color name="valhalla">#211F2E</color>
+    <color name="islamic_green">#06AA0E</color>
 
     //custom project colors
-    <color name="main_color">@color/midnight_blue</color>
-    <color name="main_bg">@color/alice_blue</color>
+    <color name="main_bg_start">@color/hawkes_blue</color>
+    <color name="main_bg_end">@color/lavender</color>
+    <color name="text_color_grey">@color/comet</color>
+    <color name="text_color_black">@color/valhalla</color>
     <color name="item_color">@color/white</color>
+    <color name="button_bg">@color/cornflower_blue</color>
+    <color name="input_bg">@color/white</color>
+    <color name="avatar_bg">@color/light_steel_blue</color>
+    <color name="avatar_icon_bg">@color/comet</color>
+    <color name="google_button_stroke">@color/white</color>
+    <color name="inactive_bg">@color/comet</color>
 </resources>

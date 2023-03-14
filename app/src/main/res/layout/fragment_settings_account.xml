@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingHorizontal="@dimen/padding_16">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_account_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_16"
+                android:background="@drawable/bg_rounded"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/settings_account_avatar"
+                    android:layout_width="@dimen/margin_50"
+                    android:layout_height="@dimen/margin_50"
+                    android:background="@color/avatar_bg"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/settings_account_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/RoundedImageView" />
+
+                <TextView
+                    android:id="@+id/settings_account_name"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginStart="@dimen/margin_16"
+                    app:layout_constraintBottom_toTopOf="@+id/settings_account_log_out"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/settings_account_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/settings_account_avatar" />
+
+                <TextView
+                    android:id="@+id/settings_account_log_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/button_bg"
+                    android:text="@string/settings_account_log_out_title"
+                    android:layout_marginTop="@dimen/margin_8"
+                    app:layout_constraintBottom_toBottomOf="@+id/settings_account_avatar"
+                    app:layout_constraintStart_toStartOf="@+id/settings_account_name"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_account_name" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/settings_account_change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_account_change_password_title"
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_container" />
+
+            <TextView
+                android:id="@+id/settings_account_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_10"
+                android:text="@string/settings_account_delete_title"
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_change_password" />
+
+            <include
+                android:id="@+id/include_empty_state"
+                layout="@layout/include_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0"
+                app:layout_constraintBottom_toTopOf="@+id/settings_account_login"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/settings_account_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_24"
+                android:text="@string/authorization_enter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

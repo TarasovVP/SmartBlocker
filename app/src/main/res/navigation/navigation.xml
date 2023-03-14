@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.onboarding.OnBoardingFragment">
+        android:name="com.tarasovvp.smartblocker.ui.main.authorization.onboarding.OnBoardingFragment">
         <action
             android:id="@+id/startLoginScreen"
             app:destination="@id/loginFragment"
@@ -16,11 +16,10 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.login.LoginFragment"
-        android:label="@string/log_in">
+        android:name="com.tarasovvp.smartblocker.ui.main.authorization.login.LoginFragment" >
         <action
-            android:id="@+id/startBlackFilterListFragment"
-            app:destination="@id/blackFilterListFragment"
+            android:id="@+id/startListBlockerFragment"
+            app:destination="@id/listBlockerFragment"
             app:popUpTo="@+id/mainNavigation"
             app:popUpToInclusive="true" />
         <action
@@ -29,81 +28,191 @@
         <action
             android:id="@+id/startForgotPasswordDialog"
             app:destination="@id/forgotPasswordDialog" />
+        <action
+            android:id="@+id/startUnauthorizedEnterDialog"
+            app:destination="@id/unauthorizedEnterDialog" />
     </fragment>
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.blacklister.ui.start.sign_up.SignUpFragment"
-        android:label="@string/sign_up"/>
+        android:name="com.tarasovvp.smartblocker.ui.main.authorization.sign_up.SignUpFragment" />
 
     <fragment
-        android:id="@+id/callListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.call_list.CallListFragment"
-        android:label="@string/blocked_call_log">
+        android:id="@+id/listBlockerFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_filter.ListBlockerFragment"
+        android:label="@string/list_blocker">
         <action
-            android:id="@+id/startFilterAddFragment"
-            app:destination="@id/filterAddFragment" />
+            android:id="@+id/startCreateFilterFragment"
+            app:destination="@id/createFilterFragment" />
         <action
-            android:id="@+id/startContactDetailFragment"
-            app:destination="@id/contactDetailFragment" />
+            android:id="@+id/startDetailsFilterFragment"
+            app:destination="@id/detailsFilterFragment" />
         <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
+            android:id="@+id/startFilterConditionsDialog"
+            app:destination="@id/filterConditionsDialog" />
+        <action
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/contactListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.contact_list.ContactListFragment"
-        android:label="@string/contact_list">
+        android:id="@+id/listPermissionFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_filter.ListPermissionFragment"
+        android:label="@string/list_permission">
         <action
-            android:id="@+id/startContactDetailFragment"
-            app:destination="@id/contactDetailFragment" />
+            android:id="@+id/startCreateFilterFragment"
+            app:destination="@id/createFilterFragment" />
+        <action
+            android:id="@+id/startDetailsFilterFragment"
+            app:destination="@id/detailsFilterFragment" />
+        <action
+            android:id="@+id/startFilterConditionsDialog"
+            app:destination="@id/filterConditionsDialog" />
+        <action
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFilterFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_filter.DetailsFilterFragment">
         <argument
-            android:name="filter"
+            android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:argType="com.tarasovvp.smartblocker.models.FilterWithCountryCode"
             app:nullable="true" />
+        <action
+            android:id="@+id/startDetailsNumberDataFragment"
+            app:destination="@id/detailsNumberDataFragment" />
+        <action
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
+        <action
+            android:id="@+id/startListBlockerFragment"
+            app:destination="@id/listBlockerFragment"
+            app:popUpTo="@id/listBlockerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/startListPermissionFragment"
+            app:destination="@id/listPermissionFragment"
+            app:popUpTo="@id/listBlockerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/contactDetailFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.contact_detail.ContactDetailFragment"
-        android:label="@string/details">
+        android:id="@+id/createFilterFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.create.CreateFilterFragment" >
         <argument
-            android:name="number"
+            android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="string"
+            app:argType="com.tarasovvp.smartblocker.models.FilterWithCountryCode"
             app:nullable="true" />
         <action
-            android:id="@+id/startFilterAddFragment"
-            app:destination="@id/filterAddFragment" />
+            android:id="@+id/startCountryCodeSearchDialog"
+            app:destination="@id/countryCodeSearchDialog" />
         <action
-            android:id="@+id/startBlockSettingsFragment"
-            app:destination="@id/blockSettingsFragment" />
+            android:id="@+id/startFilterActionDialog"
+            app:destination="@id/filterActionDialog" />
+        <action
+            android:id="@+id/startSettingsBlockerFragment"
+            app:destination="@id/settingsBlockerFragment" />
+        <action
+            android:id="@+id/startDetailsFilterFragment"
+            app:destination="@id/detailsFilterFragment" />
+        <action
+            android:id="@+id/startDetailsNumberDataFragment"
+            app:destination="@id/detailsNumberDataFragment" />
+        <action
+            android:id="@+id/startListBlockerFragment"
+            app:destination="@id/listBlockerFragment"
+            app:popUpTo="@id/listBlockerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/startListPermissionFragment"
+            app:destination="@id/listPermissionFragment"
+            app:popUpTo="@id/listBlockerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/blackFilterListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.filter_list.BlackFilterListFragment"
-        android:label="@string/black_list">
+        android:id="@+id/listContactFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_contact.ListContactFragment"
+        android:label="@string/list_contact">
         <action
-            android:id="@+id/startFilterAddFragment"
-            app:destination="@id/filterAddFragment" />
+            android:id="@+id/startDetailsNumberDataFragment"
+            app:destination="@id/detailsNumberDataFragment" />
         <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
+            android:id="@+id/startNumberDataFilteringDialog"
+            app:destination="@id/numberDataFilteringDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/whiteFilterListFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.filter_list.WhiteFilterListFragment"
-        android:label="@string/white_list">
+        android:id="@+id/listCallFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_call.ListCallFragment"
+        android:label="@string/list_call">
         <action
-            android:id="@+id/startFilterAddFragment"
-            app:destination="@id/filterAddFragment" />
+            android:id="@+id/startDetailsNumberDataFragment"
+            app:destination="@id/detailsNumberDataFragment" />
         <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
+            android:id="@+id/startNumberDataFilteringDialog"
+            app:destination="@id/numberDataFilteringDialog" />
+        <action
+            android:id="@+id/startFilteredCallDeleteDialog"
+            app:destination="@id/filteredCallDeleteDialog" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsNumberDataFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragment"
+        android:label="@string/details_number">
+        <argument
+            android:name="numberData"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.smartblocker.models.NumberData"
+            app:nullable="true" />
+        <action
+            android:id="@+id/startCreateFilterFragment"
+            app:destination="@id/createFilterFragment" />
+        <action
+            android:id="@+id/startDetailsFilterFragment"
+            app:destination="@id/detailsFilterFragment" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
+        <action
+            android:id="@+id/startSettingsBlockerFragment"
+            app:destination="@id/settingsBlockerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.number.info.InfoFragment" >
+        <argument
+            android:name="info"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.smartblocker.models.InfoData"
+            app:nullable="true" />
+        <action
+            android:id="@+id/startInfoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
 
     <action
@@ -112,41 +221,47 @@
 
     <fragment
         android:id="@+id/settingsListFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.settings_list.SettingsListFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_list.SettingsListFragment"
         android:label="@string/settings">
         <action
-            android:id="@+id/startBlockSettingsFragment"
-            app:destination="@id/blockSettingsFragment" />
+            android:id="@+id/startSettingsBlockerFragment"
+            app:destination="@id/settingsBlockerFragment" />
         <action
-            android:id="@+id/startAccountDetailsFragment"
-            app:destination="@id/accountDetailsFragment" />
+            android:id="@+id/startSettingsAccountFragment"
+            app:destination="@id/settingsAccountFragment" />
         <action
-            android:id="@+id/startAppLanguageFragment"
-            app:destination="@id/appLanguageFragment" />
+            android:id="@+id/startSettingsLanguageFragment"
+            app:destination="@id/settingsLanguageFragment" />
         <action
-            android:id="@+id/startAppThemeFragment"
-            app:destination="@id/appThemeFragment" />
+            android:id="@+id/startSettingsThemeFragment"
+            app:destination="@id/settingsThemeFragment" />
         <action
-            android:id="@+id/startAccountActionDialog"
-            app:destination="@id/accountActionDialog" />
+            android:id="@+id/startSettingsReviewDialog"
+            app:destination="@id/settingsReviewDialog" />
+        <action
+            android:id="@+id/startSettingsPrivacyFragment"
+            app:destination="@id/settingsPrivacyFragment" />
     </fragment>
 
-    <action
-        android:id="@+id/startBlockSettingsFragment"
-        app:destination="@id/blockSettingsFragment" />
+    <fragment
+        android:id="@+id/settingsBlockerFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_blocker.SettingsBlockerFragment"
+        android:label="@string/settings_blocker">
+        <action
+            android:id="@+id/startCountryCodeSearchDialog"
+            app:destination="@id/countryCodeSearchDialog" />
+    </fragment>
 
     <fragment
-        android:id="@+id/blockSettingsFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.block_settings.BlockSettingsFragment"
-        android:label="@string/block_settings" />
-
-    <fragment
-        android:id="@+id/accountDetailsFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.account_detals.AccountDetailsFragment"
-        android:label="@string/personal_details">
+        android:id="@+id/settingsAccountFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_account.SettingsAccountFragment"
+        android:label="@string/settings_account">
         <action
             android:id="@+id/startAccountActionDialog"
             app:destination="@id/accountActionDialog" />
+        <action
+            android:id="@+id/startChangePasswordDialog"
+            app:destination="@id/changePasswordDialog" />
         <action
             android:id="@+id/startLoginFragment"
             app:destination="@id/loginFragment"
@@ -155,38 +270,27 @@
     </fragment>
 
     <fragment
-        android:id="@+id/appLanguageFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.app_language.AppLanguageFragment"
-        android:label="@string/app_language" />
+        android:id="@+id/settingsLanguageFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_language.SettingsLanguageFragment"
+        android:label="@string/settings_language" />
 
     <fragment
-        android:id="@+id/appThemeFragment"
-        android:name="com.tarasovvp.blacklister.ui.settings.app_theme.AppThemeFragment"
-        android:label="@string/app_theme" />
+        android:id="@+id/settingsThemeFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_theme.SettingsThemeFragment"
+        android:label="@string/settings_theme" />
 
     <dialog
-        android:id="@+id/deleteFilterDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.DeleteFilterDialog">
-        <argument
-            android:name="filter"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
-            app:nullable="true" />
-    </dialog>
+        android:id="@+id/settingsReviewDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.SettingsReviewDialog" />
 
-    <dialog
-        android:id="@+id/changeFilterDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.ChangeFilterListDialog">
-        <argument
-            android:name="filter"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
-            app:nullable="true" />
-    </dialog>
+    <fragment
+        android:id="@+id/settingsPrivacyFragment"
+        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_privacy.SettingsPrivacyFragment"
+        android:label="@string/settings_privacy" />
 
     <dialog
         android:id="@+id/accountActionDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.AccountActionDialog">
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.AccountActionDialog">
         <argument
             android:name="isLogOut"
             android:defaultValue="false"
@@ -194,16 +298,34 @@
     </dialog>
 
     <dialog
+        android:id="@+id/filterConditionsDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterConditionsDialog">
+        <argument
+            android:name="filteringList"
+            android:defaultValue="@null"
+            app:argType="integer[]"
+            app:nullable="true" />
+    </dialog>
+
+    <dialog
         android:id="@+id/appExitDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.AppExitDialog" />
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.AppExitDialog" />
 
     <action
         android:id="@+id/startAppExitDialog"
         app:destination="@id/appExitDialog" />
 
     <dialog
+        android:id="@+id/unavailableNetworkDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.UnavailableNetworkDialog" />
+
+    <action
+        android:id="@+id/startUnavailableNetworkDialog"
+        app:destination="@id/unavailableNetworkDialog" />
+
+    <dialog
         android:id="@+id/forgotPasswordDialog"
-        android:name="com.tarasovvp.blacklister.ui.dialogs.ForgotPasswordDialog">
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.ForgotPasswordDialog">
         <argument
             android:name="email"
             android:defaultValue=""
@@ -211,26 +333,57 @@
             app:nullable="true" />
     </dialog>
 
-    <fragment
-        android:id="@+id/filterAddFragment"
-        android:name="com.tarasovvp.blacklister.ui.main.filter_add.FilterAddFragment" >
+    <dialog
+        android:id="@+id/unauthorizedEnterDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.UnauthorizedEnterDialog" />
+
+    <dialog
+        android:id="@+id/changePasswordDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.ChangePasswordDialog" />
+
+    <dialog
+        android:id="@+id/numberDataFilteringDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.NumberDataFilteringDialog">
         <argument
-            android:name="filter"
+            android:name="filteringList"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.blacklister.model.Filter"
+            app:argType="integer[]"
             app:nullable="true" />
-        <action
-            android:id="@+id/startDeleteFilterDialog"
-            app:destination="@id/deleteFilterDialog" />
-        <action
-            android:id="@+id/startChangeFilterDialog"
-            app:destination="@id/changeFilterDialog" />
-        <action
-            android:id="@+id/startBlockSettingsFragment"
-            app:destination="@id/blockSettingsFragment" />
-        <action
-            android:id="@+id/startContactDetailFragment"
-            app:destination="@id/contactDetailFragment" />
-    </fragment>
+        <argument
+            android:name="isCallList"
+            android:defaultValue="false"
+            app:argType="boolean"
+            app:nullable="false" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/filterActionDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterActionDialog">
+        <argument
+            android:name="filterWithCountryCode"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.smartblocker.models.FilterWithCountryCode"
+            app:nullable="true" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/filteredCallDeleteDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilteredCallDeleteDialog">
+        <argument
+            android:name="callDelete"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/countryCodeSearchDialog"
+        android:name="com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog.CountryCodeSearchDialog" >
+        <argument
+            android:name="countryCodeList"
+            android:defaultValue="@null"
+            app:argType="com.tarasovvp.smartblocker.models.CountryCode[]"
+            app:nullable="true" />
+    </dialog>
 
 </navigation>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingHorizontal="@dimen/padding_16">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_blocker_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_16"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_blocker_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_blocker_title"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/settings_blocker_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_1"
+                    android:background="@color/light_steel_blue"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_switch" />
+
+                <TextView
+                    android:id="@+id/settings_blocker_describe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:text="@string/settings_blocker_off"
+                    android:textSize="@dimen/text_size_10"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_blocker_hidden_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_16"
+                app:layout_constraintTop_toBottomOf="@+id/settings_blocker_container">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_blocker_hidden_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:text="@string/settings_block_hidden_title"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <View
+                    android:id="@+id/settings_blocker_hidden_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_1"
+                    android:background="@color/light_steel_blue"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_switch" />
+
+                <TextView
+                    android:id="@+id/settings_blocker_hidden_describe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:minLines="2"
+                    android:text="@string/settings_block_hidden_off"
+                    android:textSize="@dimen/text_size_10"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_blocker_country_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_16"
+                app:layout_constraintTop_toBottomOf="@+id/settings_blocker_hidden_container">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_blocker_country_switch"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_block_country_title"
+                    android:thumb="@null"
+                    android:enabled="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/settings_blocker_country"/>
+
+                <TextView
+                    android:id="@+id/settings_blocker_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_0"
+                    android:gravity="center"
+                    app:layout_constraintStart_toEndOf="@+id/settings_blocker_country_switch"
+                    app:layout_constraintTop_toTopOf="@+id/settings_blocker_country_switch"
+                    app:layout_constraintBottom_toBottomOf="@+id/settings_blocker_country_switch"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <View
+                    android:id="@+id/settings_blocker_country_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_1"
+                    android:background="@color/light_steel_blue"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_country_switch" />
+
+                <TextView
+                    android:id="@+id/settings_blocker_country_describe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:text="@string/settings_block_country_description"
+                    android:textSize="@dimen/text_size_10"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_blocker_country_divider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

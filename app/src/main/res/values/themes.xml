@@ -1,71 +1,209 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Blacklister" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.SmartBlocker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/teal_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorButtonNormal">@color/blue</item>
+        <item name="colorButtonNormal">@color/cornflower_blue</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/blue</item>
+        <item name="colorSecondary">@color/cornflower_blue</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" >@color/main_color</item>
-        <item name="android:windowBackground">@color/main_bg</item>
-        <item name="android:textColor">@color/main_color</item>
-        <item name="android:editTextColor">@color/main_color</item>
-        <item name="android:textColorHint">@color/grey</item>
-        <item name="colorControlNormal">@color/main_color</item>
-        <item name="colorOnSurface">@color/main_color</item>
-        <!-- Customize your theme here. -->
-        <item name="materialButtonStyle">@style/StrokeButton</item>
+
+        <item name="android:statusBarColor" >@color/item_color</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="android:textColor">@color/text_color_black</item>
+        <item name="android:editTextColor">@color/text_color_grey</item>
+        <item name="android:textColorHint">@color/comet</item>
+        <item name="colorControlNormal">@color/text_color_grey</item>
+        <item name="colorOnSurface">@color/main_bg_start</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="materialCardViewStyle">@style/CardViewStyle</item>
+
+        <item name="materialButtonStyle">@style/FilledButtonStyle</item>
         <item name="checkboxStyle">@style/CheckBox</item>
         <item name="radioButtonStyle">@style/RadioButtonStyle</item>
+        <item name="switchStyle">@style/SwitchStyle</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="android:fontFamily">@font/comfortaa_regular</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
+        <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
+        <item name="extendedFloatingActionButtonStyle">@style/ExtendedFABStyle</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 
-    <style name="Theme.Blacklister.Launcher">
-        <item name="android:windowBackground">@drawable/splash_bg</item>
+    <style name="ToolbarTextStyle" parent="Widget.Material3.CollapsingToolbar.Medium">
+        <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="StrokeButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="BottomNavViewStyle" parent="">
+        <item name="motionDurationLong1">0</item>
+    </style>
+
+    <style name="CardViewStyle" parent="Base.CardView">
+        <item name="cardBackgroundColor">@color/item_color</item>
+        <item name="cardElevation">1dp</item>
+        <item name="cardCornerRadius">8dp</item>
+    </style>
+
+    <style name="BaseButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:maxLines">1</item>
-        <item name="cornerRadius">@dimen/margin_10</item>
-        <item name="android:paddingLeft">@dimen/padding_25</item>
-        <item name="android:paddingRight">@dimen/padding_25</item>
+        <item name="android:ellipsize">end</item>
+        <item name="cornerRadius">@dimen/margin_8</item>
         <item name="rippleColor">#250092D4</item>
-        <item name="android:paddingTop">2dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="strokeWidth">@dimen/margin_2</item>
-        <item name="strokeColor">@color/main_color</item>
-        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="iconTint">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingLeft">@dimen/padding_8</item>
+        <item name="android:paddingRight">@dimen/padding_8</item>
+        <item name="android:paddingTop">@dimen/padding_12</item>
+        <item name="android:paddingBottom">@dimen/padding_12</item>
+    </style>
+
+    <style name="FilledButtonStyle" parent="BaseButtonStyle">
+        <item name="backgroundTint">@color/button_bg</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_18</item>
+    </style>
+
+    <style name="FilledButtonSmallStyle" parent="FilledButtonStyle">
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="StrokeButtonStyle" parent="BaseButtonStyle">
+        <item name="strokeWidth">@dimen/padding_1</item>
+        <item name="strokeColor">@color/selector_button_enable_bg</item>
+        <item name="android:textColor">@color/selector_button_enable_bg</item>
+        <item name="android:textSize">@dimen/text_size_18</item>
+    </style>
+
+    <style name="StrokeButtonSmallStyle" parent="StrokeButtonStyle">
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="TextButton" parent="FilledButtonStyle">
+        <item name="backgroundTint">@color/item_color</item>
+        <item name="android:textColor">@color/text_color_black</item>
+        <item name="iconTint">@null</item>
+        <item name="android:elevation">@dimen/margin_2</item>
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:textStyle">bold</item>
+        <item name="strokeColor">@color/google_button_stroke</item>
+        <item name="strokeWidth">@dimen/padding_1</item>
     </style>
 
     <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
-        <item name="android:textColor">@color/main_color</item>>
+        <item name="android:textColor">@color/text_color_grey</item>>
+        <item name="buttonTint">@color/selector_check_enable_bg</item>>
+        <item name="android:button">@drawable/selector_check_box</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
-        <item name="android:buttonTint">@color/main_color</item>
+        <item name="android:paddingEnd">@dimen/padding_10</item>
+        <item name="android:paddingStart">@dimen/padding_10</item>
     </style>
 
-    <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@color/main_bg</item>
-        <item name="android:itemBackground">@color/main_bg</item>
-        <item name="android:textColor">@color/main_color</item>
-    </style>
-
-    <style name="MultiChoiceAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
-        <item name="colorAccent">@color/main_color</item>
-        <item name="android:colorAccent">@color/main_color</item>
-        <item name="android:textColor">@color/main_color</item>
-
+    <style name="FilterCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:enabled">false</item>
+        <item name="android:textColor">@color/selector_check_enable_bg</item>>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@drawable/selector_filter</item>
+        <item name="android:padding">@dimen/padding_5</item>
+        <item name="android:layout_marginStart">@dimen/margin_16</item>
+        <item name="android:layout_marginEnd">@dimen/margin_16</item>
+        <item name="android:drawablePadding">@dimen/padding_5</item>
+        <item name="android:text">@string/filter_no_filter</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
     </style>
 
     <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:textColor">@color/main_color</item>
-        <item name="android:layoutDirection">rtl</item>
-        <item name="android:paddingTop">@dimen/padding_20</item>
-        <item name="android:paddingBottom">@dimen/padding_20</item>
+        <item name="android:textColor">@color/text_color_grey</item>
+        <item name="android:paddingTop">@dimen/padding_10</item>
+        <item name="android:paddingBottom">@dimen/padding_10</item>
+        <item name="android:paddingStart">@dimen/padding_8</item>
+        <item name="android:paddingEnd">@dimen/padding_16</item>
+        <item name="android:background">@drawable/bg_rounded</item>
+    </style>
+
+    <style name="SwitchStyle" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="track">@drawable/ic_switch_track</item>
+        <item name="android:thumb">@drawable/ic_switch_thumb</item>
+        <item name="thumbTint">@color/selector_switch_thumb</item>
+        <item name="trackTint">@color/selector_switch_track</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/text_color_grey</item>
+    </style>
+
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+        <item name="materialThemeOverlay">@style/CommonThemeOverlayFilledDense</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="hintEnabled">false</item>
+        <item name="colorAccent">@color/cornflower_blue</item>
+        <item name="passwordToggleDrawable">@drawable/selector_toggle_password</item>
+        <item name="boxBackgroundColor">@color/input_bg</item>
+    </style>
+
+    <style name="CommonThemeOverlayFilledDense">
+        <item name="editTextStyle">@style/Widget.AppCompat.EditText</item>
+        <item name="android:background">@drawable/bg_rounded</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:paddingStart">@dimen/padding_5</item>
+        <item name="android:paddingEnd">@dimen/padding_5</item>
+        <item name="boxBackgroundColor">@color/item_color</item>
+    </style>
+
+    <style name="Button.Icon" parent="Widget.Material3.Button.IconButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="iconTint">@null</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="strokeColor">@android:color/transparent</item>
+        <item name="shapeAppearance">@style/SquareShape</item>
+    </style>
+
+    <style name="SquareShape" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="iconPadding">0dp</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalStyle</item>
+    </style>
+
+    <style name="ModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_rounded_top</item>
+    </style>
+
+    <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="android:backgroundTint">@color/cornflower_blue</item>
+        <item name="borderWidth">@dimen/size_0</item>
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="ExtendedFABStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="android:backgroundTint">@color/cornflower_blue</item>
+        <item name="iconTint">@color/white</item>
+        <item name="borderWidth">@dimen/size_0</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="searchHintIcon">@drawable/ic_search</item>
+        <item name="queryBackground">@drawable/bg_rounded</item>
     </style>
 </resources>
