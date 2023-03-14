@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import dagger.hilt.android.HiltAndroidApp
 import java.util.*
-import javax.inject.Inject
 
 @HiltAndroidApp
 class SmartBlockerApp : Application() {

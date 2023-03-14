@@ -8,7 +8,6 @@ import com.tarasovvp.smartblocker.databinding.FragmentSettingsLanguageBinding
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
-import javax.inject.Inject
 
 class SettingsLanguageFragment :
     BaseBindingFragment<FragmentSettingsLanguageBinding>() {

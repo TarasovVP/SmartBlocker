@@ -2,11 +2,9 @@ package com.tarasovvp.smartblocker.ui.main.number.list.list_call
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.models.Call
 import com.tarasovvp.smartblocker.models.CallWithFilter
-import com.tarasovvp.smartblocker.models.NumberData
-import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async

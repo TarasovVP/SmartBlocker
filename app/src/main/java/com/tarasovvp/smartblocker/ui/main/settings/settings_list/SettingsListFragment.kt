@@ -16,7 +16,6 @@ import com.tarasovvp.smartblocker.models.Review
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsListViewModel>() {

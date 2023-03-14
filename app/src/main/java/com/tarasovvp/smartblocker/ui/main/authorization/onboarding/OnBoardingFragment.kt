@@ -16,7 +16,6 @@ import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray
-import javax.inject.Inject
 
 class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 

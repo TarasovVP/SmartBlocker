@@ -7,7 +7,6 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsThemeBinding
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
-import javax.inject.Inject
 
 class SettingsThemeFragment :
     BaseBindingFragment<FragmentSettingsThemeBinding>() {
