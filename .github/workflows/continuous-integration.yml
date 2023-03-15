@@ -10,3 +10,21 @@ on:
     APK_FILE: app/build/outputs/apk/debug/app-debug.apk
     EMAIL: vptarasov1998@gmail.com
     PASSWORD: Tarasov*2022
+
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: Set up JDK 11
+          uses: actions/setup-java@v2
+          with:
+            java-version: '11'
+        - name: Build with Gradle
+          run: ./gradlew build
+        - name: Run instrumental tests
+          run: ./gradlew connectedAndroidTest
+        - name: Send APK to email
+          run: |
+            echo "Sending APK file to ${EMAIL}"
+            echo "Subject: New APK build" | cat - ${APK_FILE} | ssmtp -au "${EMAIL}" -ap "${PASSWORD}" "${EMAIL}"
