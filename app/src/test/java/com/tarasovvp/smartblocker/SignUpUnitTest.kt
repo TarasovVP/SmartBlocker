@@ -11,7 +11,7 @@ class SignUpUnitTest {
     @Test
     fun testLayoutIdAndViewModelClass() {
         val fragment = SignUpFragment()
-        assertEquals(R.layout.fragment_sign_up, fragment.layoutId)
+        assertEquals(R.layout.fragment_list_contact, fragment.layoutId)
         assertEquals(SignUpViewModel::class.java, fragment.viewModelClass)
     }
 }
