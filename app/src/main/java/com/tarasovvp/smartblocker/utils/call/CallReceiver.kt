@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.utils
+package com.tarasovvp.smartblocker.utils.call
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -40,7 +40,7 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (!context.checkPermissions() || !intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)) return
+        if (context.checkPermissions().not() || intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).not()) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
@@ -65,7 +65,7 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
     }
 
     private fun breakCall(context: Context) {
-        if (Build.VERSION.SDK_INT >= 28) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             context.breakCallPieAndHigher()
         } else {
             context.breakCallNougatAndLower()

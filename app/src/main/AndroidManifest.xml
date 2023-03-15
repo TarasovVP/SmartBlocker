@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.tarasovvp.smartblocker.utils.ForegroundCallService"/>
+        <service android:name="com.tarasovvp.smartblocker.utils.call.ForegroundCallService"/>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
