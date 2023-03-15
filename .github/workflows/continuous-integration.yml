@@ -21,11 +21,14 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
+
     - name: Send APK to email
-        env:
-          APK_FILE: app/build/outputs/apk/debug/app-debug.apk
-          EMAIL: vptarasov1998@gmail.com
-          PASSWORD: Tarasov*2022
-        run: |
-          echo "Sending APK file to ${EMAIL}"
-          echo "Subject: New APK build" | cat - ${APK_FILE} | ssmtp -au "${EMAIL}" -ap 
+      env:
+        APK_FILE: app/build/outputs/apk/debug/app-debug.apk
+        EMAIL: vptarasov1998@gmail.com
+        PASSWORD: Tarasov*2022
+      run: |
+        echo "Sending APK file to ${EMAIL}"
+        echo "Subject: New APK build" | cat - ${APK_FILE} | ssmtp -au "${EMAIL}" -ap 
