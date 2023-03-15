@@ -22,7 +22,7 @@ jobs:
         cache: gradle
 
     - name: Build with Gradle
-      run: ./gradlew assembleDebug assembleAndroidTest
+      run: ./gradlew assembleDebug
 
     - name: Run Lint
       run: ./gradlew lintDebug

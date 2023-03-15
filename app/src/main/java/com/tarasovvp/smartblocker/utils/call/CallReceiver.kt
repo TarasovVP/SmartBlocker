@@ -23,21 +23,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiver() {
+open class CallReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var filterRepository: FilterRepository
 
     @Inject
     lateinit var filteredCallRepository: FilteredCallRepository
-
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            SmartBlockerApp.instance?.apply {
-                phoneListener.invoke()
-            }
-        }
-    }
 
     override fun onReceive(context: Context, intent: Intent) {
         if (context.checkPermissions().not() || intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).not()) return
@@ -55,9 +47,8 @@ open class CallReceiver(private val phoneListener: () -> Unit) : BroadcastReceiv
                 breakCall(context)
             } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                 delay(SECOND)
-                if (filter.isNotNull()) {
-                    context.writeFilteredCall(number, filter, filteredCallRepository)
-                    phoneListener.invoke()
+                filter?.let { filterNotNull ->
+                    context.createFilteredCall(number, filterNotNull)?.let { filteredCallRepository.insertFilteredCall(it) }
                 }
                 context.sendBroadcast(Intent(CALL_RECEIVE))
             }

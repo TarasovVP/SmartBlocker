@@ -45,7 +45,7 @@ class FilterRepositoryImpl @Inject constructor(
         return filterDao.getFilter(filter.createFilter())
     }
 
-    override fun updateFilter(filter: Filter, result: () -> Unit) {
+    override suspend fun updateFilter(filter: Filter, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilter(filter) {
                 filterDao.updateFilter(filter)
@@ -57,7 +57,7 @@ class FilterRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertFilter(filter: Filter, result: () -> Unit) {
+    override suspend fun insertFilter(filter: Filter, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.insertFilter(filter) {
                 filterDao.insertFilter(filter)
@@ -69,7 +69,7 @@ class FilterRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) {
+    override suspend fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) {
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             realDataBaseRepository.deleteFilterList(filterList) {
                 filterList.forEach { filter ->

@@ -36,9 +36,7 @@ class ForegroundCallService : Service() {
     }
 
     private fun registerScreenOffReceiver() {
-        callReceiver = CallReceiver {
-            startForeground(FOREGROUND_ID, notificationBuilder?.build())
-        }
+        callReceiver = CallReceiver()
         val filter = IntentFilter(PHONE_STATE)
         registerReceiver(callReceiver, filter)
     }

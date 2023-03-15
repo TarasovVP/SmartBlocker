@@ -10,7 +10,7 @@ interface FilteredCallRepository {
 
     suspend fun insertAllFilteredCalls(filteredCallList: ArrayList<FilteredCall>)
 
-    fun insertFilteredCall(filteredCall: FilteredCall)
+    suspend fun insertFilteredCall(filteredCall: FilteredCall)
 
     suspend fun allFilteredCalls(): List<FilteredCall>
 
@@ -20,5 +20,5 @@ interface FilteredCallRepository {
 
     suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter>
 
-    fun deleteFilteredCalls(filteredCallIdList: List<Int>, result: () -> Unit)
+    suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>, result: () -> Unit)
 }

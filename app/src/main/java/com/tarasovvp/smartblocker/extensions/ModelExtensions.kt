@@ -27,10 +27,6 @@ import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.database.entities.*
 import com.tarasovvp.smartblocker.models.*
-import com.tarasovvp.smartblocker.repository.FilteredCallRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
 
@@ -116,26 +112,23 @@ fun Context.systemLogCallList(result: (Int, Int) -> Unit): ArrayList<LogCall> {
     return logCallList
 }
 
-fun Context.writeFilteredCall(
+suspend fun Context.createFilteredCall(
     number: String,
-    filter: Filter?,
-    filteredCallRepository: FilteredCallRepository
-) {
+    filter: Filter
+) : FilteredCall? {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
-            val filteredCall = cursor.createCallObject(true) as FilteredCall
-            if (number == filteredCall.number) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    filteredCallRepository.insertFilteredCall(filteredCall.apply {
-                        if (filter?.isBlocker().isTrue()) {
+            val filteredCall = cursor.createCallObject(true) as? FilteredCall
+            if (number == filteredCall?.number) {
+                    filteredCall.apply {
+                        if (filter.isBlocker()) {
                             type = BLOCKED_CALL
                         }
-                        this.filteredNumber = filter?.filter.orEmpty()
-                        this.conditionType = filter?.conditionType.orZero()
+                        this.filteredNumber = filter.filter
+                        this.conditionType = filter.conditionType
                         this.isFilteredCall = true
-                    })
-                }
-                if (filter?.isBlocker().isTrue()) {
+                    }
+                if (filter.isBlocker()) {
                     try {
                         this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
                             "${CALL_ID}'${filteredCall.callId}'",
@@ -144,10 +137,11 @@ fun Context.writeFilteredCall(
                         e.printStackTrace()
                     }
                 }
-                break
+                return filteredCall
             }
         }
     }
+    return null
 }
 
 fun Context.getInitialDrawable(text: String): Drawable {
