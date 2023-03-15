@@ -10,6 +10,12 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CallWithFilter
+import com.tarasovvp.smartblocker.database.entities.Contact
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterCondition
@@ -47,7 +53,8 @@ class DetailsNumberDataFragment :
                     contact = Contact(name = getString(R.string.details_number_from_call_log),
                     photoUrl = callWithFilter?.call?.photoUrl,
                     number = callWithFilter?.call?.number.orEmpty(),
-                filter = callWithFilter?.filterWithCountryCode?.filter?.filter.orEmpty()))
+                filter = callWithFilter?.filterWithCountryCode?.filter?.filter.orEmpty())
+                )
             } else {
                 args.numberData as ContactWithFilter
             }
@@ -153,7 +160,8 @@ class DetailsNumberDataFragment :
             filter = number,
             conditionType = conditionIndex,
             filterType = Constants.BLOCKER
-        ))
+        )
+        )
         val phoneNumber = if (number.getPhoneNumber(String.EMPTY)
                 .isNull()
         ) number.getPhoneNumber(

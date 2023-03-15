@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.models
+package com.tarasovvp.smartblocker.database.database_views
 
 import android.content.Context
 import android.os.Parcelable
@@ -8,6 +8,9 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.database.entities.CountryCode
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.models.NumberData
 import kotlinx.parcelize.Parcelize
 @DatabaseView("SELECT * FROM filters LEFT JOIN country_codes ON filters.country = country_codes.country")
 @Parcelize

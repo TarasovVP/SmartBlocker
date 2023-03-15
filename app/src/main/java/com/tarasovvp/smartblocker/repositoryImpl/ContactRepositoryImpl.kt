@@ -2,6 +2,9 @@ package com.tarasovvp.smartblocker.repositoryImpl
 
 import android.content.Context
 import com.tarasovvp.smartblocker.database.dao.ContactDao
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.entities.Contact
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredNumberDataList
 import com.tarasovvp.smartblocker.extensions.systemContactList

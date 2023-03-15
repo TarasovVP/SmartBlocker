@@ -1,6 +1,9 @@
 package com.tarasovvp.smartblocker.repository
 
 import android.content.Context
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.entities.Contact
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.models.*
 
 interface ContactRepository {

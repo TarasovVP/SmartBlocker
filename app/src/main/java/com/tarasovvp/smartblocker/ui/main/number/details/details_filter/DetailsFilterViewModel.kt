@@ -3,9 +3,9 @@ package com.tarasovvp.smartblocker.ui.main.number.details.details_filter
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.extensions.EMPTY
-import com.tarasovvp.smartblocker.models.ContactWithFilter
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.LogCallWithFilter
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.LogCallRepository
 import com.tarasovvp.smartblocker.repository.ContactRepository

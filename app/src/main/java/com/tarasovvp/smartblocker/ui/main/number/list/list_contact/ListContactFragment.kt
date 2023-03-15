@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.models.ContactWithFilter
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 import com.tarasovvp.smartblocker.ui.base.BaseListFragment

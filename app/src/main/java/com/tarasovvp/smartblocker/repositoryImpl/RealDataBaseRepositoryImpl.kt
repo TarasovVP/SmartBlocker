@@ -7,6 +7,8 @@ import com.tarasovvp.smartblocker.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.constants.Constants.USERS
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.entities.FilteredCall
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.models.*

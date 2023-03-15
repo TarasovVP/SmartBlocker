@@ -9,6 +9,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.database.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsFilterBinding
 import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.Info

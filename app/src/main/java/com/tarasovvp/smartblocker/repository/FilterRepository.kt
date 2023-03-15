@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 
 interface FilterRepository {
 

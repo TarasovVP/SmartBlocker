@@ -1,7 +1,9 @@
 package com.tarasovvp.smartblocker.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.models.*
+import com.tarasovvp.smartblocker.database.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CallWithFilter
+import com.tarasovvp.smartblocker.database.entities.LogCall
 
 interface LogCallRepository {
 

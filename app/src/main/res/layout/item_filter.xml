@@ -8,7 +8,7 @@
         <import type="android.view.View" />
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.models.FilterWithCountryCode" />
+            type="com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

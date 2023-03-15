@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.database.entities.CountryCode
 import com.tarasovvp.smartblocker.ui.base.BaseDialog
 import dagger.hilt.android.AndroidEntryPoint
 

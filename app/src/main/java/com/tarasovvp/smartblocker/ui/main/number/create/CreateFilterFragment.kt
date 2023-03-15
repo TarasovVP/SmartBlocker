@@ -15,6 +15,10 @@ import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CountryCode
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
 import com.tarasovvp.smartblocker.enums.FilterAction

@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemCountryCodeBinding
 import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.database.entities.CountryCode
 
 class CountryCodeSearchAdapter(
     var countryCodeList: List<CountryCode>? = null,

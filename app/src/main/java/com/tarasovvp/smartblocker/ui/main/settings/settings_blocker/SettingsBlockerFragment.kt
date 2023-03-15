@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
-import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.database.entities.CountryCode
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

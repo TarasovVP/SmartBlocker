@@ -13,9 +13,9 @@ import com.tarasovvp.smartblocker.enums.FilterAction
 import com.tarasovvp.smartblocker.enums.FilterCondition
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.models.CountryCode
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.entities.CountryCode
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter

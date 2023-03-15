@@ -11,7 +11,7 @@ import com.tarasovvp.smartblocker.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
-import com.tarasovvp.smartblocker.models.Filter
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions

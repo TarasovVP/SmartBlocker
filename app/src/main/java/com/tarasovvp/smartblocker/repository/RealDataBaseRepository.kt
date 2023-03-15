@@ -1,5 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.entities.FilteredCall
 import com.tarasovvp.smartblocker.models.*
 
 interface RealDataBaseRepository {

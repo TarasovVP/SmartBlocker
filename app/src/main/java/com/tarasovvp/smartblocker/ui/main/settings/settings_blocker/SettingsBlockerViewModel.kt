@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.database.entities.CountryCode
 import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel

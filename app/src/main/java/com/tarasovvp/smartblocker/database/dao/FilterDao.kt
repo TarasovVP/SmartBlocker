@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 
 @Dao
 interface FilterDao {
@@ -18,10 +18,12 @@ interface FilterDao {
     @Query("SELECT * FROM filters ORDER BY created DESC")
     suspend fun allFilters(): List<Filter>
 
+    @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilterWithCountryCode ORDER BY created DESC")
     suspend fun allFilterWithCountryCode(): List<FilterWithCountryCode>
 
+    @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilterWithCountryCode WHERE filterType = :filterType")
     suspend fun allFiltersByType(filterType: Int): List<FilterWithCountryCode>
@@ -30,6 +32,7 @@ interface FilterDao {
     @Query("SELECT * FROM filters WHERE filter = :filter")
     suspend fun getFilter(filter: String): FilterWithCountryCode?
 
+    @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilterWithCountryCode WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2)")
     suspend fun queryFullMatchFilterList(number: String): List<FilterWithCountryCode>

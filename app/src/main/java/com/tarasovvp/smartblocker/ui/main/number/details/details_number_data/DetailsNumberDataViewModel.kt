@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.ui.main.number.details.details_number_data
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.models.CountryCode
+import com.tarasovvp.smartblocker.database.entities.CountryCode
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.repository.FilterRepository

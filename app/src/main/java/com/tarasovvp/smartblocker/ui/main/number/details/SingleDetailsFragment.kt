@@ -6,8 +6,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
 import com.tarasovvp.smartblocker.enums.EmptyState
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.models.NumberData
 import com.tarasovvp.smartblocker.ui.base.BaseBindingFragment
 

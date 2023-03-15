@@ -5,6 +5,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CountryCode
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.isDarkMode
 import com.tarasovvp.smartblocker.models.*

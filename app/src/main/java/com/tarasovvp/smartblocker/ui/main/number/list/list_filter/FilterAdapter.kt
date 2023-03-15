@@ -11,7 +11,7 @@ import com.tarasovvp.smartblocker.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.models.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 
 class FilterAdapter(val filterClickListener: FilterClickListener) :

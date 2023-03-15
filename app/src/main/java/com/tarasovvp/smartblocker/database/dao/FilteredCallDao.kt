@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.models.FilteredCall
-import com.tarasovvp.smartblocker.models.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.FilteredCall
+import com.tarasovvp.smartblocker.database.database_views.FilteredCallWithFilter
 
 @Dao
 interface FilteredCallDao {
@@ -14,12 +14,18 @@ interface FilteredCallDao {
 
     @Query("SELECT * FROM filtered_calls")
     suspend fun allFilteredCalls(): List<FilteredCall>
+
+    @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilteredCallWithFilter")
     suspend fun allFilteredCallWithFilter(): List<FilteredCallWithFilter>
+
+    @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilteredCallWithFilter WHERE filter = :filter ORDER BY callDate DESC")
     suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter>
+
+    @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilteredCallWithFilter WHERE number = :number ORDER BY callDate DESC")
     suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter>

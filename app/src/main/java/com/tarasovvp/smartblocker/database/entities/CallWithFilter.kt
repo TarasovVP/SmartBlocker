@@ -1,8 +1,11 @@
-package com.tarasovvp.smartblocker.models
+package com.tarasovvp.smartblocker.database.entities
 
 import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.models.Call
+import com.tarasovvp.smartblocker.models.NumberData
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

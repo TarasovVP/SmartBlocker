@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.enums.Info
 import com.tarasovvp.smartblocker.extensions.*
-import com.tarasovvp.smartblocker.models.CallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CallWithFilter
 import com.tarasovvp.smartblocker.models.InfoData
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter

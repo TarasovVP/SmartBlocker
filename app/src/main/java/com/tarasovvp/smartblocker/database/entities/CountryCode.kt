@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.models
+package com.tarasovvp.smartblocker.database.entities
 
 import android.os.Parcelable
 import androidx.room.Entity

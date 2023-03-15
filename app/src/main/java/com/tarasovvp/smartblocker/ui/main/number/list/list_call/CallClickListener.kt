@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.ui.main.number.list.list_call
 
-import com.tarasovvp.smartblocker.models.CallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CallWithFilter
 
 interface CallClickListener {
     fun onCallClick(callWithFilter: CallWithFilter)

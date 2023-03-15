@@ -14,7 +14,7 @@ import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.models.CallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CallWithFilter
 import com.tarasovvp.smartblocker.ui.base.BaseAdapter
 
 class CallAdapter(val callClickListener: CallClickListener) :

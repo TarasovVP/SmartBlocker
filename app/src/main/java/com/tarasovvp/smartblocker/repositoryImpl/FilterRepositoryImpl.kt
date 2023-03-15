@@ -4,8 +4,8 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.database.dao.FilterDao
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.isTrue
-import com.tarasovvp.smartblocker.models.Filter
-import com.tarasovvp.smartblocker.models.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.RealDataBaseRepository
 import kotlinx.coroutines.Dispatchers

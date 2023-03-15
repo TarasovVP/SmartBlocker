@@ -14,6 +14,7 @@ import com.tarasovvp.smartblocker.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.IN_COMING_CALL
 import com.tarasovvp.smartblocker.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.constants.Constants.TIME_FORMAT
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import kotlinx.parcelize.IgnoredOnParcel

@@ -23,6 +23,9 @@ import com.tarasovvp.smartblocker.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.constants.Constants.DESC
 import com.tarasovvp.smartblocker.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.entities.*
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
@@ -52,7 +55,8 @@ fun Context.systemContactList(filterRepository: FilterRepository, result: (Int, 
     val contactList = arrayListOf<Contact>()
     cursor?.use { contactCursor ->
         while (contactCursor.moveToNext()) {
-            contactList.add(Contact(
+            contactList.add(
+                Contact(
                 id = contactCursor.getString(0),
                 name = contactCursor.getString(1),
                 photoUrl = contactCursor.getString(2),

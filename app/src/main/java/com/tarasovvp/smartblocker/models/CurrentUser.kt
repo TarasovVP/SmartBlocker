@@ -1,6 +1,8 @@
 package com.tarasovvp.smartblocker.models
 
 import android.os.Parcelable
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.database.entities.FilteredCall
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

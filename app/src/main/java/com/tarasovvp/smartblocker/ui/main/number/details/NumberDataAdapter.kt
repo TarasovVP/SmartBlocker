@@ -8,6 +8,11 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.database.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.database.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.database.entities.CallWithFilter
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
