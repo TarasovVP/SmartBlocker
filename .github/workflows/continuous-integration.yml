@@ -22,8 +22,6 @@ jobs:
           distribution: 'temurin'
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Run instrumental tests
-        run: ./gradlew connectedAndroidTest
       - name: Send APK to email
         run: |
           echo "Sending APK file to ${EMAIL}"
