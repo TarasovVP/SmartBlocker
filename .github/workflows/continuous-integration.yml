@@ -6,14 +6,13 @@ on:
   pull_request:
     branches: [ main ]
 
-  env:
-    APK_FILE: app/build/outputs/apk/debug/app-debug.apk
-    EMAIL: vptarasov1998@gmail.com
-    PASSWORD: Tarasov*2022
-
   jobs:
     build:
       runs-on: ubuntu-latest
+      env:
+        APK_FILE: app/build/outputs/apk/debug/app-debug.apk
+        EMAIL: vptarasov1998@gmail.com
+        PASSWORD: Tarasov*2022
       steps:
         - uses: actions/checkout@v2
         - name: Set up JDK 11
