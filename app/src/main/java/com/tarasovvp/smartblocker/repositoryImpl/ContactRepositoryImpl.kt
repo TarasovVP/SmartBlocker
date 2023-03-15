@@ -7,10 +7,10 @@ import com.tarasovvp.smartblocker.database.entities.Contact
 import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.extensions.EMPTY
 import com.tarasovvp.smartblocker.extensions.filteredNumberDataList
+import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.extensions.systemContactList
 import com.tarasovvp.smartblocker.models.*
 import com.tarasovvp.smartblocker.repository.ContactRepository
-import com.tarasovvp.smartblocker.repository.FilterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,9 +18,26 @@ import javax.inject.Inject
 class ContactRepositoryImpl @Inject constructor(
     private val contactDao:  ContactDao
 ) : ContactRepository {
-    override suspend fun insertContacts(list: List<Contact>) {
-        contactDao.insertAllContacts(list)
+
+    override suspend fun insertContacts(contactList: List<Contact>) {
+        contactDao.insertAllContacts(contactList)
     }
+
+    override suspend fun setFilterToContact(filterList: ArrayList<Filter>?, contactList: List<Contact>, result: (Int, Int) -> Unit): List<Contact> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            contactList.onEachIndexed { index, contact ->
+                val filter = filterList?.filter { filter ->
+                    (contact.phoneNumberValue() == filter.filter && filter.isTypeFull())
+                            || (contact.phoneNumberValue().startsWith(filter.filter) && filter.isTypeStart())
+                            || (contact.phoneNumberValue().contains(filter.filter) && filter.isTypeContain())
+                }?.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { contact.phoneNumberValue().indexOf(it.filter) })?.firstOrNull()
+                contact.filter = filter?.filter.orEmpty()
+                filter?.filteredContacts = filter?.filteredContacts.orZero() + 1
+                result.invoke(contactList.size, index)
+            }
+        }
 
     override suspend fun getContactsWithFilters(): List<ContactWithFilter> =
         withContext(
@@ -33,13 +50,12 @@ class ContactRepositoryImpl @Inject constructor(
 
     override suspend fun getSystemContactList(
         context: Context,
-        filterRepository: FilterRepository,
         result: (Int, Int) -> Unit,
     ): ArrayList<Contact> =
         withContext(
             Dispatchers.Default
         ) {
-            context.systemContactList(filterRepository) { size, position ->
+            context.systemContactList { size, position ->
                 result.invoke(size, position)
             }
         }

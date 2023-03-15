@@ -3,9 +3,12 @@ package com.tarasovvp.smartblocker.repository
 import android.content.Context
 import com.tarasovvp.smartblocker.database.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.database.entities.CallWithFilter
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.database.entities.LogCall
 
 interface LogCallRepository {
+
+    suspend fun setFilterToLogCall(filterList: ArrayList<Filter>?, callList: List<LogCall>, result: (Int, Int) -> Unit): List<LogCall>
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>)
 

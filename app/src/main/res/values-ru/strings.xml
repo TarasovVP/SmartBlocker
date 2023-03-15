@@ -92,12 +92,12 @@
     <!--Progress-->
     <string name="progress_data_collect">Сбор информации</string>
     <string name="progress_external_data_collect">Запрос внешних данных</string>
-    <string name="progress_update_localizations">Обновление данных локализации</string>
-    <string name="progress_update_filters">Обновление фильтров</string>
-    <string name="progress_update_contacts">Обновление контактов</string>
-    <string name="progress_update_calls">Обновление списка звонков</string>
-    <string name="progress_update_filtered_calls">Обновление списка отфильтрованных звонков</string>
-    <string name="progress_update_data">Обновление данных</string>
+    <string name="progress_update_localizations">Получение данных локализации</string>
+    <string name="progress_update_contacts_receive">Получение списка контактов</string>
+    <string name="progress_update_contacts_change">Обработка контактов</string>
+    <string name="progress_update_calls_receive">Получение списка звонков</string>
+    <string name="progress_update_calls_change">Обработка звонков</string>
+    <string name="progress_update_filtered_calls">Обработка отфильтрованных звонков</string>
     <!--List screens-->
     <string name="list_blocker">Блокировщики</string>
     <string name="list_permission">Разрешения</string>

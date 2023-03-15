@@ -27,7 +27,6 @@ import com.tarasovvp.smartblocker.database.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.database.entities.*
 import com.tarasovvp.smartblocker.models.*
-import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.repository.FilteredCallRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +34,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.max
 
-fun Context.systemContactList(filterRepository: FilterRepository, result: (Int, Int) -> Unit): ArrayList<Contact> {
+fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Contacts.DISPLAY_NAME,
@@ -61,11 +60,8 @@ fun Context.systemContactList(filterRepository: FilterRepository, result: (Int, 
                 name = contactCursor.getString(1),
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
-            ).apply {
-                CoroutineScope(Dispatchers.IO).launch {
-                    filter = filterRepository.queryFilter(phoneNumberValue())?.filter?.filter.orEmpty()
-                }
-            })
+            ))
+            //TODO
             result.invoke(cursor.count, contactList.size)
         }
     }
@@ -108,14 +104,11 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     return logCall
 }
 
-fun Context.systemLogCallList(filterRepository: FilterRepository, result: (Int, Int) -> Unit): ArrayList<LogCall> {
+fun Context.systemLogCallList(result: (Int, Int) -> Unit): ArrayList<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
-            CoroutineScope(Dispatchers.IO).launch {
-                logCall.filter = filterRepository.queryFilter(logCall.phoneNumberValue())?.filter?.filter
-            }
             logCallList.add(logCall)
             result.invoke(callLogCursor.count, logCallList.size)
         }

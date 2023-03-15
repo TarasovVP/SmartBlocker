@@ -7,9 +7,11 @@ import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.models.*
 
 interface ContactRepository {
-    suspend fun getSystemContactList(context: Context, filterRepository: FilterRepository, result: (Int, Int) -> Unit): ArrayList<Contact>
+    suspend fun getSystemContactList(context: Context, result: (Int, Int) -> Unit): ArrayList<Contact>
 
-    suspend fun insertContacts(list: List<Contact>)
+    suspend fun setFilterToContact(filterList: ArrayList<Filter>?, contactList: List<Contact>, result: (Int, Int) -> Unit): List<Contact>
+
+    suspend fun insertContacts(contactList: List<Contact>)
 
     suspend fun getContactsWithFilters(): List<ContactWithFilter>
 

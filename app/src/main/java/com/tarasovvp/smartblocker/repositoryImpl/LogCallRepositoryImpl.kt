@@ -4,15 +4,29 @@ import android.content.Context
 import com.tarasovvp.smartblocker.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.database.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.database.entities.CallWithFilter
+import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.database.entities.LogCall
 import com.tarasovvp.smartblocker.extensions.systemLogCallList
 import com.tarasovvp.smartblocker.repository.LogCallRepository
-import com.tarasovvp.smartblocker.repository.FilterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LogCallRepositoryImpl @Inject constructor(private val callDao: LogCallDao, private val filterRepository: FilterRepository) : LogCallRepository {
+class LogCallRepositoryImpl @Inject constructor(private val callDao: LogCallDao) : LogCallRepository {
+
+    override suspend fun setFilterToLogCall(filterList: ArrayList<Filter>?, callList: List<LogCall>, result: (Int, Int) -> Unit): List<LogCall> =
+        withContext(
+            Dispatchers.Default
+        ) {
+            callList.onEachIndexed { index, logCall ->
+                logCall.filter = filterList?.filter { filter ->
+                    (logCall.phoneNumberValue() == filter.filter && filter.isTypeFull())
+                            || (logCall.phoneNumberValue().startsWith(filter.filter) && filter.isTypeStart())
+                            || (logCall.phoneNumberValue().contains(filter.filter) && filter.isTypeContain())
+                }?.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { logCall.phoneNumberValue().indexOf(it.filter) })?.firstOrNull()?.filter.orEmpty()
+                result.invoke(callList.size, index)
+            }
+        }
 
     override suspend fun insertAllLogCalls(logCallList: List<LogCall>) {
         callDao.insertAllLogCalls(logCallList)
@@ -36,7 +50,7 @@ class LogCallRepositoryImpl @Inject constructor(private val callDao: LogCallDao,
         withContext(
             Dispatchers.Default
         ) {
-            context.systemLogCallList(filterRepository) { size, position ->
+            context.systemLogCallList { size, position ->
                 result.invoke(size, position)
             }
         }

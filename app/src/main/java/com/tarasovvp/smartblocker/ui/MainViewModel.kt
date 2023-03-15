@@ -1,9 +1,10 @@
 package com.tarasovvp.smartblocker.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.database.entities.Filter
+import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import com.tarasovvp.smartblocker.models.CurrentUser
 import com.tarasovvp.smartblocker.models.MainProgress
@@ -60,73 +61,86 @@ class MainViewModel @Inject constructor(
 
     fun getAllData() {
         launch {
-            // init country code data
-            val countryCodeList = countryCodeRepository.getSystemCountryCodeList { size, position ->
+            setCountryCodeData()
+            val filterList = filterRepository.allFilters() as? ArrayList
+            setContactData(filterList)
+            setLogCallData(filterList)
+            setFilteredCallData(filterList)
+            filterList?.let { filterRepository.insertAllFilters(it) }
+            successAllDataLiveData.postValue(true)
+        }
+    }
+
+    private suspend fun setCountryCodeData() {
+        val countryCodeList = countryCodeRepository.getSystemCountryCodeList { size, position ->
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressDescription =
+                    getApplication<Application>().getString(R.string.progress_update_localizations)
+                progressMax = size
+                progressPosition = position
+            })
+        }
+        if (SharedPrefs.countryCode.isNullOrEmpty()) {
+            SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == SharedPrefs.country?.uppercase() }?.countryCode
+        }
+        countryCodeRepository.insertAllCountryCodes(countryCodeList)
+    }
+
+    private suspend fun setContactData(filterList: ArrayList<Filter>?) {
+        val contactList =
+            contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
                 progressStatusLiveData.postValue(mainProgress.apply {
                     progressDescription =
-                        getApplication<Application>().getString(R.string.progress_update_localizations)
+                        getApplication<Application>().getString(R.string.progress_update_contacts_receive)
                     progressMax = size
                     progressPosition = position
                 })
             }
-            if (SharedPrefs.countryCode.isNullOrEmpty()) {
-                SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == SharedPrefs.country?.uppercase() }?.countryCode
-            }
-            countryCodeRepository.insertAllCountryCodes(countryCodeList)
-            // init contacts data
-            val contactList =
-                contactRepository.getSystemContactList(getApplication<Application>(), filterRepository) { size, position ->
-                    progressStatusLiveData.postValue(mainProgress.apply {
-                        progressDescription =
-                            getApplication<Application>().getString(R.string.progress_update_contacts)
-                        progressMax = size
-                        progressPosition = position
-                    })
-                }
-            contactRepository.insertContacts(contactList)
-            Log.e("callTAG", "MainViewModel callLogList start")
-            val callLogList =
-                logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
-                    progressStatusLiveData.postValue(mainProgress.apply {
-                        progressDescription =
-                            getApplication<Application>().getString(R.string.progress_update_calls)
-                        progressMax = size
-                        progressPosition = position
-                    })
-                }
-            logCallRepository.insertAllLogCalls(callLogList)
-            Log.e("callTAG", "MainViewModel callLogList finish")
-            // init filtered calls data
-            val filteredCallList = filteredCallRepository.allFilteredCalls() as ArrayList
-            filteredCallList.forEachIndexed { index, filteredCall ->
-                progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription =
-                        getApplication<Application>().getString(R.string.progress_update_filtered_calls)
-                    progressMax = filteredCallList.size
-                    progressPosition = index
-                    filteredCall.filter = filteredCall.number.let { filterRepository.queryFilter(it) }?.filter?.filter
-                })
-            }
-            filteredCallRepository.insertAllFilteredCalls(filteredCallList)
-            // init filter data
-            val filterList = filterRepository.allFilters() as? ArrayList
-            filterList?.forEachIndexed { index, filter ->
-                filter.filteredContacts = contactList.filter { it.filter == filter.filter }.size + callLogList.filter { it.filter == filter.filter }.distinctBy { it.number }.size
-                progressStatusLiveData.postValue(mainProgress.apply {
-                    progressDescription =
-                        getApplication<Application>().getString(R.string.progress_update_filters)
-                    progressMax = filterList.size
-                    progressPosition = index
-                })
-            }
-            filterList?.let { filterRepository.insertAllFilters(it) }
-            successAllDataLiveData.postValue(true)
+        contactRepository.setFilterToContact(filterList, contactList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressDescription =
-                    getApplication<Application>().getString(R.string.progress_update_data)
-                progressMax = 0
-                progressPosition = 0
+                    getApplication<Application>().getString(R.string.progress_update_contacts_change)
+                progressMax = size
+                progressPosition = position
             })
         }
+        contactRepository.insertContacts(contactList)
+    }
+
+    private suspend fun setLogCallData(filterList: ArrayList<Filter>?) {
+        val logCallList =
+            logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
+                progressStatusLiveData.postValue(mainProgress.apply {
+                    progressDescription =
+                        getApplication<Application>().getString(R.string.progress_update_calls_receive)
+                    progressMax = size
+                    progressPosition = position
+                })
+            }
+        logCallRepository.setFilterToLogCall(filterList, logCallList) { size, position ->
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressDescription =
+                    getApplication<Application>().getString(R.string.progress_update_calls_change)
+                progressMax = size
+                progressPosition = position
+            })
+        }
+        logCallRepository.insertAllLogCalls(logCallList)
+        filterList?.onEach { filter ->
+            filter.filteredContacts = filter.filteredContacts.orZero() + logCallList.filter { filter.filter == it.filter }.distinctBy { it.number }.size
+        }
+    }
+
+    private suspend fun setFilteredCallData(filterList: ArrayList<Filter>?) {
+        val filteredCallList = filteredCallRepository.allFilteredCalls() as ArrayList
+        filteredCallRepository.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressDescription =
+                    getApplication<Application>().getString(R.string.progress_update_filtered_calls)
+                progressMax = size
+                progressPosition = position
+            })
+        }
+        filteredCallRepository.insertAllFilteredCalls(filteredCallList)
     }
 }

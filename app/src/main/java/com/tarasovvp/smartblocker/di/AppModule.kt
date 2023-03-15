@@ -63,8 +63,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLogCallRepository(logCallDao: LogCallDao, filterRepository: FilterRepository) : LogCallRepository {
-        return LogCallRepositoryImpl(logCallDao, filterRepository)
+    fun provideLogCallRepository(logCallDao: LogCallDao) : LogCallRepository {
+        return LogCallRepositoryImpl(logCallDao)
     }
 
     @Singleton
