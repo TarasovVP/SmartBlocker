@@ -57,5 +57,4 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             }
         }
     }
-
 }
