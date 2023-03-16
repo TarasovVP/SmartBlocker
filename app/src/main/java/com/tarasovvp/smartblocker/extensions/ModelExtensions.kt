@@ -13,6 +13,7 @@ import android.telephony.TelephonyManager
 import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.firebase.perf.metrics.AddTrace
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.smartblocker.R
@@ -57,7 +58,6 @@ fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
             ))
-            //TODO
             result.invoke(cursor.count, contactList.size)
         }
     }
@@ -144,6 +144,7 @@ suspend fun Context.createFilteredCall(
     return null
 }
 
+@AddTrace(name = "getInitialDrawable")
 fun Context.getInitialDrawable(text: String): Drawable {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.TRANSPARENT
@@ -220,6 +221,7 @@ fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
     null
 }
 
+@AddTrace(name = "isValidPhoneNumber")
 fun String?.isValidPhoneNumber(country: String): Boolean {
     return try {
         if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance()
@@ -238,6 +240,7 @@ fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
     }
 }
 
+@AddTrace(name = "filteredNumberDataList")
 fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): ArrayList<NumberData> {
     val filteredList = arrayListOf<NumberData>()
     val supposedFilteredList = arrayListOf<NumberData>()

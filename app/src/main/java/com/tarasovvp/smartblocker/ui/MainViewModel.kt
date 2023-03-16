@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.database.entities.Filter
 import com.tarasovvp.smartblocker.extensions.orZero
@@ -71,6 +72,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @AddTrace(name = "setCountryCodeData")
     private suspend fun setCountryCodeData() {
         val countryCodeList = countryCodeRepository.getSystemCountryCodeList { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
@@ -86,6 +88,7 @@ class MainViewModel @Inject constructor(
         countryCodeRepository.insertAllCountryCodes(countryCodeList)
     }
 
+    @AddTrace(name = "setContactData")
     private suspend fun setContactData(filterList: ArrayList<Filter>?) {
         val contactList =
             contactRepository.getSystemContactList(getApplication<Application>()) { size, position ->
@@ -107,6 +110,7 @@ class MainViewModel @Inject constructor(
         contactRepository.insertContacts(contactList)
     }
 
+    @AddTrace(name = "setLogCallData")
     private suspend fun setLogCallData(filterList: ArrayList<Filter>?) {
         val logCallList =
             logCallRepository.getSystemLogCallList(getApplication<Application>()) { size, position ->
@@ -131,6 +135,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @AddTrace(name = "setFilteredCallData")
     private suspend fun setFilteredCallData(filterList: ArrayList<Filter>?) {
         val filteredCallList = filteredCallRepository.allFilteredCalls() as ArrayList
         filteredCallRepository.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
