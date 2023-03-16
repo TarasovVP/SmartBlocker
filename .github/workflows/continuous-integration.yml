@@ -21,7 +21,21 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
+
+    - name: Run Lint
+      run: ./gradlew lintDebug
+
     - name: Run tests with Gradle
       run: ./gradlew test
+
+    - name: Run instrumental tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          script: ./gradlew connectedCheck
 
 
