@@ -12,7 +12,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : BaseBindi
     abstract val viewModelClass: Class<VM>
     abstract fun observeLiveData()
 
-    protected open val viewModel: VM by lazy(LazyThreadSafetyMode.NONE) {
+    open val viewModel: VM by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this)[viewModelClass]
     }
 

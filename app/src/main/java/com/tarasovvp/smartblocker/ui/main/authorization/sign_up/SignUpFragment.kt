@@ -30,7 +30,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         }
     }
 
-    private fun setContinueButton(editTextList: ArrayList<EditText>?) {
+    fun setContinueButton(editTextList: ArrayList<EditText>?) {
         binding?.apply {
             isInactive = editTextList?.any { it.text.isNullOrEmpty() }.isTrue()
             editTextList?.onEach { editText ->
