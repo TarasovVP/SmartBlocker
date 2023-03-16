@@ -11,6 +11,7 @@ import com.google.firebase.ktx.Firebase
 import com.tarasovvp.smartblocker.extensions.*
 import com.tarasovvp.smartblocker.local.SharedPrefs
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 import java.util.*
 
 @HiltAndroidApp
@@ -29,6 +30,9 @@ class SmartBlockerApp : Application() {
         SharedPrefs.init(this)
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
         createNotificationChannel()
         if (SharedPrefs.appLang.isNullOrEmpty()) SharedPrefs.appLang = Locale.getDefault().language
         SharedPrefs.appTheme?.let { AppCompatDelegate.setDefaultNightMode(it) }

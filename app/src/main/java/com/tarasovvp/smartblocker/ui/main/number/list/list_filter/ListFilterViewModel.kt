@@ -10,6 +10,7 @@ import com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +29,7 @@ class ListFilterViewModel @Inject constructor(
             val filterArrayList =
                 filterRepository.allFiltersByType(if (isBlackList) BLOCKER else PERMISSION) as ArrayList
             filterListLiveData.postValue(filterArrayList)
-            Log.e("filterTAG", "ListFilterViewModel getFilterList $filterArrayList")
+            Timber.e("ListFilterViewModel getFilterList $filterArrayList")
             hideProgress()
         }
     }

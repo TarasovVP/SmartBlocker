@@ -20,6 +20,7 @@ import com.tarasovvp.smartblocker.repository.FilterRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +39,7 @@ class CreateFilterViewModel @Inject constructor(
     val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getCountryCodeWithCountry(country: String?) {
-        Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeWithCountry country $country")
+        Timber.e("CreateFilterViewModel getCountryCodeWithCountry country $country")
         launch {
             val countryCode =
                 country?.let { countryCodeRepository.getCountryCodeWithCountry(it) }
@@ -48,7 +49,7 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun getCountryCodeWithCode(code: Int?) {
-        Log.e("createFilterTAG", "CreateFilterViewModel getCountryCodeWithCode code $code")
+        Timber.e("CreateFilterViewModel getCountryCodeWithCode code $code")
         launch {
             val countryCode =
                 code?.let { countryCodeRepository.getCountryCodeWithCode(it) } ?: CountryCode()
@@ -57,7 +58,7 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun getNumberDataList() {
-        Log.e("createFilterTAG", "CreateFilterViewModel getNumberDataList showProgress")
+        Timber.e("CreateFilterViewModel getNumberDataList showProgress")
         launch {
             val contacts = async { contactRepository.getContactsWithFilters() }
             val calls = async { logCallRepository.allCallNumberWithFilter() }
@@ -75,10 +76,7 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode) {
-        Log.e(
-            "createFilterTAG",
-            "CreateFilterViewModel checkFilterExist filter?.filter ${filterWithCountryCode.filter} createFilter ${filterWithCountryCode.createFilter()}"
-        )
+        Timber.e("CreateFilterViewModel checkFilterExist filter?.filter ${filterWithCountryCode.filter} createFilter ${filterWithCountryCode.createFilter()}")
         launch {
             val result = filterRepository.getFilter(filterWithCountryCode)
             existingFilterLiveData.postValue(result ?: FilterWithCountryCode(Filter(filterType = DEFAULT_FILTER)))
@@ -86,28 +84,19 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int) {
-        Log.e(
-            "createFilterTAG",
-            "CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} createFilter ${filterWithCountryCode?.createFilter()} numberDataList.size ${numberDataList.size}"
-        )
+        Timber.e("CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} createFilter ${filterWithCountryCode?.createFilter()} numberDataList.size ${numberDataList.size}")
         showProgress()
         launch {
             val filteredNumberDataList =
                 contactRepository.filteredNumberDataList(filterWithCountryCode?.filter, numberDataList, color)
             filteredNumberDataListLiveData.postValue(filteredNumberDataList)
             hideProgress()
-            Log.e(
-                "createFilterTAG",
-                "CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}"
-            )
+            Timber.e("CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}")
         }
     }
 
     fun createFilter(filter: Filter?) {
-        Log.e(
-            "createFilterTAG",
-            "CreateFilterViewModel createFilter createFilter $filter filter.country ${filter?.country}"
-        )
+        Timber.e("CreateFilterViewModel createFilter createFilter $filter filter.country ${filter?.country}")
         launch {
             filter?.let {
                 filterRepository.insertFilter(it) {
@@ -118,7 +107,7 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun updateFilter(filter: Filter?) {
-        Log.e("createFilterTAG", "CreateFilterViewModel updateFilter")
+        Timber.e("CreateFilterViewModel updateFilter")
         launch {
             filter?.let {
                 filterRepository.updateFilter(it) {
@@ -129,7 +118,7 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun deleteFilter(filter: Filter?) {
-        Log.e("createFilterTAG", "CreateFilterViewModel deleteFilter")
+        Timber.e("CreateFilterViewModel deleteFilter")
         launch {
             filter?.let {
                 filterRepository.deleteFilterList(listOf(it)) {

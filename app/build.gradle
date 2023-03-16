@@ -135,4 +135,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //Timber
+    implementation "com.jakewharton.timber:timber:4.7.1"
 }

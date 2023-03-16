@@ -31,6 +31,7 @@ import com.tarasovvp.smartblocker.ui.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.ui.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -89,7 +90,7 @@ open class CreateFilterFragment :
     }
 
     override fun initViews() {
-        Log.e("createFilterTAG", "CreateFilterFragment initViews")
+        Timber.e("CreateFilterFragment initViews")
         binding?.filterWithCountryCode = args.filterWithCountryCode?.apply {
             filter?.filterAction = filter?.filterAction ?: FilterAction.FILTER_ACTION_INVALID
         }
@@ -120,7 +121,7 @@ open class CreateFilterFragment :
     }
 
     override fun getData() {
-        Log.e("createFilterTAG", "CreateFilterFragment getData")
+        Timber.e( "CreateFilterFragment getData")
         viewModel.getNumberDataList()
         if (binding?.filterWithCountryCode?.filter?.isTypeContain().isNotTrue()) {
             if (binding?.filterWithCountryCode?.countryCode?.countryCode.isNullOrEmpty()) {
@@ -174,11 +175,11 @@ open class CreateFilterFragment :
             createFilterNumberList.hideKeyboardWithLayoutTouch()
             createFilterInput.setupClearButtonWithAction()
             createFilterInput.doAfterTextChanged {
-                Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener doAfterTextChanged it $it")
+                Timber.e( "CreateFilterFragment setFilterTextChangeListener doAfterTextChanged it $it")
                 if ((filterWithCountryCode?.conditionTypeFullHint() == it.toString() && filterWithCountryCode?.filter?.isTypeFull().isTrue())
                     || (filterWithCountryCode?.conditionTypeStartHint() == it.toString() && filterWithCountryCode?.filter?.isTypeStart().isTrue())
                 ) return@doAfterTextChanged
-                Log.e("createFilterTAG", "CreateFilterFragment setFilterTextChangeListener true condition")
+                Timber.e("CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
                 filterWithCountryCode = filterWithCountryCode?.apply {
                     filter?.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY)
@@ -193,7 +194,7 @@ open class CreateFilterFragment :
     }
 
     private fun setCountryCode(countryCode: CountryCode) {
-        Log.e("createFilterTAG", "CreateFilterFragment setCountryCode countryCode.country ${countryCode.country}")
+        Timber.e("CreateFilterFragment setCountryCode countryCode.country ${countryCode.country}")
         binding?.apply {
             filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
                 filterWithCountryCode?.countryCode = countryCode
@@ -210,7 +211,7 @@ open class CreateFilterFragment :
     }
 
     private fun filterNumberDataList(filteredList: ArrayList<NumberData>) {
-        Log.e("createFilterTAG", "CreateFilterFragment filterNumberDataList filteredList ${filteredList.size}")
+        Timber.e("CreateFilterFragment filterNumberDataList filteredList ${filteredList.size}")
         binding?.apply {
             numberDataAdapter?.numberDataList = filteredList
             numberDataAdapter?.notifyDataSetChanged()
@@ -223,11 +224,11 @@ open class CreateFilterFragment :
     override fun observeLiveData() {
         with(viewModel) {
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
-                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData countryCodeLiveData")
+                Timber.e("CreateFilterFragment observeLiveData countryCodeLiveData")
                 setCountryCode(countryCode)
             }
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
-                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData numberDataListLiveData")
+                Timber.e("CreateFilterFragment observeLiveData numberDataListLiveData")
                 this@CreateFilterFragment.numberDataList = ArrayList(numberDataList)
                 if (binding?.filterWithCountryCode?.filter?.isTypeContain().isTrue().not()) {
                     context?.let {viewModel.filterNumberDataList(binding?.filterWithCountryCode, this@CreateFilterFragment.numberDataList,
@@ -241,7 +242,7 @@ open class CreateFilterFragment :
                 (activity as MainActivity).setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
-                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter")
+                Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter")
                 binding?.filterWithCountryCode?.filter = binding?.filterWithCountryCode?.filter?.apply {
                     filterAction = when (existingFilter.filter?.filterType) {
                         DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
@@ -251,18 +252,18 @@ open class CreateFilterFragment :
                 }
             }
             filteredNumberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredNumberDataList ->
-                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData filteredNumberDataListLiveData")
+                Timber.e( "CreateFilterFragment observeLiveData filteredNumberDataListLiveData")
                 filterNumberDataList(filteredNumberDataList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
-                Log.e("createFilterTAG", "CreateFilterFragment observeLiveData filterActionLiveData")
+                Timber.e("CreateFilterFragment observeLiveData filterActionLiveData")
                 handleSuccessFilterAction(filter)
             }
         }
     }
 
     private fun handleSuccessFilterAction(filter: Filter) {
-        Log.e("createFilterTAG", "CreateFilterFragment handleSuccessFilterAction")
+        Timber.e("CreateFilterFragment handleSuccessFilterAction")
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
                 .orEmpty(),
@@ -276,7 +277,7 @@ open class CreateFilterFragment :
     }
 
     override fun showInfoScreen() {
-        Log.e("createFilterTAG", "CreateFilterFragment showInfoScreen")
+        Timber.e("CreateFilterFragment showInfoScreen")
         val info = when {
             binding?.filterWithCountryCode?.filter?.isTypeStart().isTrue() -> Info.INFO_CREATE_FILTER_START
             binding?.filterWithCountryCode?.filter?.isTypeContain().isTrue() -> Info.INFO_CREATE_FILTER_CONTAIN
