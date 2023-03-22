@@ -82,7 +82,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 }
             }
             loginContinue.setSafeOnClickListener {
-                binding?.root?.hideKeyboard()
+                root.hideKeyboard()
                 viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
                     loginPasswordInput.inputText())
             }
@@ -96,7 +96,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     getAllData()
                     if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()
                 }
-                findNavController().navigate(R.id.listBlockerFragment)
+                findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.authorization_password_reset_success), false)

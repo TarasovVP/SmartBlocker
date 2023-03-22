@@ -72,7 +72,9 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
     androidTestImplementation "org.hamcrest:hamcrest:2.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso"
+    androidTestImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
+        exclude module: "protobuf-lite"
+    }
     androidTestImplementation "androidx.test.espresso:espresso-web:$espresso"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso"
     implementation "androidx.arch.core:core-testing:2.2.0"
@@ -126,7 +128,7 @@ dependencies {
     implementation "com.googlecode.libphonenumber:libphonenumber:8.12.31"
 
     //Lottie
-    implementation "com.airbnb.android:lottie:5.1.1"
+    implementation "com.airbnb.android:lottie:6.0.0"
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"

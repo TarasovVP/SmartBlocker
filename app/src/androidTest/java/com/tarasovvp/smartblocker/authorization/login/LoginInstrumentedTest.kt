@@ -1,16 +1,27 @@
 package com.tarasovvp.smartblocker.authorization.login
 
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
+import com.tarasovvp.smartblocker.TestUtils.withDrawable
+import com.tarasovvp.smartblocker.TestUtils.withTextColor
+import com.tarasovvp.smartblocker.extensions.orZero
 import com.tarasovvp.smartblocker.ui.main.authorization.login.LoginFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import junit.framework.TestCase.assertEquals
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -42,7 +53,6 @@ class LoginInstrumentedTest {
     @Test
     fun checkContainer() {
         onView(withId(R.id.container)).check(matches(isDisplayed()))
-
     }
 
     /**
@@ -50,8 +60,7 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginMainTitle() {
-        onView(withId(R.id.login_main_title)).check(matches(isDisplayed()))
-
+        onView(withId(R.id.login_main_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_entrance)))
     }
 
     /**
@@ -59,7 +68,7 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginGoogleTitle() {
-        onView(withId(R.id.login_google_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_google_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_with_google_account)))
     }
 
     /**
@@ -67,7 +76,8 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginGoogleAuth() {
-        onView(withId(R.id.login_google_auth)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_google_auth)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter))).check(
+            matches(withDrawable(R.drawable.ic_logo_google)))
     }
 
     /**
@@ -75,9 +85,9 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginDivider() {
-        onView(withId(R.id.login_left_divider)).check(matches(isDisplayed()))
-        onView(withId(R.id.login_divider_title)).check(matches(isDisplayed()))
-        onView(withId(R.id.login_right_divider)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_left_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
+        onView(withId(R.id.login_divider_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_or)))
+        onView(withId(R.id.login_right_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, (R.color.cornflower_blue)))))
     }
 
     /**
@@ -86,7 +96,8 @@ class LoginInstrumentedTest {
     @Test
     fun checkLoginEmailInput() {
         onView(withId(R.id.login_email_input_container)).check(matches(isDisplayed()))
-        onView(withId(R.id.login_email_input)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_email_input)).check(matches(isDisplayed())).check(matches(withHint(R.string.authorization_email)))
+            .perform(replaceText(TEST_EMAIL)).check(matches(withText(TEST_EMAIL)))
     }
 
     /**
@@ -95,7 +106,8 @@ class LoginInstrumentedTest {
     @Test
     fun checkLoginPasswordInput() {
         onView(withId(R.id.login_password_input_container)).check(matches(isDisplayed()))
-        onView(withId(R.id.login_password_input)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_password_input)).check(matches(isDisplayed())).check(matches(withHint(R.string.authorization_password)))
+            .perform(replaceText(TEST_PASSWORD)).check(matches(withText(TEST_PASSWORD)))
     }
 
     /**
@@ -103,7 +115,9 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginForgotPassword() {
-        onView(withId(R.id.login_forgot_password)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_forgot_password)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_forgot_password)))
+            .check(matches(withTextColor(R.color.button_bg))).perform(click())
+        assertEquals(R.id.forgotPasswordDialog, navController?.currentDestination?.id.orZero())
     }
 
     /**
@@ -111,7 +125,9 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginSignUp() {
-        onView(withId(R.id.login_sign_up)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_sign_up)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_sign_up)))
+            .check(matches(withTextColor(R.color.button_bg))).perform(click())
+        assertEquals(R.id.signUpFragment, navController?.currentDestination?.id.orZero())
     }
 
     /**
@@ -119,7 +135,13 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginContinue() {
-        onView(withId(R.id.login_continue)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_continue)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter)))
+            .check(matches(not(isEnabled()))).check(matches(withTextColor(R.color.inactive_bg))).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.transparent))))
+        onView(withId(R.id.login_email_input)).perform(replaceText(TEST_EMAIL))
+        onView(withId(R.id.login_password_input)).perform(replaceText(TEST_PASSWORD))
+        onView(withId(R.id.login_continue))
+            .check(matches(isEnabled())).check(matches(withTextColor(R.color.white))).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.button_bg))))
+        assertEquals(R.id.listBlockerFragment, navController?.currentDestination?.id.orZero())
     }
 
     /**
@@ -127,9 +149,9 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginDividerUnauthorized() {
-        onView(withId(R.id.login_left_divider_unauthorized)).check(matches(isDisplayed()))
-        onView(withId(R.id.login_divider_title_unauthorized)).check(matches(isDisplayed()))
-        onView(withId(R.id.login_right_divider_unauthorized)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_left_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
+        onView(withId(R.id.login_divider_title_unauthorized)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_or)))
+        onView(withId(R.id.login_right_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
     }
 
     /**
@@ -137,7 +159,9 @@ class LoginInstrumentedTest {
      */
     @Test
     fun checkLoginContinueWithoutAcc() {
-        onView(withId(R.id.login_continue_without_acc)).check(matches(isDisplayed()))
+        onView(withId(R.id.login_continue_without_acc)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_continue_without_account)))
+            .check(matches(isEnabled())).perform(click())
+        assertEquals(R.id.unauthorizedEnterDialog, navController?.currentDestination?.id.orZero())
     }
 
     @After

@@ -103,7 +103,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
+    override suspend fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(BLOCK_HIDDEN).setValue(blockUnanimous)
             .addOnCompleteListener { task ->

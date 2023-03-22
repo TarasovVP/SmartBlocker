@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.ui.main.settings.settings_blocker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import com.tarasovvp.smartblocker.database.entities.CountryCode
 import com.tarasovvp.smartblocker.ui.MainActivity
 import com.tarasovvp.smartblocker.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SettingsBlockerFragment :
@@ -83,6 +85,7 @@ class SettingsBlockerFragment :
                     getString(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
                 binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden
                 SharedPrefs.blockHidden = blockHidden
+                Timber.e("SettingsBlockerFragment successBlockHiddenLiveData blockHidden $blockHidden")
             }
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { error ->
                 binding?.settingsBlockerHiddenSwitch?.isChecked =
