@@ -37,10 +37,10 @@ class SettingsAccountFragment :
 
     private fun setFragmentResults() {
         setFragmentResultListener(LOG_OUT) { _, _ ->
-            viewModel.signOut()
+            context?.googleSignInClient()?.let {viewModel.signOut(it)}
         }
         setFragmentResultListener(DELETE_USER) { _, _ ->
-            viewModel.deleteUser()
+            context?.googleSignInClient()?.let { viewModel.deleteUser(it)  }
         }
         setFragmentResultListener(CHANGE_PASSWORD) { _, bundle ->
             viewModel.changePassword(bundle.getString(CURRENT_PASSWORD, String.EMPTY),

@@ -1,5 +1,7 @@
 package com.tarasovvp.smartblocker.repository
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+
 interface AuthRepository {
 
     fun sendPasswordResetEmail(email: String, result: () -> Unit)
@@ -12,7 +14,7 @@ interface AuthRepository {
 
     fun changePassword(currentPassword: String, newPassword: String, result: () -> Unit)
 
-    fun deleteUser(result: () -> Unit)
+    fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit)
 
-    fun signOut(result: () -> Unit)
+    fun signOut(googleSignInClient: GoogleSignInClient, result: () -> Unit)
 }

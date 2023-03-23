@@ -146,7 +146,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/login_continue"
+                android:id="@+id/login_enter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/StrokeButtonStyle"
@@ -178,7 +178,7 @@
                 android:paddingHorizontal="@dimen/padding_10"
                 app:layout_constraintStart_toEndOf="@+id/login_left_divider_unauthorized"
                 app:layout_constraintEnd_toStartOf="@+id/login_right_divider_unauthorized"
-                app:layout_constraintTop_toBottomOf="@id/login_continue" />
+                app:layout_constraintTop_toBottomOf="@id/login_enter" />
 
             <View
                 android:id="@+id/login_right_divider_unauthorized"

@@ -2,11 +2,9 @@ package com.tarasovvp.smartblocker
 
 import android.content.ComponentName
 import android.content.Intent
-import android.graphics.BlendModeColorFilter
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -22,7 +20,6 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.internal.util.Checks
 import com.tarasovvp.smartblocker.extensions.isTrue
 import com.tarasovvp.smartblocker.ui.MainActivity
 import org.hamcrest.Description
@@ -98,17 +95,27 @@ object TestUtils {
                         val colors = drawable.colors
                         colors != null && colors.size == 1 && colors[0] == color
                     }
-                    is RippleDrawable -> {
-                        val colorStateList = drawable.effectColor
-                        colorStateList.defaultColor == color
-                    }
                     else -> false
                 }
             }
         }
     }
 
-    fun withTextColor(expectedId: Int): Matcher<View?>? {
+    fun withBackgroundTint(@ColorInt color: Int): Matcher<View> {
+        return object : TypeSafeMatcher<View>() {
+
+            override fun matchesSafely(view: View): Boolean {
+                val backgroundTintList = view.backgroundTintList
+                return backgroundTintList != null && backgroundTintList.defaultColor == color
+            }
+
+            override fun describeTo(description: Description) {
+                description.appendText("View with background tint color: $color")
+            }
+        }
+    }
+
+    fun withTextColor(expectedId: Int): Matcher<View?> {
         return object : BoundedMatcher<View?, TextView>(TextView::class.java) {
             override fun matchesSafely(textView: TextView): Boolean {
                 val colorId = ContextCompat.getColor(textView.context, expectedId)

@@ -17,16 +17,13 @@ import java.util.*
 @HiltAndroidApp
 class SmartBlockerApp : Application() {
 
-
     var auth: FirebaseAuth? = null
-    var googleSignInClient: GoogleSignInClient? = null
     var isNetworkAvailable: Boolean? = null
 
     override fun onCreate() {
         super.onCreate()
         instance = this
         auth = Firebase.auth
-        googleSignInClient = this.googleSignInClient()
         SharedPrefs.init(this)
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)

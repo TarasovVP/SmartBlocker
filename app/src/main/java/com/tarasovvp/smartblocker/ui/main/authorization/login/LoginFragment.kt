@@ -50,7 +50,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.inputText()))
             }
             loginGoogleAuth.setSafeOnClickListener {
-                googleSignInLauncher.launch(SmartBlockerApp.instance?.googleSignInClient?.signInIntent)
+                context?.googleSignInClient()?.signInIntent?.let {
+                    googleSignInLauncher.launch(it)
+                }
             }
         }
     }
@@ -81,7 +83,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     isInactive = editTextList.any { it.text.isNullOrEmpty() }.isTrue()
                 }
             }
-            loginContinue.setSafeOnClickListener {
+            loginEnter.setSafeOnClickListener {
                 root.hideKeyboard()
                 viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
                     loginPasswordInput.inputText())

@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.repositoryImpl
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -86,11 +87,11 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
             }
     }
 
-    override fun deleteUser(result: () -> Unit) {
+    override fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         auth?.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                SmartBlockerApp.instance?.googleSignInClient?.signOut()
+                googleSignInClient.signOut()
                 result.invoke()
             } else {
                 task.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()
@@ -98,9 +99,9 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
         }
     }
 
-    override fun signOut(result: () -> Unit) {
+    override fun signOut(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        SmartBlockerApp.instance?.googleSignInClient?.signOut()
+        googleSignInClient.signOut()
         auth?.signOut()
         result.invoke()
     }

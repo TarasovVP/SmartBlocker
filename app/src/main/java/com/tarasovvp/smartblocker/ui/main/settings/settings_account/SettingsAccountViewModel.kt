@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.ui.main.settings.settings_account
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.repository.AuthRepository
 import com.tarasovvp.smartblocker.ui.base.BaseViewModel
@@ -17,9 +18,9 @@ class SettingsAccountViewModel @Inject constructor(
     val successLiveData = MutableLiveData<Boolean>()
     val successChangePasswordLiveData = MutableLiveData<Boolean>()
 
-    fun signOut() {
+    fun signOut(googleSignInClient: GoogleSignInClient) {
         showProgress()
-        authRepository.signOut {
+        authRepository.signOut(googleSignInClient) {
             successLiveData.postValue(true)
             hideProgress()
         }
@@ -34,9 +35,9 @@ class SettingsAccountViewModel @Inject constructor(
         }
     }
 
-    fun deleteUser() {
+    fun deleteUser(googleSignInClient: GoogleSignInClient) {
         showProgress()
-        authRepository.deleteUser {
+        authRepository.deleteUser(googleSignInClient) {
             successLiveData.postValue(true)
             hideProgress()
         }

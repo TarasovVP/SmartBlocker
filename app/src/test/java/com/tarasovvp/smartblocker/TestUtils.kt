@@ -9,6 +9,8 @@ import java.util.concurrent.TimeoutException
 
 object TestUtils {
 
+    const val TEST_TOKEN = "testToken"
+
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun <T> LiveData<T>.getOrAwaitValue(
         time: Long = 2,
