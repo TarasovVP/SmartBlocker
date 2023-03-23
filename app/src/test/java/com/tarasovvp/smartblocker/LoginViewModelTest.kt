@@ -5,8 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.tarasovvp.smartblocker.TestUtils.TEST_TOKEN
-import com.tarasovvp.smartblocker.repository.AuthRepository
-import com.tarasovvp.smartblocker.ui.main.authorization.login.LoginViewModel
+import com.tarasovvp.smartblocker.domain.repository.AuthRepository
+import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginViewModel
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before

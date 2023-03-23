@@ -13,9 +13,9 @@ import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.core.content.ContextCompat
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.constants.Constants.MASK_CHAR
-import com.tarasovvp.smartblocker.constants.Constants.SPACE
-import com.tarasovvp.smartblocker.extensions.*
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MASK_CHAR
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SPACE
+import com.tarasovvp.smartblocker.utils.extensions.*
 
 class MaskedEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

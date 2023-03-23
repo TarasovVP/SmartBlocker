@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.authorization.onboarding.OnBoardingFragment">
+        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.OnBoardingFragment">
         <action
             android:id="@+id/startLoginScreen"
             app:destination="@id/loginFragment"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.authorization.login.LoginFragment" >
+        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginFragment" >
         <action
             android:id="@+id/startListBlockerFragment"
             app:destination="@id/listBlockerFragment"
@@ -35,11 +35,11 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.authorization.sign_up.SignUpFragment" />
+        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment" />
 
     <fragment
         android:id="@+id/listBlockerFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_filter.ListBlockerFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment"
         android:label="@string/list_blocker">
         <action
             android:id="@+id/startCreateFilterFragment"
@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/listPermissionFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_filter.ListPermissionFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment"
         android:label="@string/list_permission">
         <action
             android:id="@+id/startCreateFilterFragment"
@@ -81,11 +81,11 @@
 
     <fragment
         android:id="@+id/detailsFilterFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_filter.DetailsFilterFragment">
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterFragment">
         <argument
             android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode"
+            app:argType="com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode"
             app:nullable="true" />
         <action
             android:id="@+id/startDetailsNumberDataFragment"
@@ -110,11 +110,11 @@
 
     <fragment
         android:id="@+id/createFilterFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.create.CreateFilterFragment" >
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment" >
         <argument
             android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode"
+            app:argType="com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode"
             app:nullable="true" />
         <action
             android:id="@+id/startCountryCodeSearchDialog"
@@ -148,7 +148,7 @@
 
     <fragment
         android:id="@+id/listContactFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_contact.ListContactFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment"
         android:label="@string/list_contact">
         <action
             android:id="@+id/startDetailsNumberDataFragment"
@@ -163,7 +163,7 @@
 
     <fragment
         android:id="@+id/listCallFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.list.list_call.ListCallFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment"
         android:label="@string/list_call">
         <action
             android:id="@+id/startDetailsNumberDataFragment"
@@ -181,12 +181,12 @@
 
     <fragment
         android:id="@+id/detailsNumberDataFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.details.details_number_data.DetailsNumberDataFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragment"
         android:label="@string/details_number">
         <argument
             android:name="numberData"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.models.NumberData"
+            app:argType="com.tarasovvp.smartblocker.domain.models.NumberData"
             app:nullable="true" />
         <action
             android:id="@+id/startCreateFilterFragment"
@@ -204,11 +204,11 @@
 
     <fragment
         android:id="@+id/infoFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.number.info.InfoFragment" >
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment" >
         <argument
             android:name="info"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.models.InfoData"
+            app:argType="com.tarasovvp.smartblocker.domain.models.InfoData"
             app:nullable="true" />
         <action
             android:id="@+id/startInfoFragment"
@@ -221,7 +221,7 @@
 
     <fragment
         android:id="@+id/settingsListFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_list.SettingsListFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListFragment"
         android:label="@string/settings">
         <action
             android:id="@+id/startSettingsBlockerFragment"
@@ -245,7 +245,7 @@
 
     <fragment
         android:id="@+id/settingsBlockerFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_blocker.SettingsBlockerFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment"
         android:label="@string/settings_blocker">
         <action
             android:id="@+id/startCountryCodeSearchDialog"
@@ -254,7 +254,7 @@
 
     <fragment
         android:id="@+id/settingsAccountFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_account.SettingsAccountFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment"
         android:label="@string/settings_account">
         <action
             android:id="@+id/startAccountActionDialog"
@@ -271,26 +271,26 @@
 
     <fragment
         android:id="@+id/settingsLanguageFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_language.SettingsLanguageFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageFragment"
         android:label="@string/settings_language" />
 
     <fragment
         android:id="@+id/settingsThemeFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_theme.SettingsThemeFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeFragment"
         android:label="@string/settings_theme" />
 
     <dialog
         android:id="@+id/settingsReviewDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.SettingsReviewDialog" />
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.SettingsReviewDialog" />
 
     <fragment
         android:id="@+id/settingsPrivacyFragment"
-        android:name="com.tarasovvp.smartblocker.ui.main.settings.settings_privacy.SettingsPrivacyFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_privacy.SettingsPrivacyFragment"
         android:label="@string/settings_privacy" />
 
     <dialog
         android:id="@+id/accountActionDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.AccountActionDialog">
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.AccountActionDialog">
         <argument
             android:name="isLogOut"
             android:defaultValue="false"
@@ -299,7 +299,7 @@
 
     <dialog
         android:id="@+id/filterConditionsDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterConditionsDialog">
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.FilterConditionsDialog">
         <argument
             android:name="filteringList"
             android:defaultValue="@null"
@@ -309,7 +309,7 @@
 
     <dialog
         android:id="@+id/appExitDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.AppExitDialog" />
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.AppExitDialog" />
 
     <action
         android:id="@+id/startAppExitDialog"
@@ -317,7 +317,7 @@
 
     <dialog
         android:id="@+id/unavailableNetworkDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.UnavailableNetworkDialog" />
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.UnavailableNetworkDialog" />
 
     <action
         android:id="@+id/startUnavailableNetworkDialog"
@@ -325,7 +325,7 @@
 
     <dialog
         android:id="@+id/forgotPasswordDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.ForgotPasswordDialog">
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.ForgotPasswordDialog">
         <argument
             android:name="email"
             android:defaultValue=""
@@ -335,15 +335,15 @@
 
     <dialog
         android:id="@+id/unauthorizedEnterDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.UnauthorizedEnterDialog" />
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.UnauthorizedEnterDialog" />
 
     <dialog
         android:id="@+id/changePasswordDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.ChangePasswordDialog" />
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.ChangePasswordDialog" />
 
     <dialog
         android:id="@+id/numberDataFilteringDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.NumberDataFilteringDialog">
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.NumberDataFilteringDialog">
         <argument
             android:name="filteringList"
             android:defaultValue="@null"
@@ -358,17 +358,17 @@
 
     <dialog
         android:id="@+id/filterActionDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilterActionDialog">
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.FilterActionDialog">
         <argument
             android:name="filterWithCountryCode"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode"
+            app:argType="com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode"
             app:nullable="true" />
     </dialog>
 
     <dialog
         android:id="@+id/filteredCallDeleteDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.FilteredCallDeleteDialog">
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.FilteredCallDeleteDialog">
         <argument
             android:name="callDelete"
             android:defaultValue="@null"
@@ -378,11 +378,11 @@
 
     <dialog
         android:id="@+id/countryCodeSearchDialog"
-        android:name="com.tarasovvp.smartblocker.ui.dialogs.country_code_search_dialog.CountryCodeSearchDialog" >
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchDialog" >
         <argument
             android:name="countryCodeList"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.database.entities.CountryCode[]"
+            app:argType="com.tarasovvp.smartblocker.data.database.entities.CountryCode[]"
             app:nullable="true" />
     </dialog>
 

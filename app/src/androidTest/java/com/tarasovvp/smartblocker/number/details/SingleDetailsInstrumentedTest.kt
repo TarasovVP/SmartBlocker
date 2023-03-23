@@ -9,9 +9,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.constants.Constants.NUMBER_TYPE
-import com.tarasovvp.smartblocker.database.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.ui.main.number.details.SingleDetailsFragment
+import com.tarasovvp.smartblocker.data.database.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
+import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After

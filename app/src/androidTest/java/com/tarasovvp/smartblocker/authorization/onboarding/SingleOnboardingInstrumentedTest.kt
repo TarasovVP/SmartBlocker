@@ -2,9 +2,9 @@ package com.tarasovvp.smartblocker.authorization.onboarding
 
 import androidx.core.os.bundleOf
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.constants.Constants.ON_BOARDING_PAGE
-import com.tarasovvp.smartblocker.enums.OnBoarding
-import com.tarasovvp.smartblocker.ui.main.authorization.onboarding.SingleOnBoardingFragment
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
+import com.tarasovvp.smartblocker.domain.enums.OnBoarding
+import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.SingleOnBoardingFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before

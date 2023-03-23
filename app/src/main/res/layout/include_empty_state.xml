@@ -6,7 +6,7 @@
 
         <variable
             name="emptyState"
-            type="com.tarasovvp.smartblocker.enums.EmptyState" />
+            type="com.tarasovvp.smartblocker.domain.enums.EmptyState" />
 
     </data>
 

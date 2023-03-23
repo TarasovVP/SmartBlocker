@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.utils.mask
 
-import com.tarasovvp.smartblocker.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 
 class RawText {
     var text = String.EMPTY

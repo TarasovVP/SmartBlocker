@@ -6,7 +6,7 @@
 
         <variable
             name="onBoarding"
-            type="com.tarasovvp.smartblocker.enums.OnBoarding" />
+            type="com.tarasovvp.smartblocker.domain.enums.OnBoarding" />
 
     </data>
 

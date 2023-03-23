@@ -10,7 +10,7 @@
             type="Boolean" />
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.database.database_views.FilterWithCountryCode" />
+            type="com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

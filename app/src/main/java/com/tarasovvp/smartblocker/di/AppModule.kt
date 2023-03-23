@@ -3,11 +3,11 @@ package com.tarasovvp.smartblocker.di
 import android.content.Context
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.database.AppDatabase
-import com.tarasovvp.smartblocker.database.dao.*
-import com.tarasovvp.smartblocker.repository.*
-import com.tarasovvp.smartblocker.repositoryImpl.*
 import com.tarasovvp.smartblocker.BuildConfig
+import com.tarasovvp.smartblocker.data.database.AppDatabase
+import com.tarasovvp.smartblocker.data.database.dao.*
+import com.tarasovvp.smartblocker.data.repositoryImpl.*
+import com.tarasovvp.smartblocker.domain.repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -74,7 +74,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFilteredCallRepository(
-        filteredCallDao: FilteredCallDao, realDataBaseRepository: RealDataBaseRepository) : FilteredCallRepository {
+        filteredCallDao: FilteredCallDao, realDataBaseRepository: RealDataBaseRepository
+    ) : FilteredCallRepository {
         return  FilteredCallRepositoryImpl(filteredCallDao, realDataBaseRepository)
     }
 

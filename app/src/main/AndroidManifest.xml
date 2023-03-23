@@ -22,7 +22,7 @@
         android:theme="@style/Theme.SmartBlocker"
         android:dataExtractionRules="@xml/data_extraction_rules">
         <activity
-            android:name="com.tarasovvp.smartblocker.ui.MainActivity"
+            android:name="com.tarasovvp.smartblocker.presentation.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.tarasovvp.smartblocker.utils.call.ForegroundCallService"/>
+        <service android:name="com.tarasovvp.smartblocker.infrastructure.services.ForegroundCallService"/>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

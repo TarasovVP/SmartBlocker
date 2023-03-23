@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="headerDataItem"
-            type="com.tarasovvp.smartblocker.models.HeaderDataItem" />
+            type="com.tarasovvp.smartblocker.domain.models.HeaderDataItem" />
 
     </data>
 

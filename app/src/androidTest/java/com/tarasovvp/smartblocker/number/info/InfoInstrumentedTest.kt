@@ -10,8 +10,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.models.InfoData
-import com.tarasovvp.smartblocker.ui.main.number.info.InfoFragment
+import com.tarasovvp.smartblocker.domain.models.InfoData
+import com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
