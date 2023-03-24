@@ -2,27 +2,17 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_filt
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.data.database.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.data.database.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.Filter
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
-import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.domain.repository.FilterRepository
-import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsFilterViewModel @Inject constructor(
     application: Application,
-    private val contactRepository: ContactRepository,
-    private val filterRepository: FilterRepository,
-    private val logCallRepository: LogCallRepository,
-    private val filteredCallRepository: FilteredCallRepository
+    private val detailsFilterUseCase: DetailsFilterUseCase
 ) : BaseViewModel(application) {
 
     val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
@@ -33,17 +23,7 @@ class DetailsFilterViewModel @Inject constructor(
     fun getQueryContactCallList(filter: Filter, color: Int) {
         showProgress()
         launch {
-            val calls = async { logCallRepository.getLogCallWithFilterByFilter(filter.filter) }
-            val contacts = async { contactRepository.getContactsWithFilterByFilter(filter.filter) }
-            val callList = calls.await()
-            val contactList = contacts.await()
-            val numberDataList = ArrayList<NumberData>().apply {
-                addAll(callList)
-                addAll(contactList)
-                sortBy {
-                    if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
-                }
-            }
+            val numberDataList = detailsFilterUseCase.getQueryContactCallList(filter)
             filteredNumberDataList(filter, numberDataList, color)
         }
     }
@@ -55,7 +35,7 @@ class DetailsFilterViewModel @Inject constructor(
     ) {
         launch {
             numberDataListLiveData.postValue(
-                contactRepository.filteredNumberDataList(
+                detailsFilterUseCase.filteredNumberDataList(
                     filter,
                     numberDataList, color
                 )
@@ -66,7 +46,7 @@ class DetailsFilterViewModel @Inject constructor(
 
     fun filteredCallsByFilter(filter: String) {
         launch {
-            val filteredCallList = filteredCallRepository.filteredCallsByFilter(filter)
+            val filteredCallList = detailsFilterUseCase.filteredCallsByFilter(filter)
             filteredCallList.let { filteredCalls ->
                 filteredCallListLiveData.postValue(ArrayList(filteredCalls))
             }
@@ -77,7 +57,7 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filter?.let {
-                filterRepository.deleteFilterList(listOf(it)) {
+                detailsFilterUseCase.deleteFilter(it) {
                     filterActionLiveData.postValue(it)
                 }
             }
@@ -89,7 +69,7 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filter?.let {
-                filterRepository.updateFilter(it) {
+                detailsFilterUseCase.updateFilter(it) {
                     filterActionLiveData.postValue(it)
                 }
             }

@@ -1,12 +1,12 @@
-package com.tarasovvp.smartblocker.data.database.database_views
+package com.tarasovvp.smartblocker.domain.models.database_views
 
 import android.content.Context
 import android.os.Parcelable
 import androidx.room.*
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.models.NumberData

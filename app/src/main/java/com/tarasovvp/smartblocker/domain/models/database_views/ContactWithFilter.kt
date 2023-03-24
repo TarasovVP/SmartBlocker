@@ -1,10 +1,10 @@
-package com.tarasovvp.smartblocker.data.database.database_views
+package com.tarasovvp.smartblocker.domain.models.database_views
 
 import android.os.Parcelable
 import androidx.room.DatabaseView
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.tarasovvp.smartblocker.data.database.entities.Contact
+import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import kotlinx.parcelize.Parcelize
 

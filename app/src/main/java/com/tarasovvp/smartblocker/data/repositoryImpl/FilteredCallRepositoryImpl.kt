@@ -2,9 +2,9 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
-import com.tarasovvp.smartblocker.data.database.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.Filter
-import com.tarasovvp.smartblocker.data.database.entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
@@ -17,21 +17,22 @@ class FilteredCallRepositoryImpl @Inject constructor(
     private val realDataBaseRepository: RealDataBaseRepository
 ) : FilteredCallRepository {
 
-    override suspend fun setFilterToFilteredCall(filterList: ArrayList<Filter>?, callList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall> =
+    override suspend fun setFilterToFilteredCall(filterList: List<Filter>, callList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall> =
         withContext(
             Dispatchers.Default
         ) {
             callList.onEachIndexed { index, filteredCall ->
-                filteredCall.filter = filterList?.filter { filter ->
+                filteredCall.filter = filterList.filter { filter ->
                     (filteredCall.number == filter.filter && filter.isTypeFull())
                             || (filteredCall.number.startsWith(filter.filter) && filter.isTypeStart())
                             || (filteredCall.number.contains(filter.filter) && filter.isTypeContain())
-                }?.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { filteredCall.number.indexOf(it.filter) })?.firstOrNull()?.filter.orEmpty()
+                }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { filteredCall.number.indexOf(it.filter) })
+                    .firstOrNull()?.filter.orEmpty()
                 result.invoke(callList.size, index)
             }
         }
 
-    override suspend fun insertAllFilteredCalls(filteredCallList: ArrayList<FilteredCall>) {
+    override suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
         filteredCallDao.deleteAllFilteredCalls()
         filteredCallDao.insertAllFilteredCalls(filteredCallList)
     }

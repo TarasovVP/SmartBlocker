@@ -2,11 +2,9 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_numb
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
-import com.tarasovvp.smartblocker.domain.repository.FilterRepository
-import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,9 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsNumberDataViewModel @Inject constructor(
     application: Application,
-    private val countryCodeRepository: CountryCodeRepository,
-    private val filterRepository: FilterRepository,
-    private val filteredCallRepository: FilteredCallRepository
+    private val detailsNumberDataUseCase: DetailsNumberDataUseCase
 ) : BaseViewModel(application) {
 
     val filterListLiveData = MutableLiveData<ArrayList<NumberData>>()
@@ -26,7 +22,7 @@ class DetailsNumberDataViewModel @Inject constructor(
     fun filterListWithNumber(number: String) {
         showProgress()
         launch {
-            val filterList = filterRepository.queryFilterList(number)
+            val filterList = detailsNumberDataUseCase.filterListWithNumber(number)
             filterList.let {
                 filterListLiveData.postValue(ArrayList(it))
             }
@@ -35,7 +31,7 @@ class DetailsNumberDataViewModel @Inject constructor(
 
     fun filteredCallsByNumber(number: String) {
         launch {
-            val filteredCallList = filteredCallRepository.filteredCallsByNumber(number)
+            val filteredCallList = detailsNumberDataUseCase.filteredCallsByNumber(number)
             filteredCallList.let { filteredCalls ->
                 filteredCallListLiveData.postValue(ArrayList(filteredCalls))
             }
@@ -46,7 +42,7 @@ class DetailsNumberDataViewModel @Inject constructor(
     fun getCountryCode(code: Int?) {
         launch {
             val countryCode =
-                code?.let { countryCodeRepository.getCountryCodeWithCode(it) } ?: CountryCode()
+                code?.let { detailsNumberDataUseCase.getCountryCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
     }

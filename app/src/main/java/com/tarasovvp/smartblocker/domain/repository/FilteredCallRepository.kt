@@ -1,14 +1,14 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.data.database.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.Filter
-import com.tarasovvp.smartblocker.data.database.entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 
 interface FilteredCallRepository {
 
-    suspend fun setFilterToFilteredCall(filterList: ArrayList<Filter>?, callList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall>
+    suspend fun setFilterToFilteredCall(filterList: List<Filter>, callList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall>
 
-    suspend fun insertAllFilteredCalls(filteredCallList: ArrayList<FilteredCall>)
+    suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>)
 
     suspend fun insertFilteredCall(filteredCall: FilteredCall)
 

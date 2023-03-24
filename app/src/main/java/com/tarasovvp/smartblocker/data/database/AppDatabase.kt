@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
-import com.tarasovvp.smartblocker.data.database.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.data.database.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.data.database.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.*
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.*
 
 @Database(
     entities = [LogCall::class, FilteredCall::class, Contact::class, Filter::class, CountryCode::class],

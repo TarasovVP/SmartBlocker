@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION

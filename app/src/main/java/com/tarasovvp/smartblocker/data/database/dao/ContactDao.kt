@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.data.database.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.Contact
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.Contact
 
 @Dao
 interface ContactDao {

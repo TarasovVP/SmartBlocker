@@ -1,10 +1,10 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 
 interface CountryCodeRepository {
 
-    suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode>
+    suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): List<CountryCode>
 
     suspend fun insertAllCountryCodes(list: List<CountryCode>)
 

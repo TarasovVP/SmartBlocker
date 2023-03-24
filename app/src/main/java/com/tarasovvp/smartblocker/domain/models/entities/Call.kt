@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.domain.models
+package com.tarasovvp.smartblocker.domain.models.entities
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.room.Ignore
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER

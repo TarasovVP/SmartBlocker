@@ -2,9 +2,9 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import android.content.Context
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
-import com.tarasovvp.smartblocker.data.database.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.Contact
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.Contact
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.filteredNumberDataList
@@ -23,16 +23,16 @@ class ContactRepositoryImpl @Inject constructor(
         contactDao.insertAllContacts(contactList)
     }
 
-    override suspend fun setFilterToContact(filterList: ArrayList<Filter>?, contactList: List<Contact>, result: (Int, Int) -> Unit): List<Contact> =
+    override suspend fun setFilterToContact(filterList: List<Filter>, contactList: List<Contact>, result: (Int, Int) -> Unit): List<Contact> =
         withContext(
             Dispatchers.Default
         ) {
             contactList.onEachIndexed { index, contact ->
-                val filter = filterList?.filter { filter ->
+                val filter = filterList.filter { filter ->
                     (contact.phoneNumberValue() == filter.filter && filter.isTypeFull())
                             || (contact.phoneNumberValue().startsWith(filter.filter) && filter.isTypeStart())
                             || (contact.phoneNumberValue().contains(filter.filter) && filter.isTypeContain())
-                }?.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { contact.phoneNumberValue().indexOf(it.filter) })?.firstOrNull()
+                }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { contact.phoneNumberValue().indexOf(it.filter) }).firstOrNull()
                 contact.filter = filter?.filter.orEmpty()
                 filter?.filteredContacts = filter?.filteredContacts.orZero() + 1
                 result.invoke(contactList.size, index)

@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.data.database.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.LogCall
+import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.LogCall
 
 @Dao
 interface LogCallDao {

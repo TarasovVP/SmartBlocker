@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dial
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
-import com.tarasovvp.smartblocker.domain.usecase.CountryCodeSearchUseCase
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.usecase.countrycode_search.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

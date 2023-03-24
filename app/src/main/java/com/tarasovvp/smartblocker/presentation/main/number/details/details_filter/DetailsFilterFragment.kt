@@ -6,8 +6,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION

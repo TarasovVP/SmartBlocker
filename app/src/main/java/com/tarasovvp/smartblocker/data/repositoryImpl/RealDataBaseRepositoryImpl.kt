@@ -2,14 +2,14 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.google.firebase.database.DatabaseReference
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.data.database.entities.Filter
-import com.tarasovvp.smartblocker.data.database.entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
-import com.tarasovvp.smartblocker.domain.models.CurrentUser
+import com.tarasovvp.smartblocker.domain.models.entities.CurrentUser
 import com.tarasovvp.smartblocker.domain.models.Review
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.sendExceptionBroadCast

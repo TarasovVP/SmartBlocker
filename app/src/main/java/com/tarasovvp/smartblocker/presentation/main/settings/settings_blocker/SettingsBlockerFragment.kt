@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs

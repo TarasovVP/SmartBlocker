@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.data.database.dao.FilterDao
-import com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
@@ -24,7 +24,7 @@ class FilterRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun insertAllFilters(filterList: ArrayList<Filter>) {
+    override suspend fun insertAllFilters(filterList: List<Filter>) {
         filterDao.deleteAllFilters()
         filterDao.insertAllFilters(filterList)
     }

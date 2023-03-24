@@ -7,7 +7,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState

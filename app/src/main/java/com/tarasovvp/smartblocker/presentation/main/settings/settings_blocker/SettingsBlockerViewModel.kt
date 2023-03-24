@@ -3,10 +3,9 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
-import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
-import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
+import com.tarasovvp.smartblocker.domain.usecase.settings.settings_blocker.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,8 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsBlockerViewModel @Inject constructor(
     application: Application,
-    private val realDataBaseRepository: RealDataBaseRepository,
-    private val countryCodeRepository: CountryCodeRepository
+    private val settingsBlockerUseCase: SettingsBlockerUseCase
 ) : BaseViewModel(application) {
 
     val successBlockHiddenLiveData = MutableLiveData<Boolean>()
@@ -25,7 +23,7 @@ class SettingsBlockerViewModel @Inject constructor(
         showProgress()
         launch {
             if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                realDataBaseRepository.changeBlockHidden(blockHidden) {
+                settingsBlockerUseCase.changeBlockHidden(blockHidden) {
                     successBlockHiddenLiveData.postValue(blockHidden)
                 }
             } else {
@@ -38,7 +36,7 @@ class SettingsBlockerViewModel @Inject constructor(
     fun getCountryCodeWithCountry(country: String?) {
         launch {
             val countryCode =
-                country?.let { countryCodeRepository.getCountryCodeWithCountry(it) }
+                country?.let { settingsBlockerUseCase.getCountryCodeWithCountry(it) }
                     ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }

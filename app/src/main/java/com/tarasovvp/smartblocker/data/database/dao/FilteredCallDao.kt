@@ -1,13 +1,13 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.data.database.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 
 @Dao
 interface FilteredCallDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllFilteredCalls(filteredCalls: ArrayList<FilteredCall>)
+    suspend fun insertAllFilteredCalls(filteredCalls: List<FilteredCall>)
 
     @Insert
     fun insertFilteredCall(filteredCall: FilteredCall?)

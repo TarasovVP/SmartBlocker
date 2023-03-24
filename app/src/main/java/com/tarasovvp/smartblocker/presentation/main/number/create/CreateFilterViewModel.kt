@@ -2,33 +2,22 @@ package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.data.database.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.data.database.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isDarkMode
-import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
-import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
-import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateFilterViewModel @Inject constructor(
     application: Application,
-    private val contactRepository: ContactRepository,
-    private val countryCodeRepository: CountryCodeRepository,
-    private val filterRepository: FilterRepository,
-    private val logCallRepository: LogCallRepository
+    private val createFilterUseCase: CreateFilterUseCase
 ) : BaseViewModel(application) {
 
     val countryCodeLiveData = MutableLiveData<CountryCode>()
@@ -41,7 +30,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel getCountryCodeWithCountry country $country")
         launch {
             val countryCode =
-                country?.let { countryCodeRepository.getCountryCodeWithCountry(it) }
+                country?.let { createFilterUseCase.getCountryCodeWithCountry(it) }
                     ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
@@ -51,7 +40,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel getCountryCodeWithCode code $code")
         launch {
             val countryCode =
-                code?.let { countryCodeRepository.getCountryCodeWithCode(it) } ?: CountryCode()
+                code?.let { createFilterUseCase.getCountryCodeWithCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
     }
@@ -59,17 +48,7 @@ class CreateFilterViewModel @Inject constructor(
     fun getNumberDataList() {
         Timber.e("CreateFilterViewModel getNumberDataList showProgress")
         launch {
-            val contacts = async { contactRepository.getContactsWithFilters() }
-            val calls = async { logCallRepository.allCallNumberWithFilter() }
-            val contactList = contacts.await()
-            val callList = calls.await()
-            val numberDataList = ArrayList<NumberData>().apply {
-                addAll(contactList)
-                addAll(callList)
-                sortBy {
-                    if (it is ContactWithFilter) it.contact?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else if (it is LogCallWithFilter) it.call?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else String.EMPTY
-                }
-            }
+            val numberDataList = createFilterUseCase.getNumberDataList()
             numberDataListLiveData.postValue(numberDataList)
         }
     }
@@ -77,7 +56,7 @@ class CreateFilterViewModel @Inject constructor(
     fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode) {
         Timber.e("CreateFilterViewModel checkFilterExist filter?.filter ${filterWithCountryCode.filter} createFilter ${filterWithCountryCode.createFilter()}")
         launch {
-            val result = filterRepository.getFilter(filterWithCountryCode)
+            val result = createFilterUseCase.checkFilterExist(filterWithCountryCode)
             existingFilterLiveData.postValue(result ?: FilterWithCountryCode(Filter(filterType = DEFAULT_FILTER)))
         }
     }
@@ -87,7 +66,7 @@ class CreateFilterViewModel @Inject constructor(
         showProgress()
         launch {
             val filteredNumberDataList =
-                contactRepository.filteredNumberDataList(filterWithCountryCode?.filter, numberDataList, color)
+                createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataList, color)
             filteredNumberDataListLiveData.postValue(filteredNumberDataList)
             hideProgress()
             Timber.e("CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}")
@@ -98,7 +77,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel createFilter createFilter $filter filter.country ${filter?.country}")
         launch {
             filter?.let {
-                filterRepository.insertFilter(it) {
+                createFilterUseCase.createFilter(it) {
                     filterActionLiveData.postValue(it)
                 }
             }
@@ -109,7 +88,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel updateFilter")
         launch {
             filter?.let {
-                filterRepository.updateFilter(it) {
+                createFilterUseCase.updateFilter(it) {
                     filterActionLiveData.postValue(it)
                 }
             }
@@ -120,7 +99,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel deleteFilter")
         launch {
             filter?.let {
-                filterRepository.deleteFilterList(listOf(it)) {
+                createFilterUseCase.deleteFilter(it) {
                     filterActionLiveData.postValue(it)
                 }
             }

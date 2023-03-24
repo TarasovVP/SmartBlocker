@@ -17,9 +17,10 @@ import com.google.firebase.perf.metrics.AddTrace
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.data.database.entities.*
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.*
+import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ASC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_ID
@@ -27,8 +28,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_COD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.domain.models.Call
-import com.tarasovvp.smartblocker.domain.models.NumberData
 import java.util.*
 import kotlin.math.max
 
@@ -58,7 +57,8 @@ fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
                 name = contactCursor.getString(1),
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
-            ))
+            )
+            )
             result.invoke(cursor.count, contactList.size)
         }
     }
@@ -101,7 +101,7 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     return logCall
 }
 
-fun Context.systemLogCallList(result: (Int, Int) -> Unit): ArrayList<LogCall> {
+fun Context.systemLogCallList(result: (Int, Int) -> Unit): List<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {

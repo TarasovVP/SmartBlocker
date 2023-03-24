@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.data.database.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel

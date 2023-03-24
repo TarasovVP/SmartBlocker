@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.domain.repository.AuthRepository
+import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsAccountViewModel @Inject constructor(
     application: Application,
-    private val authRepository: AuthRepository
+    private val settingsAccountUseCase: SettingsAccountUseCase
 ) : BaseViewModel(application) {
 
     val successLiveData = MutableLiveData<Boolean>()
@@ -20,7 +20,7 @@ class SettingsAccountViewModel @Inject constructor(
 
     fun signOut(googleSignInClient: GoogleSignInClient) {
         showProgress()
-        authRepository.signOut(googleSignInClient) {
+        settingsAccountUseCase.signOut(googleSignInClient) {
             successLiveData.postValue(true)
             hideProgress()
         }
@@ -28,7 +28,7 @@ class SettingsAccountViewModel @Inject constructor(
 
     fun changePassword(currentPassword: String, newPassword: String) {
         showProgress()
-        authRepository.changePassword(currentPassword, newPassword) {
+        settingsAccountUseCase.changePassword(currentPassword, newPassword) {
             SmartBlockerApp.instance?.auth = null
             successChangePasswordLiveData.postValue(true)
             hideProgress()
@@ -37,7 +37,7 @@ class SettingsAccountViewModel @Inject constructor(
 
     fun deleteUser(googleSignInClient: GoogleSignInClient) {
         showProgress()
-        authRepository.deleteUser(googleSignInClient) {
+        settingsAccountUseCase.deleteUser(googleSignInClient) {
             successLiveData.postValue(true)
             hideProgress()
         }

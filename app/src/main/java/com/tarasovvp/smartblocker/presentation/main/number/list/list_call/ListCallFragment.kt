@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.entities.CallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER

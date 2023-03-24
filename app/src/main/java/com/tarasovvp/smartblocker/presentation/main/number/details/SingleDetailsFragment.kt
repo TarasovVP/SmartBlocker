@@ -3,8 +3,8 @@ package com.tarasovvp.smartblocker.presentation.main.number.details
 import android.os.Bundle
 import androidx.core.view.isVisible
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.database.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState

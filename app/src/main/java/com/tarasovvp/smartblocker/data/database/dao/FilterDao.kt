@@ -1,13 +1,13 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 
 @Dao
 interface FilterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllFilters(filters: ArrayList<Filter>)
+    suspend fun insertAllFilters(filters: List<Filter>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFilter(filter: Filter)

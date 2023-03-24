@@ -1,13 +1,13 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.data.database.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.data.database.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 
 interface FilterRepository {
 
     suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>>
 
-    suspend fun insertAllFilters(filterList: ArrayList<Filter>)
+    suspend fun insertAllFilters(filterList: List<Filter>)
 
     suspend fun allFilters(): List<Filter>
 
