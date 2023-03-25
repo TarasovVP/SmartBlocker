@@ -51,6 +51,19 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun insertAllFilters(currentUser: CurrentUser?) {
+        launch {
+            currentUser?.let {
+                val filters = async { mainUseCase.insertAllFilters(it.filterList) }
+                val filteredCalls =
+                    async { mainUseCase.insertAllFilteredCalls(it.filteredCallList) }
+                awaitAll(filters, filteredCalls)
+                getAllData()
+            }
+        }
+    }
+
+
     fun getAllData() {
         launch {
             setCountryCodeData()

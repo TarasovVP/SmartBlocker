@@ -1,14 +1,26 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
-import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
+import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCaseImpl
+import org.junit.Before
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-import javax.inject.Inject
-
 @RunWith(MockitoJUnitRunner::class)
-class LoginUseCaseTest @Inject constructor(private val authRepository: AuthRepository) {
+class LoginUseCaseTest {
+
+    @Mock
+    private lateinit var authRepository: AuthRepository
+
+    private lateinit var loginUseCaseImpl: LoginUseCaseImpl
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        loginUseCaseImpl = LoginUseCaseImpl(authRepository)
+    }
 
     fun sendPasswordResetEmail(email: String, result: () -> Unit) = authRepository.sendPasswordResetEmail(email) {
         result.invoke()

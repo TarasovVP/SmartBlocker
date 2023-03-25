@@ -39,12 +39,7 @@ class ContactRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun getContactsWithFilters(): List<ContactWithFilter> =
-        withContext(
-            Dispatchers.Default
-        ) {
-            contactDao.getContactsWithFilters()
-        }
+    override suspend fun getContactsWithFilters(): List<ContactWithFilter> = contactDao.getContactsWithFilters()
 
     override suspend fun getContactsWithFilterByFilter(filter: String) = contactDao.getContactsWithFiltersByFilter(filter)
 

@@ -3,19 +3,43 @@ package com.tarasovvp.smartblocker.usecases
 import android.app.Application
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCaseImpl
+import org.junit.Before
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import javax.inject.Inject
 
 @RunWith(MockitoJUnitRunner::class)
-class MainUseCaseTest @Inject constructor(
-    private val contactRepository: ContactRepository,
-    private val countryCodeRepository: CountryCodeRepository,
-    private val filterRepository: FilterRepository,
-    private val logCallRepository: LogCallRepository,
-    private val filteredCallRepository: FilteredCallRepository,
-    private val realDataBaseRepository: RealDataBaseRepository
-) {
+class MainUseCaseTest {
+
+    @Mock
+    private lateinit var contactRepository: ContactRepository
+
+    @Mock
+    private lateinit var countryCodeRepository: CountryCodeRepository
+
+    @Mock
+    private lateinit var filterRepository: FilterRepository
+
+    @Mock
+    private lateinit var logCallRepository: LogCallRepository
+
+    @Mock
+    private lateinit var filteredCallRepository: FilteredCallRepository
+
+    @Mock
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
+
+    private lateinit var settingsAccountUseCaseImpl: MainUseCaseImpl
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        settingsAccountUseCaseImpl = MainUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository, filteredCallRepository, realDataBaseRepository)
+    }
 
     fun getCurrentUser(result: (CurrentUser?) -> Unit) = realDataBaseRepository.getCurrentUser {
         result.invoke(it)

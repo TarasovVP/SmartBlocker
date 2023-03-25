@@ -1,26 +1,40 @@
 package com.tarasovvp.smartblocker.usecases
 
-import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
-import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.domain.repository.FilterRepository
-import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCaseImpl
+import org.junit.Before
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import javax.inject.Inject
 
 @RunWith(MockitoJUnitRunner::class)
-class DetailsFilterUseCaseTest @Inject constructor(
-    private val contactRepository: ContactRepository,
-    private val filterRepository: FilterRepository,
-    private val logCallRepository: LogCallRepository,
-    private val filteredCallRepository: FilteredCallRepository
-)  {
+class DetailsFilterUseCaseTest {
+
+    @Mock
+    private lateinit var contactRepository: ContactRepository
+
+    @Mock
+    private lateinit var filterRepository: FilterRepository
+
+    @Mock
+    private lateinit var logCallRepository: LogCallRepository
+
+    @Mock
+    private lateinit var filteredCallRepository: FilteredCallRepository
+
+    private lateinit var listContactUseCaseImpl: DetailsFilterUseCaseImpl
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        listContactUseCaseImpl = DetailsFilterUseCaseImpl(contactRepository, filterRepository, logCallRepository, filteredCallRepository)
+    }
 
     suspend fun getQueryContactCallList(filter: Filter): ArrayList<NumberData> {
             val calls =  logCallRepository.getLogCallWithFilterByFilter(filter.filter)
