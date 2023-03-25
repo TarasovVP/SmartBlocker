@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter
+package com.tarasovvp.smartblocker.usecases
 
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
@@ -10,16 +10,19 @@ import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import javax.inject.Inject
 
-class DetailsFilterUseCaseImpl @Inject constructor(
+@RunWith(MockitoJUnitRunner::class)
+class DetailsFilterUseCaseTest @Inject constructor(
     private val contactRepository: ContactRepository,
     private val filterRepository: FilterRepository,
     private val logCallRepository: LogCallRepository,
     private val filteredCallRepository: FilteredCallRepository
-): DetailsFilterUseCase  {
+)  {
 
-    override suspend fun getQueryContactCallList(filter: Filter): ArrayList<NumberData> {
+    suspend fun getQueryContactCallList(filter: Filter): ArrayList<NumberData> {
             val calls =  logCallRepository.getLogCallWithFilterByFilter(filter.filter)
             val contacts =  contactRepository.getContactsWithFilterByFilter(filter.filter)
             val callList = calls
@@ -34,15 +37,15 @@ class DetailsFilterUseCaseImpl @Inject constructor(
             return numberDataList
         }
 
-    override suspend fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int, ) = contactRepository.filteredNumberDataList(filter, numberDataList, color)
+    suspend fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int, ) = contactRepository.filteredNumberDataList(filter, numberDataList, color)
 
-    override suspend fun filteredCallsByFilter(filter: String) = filteredCallRepository.filteredCallsByFilter(filter)
+    suspend fun filteredCallsByFilter(filter: String) = filteredCallRepository.filteredCallsByFilter(filter)
 
-    override suspend fun deleteFilter(filter: Filter, result: () -> Unit) = filterRepository.deleteFilterList(listOf(filter)) {
+    suspend fun deleteFilter(filter: Filter, result: () -> Unit) = filterRepository.deleteFilterList(listOf(filter)) {
         result.invoke()
     }
 
-    override suspend fun updateFilter(filter: Filter, result: () -> Unit) = filterRepository.updateFilter(filter) {
+    suspend fun updateFilter(filter: Filter, result: () -> Unit) = filterRepository.updateFilter(filter) {
         result.invoke()
     }
 }

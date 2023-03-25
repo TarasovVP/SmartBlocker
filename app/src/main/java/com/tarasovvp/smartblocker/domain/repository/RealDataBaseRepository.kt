@@ -17,7 +17,7 @@ interface RealDataBaseRepository {
 
     fun deleteFilteredCallList(filteredCallIdList: List<String>, result: () -> Unit)
 
-    suspend fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit)
+    fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit)
 
     fun insertReview(review: Review, result: () -> Unit)
 }

@@ -1,11 +1,11 @@
-package com.tarasovvp.smartblocker
+package com.tarasovvp.smartblocker.viewmodels
 
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.tarasovvp.smartblocker.TestUtils.TEST_TOKEN
-import com.tarasovvp.smartblocker.domain.repository.AuthRepository
+import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginViewModel
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,22 +30,22 @@ class LoginViewModelTest {
     private lateinit var application: Application
 
     @Mock
-    private lateinit var authRepository: AuthRepository
+    private lateinit var loginUseCase: LoginUseCase
 
     private lateinit var viewModel: LoginViewModel
 
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
-        viewModel = LoginViewModel(application, authRepository)
+        viewModel = LoginViewModel(application, loginUseCase)
     }
 
     @Test
-    fun testFirebaseAuthWithGoogle() {
+    fun firebaseAuthWithGoogleTest() {
         doAnswer {
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(authRepository).signInWithGoogle(eq(TEST_TOKEN), any())
+        }.`when`(loginUseCase).firebaseAuthWithGoogle(eq(TEST_TOKEN), any())
 
         viewModel.firebaseAuthWithGoogle(TEST_TOKEN)
         assertTrue(viewModel.successSignInLiveData.value == true)

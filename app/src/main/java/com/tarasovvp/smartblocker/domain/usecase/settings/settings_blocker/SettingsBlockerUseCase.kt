@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 
 interface SettingsBlockerUseCase {
 
-    suspend fun changeBlockHidden(blockHidden: Boolean, result: () -> Unit)
+    fun changeBlockHidden(blockHidden: Boolean, result: () -> Unit)
 
     suspend fun getCountryCodeWithCountry(country: String): CountryCode?
 }

@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.data.repositoryImpl
+package com.tarasovvp.smartblocker.repositories
 
 import com.google.firebase.database.DatabaseReference
 import com.tarasovvp.smartblocker.SmartBlockerApp
@@ -14,18 +14,18 @@ import com.tarasovvp.smartblocker.domain.models.Review
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import javax.inject.Inject
 
-class RealDataBaseRepositoryImpl @Inject constructor(private val database: DatabaseReference) :
-    RealDataBaseRepository {
+@RunWith(MockitoJUnitRunner::class)
+class RealDataBaseRepositoryTest @Inject constructor(private val database: DatabaseReference) {
 
     private var currentUserDatabase =
         database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
     private var reviewsDatabase = database.child(REVIEWS)
 
-    override fun getCurrentUser(result: (CurrentUser?) -> Unit) {
+    fun getCurrentUser(result: (CurrentUser?) -> Unit) {
         if (currentUserDatabase.key != SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty()) currentUserDatabase =
             database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
         currentUserDatabase.get()
@@ -54,7 +54,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun insertFilter(filter: Filter, result: () -> Unit) {
+    fun insertFilter(filter: Filter, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTER_LIST).child(filter.filter).setValue(filter)
             .addOnCompleteListener { task ->
@@ -65,7 +65,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) {
+    fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
@@ -80,7 +80,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
+    fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTERED_CALL_LIST).child(filteredCall.callId.toString())
             .setValue(filteredCall)
@@ -92,7 +92,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun deleteFilteredCallList(filteredCallIdList: List<String>, result: () -> Unit) {
+    fun deleteFilteredCallList(filteredCallIdList: List<String>, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(FILTERED_CALL_LIST).get()
             .addOnCompleteListener { task ->
@@ -106,7 +106,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
+    fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         currentUserDatabase.child(BLOCK_HIDDEN).setValue(blockUnanimous)
             .addOnCompleteListener { task ->
@@ -117,7 +117,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
             }
     }
 
-    override fun insertReview(review: Review, result: () -> Unit) {
+    fun insertReview(review: Review, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         reviewsDatabase.child(review.time.toString()).setValue(review)
             .addOnCompleteListener { task ->

@@ -60,10 +60,6 @@ class MainViewModel @Inject constructor(
             setFilteredCallData(filterList)
             mainUseCase.insertAllFilters(filterList)
             successAllDataLiveData.postValue(true)
-            progressStatusLiveData.postValue(mainProgress.apply {
-                progressDescription =
-                    getApplication<Application>().getString(R.string.progress_update_calls_change)
-            })
         }
     }
 

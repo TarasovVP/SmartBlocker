@@ -21,16 +21,14 @@ class SettingsBlockerViewModel @Inject constructor(
 
     fun changeBlockHidden(blockHidden: Boolean) {
         showProgress()
-        launch {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                settingsBlockerUseCase.changeBlockHidden(blockHidden) {
-                    successBlockHiddenLiveData.postValue(blockHidden)
-                }
-            } else {
+        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            settingsBlockerUseCase.changeBlockHidden(blockHidden) {
                 successBlockHiddenLiveData.postValue(blockHidden)
             }
-            hideProgress()
+        } else {
+            successBlockHiddenLiveData.postValue(blockHidden)
         }
+        hideProgress()
     }
 
     fun getCountryCodeWithCountry(country: String?) {

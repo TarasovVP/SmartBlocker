@@ -9,7 +9,7 @@ class SettingsBlockerUseCaseImpl @Inject constructor(
     private val countryCodeRepository: CountryCodeRepository
 ): SettingsBlockerUseCase {
 
-    override suspend fun changeBlockHidden(blockHidden: Boolean, result: () -> Unit) = realDataBaseRepository.changeBlockHidden(blockHidden) {
+    override fun changeBlockHidden(blockHidden: Boolean, result: () -> Unit) = realDataBaseRepository.changeBlockHidden(blockHidden) {
         result.invoke()
     }
 

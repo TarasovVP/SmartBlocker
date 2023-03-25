@@ -18,11 +18,9 @@ class SettingsListViewModel @Inject constructor(
 
     fun insertReview(review: Review) {
         showProgress()
-        launch {
-            settingsListUseCase.insertReview(review) {
-                successReviewLiveData.postValue(review.message)
-            }
-            hideProgress()
+        settingsListUseCase.insertReview(review) {
+            successReviewLiveData.postValue(review.message)
         }
+        hideProgress()
     }
 }

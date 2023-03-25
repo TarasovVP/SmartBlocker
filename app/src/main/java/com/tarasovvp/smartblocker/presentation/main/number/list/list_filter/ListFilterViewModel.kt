@@ -24,8 +24,8 @@ class ListFilterViewModel @Inject constructor(
         if (refreshing.not()) showProgress()
         launch {
             val filterArrayList =
-                listFilterUseCase.getFilterList(isBlackList) as ArrayList
-            filterListLiveData.postValue(filterArrayList)
+                listFilterUseCase.getFilterList(isBlackList).orEmpty()
+            filterListLiveData.postValue(ArrayList(filterArrayList))
             Timber.e("ListFilterViewModel getFilterList $filterArrayList")
             hideProgress()
         }

@@ -138,7 +138,7 @@ class DetailsFilterFragment :
 
     override fun getData() {
         binding?.filterWithCountryCode?.filter?.let {
-            context?.let { context -> viewModel.getQueryContactCallList(it, ContextCompat.getColor(context, R.color.text_color_black)) }
+            viewModel.getQueryContactCallList(it)
             viewModel.filteredCallsByFilter(it.filter)
         }
     }
@@ -146,6 +146,11 @@ class DetailsFilterFragment :
     override fun observeLiveData() {
         with(viewModel) {
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
+                context?.let {
+                    filteredNumberDataList(binding?.filterWithCountryCode?.filter, numberDataList, ContextCompat.getColor(it, R.color.text_color_black))
+                }
+            }
+            filteredNumberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 numberDataScreen?.updateNumberDataList(numberDataList)
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
@@ -168,7 +173,7 @@ class DetailsFilterFragment :
             if (filter.isChangeFilterAction()) {
                 mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                     initViews()
-                    context?.let { context -> viewModel.getQueryContactCallList(filter, ContextCompat.getColor(context, R.color.text_color_black)) }
+                    viewModel.getQueryContactCallList(filter)
                 }
             } else {
                 findNavController().navigate(if (binding?.filterWithCountryCode?.filter?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
