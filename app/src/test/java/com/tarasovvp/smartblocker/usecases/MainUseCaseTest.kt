@@ -4,14 +4,14 @@ import android.app.Application
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCaseImpl
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import javax.inject.Inject
 
+//TODO unfinished
+@Suppress
 @RunWith(MockitoJUnitRunner::class)
 class MainUseCaseTest {
 

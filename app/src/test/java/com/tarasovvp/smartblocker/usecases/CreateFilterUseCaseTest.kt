@@ -15,8 +15,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import javax.inject.Inject
 
+//TODO unfinished
+@Suppress
 @RunWith(MockitoJUnitRunner::class)
 class CreateFilterUseCaseTest {
 

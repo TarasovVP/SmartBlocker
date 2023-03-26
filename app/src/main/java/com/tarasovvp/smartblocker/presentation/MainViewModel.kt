@@ -4,11 +4,10 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.domain.models.entities.CurrentUser
 import com.tarasovvp.smartblocker.domain.models.MainProgress
+import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,27 +41,22 @@ class MainViewModel @Inject constructor(
     private fun insertCurrentUserData(currentUser: CurrentUser?) {
         launch {
             currentUser?.let {
-                val filters = async { mainUseCase.insertAllFilters(it.filterList) }
+                val filters = async {insertUserFilters(it.filterList) }
                 val filteredCalls =
-                    async { mainUseCase.insertAllFilteredCalls(it.filteredCallList) }
+                    async { insertUserFilteredCalls(it.filteredCallList) }
                 awaitAll(filters, filteredCalls)
                 getAllData()
             }
         }
     }
 
-    private fun insertAllFilters(currentUser: CurrentUser?) {
-        launch {
-            currentUser?.let {
-                val filters = async { mainUseCase.insertAllFilters(it.filterList) }
-                val filteredCalls =
-                    async { mainUseCase.insertAllFilteredCalls(it.filteredCallList) }
-                awaitAll(filters, filteredCalls)
-                getAllData()
-            }
-        }
+    private suspend fun insertUserFilters(filterList: List<Filter>) {
+           mainUseCase.insertAllFilters(filterList)
     }
 
+    private suspend fun insertUserFilteredCalls(filteredCallList: List<FilteredCall>) {
+        mainUseCase.insertAllFilteredCalls(filteredCallList)
+    }
 
     fun getAllData() {
         launch {
@@ -82,15 +76,23 @@ class MainViewModel @Inject constructor(
             progressDescription =
                 getApplication<Application>().getString(R.string.progress_update_localizations)
         })
-        val countryCodeList = mainUseCase.getSystemCountryCodeList { size, position ->
+        val countryCodeList = getSystemCountryCodeList()
+        if (SharedPrefs.countryCode.isNullOrEmpty()) {
+            SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == SharedPrefs.country?.uppercase() }?.countryCode
+        }
+        insertAllCountryCodes(countryCodeList)
+    }
+
+    private suspend fun getSystemCountryCodeList(): List<CountryCode> {
+        return mainUseCase.getSystemCountryCodeList { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
             })
         }
-        if (SharedPrefs.countryCode.isNullOrEmpty()) {
-            SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == SharedPrefs.country?.uppercase() }?.countryCode
-        }
+    }
+
+    private suspend fun insertAllCountryCodes(countryCodeList: List<CountryCode>) {
         mainUseCase.insertAllCountryCodes(countryCodeList)
     }
 
@@ -100,23 +102,34 @@ class MainViewModel @Inject constructor(
             progressDescription =
                 getApplication<Application>().getString(R.string.progress_update_contacts_receive)
         })
-        val contactList =
-            mainUseCase.getSystemContactList(getApplication()) { size, position ->
-                progressStatusLiveData.postValue(mainProgress.apply {
-                    progressMax = size
-                    progressPosition = position
-                })
-            }
+        val contactList = getSystemContactList()
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription =
                 getApplication<Application>().getString(R.string.progress_update_contacts_change)
         })
+        setFilterToContact(filterList, contactList)
+        insertContacts(contactList)
+    }
+
+    private suspend fun getSystemContactList(): List<Contact> {
+        return mainUseCase.getSystemContactList(getApplication()) { size, position ->
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressMax = size
+                progressPosition = position
+            })
+        }
+    }
+
+    private suspend fun setFilterToContact(filterList: List<Filter>, contactList: List<Contact>) {
         mainUseCase.setFilterToContact(filterList, contactList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
             })
         }
+    }
+
+    private suspend fun insertContacts(contactList: List<Contact>) {
         mainUseCase.insertContacts(contactList)
     }
 
@@ -126,26 +139,33 @@ class MainViewModel @Inject constructor(
             progressDescription =
                 getApplication<Application>().getString(R.string.progress_update_calls_receive)
         })
-        val logCallList =
-            mainUseCase.getSystemLogCallList(getApplication()) { size, position ->
-                progressStatusLiveData.postValue(mainProgress.apply {
-                    progressMax = size
-                    progressPosition = position
-                })
-            }
+        val logCallList = getSystemLogCallList()
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription =
                 getApplication<Application>().getString(R.string.progress_update_calls_change)
         })
-        mainUseCase.setFilterToLogCall(filterList, logCallList) { size, position ->
+        setFilterToLogCall(filterList, logCallList)
+        mainUseCase.insertAllLogCalls(logCallList)
+        filterList.onEach { filter ->
+            filter.filteredContacts = filter.filteredContacts.orZero() + logCallList.filter { filter.filter == it.filter }.distinctBy { it.number }.size
+        }
+    }
+
+    private suspend fun getSystemLogCallList(): List<LogCall> {
+        return mainUseCase.getSystemLogCallList(getApplication()) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
             })
         }
-        mainUseCase.insertAllLogCalls(logCallList)
-        filterList.onEach { filter ->
-            filter.filteredContacts = filter.filteredContacts.orZero() + logCallList.filter { filter.filter == it.filter }.distinctBy { it.number }.size
+    }
+
+    private suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>) {
+        mainUseCase.setFilterToLogCall(filterList, logCallList) { size, position ->
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressMax = size
+                progressPosition = position
+            })
         }
     }
 
@@ -155,13 +175,31 @@ class MainViewModel @Inject constructor(
             progressDescription =
                 getApplication<Application>().getString(R.string.progress_update_filtered_calls)
         })
-        val filteredCallList = mainUseCase.getAllFilteredCalls()
+        val filteredCallList = getAllFilteredCalls()
         mainUseCase.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
             })
         }
+        setFilterToFilteredCall(filterList, filteredCallList)
+        insertAllFilteredCalls(filteredCallList)
+    }
+
+    private suspend fun getAllFilteredCalls(): List<FilteredCall> {
+        return mainUseCase.getAllFilteredCalls()
+    }
+
+    private suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>) {
+        mainUseCase.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
+            progressStatusLiveData.postValue(mainProgress.apply {
+                progressMax = size
+                progressPosition = position
+            })
+        }
+    }
+
+    private suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
         mainUseCase.insertAllFilteredCalls(filteredCallList)
     }
 }

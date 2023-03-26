@@ -13,6 +13,8 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
+//TODO unfinished
+@Suppress
 @RunWith(MockitoJUnitRunner::class)
 class DetailsFilterUseCaseTest {
 

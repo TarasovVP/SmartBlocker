@@ -8,7 +8,10 @@ import com.tarasovvp.smartblocker.TestUtils.TEST_TOKEN
 import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginViewModel
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.resetMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,5 +52,10 @@ class LoginViewModelTest {
 
         viewModel.firebaseAuthWithGoogle(TEST_TOKEN)
         assertTrue(viewModel.successSignInLiveData.value == true)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 }
