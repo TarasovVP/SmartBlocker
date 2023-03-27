@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val application: Application,
+    application: Application,
     private val mainUseCase: MainUseCase
 ) : BaseViewModel(application) {
 
@@ -72,7 +72,7 @@ class MainViewModel @Inject constructor(
         insertAllCountryCodes(countryCodeList)
     }
 
-    private suspend fun getSystemCountryCodeList(): List<CountryCode> {
+    suspend fun getSystemCountryCodeList(): List<CountryCode> {
         return mainUseCase.getSystemCountryCodeList { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
@@ -81,8 +81,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun insertAllCountryCodes(countryCodeList: List<CountryCode>) {
-        mainUseCase.insertAllCountryCodes(countryCodeList)
+    fun insertAllCountryCodes(countryCodeList: List<CountryCode>) {
+        launch {
+            mainUseCase.insertAllCountryCodes(countryCodeList)
+        }
     }
 
     @AddTrace(name = "setContactData")
@@ -98,7 +100,7 @@ class MainViewModel @Inject constructor(
         insertContacts(contactList)
     }
 
-    private suspend fun getSystemContactList(): List<Contact> {
+    suspend fun getSystemContactList(): List<Contact> {
         return mainUseCase.getSystemContactList(getApplication()) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
@@ -107,7 +109,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun setFilterToContact(filterList: List<Filter>, contactList: List<Contact>) {
+    suspend fun setFilterToContact(filterList: List<Filter>, contactList: List<Contact>) {
         mainUseCase.setFilterToContact(filterList, contactList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
@@ -116,8 +118,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun insertContacts(contactList: List<Contact>) {
-        mainUseCase.insertContacts(contactList)
+    fun insertContacts(contactList: List<Contact>) {
+        launch {
+            mainUseCase.insertContacts(contactList)
+        }
     }
 
     @AddTrace(name = "setLogCallData")
@@ -136,7 +140,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getSystemLogCallList(): List<LogCall> {
+    suspend fun getSystemLogCallList(): List<LogCall> {
         return mainUseCase.getSystemLogCallList(getApplication()) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
@@ -145,7 +149,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>) {
+    suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>) {
         mainUseCase.setFilterToLogCall(filterList, logCallList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
@@ -170,11 +174,11 @@ class MainViewModel @Inject constructor(
         insertAllFilteredCalls(filteredCallList)
     }
 
-    private suspend fun getAllFilteredCalls(): List<FilteredCall> {
+    suspend fun getAllFilteredCalls(): List<FilteredCall> {
         return mainUseCase.getAllFilteredCalls()
     }
 
-    private suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>) {
+    suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>) {
         mainUseCase.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
@@ -183,7 +187,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
-        mainUseCase.insertAllFilteredCalls(filteredCallList)
+    fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
+        launch {
+            mainUseCase.insertAllFilteredCalls(filteredCallList)
+        }
     }
 }

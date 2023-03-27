@@ -3,6 +3,10 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.TestUtils.TEST_NAME
+import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
@@ -16,7 +20,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
-@Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
@@ -30,6 +33,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     fun getCurrentUser() = runTest {
         val currentUser = CurrentUser()
         Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
             val result = it.arguments[0] as (CurrentUser) -> Unit
             result.invoke(currentUser)
         }.`when`(mainUseCase).getCurrentUser(any())
@@ -41,67 +45,102 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
 
     @Test
     fun insertUserFilters() = runTest {
-        val mockFilter = "mockFilter"
-        val filterList = listOf(Filter(filter = mockFilter), Filter(filter = "mockFilter2"))
+        val filterList = listOf(Filter(filter = TEST_FILTER), Filter(filter = "mockFilter2"))
         viewModel.insertUserFilters(filterList)
         verify(mainUseCase, times(1)).insertAllFilters(filterList)
     }
 
     @Test
     fun insertUserFilteredCalls() = runTest {
-        val mockNumber = "mockFilter"
-        val filteredCallList = listOf(FilteredCall().apply { number = mockNumber }, FilteredCall().apply { number = mockNumber })
+        val filteredCallList = listOf(FilteredCall().apply { number = TEST_FILTER }, FilteredCall().apply { number = TEST_FILTER })
         viewModel.insertUserFilteredCalls(filteredCallList)
         verify(mainUseCase, times(1)).insertAllFilteredCalls(filteredCallList)
     }
 
     @Test
     fun getSystemCountryCodeList() = runTest {
-        //mainUseCase.getSystemCountryCodeList()
+        val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY))
+        Mockito.`when`(mainUseCase.getSystemCountryCodeList(any()))
+            .thenReturn(countryCodeList)
+        val resultCountryCodeList = viewModel.getSystemCountryCodeList()
+        assertEquals(countryCodeList, resultCountryCodeList)
     }
 
     @Test
     fun insertAllCountryCodes() = runTest {
-        //mainUseCase.insertAllCountryCodes()
+        val countryCodeList = listOf(CountryCode(), CountryCode())
+        viewModel.insertAllCountryCodes(countryCodeList)
+        verify(mainUseCase, times(1)).insertAllCountryCodes(countryCodeList)
     }
 
     @Test
     fun getSystemContactList() = runTest {
-        //mainUseCase.getSystemContactList(application)
+        val contactList = listOf(Contact(name = TEST_NAME))
+        Mockito.`when`(mainUseCase.getSystemContactList(application, any()))
+            .thenReturn(contactList)
+        val resultContactList = viewModel.getSystemContactList()
+        assertEquals(contactList, resultContactList)
     }
 
     @Test
     fun setFilterToContact() = runTest {
-        //mainUseCase.setFilterToContact(filterList, contactList)
+        val filterList = listOf(Filter(filter = TEST_FILTER))
+        val contactList = listOf(Contact(name = TEST_NAME))
+        Mockito.`when`(mainUseCase.setFilterToContact(filterList, contactList, any()))
+            .thenReturn(contactList)
+        val resultContactList = viewModel.setFilterToContact(filterList, contactList)
+        assertEquals(contactList, resultContactList)
     }
 
     @Test
     fun insertContacts() = runTest {
-        // mainUseCase.insertContacts(contactList)
+        val contactList = listOf(Contact(), Contact())
+        viewModel.insertContacts(contactList)
+        verify(mainUseCase, times(1)).insertContacts(contactList)
     }
 
     @Test
     fun getSystemLogCallList() = runTest {
-        //mainUseCase.getSystemLogCallList(application)
+        val logCallList = listOf(LogCall().apply { number = TEST_NUMBER })
+        Mockito.`when`(mainUseCase.getSystemLogCallList(application, any()))
+            .thenReturn(logCallList)
+        val resultLogCallList = viewModel.getSystemLogCallList()
+        assertEquals(logCallList, resultLogCallList)
     }
 
     @Test
     fun setFilterToLogCall() = runTest {
-        //mainUseCase.setFilterToLogCall(filterList, logCallList)
+        val filterList = listOf(Filter(filter = TEST_FILTER))
+        val logCallList = listOf(LogCall().apply { number = TEST_NUMBER })
+        Mockito.`when`(mainUseCase.setFilterToLogCall(filterList, logCallList, any()))
+            .thenReturn(logCallList)
+        val resultLogCallList = viewModel.setFilterToLogCall(filterList, logCallList)
+        assertEquals(logCallList, resultLogCallList)
     }
 
     @Test
     fun getAllFilteredCalls() = runTest {
-        //mainUseCase.getAllFilteredCalls()
+        val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER })
+        Mockito.`when`(mainUseCase.getAllFilteredCalls())
+            .thenReturn(filteredCallList)
+        val resultFilteredCallList = viewModel.getAllFilteredCalls()
+        assertEquals(filteredCallList, resultFilteredCallList)
     }
 
     @Test
     fun setFilterToFilteredCall() = runTest {
-        //mainUseCase.setFilterToFilteredCall(filterList, filteredCallList)
+        val filterList = listOf(Filter(filter = TEST_FILTER))
+        val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER })
+        Mockito.`when`(mainUseCase.setFilterToFilteredCall(filterList, filteredCallList, any()))
+            .thenReturn(filteredCallList)
+        val resultFilteredCallList = viewModel.setFilterToFilteredCall(filterList, filteredCallList)
+        assertEquals(filteredCallList, resultFilteredCallList)
     }
 
     @Test
     fun insertAllFilteredCalls() = runTest {
-        //mainUseCase.insertAllFilteredCalls(filteredCallList)
+        val filteredCallList = listOf(FilteredCall(), FilteredCall())
+        viewModel.insertAllFilteredCalls(filteredCallList)
+        verify(mainUseCase, times(1)).insertAllFilteredCalls(filteredCallList)
     }
 }
