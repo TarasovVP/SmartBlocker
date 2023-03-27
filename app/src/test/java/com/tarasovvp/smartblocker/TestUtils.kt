@@ -10,6 +10,10 @@ import java.util.concurrent.TimeoutException
 object TestUtils {
 
     const val TEST_TOKEN = "testToken"
+    const val TEST_NUMBER = "12345678"
+    const val TEST_FILTER = "87654321"
+    const val TEST_NAME = "testName"
+    const val TEST_COUNTRY = "UA"
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun <T> LiveData<T>.getOrAwaitValue(

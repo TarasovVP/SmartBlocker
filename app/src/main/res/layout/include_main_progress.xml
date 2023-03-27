@@ -55,7 +55,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_16"
             android:layout_marginHorizontal="@dimen/margin_16"
-            android:text="@{mainProgress.progressDescription}"
+            android:text="@{mainProgress.progressDescription > 0 ? context.getString(mainProgress.progressDescription) :  ``}"
             app:layout_constraintTop_toBottomOf="@+id/main_progress_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

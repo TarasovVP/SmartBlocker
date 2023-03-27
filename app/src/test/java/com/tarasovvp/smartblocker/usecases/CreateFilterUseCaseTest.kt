@@ -8,7 +8,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import org.junit.Before
 import org.junit.runner.RunWith

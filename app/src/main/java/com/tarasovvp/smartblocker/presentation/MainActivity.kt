@@ -262,6 +262,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         with(mainViewModel) {
+            currentUserLiveData.safeSingleObserve(this@MainActivity) { currentUser ->
+                insertUserFilters(currentUser.filterList)
+                insertUserFilteredCalls(currentUser.filteredCallList)
+                getAllData()
+            }
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 setMainProgressVisibility(false)
             }

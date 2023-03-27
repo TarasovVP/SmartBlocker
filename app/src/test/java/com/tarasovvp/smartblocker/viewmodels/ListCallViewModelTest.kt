@@ -1,9 +1,8 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import android.app.Application
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
+import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.entities.Call
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
@@ -11,83 +10,57 @@ import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallU
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallViewModel
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class ListCallViewModelTest {
-
-    @Rule
-    @JvmField
-    val instantExecutorRule = InstantTaskExecutorRule()
+class ListCallViewModelTest: BaseViewModelTest<ListCallViewModel>() {
 
     @Mock
-    private lateinit var application: Application
+    private lateinit var useCase: ListCallUseCase
 
-    @Mock
-    private lateinit var listCallUseCase: ListCallUseCase
-
-    private lateinit var viewModel: ListCallViewModel
-    private lateinit var callNumber: String
-
-    @Before
-    fun setUp() {
-        MockitoAnnotations.openMocks(this)
-        Dispatchers.setMain(StandardTestDispatcher())
-        viewModel =
-            ListCallViewModel(application, listCallUseCase)
-        callNumber = "123"
-    }
+    override fun createViewModel() = ListCallViewModel(application, useCase)
 
     @Test
     fun getCallListTest() = runTest {
-        val callList = listOf(CallWithFilter(call = Call(number = callNumber)))
-        Mockito.`when`(listCallUseCase.getCallList())
+        val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)))
+        Mockito.`when`(useCase.getCallList())
             .thenReturn(callList)
         viewModel.getCallList(false)
         advanceUntilIdle()
         val result = viewModel.callListLiveData.getOrAwaitValue()
-        assertEquals(callNumber, result[0].call?.number)
+        assertEquals(TEST_NUMBER, result[0].call?.number)
     }
 
     @Test
     fun getHashMapFromCallListTest() = runTest {
-        val callList = listOf(CallWithFilter(call = Call(number = callNumber)), CallWithFilter(call = Call(number = "567")))
+        val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "567")))
         val callMap = mapOf("1" to callList)
-        Mockito.`when`(listCallUseCase.getHashMapFromCallList(callList))
+        Mockito.`when`(useCase.getHashMapFromCallList(callList))
             .thenReturn(callMap)
         viewModel.getHashMapFromCallList(callList, false)
         advanceUntilIdle()
         val result = viewModel.callHashMapLiveData.getOrAwaitValue()
-        assertEquals(callNumber, result?.get("1")?.get(0)?.call?.number)
+        assertEquals(TEST_NUMBER, result?.get("1")?.get(0)?.call?.number)
     }
 
     @Test
     fun deleteCallListTest() = runTest {
-        val callList = listOf(CallWithFilter(call = Call(number = callNumber, callId = 123)))
+        val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER, callId = 123)))
         Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(listCallUseCase).deleteCallList(eq(callList.map { it.call?.callId.orZero() }), any())
+        }.`when`(useCase).deleteCallList(eq(callList.map { it.call?.callId.orZero() }), any())
         viewModel.deleteCallList(callList.map { it.call?.callId.orZero() })
         advanceUntilIdle()
         val result = viewModel.successDeleteNumberLiveData.getOrAwaitValue()
         assertEquals(true, result)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 }

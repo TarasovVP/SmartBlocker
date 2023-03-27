@@ -1,61 +1,37 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import android.app.Application
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountViewModel
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class SettingsAccountViewModelTest {
-
-    @Rule
-    @JvmField
-    val instantExecutorRule = InstantTaskExecutorRule()
+class SettingsAccountViewModelTest: BaseViewModelTest<SettingsAccountViewModel>() {
 
     @Mock
-    private lateinit var application: Application
-
-    @Mock
-    private lateinit var settingsAccountUseCase: SettingsAccountUseCase
+    private lateinit var useCase: SettingsAccountUseCase
 
     @Mock
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    private lateinit var viewModel: SettingsAccountViewModel
-
-    @Before
-    fun setUp() {
-        MockitoAnnotations.openMocks(this)
-        Dispatchers.setMain(StandardTestDispatcher())
-        viewModel =
-            SettingsAccountViewModel(application, settingsAccountUseCase)
-    }
+    override fun createViewModel() = SettingsAccountViewModel(application, useCase)
 
     @Test
     fun signOutTest() {
         Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(settingsAccountUseCase).signOut(eq(googleSignInClient), any())
+        }.`when`(useCase).signOut(eq(googleSignInClient), any())
         viewModel.signOut(googleSignInClient)
         assertEquals(true, viewModel.successLiveData.value)
     }
@@ -67,7 +43,7 @@ class SettingsAccountViewModelTest {
         Mockito.doAnswer {
             val result = it.arguments[2] as () -> Unit
             result.invoke()
-        }.`when`(settingsAccountUseCase).changePassword(eq(currentPassword), eq(newPassword), any())
+        }.`when`(useCase).changePassword(eq(currentPassword), eq(newPassword), any())
         viewModel.changePassword(currentPassword, newPassword)
         assertEquals(true, viewModel.successChangePasswordLiveData.value)
     }
@@ -75,15 +51,11 @@ class SettingsAccountViewModelTest {
     @Test
     fun deleteUserTest() {
         Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(settingsAccountUseCase).deleteUser(eq(googleSignInClient), any())
+        }.`when`(useCase).deleteUser(eq(googleSignInClient), any())
         viewModel.deleteUser(googleSignInClient)
         assertEquals(true, viewModel.successLiveData.value)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 }
