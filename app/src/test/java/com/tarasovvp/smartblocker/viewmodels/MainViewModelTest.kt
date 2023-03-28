@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.viewmodels
 
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
@@ -76,7 +77,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     @Test
     fun getSystemContactList() = runTest {
         val contactList = listOf(Contact(name = TEST_NAME))
-        Mockito.`when`(mainUseCase.getSystemContactList(application, any()))
+        Mockito.`when`(mainUseCase.getSystemContactList(eq(application), any()))
             .thenReturn(contactList)
         val resultContactList = viewModel.getSystemContactList()
         assertEquals(contactList, resultContactList)
@@ -86,7 +87,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     fun setFilterToContact() = runTest {
         val filterList = listOf(Filter(filter = TEST_FILTER))
         val contactList = listOf(Contact(name = TEST_NAME))
-        Mockito.`when`(mainUseCase.setFilterToContact(filterList, contactList, any()))
+        Mockito.`when`(mainUseCase.setFilterToContact(eq(filterList), eq(contactList), any()))
             .thenReturn(contactList)
         val resultContactList = viewModel.setFilterToContact(filterList, contactList)
         assertEquals(contactList, resultContactList)
@@ -102,7 +103,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     @Test
     fun getSystemLogCallList() = runTest {
         val logCallList = listOf(LogCall().apply { number = TEST_NUMBER })
-        Mockito.`when`(mainUseCase.getSystemLogCallList(application, any()))
+        Mockito.`when`(mainUseCase.getSystemLogCallList(eq(application), any()))
             .thenReturn(logCallList)
         val resultLogCallList = viewModel.getSystemLogCallList()
         assertEquals(logCallList, resultLogCallList)
@@ -112,7 +113,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     fun setFilterToLogCall() = runTest {
         val filterList = listOf(Filter(filter = TEST_FILTER))
         val logCallList = listOf(LogCall().apply { number = TEST_NUMBER })
-        Mockito.`when`(mainUseCase.setFilterToLogCall(filterList, logCallList, any()))
+        Mockito.`when`(mainUseCase.setFilterToLogCall(eq(filterList), eq(logCallList), any()))
             .thenReturn(logCallList)
         val resultLogCallList = viewModel.setFilterToLogCall(filterList, logCallList)
         assertEquals(logCallList, resultLogCallList)
@@ -131,7 +132,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     fun setFilterToFilteredCall() = runTest {
         val filterList = listOf(Filter(filter = TEST_FILTER))
         val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER })
-        Mockito.`when`(mainUseCase.setFilterToFilteredCall(filterList, filteredCallList, any()))
+        Mockito.`when`(mainUseCase.setFilterToFilteredCall(eq(filterList), eq(filteredCallList), any()))
             .thenReturn(filteredCallList)
         val resultFilteredCallList = viewModel.setFilterToFilteredCall(filterList, filteredCallList)
         assertEquals(filteredCallList, resultFilteredCallList)

@@ -36,16 +36,20 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun insertUserFilters(filterList: List<Filter>) {
+    fun setCurrentUserData(currentUser: CurrentUser) {
         launch {
-            mainUseCase.insertAllFilters(filterList)
+            insertUserFilters(currentUser.filterList)
+            insertUserFilteredCalls(currentUser.filteredCallList)
+            getAllData()
         }
     }
 
-    fun insertUserFilteredCalls(filteredCallList: List<FilteredCall>) {
-        launch {
-            mainUseCase.insertAllFilteredCalls(filteredCallList)
-        }
+    suspend fun insertUserFilters(filterList: List<Filter>) {
+        mainUseCase.insertAllFilters(filterList)
+    }
+
+    suspend fun insertUserFilteredCalls(filteredCallList: List<FilteredCall>) {
+        mainUseCase.insertAllFilteredCalls(filteredCallList)
     }
 
     fun getAllData() {
@@ -81,10 +85,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun insertAllCountryCodes(countryCodeList: List<CountryCode>) {
-        launch {
-            mainUseCase.insertAllCountryCodes(countryCodeList)
-        }
+    suspend fun insertAllCountryCodes(countryCodeList: List<CountryCode>) {
+        mainUseCase.insertAllCountryCodes(countryCodeList)
     }
 
     @AddTrace(name = "setContactData")
@@ -96,8 +98,8 @@ class MainViewModel @Inject constructor(
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_contacts_change
         })
-        setFilterToContact(filterList, contactList)
-        insertContacts(contactList)
+        val updatedContactList = setFilterToContact(filterList, contactList)
+        insertContacts(updatedContactList)
     }
 
     suspend fun getSystemContactList(): List<Contact> {
@@ -109,8 +111,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun setFilterToContact(filterList: List<Filter>, contactList: List<Contact>) {
-        mainUseCase.setFilterToContact(filterList, contactList) { size, position ->
+    suspend fun setFilterToContact(filterList: List<Filter>, contactList: List<Contact>): List<Contact> {
+        return mainUseCase.setFilterToContact(filterList, contactList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
@@ -118,10 +120,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun insertContacts(contactList: List<Contact>) {
-        launch {
-            mainUseCase.insertContacts(contactList)
-        }
+    suspend fun insertContacts(contactList: List<Contact>) {
+        mainUseCase.insertContacts(contactList)
     }
 
     @AddTrace(name = "setLogCallData")
@@ -133,8 +133,8 @@ class MainViewModel @Inject constructor(
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_calls_change
         })
-        setFilterToLogCall(filterList, logCallList)
-        mainUseCase.insertAllLogCalls(logCallList)
+        val updatedLocCallList = setFilterToLogCall(filterList, logCallList)
+        mainUseCase.insertAllLogCalls(updatedLocCallList)
         filterList.onEach { filter ->
             filter.filteredContacts = filter.filteredContacts.orZero() + logCallList.filter { filter.filter == it.filter }.distinctBy { it.number }.size
         }
@@ -149,8 +149,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>) {
-        mainUseCase.setFilterToLogCall(filterList, logCallList) { size, position ->
+    suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>): List<LogCall> {
+        return mainUseCase.setFilterToLogCall(filterList, logCallList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
@@ -170,16 +170,16 @@ class MainViewModel @Inject constructor(
                 progressPosition = position
             })
         }
-        setFilterToFilteredCall(filterList, filteredCallList)
-        insertAllFilteredCalls(filteredCallList)
+        val updatedFilteredCallList = setFilterToFilteredCall(filterList, filteredCallList)
+        insertAllFilteredCalls(updatedFilteredCallList)
     }
 
     suspend fun getAllFilteredCalls(): List<FilteredCall> {
         return mainUseCase.getAllFilteredCalls()
     }
 
-    suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>) {
-        mainUseCase.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
+    suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>): List<FilteredCall> {
+        return mainUseCase.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
@@ -187,9 +187,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
-        launch {
-            mainUseCase.insertAllFilteredCalls(filteredCallList)
-        }
+    suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
+        mainUseCase.insertAllFilteredCalls(filteredCallList)
     }
 }
