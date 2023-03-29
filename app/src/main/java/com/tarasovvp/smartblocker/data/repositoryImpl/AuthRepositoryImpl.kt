@@ -15,25 +15,20 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     override fun sendPasswordResetEmail(email: String, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         auth?.sendPasswordResetEmail(email)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result.invoke()
-                } else {
-                    task.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()
-                }
+            ?.addOnCompleteListener {
+                result.invoke()
+            }?.addOnFailureListener { exception ->
+                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     override fun signInWithEmailAndPassword(email: String, password: String, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         auth?.signInWithEmailAndPassword(email, password)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result.invoke()
-                } else {
-                    task.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()
-                }
-
+            ?.addOnCompleteListener {
+                result.invoke()
+            }?.addOnFailureListener { exception ->
+                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
@@ -41,12 +36,10 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result.invoke()
-                } else {
-                    task.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()
-                }
+            ?.addOnCompleteListener {
+                result.invoke()
+            }?.addOnFailureListener { exception ->
+                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
@@ -57,12 +50,10 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     ) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
         auth?.createUserWithEmailAndPassword(email, password)
-            ?.addOnCompleteListener { createUserTask ->
-                if (createUserTask.isSuccessful) {
-                    result.invoke()
-                } else {
-                    createUserTask.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()
-                }
+            ?.addOnCompleteListener {
+                result.invoke()
+            }?.addOnFailureListener { exception ->
+                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
@@ -72,31 +63,28 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
         val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), currentPassword)
         user?.reauthenticateAndRetrieveData(credential)
             ?.addOnCompleteListener { passwordTask ->
-                if (passwordTask.isSuccessful) {
-                    user.updatePassword(newPassword).addOnCompleteListener {
-                        if (passwordTask.isSuccessful) {
-                            result.invoke()
-                        } else {
-                            passwordTask.exception?.localizedMessage.orEmpty()
-                                .sendExceptionBroadCast()
-                        }
+                user.updatePassword(newPassword).addOnCompleteListener {
+                    if (passwordTask.isSuccessful) {
+                        result.invoke()
+                    } else {
+                        passwordTask.exception?.localizedMessage.orEmpty()
+                            .sendExceptionBroadCast()
                     }
-                } else {
-                    passwordTask.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()
                 }
+            }?.addOnFailureListener { exception ->
+                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
     }
 
     override fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
         if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        auth?.currentUser?.delete()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
+        auth?.currentUser?.delete()
+            ?.addOnCompleteListener {
                 googleSignInClient.signOut()
                 result.invoke()
-            } else {
-                task.exception?.localizedMessage.orEmpty().sendExceptionBroadCast()
+            }?.addOnFailureListener { exception ->
+                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
             }
-        }
     }
 
     override fun signOut(googleSignInClient: GoogleSignInClient, result: () -> Unit) {

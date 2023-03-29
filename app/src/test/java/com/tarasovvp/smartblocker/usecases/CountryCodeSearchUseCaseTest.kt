@@ -23,7 +23,7 @@ class CountryCodeSearchUseCaseTest {
     @Mock
     private lateinit var countryCodeRepository: CountryCodeRepository
 
-    lateinit var countryCodeSearchUseCase: CountryCodeSearchUseCase
+    private lateinit var countryCodeSearchUseCase: CountryCodeSearchUseCase
 
     @Before
     fun setUp() {

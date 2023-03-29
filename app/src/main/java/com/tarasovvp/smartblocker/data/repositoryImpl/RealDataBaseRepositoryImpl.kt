@@ -14,8 +14,6 @@ import com.tarasovvp.smartblocker.domain.models.Review
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RealDataBaseRepositoryImpl @Inject constructor(private val database: DatabaseReference) :

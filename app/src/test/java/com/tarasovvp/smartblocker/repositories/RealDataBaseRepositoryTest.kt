@@ -1,16 +1,19 @@
 package com.tarasovvp.smartblocker.repositories
 
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
-import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.data.repositoryImpl.RealDataBaseRepositoryImpl
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -21,7 +24,9 @@ class RealDataBaseRepositoryTest {
     @Mock
     private lateinit var database: DatabaseReference
 
-    lateinit var realDataBaseRepository: RealDataBaseRepository
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
+
+    private val resultMock = mock<() -> Unit>()
 
     @Before
     fun setUp() {
@@ -29,13 +34,20 @@ class RealDataBaseRepositoryTest {
         realDataBaseRepository = RealDataBaseRepositoryImpl(database)
     }
 
-    private var currentUserDatabase =
-        database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
-    private var reviewsDatabase = database.child(REVIEWS)
-
     @Test
     fun getCurrentUserTest() {
+        val filter = Filter("test")
+        val task = mock<Task<Void>>()
+        Mockito.`when`(database.child(filter.filter)).thenReturn(database)
+        Mockito.`when`(database.setValue(filter)).thenReturn(task)
+        Mockito.doAnswer {
+            val result = it.arguments[0] as () -> Unit
+            result.invoke()
+        }.`when`(task).addOnCompleteListener(any())
 
+        realDataBaseRepository.insertFilter(filter, resultMock)
+        verify(task).addOnCompleteListener(any())
+        verify(resultMock).invoke()
     }
 
     @Test
