@@ -55,7 +55,7 @@ class MainViewModel @Inject constructor(
     fun getAllData() {
         launch {
             setCountryCodeData()
-            val filterList = mainUseCase.getAllFilters()
+            val filterList = getAllFilters()
             setContactData(filterList)
             setLogCallData(filterList)
             setFilteredCallData(filterList)
@@ -87,6 +87,10 @@ class MainViewModel @Inject constructor(
 
     suspend fun insertAllCountryCodes(countryCodeList: List<CountryCode>) {
         mainUseCase.insertAllCountryCodes(countryCodeList)
+    }
+
+    suspend fun getAllFilters(): List<Filter> {
+        return mainUseCase.getAllFilters()
     }
 
     @AddTrace(name = "setContactData")

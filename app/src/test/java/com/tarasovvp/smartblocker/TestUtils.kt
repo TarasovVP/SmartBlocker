@@ -14,6 +14,8 @@ object TestUtils {
     const val TEST_FILTER = "87654321"
     const val TEST_NAME = "testName"
     const val TEST_COUNTRY = "UA"
+    const val TEST_EMAIL = "test@email.com"
+    const val TEST_PASSWORD = "Ua12345!"
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun <T> LiveData<T>.getOrAwaitValue(

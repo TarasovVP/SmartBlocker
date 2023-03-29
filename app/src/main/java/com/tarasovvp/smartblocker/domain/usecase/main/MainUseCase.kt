@@ -7,11 +7,11 @@ interface MainUseCase {
 
     fun getCurrentUser(result: (CurrentUser?) -> Unit)
 
-    suspend fun getAllFilters(): List<Filter>
-
     suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): List<CountryCode>
 
     suspend fun insertAllCountryCodes(countryCodeList: List<CountryCode>)
+
+    suspend fun getAllFilters(): List<Filter>
 
     suspend fun getSystemContactList(application: Application, result: (Int, Int) -> Unit): List<Contact>
 

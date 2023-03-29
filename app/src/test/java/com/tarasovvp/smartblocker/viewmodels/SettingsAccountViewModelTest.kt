@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
+import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountViewModel
 import junit.framework.TestCase.assertEquals
@@ -38,13 +39,12 @@ class SettingsAccountViewModelTest: BaseViewModelTest<SettingsAccountViewModel>(
 
     @Test
     fun changePasswordTest() {
-        val currentPassword = "currentPassword"
         val newPassword = "newPassword"
         Mockito.doAnswer {
             val result = it.arguments[2] as () -> Unit
             result.invoke()
-        }.`when`(useCase).changePassword(eq(currentPassword), eq(newPassword), any())
-        viewModel.changePassword(currentPassword, newPassword)
+        }.`when`(useCase).changePassword(eq(TEST_PASSWORD), eq(newPassword), any())
+        viewModel.changePassword(TEST_PASSWORD, newPassword)
         assertEquals(true, viewModel.successChangePasswordLiveData.value)
     }
 

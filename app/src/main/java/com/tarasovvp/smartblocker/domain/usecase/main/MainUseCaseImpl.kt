@@ -18,16 +18,16 @@ class MainUseCaseImpl @Inject constructor(
         result.invoke(it)
     }
 
-    override suspend fun getAllFilters(): List<Filter> {
-        return filterRepository.allFilters()
-    }
-
     override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit) = countryCodeRepository.getSystemCountryCodeList { size, position ->
         result.invoke(size, position)
     }
 
     override suspend fun insertAllCountryCodes(countryCodeList: List<CountryCode>) {
         countryCodeRepository.insertAllCountryCodes(countryCodeList)
+    }
+
+    override suspend fun getAllFilters(): List<Filter> {
+        return filterRepository.allFilters()
     }
 
     override suspend fun getSystemContactList(application: Application, result: (Int, Int) -> Unit) = contactRepository.getSystemContactList(application) { size, position ->

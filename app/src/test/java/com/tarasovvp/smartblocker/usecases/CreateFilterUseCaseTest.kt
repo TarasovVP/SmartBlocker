@@ -1,22 +1,31 @@
 package com.tarasovvp.smartblocker.usecases
 
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-//TODO unfinished
-@Suppress
 @RunWith(MockitoJUnitRunner::class)
 class CreateFilterUseCaseTest {
 
@@ -32,48 +41,108 @@ class CreateFilterUseCaseTest {
     @Mock
     private lateinit var logCallRepository: LogCallRepository
 
-    private lateinit var listContactUseCaseImpl: CreateFilterUseCaseImpl
+    private lateinit var createFilterUseCase: CreateFilterUseCase
+
+    private val resultMock = mock<() -> Unit>()
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        listContactUseCaseImpl = CreateFilterUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository)
+        createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository)
     }
 
+    @Test
+    fun getCountryCodeWithCountryTest() = runTest {
+        val expectedCountryCode = CountryCode(countryCode = "+380", country = "UA")
+        Mockito.`when`(countryCodeRepository.getCountryCodeWithCountry(TEST_COUNTRY))
+            .thenReturn(expectedCountryCode)
 
-    suspend fun getCountryCodeWithCountry(country: String) = countryCodeRepository.getCountryCodeWithCountry(country)
-
-    suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
-
-    suspend fun getNumberDataList(): ArrayList<NumberData> {
-            val contacts =  contactRepository.getContactsWithFilters()
-            val calls =  logCallRepository.allCallNumberWithFilter()
-            val contactList = contacts
-            val callList = calls
-            val numberDataList = ArrayList<NumberData>().apply {
-                addAll(contactList)
-                addAll(callList)
-                sortBy {
-                    if (it is ContactWithFilter) it.contact?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else if (it is LogCallWithFilter) it.call?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else String.EMPTY
-                }
-            }
-            return numberDataList
+        val resultCountry = createFilterUseCase.getCountryCodeWithCountry(TEST_COUNTRY)
+        assertEquals(expectedCountryCode.country, resultCountry?.country)
+        assertEquals(expectedCountryCode.countryCode, resultCountry?.countryCode)
     }
 
-    suspend fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode) = filterRepository.getFilter(filterWithCountryCode)
+    @Test
+    fun getCountryCodeWithCodeTest() = runTest {
+        val countryCode = 123
+        val expectedCountryCode = CountryCode(countryCode = "+380", country = TEST_COUNTRY)
+        Mockito.`when`(countryCodeRepository.getCountryCodeWithCode(countryCode))
+            .thenReturn(expectedCountryCode)
 
-    suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int) = contactRepository.filteredNumberDataList(filterWithCountryCode?.filter, numberDataList, color)
-
-    suspend fun createFilter(filter: Filter,  result: () -> Unit) = filterRepository.insertFilter(filter) {
-        result.invoke()
+        val result =  createFilterUseCase.getCountryCodeWithCode(countryCode)
+        assertEquals(result?.country, TEST_COUNTRY)
     }
 
-    suspend fun updateFilter(filter: Filter,  result: () -> Unit) = filterRepository.updateFilter(filter) {
-        result.invoke()
+    @Test
+    fun getNumberDataListTest() = runTest {
+        val callList = listOf(LogCallWithFilter().apply { call = LogCall().apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall().apply { number = "2"} })
+        val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
+        val numberDataList = ArrayList<NumberData>().apply {
+            addAll(contactList)
+            addAll(callList)
+        }.sortedBy {
+            if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
+        }
+        Mockito.`when`(logCallRepository.allCallNumberWithFilter())
+            .thenReturn(callList)
+        Mockito.`when`(contactRepository.getContactsWithFilters())
+            .thenReturn(contactList)
+        val result = createFilterUseCase.getNumberDataList()
+        assertEquals(numberDataList, result)
     }
 
-    suspend fun deleteFilter(filter: Filter,  result: () -> Unit) = filterRepository.deleteFilterList(listOf(filter)) {
-        result.invoke()
+    @Test
+    fun checkFilterExistTest() = runTest {
+        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TestUtils.TEST_FILTER))
+        Mockito.`when`(filterRepository.getFilter(filterWithCountryCode))
+            .thenReturn(filterWithCountryCode)
+        val result = createFilterUseCase.checkFilterExist(filterWithCountryCode)
+        assertEquals(TestUtils.TEST_FILTER, result?.filter?.filter)
     }
 
+    @Test
+    fun filterNumberDataListTest() = runTest {
+        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TestUtils.TEST_FILTER))
+        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
+        Mockito.`when`(contactRepository.filteredNumberDataList(filterWithCountryCode.filter, numberDataList, 0))
+            .thenReturn(numberDataList)
+        val result = createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataList, 0)
+        assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
+    }
+
+    @Test
+    fun createFilterTest() = runTest {
+        val filter = Filter(filter = TestUtils.TEST_FILTER)
+        Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
+            val result = it.arguments[1] as () -> Unit
+            result.invoke()
+        }.`when`(filterRepository).insertFilter(eq(filter), any())
+        createFilterUseCase.createFilter(filter, resultMock)
+        verify(resultMock).invoke()
+    }
+
+    @Test
+    fun updateFilterTest() = runTest {
+        val filter = Filter(filter = TestUtils.TEST_FILTER)
+        Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
+            val result = it.arguments[1] as () -> Unit
+            result.invoke()
+        }.`when`(filterRepository).updateFilter(eq(filter), any())
+        createFilterUseCase.updateFilter(filter, resultMock)
+        verify(resultMock).invoke()
+    }
+
+    @Test
+    fun deleteFilterTest() = runTest {
+        val filter = Filter(filter = TestUtils.TEST_FILTER)
+        Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
+            val result = it.arguments[1] as () -> Unit
+            result.invoke()
+        }.`when`(filterRepository).deleteFilterList(eq(listOf(filter)), any())
+        createFilterUseCase.deleteFilter(filter, resultMock)
+        verify(resultMock).invoke()
+    }
 }
