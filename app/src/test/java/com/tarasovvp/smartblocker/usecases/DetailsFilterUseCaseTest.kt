@@ -40,9 +40,10 @@ class DetailsFilterUseCaseTest {
     @Mock
     private lateinit var filteredCallRepository: FilteredCallRepository
 
-    private lateinit var detailsFilterUseCase: DetailsFilterUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var detailsFilterUseCase: DetailsFilterUseCase
 
     @Test
     fun getQueryContactCallListTest() = runTest {

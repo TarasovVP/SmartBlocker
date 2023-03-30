@@ -1,9 +1,14 @@
 package com.tarasovvp.smartblocker.repositories
 
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.ContactRepositoryImpl
+import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,37 +32,39 @@ class ContactRepositoryTest {
     }
 
     @Test
-    suspend fun insertContactsTest() {
+    fun insertContactsTest() = runTest {
+        val contactList = listOf(Contact().apply { number = TEST_NUMBER }, Contact())
+        contactRepository.insertContacts(contactList)
+        verify(contactDao, times(1)).insertAllContacts(contactList)
+    }
+
+    @Test
+    fun setFilterToContactTest() = runTest {
 
     }
 
     @Test
-    suspend fun setFilterToContactTest() {
+    fun getContactsWithFiltersTest() = runTest {
 
     }
 
     @Test
-    suspend fun getContactsWithFiltersTest() {
+    fun getContactsWithFilterByFilterTest() = runTest {
 
     }
 
     @Test
-    suspend fun getContactsWithFilterByFilterTest() {
+    fun getSystemContactListTest() = runTest {
 
     }
 
     @Test
-    suspend fun getSystemContactListTest() {
+    fun getHashMapFromContactListTest() = runTest {
 
     }
 
     @Test
-    suspend fun getHashMapFromContactListTest() {
-
-    }
-
-    @Test
-    suspend fun filteredNumberDataListTest() {
+    fun filteredNumberDataListTest() = runTest {
 
     }
 }

@@ -28,9 +28,10 @@ class ListFilterUseCaseTest {
     @Mock
     private lateinit var filterRepository: FilterRepository
 
-    private lateinit var listFilterUseCase: ListFilterUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var listFilterUseCase: ListFilterUseCase
 
     @Before
     fun setUp() {

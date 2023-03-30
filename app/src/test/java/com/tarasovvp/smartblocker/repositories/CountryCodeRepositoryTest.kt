@@ -1,9 +1,14 @@
 package com.tarasovvp.smartblocker.repositories
 
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.data.database.dao.CountryCodeDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.CountryCodeRepositoryImpl
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,27 +32,29 @@ class CountryCodeRepositoryTest {
     }
 
     @Test
-    suspend fun getSystemCountryCodeListTest() {
+    fun getSystemCountryCodeListTest() = runTest {
 
     }
 
     @Test
-    suspend fun insertAllCountryCodesTest() {
+    fun insertAllCountryCodesTest() = runTest {
+        val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
+        countryCodeRepository.insertAllCountryCodes(countryCodeList)
+        verify(countryCodeDao, times(1)).insertAllCountryCode(countryCodeList)
+    }
+
+    @Test
+    fun getAllCountryCodesTest() = runTest {
 
     }
 
     @Test
-    suspend fun getAllCountryCodesTest() {
+    fun getCountryCodeWithCountryTest() = runTest {
 
     }
 
     @Test
-    suspend fun getCountryCodeWithCountryTest() {
-
-    }
-
-    @Test
-    suspend fun getCountryCodeWithCodeTest() {
+    fun getCountryCodeWithCodeTest() = runTest {
 
     }
 }

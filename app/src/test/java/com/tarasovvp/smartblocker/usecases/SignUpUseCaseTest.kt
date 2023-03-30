@@ -23,9 +23,10 @@ class SignUpUseCaseTest {
     @Mock
     private lateinit var authRepository: AuthRepository
 
-    private lateinit var signUpUseCase: SignUpUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var signUpUseCase: SignUpUseCase
 
     @Before
     fun setUp() {

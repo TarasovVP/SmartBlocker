@@ -29,9 +29,10 @@ class SettingsBlockerUseCaseTest {
     @Mock
     private lateinit var countryCodeRepository: CountryCodeRepository
 
-    private lateinit var settingsBlockerUseCase: SettingsBlockerUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var settingsBlockerUseCase: SettingsBlockerUseCase
 
     @Before
     fun setUp() {

@@ -1,10 +1,18 @@
 package com.tarasovvp.smartblocker.repositories
 
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.FilteredCallRepositoryImpl
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +30,7 @@ class FilteredCallRepositoryTest {
     @Mock
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
-    lateinit var filteredCallRepository: FilteredCallRepository
+    private lateinit var filteredCallRepository: FilteredCallRepository
 
     @Before
     fun setUp() {
@@ -31,43 +39,51 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    suspend fun setFilterToFilteredCallTest() {
+    fun setFilterToFilteredCallTest() = runTest {
 
     }
 
     @Test
-    suspend fun insertAllFilteredCallsTest() {
+    fun insertAllFilteredCallsTest() = runTest {
+        val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER }, FilteredCall())
+        filteredCallRepository.insertAllFilteredCalls(filteredCallList)
+        verify(filteredCallDao, times(1)).insertAllFilteredCalls(filteredCallList)
+    }
+
+    @Test
+    fun insertFilteredCallTest() = runTest {
+        val filteredCall = FilteredCall().apply { number = TEST_NUMBER }
+        filteredCallRepository.insertFilteredCall(filteredCall)
+        verify(filteredCallDao, times(1)).insertFilteredCall(filteredCall)
+    }
+
+    @Test
+    fun allFilteredCallsTest() = runTest {
 
     }
 
     @Test
-    suspend fun insertFilteredCallTest() {
+    fun allFilteredCallWithFilterTest() = runTest {
 
     }
 
     @Test
-    suspend fun allFilteredCallsTest() {
+    fun filteredCallsByFilterTest() = runTest {
 
     }
 
     @Test
-    suspend fun allFilteredCallWithFilterTest() {
+    fun filteredCallsByNumberTest() = runTest {
 
     }
 
     @Test
-    suspend fun filteredCallsByFilterTest() {
-
-    }
-
-    @Test
-    suspend fun filteredCallsByNumberTest() {
-
-    }
-
-    @Test
-    suspend fun deleteFilteredCallsTest() {
-
+    fun deleteFilteredCallsTest() = runTest {
+        val resultMock = mock<() -> Unit>()
+        val filteredCallIdList = listOf(1, 2)
+        filteredCallRepository.deleteFilteredCalls(filteredCallIdList, resultMock)
+        verify(filteredCallDao).deleteFilteredCalls(filteredCallIdList)
+        verify(resultMock).invoke()
     }
 
 }

@@ -24,9 +24,10 @@ class SettingsListUseCaseTest {
     @Mock
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
-    private lateinit var settingsListUseCase: SettingsListUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var settingsListUseCase: SettingsListUseCase
 
     @Before
     fun setUp() {

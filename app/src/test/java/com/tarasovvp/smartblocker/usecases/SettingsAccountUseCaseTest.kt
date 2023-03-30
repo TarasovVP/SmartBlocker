@@ -26,9 +26,10 @@ class SettingsAccountUseCaseTest {
     @Mock
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    private lateinit var settingsAccountUseCase: SettingsAccountUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var settingsAccountUseCase: SettingsAccountUseCase
 
     @Before
     fun setUp() {

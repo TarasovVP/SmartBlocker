@@ -35,9 +35,10 @@ class ListCallUseCaseTest {
     @Mock
     private lateinit var filteredCallRepository: FilteredCallRepository
 
-    private lateinit var listCallUseCase: ListCallUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var listCallUseCase: ListCallUseCase
 
     @Before
     fun setUp() {

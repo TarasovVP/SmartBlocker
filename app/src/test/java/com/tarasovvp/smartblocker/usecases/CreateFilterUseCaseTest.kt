@@ -41,9 +41,10 @@ class CreateFilterUseCaseTest {
     @Mock
     private lateinit var logCallRepository: LogCallRepository
 
-    private lateinit var createFilterUseCase: CreateFilterUseCase
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var createFilterUseCase: CreateFilterUseCase
 
     @Before
     fun setUp() {

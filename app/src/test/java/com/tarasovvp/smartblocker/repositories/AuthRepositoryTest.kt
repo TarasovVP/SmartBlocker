@@ -11,7 +11,6 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
-import com.tarasovvp.smartblocker.TestUtils.TEST_TOKEN
 import com.tarasovvp.smartblocker.data.repositoryImpl.AuthRepositoryImpl
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +18,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
@@ -34,9 +32,10 @@ class AuthRepositoryTest {
     @Mock
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    private lateinit var authRepository: AuthRepository
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var authRepository: AuthRepository
 
     @Before
     fun setUp() {

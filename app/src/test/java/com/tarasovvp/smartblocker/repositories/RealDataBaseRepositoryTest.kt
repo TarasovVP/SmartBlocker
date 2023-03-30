@@ -38,9 +38,10 @@ class RealDataBaseRepositoryTest {
     @Mock
     private lateinit var databaseReference: DatabaseReference
 
-    private lateinit var realDataBaseRepository: RealDataBaseRepository
+    @Mock
+    private lateinit var resultMock: () -> Unit
 
-    private val resultMock = mock<() -> Unit>()
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @Before
     fun setUp() {
