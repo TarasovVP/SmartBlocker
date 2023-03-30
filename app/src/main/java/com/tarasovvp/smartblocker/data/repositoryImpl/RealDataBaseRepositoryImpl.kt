@@ -16,16 +16,14 @@ import com.tarasovvp.smartblocker.utils.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import javax.inject.Inject
 
-class RealDataBaseRepositoryImpl @Inject constructor(private val database: DatabaseReference) :
+class RealDataBaseRepositoryImpl @Inject constructor(private val database: DatabaseReference, private val firebaseUserUid: String?) :
     RealDataBaseRepository {
 
-    private var currentUserDatabase =
-        database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
-    private var reviewsDatabase = database.child(REVIEWS)
-
     override fun getCurrentUser(result: (CurrentUser?) -> Unit) {
-        if (currentUserDatabase.key != SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty()) currentUserDatabase =
-            database.child(USERS).child(SmartBlockerApp.instance?.auth?.currentUser?.uid.orEmpty())
+        var currentUserDatabase =
+            database.child(USERS).child(firebaseUserUid.orEmpty())
+        if (currentUserDatabase.key != firebaseUserUid.orEmpty()) currentUserDatabase =
+            database.child(USERS).child(firebaseUserUid.orEmpty())
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -53,8 +51,8 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
     }
 
     override fun insertFilter(filter: Filter, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        currentUserDatabase.child(FILTER_LIST).child(filter.filter).setValue(filter)
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        database.child(USERS).child(firebaseUserUid.orEmpty()).child(FILTER_LIST).child(filter.filter).setValue(filter)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -64,8 +62,8 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
     }
 
     override fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        currentUserDatabase.child(FILTER_LIST).get()
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        database.child(USERS).child(firebaseUserUid.orEmpty()).child(FILTER_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
@@ -79,8 +77,8 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
     }
 
     override fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        currentUserDatabase.child(FILTERED_CALL_LIST).child(filteredCall.callId.toString())
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        database.child(USERS).child(firebaseUserUid.orEmpty()).child(FILTERED_CALL_LIST).child(filteredCall.callId.toString())
             .setValue(filteredCall)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
@@ -91,8 +89,8 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
     }
 
     override fun deleteFilteredCallList(filteredCallIdList: List<String>, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        currentUserDatabase.child(FILTERED_CALL_LIST).get()
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        database.child(USERS).child(firebaseUserUid.orEmpty()).child(FILTERED_CALL_LIST).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 task.result.children.forEach { snapshot ->
@@ -105,8 +103,8 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
     }
 
     override fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        currentUserDatabase.child(BLOCK_HIDDEN).setValue(blockUnanimous)
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        database.child(USERS).child(firebaseUserUid.orEmpty()).child(BLOCK_HIDDEN).setValue(blockUnanimous)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()
@@ -116,8 +114,8 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val database: Datab
     }
 
     override fun insertReview(review: Review, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
-        reviewsDatabase.child(review.time.toString()).setValue(review)
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        database.child(REVIEWS).child(review.time.toString()).setValue(review)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 result.invoke()

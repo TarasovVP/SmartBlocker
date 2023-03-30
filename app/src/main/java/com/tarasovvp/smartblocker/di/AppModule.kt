@@ -77,7 +77,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRealDataBaseRepository(): RealDataBaseRepository {
-        return RealDataBaseRepositoryImpl(FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference)
+        return RealDataBaseRepositoryImpl(FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference, SmartBlockerApp.instance?.auth?.currentUser?.uid)
     }
 
     @Singleton

@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.TestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.domain.models.Review
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListViewModel
@@ -25,7 +26,7 @@ class SettingsListViewModelTest: BaseViewModelTest<SettingsListViewModel>() {
 
     @Test
     fun insertReviewTest() {
-        val review = Review(TEST_EMAIL,"review", 1000)
+        val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit

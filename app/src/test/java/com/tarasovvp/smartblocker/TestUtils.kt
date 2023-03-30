@@ -16,6 +16,7 @@ object TestUtils {
     const val TEST_COUNTRY = "UA"
     const val TEST_EMAIL = "test@email.com"
     const val TEST_PASSWORD = "Ua12345!"
+    const val TEST_REVIEW = "review"
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun <T> LiveData<T>.getOrAwaitValue(

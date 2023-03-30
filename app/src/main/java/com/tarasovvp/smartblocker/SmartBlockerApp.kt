@@ -39,7 +39,7 @@ class SmartBlockerApp : Application() {
 
     fun isLoggedInUser() = auth?.currentUser.isNotNull().isTrue()
 
-    fun checkNetworkAvailable(): Boolean {
+    fun checkNetworkUnAvailable(): Boolean {
         if (isNetworkAvailable.isNotTrue()) {
             baseContext?.getString(R.string.app_network_unavailable_repeat).orEmpty()
                 .sendExceptionBroadCast()

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : AuthRepository {
 
     override fun sendPasswordResetEmail(email: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
         auth?.sendPasswordResetEmail(email)
             ?.addOnCompleteListener {
                 result.invoke()
@@ -23,7 +23,7 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun signInWithEmailAndPassword(email: String, password: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
         auth?.signInWithEmailAndPassword(email, password)
             ?.addOnCompleteListener {
                 result.invoke()
@@ -33,7 +33,7 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun signInWithGoogle(idToken: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener {
@@ -48,7 +48,7 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
         password: String,
         result: () -> Unit,
     ) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
         auth?.createUserWithEmailAndPassword(email, password)
             ?.addOnCompleteListener {
                 result.invoke()
@@ -58,7 +58,7 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun changePassword(currentPassword: String, newPassword: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
         val user = FirebaseAuth.getInstance().currentUser
         val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), currentPassword)
         user?.reauthenticateAndRetrieveData(credential)
@@ -77,7 +77,7 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
         auth?.currentUser?.delete()
             ?.addOnCompleteListener {
                 googleSignInClient.signOut()
@@ -88,7 +88,7 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun signOut(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkAvailable().isTrue()) return
+        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
         googleSignInClient.signOut()
         auth?.signOut()
         result.invoke()
