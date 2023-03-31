@@ -1,21 +1,24 @@
 package com.tarasovvp.smartblocker.repositories
 
 import com.nhaarman.mockitokotlin2.*
+import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.FilteredCallRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import junit.framework.TestCase
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -53,9 +56,9 @@ class FilteredCallRepositoryTest {
         val resultMock = mock<(Int, Int) -> Unit>()
         val modifiedContacts = filteredCallRepository.setFilterToFilteredCall(filterList, filteredCallList, resultMock)
 
-        TestCase.assertEquals("1234567890", modifiedContacts[0].filter)
-        TestCase.assertEquals("345", modifiedContacts[1].filter)
-        TestCase.assertEquals("789", modifiedContacts[2].filter)
+        assertEquals("1234567890", modifiedContacts[0].filter)
+        assertEquals("345", modifiedContacts[1].filter)
+        assertEquals("789", modifiedContacts[2].filter)
         verify(resultMock, times(filteredCallList.size)).invoke(eq(filteredCallList.size), any())
     }
 
@@ -75,22 +78,38 @@ class FilteredCallRepositoryTest {
 
     @Test
     fun allFilteredCallsTest() = runTest {
-
+        val filteredCallList = listOf(FilteredCall(callId = 1), FilteredCall(callId = 3))
+        Mockito.`when`(filteredCallDao.allFilteredCalls())
+            .thenReturn(filteredCallList)
+        val result = filteredCallRepository.allFilteredCalls()
+        assertEquals(filteredCallList, result)
     }
 
     @Test
     fun allFilteredCallWithFilterTest() = runTest {
-
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        Mockito.`when`(filteredCallDao.allFilteredCallWithFilter())
+            .thenReturn(filteredCallList)
+        val result = filteredCallRepository.allFilteredCallWithFilter()
+        assertEquals(filteredCallList, result)
     }
 
     @Test
     fun filteredCallsByFilterTest() = runTest {
-
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        Mockito.`when`(filteredCallDao.filteredCallsByFilter(TEST_FILTER))
+            .thenReturn(filteredCallList)
+        val result = filteredCallRepository.filteredCallsByFilter(TEST_FILTER)
+        assertEquals(filteredCallList, result)
     }
 
     @Test
     fun filteredCallsByNumberTest() = runTest {
-
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        Mockito.`when`(filteredCallDao.filteredCallsByNumber(TEST_NUMBER))
+            .thenReturn(filteredCallList)
+        val result = filteredCallRepository.filteredCallsByNumber(TEST_NUMBER)
+        assertEquals(filteredCallList, result)
     }
 
     @Test

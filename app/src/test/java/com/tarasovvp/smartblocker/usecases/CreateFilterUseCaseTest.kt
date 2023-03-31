@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
@@ -54,7 +55,7 @@ class CreateFilterUseCaseTest {
 
     @Test
     fun getCountryCodeWithCountryTest() = runTest {
-        val expectedCountryCode = CountryCode(countryCode = "+380", country = "UA")
+        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         Mockito.`when`(countryCodeRepository.getCountryCodeWithCountry(TEST_COUNTRY))
             .thenReturn(expectedCountryCode)
 
@@ -66,7 +67,7 @@ class CreateFilterUseCaseTest {
     @Test
     fun getCountryCodeWithCodeTest() = runTest {
         val countryCode = 123
-        val expectedCountryCode = CountryCode(countryCode = "+380", country = TEST_COUNTRY)
+        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         Mockito.`when`(countryCodeRepository.getCountryCodeWithCode(countryCode))
             .thenReturn(expectedCountryCode)
 

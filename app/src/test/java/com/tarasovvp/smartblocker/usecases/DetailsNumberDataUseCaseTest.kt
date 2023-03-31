@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
@@ -66,7 +67,7 @@ class DetailsNumberDataUseCaseTest {
     @Test
     fun getCountryCodeTest() = runTest {
         val countryCode = 123
-        val expectedCountryCode = CountryCode(countryCode = "+380", country = TEST_COUNTRY)
+        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         Mockito.`when`(countryCodeRepository.getCountryCodeWithCode(countryCode))
             .thenReturn(expectedCountryCode)
 

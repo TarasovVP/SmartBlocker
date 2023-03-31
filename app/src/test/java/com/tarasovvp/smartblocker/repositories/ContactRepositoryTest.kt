@@ -1,14 +1,24 @@
 package com.tarasovvp.smartblocker.repositories
 
+import android.content.ContentResolver
+import android.content.Context
+import android.database.Cursor
+import android.provider.ContactsContract
 import com.nhaarman.mockitokotlin2.*
+import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.TestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.ContactRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -16,6 +26,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -65,26 +76,80 @@ class ContactRepositoryTest {
 
     @Test
     fun getContactsWithFiltersTest() = runTest {
-
+        val contactWithFilterList = listOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, ContactWithFilter().apply {Contact()})
+        Mockito.`when`(contactDao.getContactsWithFilters())
+            .thenReturn(contactWithFilterList)
+        val result = contactRepository.getContactsWithFilters()
+        assertEquals(contactWithFilterList, result)
     }
 
     @Test
     fun getContactsWithFilterByFilterTest() = runTest {
-
+        val contactWithFilterList = listOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, ContactWithFilter().apply {Contact()})
+        Mockito.`when`(contactDao.getContactsWithFiltersByFilter(TEST_FILTER))
+            .thenReturn(contactWithFilterList)
+        val result = contactRepository.getContactsWithFilterByFilter(TEST_FILTER)
+        assertEquals(contactWithFilterList, result)
     }
 
     @Test
     fun getSystemContactListTest() = runTest {
+        val contact = Contact()
+        val context = mock<Context>()
+        val contentResolver = mock<ContentResolver>()
+        val cursor = mock<Cursor>()
+        val resultMock = mock<(Int, Int) -> Unit>()
+        val expectedSize = 10
 
+        Mockito.`when`(context.contentResolver).thenReturn(contentResolver)
+        Mockito.`when`(
+            contentResolver.query(
+                ContactsContract.Data.CONTENT_URI,
+                arrayOf(
+                    ContactsContract.Data.CONTACT_ID,
+                    ContactsContract.Contacts.DISPLAY_NAME,
+                    ContactsContract.Contacts.PHOTO_URI,
+                    ContactsContract.CommonDataKinds.Contactables.DATA
+                ),
+                "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'",
+                null,
+                "${ContactsContract.Contacts.DISPLAY_NAME} ${Constants.ASC}"
+            )
+        ).thenReturn(cursor)
+
+        Mockito.`when`(cursor.count).thenReturn(expectedSize)
+        var index = 0
+        Mockito.`when`(cursor.moveToNext()).thenAnswer {
+            index++ < expectedSize
+        }
+        Mockito.`when`(cursor.getString(0)).thenReturn(contact.id)
+        Mockito.`when`(cursor.getString(1)).thenReturn(contact.name)
+        Mockito.`when`(cursor.getString(2)).thenReturn(contact.photoUrl)
+        Mockito.`when`(cursor.getString(3)).thenReturn(contact.number)
+
+        val contactList = contactRepository.getSystemContactList(context, resultMock)
+
+        assertEquals(expectedSize, contactList.size)
+        verify(resultMock, times(expectedSize)).invoke(eq(expectedSize), any())
+
+        verify(context).contentResolver
+        verify(cursor).close()
     }
 
     @Test
     fun getHashMapFromContactListTest() = runTest {
-
+        val contactWithFilterList = listOf(ContactWithFilter().apply { Contact().apply { name = TEST_NAME }}, ContactWithFilter().apply {Contact().apply { name = "abc" }})
+        val result = contactRepository.getHashMapFromContactList(contactWithFilterList)
+        assertEquals(contactWithFilterList.groupBy {
+            if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
+        }, result)
     }
 
     @Test
     fun filteredNumberDataListTest() = runTest {
-
+        val filter = Filter(filter = "123", conditionType = FilterCondition.FILTER_CONDITION_START.index)
+        val numberDataList = arrayListOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, LogCallWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, NumberData().apply { Contact().apply { number = TEST_NUMBER }})
+        val result = contactRepository.filteredNumberDataList(filter, numberDataList, 0)
+        assertEquals(numberDataList, result)
     }
 }

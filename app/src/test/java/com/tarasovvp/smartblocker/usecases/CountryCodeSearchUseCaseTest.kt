@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.usecase.countrycode_search.CountryCodeSearchUseCase
@@ -33,8 +34,7 @@ class CountryCodeSearchUseCaseTest {
 
     @Test
     fun getCountryCodeList() = runTest{
-        val countryCode = "+380"
-        val countryCodeList = listOf(CountryCode(countryCode = countryCode, country = TEST_COUNTRY), CountryCode(countryCode = "+123", country = "AI"))
+        val countryCodeList = listOf(CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY), CountryCode(countryCode = "+123", country = "AI"))
         Mockito.`when`(countryCodeRepository.getAllCountryCodes())
             .thenReturn(countryCodeList)
         val result = countryCodeSearchUseCase.getCountryCodeList()

@@ -5,6 +5,7 @@ import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import javax.inject.Inject
 
 class ListFilterUseCaseImpl @Inject constructor(
@@ -13,7 +14,9 @@ class ListFilterUseCaseImpl @Inject constructor(
 
     override suspend fun getFilterList(isBlackList: Boolean) = filterRepository.allFiltersByType(if (isBlackList) BLOCKER else PERMISSION)
 
-    override suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>) = filterRepository.getHashMapFromFilterList(filterList)
+    override suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>> {
+        return filterList.groupBy { String.EMPTY }
+    }
 
     override suspend fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) = filterRepository.deleteFilterList(filterList) {
         result.invoke()

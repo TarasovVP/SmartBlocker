@@ -52,10 +52,8 @@ class ListFilterUseCaseTest {
     fun getHashMapFromFilterListTest() = runTest {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
         val filterMap = mapOf(String.EMPTY to filterList)
-        Mockito.`when`(filterRepository.getHashMapFromFilterList(filterList))
-            .thenReturn(filterMap)
         val result = listFilterUseCase.getHashMapFromFilterList(filterList)
-        assertEquals(TEST_FILTER, result?.get(String.EMPTY)?.get(0)?.filter?.filter)
+        assertEquals(filterMap, result)
     }
 
     @Test

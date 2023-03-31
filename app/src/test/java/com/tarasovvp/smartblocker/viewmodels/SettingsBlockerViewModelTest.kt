@@ -7,7 +7,9 @@ import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.Se
 import junit.framework.TestCase.assertEquals
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
+import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Test
@@ -38,7 +40,7 @@ class SettingsBlockerViewModelTest: BaseViewModelTest<SettingsBlockerViewModel>(
 
     @Test
     fun countryCodeWithCountryTest() = runTest {
-        val expectedCountryCode = CountryCode(countryCode = "+380", country = TEST_COUNTRY)
+        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         Mockito.`when`(useCase.getCountryCodeWithCountry(TEST_COUNTRY))
             .thenReturn(expectedCountryCode)
 

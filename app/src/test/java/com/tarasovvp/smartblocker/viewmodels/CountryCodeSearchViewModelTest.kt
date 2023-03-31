@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
+import com.tarasovvp.smartblocker.TestUtils as TestUtils1
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -27,8 +29,7 @@ class CountryCodeSearchViewModelTest: BaseViewModelTest<CountryCodeSearchViewMod
 
     @Test
     fun getCountryCodeList() = runTest {
-        val countryCode = "+380"
-        val countryCodeList = listOf(CountryCode(countryCode = countryCode, country = TEST_NUMBER), CountryCode(countryCode = "+123", country = "AI"))
+        val countryCodeList = listOf(CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_NUMBER), CountryCode(countryCode = "+123", country = "AI"))
         Mockito.`when`(useCase.getCountryCodeList())
             .thenReturn(countryCodeList)
 
@@ -36,6 +37,6 @@ class CountryCodeSearchViewModelTest: BaseViewModelTest<CountryCodeSearchViewMod
         advanceUntilIdle()
         val result = viewModel.countryCodeListLiveData.getOrAwaitValue()
         assertEquals(TEST_NUMBER, result[0].country)
-        assertEquals(countryCode, result[0].countryCode)
+        assertEquals(TEST_COUNTRY_CODE, result[0].countryCode)
     }
 }

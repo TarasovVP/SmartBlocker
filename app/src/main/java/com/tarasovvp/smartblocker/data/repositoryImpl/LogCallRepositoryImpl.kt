@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LogCallRepositoryImpl @Inject constructor(private val callDao: LogCallDao) :
+class LogCallRepositoryImpl @Inject constructor(private val logCallDao: LogCallDao) :
     LogCallRepository {
 
     override suspend fun setFilterToLogCall(filterList: List<Filter>, callList: List<LogCall>, result: (Int, Int) -> Unit): List<LogCall> =
@@ -31,21 +31,21 @@ class LogCallRepositoryImpl @Inject constructor(private val callDao: LogCallDao)
         }
 
     override suspend fun insertAllLogCalls(logCallList: List<LogCall>) {
-        callDao.insertAllLogCalls(logCallList)
+        logCallDao.insertAllLogCalls(logCallList)
     }
 
     override suspend fun getAllLogCallWithFilter(): List<LogCallWithFilter> =
         withContext(
             Dispatchers.Default
         ) {
-            callDao.allLogCallWithFilter()
+            logCallDao.allLogCallWithFilter()
         }
 
     override suspend fun allCallNumberWithFilter(): List<LogCallWithFilter> {
-        return callDao.allCallNumberWithFilter().distinctBy { it.call?.number }
+        return logCallDao.allCallNumberWithFilter().distinctBy { it.call?.number }
     }
 
-    override suspend fun getLogCallWithFilterByFilter(filter: String) = callDao.queryCallList(filter).distinctBy { it.call?.number }
+    override suspend fun getLogCallWithFilterByFilter(filter: String) = logCallDao.queryCallList(filter).distinctBy { it.call?.number }
 
 
     override suspend fun getSystemLogCallList(context: Context, result: (Int, Int) -> Unit): List<LogCall> =

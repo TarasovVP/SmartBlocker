@@ -68,10 +68,7 @@ class ContactRepositoryImpl @Inject constructor(
         filter: Filter?,
         numberDataList: ArrayList<NumberData>,
         color: Int
-    ): ArrayList<NumberData> =
-        withContext(
-            Dispatchers.Default
-        ) {
+    ): ArrayList<NumberData> = withContext(Dispatchers.Default) {
             numberDataList.filteredNumberDataList(filter, color)
         }
 }

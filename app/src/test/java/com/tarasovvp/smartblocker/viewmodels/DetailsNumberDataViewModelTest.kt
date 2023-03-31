@@ -1,6 +1,8 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
@@ -54,7 +56,7 @@ class DetailsNumberDataViewModelTest: BaseViewModelTest<DetailsNumberDataViewMod
     @Test
     fun getCountryCodeTest() = runTest {
         val countryCode = 123
-        val expectedCountryCode = CountryCode(countryCode = "+380", country = TEST_COUNTRY)
+        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         Mockito.`when`(useCase.getCountryCode(countryCode))
             .thenReturn(expectedCountryCode)
 

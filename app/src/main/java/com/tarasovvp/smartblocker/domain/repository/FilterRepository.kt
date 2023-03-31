@@ -5,8 +5,6 @@ import com.tarasovvp.smartblocker.domain.models.entities.Filter
 
 interface FilterRepository {
 
-    suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>>
-
     suspend fun insertAllFilters(filterList: List<Filter>)
 
     suspend fun allFilters(): List<Filter>

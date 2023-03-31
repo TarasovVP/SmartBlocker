@@ -43,21 +43,23 @@ fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
         "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'"
     val cursor: Cursor? = this
         .contentResolver
-        .query(ContactsContract.Data.CONTENT_URI,
+        .query(
+            ContactsContract.Data.CONTENT_URI,
             projection,
             selection,
             null,
-            "${ContactsContract.Contacts.DISPLAY_NAME} $ASC")
+            "${ContactsContract.Contacts.DISPLAY_NAME} $ASC"
+        )
     val contactList = arrayListOf<Contact>()
     cursor?.use { contactCursor ->
         while (contactCursor.moveToNext()) {
             contactList.add(
                 Contact(
-                id = contactCursor.getString(0),
-                name = contactCursor.getString(1),
-                photoUrl = contactCursor.getString(2),
-                number = contactCursor.getString(3),
-            )
+                    id = contactCursor.getString(0),
+                    name = contactCursor.getString(1),
+                    photoUrl = contactCursor.getString(2),
+                    number = contactCursor.getString(3),
+                )
             )
             result.invoke(cursor.count, contactList.size)
         }
@@ -73,7 +75,8 @@ fun Context.systemCallLogCursor(): Cursor? {
         CallLog.Calls.TYPE,
         CallLog.Calls.DATE,
         CallLog.Calls.CACHED_NORMALIZED_NUMBER,
-        CallLog.Calls.COUNTRY_ISO)
+        CallLog.Calls.COUNTRY_ISO
+    )
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
     }
@@ -115,25 +118,27 @@ fun Context.systemLogCallList(result: (Int, Int) -> Unit): List<LogCall> {
 
 suspend fun Context.createFilteredCall(
     number: String,
-    filter: Filter
-) : FilteredCall? {
+    filter: Filter,
+): FilteredCall? {
     systemCallLogCursor()?.use { cursor ->
         while (cursor.moveToNext()) {
             val filteredCall = cursor.createCallObject(true) as? FilteredCall
             if (number == filteredCall?.number) {
-                    filteredCall.apply {
-                        if (filter.isBlocker()) {
-                            type = BLOCKED_CALL
-                        }
-                        this.filteredNumber = filter.filter
-                        this.conditionType = filter.conditionType
-                        this.isFilteredCall = true
+                filteredCall.apply {
+                    if (filter.isBlocker()) {
+                        type = BLOCKED_CALL
                     }
+                    this.filteredNumber = filter.filter
+                    this.conditionType = filter.conditionType
+                    this.isFilteredCall = true
+                }
                 if (filter.isBlocker()) {
                     try {
-                        this.contentResolver.delete(Uri.parse(LOG_CALL_CALL),
+                        this.contentResolver.delete(
+                            Uri.parse(LOG_CALL_CALL),
                             "${CALL_ID}'${filteredCall.callId}'",
-                            null)
+                            null
+                        )
                     } catch (e: java.lang.Exception) {
                         e.printStackTrace()
                     }
@@ -166,10 +171,12 @@ fun Context.getInitialDrawable(text: String): Drawable {
     val canvas = Canvas(initialBitmap)
     paint.color = ContextCompat.getColor(this, R.color.avatar_icon_bg)
     paint.style = Paint.Style.FILL
-    canvas.drawText(text,
+    canvas.drawText(
+        text,
         (rectSize - textWidth) / 2,
         (rectSize - textHeight) / 2 + textHeight,
-        paint)
+        paint
+    )
     return BitmapDrawable(resources, initialBitmap)
 }
 
@@ -200,9 +207,13 @@ fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<Count
         val countryCode =
             String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString())
         val numberFormat = try {
-            format(getExampleNumberForType(region, PhoneNumberUtil.PhoneNumberType.MOBILE),
-                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace("$countryCode ",
-                String.EMPTY)
+            format(
+                getExampleNumberForType(region, PhoneNumberUtil.PhoneNumberType.MOBILE),
+                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL
+            ).replace(
+                "$countryCode ",
+                String.EMPTY
+            )
         } catch (e: Exception) {
             String.EMPTY
         }
@@ -242,12 +253,17 @@ fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
 }
 
 @AddTrace(name = "filteredNumberDataList")
-fun ArrayList<NumberData>.filteredNumberDataList(filter: Filter?, color: Int): ArrayList<NumberData> {
+fun ArrayList<NumberData>.filteredNumberDataList(
+    filter: Filter?,
+    color: Int,
+): ArrayList<NumberData> {
     val filteredList = arrayListOf<NumberData>()
     val supposedFilteredList = arrayListOf<NumberData>()
     forEach { numberData ->
-        numberData.highlightedSpanned = numberData.highlightedSpanned(filter,color)
-        if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR).isTrue().not() ) {
+        numberData.highlightedSpanned = numberData.highlightedSpanned(filter, color)
+        if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR)
+                .isTrue().not()
+        ) {
             supposedFilteredList.add(numberData)
         } else {
             filteredList.add(numberData)
@@ -261,15 +277,31 @@ fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString?
     when (this) {
         is CallWithFilter -> {
             return when {
-                filter?.filter.isNullOrEmpty() -> call?.number.highlightedSpanned(String.EMPTY, null, color)
+                filter?.filter.isNullOrEmpty() -> call?.number.highlightedSpanned(
+                    String.EMPTY,
+                    null,
+                    color
+                )
                 else -> call?.number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }
         is ContactWithFilter -> {
             return when {
-                filter?.filter.isNullOrEmpty() -> contact?.number.highlightedSpanned(String.EMPTY, null, color)
-                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isNotTrue() -> contact?.number.highlightedSpanned(filter?.filter, filter?.countryCode, color)
-                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber().isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR).isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
+                filter?.filter.isNullOrEmpty() -> contact?.number.highlightedSpanned(
+                    String.EMPTY,
+                    null,
+                    color
+                )
+                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber()
+                    .isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR)
+                    .isNotTrue() -> contact?.number.highlightedSpanned(
+                    filter?.filter,
+                    filter?.countryCode,
+                    color
+                )
+                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber()
+                    .isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR)
+                    .isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
                 else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }

@@ -4,25 +4,15 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.data.database.dao.FilterDao
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FilterRepositoryImpl @Inject constructor(
     private val filterDao: FilterDao,
     private val realDataBaseRepository: RealDataBaseRepository
 ) : FilterRepository {
-
-    override suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>> =
-        withContext(Dispatchers.Default) {
-            filterList.groupBy {
-                String.EMPTY
-            }
-        }
 
     override suspend fun insertAllFilters(filterList: List<Filter>) {
         filterDao.deleteAllFilters()
