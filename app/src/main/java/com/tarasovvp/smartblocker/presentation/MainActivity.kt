@@ -32,6 +32,7 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
 import com.tarasovvp.smartblocker.infrastructure.receivers.ExceptionReceiver
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.*
@@ -47,7 +48,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
-    private var navController: NavController? = null
+    var navController: NavController? = null
     var bottomNavigationView: BottomNavigationView? = null
     var bottomNavigationDivider: View? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
@@ -145,7 +146,9 @@ class MainActivity : AppCompatActivity() {
             }
         })
         SharedPrefs.country = SharedPrefs.country.takeIf { it.isNullOrEmpty().not() } ?: getUserCountry()
-        setNavController()
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
+            setNavController()
+        }
         setToolBar()
         setBottomNavigationView()
         setOnDestinationChangedListener()

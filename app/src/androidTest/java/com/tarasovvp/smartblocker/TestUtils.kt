@@ -20,6 +20,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import org.hamcrest.Description
@@ -42,6 +43,9 @@ object TestUtils {
                 ApplicationProvider.getApplicationContext(),
                 MainActivity::class.java
             )
+        ).putExtra(
+            IS_INSTRUMENTAL_TEST,
+            true
         ).putExtra(
             "androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
             themeResId

@@ -1,7 +1,12 @@
 package com.tarasovvp.smartblocker.authorization.onboarding
 
 import androidx.core.os.bundleOf
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
@@ -26,21 +31,18 @@ class SingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSingleOnBoardingTitle() {
-        //TODO
-        //onView(withId(R.id.single_on_boarding_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.single_on_boarding_title)).check(matches(isDisplayed()))
 
     }
 
     @Test
     fun checkSingleOnBoardingTooltipArrow() {
-        //TODO
-        //onView(withId(R.id.single_on_boarding_tooltip_arrow)).check(matches(isDisplayed()))
+        onView(withId(R.id.single_on_boarding_tooltip_arrow)).check(matches(isDisplayed()))
 
     }
 
     @Test
     fun checkSingleOnBoardingIcon() {
-        //TODO
-        //onView(withId(R.id.single_on_boarding_icon)).check(matches(isDisplayed()))
+        onView(withId(R.id.single_on_boarding_icon)).check(matches(isDisplayed()))
     }
 }
