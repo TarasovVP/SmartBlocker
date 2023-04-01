@@ -18,11 +18,18 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.IdlingResource
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
@@ -55,7 +62,7 @@ object TestUtils {
             val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
                 Preconditions.checkNotNull(T::class.java.classLoader) as ClassLoader,
                 T::class.java.name
-            )
+            ) as T
             fragment.arguments = fragmentArgs
             activity.supportFragmentManager
                 .beginTransaction()

@@ -21,6 +21,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 
     override var layoutId = R.layout.fragment_on_boarding
 
+    var adapter: OnBoardingAdapter? = null
     private var currentPosition = 0
 
     private val requestPermissionLauncher =
@@ -53,7 +54,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
             SingleOnBoardingFragment.newInstance(OnBoarding.ONBOARDING_PERMISSIONS)
         )
 
-        val adapter = activity?.supportFragmentManager?.let { fragmentManager ->
+        adapter = activity?.supportFragmentManager?.let { fragmentManager ->
             OnBoardingAdapter(
                 fragmentList,
                 fragmentManager,
