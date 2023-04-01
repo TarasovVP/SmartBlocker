@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.authorization.onboarding
 
 import androidx.core.os.bundleOf
+import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
@@ -12,20 +13,17 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SingleOnboardingInstrumentedTest {
+class SingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Before
-    fun setUp() {
-        launchFragmentInHiltContainer<SingleOnBoardingFragment>(fragmentArgs = bundleOf(ON_BOARDING_PAGE to OnBoarding.ONBOARDING_INTRO)) {
-        }
+    override fun setUp() {
+        super.setUp()
+        launchFragmentInHiltContainer<SingleOnBoardingFragment>(fragmentArgs = bundleOf(ON_BOARDING_PAGE to OnBoarding.ONBOARDING_INTRO)) {}
     }
 
-    /**
-     *
-     */
     @Test
     fun checkSingleOnBoardingTitle() {
         //TODO
@@ -33,9 +31,6 @@ class SingleOnboardingInstrumentedTest {
 
     }
 
-    /**
-     *
-     */
     @Test
     fun checkSingleOnBoardingTooltipArrow() {
         //TODO
@@ -43,9 +38,6 @@ class SingleOnboardingInstrumentedTest {
 
     }
 
-    /**
-     *
-     */
     @Test
     fun checkSingleOnBoardingIcon() {
         //TODO

@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.authorization.login
 
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
-import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -11,6 +10,7 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
+import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
@@ -33,18 +33,14 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class LoginInstrumentedTest {
+class LoginInstrumentedTest: BaseInstrumentedTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
-    private var navController: TestNavHostController? = null
-
     @Before
-    fun setUp() {
-        InstrumentationRegistry.getInstrumentation().targetContext?.let {
-            navController = TestNavHostController(it)
-        }
+    override fun setUp() {
+        super.setUp()
         launchFragmentInHiltContainer<LoginFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.loginFragment)
@@ -53,33 +49,21 @@ class LoginInstrumentedTest {
         Intents.init()
     }
 
-    /**
-     * Check main layout is visible
-     */
     @Test
     fun checkContainer() {
         onView(withId(R.id.container)).check(matches(isDisplayed()))
     }
 
-    /**
-     * Check main title is visible with correct text
-     */
     @Test
     fun checkLoginMainTitle() {
         onView(withId(R.id.login_main_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_entrance)))
     }
 
-    /**
-     * Check google title is visible with correct text
-     */
     @Test
     fun checkLoginGoogleTitle() {
         onView(withId(R.id.login_google_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_with_google_account)))
     }
 
-    /**
-     * Check google button is visible with correct text
-     */
     @Test
     fun checkLoginGoogleAuth() {
         onView(withId(R.id.login_google_auth)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter))).check(
@@ -92,9 +76,6 @@ class LoginInstrumentedTest {
         )
     }
 
-    /**
-     * Check login divider is visible with correct line color and with correct text
-     */
     @Test
     fun checkLoginDivider() {
         onView(withId(R.id.login_left_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
@@ -102,9 +83,6 @@ class LoginInstrumentedTest {
         onView(withId(R.id.login_right_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, (R.color.cornflower_blue)))))
     }
 
-    /**
-     * Check email input is visible with correct hint, after text typing check with correct text
-     */
     @Test
     fun checkLoginEmailInput() {
         onView(withId(R.id.login_email_input_container)).check(matches(isDisplayed()))
@@ -112,9 +90,6 @@ class LoginInstrumentedTest {
             .perform(typeText(TEST_EMAIL)).check(matches(withText(TEST_EMAIL)))
     }
 
-    /**
-     * Check password input is visible with correct hint, after text typing check with correct text
-     */
     @Test
     fun checkLoginPasswordInput() {
         onView(withId(R.id.login_password_input_container)).check(matches(isDisplayed()))
@@ -122,9 +97,6 @@ class LoginInstrumentedTest {
             .perform(replaceText(TEST_PASSWORD)).check(matches(withText(TEST_PASSWORD)))
     }
 
-    /**
-     * Check forgot password button is visible with correct text and text color, after clicking check forgot password dialog displaying
-     */
     @Test
     fun checkLoginForgotPassword() {
         onView(withId(R.id.login_forgot_password)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_forgot_password)))
@@ -132,9 +104,6 @@ class LoginInstrumentedTest {
         assertEquals(R.id.forgotPasswordDialog, navController?.currentDestination?.id.orZero())
     }
 
-    /**
-     * Check sign up button is visible with correct text and text color, after clicking check sign up screen displaying
-     */
     @Test
     fun checkLoginSignUp() {
         onView(withId(R.id.login_sign_up)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_sign_up)))
@@ -142,11 +111,6 @@ class LoginInstrumentedTest {
         assertEquals(R.id.signUpFragment, navController?.currentDestination?.id.orZero())
     }
 
-    /**
-     * Check login enter button is visible correct text, text color, background tint and disable,
-     * enter only email check button is disable, enter only password check button is disable,
-     * enter email and password check button is enable, perform click
-     */
     @Test
     fun checkLoginEnter() {
         onView(withId(R.id.login_enter)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter)))
@@ -162,9 +126,6 @@ class LoginInstrumentedTest {
         assertEquals(R.id.listBlockerFragment, navController?.currentDestination?.id.orZero())
     }
 
-    /**
-     * Check unauthorized divider is visible with correct line color and with correct text
-     */
     @Test
     fun checkLoginDividerUnauthorized() {
         onView(withId(R.id.login_left_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
@@ -172,9 +133,6 @@ class LoginInstrumentedTest {
         onView(withId(R.id.login_right_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
     }
 
-    /**
-     * Check continue button without acc is visible with correct text, after clicking check unauthorized enter dialog displaying
-     */
     @Test
     fun checkLoginContinueWithoutAcc() {
         onView(withId(R.id.login_continue_without_acc)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_continue_without_account)))
@@ -183,8 +141,7 @@ class LoginInstrumentedTest {
     }
 
     @After
-    fun tearDown() {
-        navController = null
+    override fun tearDown() {
         Intents.release()
     }
 }

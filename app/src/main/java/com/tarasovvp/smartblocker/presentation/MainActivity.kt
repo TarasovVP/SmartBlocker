@@ -94,7 +94,11 @@ class MainActivity : AppCompatActivity() {
             setProgressVisibility(false)
         }
         registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
-        MobileAds.initialize(this) {}
+        try {
+            MobileAds.initialize(this) {}
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         //TODO
         val configuration = RequestConfiguration.Builder()
             .setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
