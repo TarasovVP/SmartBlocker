@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.repositories
 import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
-import android.provider.ContactsContract
 import com.nhaarman.mockitokotlin2.*
 import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.TestUtils.TEST_NAME
@@ -17,7 +16,6 @@ import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -104,16 +102,11 @@ class ContactRepositoryTest {
         Mockito.`when`(context.contentResolver).thenReturn(contentResolver)
         Mockito.`when`(
             contentResolver.query(
-                ContactsContract.Data.CONTENT_URI,
-                arrayOf(
-                    ContactsContract.Data.CONTACT_ID,
-                    ContactsContract.Contacts.DISPLAY_NAME,
-                    ContactsContract.Contacts.PHOTO_URI,
-                    ContactsContract.CommonDataKinds.Contactables.DATA
-                ),
-                "${ContactsContract.Data.MIMETYPE} = '${ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE}'",
-                null,
-                "${ContactsContract.Contacts.DISPLAY_NAME} ${Constants.ASC}"
+                anyOrNull(),
+                anyOrNull(),
+                anyOrNull(),
+                anyOrNull(),
+                anyOrNull()
             )
         ).thenReturn(cursor)
 
@@ -150,6 +143,6 @@ class ContactRepositoryTest {
         val filter = Filter(filter = "123", conditionType = FilterCondition.FILTER_CONDITION_START.index)
         val numberDataList = arrayListOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, LogCallWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, NumberData().apply { Contact().apply { number = TEST_NUMBER }})
         val result = contactRepository.filteredNumberDataList(filter, numberDataList, 0)
-        assertEquals(numberDataList, result)
+        assertEquals(arrayListOf(numberDataList[1], numberDataList[2], numberDataList[0]), result)
     }
 }

@@ -6,11 +6,9 @@ import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.filteredNumberDataList
-import com.tarasovvp.smartblocker.utils.extensions.orZero
-import com.tarasovvp.smartblocker.utils.extensions.systemContactList
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -69,6 +67,17 @@ class ContactRepositoryImpl @Inject constructor(
         numberDataList: ArrayList<NumberData>,
         color: Int
     ): ArrayList<NumberData> = withContext(Dispatchers.Default) {
-            numberDataList.filteredNumberDataList(filter, color)
+        val filteredList = arrayListOf<NumberData>()
+        val supposedFilteredList = arrayListOf<NumberData>()
+        numberDataList.forEach { numberData ->
+            numberData.highlightedSpanned = numberData.highlightedSpanned(filter, color)
+            if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(Constants.PLUS_CHAR).isTrue().not()) {
+                supposedFilteredList.add(numberData)
+            } else {
+                filteredList.add(numberData)
+            }
+        }
+        filteredList.addAll(supposedFilteredList)
+        filteredList
         }
 }

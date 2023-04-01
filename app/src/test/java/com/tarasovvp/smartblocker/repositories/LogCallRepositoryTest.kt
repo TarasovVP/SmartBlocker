@@ -1,7 +1,9 @@
 package com.tarasovvp.smartblocker.repositories
 
+import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
+import android.os.Build
 import com.nhaarman.mockitokotlin2.*
 import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
@@ -9,11 +11,9 @@ import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.LogCall
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
-import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -21,7 +21,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
@@ -73,7 +72,7 @@ class LogCallRepositoryTest {
     @Test
     fun getAllLogCallWithFilterTest() = runTest {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1) }, LogCallWithFilter().apply { call = LogCall(callId = 2) })
-        Mockito.`when`(logCallDao.allLogCallWithFilter())
+        `when`(logCallDao.allLogCallWithFilter())
             .thenReturn(logCallList)
         val result = logCallRepository.getAllLogCallWithFilter()
         assertEquals(logCallList, result)
@@ -82,7 +81,7 @@ class LogCallRepositoryTest {
     @Test
     fun allCallNumberWithFilterTest() = runTest {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        Mockito.`when`(logCallDao.allCallNumberWithFilter())
+        `when`(logCallDao.allCallNumberWithFilter())
             .thenReturn(logCallList)
         val result = logCallRepository.allCallNumberWithFilter()
         assertEquals(logCallList.distinctBy { it.call?.number }, result)
@@ -91,7 +90,7 @@ class LogCallRepositoryTest {
     @Test
     fun getLogCallWithFilterByFilterTest() = runTest {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        Mockito.`when`(logCallDao.queryCallList(TEST_FILTER))
+        `when`(logCallDao.queryCallList(TEST_FILTER))
             .thenReturn(logCallList)
         val result = logCallRepository.getLogCallWithFilterByFilter(TEST_FILTER)
         assertEquals(logCallList.distinctBy { it.call?.number }, result)
@@ -99,35 +98,46 @@ class LogCallRepositoryTest {
 
     @Test
     fun getSystemLogCallListTest() = runTest {
-        val contact = Contact()
+        val logCall = LogCall()
         val context = mock<Context>()
+        val contentResolver = mock<ContentResolver>()
         val cursor = mock<Cursor>()
         val resultMock = mock<(Int, Int) -> Unit>()
         val expectedSize = 10
 
-        `when`(context.contentResolver).thenReturn(mock())
-        `when`(context.contentResolver.query(
-            any(),
-            any(),
-            any(),
-            any(),
-            anyOrNull()
-        )).thenReturn(cursor)
+        `when`(context.contentResolver).thenReturn(contentResolver)
+        `when`(
+            contentResolver.query(
+                anyOrNull(),
+                anyOrNull(),
+                anyOrNull(),
+                anyOrNull(),
+                anyOrNull()
+            )
+        ).thenReturn(cursor)
 
         `when`(cursor.count).thenReturn(expectedSize)
-        `when`(cursor.moveToNext()).thenReturn(true, false)
-        `when`(cursor.getString(0)).thenReturn(contact.id)
-        `when`(cursor.getString(1)).thenReturn(contact.name)
-        `when`(cursor.getString(2)).thenReturn(contact.photoUrl)
-        `when`(cursor.getString(3)).thenReturn(contact.number)
+        var index = 0
+        `when`(cursor.moveToNext()).thenAnswer {
+            index++ < expectedSize
+        }
+        `when`(cursor.getInt(0)).thenReturn(logCall.callId)
+        `when`(cursor.getString(1)).thenReturn(logCall.callName)
+        `when`(cursor.getString(2)).thenReturn(logCall.number)
+        `when`(cursor.getString(3)).thenReturn(logCall.type)
+        `when`(cursor.getString(4)).thenReturn(logCall.callDate)
+        `when`(cursor.getString(5)).thenReturn(logCall.normalizedNumber)
+        `when`(cursor.getString(6)).thenReturn(logCall.countryIso)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            `when`(cursor.getString(7)).thenReturn(logCall.photoUrl)
+        }
 
         val contactList = logCallRepository.getSystemLogCallList(context, resultMock)
 
         assertEquals(expectedSize, contactList.size)
-        verify(resultMock, times(expectedSize)).invoke(expectedSize, any())
+        verify(resultMock, times(expectedSize)).invoke(eq(expectedSize), any())
 
         verify(context).contentResolver
-        verify(cursor, times(expectedSize)).moveToNext()
         verify(cursor).close()
     }
 

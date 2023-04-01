@@ -80,8 +80,9 @@ fun Context.systemCallLogCursor(): Cursor? {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
     }
+
     return this.contentResolver.query(
-        Uri.parse(LOG_CALL_CALL),
+        CallLog.Calls.CONTENT_URI,
         projection.toTypedArray(),
         null,
         null,
@@ -250,27 +251,6 @@ fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
     } catch (e: Exception) {
         return false
     }
-}
-
-@AddTrace(name = "filteredNumberDataList")
-fun ArrayList<NumberData>.filteredNumberDataList(
-    filter: Filter?,
-    color: Int,
-): ArrayList<NumberData> {
-    val filteredList = arrayListOf<NumberData>()
-    val supposedFilteredList = arrayListOf<NumberData>()
-    forEach { numberData ->
-        numberData.highlightedSpanned = numberData.highlightedSpanned(filter, color)
-        if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR)
-                .isTrue().not()
-        ) {
-            supposedFilteredList.add(numberData)
-        } else {
-            filteredList.add(numberData)
-        }
-    }
-    filteredList.addAll(supposedFilteredList)
-    return filteredList
 }
 
 fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString? {
