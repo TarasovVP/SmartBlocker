@@ -21,7 +21,7 @@
                 android:background="@drawable/bg_rounded"
                 android:drawablePadding="@dimen/padding_8"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_blocker"
                 app:drawableStartCompat="@drawable/ic_settings_blocker"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
                 android:background="@drawable/bg_rounded"
                 android:drawablePadding="@dimen/padding_8"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_account"
                 app:drawableStartCompat="@drawable/ic_settings_account"
                 app:layout_constraintTop_toBottomOf="@+id/settings_blocker" />
@@ -47,7 +47,7 @@
                 android:background="@drawable/bg_rounded"
                 android:drawablePadding="@dimen/padding_8"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_language"
                 app:drawableStartCompat="@drawable/ic_settings_language"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account" />
@@ -60,7 +60,7 @@
                 android:background="@drawable/bg_rounded"
                 android:drawablePadding="@dimen/padding_8"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_theme"
                 app:drawableStartCompat="@drawable/ic_settings_theme"
                 app:layout_constraintTop_toBottomOf="@+id/settings_language" />
@@ -73,7 +73,7 @@
                 android:background="@drawable/bg_rounded"
                 android:drawablePadding="@dimen/padding_8"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_review"
                 app:drawableStartCompat="@drawable/ic_settings_review"
                 app:layout_constraintTop_toBottomOf="@+id/settings_theme" />
@@ -86,7 +86,7 @@
                 android:background="@drawable/bg_rounded"
                 android:drawablePadding="@dimen/padding_8"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_privacy"
                 app:drawableStartCompat="@drawable/ic_settings_privacy"
                 app:layout_constraintTop_toBottomOf="@+id/settings_review" />

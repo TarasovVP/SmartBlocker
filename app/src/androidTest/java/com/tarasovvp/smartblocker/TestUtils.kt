@@ -81,9 +81,10 @@ object TestUtils {
         override fun matchesSafely(view: View): Boolean {
             val context = view.context
             val expectedBitmap = context.getDrawable(id)?.toBitmap()
-            return if (view is ImageView) view.drawable?.toBitmap()
-                ?.sameAs(expectedBitmap).isTrue() else if (view is Button && view.compoundDrawables.isNotEmpty()) view.compoundDrawables[0].toBitmap()
-                .sameAs(expectedBitmap) else false
+            return if (view is ImageView) view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
+            else if (view is Button && view.compoundDrawables.isNotEmpty()) view.compoundDrawables[0].toBitmap().sameAs(expectedBitmap)
+            else if (view is TextView && view.compoundDrawables.isNotEmpty()) view.compoundDrawables[0].toBitmap().sameAs(expectedBitmap)
+            else false
         }
     }
 
