@@ -1,15 +1,29 @@
 package com.tarasovvp.smartblocker.authorization.sign_up
 
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.withBackgroundTint
+import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.orZero
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import junit.framework.TestCase.assertEquals
+import org.hamcrest.Matchers
+import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,14 +52,15 @@ class SignUpInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSignUpTitle() {
-        onView(withId(R.id.sign_up_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.sign_up_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_sign_up)))
 
     }
 
     @Test
     fun checkSignUpEmail() {
         onView(withId(R.id.sign_up_email_container)).check(matches(isDisplayed()))
-        onView(withId(R.id.sign_up_email)).check(matches(isDisplayed()))
+        onView(withId(R.id.sign_up_email)).check(matches(isDisplayed())).check(matches(withHint(R.string.authorization_email)))
+            .perform(typeText(TEST_EMAIL)).check(matches(withText(TEST_EMAIL)))
     }
 
     @Test
@@ -56,12 +71,32 @@ class SignUpInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSignUpEntranceTitle() {
-        onView(withId(R.id.sign_up_entrance_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.sign_up_entrance_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_entrance_title)))
         onView(withId(R.id.sign_up_entrance)).check(matches(isDisplayed()))
+            .check(matches(withText(R.string.authorization_entrance)))
+            .check(matches(withTextColor(R.color.button_bg))).perform(click())
+        assertEquals(R.id.onBoardingFragment, navController?.currentDestination?.id.orZero())
     }
 
     @Test
     fun checkSignUpContinue() {
-        onView(withId(R.id.sign_up_continue)).check(matches(isDisplayed()))
+        onView(withId(R.id.sign_up_continue)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_signing_up)))
+            .check(matches(not(isEnabled()))).check(matches(withTextColor(R.color.inactive_bg))).check(matches(
+               withBackgroundTint(ContextCompat.getColor(
+                        InstrumentationRegistry.getInstrumentation().targetContext,
+                        R.color.transparent))))
+        onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(TEST_EMAIL))
+        onView(withId(R.id.sign_up_continue)).check(matches(Matchers.not(isEnabled())))
+        onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(String.EMPTY))
+        onView(withId(R.id.sign_up_password)).perform(ViewActions.replaceText(TestUtils.TEST_PASSWORD))
+        onView(withId(R.id.sign_up_continue)).check(matches(Matchers.not(isEnabled())))
+        onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(TEST_EMAIL))
+        onView(withId(R.id.sign_up_continue))
+            .check(matches(isEnabled())).check(matches(withTextColor(R.color.white)))
+            .check(matches(withBackgroundTint(ContextCompat.getColor(
+                        InstrumentationRegistry.getInstrumentation().targetContext,
+                        R.color.button_bg)))).perform(click())
+        //TODO implement correct destination checking
+        //assertEquals(R.id.listBlockerFragment, navController?.currentDestination?.id)
     }
 }
