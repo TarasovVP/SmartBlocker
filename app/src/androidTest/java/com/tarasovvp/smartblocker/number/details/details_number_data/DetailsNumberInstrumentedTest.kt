@@ -16,6 +16,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+//TODO not finished
+@androidx.test.filters.Suppress
 @HiltAndroidTest
 class DetailsNumberInstrumentedTest: BaseInstrumentedTest() {
 

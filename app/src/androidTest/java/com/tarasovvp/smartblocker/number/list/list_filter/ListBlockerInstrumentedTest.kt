@@ -15,6 +15,7 @@ import org.junit.Test
 import androidx.test.filters.Suppress
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 
+//TODO not finished
 @Suppress
 @HiltAndroidTest
 class ListBlockerInstrumentedTest: BaseInstrumentedTest() {
