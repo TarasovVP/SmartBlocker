@@ -18,7 +18,7 @@ class SettingsThemeFragment :
         when (SharedPrefs.appTheme) {
             AppCompatDelegate.MODE_NIGHT_YES -> binding?.appThemeNight?.isChecked = true
             AppCompatDelegate.MODE_NIGHT_NO -> binding?.appThemeDay?.isChecked = true
-            else -> binding?.appAuto?.isChecked = true
+            else -> binding?.appThemeAuto?.isChecked = true
         }
         binding?.appTheme?.setOnCheckedChangeListener { _, checkedId ->
             val mode = when (checkedId) {
