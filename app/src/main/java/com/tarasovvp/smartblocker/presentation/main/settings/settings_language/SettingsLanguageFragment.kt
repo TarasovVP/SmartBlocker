@@ -30,7 +30,9 @@ class SettingsLanguageFragment :
             }
             SharedPrefs.appLang = appLang
             (activity as MainActivity).apply {
-                recreate()
+                if (intent.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).not()) {
+                    recreate()
+                }
             }
         }
     }

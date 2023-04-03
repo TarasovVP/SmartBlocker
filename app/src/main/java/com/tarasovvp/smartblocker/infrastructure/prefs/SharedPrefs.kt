@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_EN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_OFF
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_SEEN
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 
 @Suppress("UNCHECKED_CAST")
 object SharedPrefs {
@@ -22,52 +22,52 @@ object SharedPrefs {
     }
 
     var isOnBoardingSeen: Boolean?
-        get() = get(ON_BOARDING_SEEN, Boolean::class.java)
+        get() = get(ON_BOARDING_SEEN, Boolean::class.java, false)
         set(isOnBoardingSeen) {
             put(ON_BOARDING_SEEN, isOnBoardingSeen)
         }
 
     var appLang: String?
-        get() = get(APP_LANG, String::class.java)
+        get() = get(APP_LANG, String::class.java, APP_LANG_EN)
         set(appLang) {
             put(APP_LANG, appLang)
         }
 
     var appTheme: Int?
-        get() = get(APP_THEME, Int::class.java)
+        get() = get(APP_THEME, Int::class.java, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         set(appTheme) {
             put(APP_THEME, appTheme)
         }
 
     var smartBlockerTurnOff: Boolean?
-        get() = get(BLOCK_TURN_OFF, Boolean::class.java)
+        get() = get(BLOCK_TURN_OFF, Boolean::class.java, false)
         set(blockTurnOff) {
             put(BLOCK_TURN_OFF, blockTurnOff)
         }
 
     var blockHidden: Boolean?
-        get() = get(BLOCK_HIDDEN, Boolean::class.java)
+        get() = get(BLOCK_HIDDEN, Boolean::class.java, false)
         set(blockHidden) {
             put(BLOCK_HIDDEN, blockHidden)
         }
 
     var country: String?
-        get() = get(COUNTRY, String::class.java)
+        get() = get(COUNTRY, String::class.java, COUNTRY)
         set(countryCode) {
             put(COUNTRY, countryCode)
         }
 
     var countryCode: String?
-        get() = get(COUNTRY_CODE, String::class.java)
+        get() = get(COUNTRY_CODE, String::class.java, COUNTRY_CODE)
         set(countryCode) {
             put(COUNTRY_CODE, countryCode)
         }
 
-    private fun <T> get(key: String, clazz: Class<T>): T =
+    private fun <T> get(key: String, clazz: Class<T>, defaultValue: Any): T =
         when (clazz) {
-            String::class.java -> sharedPref?.getString(key, String.EMPTY)
-            Boolean::class.java -> sharedPref?.getBoolean(key, false)
-            Int::class.java -> sharedPref?.getInt(key, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            String::class.java -> sharedPref?.getString(key, defaultValue.toString())
+            Boolean::class.java -> sharedPref?.getBoolean(key, defaultValue as Boolean)
+            Int::class.java -> sharedPref?.getInt(key, defaultValue as Int)
             else -> null
         } as T
 
