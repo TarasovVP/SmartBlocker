@@ -68,7 +68,6 @@ class SettingsListInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsTheme() {
-        //TODO implement end drawable checking
         onView(withId(R.id.settings_theme)).check(matches(isDisplayed()))
             .check(matches(withText(R.string.settings_theme)))
             .check(matches(withDrawable(R.drawable.ic_settings_theme))).perform(click())

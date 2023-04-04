@@ -157,6 +157,20 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1040673103">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="3200b9324688c53d" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A750FN" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1013965696">
           <value>
             <AndroidTestResultsTableState>
@@ -185,6 +199,20 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-577176190">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="3200b9324688c53d" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A750FN" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-435962545">
           <value>
             <AndroidTestResultsTableState>
@@ -193,6 +221,7 @@
                   <entry key="3200b9324688c53d" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A750FN" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -395,6 +424,20 @@
           </value>
         </entry>
         <entry key="597460564">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="3200b9324688c53d" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A750FN" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="690393259">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">

@@ -110,6 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_0"
                     android:gravity="center"
+                    android:minWidth="48dp"
                     app:layout_constraintStart_toEndOf="@+id/settings_blocker_country_switch"
                     app:layout_constraintTop_toTopOf="@+id/settings_blocker_country_switch"
                     app:layout_constraintBottom_toBottomOf="@+id/settings_blocker_country_switch"
