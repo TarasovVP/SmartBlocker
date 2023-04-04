@@ -2,7 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="isLoggedInUser"
+            type="Boolean" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -16,8 +24,10 @@
                 android:id="@+id/settings_account_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding_16"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingTop="@dimen/padding_16"
                 android:background="@drawable/bg_rounded"
+                android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
                 android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -27,6 +37,7 @@
                     android:layout_height="@dimen/margin_50"
                     android:background="@color/avatar_bg"
                     android:scaleType="center"
+                    android:layout_marginBottom="@dimen/margin_16"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/settings_account_name"
                     app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +62,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/button_bg"
                     android:text="@string/settings_account_log_out_title"
-                    android:layout_marginTop="@dimen/margin_8"
-                    app:layout_constraintBottom_toBottomOf="@+id/settings_account_avatar"
+                    android:paddingTop="@dimen/margin_8"
+                    android:paddingBottom="@dimen/padding_16"
                     app:layout_constraintStart_toStartOf="@+id/settings_account_name"
                     app:layout_constraintTop_toBottomOf="@+id/settings_account_name" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -64,8 +75,9 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:background="@drawable/bg_rounded"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_account_change_password_title"
+                android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_container" />
 
             <TextView
@@ -75,8 +87,9 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:background="@drawable/bg_rounded"
                 android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_10"
+                android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_account_delete_title"
+                android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_change_password" />
 
             <include
@@ -84,6 +97,7 @@
                 layout="@layout/include_empty_state"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"
+                android:visibility="@{isLoggedInUser ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toTopOf="@+id/settings_account_login"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_24"
                 android:text="@string/authorization_enter"
+                android:visibility="@{isLoggedInUser ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

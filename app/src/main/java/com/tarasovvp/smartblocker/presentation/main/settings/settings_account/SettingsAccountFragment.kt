@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
@@ -51,10 +50,7 @@ class SettingsAccountFragment :
     private fun initViews() {
         binding?.apply {
             includeEmptyState.emptyState = EmptyState.EMPTY_STATE_ACCOUNT
-            includeEmptyState.root.isVisible =
-                SmartBlockerApp.instance?.isLoggedInUser().isNotTrue()
-            settingsAccountLogin.isVisible =
-                SmartBlockerApp.instance?.isLoggedInUser().isNotTrue()
+            isLoggedInUser = SmartBlockerApp.instance?.isLoggedInUser()
             settingsAccountName.text = SmartBlockerApp.instance?.auth?.currentUser?.email
             settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SmartBlockerApp.instance?.auth?.currentUser?.email.nameInitial()))
         }
@@ -65,9 +61,7 @@ class SettingsAccountFragment :
             settingsAccountLogOut.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
                 findNavController().navigate(
-                    SettingsAccountFragmentDirections.startAccountActionDialog(
-                        isLogOut = true
-                    )
+                    SettingsAccountFragmentDirections.startAccountActionDialog(isLogOut = true)
                 )
             }
             settingsAccountDelete.setSafeOnClickListener {
