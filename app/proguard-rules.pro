@@ -27,3 +27,6 @@
   **[] $VALUES;
   public *;
 }
+
+#JaCoCo
+-keep class org.jacoco.** { *; }
