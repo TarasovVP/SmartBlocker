@@ -4,21 +4,24 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils.clickLinkWithText
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment
+import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages
+import com.tarasovvp.smartblocker.utils.extensions.parcelable
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-//TODO not finished
-@androidx.test.filters.Suppress
 @HiltAndroidTest
 class InfoInstrumentedTest: BaseInstrumentedTest() {
 
@@ -28,7 +31,9 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        launchFragmentInHiltContainer<InfoFragment> (fragmentArgs = bundleOf("info" to InfoData())) {
+        launchFragmentInHiltContainer<InfoFragment> (fragmentArgs = bundleOf("info" to
+                InfoData(InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.title),
+                    InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.description)))) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.infoFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -37,6 +42,15 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkInfoWebView() {
-        onView(withId(R.id.info_web_view)).check(matches(isDisplayed()))
+        InstrumentationRegistry.getInstrumentation().targetContext.apply {
+            onView(withId(R.id.info_web_view))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(htmlWithImages(getString(Info.INFO_DETAILS_NUMBER_DATA.description)).toString())))
+                .perform(clickLinkWithText("Номер"))
+        }
+        assertEquals(R.id.infoFragment, navController?.currentDestination?.id)
+        assertEquals(InfoData(title = InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_BLOCKER_LIST.title),
+            description = InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_BLOCKER_LIST.description)),
+            navController?.backStack?.last()?.arguments?.parcelable<InfoData>("info"))
     }
 }

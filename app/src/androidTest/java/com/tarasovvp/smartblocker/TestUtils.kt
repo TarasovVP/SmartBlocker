@@ -6,6 +6,9 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.text.Spannable
+import android.text.style.ClickableSpan
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,8 +20,13 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.ViewMatchers.*
+import com.google.android.apps.common.testing.accessibility.framework.replacements.Spans
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.MainActivity
@@ -26,6 +34,7 @@ import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 
 
@@ -78,7 +87,7 @@ object TestUtils {
             val context = view.context
             val expectedBitmap = context.getDrawable(id)?.toBitmap()
             return if (view is ImageView) view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
-            else if (view is TextView && view.compoundDrawables.isNotEmpty()) view.compoundDrawables[view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
+            else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
             else false
         }
     }
@@ -132,6 +141,34 @@ object TestUtils {
             override fun describeTo(description: Description) {
                 description.appendText("with text color: ")
                 description.appendValue(expectedId)
+            }
+        }
+    }
+
+    fun clickLinkWithText(linkText: String): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return allOf(isDisplayed(), isAssignableFrom(TextView::class.java))
+            }
+
+            override fun getDescription(): String {
+                return "click on link with text: $linkText"
+            }
+
+            override fun perform(uiController: UiController?, view: View?) {
+                if (view is TextView) {
+                    val text = view.text.toString()
+                    val start = text.indexOf(linkText)
+                    val end = start + linkText.length
+                    view.movementMethod.onTouchEvent(view, view.text as Spannable,
+                        MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN,
+                            view.layout.getPrimaryHorizontal(start),
+                            view.layout.getLineBaseline(view.layout.getLineForOffset(start)).toFloat(), 0))
+                    view.movementMethod.onTouchEvent(view, view.text as Spannable,
+                        MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP,
+                            view.layout.getPrimaryHorizontal(end),
+                            view.layout.getLineBaseline(view.layout.getLineForOffset(end)).toFloat(), 0))
+                }
             }
         }
     }
