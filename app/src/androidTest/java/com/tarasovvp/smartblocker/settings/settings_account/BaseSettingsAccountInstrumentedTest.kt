@@ -19,8 +19,9 @@ import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Test
+import androidx.test.filters.Suppress
 
-@androidx.test.filters.Suppress
+@Suppress
 @HiltAndroidTest
 open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
 

@@ -7,9 +7,9 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Spannable
-import android.text.style.ClickableSpan
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ExpandableListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
@@ -18,16 +18,23 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.google.android.apps.common.testing.accessibility.framework.replacements.Spans
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.Contact
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
@@ -66,7 +73,7 @@ object TestUtils {
             val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
                 Preconditions.checkNotNull(T::class.java.classLoader) as ClassLoader,
                 T::class.java.name
-            ) as T
+            )
             SharedPrefs.init(activity)
             fragment.arguments = fragmentArgs
             activity.supportFragmentManager
@@ -172,4 +179,35 @@ object TestUtils {
             }
         }
     }
+
+    fun hasItemCount(expectedCount: Int): Matcher<View> {
+        return object : TypeSafeMatcher<View>() {
+            override fun describeTo(description: Description?) {
+                description?.appendText("has $expectedCount items")
+            }
+
+            override fun matchesSafely(view: View?): Boolean {
+                return when(view) {
+                    is RecyclerView -> view.adapter?.itemCount == expectedCount
+                    else -> false
+                }
+            }
+        }
+    }
+
+    fun contactWithFilterList() = listOf(
+        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344"),
+            FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("3", name = "B Name", number = "12345"),
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("4", name = "B Name", number = "12345"),
+            FilterWithCountryCode(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("5", name = "C Name", number = "12345"),
+            FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("6", name = " D Name", number = "12345"),
+            FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("7", name = "Y Name", number = "12345"), null)
+    )
 }
