@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.number.list.list_filter
 
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
@@ -14,6 +15,8 @@ import org.junit.Rule
 import org.junit.Test
 import androidx.test.filters.Suppress
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
+import com.tarasovvp.smartblocker.TestUtils
+import org.hamcrest.Matchers
 
 //TODO not finished
 @Suppress
@@ -32,6 +35,35 @@ class ListBlockerInstrumentedTest: BaseInstrumentedTest() {
             Navigation.setViewNavController(requireView(), navController)
         }
     }
+
+    /*@Test
+    fun checkFilterConditionsDialog() {
+        if (contactWithFilterList.isNullOrEmpty()) {
+            onView(withId(R.id.list_contact_check)).check(matches(Matchers.not(isEnabled())))
+        } else {
+            onView(withId(R.id.list_contact_check)).check(matches(isEnabled())).perform(ViewActions.click())
+            onView(withId(R.id.dialog_filter_condition_title)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_title)))
+            onView(withId(R.id.dialog_filter_condition_full)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_full)))
+                .check(matches(Matchers.not(isChecked()))).perform(ViewActions.click()).check(matches(isChecked()))
+            onView(withId(R.id.dialog_filter_condition_start)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_start)))
+                .check(matches(Matchers.not(isChecked()))).perform(ViewActions.click()).check(matches(isChecked()))
+            onView(withId(R.id.dialog_filter_condition_contain)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_contain)))
+                .check(matches(Matchers.not(isChecked()))).perform(ViewActions.click()).check(matches(isChecked()))
+            onView(withId(R.id.dialog_filter_condition_cancel)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(
+                ViewActions.click()
+            )
+            onView(withId(R.id.list_contact_check)).check(matches(isDisplayed())).check(matches(withText(callFilteringText()))).perform(
+                ViewActions.click()
+            )
+            onView(withId(R.id.dialog_filter_condition_confirm)).check(matches(isDisplayed())).check(matches(
+                TestUtils.withDrawable(R.drawable.ic_close_small)
+            )).perform(ViewActions.click())
+            onView(withId(R.id.dialog_filter_condition_full)).perform(ViewActions.click())
+            onView(withId(R.id.list_contact_check)).check(matches(withText(callFilteringText()))).perform(
+                ViewActions.click()
+            )
+        }
+    }*/
 
     @Test
     fun check_list_filter_filter() {

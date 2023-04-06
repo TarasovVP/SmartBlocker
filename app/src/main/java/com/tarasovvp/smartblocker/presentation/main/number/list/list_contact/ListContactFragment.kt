@@ -24,7 +24,7 @@ open class ListContactFragment :
     override val viewModelClass = ListContactViewModel::class.java
 
     private var contactWithFilterList: List<ContactWithFilter>? = null
-    private var conditionFilterIndexes: ArrayList<Int>? = null
+    var conditionFilterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<ContactWithFilter>? {
         return context?.let {

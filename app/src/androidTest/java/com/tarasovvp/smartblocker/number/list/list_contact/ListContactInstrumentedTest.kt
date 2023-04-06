@@ -1,10 +1,5 @@
 package com.tarasovvp.smartblocker.number.list.list_contact
 
-import androidx.navigation.Navigation
-import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils.contactWithFilterList
-import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -18,13 +13,7 @@ class ListContactInstrumentedTest: BaseListContactInstrumentedTest() {
 
     @Before
     override fun setUp() {
+        contactWithFilterList = listOf()
         super.setUp()
-        contactWithFilterList = contactWithFilterList()
-        launchFragmentInHiltContainer<ListContactFragment> {
-            navController?.setGraph(R.navigation.navigation)
-            navController?.setCurrentDestination(R.id.listContactFragment)
-            Navigation.setViewNavController(requireView(), navController)
-            (this as ListContactFragment).viewModel.contactLiveData.postValue(contactWithFilterList)
-        }
     }
 }

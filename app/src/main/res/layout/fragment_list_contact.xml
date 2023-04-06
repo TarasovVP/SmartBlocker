@@ -4,14 +4,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/padding_8" >
+        android:layout_height="match_parent">
 
         <CheckBox
             android:id="@+id/list_contact_check"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             style="@style/FilterCheckBox"
+            android:minHeight="@dimen/padding_48"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/list_contact_info"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -21,8 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_0"
             android:src="@drawable/ic_info"
-            android:padding="@dimen/padding_16"
+            android:paddingHorizontal="@dimen/padding_16"
             android:background="@color/transparent"
+            android:contentDescription="@string/menu_info"
             app:layout_constraintTop_toTopOf="@+id/list_contact_check"
             app:layout_constraintBottom_toBottomOf="@+id/list_contact_check"
             app:layout_constraintEnd_toEndOf="parent"
