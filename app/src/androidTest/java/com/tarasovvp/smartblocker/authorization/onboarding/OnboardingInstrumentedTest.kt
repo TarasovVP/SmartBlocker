@@ -38,6 +38,11 @@ class OnboardingInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
+    }
+
+    @Test
     fun checkOnBoardingViewPagerIntro() {
         onView(withId(R.id.on_boarding_view_pager)).check(matches(isDisplayed()))
         onView(withId(R.id.on_boarding_button)).apply {

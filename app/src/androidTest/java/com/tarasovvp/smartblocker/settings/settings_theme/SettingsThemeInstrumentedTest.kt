@@ -35,6 +35,11 @@ class SettingsThemeInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
+    }
+
+    @Test
     fun checkAppTheme() {
         onView(withId(R.id.app_theme))
             .check(matches(isDisplayed()))

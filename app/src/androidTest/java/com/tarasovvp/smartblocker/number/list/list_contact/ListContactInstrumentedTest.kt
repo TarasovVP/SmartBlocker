@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.number.list.list_contact
 
+import com.tarasovvp.smartblocker.TestUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -13,7 +14,7 @@ class ListContactInstrumentedTest: BaseListContactInstrumentedTest() {
 
     @Before
     override fun setUp() {
-        contactWithFilterList = listOf()
+        contactWithFilterList = TestUtils.contactWithFilterList()
         super.setUp()
     }
 }

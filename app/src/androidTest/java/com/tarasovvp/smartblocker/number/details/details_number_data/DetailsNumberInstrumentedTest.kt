@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.number.details.details_number_data
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
@@ -36,7 +37,7 @@ class DetailsNumberInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkContainer() {
-        onView(withId(R.id.container)).check(matches(isDisplayed()))
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
 
     }
 

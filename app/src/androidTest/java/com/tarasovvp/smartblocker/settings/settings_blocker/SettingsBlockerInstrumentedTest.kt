@@ -41,9 +41,13 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
+    }
+
+    @Test
     fun checkSettingsBlockerContainer() {
         onView(withId(R.id.settings_blocker_container)).check(matches(isDisplayed()))
-
     }
 
     @Test

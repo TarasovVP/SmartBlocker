@@ -43,6 +43,11 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
+    }
+
+    @Test
     fun checkSettingsLanguagesRg() {
         onView(withId(R.id.settings_languages_rg)).check(matches(isDisplayed())).check(matches(
             hasChildCount(3)

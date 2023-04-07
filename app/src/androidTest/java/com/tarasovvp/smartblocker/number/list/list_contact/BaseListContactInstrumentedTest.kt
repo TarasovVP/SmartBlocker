@@ -18,11 +18,13 @@ import org.junit.Test
 import androidx.test.filters.Suppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import java.util.ArrayList
@@ -37,7 +39,6 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        contactWithFilterList = listOf()
         TestUtils.launchFragmentInHiltContainer<ListContactFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listContactFragment)
@@ -47,6 +48,12 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 viewModel.contactLiveData.postValue(contactWithFilterList)
             }
         }
+        waitUntilViewIsDisplayed(if (this@BaseListContactInstrumentedTest is EmptyListContactInstrumentedTest) withId(R.id.list_contact_empty) else withText("A Name"))
+    }
+
+    @Test
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
     }
 
     @Test
@@ -60,31 +67,40 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             } else {
                 check(matches(isEnabled()))
                 perform(click())
-                assertEquals(R.id.filterConditionsDialog, navController?.currentDestination?.id.orZero())
+                assertEquals(R.id.numberDataFilteringDialog, navController?.currentDestination?.id.orZero())
             }
         }
     }
 
-   /* @Test
-    fun checkFilterConditionsDialog() {
+    @Test
+    fun checkNumberDataFilteringDialog() {
         if (contactWithFilterList.isNullOrEmpty()) {
             onView(withId(R.id.list_contact_check)).check(matches(not(isEnabled())))
         } else {
             onView(withId(R.id.list_contact_check)).check(matches(isEnabled())).perform(click())
-            onView(withId(R.id.dialog_filter_condition_title)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_title)))
-            onView(withId(R.id.dialog_filter_condition_full)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_full)))
+            onView(isRoot()).perform(waitFor(3000))
+            onView(withId(R.id.dialog_number_data_filtering_title)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_title)))
+            onView(withId(R.id.dialog_number_data_with_blocker)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_contact_blocker)))
                 .check(matches(not(isChecked()))).perform(click()).check(matches(isChecked()))
-            onView(withId(R.id.dialog_filter_condition_start)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_start)))
+            onView(withId(R.id.dialog_number_data_with_permission)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_contact_permission)))
                 .check(matches(not(isChecked()))).perform(click()).check(matches(isChecked()))
-            onView(withId(R.id.dialog_filter_condition_contain)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_contain)))
-                .check(matches(not(isChecked()))).perform(click()).check(matches(isChecked()))
-            onView(withId(R.id.dialog_filter_condition_cancel)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
+            onView(withId(R.id.dialog_number_data_by_blocker)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.dialog_number_data_by_permission)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.dialog_number_data_cancel)).check(matches(isDisplayed())).check(matches(withText(R.string.button_cancel))).perform(click())
             onView(withId(R.id.list_contact_check)).check(matches(isDisplayed())).check(matches(withText(callFilteringText()))).perform(click())
-            onView(withId(R.id.dialog_filter_condition_confirm)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_close_small))).perform(click())
-            onView(withId(R.id.dialog_filter_condition_full)).perform(click())
+            onView(withId(R.id.dialog_number_data_with_blocker)).check(matches(not(isChecked()))).perform(click())
+            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
             onView(withId(R.id.list_contact_check)).check(matches(withText(callFilteringText()))).perform(click())
+            onView(withId(R.id.dialog_number_data_with_blocker)).check(matches(isChecked())).perform(click())
+            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
+            onView(withId(R.id.list_contact_check)).check(matches(withText(callFilteringText()))).perform(click())
+            onView(withId(R.id.dialog_number_data_with_permission)).check(matches(not(isChecked()))).perform(click())
+            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
+            onView(withId(R.id.list_contact_check)).check(matches(withText(callFilteringText()))).perform(click())
+            onView(withId(R.id.dialog_number_data_with_permission)).check(matches(isChecked())).perform(click())
+            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
         }
-    }*/
+    }
 
     @Test
     fun checkListContactInfo() {

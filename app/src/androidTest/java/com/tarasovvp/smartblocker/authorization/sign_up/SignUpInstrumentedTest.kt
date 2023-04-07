@@ -46,7 +46,7 @@ class SignUpInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkContainer() {
-        onView(withId(R.id.container)).check(matches(isDisplayed()))
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
 
     }
 

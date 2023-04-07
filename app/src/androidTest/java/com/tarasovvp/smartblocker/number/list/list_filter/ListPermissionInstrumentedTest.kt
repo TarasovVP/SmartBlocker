@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.number.list.list_filter
 
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.Suppress
@@ -31,6 +32,11 @@ class ListPermissionInstrumentedTest: BaseInstrumentedTest() {
             navController?.setCurrentDestination(R.id.listPermissionFragment)
             Navigation.setViewNavController(requireView(), navController)
         }
+    }
+
+    @Test
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
     }
 
     @Test

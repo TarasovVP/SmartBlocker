@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.number.info
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
@@ -38,6 +39,11 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
             navController?.setCurrentDestination(R.id.infoFragment)
             Navigation.setViewNavController(requireView(), navController)
         }
+    }
+
+    @Test
+    fun checkContainer() {
+        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
     }
 
     @Test
