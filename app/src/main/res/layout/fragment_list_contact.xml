@@ -11,7 +11,7 @@
             android:id="@+id/list_contact_check"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
-            style="@style/FilterCheckBox"
+            style="@style/FilterCheckBoxStyle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/list_contact_info"
             app:layout_constraintStart_toStartOf="parent"/>

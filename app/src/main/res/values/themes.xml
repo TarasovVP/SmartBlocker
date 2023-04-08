@@ -24,7 +24,7 @@
         <item name="materialCardViewStyle">@style/CardViewStyle</item>
 
         <item name="materialButtonStyle">@style/FilledButtonStyle</item>
-        <item name="checkboxStyle">@style/CheckBox</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="radioButtonStyle">@style/RadioButtonStyle</item>
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
@@ -96,7 +96,7 @@
         <item name="strokeWidth">@dimen/padding_1</item>
     </style>
 
-    <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textColor">@color/text_color_grey</item>>
         <item name="buttonTint">@color/selector_check_enable_bg</item>>
         <item name="android:button">@drawable/selector_check_box</item>
@@ -107,7 +107,7 @@
         <item name="android:minHeight">@dimen/padding_48</item>
     </style>
 
-    <style name="FilterCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="FilterCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:enabled">false</item>
         <item name="android:textColor">@color/selector_check_enable_bg</item>>
         <item name="android:minHeight">@dimen/padding_48</item>
@@ -141,7 +141,7 @@
         <item name="android:textColor">@color/text_color_grey</item>
     </style>
 
-    <style name="RoundedImageView">
+    <style name="RoundedImageViewStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>

@@ -70,13 +70,9 @@ open class BaseListFilterFragment :
     }
 
     private fun setFilterConditionFilter() {
-        conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.listFilterFilter?.apply {
             isSelected = true
-            text =
-                if (conditionFilterIndexes.isNullOrEmpty()) getString(R.string.filter_no_filter) else conditionFilterIndexes?.joinToString {
-                    getString(FilterCondition.getTitleByIndex(it))
-                }
+            text = context?.numberDataFilteringText(conditionFilterIndexes ?: arrayListOf())
             isChecked = conditionFilterIndexes.isNullOrEmpty().not()
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
@@ -143,11 +139,11 @@ open class BaseListFilterFragment :
                 listFilterFilter.isChecked =
                     listFilterFilter.isChecked.isTrue().not()
                 findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
-                    ListBlockerFragmentDirections.startFilterConditionsDialog(
+                    ListBlockerFragmentDirections.startNumberDataFilteringDialog(
                         filteringList = conditionFilterIndexes.orEmpty().toIntArray()
                     )
                 } else {
-                    ListPermissionFragmentDirections.startFilterConditionsDialog(
+                    ListPermissionFragmentDirections.startNumberDataFilteringDialog(
                         filteringList = conditionFilterIndexes.orEmpty().toIntArray()
                     )
                 })

@@ -48,19 +48,9 @@ open class ListContactFragment :
     }
 
     private fun setContactConditionFilter() {
-        conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.listContactCheck?.apply {
             isSelected = true
-            val callFilteringText = arrayListOf<String>()
-            if (conditionFilterIndexes.isNullOrEmpty())
-                callFilteringText.add(getString(R.string.filter_no_filter))
-            else {
-                if (conditionFilterIndexes?.contains(BLOCKER).isTrue())
-                    callFilteringText.add(context.getString(R.string.filter_contact_blocker))
-                if (conditionFilterIndexes?.contains(PERMISSION).isTrue())
-                    callFilteringText.add(context.getString(R.string.filter_contact_permission))
-            }
-            text = callFilteringText.joinToString()
+            text = context?.numberDataFilteringText(conditionFilterIndexes ?: arrayListOf())
             isChecked = conditionFilterIndexes.isNullOrEmpty().not()
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()

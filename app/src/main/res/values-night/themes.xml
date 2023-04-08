@@ -23,7 +23,7 @@
         <item name="android:letterSpacing">0.02</item>
 
         <item name="materialButtonStyle">@style/FilledButtonStyle</item>
-        <item name="checkboxStyle">@style/CheckBox</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="radioButtonStyle">@style/RadioButtonStyle</item>
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>

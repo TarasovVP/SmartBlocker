@@ -71,19 +71,9 @@ class ListCallFragment :
     }
 
     private fun setCallConditionFilter() {
-        conditionFilterIndexes = conditionFilterIndexes ?: arrayListOf()
         binding?.listCallCheck?.apply {
             isSelected = true
-            val callFilteringText = arrayListOf<String>()
-            if (conditionFilterIndexes.isNullOrEmpty())
-                callFilteringText.add(getString(R.string.filter_no_filter))
-            else {
-                if (conditionFilterIndexes?.contains(BLOCKED_CALL.toInt()).isTrue())
-                    callFilteringText.add(context.getString(R.string.filter_call_blocked))
-                if (conditionFilterIndexes?.contains(PERMITTED_CALL.toInt()).isTrue())
-                    callFilteringText.add(context.getString(R.string.filter_call_permitted))
-            }
-            text = callFilteringText.joinToString()
+            text = context?.numberDataFilteringText(conditionFilterIndexes ?: arrayListOf())
             isChecked = conditionFilterIndexes.isNullOrEmpty().not()
             isEnabled =
                 adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
@@ -96,7 +86,6 @@ class ListCallFragment :
             binding?.listCallCheck?.isChecked = binding?.listCallCheck?.isChecked.isTrue().not()
             findNavController().navigate(
                 ListCallFragmentDirections.startNumberDataFilteringDialog(
-                    isCallList = true,
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray()
                 )
             )

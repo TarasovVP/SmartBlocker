@@ -36,7 +36,7 @@
                 android:scaleType="center"
                 app:imageUrl="@{contactWithFilter.contact.photoUrl}"
                 app:placeHolder="@{contactWithFilter.contact.placeHolder(context)}"
-                app:shapeAppearanceOverlay="@style/RoundedImageView"
+                app:shapeAppearanceOverlay="@style/RoundedImageViewStyle"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_number"
                 app:layout_constraintStart_toStartOf="parent"

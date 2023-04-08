@@ -42,7 +42,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/settings_account_name"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/RoundedImageView" />
+                    app:shapeAppearanceOverlay="@style/RoundedImageViewStyle" />
 
                 <TextView
                     android:id="@+id/settings_account_name"

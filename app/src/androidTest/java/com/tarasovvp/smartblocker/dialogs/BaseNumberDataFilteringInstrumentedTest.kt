@@ -15,7 +15,6 @@ import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTERING_LIST
 import com.tarasovvp.smartblocker.TestUtils.IS_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
-import com.tarasovvp.smartblocker.presentation.dialogs.NumberDataFilteringDialog
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals

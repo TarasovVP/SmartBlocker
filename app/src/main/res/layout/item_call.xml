@@ -41,7 +41,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_number"
                 app:placeHolder="@{callWithFilter.call.placeHolder(context)}"
-                app:shapeAppearanceOverlay="@style/RoundedImageView" />
+                app:shapeAppearanceOverlay="@style/RoundedImageViewStyle" />
 
             <ImageView
                 android:layout_width="@dimen/margin_20"

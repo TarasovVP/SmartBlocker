@@ -48,8 +48,8 @@
             android:id="@+id/startDetailsFilterFragment"
             app:destination="@id/detailsFilterFragment" />
         <action
-            android:id="@+id/startFilterConditionsDialog"
-            app:destination="@id/filterConditionsDialog" />
+            android:id="@+id/startNumberDataFilteringDialog"
+            app:destination="@id/numberDataFilteringDialog" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
@@ -69,8 +69,8 @@
             android:id="@+id/startDetailsFilterFragment"
             app:destination="@id/detailsFilterFragment" />
         <action
-            android:id="@+id/startFilterConditionsDialog"
-            app:destination="@id/filterConditionsDialog" />
+            android:id="@+id/startNumberDataFilteringDialog"
+            app:destination="@id/numberDataFilteringDialog" />
         <action
             android:id="@+id/startFilterActionDialog"
             app:destination="@id/filterActionDialog" />
@@ -298,16 +298,6 @@
     </dialog>
 
     <dialog
-        android:id="@+id/filterConditionsDialog"
-        android:name="com.tarasovvp.smartblocker.presentation.dialogs.FilterConditionsDialog">
-        <argument
-            android:name="filteringList"
-            android:defaultValue="@null"
-            app:argType="integer[]"
-            app:nullable="true" />
-    </dialog>
-
-    <dialog
         android:id="@+id/appExitDialog"
         android:name="com.tarasovvp.smartblocker.presentation.dialogs.AppExitDialog" />
 
@@ -349,11 +339,6 @@
             android:defaultValue="@null"
             app:argType="integer[]"
             app:nullable="true" />
-        <argument
-            android:name="isCallList"
-            android:defaultValue="false"
-            app:argType="boolean"
-            app:nullable="false" />
     </dialog>
 
     <dialog

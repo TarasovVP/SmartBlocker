@@ -17,10 +17,13 @@ import com.google.firebase.perf.metrics.AddTrace
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.*
 import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ASC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_ID
@@ -29,6 +32,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.max
 
 fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
@@ -250,6 +254,12 @@ fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
             .isValidNumber(this)
     } catch (e: Exception) {
         return false
+    }
+}
+
+fun Context.numberDataFilteringText(filterIndexes: ArrayList<Int>): String {
+    return if (filterIndexes.isEmpty()) getString(R.string.filter_no_filter) else filterIndexes.joinToString { index ->
+        NumberDataFiltering.values().find { it.ordinal == index }?.title?.let { getString(it) } ?: String.EMPTY
     }
 }
 
