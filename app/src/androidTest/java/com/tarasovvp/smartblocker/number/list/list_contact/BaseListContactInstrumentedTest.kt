@@ -1,5 +1,9 @@
 package com.tarasovvp.smartblocker.number.list.list_contact
 
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -20,11 +24,16 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import java.util.ArrayList
 
@@ -34,6 +43,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
 
     protected var contactWithFilterList: List<ContactWithFilter>? = null
     private var conditionFilters: ArrayList<Int>? = null
+    private var fragment: Fragment? = null
 
     @Before
     override fun setUp() {
@@ -42,6 +52,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listContactFragment)
             Navigation.setViewNavController(requireView(), navController)
+            fragment = this
             (this as ListContactFragment).apply {
                 conditionFilters = conditionFilterIndexes
                 viewModel.contactLiveData.postValue(contactWithFilterList)
@@ -66,6 +77,53 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 check(matches(isEnabled()))
                 perform(click())
                 assertEquals(R.id.numberDataFilteringDialog, navController?.currentDestination?.id.orZero())
+            }
+        }
+    }
+
+    @Test
+    fun checkListContactCheckOneFilter() {
+        onView(withId(R.id.list_contact_check)).apply {
+            check(matches(withText(callFilteringText())))
+            runBlocking(Dispatchers.Main) {
+                fragment?.setFragmentResult(
+                    FILTER_CONDITION_LIST,
+                    bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
+                        add(BLOCKER)
+                    })
+                )
+                fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
+                    if (contactWithFilterList.isNullOrEmpty()) {
+                        check(matches(not(isEnabled())))
+                    } else {
+                        check(matches(isChecked()))
+                        check(matches(withText(callFilteringText())))
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun checkListContactCheckTwoFilters() {
+        onView(withId(R.id.list_contact_check)).apply {
+            check(matches(withText(callFilteringText())))
+            runBlocking(Dispatchers.Main) {
+                fragment?.setFragmentResult(
+                    FILTER_CONDITION_LIST,
+                    bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
+                        add(BLOCKER)
+                        add(PERMISSION)
+                    })
+                )
+                fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
+                    if (contactWithFilterList.isNullOrEmpty()) {
+                        check(matches(not(isEnabled())))
+                    } else {
+                        check(matches(isChecked()))
+                        check(matches(withText(callFilteringText())))
+                    }
+                }
             }
         }
     }
