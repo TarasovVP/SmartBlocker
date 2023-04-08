@@ -48,7 +48,7 @@ fun View.setSafeOnClickListener(action: () -> Unit) {
 }
 
 fun Activity.showMessage(message: String, isError: Boolean) {
-    if (isFinishing) return
+    if (window.isNull() || isFinishing) return
     val dialogView = DialogInfoBinding.inflate(LayoutInflater.from(this))
     dialogView.dialogInfoIcon.setImageResource(if (isError) R.drawable.ic_result_error else R.drawable.ic_result_success)
     dialogView.dialogInfoDescription.text = message

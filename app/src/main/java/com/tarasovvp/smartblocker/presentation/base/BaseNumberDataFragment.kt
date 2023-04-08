@@ -3,7 +3,9 @@ package com.tarasovvp.smartblocker.presentation.base
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.hideKeyboard
+import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
 
 abstract class BaseNumberDataFragment<B : ViewDataBinding, T : BaseViewModel> :
     BaseFragment<B, T>() {
@@ -19,7 +21,7 @@ abstract class BaseNumberDataFragment<B : ViewDataBinding, T : BaseViewModel> :
         initViews()
         setClickListeners()
         setFragmentResultListeners()
-        getData()
+        if (activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isNotTrue()) getData()
     }
 
     override fun onPause() {

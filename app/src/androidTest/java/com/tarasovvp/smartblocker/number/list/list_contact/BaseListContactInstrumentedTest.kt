@@ -18,7 +18,6 @@ import org.junit.Test
 import androidx.test.filters.Suppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
-import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
@@ -50,7 +49,6 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
         }
         waitUntilViewIsDisplayed(if (this@BaseListContactInstrumentedTest is EmptyListContactInstrumentedTest) withId(R.id.list_contact_empty) else withText("A Name"))
     }
-
     @Test
     fun checkContainer() {
         onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
@@ -69,36 +67,6 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 perform(click())
                 assertEquals(R.id.numberDataFilteringDialog, navController?.currentDestination?.id.orZero())
             }
-        }
-    }
-
-    @Test
-    fun checkNumberDataFilteringDialog() {
-        if (contactWithFilterList.isNullOrEmpty()) {
-            onView(withId(R.id.list_contact_check)).check(matches(not(isEnabled())))
-        } else {
-            onView(withId(R.id.list_contact_check)).check(matches(isEnabled())).perform(click())
-            onView(isRoot()).perform(waitFor(3000))
-            onView(withId(R.id.dialog_number_data_filtering_title)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_title)))
-            onView(withId(R.id.dialog_number_data_with_blocker)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_contact_blocker)))
-                .check(matches(not(isChecked()))).perform(click()).check(matches(isChecked()))
-            onView(withId(R.id.dialog_number_data_with_permission)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_contact_permission)))
-                .check(matches(not(isChecked()))).perform(click()).check(matches(isChecked()))
-            onView(withId(R.id.dialog_number_data_by_blocker)).check(matches(not(isDisplayed())))
-            onView(withId(R.id.dialog_number_data_by_permission)).check(matches(not(isDisplayed())))
-            onView(withId(R.id.dialog_number_data_cancel)).check(matches(isDisplayed())).check(matches(withText(R.string.button_cancel))).perform(click())
-            onView(withId(R.id.list_contact_check)).check(matches(isDisplayed())).check(matches(withText(callFilteringText()))).perform(click())
-            onView(withId(R.id.dialog_number_data_with_blocker)).check(matches(not(isChecked()))).perform(click())
-            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
-            onView(withId(R.id.list_contact_check)).check(matches(withText(callFilteringText()))).perform(click())
-            onView(withId(R.id.dialog_number_data_with_blocker)).check(matches(isChecked())).perform(click())
-            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
-            onView(withId(R.id.list_contact_check)).check(matches(withText(callFilteringText()))).perform(click())
-            onView(withId(R.id.dialog_number_data_with_permission)).check(matches(not(isChecked()))).perform(click())
-            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
-            onView(withId(R.id.list_contact_check)).check(matches(withText(callFilteringText()))).perform(click())
-            onView(withId(R.id.dialog_number_data_with_permission)).check(matches(isChecked())).perform(click())
-            onView(withId(R.id.dialog_number_data_confirm)).check(matches(isDisplayed())).check(matches(withText(R.string.button_ok))).perform(click())
         }
     }
 

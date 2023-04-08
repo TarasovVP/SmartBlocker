@@ -104,11 +104,13 @@
         <item name="android:singleLine">true</item>
         <item name="android:paddingEnd">@dimen/padding_10</item>
         <item name="android:paddingStart">@dimen/padding_10</item>
+        <item name="android:minHeight">@dimen/padding_48</item>
     </style>
 
     <style name="FilterCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:enabled">false</item>
         <item name="android:textColor">@color/selector_check_enable_bg</item>>
+        <item name="android:minHeight">@dimen/padding_48</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:button">@drawable/selector_filter</item>

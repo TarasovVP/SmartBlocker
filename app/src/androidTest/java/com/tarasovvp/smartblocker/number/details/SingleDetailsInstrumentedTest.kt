@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.number.details
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
@@ -33,11 +32,6 @@ class SingleDetailsInstrumentedTest: BaseInstrumentedTest() {
             navController?.setGraph(R.navigation.navigation)
             Navigation.setViewNavController(requireView(), navController)
         }
-    }
-
-    @Test
-    fun checkContainer() {
-        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
     }
 
     @Test

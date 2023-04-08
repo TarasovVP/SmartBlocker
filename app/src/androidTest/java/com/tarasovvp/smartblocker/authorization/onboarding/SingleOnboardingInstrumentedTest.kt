@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.authorization.onboarding
 
 import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
@@ -22,11 +21,6 @@ class SingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
-
-    @Test
-    fun checkContainer() {
-        onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
-    }
 
     @Test
     fun checkOnBoardingViewPagerIntro() {

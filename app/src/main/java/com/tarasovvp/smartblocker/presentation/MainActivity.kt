@@ -148,9 +148,9 @@ class MainActivity : AppCompatActivity() {
         SharedPrefs.country = SharedPrefs.country.takeIf { it.isNullOrEmpty().not() } ?: getUserCountry()
         if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
             setNavController()
+            setToolBar()
+            setBottomNavigationView()
         }
-        setToolBar()
-        setBottomNavigationView()
         setOnDestinationChangedListener()
         observeLiveData()
         if (SharedPrefs.isOnBoardingSeen.isTrue()
@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnItemSelectedListener true
         }
-        (bottomNavigationView?.getChildAt(0) as BottomNavigationMenuView).children.forEach {
+        (bottomNavigationView?.getChildAt(0) as? BottomNavigationMenuView)?.children?.forEach {
             it.findViewById<TextView>(com.google.android.material.R.id.navigation_bar_item_large_label_view)
                 .apply {
                     ellipsize = TextUtils.TruncateAt.MARQUEE

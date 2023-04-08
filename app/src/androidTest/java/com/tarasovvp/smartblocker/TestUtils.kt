@@ -50,6 +50,8 @@ object TestUtils {
     const val TEST_EMAIL = "testEmail"
     const val TEST_PASSWORD = "testPassword"
     const val IS_LOG_OUT = "isLogOut"
+    const val FILTERING_LIST = "filteringList"
+    const val IS_CALL_LIST = "isCallList"
 
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
