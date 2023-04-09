@@ -5,13 +5,10 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMITTED_CALL
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
@@ -86,6 +83,7 @@ class ListCallFragment :
             binding?.listCallCheck?.isChecked = binding?.listCallCheck?.isChecked.isTrue().not()
             findNavController().navigate(
                 ListCallFragmentDirections.startNumberDataFilteringDialog(
+                    previousDestinationId = findNavController().currentDestination?.id.orZero(),
                     filteringList = conditionFilterIndexes.orEmpty().toIntArray()
                 )
             )
@@ -175,22 +173,12 @@ class ListCallFragment :
     override fun searchDataList() {
         (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredCallList = callWithFilterList?.filter { callWithFilter ->
-            (callWithFilter.call?.callName?.lowercase(Locale.getDefault())
-                ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue()
-                    || callWithFilter.call?.number?.lowercase(Locale.getDefault())
-                ?.contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty()).isTrue())
-                    && (callWithFilter.filterWithCountryCode?.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(
-                BLOCKER).isTrue() ||
-                    callWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
-                PERMISSION).isTrue() ||
-                    callWithFilter.call?.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(
-                BLOCKED_CALL.toInt()).isTrue() ||
-                    callWithFilter.call?.isPermittedCall().isTrue() && conditionFilterIndexes?.contains(
-                PERMITTED_CALL.toInt()).isTrue()
-                    || conditionFilterIndexes.isNullOrEmpty())
+            (searchQuery.isNullOrBlank().not() && (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery))
+                    || callWithFilter.call?.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
+                    || callWithFilter.call?.isPermittedCall().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
+                    || conditionFilterIndexes.isNullOrEmpty()
         }.orEmpty()
-        binding?.listCallCheck?.isEnabled =
-            filteredCallList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
+        binding?.listCallCheck?.isEnabled = filteredCallList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
         checkDataListEmptiness(filteredCallList.isEmpty())
         if (filteredCallList.isNotEmpty()) {
             viewModel.getHashMapFromCallList(filteredCallList, swipeRefresh?.isRefreshing.isTrue())

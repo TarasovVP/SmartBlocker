@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTERING_LIST
 import com.tarasovvp.smartblocker.TestUtils.IS_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
+import com.tarasovvp.smartblocker.presentation.dialogs.NumberDataFilteringDialog
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
@@ -35,8 +36,7 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
     override fun setUp() {
         super.setUp()
         TestUtils.launchFragmentInHiltContainer<NumberDataFilteringDialog>(
-            bundleOf(FILTERING_LIST to arrayListOf<Int>(),
-                IS_CALL_LIST to (this@BaseNumberDataFilteringInstrumentedTest is CallNumberDataFilteringInstrumentedTest))) {
+            bundleOf(FILTERING_LIST to arrayListOf<Int>())) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -57,7 +57,7 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkDialogNumberDataWithBlocker() {
-        onView(withId(R.id.dialog_number_data_with_blocker)).apply {
+        onView(withId(R.id.dialog_number_data_filtering_container)).apply {
             if (isCallList) {
                 check(matches(not(isDisplayed())))
             } else {
@@ -122,7 +122,7 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
                 assertEquals(0, bundle.getIntegerArrayList(FILTER_CONDITION_LIST)?.size)
             }
         }
-        onView(withId(R.id.dialog_number_data_confirm))
+        onView(withId(R.id.dialog_number_data_filtering_confirm))
             .check(matches(isDisplayed()))
             .check(matches(withText(R.string.button_ok)))
             .perform(click())
@@ -143,7 +143,7 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.dialog_number_data_with_blocker)).perform(click())
             onView(withId(R.id.dialog_number_data_with_permission)).perform(click())
         }
-        onView(withId(R.id.dialog_number_data_confirm))
+        onView(withId(R.id.dialog_number_data_filtering_confirm))
             .check(matches(isDisplayed()))
             .check(matches(withText(R.string.button_ok)))
             .perform(click())
@@ -151,7 +151,7 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkDialogNumberDataCancel() {
-        onView(withId(R.id.dialog_number_data_cancel))
+        onView(withId(R.id.dialog_number_data_filtering_cancel))
             .check(matches(isDisplayed()))
             .check(matches(withText(R.string.button_cancel)))
             .perform(click())

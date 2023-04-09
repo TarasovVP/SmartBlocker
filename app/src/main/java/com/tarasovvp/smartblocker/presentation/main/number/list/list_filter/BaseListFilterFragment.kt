@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
@@ -140,10 +141,12 @@ open class BaseListFilterFragment :
                     listFilterFilter.isChecked.isTrue().not()
                 findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
                     ListBlockerFragmentDirections.startNumberDataFilteringDialog(
+                        previousDestinationId = findNavController().currentDestination?.id.orZero(),
                         filteringList = conditionFilterIndexes.orEmpty().toIntArray()
                     )
                 } else {
                     ListPermissionFragmentDirections.startNumberDataFilteringDialog(
+                        previousDestinationId = findNavController().currentDestination?.id.orZero(),
                         filteringList = conditionFilterIndexes.orEmpty().toIntArray()
                     )
                 })
@@ -248,17 +251,10 @@ open class BaseListFilterFragment :
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredList = filterWithCountryCodeList?.filter { filter ->
-            filter.filter?.filter.orEmpty().lowercase(Locale.getDefault())
-                .contains(searchQuery?.lowercase(Locale.getDefault()).orEmpty())
-                    && (conditionFilterIndexes?.contains(FilterCondition.FILTER_CONDITION_FULL.index)
-                .isTrue()
-                    && filter.filter?.isTypeFull().isTrue()
-                    || conditionFilterIndexes?.contains(FilterCondition.FILTER_CONDITION_START.index)
-                .isTrue()
-                    && filter.filter?.isTypeStart().isTrue()
-                    || conditionFilterIndexes?.contains(FilterCondition.FILTER_CONDITION_CONTAIN.index)
-                .isTrue()
-                    && filter.filter?.isTypeContain().isTrue()
+            filter.filter?.filter.orEmpty().lowercase().contains(searchQuery?.lowercase().orEmpty())
+                    && (conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal).isTrue() && filter.filter?.isTypeFull().isTrue()
+                    || conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal).isTrue() && filter.filter?.isTypeStart().isTrue()
+                    || conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal).isTrue() && filter.filter?.isTypeContain().isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         binding?.listFilterFilter?.isEnabled =

@@ -172,3 +172,7 @@ inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = whe
     SDK_INT >= 33 -> getSerializable(key, T::class.java)
     else -> @Suppress("DEPRECATION") getSerializable(key) as? T
 }
+
+infix fun String?.isContaining(searchQuery: String?): Boolean {
+    return this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
+}

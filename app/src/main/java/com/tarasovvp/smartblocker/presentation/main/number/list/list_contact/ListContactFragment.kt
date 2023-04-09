@@ -5,16 +5,15 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 open class ListContactFragment :
@@ -64,6 +63,7 @@ open class ListContactFragment :
                 binding?.listContactCheck?.isChecked.isTrue().not()
             findNavController().navigate(
                 ListContactFragmentDirections.startNumberDataFilteringDialog(
+                    previousDestinationId = findNavController().currentDestination?.id.orZero(),
                     filteringList = conditionFilterIndexes.orEmpty()
                         .toIntArray()
                 )
@@ -105,15 +105,9 @@ open class ListContactFragment :
     override fun searchDataList() {
         (adapter as? ContactAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredContactList = contactWithFilterList?.filter { contactWithFilter ->
-            (contactWithFilter.contact?.name?.lowercase(Locale.getDefault())?.contains(
-                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            ).isTrue() || contactWithFilter.contact?.trimmedPhone?.lowercase(Locale.getDefault())?.contains(
-                searchQuery?.lowercase(Locale.getDefault()).orEmpty()
-            )
-                .isTrue()) && (contactWithFilter.filterWithCountryCode?.filter?.isBlocker()
-                .isTrue() && conditionFilterIndexes?.contains(BLOCKER).isTrue() ||
-                    contactWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(
-                PERMISSION).isTrue()
+            (searchQuery.isNullOrBlank().not() && (contactWithFilter.contact?.name isContaining  searchQuery || contactWithFilter.contact?.trimmedPhone isContaining searchQuery))
+                    && (contactWithFilter.filterWithCountryCode?.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal).isTrue()
+                    || contactWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal).isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
         binding?.listContactCheck?.isEnabled =

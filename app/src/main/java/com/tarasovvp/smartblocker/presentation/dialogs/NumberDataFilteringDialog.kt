@@ -16,7 +16,6 @@ import com.tarasovvp.smartblocker.utils.extensions.getViewsFromLayout
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
-
 class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>() {
 
     override var layoutId = R.layout.dialog_number_data_filtering
@@ -25,7 +24,7 @@ class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>()
 
     override fun initUI() {
         binding?.apply {
-            val numberDataFiltering = when(findNavController().previousBackStackEntry?.destination?.id) {
+            val numberDataFiltering = when(args.previousDestinationId) {
                 R.id.listCallFragment -> NumberDataFiltering.values().sliceArray(3..4)
                 R.id.listContactFragment -> NumberDataFiltering.values().sliceArray(5..6)
                 else -> NumberDataFiltering.values().sliceArray(0..2)

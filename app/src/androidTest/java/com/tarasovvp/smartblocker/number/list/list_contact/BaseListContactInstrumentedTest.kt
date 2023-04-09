@@ -23,26 +23,24 @@ import androidx.test.filters.Suppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import java.util.ArrayList
 
 @Suppress
 @HiltAndroidTest
 open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
 
     protected var contactWithFilterList: List<ContactWithFilter>? = null
-    private var conditionFilters: ArrayList<Int>? = null
+    private var filterIndexes: ArrayList<Int> = arrayListOf()
     private var fragment: Fragment? = null
 
     @Before
@@ -54,7 +52,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             Navigation.setViewNavController(requireView(), navController)
             fragment = this
             (this as ListContactFragment).apply {
-                conditionFilters = conditionFilterIndexes
+                filterIndexes = conditionFilterIndexes ?: arrayListOf()
                 viewModel.contactLiveData.postValue(contactWithFilterList)
             }
         }
@@ -70,7 +68,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.list_contact_check)).apply {
             check(matches(isDisplayed()))
             check(matches(not(isChecked())))
-            check(matches(withText(callFilteringText())))
+            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexes))))
             if (contactWithFilterList.isNullOrEmpty()) {
                 check(matches(not(isEnabled())))
             } else {
@@ -84,7 +82,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkListContactCheckOneFilter() {
         onView(withId(R.id.list_contact_check)).apply {
-            check(matches(withText(callFilteringText())))
+            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexes))))
             runBlocking(Dispatchers.Main) {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
@@ -92,12 +90,12 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                         add(BLOCKER)
                     })
                 )
-                fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
+                fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
                     if (contactWithFilterList.isNullOrEmpty()) {
                         check(matches(not(isEnabled())))
                     } else {
                         check(matches(isChecked()))
-                        check(matches(withText(callFilteringText())))
+                        check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexes))))
                     }
                 }
             }
@@ -107,7 +105,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkListContactCheckTwoFilters() {
         onView(withId(R.id.list_contact_check)).apply {
-            check(matches(withText(callFilteringText())))
+            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexes))))
             runBlocking(Dispatchers.Main) {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
@@ -116,12 +114,12 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                         add(PERMISSION)
                     })
                 )
-                fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
+                fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
                     if (contactWithFilterList.isNullOrEmpty()) {
                         check(matches(not(isEnabled())))
                     } else {
                         check(matches(isChecked()))
-                        check(matches(withText(callFilteringText())))
+                        check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexes))))
                     }
                 }
             }
@@ -172,20 +170,5 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
         } else {
             onView(withId(R.id.list_contact_empty)).check(matches(not(isDisplayed())))
         }
-    }
-
-    private fun callFilteringText(): String {
-        val callFilteringText = arrayListOf<String>()
-        InstrumentationRegistry.getInstrumentation().targetContext.apply {
-            if (conditionFilters.isNullOrEmpty())
-                callFilteringText.add(getString(R.string.filter_no_filter))
-            else {
-                if (conditionFilters?.contains(Constants.BLOCKER).isTrue())
-                    callFilteringText.add(getString(R.string.filter_contact_blocker))
-                if (conditionFilters?.contains(Constants.PERMISSION).isTrue())
-                    callFilteringText.add(getString(R.string.filter_contact_permission))
-            }
-        }
-        return callFilteringText.joinToString()
     }
 }

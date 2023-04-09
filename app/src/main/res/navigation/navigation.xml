@@ -335,6 +335,9 @@
         android:id="@+id/numberDataFilteringDialog"
         android:name="com.tarasovvp.smartblocker.presentation.dialogs.NumberDataFilteringDialog">
         <argument
+            android:name="previousDestinationId"
+            app:argType="integer" />
+        <argument
             android:name="filteringList"
             android:defaultValue="@null"
             app:argType="integer[]"
