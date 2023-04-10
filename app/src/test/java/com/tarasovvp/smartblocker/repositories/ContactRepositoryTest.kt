@@ -10,13 +10,17 @@ import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.ContactRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -127,6 +131,14 @@ class ContactRepositoryTest {
 
         verify(context).contentResolver
         verify(cursor).close()
+    }
+
+    @Test
+    fun getFilteredContactListTest() = runTest {
+        val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), ContactWithFilter(contact = Contact(name = "zxy")))
+        val result = contactRepository.getFilteredContactList(contactList, String.EMPTY, arrayListOf(
+            NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))
+        assertEquals(contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }, result)
     }
 
     @Test

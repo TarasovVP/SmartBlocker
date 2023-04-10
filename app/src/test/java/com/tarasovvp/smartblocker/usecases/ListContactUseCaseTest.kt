@@ -1,11 +1,17 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.TestUtils.TEST_NAME
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
+import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCaseImpl
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -37,6 +43,15 @@ class ListContactUseCaseTest {
             .thenReturn(contactList)
         val result = listContactUseCase.getContactsWithFilters()
         assertEquals(TEST_NAME, result[0].contact?.name)
+    }
+
+    @Test
+    fun getFilteredContactListTest() = runTest {
+        val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), ContactWithFilter(contact = Contact(name = "zxy")))
+        Mockito.`when`(contactRepository.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)))
+            .thenReturn(contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() })
+        val result = listContactUseCase.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))
+        assertEquals(contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }, result)
     }
 
     @Test
