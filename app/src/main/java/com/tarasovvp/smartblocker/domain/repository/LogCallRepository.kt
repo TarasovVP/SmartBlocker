@@ -20,5 +20,7 @@ interface LogCallRepository {
 
     suspend fun getSystemLogCallList(context: Context, result: (Int, Int) -> Unit) : List<LogCall>
 
+    suspend fun getFilteredCallList(callList: List<CallWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>): List<CallWithFilter>
+
     suspend fun getHashMapFromCallList(logCallList: List<CallWithFilter>): Map<String, List<CallWithFilter>>
 }

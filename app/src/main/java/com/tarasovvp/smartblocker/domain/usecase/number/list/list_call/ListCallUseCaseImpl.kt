@@ -24,6 +24,8 @@ class ListCallUseCaseImpl @Inject constructor(
             }
     }
 
+    override suspend fun getFilteredCallList(callList: List<CallWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>): List<CallWithFilter> = logCallRepository.getFilteredCallList(callList, searchQuery, filterIndexes)
+
     override suspend fun getHashMapFromCallList(callList: List<CallWithFilter>) = logCallRepository.getHashMapFromCallList(callList.sortedByDescending {
         it.call?.callDate
     })

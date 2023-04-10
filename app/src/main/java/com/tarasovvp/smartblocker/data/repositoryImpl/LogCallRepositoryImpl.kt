@@ -2,12 +2,16 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import android.content.Context
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.LogCall
 import com.tarasovvp.smartblocker.utils.extensions.systemLogCallList
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
+import com.tarasovvp.smartblocker.utils.extensions.isContaining
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -56,6 +60,19 @@ class LogCallRepositoryImpl @Inject constructor(private val logCallDao: LogCallD
                 result.invoke(size, position)
             }
         }
+
+    override suspend fun getFilteredCallList(
+        callList: List<CallWithFilter>,
+        searchQuery: String,
+        filterIndexes: ArrayList<Int>
+    ) = withContext(Dispatchers.Default) {
+        if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
+            (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
+                    || callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
+                    || callWithFilter.call?.isPermittedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
+                    || filterIndexes.isEmpty()
+        }
+    }
 
     override suspend fun getHashMapFromCallList(logCallList: List<CallWithFilter>): Map<String, List<CallWithFilter>> =
         withContext(

@@ -8,7 +8,7 @@ class ListContactUseCaseImpl @Inject constructor(private val contactRepository: 
 
     override suspend fun getContactsWithFilters() = contactRepository.getContactsWithFilters()
 
-    override suspend fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>, ) = contactRepository.getFilteredContactList(contactList, searchQuery, filterIndexes)
+    override suspend fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>) = contactRepository.getFilteredContactList(contactList, searchQuery, filterIndexes)
 
     override suspend fun getHashMapFromContactList(contactList: List<ContactWithFilter>) = contactRepository.getHashMapFromContactList(contactList)
 }

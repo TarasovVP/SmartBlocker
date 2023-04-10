@@ -15,6 +15,7 @@ class ListCallViewModel @Inject constructor(
 ) : BaseViewModel(application) {
 
     val callListLiveData = MutableLiveData<List<CallWithFilter>>()
+    val filteredCallListLiveData = MutableLiveData<List<CallWithFilter>>()
     val callHashMapLiveData = MutableLiveData<Map<String, List<CallWithFilter>>?>()
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
@@ -23,6 +24,13 @@ class ListCallViewModel @Inject constructor(
         launch {
             val callList = listCallUseCase.getCallList()
             callListLiveData.postValue(callList)
+            hideProgress()
+        }
+    }
+
+    fun getFilteredCallList(callList: List<CallWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>) {
+        launch {
+            filteredCallListLiveData.postValue(listCallUseCase.getFilteredCallList(callList, searchQuery, filterIndexes))
             hideProgress()
         }
     }
