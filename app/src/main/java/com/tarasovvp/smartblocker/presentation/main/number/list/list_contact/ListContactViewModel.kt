@@ -14,7 +14,8 @@ class ListContactViewModel @Inject constructor(
     private val listContactUseCase: ListContactUseCase
 ) : BaseViewModel(application) {
 
-    val contactLiveData = MutableLiveData<List<ContactWithFilter>>()
+    val contactListLiveData = MutableLiveData<List<ContactWithFilter>>()
+    val filteredContactListLiveData = MutableLiveData<List<ContactWithFilter>>()
     val contactHashMapLiveData = MutableLiveData<Map<String, List<ContactWithFilter>>?>()
 
     fun getContactsWithFilters(refreshing: Boolean) {
@@ -22,8 +23,15 @@ class ListContactViewModel @Inject constructor(
         launch {
             val contactList = listContactUseCase.getContactsWithFilters()
             contactList.apply {
-                contactLiveData.postValue(this)
+                contactListLiveData.postValue(this)
             }
+            hideProgress()
+        }
+    }
+
+    fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>) {
+        launch {
+            filteredContactListLiveData.postValue(listContactUseCase.getFilteredContactList(contactList, searchQuery, filterIndexes))
             hideProgress()
         }
     }

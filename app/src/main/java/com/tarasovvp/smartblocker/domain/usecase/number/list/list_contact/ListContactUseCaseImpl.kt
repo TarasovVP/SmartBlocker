@@ -4,10 +4,11 @@ import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import javax.inject.Inject
 
-class ListContactUseCaseImpl @Inject constructor(private val contactRepository: ContactRepository):
-    ListContactUseCase {
+class ListContactUseCaseImpl @Inject constructor(private val contactRepository: ContactRepository): ListContactUseCase {
 
     override suspend fun getContactsWithFilters() = contactRepository.getContactsWithFilters()
+
+    override suspend fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>, ) = contactRepository.getFilteredContactList(contactList, searchQuery, filterIndexes)
 
     override suspend fun getHashMapFromContactList(contactList: List<ContactWithFilter>) = contactRepository.getHashMapFromContactList(contactList)
 }

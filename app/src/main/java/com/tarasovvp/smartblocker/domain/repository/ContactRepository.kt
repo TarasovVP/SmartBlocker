@@ -17,6 +17,8 @@ interface ContactRepository {
 
     suspend fun getContactsWithFilterByFilter(filter: String): List<ContactWithFilter>
 
+    suspend fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>): List<ContactWithFilter>
+
     suspend fun getHashMapFromContactList(contactList: List<ContactWithFilter>): Map<String, List<ContactWithFilter>>
 
     suspend fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int): ArrayList<NumberData>

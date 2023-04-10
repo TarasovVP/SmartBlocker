@@ -31,7 +31,7 @@ class ListContactViewModelTest: BaseViewModelTest<ListContactViewModel>() {
             .thenReturn(contactList)
         viewModel.getContactsWithFilters(false)
         advanceUntilIdle()
-        val result = viewModel.contactLiveData.getOrAwaitValue()
+        val result = viewModel.contactListLiveData.getOrAwaitValue()
         assertEquals(TEST_NAME, result[0].contact?.name)
     }
 

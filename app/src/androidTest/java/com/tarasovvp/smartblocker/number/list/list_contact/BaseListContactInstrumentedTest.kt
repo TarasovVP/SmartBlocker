@@ -52,8 +52,8 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             Navigation.setViewNavController(requireView(), navController)
             fragment = this
             (this as ListContactFragment).apply {
-                filterIndexes = conditionFilterIndexes ?: arrayListOf()
-                viewModel.contactLiveData.postValue(contactWithFilterList)
+                filterIndexes = filterIndexes ?: arrayListOf()
+                viewModel.contactListLiveData.postValue(contactWithFilterList)
             }
         }
         waitUntilViewIsDisplayed(if (this@BaseListContactInstrumentedTest is EmptyListContactInstrumentedTest) withId(R.id.list_contact_empty) else withText("A Name"))

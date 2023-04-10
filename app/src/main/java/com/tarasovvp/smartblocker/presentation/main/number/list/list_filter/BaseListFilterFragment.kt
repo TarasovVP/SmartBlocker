@@ -251,15 +251,13 @@ open class BaseListFilterFragment :
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
         val filteredList = filterWithCountryCodeList?.filter { filter ->
-            filter.filter?.filter.orEmpty().lowercase().contains(searchQuery?.lowercase().orEmpty())
+            (filter.filter?.filter isContaining  searchQuery)
                     && (conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal).isTrue() && filter.filter?.isTypeFull().isTrue()
                     || conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal).isTrue() && filter.filter?.isTypeStart().isTrue()
                     || conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal).isTrue() && filter.filter?.isTypeContain().isTrue()
                     || conditionFilterIndexes.isNullOrEmpty())
         }.orEmpty()
-        binding?.listFilterFilter?.isEnabled =
-            filteredList.isNotEmpty() || conditionFilterIndexes.isNullOrEmpty()
-                .not()
+        binding?.listFilterFilter?.isEnabled = filteredList.isNotEmpty() || conditionFilterIndexes.isNullOrEmpty().not()
         checkDataListEmptiness(filteredList.isEmpty())
         if (filteredList.isNotEmpty()) {
             viewModel.getHashMapFromFilterList(filteredList, swipeRefresh?.isRefreshing.isTrue())

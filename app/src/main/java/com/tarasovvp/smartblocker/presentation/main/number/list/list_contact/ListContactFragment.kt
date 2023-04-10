@@ -7,7 +7,6 @@ import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
@@ -23,7 +22,7 @@ open class ListContactFragment :
     override val viewModelClass = ListContactViewModel::class.java
 
     private var contactWithFilterList: List<ContactWithFilter>? = null
-    var conditionFilterIndexes: ArrayList<Int>? = null
+    var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<ContactWithFilter>? {
         return context?.let {
@@ -43,28 +42,33 @@ open class ListContactFragment :
             emptyStateContainer = listContactEmpty
             listContactRecyclerView.hideKeyboardWithLayoutTouch()
         }
-        setContactConditionFilter()
+        setContactFilterCheck()
     }
 
-    private fun setContactConditionFilter() {
+    private fun setContactFilterCheck() {
         binding?.listContactCheck?.apply {
             isSelected = true
-            text = context?.numberDataFilteringText(conditionFilterIndexes ?: arrayListOf())
-            isChecked = conditionFilterIndexes.isNullOrEmpty().not()
+            text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
+            isChecked = filterIndexes.isNullOrEmpty().not()
             isEnabled =
-                adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
+                adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
+    }
+
+    private fun setContactListData(contactWithFilterList: List<ContactWithFilter>) {
+        binding?.listContactCheck?.isEnabled = contactWithFilterList.isNotEmpty() || binding?.listContactCheck?.isChecked.isTrue()
+        checkDataListEmptiness(contactWithFilterList.isEmpty())
+        viewModel.getHashMapFromContactList(contactWithFilterList, swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun setClickListeners() {
         binding?.listContactCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
-            binding?.listContactCheck?.isChecked =
-                binding?.listContactCheck?.isChecked.isTrue().not()
+            binding?.listContactCheck?.isChecked = binding?.listContactCheck?.isChecked.isTrue().not()
             findNavController().navigate(
                 ListContactFragmentDirections.startNumberDataFilteringDialog(
                     previousDestinationId = findNavController().currentDestination?.id.orZero(),
-                    filteringList = conditionFilterIndexes.orEmpty()
+                    filteringList = filterIndexes.orEmpty()
                         .toIntArray()
                 )
             )
@@ -76,21 +80,24 @@ open class ListContactFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
-            conditionFilterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
-            setContactConditionFilter()
+            filterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
+            setContactFilterCheck()
             searchDataList()
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            contactLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
+            contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
                 if (contactList == this@ListContactFragment.contactWithFilterList) {
                     checkDataListEmptiness(contactList.isEmpty())
                     return@safeSingleObserve
                 }
                 this@ListContactFragment.contactWithFilterList = contactList
                 searchDataList()
+            }
+            filteredContactListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredContactList ->
+                setContactListData(filteredContactList)
             }
             contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { contactHashMap ->
                 contactHashMap?.let { setDataList(it) }
@@ -99,22 +106,12 @@ open class ListContactFragment :
     }
 
     override fun isFiltered(): Boolean {
-        return conditionFilterIndexes.isNullOrEmpty().not()
+        return filterIndexes.isNullOrEmpty().not()
     }
 
     override fun searchDataList() {
         (adapter as? ContactAdapter)?.searchQuery = searchQuery.orEmpty()
-        val filteredContactList = contactWithFilterList?.filter { contactWithFilter ->
-            (searchQuery.isNullOrBlank().not() && (contactWithFilter.contact?.name isContaining  searchQuery || contactWithFilter.contact?.trimmedPhone isContaining searchQuery))
-                    && (contactWithFilter.filterWithCountryCode?.filter?.isBlocker().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal).isTrue()
-                    || contactWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal).isTrue()
-                    || conditionFilterIndexes.isNullOrEmpty())
-        }.orEmpty()
-        binding?.listContactCheck?.isEnabled =
-            filteredContactList.isNotEmpty() || binding?.listContactCheck?.isChecked.isTrue()
-        checkDataListEmptiness(filteredContactList.isEmpty())
-        viewModel.getHashMapFromContactList(filteredContactList,
-            swipeRefresh?.isRefreshing.isTrue())
+        viewModel.getFilteredContactList(contactWithFilterList.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
     }
 
     override fun getData() {
