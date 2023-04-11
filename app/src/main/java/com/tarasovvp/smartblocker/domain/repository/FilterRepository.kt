@@ -21,6 +21,8 @@ interface FilterRepository {
 
     suspend fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit)
 
+    suspend fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>): List<FilterWithCountryCode>
+
     suspend fun queryFilterList(number: String): List<FilterWithCountryCode>
 
     suspend fun queryFilter(number: String): FilterWithCountryCode?

@@ -15,7 +15,6 @@ import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
@@ -33,7 +32,7 @@ open class BaseListFilterFragment :
 
     private var filterWithCountryCodeList: ArrayList<FilterWithCountryCode>? = null
     private var isDeleteMode = false
-    private var conditionFilterIndexes: ArrayList<Int>? = null
+    private var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<FilterWithCountryCode>? {
         return context?.let {
@@ -71,18 +70,24 @@ open class BaseListFilterFragment :
     }
 
     private fun setFilterConditionFilter() {
-        binding?.listFilterFilter?.apply {
+        binding?.listFilterCheck?.apply {
             isSelected = true
-            text = context?.numberDataFilteringText(conditionFilterIndexes ?: arrayListOf())
-            isChecked = conditionFilterIndexes.isNullOrEmpty().not()
+            text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
+            isChecked = filterIndexes.isNullOrEmpty().not()
             isEnabled =
-                adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
+                adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
+    }
+
+    private fun setFilterListData(filterWithCountryCodeList: List<FilterWithCountryCode>) {
+        binding?.listFilterCheck?.isEnabled = filterWithCountryCodeList.isNotEmpty() || binding?.listFilterCheck?.isChecked.isTrue()
+        checkDataListEmptiness(filterWithCountryCodeList.isEmpty())
+        viewModel.getHashMapFromFilterList(filterWithCountryCodeList, swipeRefresh?.isRefreshing.isTrue())
     }
 
     private fun changeDeleteMode() {
         isDeleteMode = isDeleteMode.not()
-        binding?.listFilterFilter?.isEnabled = isDeleteMode.not()
+        binding?.listFilterCheck?.isEnabled = isDeleteMode.not()
         (adapter as FilterAdapter).apply {
             isDeleteMode = this@BaseListFilterFragment.isDeleteMode
             recyclerView?.post {
@@ -135,19 +140,19 @@ open class BaseListFilterFragment :
 
     override fun setClickListeners() {
         binding?.apply {
-            listFilterFilter.setSafeOnClickListener {
+            listFilterCheck.setSafeOnClickListener {
                 root.hideKeyboard()
-                listFilterFilter.isChecked =
-                    listFilterFilter.isChecked.isTrue().not()
+                listFilterCheck.isChecked =
+                    listFilterCheck.isChecked.isTrue().not()
                 findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
                     ListBlockerFragmentDirections.startNumberDataFilteringDialog(
                         previousDestinationId = findNavController().currentDestination?.id.orZero(),
-                        filteringList = conditionFilterIndexes.orEmpty().toIntArray()
+                        filteringList = filterIndexes.orEmpty().toIntArray()
                     )
                 } else {
                     ListPermissionFragmentDirections.startNumberDataFilteringDialog(
                         previousDestinationId = findNavController().currentDestination?.id.orZero(),
-                        filteringList = conditionFilterIndexes.orEmpty().toIntArray()
+                        filteringList = filterIndexes.orEmpty().toIntArray()
                     )
                 })
             }
@@ -188,7 +193,7 @@ open class BaseListFilterFragment :
             viewModel.deleteFilterList(mappedFilterList)
         }
         setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
-            conditionFilterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)
+            filterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)
             setFilterConditionFilter()
             searchDataList()
         }
@@ -231,6 +236,9 @@ open class BaseListFilterFragment :
                 this@BaseListFilterFragment.filterWithCountryCodeList = filterList as ArrayList<FilterWithCountryCode>
                 searchDataList()
             }
+            filteredFilterListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredFilterList ->
+                setFilterListData(filteredFilterList)
+            }
             filterHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
                 filterList?.let { setDataList(it) }
             }
@@ -245,23 +253,12 @@ open class BaseListFilterFragment :
     }
 
     override fun isFiltered(): Boolean {
-        return conditionFilterIndexes.isNullOrEmpty().not()
+        return filterIndexes.isNullOrEmpty().not()
     }
 
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
-        val filteredList = filterWithCountryCodeList?.filter { filter ->
-            (filter.filter?.filter isContaining  searchQuery)
-                    && (conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal).isTrue() && filter.filter?.isTypeFull().isTrue()
-                    || conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal).isTrue() && filter.filter?.isTypeStart().isTrue()
-                    || conditionFilterIndexes?.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal).isTrue() && filter.filter?.isTypeContain().isTrue()
-                    || conditionFilterIndexes.isNullOrEmpty())
-        }.orEmpty()
-        binding?.listFilterFilter?.isEnabled = filteredList.isNotEmpty() || conditionFilterIndexes.isNullOrEmpty().not()
-        checkDataListEmptiness(filteredList.isEmpty())
-        if (filteredList.isNotEmpty()) {
-            viewModel.getHashMapFromFilterList(filteredList, swipeRefresh?.isRefreshing.isTrue())
-        }
+        viewModel.getFilteredFilterList(filterWithCountryCodeList.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
     }
 
     override fun getData() {

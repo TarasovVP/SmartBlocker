@@ -14,6 +14,8 @@ class ListFilterUseCaseImpl @Inject constructor(
 
     override suspend fun getFilterList(isBlackList: Boolean) = filterRepository.allFiltersByType(if (isBlackList) BLOCKER else PERMISSION)
 
+    override suspend fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>, ): List<FilterWithCountryCode> = filterRepository.getFilteredFilterList(filterList, searchQuery, filterIndexes)
+
     override suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>> {
         return filterList.groupBy { String.EMPTY }
     }

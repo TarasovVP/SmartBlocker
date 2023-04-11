@@ -15,8 +15,6 @@ import org.junit.Rule
 import org.junit.Test
 import androidx.test.filters.Suppress
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
-import com.tarasovvp.smartblocker.TestUtils
-import org.hamcrest.Matchers
 
 //TODO not finished
 @Suppress

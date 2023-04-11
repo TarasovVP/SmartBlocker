@@ -18,6 +18,7 @@ class ListFilterViewModel @Inject constructor(
 
     val filterListLiveData = MutableLiveData<ArrayList<FilterWithCountryCode>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
+    val filteredFilterListLiveData = MutableLiveData<List<FilterWithCountryCode>>()
     val filterHashMapLiveData = MutableLiveData<Map<String, List<FilterWithCountryCode>>?>()
 
     fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {
@@ -28,6 +29,12 @@ class ListFilterViewModel @Inject constructor(
             filterListLiveData.postValue(ArrayList(filterArrayList))
             Timber.e("ListFilterViewModel getFilterList $filterArrayList")
             hideProgress()
+        }
+    }
+
+    fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>) {
+        launch {
+            filteredFilterListLiveData.postValue(listFilterUseCase.getFilteredFilterList(filterList, searchQuery, filterIndexes))
         }
     }
 
