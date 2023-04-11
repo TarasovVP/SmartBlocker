@@ -4,10 +4,14 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.models.entities.Call
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallViewModel
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,6 +40,17 @@ class ListCallViewModelTest: BaseViewModelTest<ListCallViewModel>() {
         advanceUntilIdle()
         val result = viewModel.callListLiveData.getOrAwaitValue()
         assertEquals(TEST_NUMBER, result[0].call?.number)
+    }
+
+    @Test
+    fun getFilteredCallListTest() = runTest {
+        val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
+        Mockito.`when`(useCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal)))
+            .thenReturn(callList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() })
+        viewModel.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal))
+        advanceUntilIdle()
+        val result = viewModel.filteredCallListLiveData.getOrAwaitValue()
+        assertEquals(callList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }, result)
     }
 
     @Test

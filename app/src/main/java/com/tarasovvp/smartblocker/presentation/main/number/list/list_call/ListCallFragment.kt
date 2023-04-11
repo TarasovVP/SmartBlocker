@@ -8,7 +8,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
@@ -26,7 +25,7 @@ class ListCallFragment :
 
     private var callWithFilterList: List<CallWithFilter>? = null
     private var isDeleteMode = false
-    private var conditionFilterIndexes: ArrayList<Int>? = null
+    private var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<CallWithFilter>? {
         return context?.let {
@@ -70,11 +69,17 @@ class ListCallFragment :
     private fun setCallConditionFilter() {
         binding?.listCallCheck?.apply {
             isSelected = true
-            text = context?.numberDataFilteringText(conditionFilterIndexes ?: arrayListOf())
-            isChecked = conditionFilterIndexes.isNullOrEmpty().not()
+            text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
+            isChecked = filterIndexes.isNullOrEmpty().not()
             isEnabled =
-                adapter?.itemCount.orZero() > 0 || conditionFilterIndexes.isNullOrEmpty().not()
+                adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
+    }
+
+    private fun setCallListData(callWithFilterList: List<CallWithFilter>) {
+        binding?.listCallCheck?.isEnabled = callWithFilterList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
+        checkDataListEmptiness(callWithFilterList.isEmpty())
+        viewModel.getHashMapFromCallList(callWithFilterList, swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun setClickListeners() {
@@ -84,7 +89,7 @@ class ListCallFragment :
             findNavController().navigate(
                 ListCallFragmentDirections.startNumberDataFilteringDialog(
                     previousDestinationId = findNavController().currentDestination?.id.orZero(),
-                    filteringList = conditionFilterIndexes.orEmpty().toIntArray()
+                    filteringList = filterIndexes.orEmpty().toIntArray()
                 )
             )
         }
@@ -98,7 +103,7 @@ class ListCallFragment :
             callWithFilterList?.filter { it.call?.isCheckedForDelete.isTrue() }?.map { it.call?.callId.orZero() }?.let { viewModel.deleteCallList(it) }
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
-            conditionFilterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
+            filterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
             setCallConditionFilter()
             searchDataList()
         }
@@ -153,6 +158,9 @@ class ListCallFragment :
                 callWithFilterList = callListData
                 searchDataList()
             }
+            filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
+                setCallListData(filteredCallList)
+            }
             callHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { callHashMap ->
                 callHashMap?.let { setDataList(it) }
             }
@@ -167,22 +175,12 @@ class ListCallFragment :
     }
 
     override fun isFiltered(): Boolean {
-        return conditionFilterIndexes.isNullOrEmpty().not()
+        return filterIndexes.isNullOrEmpty().not()
     }
 
     override fun searchDataList() {
         (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
-        val filteredCallList = callWithFilterList?.filter { callWithFilter ->
-            (searchQuery.isNullOrBlank().not() && (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery))
-                    || callWithFilter.call?.isBlockedCall().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
-                    || callWithFilter.call?.isPermittedCall().isTrue() && conditionFilterIndexes?.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
-                    || conditionFilterIndexes.isNullOrEmpty()
-        }.orEmpty()
-        binding?.listCallCheck?.isEnabled = filteredCallList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
-        checkDataListEmptiness(filteredCallList.isEmpty())
-        if (filteredCallList.isNotEmpty()) {
-            viewModel.getHashMapFromCallList(filteredCallList, swipeRefresh?.isRefreshing.isTrue())
-        }
+        viewModel.getFilteredCallList(callWithFilterList.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
     }
 
     override fun getData() {

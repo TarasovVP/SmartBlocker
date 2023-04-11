@@ -68,9 +68,9 @@ class LogCallRepositoryImpl @Inject constructor(private val logCallDao: LogCallD
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
-                    || callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
+                    && (callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
                     || callWithFilter.call?.isPermittedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
-                    || filterIndexes.isEmpty()
+                    || filterIndexes.isEmpty())
         }
     }
 

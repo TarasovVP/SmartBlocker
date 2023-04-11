@@ -2,19 +2,20 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.Call
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.models.entities.LogCall
+import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCaseImpl
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
@@ -62,6 +63,16 @@ class ListCallUseCaseTest {
             .thenReturn(filteredCallList)
         val result = listCallUseCase.getCallList()
         assertEquals(commonCallList, result)
+    }
+
+    @Test
+    fun getFilteredCallListTest() = runTest {
+        val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
+        Mockito.`when`(logCallRepository.getFilteredCallList(callList, String.EMPTY, arrayListOf(
+            NumberDataFiltering.CALL_BLOCKED.ordinal)))
+            .thenReturn(callList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() })
+        val result = listCallUseCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal))
+        assertEquals(callList, result)
     }
 
     @Test

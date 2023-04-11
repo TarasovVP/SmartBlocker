@@ -10,10 +10,18 @@ import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
+import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.models.entities.LogCall
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -139,6 +147,13 @@ class LogCallRepositoryTest {
 
         verify(context).contentResolver
         verify(cursor).close()
+    }
+
+    @Test
+    fun getFilteredCallListTest() = runTest {
+        val callList = listOf(CallWithFilter(call = FilteredCall().apply { type = BLOCKED_CALL }, filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
+        val result = logCallRepository.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal))
+        assertEquals(callList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }, result)
     }
 
     @Test
