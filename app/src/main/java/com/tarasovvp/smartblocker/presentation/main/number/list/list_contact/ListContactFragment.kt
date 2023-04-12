@@ -68,8 +68,7 @@ open class ListContactFragment :
             findNavController().navigate(
                 ListContactFragmentDirections.startNumberDataFilteringDialog(
                     previousDestinationId = findNavController().currentDestination?.id.orZero(),
-                    filteringList = filterIndexes.orEmpty()
-                        .toIntArray()
+                    filteringList = filterIndexes.orEmpty().toIntArray()
                 )
             )
         }

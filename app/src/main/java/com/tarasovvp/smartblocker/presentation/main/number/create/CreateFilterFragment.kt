@@ -117,7 +117,7 @@ open class CreateFilterFragment :
                     )
             }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
-                if (findNavController().currentDestination?.navigatorName != Constants.DIALOG) {
+                if (findNavController().currentDestination?.navigatorName notEquals Constants.DIALOG) {
                     findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
                 }
             }

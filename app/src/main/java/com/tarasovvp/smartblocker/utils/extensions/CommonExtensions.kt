@@ -75,11 +75,11 @@ fun String.toMillisecondsFromString(): Long {
 
 fun Any?.isNull() = this == null
 
-fun Any?.isNotNull() = this != null
+fun Any?.isNotNull() = this notEquals null
 
 fun Boolean?.isTrue() = this == true
 
-fun Boolean?.isNotTrue() = this != true
+fun Boolean?.isNotTrue() = this notEquals true
 
 fun Int?.orZero() = this ?: 0
 
@@ -175,4 +175,8 @@ inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = whe
 
 infix fun String?.isContaining(searchQuery: String?): Boolean {
     return this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
+}
+
+infix fun Any?.notEquals(any: Any?): Boolean {
+    return this != any
 }

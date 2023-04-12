@@ -11,17 +11,18 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTERING_LIST
-import com.tarasovvp.smartblocker.TestUtils.IS_CALL_LIST
+import com.tarasovvp.smartblocker.TestUtils.childOf
+import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.dialogs.NumberDataFilteringDialog
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.orZero
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.Matchers.not
+import org.hamcrest.Matchers.*
 import org.junit.Before
 import org.junit.Test
 
@@ -30,18 +31,23 @@ import org.junit.Test
 open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
 
     private var fragment: Fragment? = null
-    private var isCallList = false
+    private var previousDestination = 0
 
     @Before
     override fun setUp() {
         super.setUp()
-        TestUtils.launchFragmentInHiltContainer<NumberDataFilteringDialog>(
-            bundleOf(FILTERING_LIST to arrayListOf<Int>())) {
+        val previousDestinationId = when(this) {
+            is CallNumberDataFilteringInstrumentedTest -> R.id.listCallFragment
+            is ContactNumberDataFilteringInstrumentedTest -> R.id.listContactFragment
+            else -> R.id.listBlockerFragment
+        }
+        launchFragmentInHiltContainer<NumberDataFilteringDialog>(
+            bundleOf("previousDestinationId" to previousDestinationId, FILTERING_LIST to arrayListOf<Int>())) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
             fragment = this
-            isCallList = arguments?.getBoolean(IS_CALL_LIST, false).isTrue()
+            previousDestination = arguments?.getInt("previousDestinationId").orZero()
         }
     }
 
@@ -54,63 +60,136 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
     fun checkDialogNumberDataFilteringTitle() {
         onView(withId(R.id.dialog_number_data_filtering_title)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_title)))
     }
-
     @Test
-    fun checkDialogNumberDataWithBlocker() {
-        onView(withId(R.id.dialog_number_data_filtering_container)).apply {
-            if (isCallList) {
-                check(matches(not(isDisplayed())))
-            } else {
+    fun checkDialogNumberDataConditionFull() {
+        onView(allOf(
+            withId(R.id.item_check_box),
+            childOf(withId(R.id.dialog_number_data_filtering_container), 0)
+        )).apply {
+            if (previousDestination == R.id.listBlockerFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(R.string.filter_contact_blocker)))
+                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.title)))
+                check(matches(withTagValue(equalTo(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
+            } else {
+                check(matches(not(withText(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.title))))
+            }
+        }
+    }
+
+    @Test
+    fun checkDialogNumberDataConditionStart() {
+        onView(allOf(
+            withId(R.id.item_check_box),
+            childOf(withId(R.id.dialog_number_data_filtering_container), 1)
+        )).apply {
+            if (previousDestination == R.id.listBlockerFragment) {
+                check(matches(isDisplayed()))
+                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.title)))
+                check(matches(withTagValue(equalTo(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal))))
+                check(matches(not(isChecked())))
+                perform(click())
+                check(matches(isChecked()))
+            } else {
+                check(matches(not(withText(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.title))))
+            }
+        }
+    }
+
+    @Test
+    fun checkDialogNumberDataConditionContain() {
+        onView(allOf(
+            withId(R.id.item_check_box),
+            childOf(withId(R.id.dialog_number_data_filtering_container), 2)
+        )).apply {
+            if (previousDestination == R.id.listBlockerFragment) {
+                check(matches(isDisplayed()))
+                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.title)))
+                check(matches(withTagValue(equalTo(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal))))
+                check(matches(not(isChecked())))
+                perform(click())
+                check(matches(isChecked()))
+            } else {
+                check(doesNotExist())
+            }
+        }
+    }
+
+
+    @Test
+    fun checkDialogNumberDataWithBlocker() {
+        onView(allOf(
+            withId(R.id.item_check_box),
+            childOf(withId(R.id.dialog_number_data_filtering_container), 0)
+        )).apply {
+            if (previousDestination == R.id.listContactFragment) {
+                check(matches(isDisplayed()))
+                check(matches(withText(NumberDataFiltering.CONTACT_WITH_BLOCKER.title)))
+                check(matches(withTagValue(equalTo(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))))
+                check(matches(not(isChecked())))
+                perform(click())
+                check(matches(isChecked()))
+            } else {
+                check(matches(not(withText(NumberDataFiltering.CONTACT_WITH_BLOCKER.title))))
             }
         }
     }
 
     @Test
     fun checkDialogNumberDataWithPermission() {
-        onView(withId(R.id.dialog_number_data_with_permission)).apply {
-            if (isCallList) {
-                check(matches(not(isDisplayed())))
-            } else {
+        onView(allOf(
+            withId(R.id.item_check_box),
+            childOf(withId(R.id.dialog_number_data_filtering_container), 1)
+        )).apply {
+            if (previousDestination == R.id.listContactFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(R.string.filter_contact_permission)))
+                check(matches(withText(NumberDataFiltering.CONTACT_WITH_PERMISSION.title)))
+                check(matches(withTagValue(equalTo(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
+            } else {
+                check(matches(not(withText(NumberDataFiltering.CONTACT_WITH_PERMISSION.title))))
             }
         }
     }
 
     @Test
     fun checkDialogNumberDataByBlocker() {
-        onView(withId(R.id.dialog_number_data_by_blocker)).apply {
-            if (isCallList) {
+        onView(allOf(
+            withId(R.id.item_check_box),
+            childOf(withId(R.id.dialog_number_data_filtering_container), 0)
+        )).apply {
+            if (previousDestination == R.id.listCallFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(R.string.filter_call_blocked)))
+                check(matches(withText(NumberDataFiltering.CALL_BLOCKED.title)))
+                check(matches(withTagValue(equalTo(NumberDataFiltering.CALL_BLOCKED.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(isDisplayed())))
+                check(matches(not(withText(NumberDataFiltering.CALL_BLOCKED.title))))
             }
         }
     }
 
     @Test
     fun checkDialogNumberDataByPermission() {
-        onView(withId(R.id.dialog_number_data_by_permission)).apply {
-            if (isCallList) {
+        onView(allOf(
+            withId(R.id.item_check_box),
+            childOf(withId(R.id.dialog_number_data_filtering_container), 1)
+        )).apply {
+            if (previousDestination == R.id.listCallFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(R.string.filter_call_permitted)))
+                check(matches(withText(NumberDataFiltering.CALL_PERMITTED.title)))
+                check(matches(withTagValue(equalTo(NumberDataFiltering.CALL_PERMITTED.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(isDisplayed())))
+                check(matches(not(withText(NumberDataFiltering.CALL_PERMITTED.title))))
             }
         }
     }
@@ -127,26 +206,6 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withText(R.string.button_ok)))
             .perform(click())
 
-    }
-
-    @Test
-    fun checkDialogNumberDataConfirmTwoChecked() {
-        runBlocking(Dispatchers.Main) {
-            fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
-                assertEquals(2, bundle.getIntegerArrayList(FILTER_CONDITION_LIST)?.size)
-            }
-        }
-        if (isCallList) {
-            onView(withId(R.id.dialog_number_data_by_blocker)).perform(click())
-            onView(withId(R.id.dialog_number_data_by_permission)).perform(click())
-        } else {
-            onView(withId(R.id.dialog_number_data_with_blocker)).perform(click())
-            onView(withId(R.id.dialog_number_data_with_permission)).perform(click())
-        }
-        onView(withId(R.id.dialog_number_data_filtering_confirm))
-            .check(matches(isDisplayed()))
-            .check(matches(withText(R.string.button_ok)))
-            .perform(click())
     }
 
     @Test

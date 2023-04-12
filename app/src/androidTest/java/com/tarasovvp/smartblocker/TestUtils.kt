@@ -9,11 +9,13 @@ import android.os.Bundle
 import android.text.Spannable
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ExpandableListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.NonNull
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -178,6 +180,38 @@ object TestUtils {
                             view.layout.getPrimaryHorizontal(end),
                             view.layout.getLineBaseline(view.layout.getLineForOffset(end)).toFloat(), 0))
                 }
+            }
+        }
+    }
+
+    fun atPosition(position: Int, @NonNull itemMatcher: Matcher<View?>): Matcher<View?> {
+        return object : BoundedMatcher<View?, RecyclerView>(RecyclerView::class.java) {
+            override fun describeTo(description: Description) {
+                description.appendText("has item at position $position: ")
+                itemMatcher.describeTo(description)
+            }
+
+            override fun matchesSafely(view: RecyclerView): Boolean {
+                val viewHolder = view.findViewHolderForAdapterPosition(position)
+                    ?: return false
+                return itemMatcher.matches(viewHolder.itemView)
+            }
+        }
+    }
+
+    fun childOf(parentMatcher: Matcher<View?>?, childPosition: Int): Matcher<View?> {
+        return object : TypeSafeMatcher<View>() {
+            override fun describeTo(description: Description) {
+                description.appendText("with $childPosition child view of type parentMatcher")
+            }
+
+            override fun matchesSafely(view: View): Boolean {
+                if (view.parent !is ViewGroup) {
+                    return parentMatcher?.matches(view.parent).isTrue()
+                }
+                val group = view.parent as ViewGroup
+                return parentMatcher?.matches(view.parent).isTrue() && group.getChildAt(
+                    childPosition) == view
             }
         }
     }

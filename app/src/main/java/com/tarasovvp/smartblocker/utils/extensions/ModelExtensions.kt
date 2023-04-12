@@ -190,10 +190,10 @@ fun Context.getUserCountry(): String? {
         val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val simCountry = tm.simCountryIso
         when {
-            simCountry != null && simCountry.length == 2 -> {
+            simCountry.isNotNull() && simCountry.length == 2 -> {
                 return simCountry.lowercase(Locale.US)
             }
-            tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA -> {
+            tm.phoneType notEquals TelephonyManager.PHONE_TYPE_CDMA -> {
                 val networkCountry = tm.networkCountryIso
                 if (networkCountry.isNotNull() && networkCountry.length == 2) {
                     return networkCountry.lowercase(Locale.US)

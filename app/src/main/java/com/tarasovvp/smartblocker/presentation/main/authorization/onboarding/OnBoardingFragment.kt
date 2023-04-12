@@ -16,6 +16,7 @@ import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray
+import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
 
 class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
 
@@ -77,7 +78,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
     }
 
     private fun checkPermissions() {
-        if (context?.checkPermissions() != true) {
+        if (context?.checkPermissions().isNotTrue()) {
             requestPermissionLauncher.launch(permissionsArray())
         } else {
             startLoginScreen()

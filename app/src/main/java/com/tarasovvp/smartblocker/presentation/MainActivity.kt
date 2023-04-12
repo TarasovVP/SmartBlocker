@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity() {
             if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
                 toolbar?.navigationIcon = null
             } else {
-                if (destination.navigatorName != DIALOG && isDialog.not()) {
+                if (destination.navigatorName notEquals DIALOG && isDialog.not()) {
                     toolbar?.navigationIcon =
                         ContextCompat.getDrawable(this, R.drawable.ic_arrow_back)
                 }
@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
             }
             toolbar?.menu?.clear()
             toolbar?.isVisible =
-                destination.id != R.id.onBoardingFragment && destination.id != R.id.loginFragment && destination.id != R.id.signUpFragment
+                destination.id notEquals R.id.onBoardingFragment && destination.id notEquals R.id.loginFragment && destination.id notEquals R.id.signUpFragment
             binding?.toolbarDivider?.isVisible = toolbar?.isVisible.isTrue()
             loadAdBanner(toolbar?.isVisible.isTrue() && navigationScreens.contains(destination.id).not())
 

@@ -41,7 +41,7 @@ class ListPermissionInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun check_list_filter_filter() {
-        onView(withId(R.id.list_filter_filter)).check(matches(isDisplayed()))
+        onView(withId(R.id.list_filter_check)).check(matches(isDisplayed()))
 
     }
 

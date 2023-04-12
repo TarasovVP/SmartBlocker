@@ -106,7 +106,7 @@ class MaskedEditText @JvmOverloads constructor(
     private fun findLastValidMaskPosition(): Int {
         maskToRaw?.apply {
             for (i in indices.reversed()) {
-                if (maskToRaw?.get(i) != -1) return i
+                if (maskToRaw?.get(i) notEquals -1) return i
             }
         }
         throw RuntimeException("Mask must contain at least one representation char")
@@ -164,7 +164,7 @@ class MaskedEditText @JvmOverloads constructor(
                     rangeStart = erasingStart(start)
                 }
                 val range = calculateRange(rangeStart, start + count)
-                if (range.start != -1) {
+                if (range.start notEquals -1) {
                     rawText?.subtractFromString(range)
                 }
                 if (count > 0) {
@@ -301,7 +301,7 @@ class MaskedEditText @JvmOverloads constructor(
         var position: Int
         mask?.forEachIndexed { index, char ->
             position = maskToRaw?.get(index).orZero()
-            if (position != -1) {
+            if (position notEquals -1) {
                 if (position < rawText?.length().orZero()) {
                     rawText?.charAt(position)?.let { ssb.append(it) }
                 } else {
@@ -324,7 +324,7 @@ class MaskedEditText @JvmOverloads constructor(
         val range = Range()
         var i = start
         while (i <= end && i < mask?.length.orZero()) {
-            if (maskToRaw?.get(i) != -1) {
+            if (maskToRaw?.get(i) notEquals -1) {
                 if (range.start == -1) {
                     range.start = maskToRaw?.get(i).orZero()
                 }
