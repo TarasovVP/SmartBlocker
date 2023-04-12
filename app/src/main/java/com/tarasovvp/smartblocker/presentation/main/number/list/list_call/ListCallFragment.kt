@@ -25,7 +25,7 @@ class ListCallFragment :
 
     private var callWithFilterList: List<CallWithFilter>? = null
     private var isDeleteMode = false
-    private var filterIndexes: ArrayList<Int>? = null
+    var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<CallWithFilter>? {
         return context?.let {
@@ -63,10 +63,9 @@ class ListCallFragment :
             emptyStateContainer = listCallEmpty
             listCallRecyclerView.hideKeyboardWithLayoutTouch()
         }
-        setCallConditionFilter()
     }
 
-    private fun setCallConditionFilter() {
+    override fun setFilterCheck() {
         binding?.listCallCheck?.apply {
             isSelected = true
             text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
@@ -104,7 +103,7 @@ class ListCallFragment :
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
             filterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
-            setCallConditionFilter()
+            setFilterCheck()
             searchDataList()
         }
     }

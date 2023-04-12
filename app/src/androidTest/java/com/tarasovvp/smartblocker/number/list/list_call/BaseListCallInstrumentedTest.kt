@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.number.list.list_call
 
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -7,8 +8,11 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
+import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
@@ -17,14 +21,25 @@ import org.junit.Test
 @HiltAndroidTest
 open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
 
+    private var callList: List<CallWithFilter>? = null
+    private var filterIndexList: ArrayList<Int> = arrayListOf()
+    private var fragment: Fragment? = null
+
     @Before
     override fun setUp() {
         super.setUp()
+        callList = if (this is EmptyListCallInstrumentedTest) listOf() else TestUtils.callWithFilterList()
         launchFragmentInHiltContainer<ListCallFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listCallFragment)
             Navigation.setViewNavController(requireView(), navController)
+            fragment = this
+            (this as ListCallFragment).apply {
+                filterIndexList = filterIndexes ?: arrayListOf()
+                viewModel.callListLiveData.postValue(callList)
+            }
         }
+        waitUntilViewIsDisplayed(if (this is EmptyListCallInstrumentedTest) withId(R.id.list_call_empty) else withText(callList?.get(0)?.call?.callName))
     }
 
     @Test

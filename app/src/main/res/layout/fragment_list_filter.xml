@@ -25,6 +25,7 @@
             android:src="@drawable/ic_info"
             android:padding="@dimen/padding_16"
             android:background="@color/transparent"
+            android:contentDescription="@string/menu_info"
             app:layout_constraintTop_toTopOf="@+id/list_filter_check"
             app:layout_constraintBottom_toBottomOf="@+id/list_filter_check"
             app:layout_constraintEnd_toEndOf="parent"

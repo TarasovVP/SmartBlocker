@@ -1,11 +1,11 @@
-package com.tarasovvp.smartblocker.number.list.list_contact
+package com.tarasovvp.smartblocker.number.list.list_filter
 
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 
 @HiltAndroidTest
-class ListContactInstrumentedTest: BaseListContactInstrumentedTest() {
+class EmptyListFilterInstrumentedTest: BaseListFilterInstrumentedTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)

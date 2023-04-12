@@ -14,10 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.dpToPx
-import com.tarasovvp.smartblocker.utils.extensions.orZero
-import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.domain.models.HeaderDataItem
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.presentation.MainActivity
@@ -26,6 +22,7 @@ import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.Lis
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
+import com.tarasovvp.smartblocker.utils.extensions.*
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
     BaseNumberDataFragment<B, T>() {
@@ -39,6 +36,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun searchDataList()
+    abstract fun setFilterCheck()
     abstract fun isFiltered(): Boolean
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

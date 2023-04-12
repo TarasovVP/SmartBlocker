@@ -42,16 +42,14 @@ open class ListContactFragment :
             emptyStateContainer = listContactEmpty
             listContactRecyclerView.hideKeyboardWithLayoutTouch()
         }
-        setContactFilterCheck()
     }
 
-    private fun setContactFilterCheck() {
+    override fun setFilterCheck() {
         binding?.listContactCheck?.apply {
             isSelected = true
             text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
             isChecked = filterIndexes.isNullOrEmpty().not()
-            isEnabled =
-                adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
+            isEnabled = adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
     }
 
@@ -80,7 +78,7 @@ open class ListContactFragment :
     override fun setFragmentResultListeners() {
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
             filterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
-            setContactFilterCheck()
+            setFilterCheck()
             searchDataList()
         }
     }

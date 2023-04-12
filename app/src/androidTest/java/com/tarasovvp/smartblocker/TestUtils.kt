@@ -10,7 +10,6 @@ import android.text.Spannable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
@@ -31,14 +30,18 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.Contact
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IN_COMING_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MISSED_CALL
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.OUT_GOING_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import org.hamcrest.Description
@@ -53,7 +56,6 @@ object TestUtils {
     const val TEST_PASSWORD = "testPassword"
     const val IS_LOG_OUT = "isLogOut"
     const val FILTERING_LIST = "filteringList"
-    const val IS_CALL_LIST = "isCallList"
 
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
@@ -240,6 +242,49 @@ object TestUtils {
             }
         }
     }
+
+    fun filterWithFilterList() = arrayListOf(
+            FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index).apply { filteredContacts = 3
+                created = 1681315250919}, countryCode = CountryCode("UA")),
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index).apply {
+                filteredContacts = 1
+                filteredCalls = 5
+                created = 1681314350919}, countryCode = CountryCode("UA")),
+            FilterWithCountryCode(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index).apply { created = 1681314260919 }, countryCode = CountryCode("UA")),
+            FilterWithCountryCode(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.index).apply { created = 1681354250919 }, countryCode = CountryCode("UA")),
+            FilterWithCountryCode(Filter(filter = "123456", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index).apply { created = 1681314850919 }, countryCode = CountryCode("UA")),
+            FilterWithCountryCode(Filter(filter = "1234567", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index).apply { created = 1681314251219 }, countryCode = CountryCode("UA"))
+    )
+
+    fun callWithFilterList() = listOf(
+        CallWithFilter(LogCall(1).apply { callName = "A Name"
+            number = "+380502711344"
+            type = IN_COMING_CALL },
+            FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(FilteredCall(2).apply { callName = "a Name"
+            number = "12345"
+            type = BLOCKED_CALL },
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(FilteredCall(3).apply {  callName = "B Name"
+            number = "12345"
+            type = MISSED_CALL },
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(LogCall(4).apply {  callName = String.EMPTY
+            number = "12345"
+            type = REJECTED_CALL },
+            FilterWithCountryCode(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
+            number = "12345"
+            type = OUT_GOING_CALL},
+            FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(FilteredCall(6).apply { callName = "D Name"
+            number = "12345"
+            type = BLOCKED_CALL },
+            FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(LogCall(7).apply { callName = "Y Name"
+            number = "12345"
+            type = IN_COMING_CALL }, null)
+    )
 
     fun contactWithFilterList() = listOf(
         ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344"),

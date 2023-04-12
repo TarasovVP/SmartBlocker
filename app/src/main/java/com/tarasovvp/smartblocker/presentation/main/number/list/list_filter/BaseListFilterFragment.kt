@@ -21,7 +21,6 @@ import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 open class BaseListFilterFragment :
@@ -32,7 +31,7 @@ open class BaseListFilterFragment :
 
     private var filterWithCountryCodeList: ArrayList<FilterWithCountryCode>? = null
     private var isDeleteMode = false
-    private var filterIndexes: ArrayList<Int>? = null
+    var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<FilterWithCountryCode>? {
         return context?.let {
@@ -57,25 +56,20 @@ open class BaseListFilterFragment :
     }
 
     override fun initViews() {
-        findNavController().currentDestination?.label =
-            getString(if (this@BaseListFilterFragment is ListBlockerFragment) R.string.list_blocker else R.string.list_permission)
-        (activity as MainActivity).toolbar?.title = findNavController().currentDestination?.label
         binding?.apply {
             swipeRefresh = listFilterRefresh
             recyclerView = listFilterRecyclerView
             emptyStateContainer = listFilterEmpty
             listFilterRecyclerView.hideKeyboardWithLayoutTouch()
         }
-        setFilterConditionFilter()
     }
 
-    private fun setFilterConditionFilter() {
+    override fun setFilterCheck() {
         binding?.listFilterCheck?.apply {
             isSelected = true
             text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
             isChecked = filterIndexes.isNullOrEmpty().not()
-            isEnabled =
-                adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
+            isEnabled = adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
     }
 
@@ -194,7 +188,7 @@ open class BaseListFilterFragment :
         }
         setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
             filterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)
-            setFilterConditionFilter()
+            setFilterCheck()
             searchDataList()
         }
     }
