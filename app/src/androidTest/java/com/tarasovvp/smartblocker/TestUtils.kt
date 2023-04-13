@@ -259,31 +259,38 @@ object TestUtils {
     fun callWithFilterList() = listOf(
         CallWithFilter(LogCall(1).apply { callName = "A Name"
             number = "+380502711344"
-            type = IN_COMING_CALL },
+            type = IN_COMING_CALL
+            callDate = "1678603872094"},
             FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
         CallWithFilter(FilteredCall(2).apply { callName = "a Name"
             number = "12345"
-            type = BLOCKED_CALL },
+            type = BLOCKED_CALL
+            callDate = "1678603872094"},
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
         CallWithFilter(FilteredCall(3).apply {  callName = "B Name"
             number = "12345"
-            type = MISSED_CALL },
+            type = MISSED_CALL
+            callDate = "1611995776162"},
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
         CallWithFilter(LogCall(4).apply {  callName = String.EMPTY
             number = "12345"
-            type = REJECTED_CALL },
+            type = REJECTED_CALL
+            callDate = "1612258705769"},
             FilterWithCountryCode(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
         CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
             number = "12345"
-            type = OUT_GOING_CALL},
+            type = OUT_GOING_CALL
+            callDate = "1612525268071"},
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
         CallWithFilter(FilteredCall(6).apply { callName = "D Name"
             number = "12345"
-            type = BLOCKED_CALL },
+            type = BLOCKED_CALL
+            callDate = "1615110430251"},
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
         CallWithFilter(LogCall(7).apply { callName = "Y Name"
             number = "12345"
-            type = IN_COMING_CALL }, null)
+            type = IN_COMING_CALL
+            callDate = "1619427342586"}, null)
     )
 
     fun contactWithFilterList() = listOf(

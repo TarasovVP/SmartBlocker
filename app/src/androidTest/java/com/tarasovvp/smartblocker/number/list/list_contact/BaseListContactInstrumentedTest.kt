@@ -23,10 +23,9 @@ import androidx.test.filters.Suppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
 import com.tarasovvp.smartblocker.utils.extensions.orZero
@@ -89,7 +88,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
                     bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
-                        add(BLOCKER)
+                        add(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
                     })
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
@@ -112,8 +111,8 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
                     bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
-                        add(BLOCKER)
-                        add(PERMISSION)
+                        add(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
+                        add(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal)
                     })
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
