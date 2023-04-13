@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 open class ListContactFragment :
@@ -22,7 +21,6 @@ open class ListContactFragment :
     override val viewModelClass = ListContactViewModel::class.java
 
     private var contactWithFilterList: List<ContactWithFilter>? = null
-    var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<ContactWithFilter>? {
         return context?.let {
@@ -39,17 +37,9 @@ open class ListContactFragment :
         binding?.apply {
             swipeRefresh = listContactRefresh
             recyclerView = listContactRecyclerView
+            filterCheck = listContactCheck
             emptyStateContainer = listContactEmpty
             listContactRecyclerView.hideKeyboardWithLayoutTouch()
-        }
-    }
-
-    override fun setFilterCheck() {
-        binding?.listContactCheck?.apply {
-            isSelected = true
-            text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
-            isChecked = filterIndexes.isNullOrEmpty().not()
-            isEnabled = adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
     }
 

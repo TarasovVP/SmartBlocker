@@ -31,7 +31,6 @@ open class BaseListFilterFragment :
 
     private var filterWithCountryCodeList: ArrayList<FilterWithCountryCode>? = null
     private var isDeleteMode = false
-    var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<FilterWithCountryCode>? {
         return context?.let {
@@ -59,17 +58,9 @@ open class BaseListFilterFragment :
         binding?.apply {
             swipeRefresh = listFilterRefresh
             recyclerView = listFilterRecyclerView
+            filterCheck = listFilterCheck
             emptyStateContainer = listFilterEmpty
             listFilterRecyclerView.hideKeyboardWithLayoutTouch()
-        }
-    }
-
-    override fun setFilterCheck() {
-        binding?.listFilterCheck?.apply {
-            isSelected = true
-            text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
-            isChecked = filterIndexes.isNullOrEmpty().not()
-            isEnabled = adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
     }
 

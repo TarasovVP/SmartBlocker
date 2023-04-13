@@ -14,7 +14,6 @@ import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class ListCallFragment :
@@ -25,7 +24,6 @@ class ListCallFragment :
 
     private var callWithFilterList: List<CallWithFilter>? = null
     private var isDeleteMode = false
-    var filterIndexes: ArrayList<Int>? = null
 
     override fun createAdapter(): BaseAdapter<CallWithFilter>? {
         return context?.let {
@@ -60,18 +58,9 @@ class ListCallFragment :
         binding?.apply {
             swipeRefresh = listCallRefresh
             recyclerView = listCallRecyclerView
+            filterCheck = listCallCheck
             emptyStateContainer = listCallEmpty
             listCallRecyclerView.hideKeyboardWithLayoutTouch()
-        }
-    }
-
-    override fun setFilterCheck() {
-        binding?.listCallCheck?.apply {
-            isSelected = true
-            text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
-            isChecked = filterIndexes.isNullOrEmpty().not()
-            isEnabled =
-                adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
     }
 

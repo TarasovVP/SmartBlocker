@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.widget.AutoCompleteTextView
+import android.widget.CheckBox
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
@@ -31,12 +32,13 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
 
     protected var swipeRefresh: SwipeRefreshLayout? = null
     protected var recyclerView: RecyclerView? = null
+    protected var filterCheck: CheckBox? = null
     protected var emptyStateContainer: IncludeEmptyStateBinding? = null
     protected var searchQuery: String? = String.EMPTY
+    var filterIndexes: ArrayList<Int>? = null
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun searchDataList()
-    abstract fun setFilterCheck()
     abstract fun isFiltered(): Boolean
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +59,15 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         }
         swipeRefresh?.setOnRefreshListener {
             getData()
+        }
+    }
+
+    protected fun setFilterCheck() {
+        filterCheck?.apply {
+            isSelected = true
+            text = context?.numberDataFilteringText(filterIndexes ?: arrayListOf())
+            isChecked = filterIndexes.isNullOrEmpty().not()
+            isEnabled = adapter?.itemCount.orZero() > 0 || filterIndexes.isNullOrEmpty().not()
         }
     }
 
