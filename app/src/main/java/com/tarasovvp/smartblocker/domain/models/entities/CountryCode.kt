@@ -12,7 +12,7 @@ import java.util.*
 
 @Entity(tableName = COUNTRY_CODES)
 @Parcelize
-class CountryCode(
+data class CountryCode(
     @PrimaryKey var country: String = String.EMPTY,
     var countryCode: String = String.EMPTY,
     var flagEmoji: String = String.EMPTY,

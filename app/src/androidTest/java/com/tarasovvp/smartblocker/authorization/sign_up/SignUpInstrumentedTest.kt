@@ -75,7 +75,7 @@ class SignUpInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.sign_up_entrance)).check(matches(isDisplayed()))
             .check(matches(withText(R.string.authorization_entrance)))
             .check(matches(withTextColor(R.color.button_bg))).perform(click())
-        assertEquals(R.id.onBoardingFragment, navController?.currentDestination?.id.orZero())
+        assertEquals(R.id.onBoardingFragment, navController?.currentDestination?.id)
     }
 
     @Test

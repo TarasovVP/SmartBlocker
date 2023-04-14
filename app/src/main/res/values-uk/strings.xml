@@ -120,6 +120,7 @@
     <string name="list_contact">Контакты</string>
     <string name="list_number_search_hint">Введите номер или имя</string>
     <!--Creating filter-->
+    <string name="creating_filter">Создание фильтра</string>
     <string name="creating_blocker">Создание Блокировщика</string>
     <string name="creating_permission">Создание Разрешения</string>
     <string name="creating_filter_enter_hint">Введите номер</string>

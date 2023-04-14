@@ -101,14 +101,14 @@ class LoginInstrumentedTest: BaseInstrumentedTest() {
     fun checkLoginForgotPassword() {
         onView(withId(R.id.login_forgot_password)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_forgot_password)))
             .check(matches(withTextColor(R.color.button_bg))).perform(click())
-        assertEquals(R.id.forgotPasswordDialog, navController?.currentDestination?.id.orZero())
+        assertEquals(R.id.forgotPasswordDialog, navController?.currentDestination?.id)
     }
 
     @Test
     fun checkLoginSignUp() {
         onView(withId(R.id.login_sign_up)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_sign_up)))
             .check(matches(withTextColor(R.color.button_bg))).perform(click())
-        assertEquals(R.id.signUpFragment, navController?.currentDestination?.id.orZero())
+        assertEquals(R.id.signUpFragment, navController?.currentDestination?.id)
     }
 
     @Test
@@ -140,7 +140,7 @@ class LoginInstrumentedTest: BaseInstrumentedTest() {
     fun checkLoginContinueWithoutAcc() {
         onView(withId(R.id.login_continue_without_acc)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_continue_without_account)))
             .check(matches(isEnabled())).perform(click())
-        assertEquals(R.id.unauthorizedEnterDialog, navController?.currentDestination?.id.orZero())
+        assertEquals(R.id.unauthorizedEnterDialog, navController?.currentDestination?.id)
     }
 
     @After

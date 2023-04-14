@@ -75,7 +75,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             } else {
                 check(matches(isEnabled()))
                 perform(click())
-                assertEquals(R.id.numberDataFilteringDialog, navController?.currentDestination?.id.orZero())
+                assertEquals(R.id.numberDataFilteringDialog, navController?.currentDestination?.id)
             }
         }
     }
@@ -133,7 +133,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(isDisplayed()))
             .check(matches(withDrawable(R.drawable.ic_info)))
             .perform(click())
-        assertEquals(R.id.infoFragment, navController?.currentDestination?.id.orZero())
+        assertEquals(R.id.infoFragment, navController?.currentDestination?.id)
 
     }
 
