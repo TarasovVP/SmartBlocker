@@ -22,7 +22,9 @@ import org.junit.Test
 import androidx.test.filters.Suppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.getViewFromListItem
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
@@ -158,6 +160,33 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 .check(matches(hasItemCount(contactList?.size.orZero() + contactList?.groupBy {
                     if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
                 }?.size.orZero())))
+        }
+    }
+
+    @Test
+    fun checkContactItemOne() {
+        if (contactList.isNullOrEmpty()) {
+            onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
+        } else {
+            val contactWithFilter = contactList?.get(0)
+            R.id.list_contact_recycler_view.apply {
+                getViewFromListItem(R.id.item_contact_avatar, 0)
+                //.check(matches(isDisplayed())).check(matches(withDrawable(contactWithFilter.contact)))
+                getViewFromListItem(R.id.item_contact_filter, 0).check(matches(isDisplayed()))
+                    .check(matches(withDrawable(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
+                getViewFromListItem(R.id.item_contact_number, 0).check(matches(isDisplayed()))
+                    .check(matches(withText(contactWithFilter?.highlightedSpanned.toString())))
+                getViewFromListItem(R.id.item_contact_validity, 0).check(matches(isDisplayed()))
+                    .check(matches(withText(contactWithFilter?.contact?.phoneNumberValidity() == null ? `` : context.getString(contactWithFilter.contact.phoneNumberValidity()))))
+                getViewFromListItem(R.id.item_contact_name, 0).check(matches(isDisplayed()))
+                    .check(matches(withText(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
+                getViewFromListItem(R.id.item_contact_divider, 0).check(matches(isDisplayed()))
+                    .check(matches(withBackgroundColor(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
+                getViewFromListItem(R.id.item_contact_filter_title, 0).check(matches(isDisplayed()))
+                    .check(matches(withText(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
+                getViewFromListItem(R.id.item_contact_filter_value, 0).check(matches(isDisplayed()))
+                    .check(matches(withText(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
+            }
         }
     }
 

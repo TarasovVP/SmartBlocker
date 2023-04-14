@@ -22,8 +22,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -199,6 +202,10 @@ object TestUtils {
                 return itemMatcher.matches(viewHolder.itemView)
             }
         }
+    }
+
+    fun Int.getViewFromListItem(viewId: Int, position: Int) : ViewInteraction {
+        return onView(allOf(withId(viewId), isDescendantOfA(childOf(withId(this), position))))
     }
 
     fun childOf(parentMatcher: Matcher<View?>?, childPosition: Int): Matcher<View?> {
