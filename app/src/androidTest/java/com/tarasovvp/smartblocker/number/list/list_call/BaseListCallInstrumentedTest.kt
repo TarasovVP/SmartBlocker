@@ -67,7 +67,6 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
         waitUntilViewIsDisplayed(if (this is EmptyListCallInstrumentedTest) withId(R.id.list_call_empty) else withText(callList?.get(0)?.call?.callName))
     }
 
-/*
     @Test
     fun checkContainer() {
         onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
@@ -184,7 +183,6 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_call_recycler_view)).check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
         }
     }
-*/
 
     @Test
     fun checkCallItemOne() {
@@ -204,7 +202,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
         }
     }
 
-    /*@Test
+    @Test
     fun checkListCallEmpty() {
         if (callList.isNullOrEmpty()) {
             onView(withId(R.id.list_call_empty)).check(matches(isDisplayed()))
@@ -215,7 +213,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
         } else {
             onView(withId(R.id.list_call_empty)).check(matches(not(isDisplayed())))
         }
-    }*/
+    }
 
     private fun checkCallItem(position: Int, callWithFilter: CallWithFilter?) {
         onView(withId(R.id.list_call_recycler_view)).apply {

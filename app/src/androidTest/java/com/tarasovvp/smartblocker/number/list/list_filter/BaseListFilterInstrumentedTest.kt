@@ -1,36 +1,41 @@
 package com.tarasovvp.smartblocker.number.list.list_filter
 
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.Suppress
-import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.atPosition
+import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
+import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
-import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
-import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.Test
 
@@ -213,6 +218,24 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
+    fun checkCallItemOne() {
+        if (filterList.isNullOrEmpty()) {
+            onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
+        } else {
+            checkCallItem(0, filterList?.get(0))
+        }
+    }
+
+    @Test
+    fun checkCallItemTwo() {
+        if (filterList.isNullOrEmpty()) {
+            onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
+        } else {
+            checkCallItem(1, filterList?.get(1))
+        }
+    }
+
+    @Test
     fun checkListFilterEmpty() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
@@ -222,6 +245,40 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {
             onView(withId(R.id.list_filter_empty)).check(matches(not(isDisplayed())))
+        }
+    }
+
+    private fun checkCallItem(position: Int, filterWithCountryCode: FilterWithCountryCode?) {
+        onView(withId(R.id.list_filter_recycler_view)).apply {
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
+                isDisplayed(),
+                withDrawable(filterWithCountryCode?.filter?.conditionTypeIcon()))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_filter),
+                isDisplayed(),
+                withDrawable(filterWithCountryCode?.filter?.filterTypeIcon()))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_value),
+                isDisplayed(),
+                withText(filterWithCountryCode?.highlightedSpanned.toString()))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_name),
+                isDisplayed(),
+                withText(if (filterWithCountryCode?.filter.isNull()) filterWithCountryCode?.filter?.filter else targetContext.getString(filterWithCountryCode?.filter?.conditionTypeName().orZero())),
+                withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) R.color.text_color_grey else filterWithCountryCode?.filter?.filterAction?.color.orZero()))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_delete),
+                if (filterWithCountryCode?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
+                if (filterWithCountryCode?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_divider),
+                isDisplayed(),
+                withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_contacts),
+                isDisplayed(),
+                withText(filterWithCountryCode?.filter?.filteredContactsText(targetContext)),
+                withTextColor(if (filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_created),
+                isDisplayed(),
+                withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithCountryCode?.filter?.filterCreatedDate())))))))
+            perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
+            assertEquals(R.id.detailsFilterFragment, navController?.currentDestination?.id)
+            assertEquals(filterWithCountryCode, navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>("filterWithCountryCode"))
         }
     }
 }
