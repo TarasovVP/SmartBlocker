@@ -24,6 +24,7 @@
         app:cardElevation="@dimen/padding_1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_call_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="@{callWithFilter.call.deleteMode &amp;&amp; !callWithFilter.call.callFiltered ? 0.5f : 1f}"
@@ -44,6 +45,7 @@
                 app:shapeAppearanceOverlay="@style/RoundedImageViewStyle" />
 
             <ImageView
+                android:id="@+id/item_call_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
                 android:visibility="@{!callWithFilter.call.extract || callWithFilter.filterWithCountryCode.filter.filterType == 0 ? View.GONE : View.VISIBLE}"
@@ -99,20 +101,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_call_delete"
                 app:layout_constraintStart_toEndOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_time" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/item_call_filter_condition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@{callWithFilter.call.filterNullOrEmpty ? null : ContextCompat.getDrawable(context, callWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon)}"
-                android:gravity="center_vertical|end"
-                android:text="@{callWithFilter.call.filterValue}"
-                android:textColor="@{callWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
-                android:textSize="@dimen/text_size_10"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
-                app:layout_constraintEnd_toEndOf="@+id/item_call_type_icon"
-                app:layout_constraintTop_toTopOf="@+id/item_call_name" />
 
             <CheckBox
                 android:id="@+id/item_call_delete"

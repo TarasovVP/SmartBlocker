@@ -173,10 +173,8 @@ inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = whe
     else -> @Suppress("DEPRECATION") getSerializable(key) as? T
 }
 
-infix fun String?.isContaining(searchQuery: String?): Boolean {
-    return this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
-}
+infix fun String?.isContaining(searchQuery: String?) = this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
 
-infix fun Any?.notEquals(any: Any?): Boolean {
-    return this != any
-}
+infix fun Any?.notEquals(any: Any?) = this != any
+
+infix fun <T> Boolean.then(param: T): T? = if (this) param else null

@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker
 
 import android.content.ComponentName
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -106,6 +107,16 @@ object TestUtils {
             else if (view is TextView && id.isNull()) view.compoundDrawables.none { it.isNotNull() }
             else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
             else false
+        }
+    }
+
+    fun withBitmap(bitmap: Bitmap?) = object : TypeSafeMatcher<View>() {
+        override fun describeTo(description: Description) {
+            description.appendText("ImageView with bitmap same as $bitmap")
+        }
+
+        override fun matchesSafely(view: View): Boolean {
+            return (view as ImageView).drawable?.toBitmap()?.sameAs(bitmap).isTrue()
         }
     }
 
@@ -298,15 +309,15 @@ object TestUtils {
     )
 
     fun contactWithFilterList() = listOf(
-        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344"),
+        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filter = "+380502711344"),
             FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("3", name = "B Name", number = "12345"),
+        ContactWithFilter(Contact("3", name = "B Name", number = "12345", filter = "123"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("4", name = "B Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("5", name = "C Name", number = "12345"),
+        ContactWithFilter(Contact("5", name = "C Name", number = "12345", filter = "123"),
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("6", name = " D Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
