@@ -10,6 +10,7 @@ import org.junit.*
 abstract class BaseInstrumentedTest {
 
     protected var navController: TestNavHostController? = null
+    protected val targetContext by lazy { InstrumentationRegistry.getInstrumentation().targetContext }
 
     companion object {
         @BeforeClass

@@ -82,20 +82,16 @@ class SignUpInstrumentedTest: BaseInstrumentedTest() {
     fun checkSignUpContinue() {
         onView(withId(R.id.sign_up_continue)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_signing_up)))
             .check(matches(not(isEnabled()))).check(matches(withTextColor(R.color.inactive_bg))).check(matches(
-               withBackgroundTint(ContextCompat.getColor(
-                        InstrumentationRegistry.getInstrumentation().targetContext,
-                        R.color.transparent))))
+               withBackgroundTint(ContextCompat.getColor(targetContext, R.color.transparent))))
         onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(TEST_EMAIL))
-        onView(withId(R.id.sign_up_continue)).check(matches(Matchers.not(isEnabled())))
+        onView(withId(R.id.sign_up_continue)).check(matches(not(isEnabled())))
         onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(String.EMPTY))
         onView(withId(R.id.sign_up_password)).perform(ViewActions.replaceText(TestUtils.TEST_PASSWORD))
-        onView(withId(R.id.sign_up_continue)).check(matches(Matchers.not(isEnabled())))
+        onView(withId(R.id.sign_up_continue)).check(matches(not(isEnabled())))
         onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(TEST_EMAIL))
         onView(withId(R.id.sign_up_continue))
             .check(matches(isEnabled())).check(matches(withTextColor(R.color.white)))
-            .check(matches(withBackgroundTint(ContextCompat.getColor(
-                        InstrumentationRegistry.getInstrumentation().targetContext,
-                        R.color.button_bg)))).perform(click())
+            .check(matches(withBackgroundTint(ContextCompat.getColor(targetContext, R.color.button_bg)))).perform(click())
         //TODO implement correct destination checking
         //assertEquals(R.id.listBlockerFragment, navController?.currentDestination?.id)
     }

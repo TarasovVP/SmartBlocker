@@ -3,20 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="headerDataItem"
             type="com.tarasovvp.smartblocker.domain.models.HeaderDataItem" />
 
     </data>
 
-    <TextView
-        android:id="@+id/item_header_text"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
-        android:drawablePadding="@dimen/padding_15"
-        android:text="@{headerDataItem.header}"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/item_header_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/padding_15"
+            android:text="@{headerDataItem.header}" />
+    </FrameLayout>
 </layout>

@@ -65,7 +65,7 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     fun checkSettingsBlockerDivider() {
         onView(withId(R.id.settings_blocker_divider))
             .check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.light_steel_blue))))
+            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
     }
 
     @Test
@@ -98,7 +98,7 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     fun checkSettingsBlockerHiddenDivider() {
         onView(withId(R.id.settings_blocker_hidden_divider))
             .check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.light_steel_blue))))
+            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
     }
 
     @Test
@@ -137,7 +137,7 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     fun checkSettingsBlockerCountryDivider() {
         onView(withId(R.id.settings_blocker_country_divider))
             .check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.light_steel_blue))))
+            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
     }
 
     @Test

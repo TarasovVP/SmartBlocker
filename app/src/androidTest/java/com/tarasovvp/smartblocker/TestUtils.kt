@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -46,6 +45,7 @@ import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -94,21 +94,22 @@ object TestUtils {
         }
     }
 
-    fun withDrawable(@DrawableRes id: Int) = object : TypeSafeMatcher<View>() {
+    fun withDrawable(@DrawableRes id: Int?) = object : TypeSafeMatcher<View>() {
         override fun describeTo(description: Description) {
             description.appendText("ImageView with drawable same as drawable with id $id")
         }
 
         override fun matchesSafely(view: View): Boolean {
             val context = view.context
-            val expectedBitmap = context.getDrawable(id)?.toBitmap()
+            val expectedBitmap = id?.let { context.getDrawable(it)?.toBitmap() }
             return if (view is ImageView) view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
+            else if (view is TextView && id.isNull()) view.compoundDrawables.none { it.isNotNull() }
             else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
             else false
         }
     }
 
-    fun withBackgroundColor(@ColorInt color: Int): Matcher<View> {
+    fun withBackgroundColor(color: Int): Matcher<View> {
         return object : TypeSafeMatcher<View>() {
 
             override fun matchesSafely(view: View): Boolean {
@@ -120,7 +121,7 @@ object TestUtils {
                 description.appendText("View with background color: $color")
             }
 
-            private fun checkColor(drawable: Drawable?, @ColorInt color: Int): Boolean {
+            private fun checkColor(drawable: Drawable?, color: Int): Boolean {
                 return when (drawable) {
                     is ColorDrawable -> drawable.color == color
                     is GradientDrawable -> {
@@ -202,10 +203,6 @@ object TestUtils {
                 return itemMatcher.matches(viewHolder.itemView)
             }
         }
-    }
-
-    fun Int.getViewFromListItem(viewId: Int, position: Int) : ViewInteraction {
-        return onView(allOf(withId(viewId), isDescendantOfA(childOf(withId(this), position))))
     }
 
     fun childOf(parentMatcher: Matcher<View?>?, childPosition: Int): Matcher<View?> {

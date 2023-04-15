@@ -68,7 +68,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.list_call_check)).apply {
             check(matches(isDisplayed()))
             check(matches(Matchers.not(isChecked())))
-            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+            check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
             if (callList.isNullOrEmpty()) {
                 check(matches(Matchers.not(isEnabled())))
             } else {
@@ -85,7 +85,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkListContactCheckOneFilter() {
         onView(withId(R.id.list_call_check)).apply {
-            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+            check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
             runBlocking(Dispatchers.Main) {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
@@ -98,7 +98,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                         check(matches(Matchers.not(isEnabled())))
                     } else {
                         check(matches(isChecked()))
-                        check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+                        check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
                     }
                 }
             }
@@ -108,7 +108,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkListContactCheckTwoFilters() {
         onView(withId(R.id.list_call_check)).apply {
-            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+            check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
             runBlocking(Dispatchers.Main) {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
@@ -122,7 +122,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                         check(matches(Matchers.not(isEnabled())))
                     } else {
                         check(matches(isChecked()))
-                        check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+                        check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
                     }
                 }
             }

@@ -78,9 +78,9 @@ class LoginInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkLoginDivider() {
-        onView(withId(R.id.login_left_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
+        onView(withId(R.id.login_left_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.cornflower_blue))))
         onView(withId(R.id.login_divider_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_or)))
-        onView(withId(R.id.login_right_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, (R.color.cornflower_blue)))))
+        onView(withId(R.id.login_right_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, (R.color.cornflower_blue)))))
     }
 
     @Test
@@ -114,7 +114,7 @@ class LoginInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkLoginEnter() {
         onView(withId(R.id.login_enter)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter)))
-            .check(matches(not(isEnabled()))).check(matches(withTextColor(R.color.inactive_bg))).check(matches(withBackgroundTint(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.transparent))))
+            .check(matches(not(isEnabled()))).check(matches(withTextColor(R.color.inactive_bg))).check(matches(withBackgroundTint(ContextCompat.getColor(targetContext, R.color.transparent))))
         onView(withId(R.id.login_email_input)).perform(replaceText(TEST_EMAIL))
         onView(withId(R.id.login_enter)).check(matches(not(isEnabled())))
         onView(withId(R.id.login_email_input)).perform(replaceText(String.EMPTY))
@@ -123,7 +123,7 @@ class LoginInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.login_email_input)).perform(replaceText(TEST_EMAIL))
         onView(withId(R.id.login_enter))
             .check(matches(isEnabled())).check(matches(withTextColor(R.color.white)))
-            .check(matches(withBackgroundTint(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.button_bg))))
+            .check(matches(withBackgroundTint(ContextCompat.getColor(targetContext, R.color.button_bg))))
             .perform(click())
         //TODO implement correct destination checking
         //assertEquals(R.id.listBlockerFragment, navController?.currentDestination?.id)
@@ -131,9 +131,9 @@ class LoginInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkLoginDividerUnauthorized() {
-        onView(withId(R.id.login_left_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
+        onView(withId(R.id.login_left_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.cornflower_blue))))
         onView(withId(R.id.login_divider_title_unauthorized)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_or)))
-        onView(withId(R.id.login_right_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(InstrumentationRegistry.getInstrumentation().targetContext, R.color.cornflower_blue))))
+        onView(withId(R.id.login_right_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.cornflower_blue))))
     }
 
     @Test

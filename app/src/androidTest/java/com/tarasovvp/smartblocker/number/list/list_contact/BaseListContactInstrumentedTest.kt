@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.number.list.list_contact
 
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -15,26 +16,26 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.junit.Test
 import androidx.test.filters.Suppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
-import com.tarasovvp.smartblocker.TestUtils.getViewFromListItem
+import com.tarasovvp.smartblocker.TestUtils.atPosition
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
+import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
-import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.*
 import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.Matchers.allOf
 import org.junit.Before
 
 @Suppress
@@ -61,6 +62,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
         }
         waitUntilViewIsDisplayed(if (this@BaseListContactInstrumentedTest is EmptyListContactInstrumentedTest) withId(R.id.list_contact_empty) else withText(contactList?.get(0)?.contact?.name))
     }
+
     @Test
     fun checkContainer() {
         onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
@@ -71,7 +73,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.list_contact_check)).apply {
             check(matches(isDisplayed()))
             check(matches(not(isChecked())))
-            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+            check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
             if (contactList.isNullOrEmpty()) {
                 check(matches(not(isEnabled())))
             } else {
@@ -85,7 +87,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkListContactCheckOneFilter() {
         onView(withId(R.id.list_contact_check)).apply {
-            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+            check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
             runBlocking(Dispatchers.Main) {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
@@ -98,7 +100,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                         check(matches(not(isEnabled())))
                     } else {
                         check(matches(isChecked()))
-                        check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+                        check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
                     }
                 }
             }
@@ -108,7 +110,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkListContactCheckTwoFilters() {
         onView(withId(R.id.list_contact_check)).apply {
-            check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+            check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
             runBlocking(Dispatchers.Main) {
                 fragment?.setFragmentResult(
                     FILTER_CONDITION_LIST,
@@ -122,7 +124,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                         check(matches(not(isEnabled())))
                     } else {
                         check(matches(isChecked()))
-                        check(matches(withText(InstrumentationRegistry.getInstrumentation().targetContext.numberDataFilteringText(filterIndexList))))
+                        check(matches(withText(targetContext.numberDataFilteringText(filterIndexList))))
                     }
                 }
             }
@@ -164,29 +166,32 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
+    fun checkContactItemHeaderOne() {
+        if (contactList.isNullOrEmpty()) {
+            onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
+        } else {
+            val firstHeader = contactList?.groupBy {
+                if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
+            }?.keys?.first()
+            onView(withId(R.id.list_contact_recycler_view)).check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
+        }
+    }
+
+    @Test
     fun checkContactItemOne() {
         if (contactList.isNullOrEmpty()) {
             onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
         } else {
-            val contactWithFilter = contactList?.get(0)
-            R.id.list_contact_recycler_view.apply {
-                getViewFromListItem(R.id.item_contact_avatar, 0)
-                //.check(matches(isDisplayed())).check(matches(withDrawable(contactWithFilter.contact)))
-                getViewFromListItem(R.id.item_contact_filter, 0).check(matches(isDisplayed()))
-                    .check(matches(withDrawable(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
-                getViewFromListItem(R.id.item_contact_number, 0).check(matches(isDisplayed()))
-                    .check(matches(withText(contactWithFilter?.highlightedSpanned.toString())))
-                getViewFromListItem(R.id.item_contact_validity, 0).check(matches(isDisplayed()))
-                    .check(matches(withText(contactWithFilter?.contact?.phoneNumberValidity() == null ? `` : context.getString(contactWithFilter.contact.phoneNumberValidity()))))
-                getViewFromListItem(R.id.item_contact_name, 0).check(matches(isDisplayed()))
-                    .check(matches(withText(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
-                getViewFromListItem(R.id.item_contact_divider, 0).check(matches(isDisplayed()))
-                    .check(matches(withBackgroundColor(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
-                getViewFromListItem(R.id.item_contact_filter_title, 0).check(matches(isDisplayed()))
-                    .check(matches(withText(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
-                getViewFromListItem(R.id.item_contact_filter_value, 0).check(matches(isDisplayed()))
-                    .check(matches(withText(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero())))
-            }
+            checkContactItem(1, contactList?.get(0))
+        }
+    }
+
+    @Test
+    fun checkContactItemTwo() {
+        if (contactList.isNullOrEmpty()) {
+            onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
+        } else {
+            checkContactItem(2, contactList?.get(1))
         }
     }
 
@@ -199,6 +204,37 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {
             onView(withId(R.id.list_contact_empty)).check(matches(not(isDisplayed())))
+        }
+    }
+
+    private fun checkContactItem(position: Int, contactWithFilter: ContactWithFilter?) {
+        onView(withId(R.id.list_contact_recycler_view)).apply {
+            //TODO drawable
+            //check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_contact_avatar), withDrawable(contactWithFilter.contact.photoUrl))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter),
+                isDisplayed(),
+                withDrawable(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero()))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_number),
+                isDisplayed(),
+                withText(contactWithFilter?.highlightedSpanned.toString()))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_validity),
+                if (contactWithFilter?.contact?.phoneNumberValidity().isNull()) not(isDisplayed()) else isDisplayed(),
+                withText(if (contactWithFilter?.contact?.phoneNumberValidity().isNull()) String.EMPTY else targetContext.getString(contactWithFilter?.contact?.phoneNumberValidity().orZero())))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_name),
+                isDisplayed(),
+                withText(if (contactWithFilter?.contact?.isNameEmpty().isTrue()) targetContext.getString(R.string.details_number_not_from_contacts) else contactWithFilter?.contact?.name))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_divider),
+                isDisplayed(),
+                withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_title),
+                isDisplayed(),
+                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.details_number_block_with_filter) else InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.details_number_permit_with_filter)),
+                withTextColor(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) R.color.text_color_grey else if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_value),
+                isDisplayed(),
+                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) String.EMPTY else contactWithFilter?.filterWithCountryCode?.filter?.filter),
+                withTextColor(if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
+                withDrawable(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) null else contactWithFilter?.filterWithCountryCode?.filter?.conditionTypeSmallIcon()))))))
         }
     }
 }

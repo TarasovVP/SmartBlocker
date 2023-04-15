@@ -33,8 +33,8 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
     override fun setUp() {
         super.setUp()
         launchFragmentInHiltContainer<InfoFragment> (fragmentArgs = bundleOf("info" to
-                InfoData(InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.title),
-                    InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.description)))) {
+                InfoData(targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.title),
+                    targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.description)))) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.infoFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -55,8 +55,8 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
                 .perform(clickLinkWithText("Номер"))
         }
         assertEquals(R.id.infoFragment, navController?.currentDestination?.id)
-        assertEquals(InfoData(title = InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_BLOCKER_LIST.title),
-            description = InstrumentationRegistry.getInstrumentation().targetContext.getString(Info.INFO_BLOCKER_LIST.description)),
+        assertEquals(InfoData(title = targetContext.getString(Info.INFO_BLOCKER_LIST.title),
+            description = targetContext.getString(Info.INFO_BLOCKER_LIST.description)),
             navController?.backStack?.last()?.arguments?.parcelable<InfoData>("info"))
     }
 }
