@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -24,7 +25,6 @@ import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
@@ -218,7 +218,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
-    fun checkCallItemOne() {
+    fun checkFilterItemOne() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
         } else {
@@ -227,11 +227,33 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
-    fun checkCallItemTwo() {
+    fun checkFilterItemTwo() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
         } else {
             checkCallItem(1, filterList?.get(1))
+        }
+    }
+
+    @Test
+    fun checkDeleteMode() {
+        if (filterList.isNullOrEmpty()) {
+            onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.list_filter_recycler_view)).apply {
+                check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_filter_delete),
+                    if (filterList?.get(0)?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (filterList?.get(0)?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, longClick()))
+                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+                check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_filter_delete),
+                    if (filterList?.get(0)?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (filterList?.get(0)?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+                check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_filter_delete),
+                    if (filterList?.get(0)?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (filterList?.get(0)?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+            }
         }
     }
 

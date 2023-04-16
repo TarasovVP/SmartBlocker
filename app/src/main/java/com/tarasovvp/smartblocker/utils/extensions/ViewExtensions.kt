@@ -1,15 +1,12 @@
 package com.tarasovvp.smartblocker.utils.extensions
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Handler
-import android.os.Looper
 import android.os.SystemClock
 import android.text.Editable
 import android.text.Spannable
@@ -24,8 +21,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -34,6 +33,8 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.databinding.DialogInfoBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private var lastClickTime = 0L
 
@@ -47,7 +48,7 @@ fun View.setSafeOnClickListener(action: () -> Unit) {
     }
 }
 
-fun Activity.showMessage(message: String, isError: Boolean) {
+fun AppCompatActivity.showMessage(message: String, isError: Boolean) {
     if (window.isNull() || isFinishing) return
     val dialogView = DialogInfoBinding.inflate(LayoutInflater.from(this))
     dialogView.dialogInfoIcon.setImageResource(if (isError) R.drawable.ic_result_error else R.drawable.ic_result_success)
@@ -59,9 +60,10 @@ fun Activity.showMessage(message: String, isError: Boolean) {
         this.width = (Resources.getSystem().displayMetrics.widthPixels * 0.9).toInt()
         dialog.window?.attributes = this
     }
-    Handler(Looper.getMainLooper()).postDelayed({
+    lifecycleScope.launch {
+        delay(SECOND * 2)
         dialog.dismiss()
-    }, SECOND * 2)
+    }
 }
 
 fun <T> ViewGroup.getViewsFromLayout(

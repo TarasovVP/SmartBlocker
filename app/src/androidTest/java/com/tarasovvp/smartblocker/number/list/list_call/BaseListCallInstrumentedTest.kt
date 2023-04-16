@@ -9,8 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -25,9 +24,8 @@ import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.models.InfoData
+import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
@@ -154,7 +152,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_call_empty)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.list_call_refresh)).check(matches(isDisplayed()))
-            onView(withId(R.id.list_call_refresh)).perform(ViewActions.swipeDown())
+            onView(withId(R.id.list_call_refresh)).perform(swipeDown())
         }
     }
 
@@ -199,6 +197,44 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_call_empty)).check(matches(isDisplayed()))
         } else {
             checkCallItem(2, callList?.get(1))
+        }
+    }
+    @Test
+    fun checkLogCallDeleteMode() {
+        if (callList.isNullOrEmpty()) {
+            onView(withId(R.id.list_call_empty)).check(matches(isDisplayed()))
+        } else {
+            val callWithFilter = callList?.get(1)
+            onView(withId(R.id.list_call_recycler_view)).apply {
+                check(matches(atPosition(1, hasDescendant(allOf(withId(R.id.item_call_delete),
+                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, longClick()))
+                onView(withText(R.string.list_call_delete_info)).check(matches(isDisplayed()))
+            }
+        }
+    }
+
+    @Test
+    fun checkFilteredCallDeleteMode() {
+        if (callList.isNullOrEmpty()) {
+            onView(withId(R.id.list_call_empty)).check(matches(isDisplayed()))
+        } else {
+            val callWithFilter = callList?.get(1)
+            onView(withId(R.id.list_call_recycler_view)).apply {
+                check(matches(atPosition(2, hasDescendant(allOf(withId(R.id.item_call_delete),
+                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, longClick()))
+                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
+                check(matches(atPosition(2, hasDescendant(allOf(withId(R.id.item_call_delete),
+                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
+                check(matches(atPosition(2, hasDescendant(allOf(withId(R.id.item_call_delete),
+                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+            }
         }
     }
 
@@ -252,7 +288,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                 isDisplayed(),
                 withText(callWithFilter?.call?.callFilterValue().orEmpty()),
                 withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithCountryCode?.filter).orZero()),
-                withDrawable(if (callWithFilter?.call?.isFilterNullOrEmpty().isTrue()) null else callWithFilter?.call?.callFilterIcon(callWithFilter.filterWithCountryCode?.filter)))))))
+                withDrawable(callWithFilter?.call?.callFilterIcon(callWithFilter.filterWithCountryCode?.filter)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),
                 withAlpha(if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isFilteredCall.isNotTrue()) 0.5f else 1f))))))

@@ -280,12 +280,15 @@ object TestUtils {
         CallWithFilter(FilteredCall(2).apply { callName = "a Name"
             number = "12345"
             type = BLOCKED_CALL
-            callDate = "1678603872094"},
+            callDate = "1678603872094"
+            isFilteredCall = true
+            filteredNumber = "12345"
+            conditionType = FilterCondition.FILTER_CONDITION_FULL.index},
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
         CallWithFilter(FilteredCall(3).apply {  callName = "B Name"
             number = "12345"
             type = MISSED_CALL
-            callDate = "1611995776162"},
+            callDate = "1611995776162" },
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
         CallWithFilter(LogCall(4).apply {  callName = String.EMPTY
             number = "12345"

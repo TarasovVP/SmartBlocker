@@ -243,7 +243,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 withDrawable(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) null else contactWithFilter?.filterWithCountryCode?.filter?.conditionTypeSmallIcon()))))))
             perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
             assertEquals(R.id.detailsNumberDataFragment, navController?.currentDestination?.id)
-            assertEquals(contactWithFilter, navController?.backStack?.last()?.arguments?.parcelable<CallWithFilter>("numberData"))
+            assertEquals(contactWithFilter, navController?.backStack?.last()?.arguments?.parcelable<ContactWithFilter>("numberData"))
         }
     }
 }
