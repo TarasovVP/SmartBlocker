@@ -45,6 +45,7 @@
                 app:shapeAppearanceOverlay="@style/RoundedImageViewStyle" />
 
             <ImageView
+                android:id="@+id/item_details_filter_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
                 app:imageResource="@{filterWithCountryCode.filter.filterTypeIcon}"

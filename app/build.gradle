@@ -80,7 +80,7 @@ android {
 
 dependencies {
 
-    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "androidx.core:core-ktx:1.10.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "com.google.android.material:material:1.8.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
@@ -88,7 +88,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
-    implementation "androidx.fragment:fragment-ktx:1.5.5"
+    implementation "androidx.fragment:fragment-ktx:1.5.6"
     implementation "com.google.ar:core:1.36.0"
 
     //Testing
@@ -113,8 +113,8 @@ dependencies {
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0'
 
     //GoogleServices
-    implementation "com.google.android.gms:play-services-ads:21.5.0"
-    implementation "com.google.android.gms:play-services-auth:20.4.1"
+    implementation "com.google.android.gms:play-services-ads:22.0.0"
+    implementation "com.google.android.gms:play-services-auth:20.5.0"
 
     //Review
     implementation "com.google.android.play:review:$review"

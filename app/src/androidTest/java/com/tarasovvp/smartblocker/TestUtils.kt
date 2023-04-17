@@ -23,14 +23,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.*
@@ -60,6 +60,7 @@ object TestUtils {
     const val TEST_PASSWORD = "testPassword"
     const val IS_LOG_OUT = "isLogOut"
     const val FILTERING_LIST = "filteringList"
+    const val FILTER_WITH_COUNTRY_CODE = "filterWithCountryCode"
 
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
@@ -242,6 +243,7 @@ object TestUtils {
             override fun matchesSafely(view: View?): Boolean {
                 return when(view) {
                     is RecyclerView -> view.adapter?.itemCount == expectedCount
+                    is ViewPager2 -> view.adapter?.itemCount == expectedCount
                     else -> false
                 }
             }
@@ -326,4 +328,33 @@ object TestUtils {
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("7", name = "Y Name", number = "12345"), null)
     )
+
+    fun numberDataList() = arrayListOf(CallWithFilter(LogCall(1).apply { callName = "A Name"
+        number = "+380502711344"
+        type = IN_COMING_CALL
+        callDate = "1678603872094"},
+        FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filter = "+380502711344"),
+            FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))))
+
+    fun filteredCallList() = arrayListOf<NumberData>(CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
+        number = "12345"
+        type = OUT_GOING_CALL
+        callDate = "1612525268071"},
+        FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(FilteredCall(6).apply { callName = "D Name"
+            number = "12345"
+            type = BLOCKED_CALL
+            callDate = "1615110430251"},
+            FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
+        CallWithFilter(FilteredCall(2).apply { callName = "a Name"
+            number = "12345"
+            type = BLOCKED_CALL
+            callDate = "1678603872094"
+            isFilteredCall = true
+            filteredNumber = "12345"
+            conditionType = FilterCondition.FILTER_CONDITION_FULL.index},
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))))
 }
