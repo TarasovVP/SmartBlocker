@@ -67,7 +67,7 @@
                 app:layout_constraintTop_toTopOf="@+id/details_number_data_create_blocker" />
 
             <include
-                android:id="@+id/details_number_data_empty"
+                android:id="@+id/details_number_data_hidden"
                 layout="@layout/include_empty_state"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"

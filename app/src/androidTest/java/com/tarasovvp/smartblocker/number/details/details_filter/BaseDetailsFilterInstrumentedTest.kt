@@ -21,14 +21,12 @@ import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
-import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
@@ -59,7 +57,6 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
                 viewModel.filteredCallListLiveData.postValue(filteredCallList())
             }
         }
-        onView(isRoot()).perform(waitFor(2000))
     }
 
     @Test

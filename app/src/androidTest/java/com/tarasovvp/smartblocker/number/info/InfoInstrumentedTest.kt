@@ -48,7 +48,7 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkInfoWebView() {
-        InstrumentationRegistry.getInstrumentation().targetContext.apply {
+        targetContext.apply {
             onView(withId(R.id.info_web_view))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(htmlWithImages(getString(Info.INFO_DETAILS_NUMBER_DATA.description)).toString())))

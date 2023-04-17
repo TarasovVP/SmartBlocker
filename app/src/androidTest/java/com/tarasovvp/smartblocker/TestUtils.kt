@@ -18,6 +18,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.NonNull
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
+import androidx.test.espresso.idling.CountingIdlingResource
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
@@ -52,7 +54,6 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
-
 
 object TestUtils {
 
@@ -98,12 +99,13 @@ object TestUtils {
 
     fun withDrawable(@DrawableRes id: Int?) = object : TypeSafeMatcher<View>() {
         override fun describeTo(description: Description) {
-            description.appendText("ImageView with drawable same as drawable with id $id")
+            description.appendText("View with drawable same as drawable with id $id")
         }
 
         override fun matchesSafely(view: View): Boolean {
             val context = view.context
             val expectedBitmap = id?.let { context.getDrawable(it)?.toBitmap() }
+
             return if (view is ImageView) view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
             else if (view is TextView && id.isNull()) view.compoundDrawables.none { it.isNotNull() }
             else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
@@ -357,4 +359,12 @@ object TestUtils {
             filteredNumber = "12345"
             conditionType = FilterCondition.FILTER_CONDITION_FULL.index},
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))))
+
+    fun filterList() = arrayListOf<NumberData>(FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index).apply { filteredContacts = 3
+        created = 1681315250919}, countryCode = CountryCode("UA")),
+        FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index).apply {
+            filteredContacts = 1
+            filteredCalls = 5
+            created = 1681314350919}, countryCode = CountryCode("UA")),
+        FilterWithCountryCode(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index).apply { created = 1681314260919 }, countryCode = CountryCode("UA")))
 }

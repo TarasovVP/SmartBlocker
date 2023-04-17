@@ -193,7 +193,6 @@
     <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
         <item name="android:backgroundTint">@color/cornflower_blue</item>
         <item name="borderWidth">@dimen/size_0</item>
-        <item name="tint">@color/white</item>
     </style>
 
     <style name="ExtendedFABStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">

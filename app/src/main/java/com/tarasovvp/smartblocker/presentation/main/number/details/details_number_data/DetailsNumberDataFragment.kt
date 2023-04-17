@@ -22,6 +22,8 @@ import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
@@ -54,8 +56,7 @@ class DetailsNumberDataFragment :
                     contact = Contact(name = getString(R.string.details_number_from_call_log),
                     photoUrl = callWithFilter?.call?.photoUrl,
                     number = callWithFilter?.call?.number.orEmpty(),
-                filter = callWithFilter?.filterWithCountryCode?.filter?.filter.orEmpty())
-                )
+                filter = callWithFilter?.filterWithCountryCode?.filter?.filter.orEmpty()))
             } else {
                 args.numberData as ContactWithFilter
             }
@@ -69,8 +70,8 @@ class DetailsNumberDataFragment :
     private fun setHiddenCallScreen() {
         binding?.apply {
             detailsNumberDataCreatePermission.isVisible = false
-            detailsNumberDataEmpty.emptyState = EmptyState.EMPTY_STATE_HIDDEN
-            detailsNumberDataEmpty.root.isVisible = true
+            detailsNumberDataHidden.emptyState = EmptyState.EMPTY_STATE_HIDDEN
+            detailsNumberDataHidden.root.isVisible = true
             detailsNumberDataTabs.isVisible = false
             detailsNumberDataViewPager.isVisible = false
             detailsNumberDataItemContact.itemContactNumber.setText(R.string.details_number_hidden)
@@ -82,7 +83,6 @@ class DetailsNumberDataFragment :
                     setTextColor(ContextCompat.getColorStateList(it, R.color.text_color_grey))
                     strokeColor = ContextCompat.getColorStateList(it, R.color.text_color_grey)
                     icon = ContextCompat.getDrawable(it, R.drawable.ic_settings)
-                    iconTint = ContextCompat.getColorStateList(it, R.color.text_color_grey)
                 }
             }
         }
@@ -101,18 +101,11 @@ class DetailsNumberDataFragment :
         })
         filteredCallsScreen =
             SingleDetailsFragment.newInstance(FilteredCallWithFilter::class.simpleName.orEmpty())
-        val fragmentList = arrayListOf(
-            filtersScreen,
-            filteredCallsScreen
-        )
+        val fragmentList = arrayListOf(filtersScreen, filteredCallsScreen)
 
         binding?.detailsNumberDataViewPager?.adapter =
             activity?.supportFragmentManager?.let { fragmentManager ->
-                DetailsPagerAdapter(
-                    fragmentList,
-                    fragmentManager,
-                    lifecycle
-                )
+                DetailsPagerAdapter(fragmentList, fragmentManager, lifecycle)
             }
         binding?.detailsNumberDataViewPager?.offscreenPageLimit = 2
         binding?.detailsNumberDataViewPager?.registerOnPageChangeCallback(object :
@@ -160,15 +153,10 @@ class DetailsNumberDataFragment :
         filterWithCountryCode = FilterWithCountryCode(filter = Filter(
             filter = number,
             conditionType = conditionIndex,
-            filterType = Constants.BLOCKER
-        )
-        )
-        val phoneNumber = if (number.getPhoneNumber(String.EMPTY)
-                .isNull()
-        ) number.getPhoneNumber(
-            context?.getUserCountry().orEmpty()
-                .uppercase()
-        ) else number.getPhoneNumber(String.EMPTY)
+            filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION))
+        val phoneNumber = if (number.getPhoneNumber(String.EMPTY).isNull())
+            number.getPhoneNumber(context?.getUserCountry().orEmpty().uppercase())
+        else number.getPhoneNumber(String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
             startAddFilterScreen()
         } else {
@@ -195,16 +183,13 @@ class DetailsNumberDataFragment :
                 isShown.not() && isBlocker.not()
             )
             numberDataDetailAddFilterFull.changeFilterConditionButtonState(
-                if (isBlocker) FilterCondition.FILTER_CONDITION_FULL.smallBlockerIcon
-                else FilterCondition.FILTER_CONDITION_FULL.smallPermissionIcon, isShown
+                FilterCondition.FILTER_CONDITION_FULL.mainIcon, isShown
             )
             numberDataDetailAddFilterStart.changeFilterConditionButtonState(
-                if (isBlocker) FilterCondition.FILTER_CONDITION_START.smallBlockerIcon
-                else FilterCondition.FILTER_CONDITION_START.smallPermissionIcon, isShown
+                FilterCondition.FILTER_CONDITION_START.mainIcon, isShown
             )
             numberDataDetailAddFilterContain.changeFilterConditionButtonState(
-                if (isBlocker) FilterCondition.FILTER_CONDITION_CONTAIN.smallBlockerIcon
-                else FilterCondition.FILTER_CONDITION_CONTAIN.smallPermissionIcon, isShown
+                FilterCondition.FILTER_CONDITION_CONTAIN.mainIcon, isShown
             )
         }
     }

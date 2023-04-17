@@ -234,7 +234,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_title),
                 isDisplayed(),
-                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.details_number_block_with_filter) else InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.details_number_permit_with_filter)),
+                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) targetContext.getString(R.string.details_number_block_with_filter) else targetContext.getString(R.string.details_number_permit_with_filter)),
                 withTextColor(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) R.color.text_color_grey else if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_value),
                 isDisplayed(),
