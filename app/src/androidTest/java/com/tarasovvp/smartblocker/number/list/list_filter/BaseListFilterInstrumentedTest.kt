@@ -10,7 +10,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -18,6 +17,7 @@ import androidx.test.filters.Suppress
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.atPosition
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
@@ -139,7 +139,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
                 filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.index,
                     filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)
                 countryCode = CountryCode()
-            }, navController?.backStack?.last()?.arguments?.get("filterWithCountryCode"))
+            }, navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
         }
     }
 
@@ -157,7 +157,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
                 filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.index,
                     filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)
                 countryCode = CountryCode()
-            }, navController?.backStack?.last()?.arguments?.get("filterWithCountryCode"))
+            }, navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
         }
     }
 
@@ -175,7 +175,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
                 filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index,
                     filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)
                 countryCode = CountryCode()
-            }, navController?.backStack?.last()?.arguments?.get("filterWithCountryCode"))
+            }, navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
         }
     }
 
@@ -223,7 +223,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
         } else {
-            checkCallItem(0, filterList?.get(0))
+            checkFilterItem(0, filterList?.get(0))
         }
     }
 
@@ -232,7 +232,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
         } else {
-            checkCallItem(1, filterList?.get(1))
+            checkFilterItem(1, filterList?.get(1))
         }
     }
 
@@ -271,7 +271,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
         }
     }
 
-    private fun checkCallItem(position: Int, filterWithCountryCode: FilterWithCountryCode?) {
+    private fun checkFilterItem(position: Int, filterWithCountryCode: FilterWithCountryCode?) {
         onView(withId(R.id.list_filter_recycler_view)).apply {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
                 isDisplayed(),
@@ -301,7 +301,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
                 withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithCountryCode?.filter?.filterCreatedDate())))))))
             perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
             assertEquals(R.id.detailsFilterFragment, navController?.currentDestination?.id)
-            assertEquals(filterWithCountryCode, navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>("filterWithCountryCode"))
+            assertEquals(filterWithCountryCode, navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
         }
     }
 }

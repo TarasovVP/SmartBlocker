@@ -23,6 +23,7 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.*
@@ -69,7 +70,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsNumberDataFragment)
             Navigation.setViewNavController(requireView(), navController)
-            val numberDataFromBundle = arguments?.get("numberData")
+            val numberDataFromBundle = arguments?.parcelable<NumberData>("numberData")
             contactWithFilter = if (numberDataFromBundle is CallWithFilter) ContactWithFilter(filterWithCountryCode = numberDataFromBundle.filterWithCountryCode,
                 contact = Contact(name = getString(R.string.details_number_from_call_log),
                     photoUrl = numberDataFromBundle.call?.photoUrl,

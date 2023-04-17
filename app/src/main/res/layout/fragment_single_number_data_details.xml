@@ -7,13 +7,13 @@
         android:layout_height="match_parent" >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/single_filter_details_list"
+            android:id="@+id/single_details_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <include
-            android:id="@+id/filter_details_number_list_empty"
+            android:id="@+id/single_details_list_empty"
             layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"

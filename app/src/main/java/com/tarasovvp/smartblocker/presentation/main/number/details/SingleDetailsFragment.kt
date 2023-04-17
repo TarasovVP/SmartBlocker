@@ -22,19 +22,19 @@ class SingleDetailsFragment :
     fun updateNumberDataList(numberDataList: ArrayList<NumberData>, isFilteredCallItemDisable: Boolean = false) {
         val numberType = arguments?.getString(NUMBER_TYPE)
         binding?.apply {
-            singleFilterDetailsList.adapter =
+            singleDetailsList.adapter =
                 numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
                     numberDataClickListener?.onNumberDataClick(numberData)
                 }.apply {
                     this.isFilteredCallDetails = numberType == FilteredCallWithFilter::class.simpleName
                     this.isFilteredCallItemDisable = isFilteredCallItemDisable
                 }
-            filterDetailsNumberListEmpty.emptyState = when (numberType) {
+            singleDetailsListEmpty.emptyState = when (numberType) {
                 Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS
                 NumberData::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS
                 else -> EmptyState.EMPTY_STATE_FILTERED_CALLS
             }
-            filterDetailsNumberListEmpty.root.isVisible = numberDataList.isEmpty()
+            singleDetailsListEmpty.root.isVisible = numberDataList.isEmpty()
         }
     }
 
