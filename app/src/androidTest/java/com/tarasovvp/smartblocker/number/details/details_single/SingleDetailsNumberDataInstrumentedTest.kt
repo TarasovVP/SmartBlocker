@@ -10,6 +10,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils.LIST_EMPTY
 import com.tarasovvp.smartblocker.TestUtils.atPosition
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.numberDataList
@@ -39,7 +40,7 @@ class SingleDetailsNumberDataInstrumentedTest: BaseSingleDetailsInstrumentedTest
     @Before
     override fun setUp() {
         super.setUp()
-        dataList = if (name.methodName.contains("ListEmpty")) arrayListOf() else numberDataList()
+        dataList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else numberDataList()
         launchFragmentInHiltContainer<SingleDetailsFragment> (fragmentArgs = bundleOf(NUMBER_TYPE to NumberData::class.simpleName.orEmpty())) {
             (this as SingleDetailsFragment).updateNumberDataList(dataList)
         }

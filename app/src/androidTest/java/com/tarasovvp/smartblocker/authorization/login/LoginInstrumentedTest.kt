@@ -20,7 +20,6 @@ import com.tarasovvp.smartblocker.TestUtils.withBackgroundTint
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

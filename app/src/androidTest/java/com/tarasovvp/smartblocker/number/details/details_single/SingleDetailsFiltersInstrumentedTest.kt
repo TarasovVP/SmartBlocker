@@ -10,6 +10,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
+import com.tarasovvp.smartblocker.TestUtils.LIST_EMPTY
 import com.tarasovvp.smartblocker.TestUtils.atPosition
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
@@ -41,7 +42,7 @@ class SingleDetailsFiltersInstrumentedTest: BaseSingleDetailsInstrumentedTest() 
     @Before
     override fun setUp() {
         super.setUp()
-        dataList = if (name.methodName.contains("ListEmpty")) arrayListOf() else filterList()
+        dataList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else filterList()
         launchFragmentInHiltContainer<SingleDetailsFragment> (fragmentArgs = bundleOf(NUMBER_TYPE to Filter::class.simpleName.orEmpty())) {
             (this as SingleDetailsFragment).updateNumberDataList(dataList)
         }

@@ -105,21 +105,12 @@ open class CreateFilterFragment :
     override fun setClickListeners() {
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
-                    findNavController().navigate(
-                        CreateFilterFragmentDirections.startFilterActionDialog(
-                            filterWithCountryCode = filterWithCountryCode?.apply {
-                                filter?.filter = filterWithCountryCode?.createFilter().orEmpty()
-                                filter?.filterAction = filter?.filterAction
-                                    ?: if (filter?.isBlocker()
-                                            .isTrue()
-                                    ) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
-                            })
-                    )
+                findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(filterWithCountryCode = filterWithCountryCode?.apply {
+                    filter?.filter = filterWithCountryCode?.createFilter().orEmpty()
+                    filter?.filterAction = filter?.filterAction ?: if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE }))
             }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
-                if (findNavController().currentDestination?.navigatorName notEquals Constants.DIALOG) {
-                    findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
-                }
+                findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
             }
         }
     }

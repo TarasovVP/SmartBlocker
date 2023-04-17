@@ -62,6 +62,7 @@ object TestUtils {
     const val IS_LOG_OUT = "isLogOut"
     const val FILTERING_LIST = "filteringList"
     const val FILTER_WITH_COUNTRY_CODE = "filterWithCountryCode"
+    const val LIST_EMPTY = "ListEmpty"
 
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
