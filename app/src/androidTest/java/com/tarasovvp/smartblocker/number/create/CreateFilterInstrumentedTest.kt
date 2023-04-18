@@ -54,7 +54,10 @@ class CreateFilterInstrumentedTest: BaseInstrumentedTest() {
             navController?.setCurrentDestination(R.id.createFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
             filterWithCountryCode = arguments?.parcelable(FILTER_WITH_COUNTRY_CODE)
-
+            (this as? CreateFilterFragment)?.apply {
+                viewModel.countryCodeLiveData.postValue(TestUtils.countryCode())
+                viewModel.filteredNumberDataListLiveData.postValue(TestUtils.numberDataList())
+            }
         }
     }
 

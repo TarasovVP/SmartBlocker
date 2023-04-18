@@ -11,12 +11,12 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.filterList
 import com.tarasovvp.smartblocker.TestUtils.filteredCallList
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
@@ -321,7 +321,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             filterWithCountryCode.apply {
                 filter?.country = "UA"
                 filter?.filter = phoneNumber?.nationalNumber.toString()
-                countryCode = CountryCode(country = "UA", countryCode = "+380", flagEmoji = "UA".flagEmoji(), numberFormat = "50 123 4567")
+                countryCode = TestUtils.countryCode()
             }
             assertEquals(filterWithCountryCode,
                 navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))

@@ -46,10 +46,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.MainActivity
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
-import com.tarasovvp.smartblocker.utils.extensions.isNull
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
@@ -368,4 +365,14 @@ object TestUtils {
             filteredCalls = 5
             created = 1681314350919}, countryCode = CountryCode("UA")),
         FilterWithCountryCode(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index).apply { created = 1681314260919 }, countryCode = CountryCode("UA")))
+
+    fun filterWithCountryCode() = FilterWithCountryCode(filter = Filter(filter = "123",
+        conditionType = FilterCondition.FILTER_CONDITION_FULL.index,
+        filterType = BLOCKER ).apply {
+        filteredContacts = 12
+        filteredCalls = 3
+        created = 1681314350919
+    }, countryCode = CountryCode(country = "UA"))
+
+    fun countryCode() = CountryCode(country = "UA", countryCode = "+380", flagEmoji = "UA".flagEmoji(), numberFormat = "50 123 4567")
 }

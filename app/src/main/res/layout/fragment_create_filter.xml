@@ -87,6 +87,7 @@
                     android:singleLine="true"
                     android:textSize="@dimen/text_size_16"
                     android:minHeight="@dimen/padding_48"
+                    android:contentDescription="@string/creating_filter_enter_hint"
                     app:filterToInput="@{filterToInput}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -67,16 +67,10 @@ open class CreateFilterFragment :
                                 .replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
                 } else {
-                    val phoneNumber =
-                        number.getPhoneNumber(filterWithCountryCode?.countryCode?.country.orEmpty())
-                    if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() &&
-                                String.format(COUNTRY_CODE_START,
-                                    phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()
-                    ) {
+                    val phoneNumber = number.getPhoneNumber(filterWithCountryCode?.countryCode?.country.orEmpty())
+                    if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
                         filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
-                            this.filter =
-                                phoneNumber?.nationalNumber?.toString()
-                                    ?: number.digitsTrimmed()
+                            this.filter = phoneNumber?.nationalNumber?.toString() ?: number.digitsTrimmed()
                         }
                         if (phoneNumber?.countryCode.orZero() > 0) {
                             viewModel.getCountryCodeWithCode(phoneNumber?.countryCode)
@@ -91,15 +85,15 @@ open class CreateFilterFragment :
 
     override fun initViews() {
         Timber.e("CreateFilterFragment initViews")
-        binding?.filterWithCountryCode = args.filterWithCountryCode?.apply {
-            filter?.filterAction = filter?.filterAction ?: FilterAction.FILTER_ACTION_INVALID
+        binding?.apply {
+            filterWithCountryCode = args.filterWithCountryCode?.apply {
+                filter?.filterAction = filter?.filterAction ?: FilterAction.FILTER_ACTION_INVALID
+            }
+            (activity as MainActivity).toolbar?.title = getString(if (filterWithCountryCode?.filter?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
+            setFilterTextChangeListener()
+            createFilterEmptyList.emptyState = EmptyState.EMPTY_STATE_ADD_FILTER
+            executePendingBindings()
         }
-        (activity as MainActivity).toolbar?.title = getString(if (binding?.filterWithCountryCode?.filter?.isBlocker()
-                .isTrue()
-        ) R.string.creating_blocker else R.string.creating_permission)
-        setFilterTextChangeListener()
-        binding?.createFilterEmptyList?.emptyState = EmptyState.EMPTY_STATE_ADD_FILTER
-        binding?.executePendingBindings()
     }
 
     override fun setClickListeners() {
