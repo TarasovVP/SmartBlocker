@@ -7,8 +7,6 @@ import com.tarasovvp.smartblocker.domain.models.NumberData
 
 interface CreateFilterUseCase {
 
-    suspend fun getCountryCodeWithCountry(country: String): CountryCode?
-
     suspend fun getCountryCodeWithCode(code: Int):  CountryCode?
 
     suspend fun getNumberDataList(): ArrayList<NumberData>

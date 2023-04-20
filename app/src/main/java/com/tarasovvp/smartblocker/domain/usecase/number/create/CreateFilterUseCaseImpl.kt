@@ -20,8 +20,6 @@ class CreateFilterUseCaseImpl @Inject constructor(
     private val logCallRepository: LogCallRepository
 ) : CreateFilterUseCase {
 
-    override suspend fun getCountryCodeWithCountry(country: String) = countryCodeRepository.getCountryCodeWithCountry(country)
-
     override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
 
     override suspend fun getNumberDataList(): ArrayList<NumberData> {

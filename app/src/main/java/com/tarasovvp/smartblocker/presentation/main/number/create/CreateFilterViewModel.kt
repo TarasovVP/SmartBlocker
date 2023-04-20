@@ -26,16 +26,6 @@ class CreateFilterViewModel @Inject constructor(
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
-    fun getCountryCodeWithCountry(country: String?) {
-        Timber.e("CreateFilterViewModel getCountryCodeWithCountry country $country")
-        launch {
-            val countryCode =
-                country?.let { createFilterUseCase.getCountryCodeWithCountry(it) }
-                    ?: CountryCode()
-            countryCodeLiveData.postValue(countryCode)
-        }
-    }
-
     fun getCountryCodeWithCode(code: Int?) {
         Timber.e("CreateFilterViewModel getCountryCodeWithCode code $code")
         launch {

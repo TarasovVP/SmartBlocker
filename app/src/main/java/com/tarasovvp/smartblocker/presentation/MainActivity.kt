@@ -145,7 +145,6 @@ class MainActivity : AppCompatActivity() {
             override fun onAnimationRepeat(p0: Animator) {
             }
         })
-        SharedPrefs.country = SharedPrefs.country.takeIf { it.isNullOrEmpty().not() } ?: getUserCountry()
         if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
             setNavController()
             setToolBar()

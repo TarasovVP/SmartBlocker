@@ -3,14 +3,17 @@ package com.tarasovvp.smartblocker.infrastructure.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.gson.Gson
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_EN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_OFF
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_SEEN
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.orZero
 
 @Suppress("UNCHECKED_CAST")
 object SharedPrefs {
@@ -51,23 +54,21 @@ object SharedPrefs {
             put(BLOCK_HIDDEN, blockHidden)
         }
 
-    var country: String?
-        get() = get(COUNTRY, String::class.java, COUNTRY)
+    var countryCode: CountryCode?
+        get() = try {
+            Gson().fromJson(get(COUNTRY_CODE, String::class.java, null),  CountryCode::class.java)
+        } catch (e: java.lang.Exception) {
+            CountryCode()
+        }
         set(countryCode) {
-            put(COUNTRY, countryCode)
+            put(COUNTRY_CODE, Gson().toJson(countryCode))
         }
 
-    var countryCode: String?
-        get() = get(COUNTRY_CODE, String::class.java, COUNTRY_CODE)
-        set(countryCode) {
-            put(COUNTRY_CODE, countryCode)
-        }
-
-    private fun <T> get(key: String, clazz: Class<T>, defaultValue: Any): T =
+    private fun <T> get(key: String, clazz: Class<T>, defaultValue: Any?): T =
         when (clazz) {
-            String::class.java -> sharedPref?.getString(key, defaultValue.toString())
-            Boolean::class.java -> sharedPref?.getBoolean(key, defaultValue as Boolean)
-            Int::class.java -> sharedPref?.getInt(key, defaultValue as Int)
+            String::class.java -> sharedPref?.getString(key, defaultValue as? String)
+            Boolean::class.java -> sharedPref?.getBoolean(key, (defaultValue as? Boolean).isTrue())
+            Int::class.java -> sharedPref?.getInt(key, (defaultValue as? Int).orZero())
             else -> null
         } as T
 

@@ -212,17 +212,12 @@ fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<Count
         val countryCode =
             String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString())
         val numberFormat = try {
-            format(
-                getExampleNumberForType(region, PhoneNumberUtil.PhoneNumberType.MOBILE),
-                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL
-            ).replace(
-                "$countryCode ",
-                String.EMPTY
-            )
+            format(getExampleNumberForType(region, PhoneNumberUtil.PhoneNumberType.MOBILE),
+                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace("$countryCode ", String.EMPTY)
         } catch (e: Exception) {
             String.EMPTY
         }
-        countryCodeMap.add(CountryCode(region, countryCode, region.flagEmoji(), numberFormat))
+        countryCodeMap.add(CountryCode(region, countryCode, numberFormat))
         result.invoke(supportedRegions.size, index)
     }
     return countryCodeMap

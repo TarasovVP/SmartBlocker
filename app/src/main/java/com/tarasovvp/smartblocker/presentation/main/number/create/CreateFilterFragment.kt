@@ -62,9 +62,7 @@ open class CreateFilterFragment :
                 binding?.filterToInput = true
                 if (filterWithCountryCode?.filter?.isTypeContain().isTrue()) {
                     filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
-                        this.filter =
-                            number.digitsTrimmed()
-                                .replace(PLUS_CHAR.toString(), String.EMPTY)
+                        this.filter = number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
                 } else {
                     val phoneNumber = number.getPhoneNumber(filterWithCountryCode?.countryCode?.country.orEmpty())
@@ -113,11 +111,7 @@ open class CreateFilterFragment :
         Timber.e( "CreateFilterFragment getData")
         viewModel.getNumberDataList()
         if (binding?.filterWithCountryCode?.filter?.isTypeContain().isNotTrue()) {
-            if (binding?.filterWithCountryCode?.countryCode?.countryCode.isNullOrEmpty()) {
-                viewModel.getCountryCodeWithCountry(SharedPrefs.country)
-            } else {
-                binding?.filterWithCountryCode?.countryCode?.let { setCountryCode(it) }
-            }
+            binding?.filterWithCountryCode?.countryCode?.let { setCountryCode(it) }
         } else {
             binding?.createFilterInput?.hint = getString(R.string.creating_filter_enter_hint)
         }
@@ -129,8 +123,7 @@ open class CreateFilterFragment :
                 bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { setCountryCode(it) }
             }
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
-                when (val filterAction =
-                    bundle.serializable<FilterAction>(FILTER_ACTION)) {
+                when (val filterAction = bundle.serializable<FilterAction>(FILTER_ACTION)) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
                     -> viewModel.updateFilter(filter.filter?.apply {

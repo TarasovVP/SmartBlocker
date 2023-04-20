@@ -66,12 +66,17 @@ object Constants {
     const val FILTER_ACTION = "filterAction"
     const val CALL_DELETE = "callDelete"
 
-    //Number
-    const val PLUS_CHAR = '+'
-    const val MASK_CHAR = '_'
+    //CountryCode
     const val COUNTRY_CODE_START = "+%s"
     const val COUNTRY = "country"
     const val COUNTRY_CODE = "countryCode"
+    const val COUNTRY_DEFAULT = "UA"
+    const val COUNTRY_CODE_DEFAULT = "+380"
+    const val NUMBER_FORMAT_DEFAULT = "12 345 67 89"
+
+    //Number
+    const val PLUS_CHAR = '+'
+    const val MASK_CHAR = '_'
     const val SPACE = " "
     const val NUMBER_DATA_TYPE = 0
     const val HEADER_TYPE = 1

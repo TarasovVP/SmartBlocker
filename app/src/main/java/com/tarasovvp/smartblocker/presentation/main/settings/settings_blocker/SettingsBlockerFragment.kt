@@ -26,7 +26,7 @@ class SettingsBlockerFragment :
         super.onViewCreated(view, savedInstanceState)
         setSmartBlockerOnSettings()
         setBlockHiddenSettings()
-        viewModel.getCountryCodeWithCountry(SharedPrefs.country)
+        setCountryCodeSettings(SharedPrefs.countryCode)
     }
 
     private fun setSmartBlockerOnSettings() {
@@ -60,17 +60,16 @@ class SettingsBlockerFragment :
         }
     }
 
-    private fun setCountryCodeSettings(countryCode: CountryCode) {
+    private fun setCountryCodeSettings(countryCode: CountryCode?) {
         setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
             bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let {
-                SharedPrefs.countryCode = it.countryCode
-                SharedPrefs.country = it.country
+                SharedPrefs.countryCode = it
                 setCountryCodeSettings(it)
                 (activity as? MainActivity)?.getAllData()
             }
         }
         binding?.apply {
-            settingsBlockerCountry.text = countryCode.countryEmoji()
+            settingsBlockerCountry.text = countryCode?.countryEmoji()
             settingsBlockerCountry.setSafeOnClickListener {
                 findNavController().navigate(SettingsBlockerFragmentDirections.startCountryCodeSearchDialog())
             }
@@ -90,9 +89,6 @@ class SettingsBlockerFragment :
                 binding?.settingsBlockerHiddenSwitch?.isChecked =
                     binding?.settingsBlockerHiddenSwitch?.isChecked.isTrue().not()
                 showMessage(error, true)
-            }
-            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
-                setCountryCodeSettings(countryCode)
             }
         }
     }

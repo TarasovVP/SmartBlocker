@@ -10,6 +10,8 @@ import com.tarasovvp.smartblocker.domain.models.MainProgress
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
+import com.tarasovvp.smartblocker.utils.extensions.isNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -70,8 +72,8 @@ class MainViewModel @Inject constructor(
             progressDescription = R.string.progress_update_localizations
         })
         val countryCodeList = getSystemCountryCodeList()
-        if (SharedPrefs.countryCode.isNullOrEmpty()) {
-            SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == SharedPrefs.country?.uppercase() }?.countryCode
+        if (SharedPrefs.countryCode.isNull()) {
+            SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == getApplication<Application>().getUserCountry() } ?: CountryCode()
         }
         insertAllCountryCodes(countryCodeList)
     }

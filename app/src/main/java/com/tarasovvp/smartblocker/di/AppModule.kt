@@ -133,8 +133,9 @@ object AppModule {
     @Provides
     fun provideListFilterUseCase(
         filterRepository: FilterRepository,
+        countryCodeRepository: CountryCodeRepository
     ): ListFilterUseCase {
-        return ListFilterUseCaseImpl(filterRepository)
+        return ListFilterUseCaseImpl(filterRepository, countryCodeRepository)
     }
 
     @Singleton

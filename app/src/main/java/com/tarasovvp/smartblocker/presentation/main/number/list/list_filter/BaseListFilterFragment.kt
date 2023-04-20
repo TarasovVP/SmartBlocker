@@ -5,7 +5,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
@@ -16,6 +15,7 @@ import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
+import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
@@ -96,39 +96,11 @@ open class BaseListFilterFragment :
         }
     }
 
-    private fun startNextScreen(filterWithCountryCode: FilterWithCountryCode) {
-        val direction = if (this is ListBlockerFragment) {
-            if (filterWithCountryCode.filter?.filter.orEmpty().isEmpty()) {
-                filterWithCountryCode.filter?.filterType = BLOCKER
-                ListBlockerFragmentDirections.startCreateFilterFragment(
-                    filterWithCountryCode = filterWithCountryCode
-                )
-            } else {
-                ListBlockerFragmentDirections.startDetailsFilterFragment(
-                    filterWithCountryCode = filterWithCountryCode
-                )
-            }
-        } else {
-            if (filterWithCountryCode.filter?.filter.orEmpty().isEmpty()) {
-                filterWithCountryCode.filter?.filterType = PERMISSION
-                ListPermissionFragmentDirections.startCreateFilterFragment(
-                    filterWithCountryCode = filterWithCountryCode
-                )
-            } else {
-                ListPermissionFragmentDirections.startDetailsFilterFragment(
-                    filterWithCountryCode = filterWithCountryCode
-                )
-            }
-        }
-        findNavController().navigate(direction)
-    }
-
     override fun setClickListeners() {
         binding?.apply {
             listFilterCheck.setSafeOnClickListener {
                 root.hideKeyboard()
-                listFilterCheck.isChecked =
-                    listFilterCheck.isChecked.isTrue().not()
+                listFilterCheck.isChecked = listFilterCheck.isChecked.isTrue().not()
                 findNavController().navigate(if (this@BaseListFilterFragment is ListBlockerFragment) {
                     ListBlockerFragmentDirections.startNumberDataFilteringDialog(
                         previousDestinationId = findNavController().currentDestination?.id.orZero(),
@@ -151,22 +123,13 @@ open class BaseListFilterFragment :
                 if (fabContain.isVisible) fabContain.hide() else fabContain.show()
             }
             fabFull.setSafeOnClickListener {
-                startNextScreen(FilterWithCountryCode().apply {
-                    filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.index)
-                    countryCode = CountryCode()
-                })
+                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
             }
             fabStart.setSafeOnClickListener {
-                startNextScreen(FilterWithCountryCode().apply {
-                    filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.index)
-                    countryCode = CountryCode()
-                })
+                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
             }
             fabContain.setSafeOnClickListener {
-                startNextScreen(FilterWithCountryCode().apply {
-                    filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)
-                    countryCode = CountryCode()
-                })
+                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
             }
         }
     }
@@ -182,6 +145,23 @@ open class BaseListFilterFragment :
             setFilterCheck()
             searchDataList()
         }
+    }
+
+    private fun startNextScreen(filterWithCountryCode: FilterWithCountryCode) {
+        val direction = if (this is ListBlockerFragment) {
+            if (filterWithCountryCode.filter?.filter.orEmpty().isEmpty()) {
+                ListBlockerFragmentDirections.startCreateFilterFragment(filterWithCountryCode = filterWithCountryCode)
+            } else {
+                ListBlockerFragmentDirections.startDetailsFilterFragment(filterWithCountryCode = filterWithCountryCode)
+            }
+        } else {
+            if (filterWithCountryCode.filter?.filter.orEmpty().isEmpty()) {
+                ListPermissionFragmentDirections.startCreateFilterFragment(filterWithCountryCode = filterWithCountryCode)
+            } else {
+                ListPermissionFragmentDirections.startDetailsFilterFragment(filterWithCountryCode = filterWithCountryCode)
+            }
+        }
+        findNavController().navigate(direction)
     }
 
     private fun setDeleteMenuClickListener() {

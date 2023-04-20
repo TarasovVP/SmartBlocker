@@ -17,7 +17,7 @@ data class LogCall(
 ) : Call(), Parcelable {
 
     fun phoneNumberValue(): String {
-        val phoneNumber = SharedPrefs.country?.let { number.getPhoneNumber(it.uppercase()) }
+        val phoneNumber = SharedPrefs.countryCode?.country?.let { number.getPhoneNumber(it.uppercase()) }
         return if (phoneNumber.isValidPhoneNumber()) String.format("+%s%s", phoneNumber?.countryCode, phoneNumber?.nationalNumber) else number
     }
 }
