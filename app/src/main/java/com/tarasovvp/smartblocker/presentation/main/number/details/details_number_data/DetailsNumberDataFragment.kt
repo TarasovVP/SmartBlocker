@@ -15,9 +15,7 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithF
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
-import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
@@ -70,8 +68,7 @@ class DetailsNumberDataFragment :
     private fun setHiddenCallScreen() {
         binding?.apply {
             detailsNumberDataCreatePermission.isVisible = false
-            detailsNumberDataHidden.emptyState = EmptyState.EMPTY_STATE_HIDDEN
-            detailsNumberDataHidden.root.isVisible = true
+            detailsNumberDataHidden.isVisible = true
             detailsNumberDataTabs.isVisible = false
             detailsNumberDataViewPager.isVisible = false
             detailsNumberDataItemContact.itemContactNumber.setText(R.string.details_number_hidden)

@@ -2,6 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <import type="com.tarasovvp.smartblocker.domain.enums.EmptyState" />
+    </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -75,13 +79,13 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/country_code_search_divider" />
 
-            <include
+            <com.tarasovvp.smartblocker.utils.EmptyStateView
                 android:id="@+id/country_code_empty"
-                layout="@layout/include_empty_state"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"
                 android:layout_marginHorizontal="@dimen/margin_8"
                 android:layout_marginTop="@dimen/margin_8"
+                app:description="@{EmptyState.EMPTY_STATE_BLOCKERS.description}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/country_code_search_container" />
 

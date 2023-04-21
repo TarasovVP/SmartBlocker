@@ -29,9 +29,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/list_contact_check"/>
 
-        <include
+        <com.tarasovvp.smartblocker.utils.EmptyStateView
             android:id="@+id/list_contact_empty"
-            layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             android:layout_marginHorizontal="@dimen/margin_16"

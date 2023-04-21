@@ -49,7 +49,6 @@ class SettingsAccountFragment :
 
     private fun initViews() {
         binding?.apply {
-            includeEmptyState.emptyState = EmptyState.EMPTY_STATE_ACCOUNT
             isLoggedInUser = SmartBlockerApp.instance?.isLoggedInUser()
             settingsAccountName.text = SmartBlockerApp.instance?.auth?.currentUser?.email
             settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SmartBlockerApp.instance?.auth?.currentUser?.email.nameInitial()))

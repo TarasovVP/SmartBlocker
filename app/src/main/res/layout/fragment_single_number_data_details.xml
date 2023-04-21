@@ -12,9 +12,8 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <include
+        <com.tarasovvp.smartblocker.utils.EmptyStateView
             android:id="@+id/single_details_list_empty"
-            layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_0"
             app:layout_constraintBottom_toBottomOf="parent"

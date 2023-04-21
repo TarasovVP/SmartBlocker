@@ -89,7 +89,6 @@ open class CreateFilterFragment :
             }
             (activity as MainActivity).toolbar?.title = getString(if (filterWithCountryCode?.filter?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
             setFilterTextChangeListener()
-            createFilterEmptyList.emptyState = EmptyState.EMPTY_STATE_ADD_FILTER
             executePendingBindings()
         }
     }
@@ -198,7 +197,7 @@ open class CreateFilterFragment :
             numberDataAdapter?.numberDataList = filteredList
             numberDataAdapter?.notifyDataSetChanged()
             createFilterNumberList.isVisible = filteredList.isEmpty().not()
-            createFilterEmptyList.root.isVisible = filteredList.isEmpty()
+            createFilterEmptyList.isVisible = filteredList.isEmpty()
             viewModel.hideProgress()
         }
     }

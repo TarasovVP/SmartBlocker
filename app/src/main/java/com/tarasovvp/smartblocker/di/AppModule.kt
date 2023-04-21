@@ -132,10 +132,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideListFilterUseCase(
-        filterRepository: FilterRepository,
-        countryCodeRepository: CountryCodeRepository
+        filterRepository: FilterRepository
     ): ListFilterUseCase {
-        return ListFilterUseCaseImpl(filterRepository, countryCodeRepository)
+        return ListFilterUseCaseImpl(filterRepository)
     }
 
     @Singleton
@@ -233,8 +232,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository, countryCodeRepository: CountryCodeRepository): SettingsBlockerUseCase {
-        return SettingsBlockerUseCaseImpl(realDataBaseRepository, countryCodeRepository)
+    fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository): SettingsBlockerUseCase {
+        return SettingsBlockerUseCaseImpl(realDataBaseRepository)
     }
 
     @Singleton

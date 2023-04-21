@@ -33,7 +33,7 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
                 findNavController().navigateUp()
             }
         binding?.countryCodeSearchList?.adapter = countryCodeSearchAdapter
-        binding?.countryCodeEmpty?.emptyState = EmptyState.EMPTY_STATE_QUERY
+        binding?.countryCodeEmpty?.setDescription(EmptyState.EMPTY_STATE_QUERY.description)
         binding?.countryCodeSearchCancel?.setSafeOnClickListener {
             dismiss()
         }
@@ -45,7 +45,7 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
 
     private fun setCountryCodeSearchList(countryCodeList: List<CountryCode>) {
         countryCodeSearchAdapter?.countryCodeList = countryCodeList
-        binding?.countryCodeEmpty?.root?.isVisible = countryCodeList.isEmpty()
+        binding?.countryCodeEmpty?.isVisible = countryCodeList.isEmpty()
         binding?.countryCodeSearchInput?.doAfterTextChanged { searchText ->
             countryCodeSearchAdapter?.countryCodeList =
                 countryCodeList.filter {
@@ -53,7 +53,7 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
                             || it.country.lowercase().contains(searchText.toString().lowercase())
                 }
             countryCodeSearchAdapter?.notifyDataSetChanged()
-            binding?.countryCodeEmpty?.root?.isVisible =
+            binding?.countryCodeEmpty?.isVisible =
                 countryCodeSearchAdapter?.countryCodeList.orEmpty().isEmpty()
         }
         countryCodeSearchAdapter?.notifyDataSetChanged()

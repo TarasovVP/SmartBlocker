@@ -6,6 +6,7 @@
 
         <import type="android.view.View" />
         <import type="androidx.core.content.ContextCompat" />
+        <import type="com.tarasovvp.smartblocker.domain.enums.EmptyState"/>
 
         <variable
             name="filterToInput"
@@ -127,12 +128,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/create_filter_submit" />
 
-        <include
+        <com.tarasovvp.smartblocker.utils.EmptyStateView
             android:id="@+id/create_filter_empty_list"
-            layout="@layout/include_empty_state"
             android:layout_width="match_parent"
             android:layout_marginHorizontal="@dimen/margin_2"
             android:layout_height="@dimen/size_0"
+            app:description="@{EmptyState.EMPTY_STATE_CREATE_FILTER.description}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/create_filter_submit" />
 

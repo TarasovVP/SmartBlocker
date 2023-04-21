@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.tarasovvp.smartblocker.domain.enums.EmptyState" />
         <import type="android.view.View" />
         <variable
             name="isLoggedInUser"
@@ -92,12 +93,12 @@
                 android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_change_password" />
 
-            <include
+            <com.tarasovvp.smartblocker.utils.EmptyStateView
                 android:id="@+id/include_empty_state"
-                layout="@layout/include_empty_state"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_0"
                 android:visibility="@{isLoggedInUser ? View.GONE : View.VISIBLE}"
+                app:description="@{EmptyState.EMPTY_STATE_ACCOUNT.description}"
                 app:layout_constraintBottom_toTopOf="@+id/settings_account_login"
                 app:layout_constraintTop_toTopOf="parent" />
 

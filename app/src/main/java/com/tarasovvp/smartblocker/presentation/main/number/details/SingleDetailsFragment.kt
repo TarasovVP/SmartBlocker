@@ -3,10 +3,10 @@ package com.tarasovvp.smartblocker.presentation.main.number.details
 import android.os.Bundle
 import androidx.core.view.isVisible
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
-import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
@@ -29,12 +29,12 @@ class SingleDetailsFragment :
                     this.isFilteredCallDetails = numberType == FilteredCallWithFilter::class.simpleName
                     this.isFilteredCallItemDisable = isFilteredCallItemDisable
                 }
-            singleDetailsListEmpty.emptyState = when (numberType) {
-                Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS
-                NumberData::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS
-                else -> EmptyState.EMPTY_STATE_FILTERED_CALLS
-            }
-            singleDetailsListEmpty.root.isVisible = numberDataList.isEmpty()
+            singleDetailsListEmpty.setDescription( when (numberType) {
+                Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description
+                NumberData::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description
+                else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description
+            })
+            singleDetailsListEmpty.isVisible = numberDataList.isEmpty()
         }
     }
 

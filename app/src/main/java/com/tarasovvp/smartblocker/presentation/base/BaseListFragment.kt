@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.databinding.IncludeEmptyStateBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.models.HeaderDataItem
 import com.tarasovvp.smartblocker.domain.models.NumberData
@@ -23,6 +22,7 @@ import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.Lis
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
+import com.tarasovvp.smartblocker.utils.EmptyStateView
 import com.tarasovvp.smartblocker.utils.extensions.*
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
@@ -33,7 +33,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     protected var swipeRefresh: SwipeRefreshLayout? = null
     protected var recyclerView: RecyclerView? = null
     protected var filterCheck: CheckBox? = null
-    protected var emptyStateContainer: IncludeEmptyStateBinding? = null
+    protected var emptyStateContainer: EmptyStateView? = null
     protected var searchQuery: String? = String.EMPTY
     var filterIndexes: ArrayList<Int>? = null
 
@@ -119,15 +119,15 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     protected open fun checkDataListEmptiness(isEmpty: Boolean) {
         (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible =
             searchQuery.isNullOrEmpty().not() || isEmpty.not()
-        emptyStateContainer?.root?.isVisible = isEmpty
+        emptyStateContainer?.isVisible = isEmpty
         recyclerView?.isVisible = isEmpty.not()
-        emptyStateContainer?.emptyState =
+        emptyStateContainer?.setDescription(
             if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
-                is ListPermissionFragment -> EmptyState.EMPTY_STATE_PERMISSIONS
-                is ListContactFragment -> EmptyState.EMPTY_STATE_CONTACTS
-                is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS
-                else -> EmptyState.EMPTY_STATE_BLOCKERS
-            } else EmptyState.EMPTY_STATE_QUERY
+                is ListPermissionFragment -> EmptyState.EMPTY_STATE_PERMISSIONS.description
+                is ListContactFragment -> EmptyState.EMPTY_STATE_CONTACTS.description
+                is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS.description
+                else -> EmptyState.EMPTY_STATE_BLOCKERS.description
+            } else EmptyState.EMPTY_STATE_QUERY.description)
         if (isEmpty) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()

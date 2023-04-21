@@ -1,15 +1,10 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_blocker.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel
 import junit.framework.TestCase.assertEquals
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.tarasovvp.smartblocker.TestUtils
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Test
@@ -36,18 +31,5 @@ class SettingsBlockerViewModelTest: BaseViewModelTest<SettingsBlockerViewModel>(
         }.`when`(useCase).changeBlockHidden(eq(true), any())
         viewModel.changeBlockHidden(true)
         assertEquals(viewModel.successBlockHiddenLiveData.value, true)
-    }
-
-    @Test
-    fun countryCodeWithCountryTest() = runTest {
-        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        Mockito.`when`(useCase.getCountryCodeWithCountry(TEST_COUNTRY))
-            .thenReturn(expectedCountryCode)
-
-        viewModel.getCountryCodeWithCountry(TEST_COUNTRY)
-        advanceUntilIdle()
-        val resultCountry = viewModel.countryCodeLiveData.getOrAwaitValue()
-        assertEquals(expectedCountryCode.country, resultCountry?.country)
-        assertEquals(expectedCountryCode.countryCode, resultCountry?.countryCode)
     }
 }

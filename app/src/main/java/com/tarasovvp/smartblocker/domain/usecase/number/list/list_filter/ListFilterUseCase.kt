@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter
 
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 
 interface ListFilterUseCase {
@@ -13,6 +12,4 @@ interface ListFilterUseCase {
     suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>>?
 
     suspend fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit)
-
-    suspend fun getCountryCodeWithCountry(country: String): CountryCode?
 }
