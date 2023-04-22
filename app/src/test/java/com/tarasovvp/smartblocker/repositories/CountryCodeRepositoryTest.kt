@@ -55,14 +55,6 @@ class CountryCodeRepositoryTest {
     }
 
     @Test
-    fun getCountryCodeWithCountryTest() = runTest {
-        val countryCode = CountryCode(country = TEST_COUNTRY, countryCode = TEST_COUNTRY)
-        Mockito.`when`(countryCodeDao.getCountryCodeWithCountry(TEST_COUNTRY)).thenReturn(countryCode)
-        val result = countryCodeRepository.getCountryCodeWithCountry(TEST_COUNTRY)
-        assertEquals(countryCode, result)
-    }
-
-    @Test
     fun getCountryCodeWithCodeTest() = runTest {
         val countryCode = CountryCode(country = TEST_COUNTRY, countryCode = TEST_COUNTRY)
         Mockito.`when`(countryCodeDao.getCountryCodeWithCode(TEST_COUNTRY_CODE)).thenReturn(countryCode)

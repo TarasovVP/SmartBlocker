@@ -152,7 +152,7 @@
     <plurals name="details_number_permitted_calls">
         <item quantity="zero">Разрешено %s звонков</item>
         <item quantity="one">Разрешен %s вызов</item>
-        <item quantity="few">Разрешены %s вызова</item>
+        <item quantity="few">Разрешено %s вызовов</item>
         <item quantity="other">Разрешено %s вызовов</item>
     </plurals>
     <string name="details_number_contact_without_filter">Без признаков фильтра</string>

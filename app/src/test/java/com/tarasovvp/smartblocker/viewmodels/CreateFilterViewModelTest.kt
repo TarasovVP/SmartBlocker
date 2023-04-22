@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
@@ -31,19 +30,6 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     private lateinit var useCase: CreateFilterUseCase
 
     override fun createViewModel() = CreateFilterViewModel(application, useCase)
-
-    @Test
-    fun getCountryCodeWithCountryTest() = runTest {
-        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        Mockito.`when`(useCase.getCountryCodeWithCountry(TEST_COUNTRY))
-            .thenReturn(expectedCountryCode)
-
-        viewModel.getCountryCodeWithCountry(TEST_COUNTRY)
-        advanceUntilIdle()
-        val resultCountry = viewModel.countryCodeLiveData.getOrAwaitValue()
-        assertEquals(expectedCountryCode.country, resultCountry?.country)
-        assertEquals(expectedCountryCode.countryCode, resultCountry?.countryCode)
-    }
 
     @Test
     fun getCountryCodeWithCodeTest() = runTest {

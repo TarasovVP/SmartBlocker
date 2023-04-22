@@ -21,7 +21,7 @@ class SettingsBlockerViewModel @Inject constructor(
         showProgress()
         if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
             settingsBlockerUseCase.changeBlockHidden(blockHidden) {
-                successBlockHiddenLiveData.postValue(blockHidden)
+                successBlockHiddenLiveData.postValue(blockHidden.not())
             }
         } else {
             successBlockHiddenLiveData.postValue(blockHidden)

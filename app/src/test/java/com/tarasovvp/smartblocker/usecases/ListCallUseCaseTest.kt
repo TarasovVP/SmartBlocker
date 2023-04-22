@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallU
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCaseImpl
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import junit.framework.TestCase.assertEquals
@@ -68,11 +69,20 @@ class ListCallUseCaseTest {
     @Test
     fun getFilteredCallListTest() = runTest {
         val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
+        val searchQuery = String.EMPTY
+        val filterIndexes = arrayListOf(
+            NumberDataFiltering.CALL_BLOCKED.ordinal)
+        val expectedCallList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
+            (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
+                    && (callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
+                    || callWithFilter.call?.isPermittedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
+                    || filterIndexes.isEmpty())
+        }
         Mockito.`when`(logCallRepository.getFilteredCallList(callList, String.EMPTY, arrayListOf(
             NumberDataFiltering.CALL_BLOCKED.ordinal)))
-            .thenReturn(callList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() })
+            .thenReturn(expectedCallList)
         val result = listCallUseCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal))
-        assertEquals(callList, result)
+        assertEquals(expectedCallList, result)
     }
 
     @Test

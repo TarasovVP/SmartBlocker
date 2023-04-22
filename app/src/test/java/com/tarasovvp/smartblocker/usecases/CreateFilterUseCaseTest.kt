@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
@@ -51,17 +50,6 @@ class CreateFilterUseCaseTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository)
-    }
-
-    @Test
-    fun getCountryCodeWithCountryTest() = runTest {
-        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        Mockito.`when`(countryCodeRepository.getCountryCodeWithCountry(TEST_COUNTRY))
-            .thenReturn(expectedCountryCode)
-
-        val resultCountry = createFilterUseCase.getCountryCodeWithCountry(TEST_COUNTRY)
-        assertEquals(expectedCountryCode.country, resultCountry?.country)
-        assertEquals(expectedCountryCode.countryCode, resultCountry?.countryCode)
     }
 
     @Test

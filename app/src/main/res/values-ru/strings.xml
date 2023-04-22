@@ -148,13 +148,13 @@
     </plurals>
     <plurals name="details_number_blocked_calls">
         <item quantity="one">Заблокирован %s вызов</item>
-        <item quantity="few">Заблокированы %s вызова</item>
+        <item quantity="few">Заблокировано %s вызовов</item>
         <item quantity="other">Заблокировано %s вызовов</item>
         <item quantity="many">Заблокировано %s вызовов</item>
     </plurals>
     <plurals name="details_number_permitted_calls">
         <item quantity="one">Разрешен %s вызов</item>
-        <item quantity="few">Разрешены %s вызова</item>
+        <item quantity="few">Разрешено %s вызовов</item>
         <item quantity="other">Разрешено %s вызовов</item>
         <item quantity="many">Разрешено %s вызовов</item>
     </plurals>

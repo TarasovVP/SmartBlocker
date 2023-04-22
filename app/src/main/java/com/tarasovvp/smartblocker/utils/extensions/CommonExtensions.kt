@@ -118,7 +118,7 @@ fun String?.digitsTrimmed() = this?.filter { it.isDigit() || it == PLUS_CHAR }.o
 
 fun String.sendExceptionBroadCast() {
     val intent = Intent(EXCEPTION).putExtra(EXCEPTION, this)
-    SmartBlockerApp.instance?.sendBroadcast(intent)
+    SmartBlockerApp.instance?.baseContext?.sendBroadcast(intent)
 }
 
 fun Context.dpToPx(dp: Float): Float {

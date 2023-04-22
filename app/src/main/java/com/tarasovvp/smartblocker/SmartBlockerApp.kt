@@ -41,8 +41,7 @@ class SmartBlockerApp : Application() {
 
     fun checkNetworkUnAvailable(): Boolean {
         if (isNetworkAvailable.isNotTrue()) {
-            baseContext?.getString(R.string.app_network_unavailable_repeat).orEmpty()
-                .sendExceptionBroadCast()
+            baseContext?.getString(R.string.app_network_unavailable_repeat)?.sendExceptionBroadCast()
             return true
         }
         return false

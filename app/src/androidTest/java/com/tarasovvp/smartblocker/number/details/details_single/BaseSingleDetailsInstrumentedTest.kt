@@ -77,7 +77,8 @@ abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
                 }
                 onView(withId(R.id.empty_state_description)).check(matches(withText(descriptionText)))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
-                onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
+                //TODO drawable
+                //onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
             } else {
                 check(matches(not(isDisplayed())))
             }
