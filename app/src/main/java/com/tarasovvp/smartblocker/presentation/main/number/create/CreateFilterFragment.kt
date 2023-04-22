@@ -87,6 +87,7 @@ open class CreateFilterFragment :
             filterWithCountryCode = args.filterWithCountryCode?.apply {
                 filter?.filterAction = filter?.filterAction ?: FilterAction.FILTER_ACTION_INVALID
             }
+            filterWithCountryCode?.countryCode?.let { setCountryCode(it) }
             (activity as MainActivity).toolbar?.title = getString(if (filterWithCountryCode?.filter?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
             setFilterTextChangeListener()
             executePendingBindings()

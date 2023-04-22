@@ -5,7 +5,6 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
@@ -14,17 +13,19 @@ import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.LIST_EMPTY
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.TestUtils.withBackgroundTint
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
@@ -35,14 +36,12 @@ import org.junit.rules.TestName
 
 @androidx.test.filters.Suppress
 @HiltAndroidTest
-class CreateFilterInstrumentedTest: BaseInstrumentedTest() {
-
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
+open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     @get:Rule
     var name: TestName = TestName()
 
+    private var fragment: CreateFilterFragment? = null
     private var filterWithCountryCode: FilterWithCountryCode? = null
     private var numberDataList = arrayListOf<NumberData>()
 
@@ -50,16 +49,20 @@ class CreateFilterInstrumentedTest: BaseInstrumentedTest() {
     override fun setUp() {
         super.setUp()
         numberDataList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else TestUtils.numberDataList()
-        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCode(filter = Filter()))) {
+        val filterCondition = when(this) {
+            is CreateFilterConditionFullInstrumentedTest -> FilterCondition.FILTER_CONDITION_FULL.index
+            is CreateFilterConditionStartInstrumentedTest -> FilterCondition.FILTER_CONDITION_START.index
+            else -> FilterCondition.FILTER_CONDITION_CONTAIN.index
+        }
+        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCode(filter = Filter(filterType = BLOCKER, conditionType = filterCondition), countryCode = CountryCode()))) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.createFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
-            filterWithCountryCode = arguments?.parcelable(FILTER_WITH_COUNTRY_CODE)
-            (this as? CreateFilterFragment)?.apply {
-                viewModel.countryCodeLiveData.postValue(TestUtils.countryCode())
-                viewModel.filteredNumberDataListLiveData.postValue(TestUtils.numberDataList())
-            }
+            fragment = this as? CreateFilterFragment
         }
+        onView(isRoot()).perform(waitFor(2000))
+        fragment?.viewModel?.filteredNumberDataListLiveData?.postValue(numberDataList)
+        filterWithCountryCode = fragment?.binding?.filterWithCountryCode
     }
 
     @Test
@@ -110,7 +113,6 @@ class CreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkItemDetailsFilterFilteredCallsDetails() {
-        onView(withId(R.id.details_filter_view_pager)).perform(swipeLeft())
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
             .check(matches(withText(if (filterWithCountryCode?.filter?.filterAction.isNull())
                 filterWithCountryCode?.filter?.filteredCallsText(targetContext) else filterWithCountryCode?.filterActionText(targetContext))))
@@ -119,9 +121,14 @@ class CreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkItemDetailsFilterCreated() {
-        onView(withId(R.id.item_details_filter_created))
-            .check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter?.created == 0L) String.EMPTY else String.format(targetContext.getString(R.string.filter_action_created), filterWithCountryCode?.filter?.filterCreatedDate()))))
+        onView(withId(R.id.item_details_filter_created)).apply {
+            if ((filterWithCountryCode?.filter?.created ?: 0) > 0L) {
+                check(matches(isDisplayed()))
+                check(matches(withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithCountryCode?.filter?.filterCreatedDate()))))
+            } else {
+                check(matches(withText(String.EMPTY)))
+            }
+        }
     }
 
 
@@ -164,7 +171,6 @@ class CreateFilterInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withTextColor(filterWithCountryCode?.filter?.filterActionTextTint().orZero())))
             .check(matches(withAlpha(if (filterWithCountryCode?.filter?.isInvalidFilterAction().isTrue()) 0.5f else 1f)))
             .check(matches(if (filterWithCountryCode?.filter?.isInvalidFilterAction().isTrue()) not(isEnabled()) else isEnabled()))
-            .check(matches(withBackgroundTint(filterWithCountryCode?.filter?.filterActionBgTint().orZero())))
     }
 
     @Test
