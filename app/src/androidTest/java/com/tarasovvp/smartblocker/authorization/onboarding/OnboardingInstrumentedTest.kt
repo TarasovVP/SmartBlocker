@@ -8,6 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.OnBoardingAdapter
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.OnBoardingFragment
@@ -85,7 +86,9 @@ class OnboardingInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isEnabled()))
             check(matches(withText(R.string.button_next)))
             perform(click())
+            onView(isRoot()).perform(waitFor(501))
             perform(click())
+            onView(isRoot()).perform(waitFor(501))
             perform(click())
             check(matches(isEnabled()))
             check(matches(withText(R.string.button_accept)))

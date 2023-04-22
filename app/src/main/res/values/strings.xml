@@ -146,7 +146,7 @@
     <plurals name="details_number_blocked_calls">
         <item quantity="zero">Заблокировано %s звонков</item>
         <item quantity="one">Заблокирован %s вызов</item>
-        <item quantity="few">Заблокированы %s вызова</item>
+        <item quantity="few">Заблокировано %s вызовов</item>
         <item quantity="other">Заблокировано %s вызовов</item>
     </plurals>
     <plurals name="details_number_permitted_calls">

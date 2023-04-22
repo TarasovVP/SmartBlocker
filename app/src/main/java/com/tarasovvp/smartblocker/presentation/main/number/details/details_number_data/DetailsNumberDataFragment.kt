@@ -151,8 +151,7 @@ class DetailsNumberDataFragment :
             filter = number,
             conditionType = conditionIndex,
             filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION))
-        val phoneNumber = if (number.getPhoneNumber(String.EMPTY).isNull())
-            number.getPhoneNumber(context?.getUserCountry().orEmpty().uppercase())
+        val phoneNumber = if (number.getPhoneNumber(String.EMPTY).isNull()) number.getPhoneNumber(context?.getUserCountry().orEmpty().uppercase())
         else number.getPhoneNumber(String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
             startAddFilterScreen()

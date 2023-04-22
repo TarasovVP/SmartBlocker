@@ -6,7 +6,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
@@ -128,7 +127,7 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     fun checkSettingsBlockerCountry() {
         onView(withId(R.id.settings_blocker_country))
             .check(matches(isDisplayed()))
-            .check(matches(withText(String.format("%s %s", SharedPrefs.country?.uppercase()?.flagEmoji(), SharedPrefs.country?.uppercase()))))
+            .check(matches(withText(String.format("%s %s", SharedPrefs.countryCode?.country?.uppercase()?.flagEmoji(), SharedPrefs.countryCode?.country?.uppercase()))))
             .perform(click())
         assertEquals(R.id.countryCodeSearchDialog, navController?.currentDestination?.id)
     }

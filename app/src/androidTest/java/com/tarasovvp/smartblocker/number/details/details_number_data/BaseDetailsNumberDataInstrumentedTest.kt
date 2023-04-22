@@ -157,7 +157,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(isDisplayed()))
             .check(matches(withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) String.EMPTY else contactWithFilter?.filterWithCountryCode?.filter?.filter)))
             .check(matches(withTextColor(if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green)))
-            .check(matches(withDrawable(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) null else contactWithFilter?.filterWithCountryCode?.filter?.conditionTypeSmallIcon())))
+            .check(matches(withDrawable(if (contactWithFilter?.filterWithCountryCode.isNull()) null else contactWithFilter?.filterWithCountryCode?.filter?.conditionTypeSmallIcon())))
     }
 
     @Test

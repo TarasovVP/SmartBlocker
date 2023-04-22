@@ -118,7 +118,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_filter_title"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:drawableStart="@{contactWithFilter.contact.filterNullOrEmpty ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon)}" />
+                android:drawableStart="@{contactWithFilter.filterWithCountryCode == null ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon)}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

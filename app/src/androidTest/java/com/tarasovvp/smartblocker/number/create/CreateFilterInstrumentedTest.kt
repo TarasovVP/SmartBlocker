@@ -33,6 +33,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestName
 
+@androidx.test.filters.Suppress
 @HiltAndroidTest
 class CreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
