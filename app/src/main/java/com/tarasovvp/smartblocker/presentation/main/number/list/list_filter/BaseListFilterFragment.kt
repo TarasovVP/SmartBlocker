@@ -129,7 +129,7 @@ open class BaseListFilterFragment :
                 startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
             }
             fabContain.setSafeOnClickListener {
-                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
+                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = null))
             }
         }
     }

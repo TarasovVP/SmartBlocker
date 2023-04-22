@@ -29,7 +29,7 @@ class CreateFilterUseCaseImpl @Inject constructor(
             val callList = calls
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contactList)
-                addAll(callList)
+                addAll(callList.filter { it.call?.number.isNullOrEmpty().not() })
                 sortBy {
                     if (it is ContactWithFilter) it.contact?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else if (it is LogCallWithFilter) it.call?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else String.EMPTY
                 }

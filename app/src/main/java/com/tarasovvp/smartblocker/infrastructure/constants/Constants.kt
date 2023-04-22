@@ -22,7 +22,6 @@ object Constants {
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
     const val BLOCKED_CALL = "6"
-    const val PERMITTED_CALL = "11"
 
     //Notification
     const val NOTIFICATION_CHANNEL = "NOTIFICATION_CHANNEL"
@@ -68,7 +67,6 @@ object Constants {
 
     //CountryCode
     const val COUNTRY_CODE_START = "+%s"
-    const val COUNTRY = "country"
     const val COUNTRY_CODE = "countryCode"
     const val COUNTRY_DEFAULT = "UA"
     const val COUNTRY_CODE_DEFAULT = "+380"
@@ -76,7 +74,7 @@ object Constants {
 
     //Number
     const val PLUS_CHAR = '+'
-    const val MASK_CHAR = '_'
+    const val MASK_CHAR = '#'
     const val SPACE = " "
     const val NUMBER_DATA_TYPE = 0
     const val HEADER_TYPE = 1
