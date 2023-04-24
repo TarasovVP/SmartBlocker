@@ -53,16 +53,16 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
     }
 
     //TODO check crashing
-    @Test
+    /*@Test
     fun filteredCallsByFilterTest() = runTest {
-       /* val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
         Mockito.`when`(useCase.filteredCallsByFilter(TEST_FILTER))
             .thenReturn(filteredCallList)
         viewModel.filteredCallsByFilter(TEST_FILTER)
         advanceUntilIdle()
         val result = viewModel.filteredCallListLiveData.getOrAwaitValue()
-        assertEquals(filteredCallList, result)*/
-    }
+        assertEquals(filteredCallList, result)
+    }*/
 
     @Test
     fun deleteFilterTest() = runTest {
