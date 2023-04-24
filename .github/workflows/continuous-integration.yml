@@ -40,12 +40,12 @@ jobs:
         test_apk: 'app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk'
         gcloud_version: '340.0.0'
         gcloud_project: 'smart-blocker-369210'
-      matrix:
+        matrix:
         os-version: '28'
         device-model: 'pixel3'
         locale: 'en_US'
         orientation: 'portrait'
-      permissions:
+        permissions:
         contents: read
         pages: write
         id-token: write
