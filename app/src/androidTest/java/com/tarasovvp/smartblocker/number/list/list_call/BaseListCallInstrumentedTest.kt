@@ -289,7 +289,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                 isDisplayed(),
                 withText(callWithFilter?.call?.callFilterValue().orEmpty()),
                 withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithCountryCode?.filter).orZero()),
-                withDrawable(callWithFilter?.call?.callFilterIcon(callWithFilter.filterWithCountryCode?.filter)))))))
+                withDrawable(callWithFilter?.call?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),
                 withAlpha(if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isFilteredCall.isNotTrue()) 0.5f else 1f))))))

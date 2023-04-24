@@ -136,7 +136,7 @@
                 android:id="@+id/item_call_filter_value"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
-                android:drawableStart="@{callWithFilter.call.callFilterIcon(callWithFilter.filterWithCountryCode.filter) == null ? null : ContextCompat.getDrawable(context, callWithFilter.call.callFilterIcon(callWithFilter.filterWithCountryCode.filter))}"
+                android:drawableStart="@{callWithFilter.call.callFilterIcon() == null ? null : ContextCompat.getDrawable(context, callWithFilter.call.callFilterIcon())}"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{callWithFilter.call.callFilterValue}"
