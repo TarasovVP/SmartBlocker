@@ -21,19 +21,40 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Install adb and fastboot
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
+
+    - name: Run Lint
+      run: ./gradlew lintDebug
+
+    - name: Run tests with Gradle
+      run: ./gradlew test
+
+    - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v0.2.0
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CLOUD_AUTH }}
+          project_id: smart-blocker-369210
+
+    - name: Install gcloud
+        run: |
+          export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+          echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+          sudo apt-get update && sudo apt-get install google-cloud-sdk
+          
+    - name: Run tests on Firebase Test Lab
       run: |
-        sudo apt-get install -y android-tools-adb android-tools-fastboot
+        gcloud firebase test android run \
+        --type instrumentation \
+        --app app/build/outputs/apk/debug/app-debug.apk \
+        --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+        --device-ids NexusLowRes \
+        --timeout 5m
 
-    
-
-    - name: Run instrumental tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 30
-        target: google_apis
-        arch: x86_64
-        profile: Nexus 6P
-        script: ./gradlew connectedAndroidTest
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_AUTH }}
+        
+        
 
 
