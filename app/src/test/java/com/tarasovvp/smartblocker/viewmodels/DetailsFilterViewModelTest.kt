@@ -19,8 +19,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
-//TODO
-@androidx.test.filters.Suppress
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
@@ -30,7 +28,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
 
     override fun createViewModel() = DetailsFilterViewModel(application, useCase)
 
-    /*@Test
+    @Test
     fun getQueryContactCallListTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
         val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
@@ -91,5 +89,5 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         advanceUntilIdle()
         val result = viewModel.filterActionLiveData.getOrAwaitValue()
         assertEquals(TEST_FILTER, result.filter)
-    }*/
+    }
 }
