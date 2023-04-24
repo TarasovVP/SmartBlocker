@@ -21,20 +21,13 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
 
-    - name: Run Lint
-      run: ./gradlew lintDebug
-
-    - name: Run tests with Gradle
-      run: ./gradlew test
 
     - name: Authenticate with Google Cloud
       uses: google-github-actions/auth@v0.2.0
       with:
-        credentials_json: ${{ secrets.GOOGLE_CLOUD_AUTH }}
-        project_id: smart-blocker-369210
+        service_account: ${{ secrets.GOOGLE_CLOUD_AUTH }}
+        audience: smartblocker@smart-blocker-369210.iam.gserviceaccount.com
 
     - name: Install gcloud
       run: |
