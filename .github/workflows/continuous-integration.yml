@@ -53,12 +53,6 @@ jobs:
         with:
           credentials_json: ${{ secrets.FIREBASE_KEY }}
 
-      - name: Set up gcloud
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          version: '340.0.0'
-          service_account_key: ${{ secrets.FIREBASE_KEY }}
-
       - name: Set current project
         run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
 
