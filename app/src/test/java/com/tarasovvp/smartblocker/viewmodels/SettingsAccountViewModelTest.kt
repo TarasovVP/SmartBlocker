@@ -41,6 +41,7 @@ class SettingsAccountViewModelTest: BaseViewModelTest<SettingsAccountViewModel>(
     fun changePasswordTest() {
         val newPassword = "newPassword"
         Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
             val result = it.arguments[2] as () -> Unit
             result.invoke()
         }.`when`(useCase).changePassword(eq(TEST_PASSWORD), eq(newPassword), any())

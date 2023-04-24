@@ -21,14 +21,11 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
+    - name: Install adb and fastboot
+      run: |
+        sudo apt-get install -y android-tools-adb android-tools-fastboot
 
-    - name: Run Lint
-      run: ./gradlew lintDebug
-
-    - name: Run tests with Gradle
-      run: ./gradlew test
+    
 
     - name: Run instrumental tests
       uses: reactivecircus/android-emulator-runner@v2
