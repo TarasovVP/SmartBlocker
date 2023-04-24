@@ -52,6 +52,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 
+    //TODO check crashing
     @Test
     fun filteredCallsByFilterTest() = runTest {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
