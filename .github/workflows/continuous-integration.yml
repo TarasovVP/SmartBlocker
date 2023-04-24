@@ -26,10 +26,9 @@ jobs:
     - name: Authenticate with Google Cloud
       uses: google-github-actions/auth@v0.2.0
       with:
-        project_id: smart-blocker-369210
-        service_account_email: smartblocker@smart-blocker-369210.iam.gserviceaccount.com
-        service_account_key: ec9e74e454b0ae571de3066a5c8eabc15edf0bb2
-        export_default_credentials: true
+        service_account: ${{ secrets.GOOGLE_CLOUD_AUTH }}
+        audience: smartblocker@smart-blocker-369210.iam.gserviceaccount.com
+        workload_identity_provider: 'projects/*******/locations/global/workloadIdentityPools/**REDACTED**/providers/github-provider'
 
     - name: Install gcloud
       run: |
