@@ -53,6 +53,9 @@ jobs:
         with:
           credentials_json: ${{ secrets.FIREBASE_KEY }}
 
+      - name: Firebase auth with gcloud
+        uses: google-github-actions/setup-gcloud@v1
+
       - name: Set current project
         run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
 
