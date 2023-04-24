@@ -60,7 +60,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         viewModel.filteredCallsByFilter(TEST_FILTER)
         advanceUntilIdle()
         val result = viewModel.filteredCallListLiveData.getOrAwaitValue()
-        assertEquals(TEST_NUMBER, (result[0] as FilteredCallWithFilter).call?.number)
+        assertEquals(filteredCallList, result)
     }
 
     @Test
