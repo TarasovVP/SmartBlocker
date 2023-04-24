@@ -138,7 +138,7 @@ class MaskedEditText @JvmOverloads constructor(
             charsInMaskAux += SPACE
         }
         rawToMask = IntArray(charIndex)
-        System.arraycopy(aux, 0, rawToMask, 0, charIndex)
+        rawToMask?.let { System.arraycopy(aux, 0, it, 0, charIndex) }
     }
 
     private fun erasingStart(start1: Int): Int {
