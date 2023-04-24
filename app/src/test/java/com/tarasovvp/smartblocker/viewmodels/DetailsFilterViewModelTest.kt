@@ -28,8 +28,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
 
     override fun createViewModel() = DetailsFilterViewModel(application, useCase)
 
-    //TODO check crashing
-   /* @Test
+    @Test
     fun getQueryContactCallListTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
         val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
@@ -39,7 +38,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         advanceUntilIdle()
         val result = viewModel.numberDataListLiveData.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
-    }*/
+    }
 
     @Test
     fun filteredNumberDataListTest() = runTest {
@@ -53,8 +52,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 
-    //TODO check crashing
-    /*@Test
+    @Test
     fun filteredCallsByFilterTest() = runTest {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
         Mockito.`when`(useCase.filteredCallsByFilter(TEST_FILTER))
@@ -63,7 +61,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         advanceUntilIdle()
         val result = viewModel.filteredCallListLiveData.getOrAwaitValue()
         assertEquals(filteredCallList, result)
-    }*/
+    }
 
     @Test
     fun deleteFilterTest() = runTest {
