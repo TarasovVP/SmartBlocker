@@ -49,6 +49,7 @@ class SingleDetailsFilteredCallsInstrumentedTest: BaseSingleDetailsInstrumentedT
 
     override fun checkListItem(position: Int) {
         val callWithFilter = dataList[position] as? CallWithFilter
+
         onView(withId(R.id.single_details_list)).apply {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),
