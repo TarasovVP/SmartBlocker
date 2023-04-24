@@ -51,7 +51,7 @@ jobs:
       - name: Firebase auth
         uses: google-github-actions/auth@v1
         with:
-          service_account_key: ${{ secrets.FIREBASE_KEY }}
+          credentials_json: ${{ secrets.FIREBASE_KEY }}
 
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v1
