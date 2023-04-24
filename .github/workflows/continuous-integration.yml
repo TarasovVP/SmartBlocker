@@ -57,7 +57,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           version: '340.0.0'
-          service_account_key: ${{ secrets.FIREBASE_KEY }}
+          service_account: ${{ secrets.FIREBASE_KEY }}
           project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
 
       - name: Run Instrumentation Tests in Firebase Test Lab
