@@ -23,7 +23,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.junit.Test
 import androidx.test.filters.Suppress
-import androidx.test.platform.app.InstrumentationRegistry
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.atPosition
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
@@ -32,7 +31,6 @@ import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import com.tarasovvp.smartblocker.utils.extensions.*

@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_15"
+            android:contentDescription="@{headerDataItem.header.empty ? `-` : headerDataItem.header.empty}"
             android:text="@{headerDataItem.header}" />
     </FrameLayout>
 </layout>
