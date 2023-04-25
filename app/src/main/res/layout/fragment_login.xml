@@ -124,26 +124,26 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/login_forgot_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:paddingVertical="@dimen/padding_12"
-                android:text="@string/authorization_forgot_password"
-                android:textColor="@color/button_bg"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
-
-            <TextView
                 android:id="@+id/login_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/padding_12"
+                android:minHeight="@dimen/padding_48"
                 android:text="@string/authorization_sign_up"
+                android:gravity="center"
                 android:textColor="@color/button_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
 
+            <TextView
+                android:id="@+id/login_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/padding_48"
+                android:text="@string/authorization_forgot_password"
+                android:textColor="@color/button_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_enter"
