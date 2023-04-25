@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.authorization.login
+package com.tarasovvp.smartblocker.login
 
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
