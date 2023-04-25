@@ -9,8 +9,8 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
+import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
@@ -33,6 +33,7 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
+        SharedPrefs.countryCode = CountryCode()
         launchFragmentInHiltContainer<SettingsBlockerFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.settingsBlockerFragment)

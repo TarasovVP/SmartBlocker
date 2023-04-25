@@ -70,7 +70,8 @@
                 android:id="@+id/sign_up_entrance_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/padding_12"
+                android:minHeight="@dimen/padding_48"
+                android:gravity="center"
                 android:text="@string/authorization_entrance_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sign_up_password_container" />
