@@ -47,6 +47,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         Mockito.`when`(useCase.filteredNumberDataList(filter, numberDataList, 0))
             .thenReturn(numberDataList)
         viewModel.filteredNumberDataList(filter, numberDataList, 0)
+
         advanceUntilIdle()
         val result = viewModel.filteredNumberDataListLiveData.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
