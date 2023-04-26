@@ -1,13 +1,11 @@
 package com.tarasovvp.smartblocker.number.list.list_contact
 
-import android.app.Application
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.liveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -16,6 +14,8 @@ import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.tarasovvp.smartblocker.BaseInstrumentedTest
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
@@ -23,8 +23,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.junit.Test
 import androidx.test.filters.Suppress
-import androidx.test.platform.app.InstrumentationRegistry
-import com.tarasovvp.smartblocker.*
+import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.atPosition
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
@@ -32,13 +31,10 @@ import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCaseImpl
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactViewModel
 import com.tarasovvp.smartblocker.utils.extensions.*
-import io.mockk.coEvery
-import io.mockk.mockk
+import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -57,16 +53,14 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
     override fun setUp() {
         super.setUp()
         contactList = if (this is EmptyListContactInstrumentedTest) listOf() else TestUtils.contactWithFilterList()
-        val listContactUseCase = mockk<ListContactUseCaseImpl>()
-        val listContactViewModel = ListContactViewModel(InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as Application, listContactUseCase)
-        coEvery { listContactUseCase.getContactsWithFilters() } returns contactList!!
-        launchFragmentInHiltContainer<ListContactFragment>(viewModel = listContactViewModel) {
+        launchFragmentInHiltContainer<ListContactFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listContactFragment)
             Navigation.setViewNavController(requireView(), navController)
             fragment = this
             (this as ListContactFragment).apply {
                 filterIndexList = filterIndexes ?: arrayListOf()
+                viewModel.contactListLiveData.postValue(contactList)
             }
         }
         waitUntilViewIsDisplayed(if (this@BaseListContactInstrumentedTest is EmptyListContactInstrumentedTest) withId(R.id.list_contact_empty) else withText(contactList?.get(0)?.contact?.name))

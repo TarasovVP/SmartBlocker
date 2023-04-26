@@ -64,7 +64,6 @@ object TestUtils {
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
         @StyleRes themeResId: Int = R.style.Theme_SmartBlocker,
-        viewModel: ViewModel? = null,
         crossinline action: Fragment.() -> Unit = {},
     ) {
         val startActivityIntent = Intent.makeMainActivity(
@@ -87,7 +86,6 @@ object TestUtils {
             )
             SharedPrefs.init(activity)
             fragment.arguments = fragmentArgs
-
             activity.supportFragmentManager
                 .beginTransaction()
                 .add(android.R.id.content, fragment, "")
