@@ -85,6 +85,7 @@ object TestUtils {
                 T::class.java.name
             )
             SharedPrefs.init(activity)
+            SharedPrefs.countryCode = CountryCode()
             fragment.arguments = fragmentArgs
             activity.supportFragmentManager
                 .beginTransaction()
