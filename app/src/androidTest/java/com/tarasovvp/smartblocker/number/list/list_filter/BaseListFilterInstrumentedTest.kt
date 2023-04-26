@@ -19,6 +19,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.atPosition
+import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
@@ -133,6 +134,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.filter_condition_full)))
             check(matches(withDrawable(R.drawable.ic_condition_full)))
+            onView(isRoot()).perform(waitFor(501))
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             assertEquals(FilterWithCountryCode().apply {
@@ -151,6 +153,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.filter_condition_start)))
             check(matches(withDrawable(R.drawable.ic_condition_start)))
+            onView(isRoot()).perform(waitFor(501))
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             assertEquals(FilterWithCountryCode().apply {
@@ -169,6 +172,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.filter_condition_contain)))
             check(matches(withDrawable(R.drawable.ic_condition_contain)))
+            onView(isRoot()).perform(waitFor(501))
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             assertEquals(FilterWithCountryCode().apply {
@@ -189,6 +193,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.fab_start)).check(matches(isDisplayed()))
             onView(withId(R.id.fab_contain)).check(matches(isDisplayed()))
             check(matches(withDrawable(R.drawable.ic_close)))
+            onView(isRoot()).perform(waitFor(501))
             perform(click())
             onView(withId(R.id.fab_full)).check(matches(not(isDisplayed())))
             onView(withId(R.id.fab_start)).check(matches(not(isDisplayed())))

@@ -317,8 +317,8 @@ object TestUtils {
     fun contactWithFilterList() = listOf(
         ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filter = "+380502711344"),
             FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.index), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
-            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("2", name = "a Name", number = "12345", filter = "123"),
+            FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("3", name = "B Name", number = "12345", filter = "123"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("4", name = "B Name", number = "12345"),

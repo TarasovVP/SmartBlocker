@@ -28,7 +28,6 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
-
     @Before
     override fun setUp() {
         super.setUp()
