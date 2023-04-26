@@ -18,14 +18,16 @@ class AccountActionDialog : BaseDialog<DialogConfirmBinding>() {
     override var layoutId = R.layout.dialog_confirm
 
     override fun initUI() {
-        binding?.dialogConfirmTitle?.text =
-            if (args.isLogOut) getString(R.string.settings_account_log_out) else getString(R.string.settings_account_delete)
-        binding?.dialogConfirmCancel?.setSafeOnClickListener {
-            dismiss()
-        }
-        binding?.dialogConfirmSubmit?.setSafeOnClickListener {
-            findNavController().navigateUp()
-            setFragmentResult(if (args.isLogOut) LOG_OUT else DELETE_USER, bundleOf())
+        binding?.apply {
+            dialogConfirmTitle.text =
+                if (args.isLogOut) getString(R.string.settings_account_log_out) else getString(R.string.settings_account_delete)
+            dialogConfirmCancel.setSafeOnClickListener {
+                dismiss()
+            }
+            dialogConfirmSubmit.setSafeOnClickListener {
+                findNavController().navigateUp()
+                setFragmentResult(if (args.isLogOut) LOG_OUT else DELETE_USER, bundleOf())
+            }
         }
     }
 }

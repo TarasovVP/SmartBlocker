@@ -14,13 +14,15 @@ class AppExitDialog : BaseDialog<DialogConfirmBinding>() {
     override var layoutId = R.layout.dialog_confirm
 
     override fun initUI() {
-        binding?.dialogConfirmTitle?.text = getString(R.string.app_exit)
-        binding?.dialogConfirmCancel?.setSafeOnClickListener {
-            dismiss()
-        }
-        binding?.dialogConfirmSubmit?.setSafeOnClickListener {
-            findNavController().navigateUp()
-            setFragmentResult(APP_EXIT, bundleOf())
+        binding?.apply {
+            dialogConfirmTitle.text = getString(R.string.app_exit)
+            dialogConfirmCancel.setSafeOnClickListener {
+                dismiss()
+            }
+            dialogConfirmSubmit.setSafeOnClickListener {
+                findNavController().navigateUp()
+                setFragmentResult(APP_EXIT, bundleOf())
+            }
         }
     }
 }

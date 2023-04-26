@@ -34,10 +34,12 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
                 setFragmentResult(COUNTRY_CODE, bundleOf(COUNTRY_CODE to countryCode))
                 findNavController().navigateUp()
             }
-        binding?.countryCodeSearchList?.adapter = countryCodeSearchAdapter
-        binding?.countryCodeEmpty?.setDescription(EmptyState.EMPTY_STATE_QUERY.description)
-        binding?.countryCodeSearchCancel?.setSafeOnClickListener {
-            dismiss()
+        binding?.apply {
+            countryCodeSearchList.adapter = countryCodeSearchAdapter
+            countryCodeEmpty.setDescription(EmptyState.EMPTY_STATE_QUERY.description)
+            countryCodeSearchCancel.setSafeOnClickListener {
+                dismiss()
+            }
         }
         viewModel.getCountryCodeList()
         viewModel.countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
@@ -46,18 +48,20 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
     }
 
     private fun setCountryCodeSearchList(countryCodeList: List<CountryCode>) {
-        countryCodeSearchAdapter?.countryCodeList = countryCodeList
-        binding?.countryCodeEmpty?.isVisible = countryCodeList.isEmpty()
-        binding?.countryCodeSearchInput?.doAfterTextChanged { searchText ->
-            countryCodeSearchAdapter?.countryCodeList =
-                countryCodeList.filter {
-                    it.countryCode.contains(searchText.toString().lowercase())
-                            || Locale(SharedPrefs.appLang.orEmpty(), it.country).displayCountry.lowercase().contains(searchText.toString().lowercase())
-                }
+        binding?.apply {
+            countryCodeSearchAdapter?.countryCodeList = countryCodeList
+            countryCodeEmpty.isVisible = countryCodeList.isEmpty()
+            countryCodeSearchInput.doAfterTextChanged { searchText ->
+                countryCodeSearchAdapter?.countryCodeList =
+                    countryCodeList.filter {
+                        it.countryCode.contains(searchText.toString().lowercase())
+                                || Locale(SharedPrefs.appLang.orEmpty(), it.country).displayCountry.lowercase().contains(searchText.toString().lowercase())
+                    }
+                countryCodeSearchAdapter?.notifyDataSetChanged()
+                countryCodeEmpty.isVisible =
+                    countryCodeSearchAdapter?.countryCodeList.orEmpty().isEmpty()
+            }
             countryCodeSearchAdapter?.notifyDataSetChanged()
-            binding?.countryCodeEmpty?.isVisible =
-                countryCodeSearchAdapter?.countryCodeList.orEmpty().isEmpty()
         }
-        countryCodeSearchAdapter?.notifyDataSetChanged()
     }
 }

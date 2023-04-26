@@ -12,12 +12,14 @@ class UnavailableNetworkDialog : BaseDialog<DialogConfirmBinding>() {
     override var layoutId = R.layout.dialog_confirm
 
     override fun initUI() {
-        binding?.dialogConfirmTitle?.text = getString(R.string.authorization_network_unavailable)
-        binding?.dialogConfirmSubmit?.isVisible = false
-        binding?.dialogConfirmCancel?.text = getString(R.string.button_ok)
-        binding?.dialogConfirmCancel?.setSafeOnClickListener {
-            dismiss()
-            (activity as MainActivity).finish()
+        binding?.apply {
+            dialogConfirmTitle.text = getString(R.string.authorization_network_unavailable)
+            dialogConfirmSubmit.isVisible = false
+            dialogConfirmCancel.text = getString(R.string.button_ok)
+            dialogConfirmCancel.setSafeOnClickListener {
+                dismiss()
+                (activity as MainActivity).finish()
+            }
         }
     }
 }
