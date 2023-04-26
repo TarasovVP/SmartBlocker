@@ -2,9 +2,9 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
-import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
-import com.tarasovvp.smartblocker.TestUtils.TEST_TOKEN
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_TOKEN
 import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginViewModel
 import junit.framework.TestCase.assertTrue

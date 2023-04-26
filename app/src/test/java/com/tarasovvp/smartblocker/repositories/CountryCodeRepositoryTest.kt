@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.repositories
 
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.data.database.dao.CountryCodeDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.CountryCodeRepositoryImpl
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode

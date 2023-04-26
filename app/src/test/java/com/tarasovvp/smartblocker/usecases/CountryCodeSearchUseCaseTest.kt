@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.usecases
 
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.usecase.countrycode_search.CountryCodeSearchUseCase

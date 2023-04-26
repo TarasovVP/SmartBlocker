@@ -4,11 +4,11 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.TestUtils.TEST_NAME
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
 import com.tarasovvp.smartblocker.presentation.MainViewModel

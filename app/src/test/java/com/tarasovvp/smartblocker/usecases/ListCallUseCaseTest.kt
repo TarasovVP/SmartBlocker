@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.usecases
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter

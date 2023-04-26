@@ -5,8 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import com.nhaarman.mockitokotlin2.*
-import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition

@@ -9,8 +9,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
-import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.data.repositoryImpl.AuthRepositoryImpl
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi

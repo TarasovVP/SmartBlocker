@@ -3,10 +3,10 @@ package com.tarasovvp.smartblocker.usecases
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
@@ -83,16 +83,16 @@ class CreateFilterUseCaseTest {
 
     @Test
     fun checkFilterExistTest() = runTest {
-        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TestUtils.TEST_FILTER))
+        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
         Mockito.`when`(filterRepository.getFilter(filterWithCountryCode))
             .thenReturn(filterWithCountryCode)
         val result = createFilterUseCase.checkFilterExist(filterWithCountryCode)
-        assertEquals(TestUtils.TEST_FILTER, result?.filter?.filter)
+        assertEquals(UnitTestUtils.TEST_FILTER, result?.filter?.filter)
     }
 
     @Test
     fun filterNumberDataListTest() = runTest {
-        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TestUtils.TEST_FILTER))
+        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
         val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
         Mockito.`when`(contactRepository.filteredNumberDataList(filterWithCountryCode.filter, numberDataList, 0))
             .thenReturn(numberDataList)
@@ -102,7 +102,7 @@ class CreateFilterUseCaseTest {
 
     @Test
     fun createFilterTest() = runTest {
-        val filter = Filter(filter = TestUtils.TEST_FILTER)
+        val filter = Filter(filter = UnitTestUtils.TEST_FILTER)
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
@@ -114,7 +114,7 @@ class CreateFilterUseCaseTest {
 
     @Test
     fun updateFilterTest() = runTest {
-        val filter = Filter(filter = TestUtils.TEST_FILTER)
+        val filter = Filter(filter = UnitTestUtils.TEST_FILTER)
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
@@ -126,7 +126,7 @@ class CreateFilterUseCaseTest {
 
     @Test
     fun deleteFilterTest() = runTest {
-        val filter = Filter(filter = TestUtils.TEST_FILTER)
+        val filter = Filter(filter = UnitTestUtils.TEST_FILTER)
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit

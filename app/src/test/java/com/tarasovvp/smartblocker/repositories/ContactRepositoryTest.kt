@@ -4,9 +4,9 @@ import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
 import com.nhaarman.mockitokotlin2.*
-import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.TestUtils.TEST_NAME
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.ContactRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition

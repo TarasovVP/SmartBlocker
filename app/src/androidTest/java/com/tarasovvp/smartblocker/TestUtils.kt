@@ -20,6 +20,8 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -62,6 +64,7 @@ object TestUtils {
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
         @StyleRes themeResId: Int = R.style.Theme_SmartBlocker,
+        viewModel: ViewModel? = null,
         crossinline action: Fragment.() -> Unit = {},
     ) {
         val startActivityIntent = Intent.makeMainActivity(
@@ -84,6 +87,7 @@ object TestUtils {
             )
             SharedPrefs.init(activity)
             fragment.arguments = fragmentArgs
+
             activity.supportFragmentManager
                 .beginTransaction()
                 .add(android.R.id.content, fragment, "")

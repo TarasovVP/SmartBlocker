@@ -7,7 +7,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-object TestUtils {
+object UnitTestUtils {
 
     const val TEST_TOKEN = "testToken"
     const val TEST_NUMBER = "12345678"

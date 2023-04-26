@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecase.countrycode_search.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchViewModel
@@ -14,7 +14,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
-import com.tarasovvp.smartblocker.TestUtils as TestUtils1
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)

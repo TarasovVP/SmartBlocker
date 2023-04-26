@@ -1,10 +1,10 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
-import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode

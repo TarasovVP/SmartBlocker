@@ -5,7 +5,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
@@ -68,21 +68,21 @@ class MainUseCaseTest {
 
     @Test
     fun insertUserFiltersTest() = runTest {
-        val filterList = listOf(Filter(filter = TestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
+        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
         mainUseCase.insertAllFilters(filterList)
         verify(filterRepository, times(1)).insertAllFilters(filterList)
     }
 
     @Test
     fun insertUserFilteredCallsTest() = runTest {
-        val filteredCallList = listOf(FilteredCall().apply { number = TestUtils.TEST_FILTER }, FilteredCall().apply { number = TestUtils.TEST_FILTER })
+        val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_FILTER }, FilteredCall().apply { number = UnitTestUtils.TEST_FILTER })
         mainUseCase.insertAllFilteredCalls(filteredCallList)
         verify(filteredCallRepository, times(1)).insertAllFilteredCalls(filteredCallList)
     }
 
     @Test
     fun getSystemCountryCodeListTest() = runTest {
-        val countryCodeList = listOf(CountryCode(country = TestUtils.TEST_COUNTRY))
+        val countryCodeList = listOf(CountryCode(country = UnitTestUtils.TEST_COUNTRY))
         Mockito.`when`(countryCodeRepository.getSystemCountryCodeList(any()))
             .thenReturn(countryCodeList)
         val resultCountryCodeList = mainUseCase.getSystemCountryCodeList(any())
@@ -98,7 +98,7 @@ class MainUseCaseTest {
 
     @Test
     fun getAllFiltersTest() = runTest {
-        val filterList = listOf(Filter(filter = TestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
+        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
         Mockito.`when`(filterRepository.allFilters())
             .thenReturn(filterList)
         val resultFilterList = mainUseCase.getAllFilters()
@@ -107,7 +107,7 @@ class MainUseCaseTest {
 
     @Test
     fun getSystemContactListTest() = runTest {
-        val contactList = arrayListOf(Contact(name = TestUtils.TEST_NAME))
+        val contactList = arrayListOf(Contact(name = UnitTestUtils.TEST_NAME))
         Mockito.`when`(contactRepository.getSystemContactList(eq(application), any()))
             .thenReturn(contactList)
         val resultContactList = mainUseCase.getSystemContactList(eq(application), any())
@@ -116,8 +116,8 @@ class MainUseCaseTest {
 
     @Test
     fun setFilterToContactTest() = runTest {
-        val filterList = listOf(Filter(filter = TestUtils.TEST_FILTER))
-        val contactList = listOf(Contact(name = TestUtils.TEST_NAME))
+        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
+        val contactList = listOf(Contact(name = UnitTestUtils.TEST_NAME))
         Mockito.`when`(contactRepository.setFilterToContact(eq(filterList), eq(contactList), any()))
             .thenReturn(contactList)
         val resultContactList = mainUseCase.setFilterToContact(eq(filterList), eq(contactList), any())
@@ -133,7 +133,7 @@ class MainUseCaseTest {
 
     @Test
     fun getSystemLogCallListTest() = runTest {
-        val logCallList = listOf(LogCall().apply { number = TestUtils.TEST_NUMBER })
+        val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(logCallRepository.getSystemLogCallList(eq(application), any()))
             .thenReturn(logCallList)
         val resultLogCallList = mainUseCase.getSystemLogCallList(eq(application), any())
@@ -142,8 +142,8 @@ class MainUseCaseTest {
 
     @Test
     fun setFilterToLogCallTest() = runTest {
-        val filterList = listOf(Filter(filter = TestUtils.TEST_FILTER))
-        val logCallList = listOf(LogCall().apply { number = TestUtils.TEST_NUMBER })
+        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
+        val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(logCallRepository.setFilterToLogCall(eq(filterList), eq(logCallList), any()))
             .thenReturn(logCallList)
         val resultLogCallList = mainUseCase.setFilterToLogCall(eq(filterList), eq(logCallList), any())
@@ -152,7 +152,7 @@ class MainUseCaseTest {
 
     @Test
     fun getAllFilteredCallsTest() = runTest {
-        val filteredCallList = listOf(FilteredCall().apply { number = TestUtils.TEST_NUMBER })
+        val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(filteredCallRepository.allFilteredCalls())
             .thenReturn(filteredCallList)
         val resultFilteredCallList = mainUseCase.getAllFilteredCalls()
@@ -161,8 +161,8 @@ class MainUseCaseTest {
 
     @Test
     fun setFilterToFilteredCallTest() = runTest {
-        val filterList = listOf(Filter(filter = TestUtils.TEST_FILTER))
-        val filteredCallList = listOf(FilteredCall().apply { number = TestUtils.TEST_NUMBER })
+        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
+        val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(filteredCallRepository.setFilterToFilteredCall(eq(filterList), eq(filteredCallList), any()))
             .thenReturn(filteredCallList)
         val resultFilteredCallList = mainUseCase.setFilterToFilteredCall(eq(filterList), eq(filteredCallList), any())

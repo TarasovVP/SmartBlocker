@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountViewModel
 import junit.framework.TestCase.assertEquals

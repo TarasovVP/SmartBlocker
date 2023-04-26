@@ -2,19 +2,14 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.models.entities.LogCall
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCase
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterViewModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*

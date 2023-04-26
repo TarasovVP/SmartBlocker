@@ -2,10 +2,9 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
-import com.tarasovvp.smartblocker.TestUtils.TEST_REVIEW
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.domain.models.Review
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCase

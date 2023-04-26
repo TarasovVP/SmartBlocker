@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.usecases
 
-import com.tarasovvp.smartblocker.TestUtils.TEST_NAME
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode

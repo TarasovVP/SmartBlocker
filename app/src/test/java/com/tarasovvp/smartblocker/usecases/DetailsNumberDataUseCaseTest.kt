@@ -1,9 +1,9 @@
 package com.tarasovvp.smartblocker.usecases
 
-import com.tarasovvp.smartblocker.TestUtils
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
-import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
@@ -46,11 +46,11 @@ class DetailsNumberDataUseCaseTest {
 
     @Test
     fun filterListWithNumberTest() = runTest {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TestUtils.TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
         Mockito.`when`(filterRepository.queryFilterList(TEST_NUMBER))
             .thenReturn(filterList)
         val result = detailsNumberDataUseCase.filterListWithNumber(TEST_NUMBER)
-        assertEquals(TestUtils.TEST_FILTER, (result[0] as FilterWithCountryCode).filter?.filter)
+        assertEquals(UnitTestUtils.TEST_FILTER, (result[0] as FilterWithCountryCode).filter?.filter)
     }
 
     @Test

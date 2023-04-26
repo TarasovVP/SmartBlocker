@@ -3,9 +3,8 @@ package com.tarasovvp.smartblocker.usecases
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.tarasovvp.smartblocker.TestUtils.TEST_PASSWORD
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCaseImpl
