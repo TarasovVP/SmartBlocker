@@ -20,5 +20,5 @@ interface FilteredCallRepository {
 
     suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter>
 
-    suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>, result: () -> Unit)
+    suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>)
 }

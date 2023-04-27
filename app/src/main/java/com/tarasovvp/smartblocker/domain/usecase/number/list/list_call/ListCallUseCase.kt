@@ -10,5 +10,5 @@ interface ListCallUseCase {
 
     suspend fun getHashMapFromCallList(callList: List<CallWithFilter>): Map<String, List<CallWithFilter>>?
 
-    suspend fun deleteCallList(filteredCallIdList: List<Int>, result: () -> Unit)
+    suspend fun deleteCallList(filteredCallIdList: List<Int>, isLoggedInUser: Boolean, result: () -> Unit)
 }

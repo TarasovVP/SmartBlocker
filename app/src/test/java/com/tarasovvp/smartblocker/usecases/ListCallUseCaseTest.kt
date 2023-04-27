@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
@@ -11,6 +12,7 @@ import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCaseImpl
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
@@ -38,6 +40,9 @@ class ListCallUseCaseTest {
     private lateinit var filteredCallRepository: FilteredCallRepository
 
     @Mock
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
+
+    @Mock
     private lateinit var resultMock: () -> Unit
 
     private lateinit var listCallUseCase: ListCallUseCase
@@ -45,7 +50,7 @@ class ListCallUseCaseTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository)
+        listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository)
     }
 
     @Test
@@ -102,8 +107,15 @@ class ListCallUseCaseTest {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(filteredCallRepository).deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() }), any())
-        listCallUseCase.deleteCallList(callList.map { it.call?.callId.orZero() }, resultMock)
+        }.`when`(realDataBaseRepository).deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any())
+        Mockito.`when`(filteredCallRepository.deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() }))).thenReturn(Unit)
+        listCallUseCase.deleteCallList(callList.map { it.call?.callId.orZero() }, true, resultMock)
+        verify(realDataBaseRepository).deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any())
+        verify(filteredCallRepository).deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() }))
         verify(resultMock).invoke()
+        listCallUseCase.deleteCallList(callList.map { it.call?.callId.orZero() }, false, resultMock)
+        verify(realDataBaseRepository, times(1)).deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any())
+        verify(filteredCallRepository, times(2)).deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() }))
+        verify(resultMock, times(2)).invoke()
     }
 }

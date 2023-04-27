@@ -11,5 +11,5 @@ interface ListFilterUseCase {
 
     suspend fun getHashMapFromFilterList(filterList: List<FilterWithCountryCode>): Map<String, List<FilterWithCountryCode>>?
 
-    suspend fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit)
+    suspend fun deleteFilterList(filterList: List<Filter?>, isLoggedInUser: Boolean, result: () -> Unit)
 }

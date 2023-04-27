@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
@@ -39,6 +40,9 @@ class CreateFilterUseCaseTest {
     private lateinit var filterRepository: FilterRepository
 
     @Mock
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
+
+    @Mock
     private lateinit var logCallRepository: LogCallRepository
 
     @Mock
@@ -49,7 +53,7 @@ class CreateFilterUseCaseTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository)
+        createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, realDataBaseRepository, logCallRepository)
     }
 
     @Test
@@ -107,9 +111,16 @@ class CreateFilterUseCaseTest {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(filterRepository).insertFilter(eq(filter), any())
-        createFilterUseCase.createFilter(filter, resultMock)
+        }.`when`(realDataBaseRepository).insertFilter(eq(filter), any())
+        Mockito.`when`(filterRepository.insertFilter(eq(filter))).thenReturn(Unit)
+        createFilterUseCase.createFilter(filter, true, resultMock)
+        verify(realDataBaseRepository).insertFilter(eq(filter), any())
+        verify(filterRepository).insertFilter(eq(filter))
         verify(resultMock).invoke()
+        createFilterUseCase.createFilter(filter, false, resultMock)
+        verify(realDataBaseRepository, times(1)).insertFilter(eq(filter), any())
+        verify(filterRepository, times(2)).insertFilter(eq(filter))
+        verify(resultMock, times(2)).invoke()
     }
 
     @Test
@@ -119,9 +130,16 @@ class CreateFilterUseCaseTest {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(filterRepository).updateFilter(eq(filter), any())
-        createFilterUseCase.updateFilter(filter, resultMock)
+        }.`when`(realDataBaseRepository).insertFilter(eq(filter), any())
+        Mockito.`when`(filterRepository.updateFilter(eq(filter))).thenReturn(Unit)
+        createFilterUseCase.updateFilter(filter, true, resultMock)
+        verify(realDataBaseRepository).insertFilter(eq(filter), any())
+        verify(filterRepository).updateFilter(eq(filter))
         verify(resultMock).invoke()
+        createFilterUseCase.updateFilter(filter, false, resultMock)
+        verify(realDataBaseRepository, times(1)).insertFilter(eq(filter), any())
+        verify(filterRepository, times(2)).updateFilter(eq(filter))
+        verify(resultMock, times(2)).invoke()
     }
 
     @Test
@@ -131,8 +149,15 @@ class CreateFilterUseCaseTest {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(filterRepository).deleteFilterList(eq(listOf(filter)), any())
-        createFilterUseCase.deleteFilter(filter, resultMock)
+        }.`when`(realDataBaseRepository).deleteFilterList(eq(listOf(filter)), any())
+        Mockito.`when`(filterRepository.deleteFilterList(eq(listOf(filter)))).thenReturn(Unit)
+        createFilterUseCase.deleteFilter(filter, true, resultMock)
+        verify(realDataBaseRepository).deleteFilterList(eq(listOf(filter)), any())
+        verify(filterRepository).deleteFilterList(eq(listOf(filter)))
         verify(resultMock).invoke()
+        createFilterUseCase.deleteFilter(filter, false, resultMock)
+        verify(realDataBaseRepository, times(1)).deleteFilterList(eq(listOf(filter)), any())
+        verify(filterRepository, times(2)).deleteFilterList(eq(listOf(filter)))
+        verify(resultMock, times(2)).invoke()
     }
 }

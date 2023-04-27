@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
@@ -34,6 +35,9 @@ class DetailsFilterUseCaseTest {
     private lateinit var filterRepository: FilterRepository
 
     @Mock
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
+
+    @Mock
     private lateinit var logCallRepository: LogCallRepository
 
     @Mock
@@ -43,6 +47,12 @@ class DetailsFilterUseCaseTest {
     private lateinit var resultMock: () -> Unit
 
     private lateinit var detailsFilterUseCase: DetailsFilterUseCase
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        detailsFilterUseCase = DetailsFilterUseCaseImpl(contactRepository, filterRepository, realDataBaseRepository, logCallRepository, filteredCallRepository)
+    }
 
     @Test
     fun getQueryContactCallListTest() = runTest {
@@ -89,9 +99,16 @@ class DetailsFilterUseCaseTest {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(filterRepository).deleteFilterList(eq(listOf(filter)), any())
-        detailsFilterUseCase.deleteFilter(filter, resultMock)
+        }.`when`(realDataBaseRepository).deleteFilterList(eq(listOf(filter)), any())
+        Mockito.`when`(filterRepository.deleteFilterList(eq(listOf(filter)))).thenReturn(Unit)
+        detailsFilterUseCase.deleteFilter(filter, true, resultMock)
+        verify(realDataBaseRepository).deleteFilterList(eq(listOf(filter)), any())
+        verify(filterRepository).deleteFilterList(eq(listOf(filter)))
         verify(resultMock).invoke()
+        detailsFilterUseCase.deleteFilter(filter, false, resultMock)
+        verify(realDataBaseRepository, times(1)).deleteFilterList(eq(listOf(filter)), any())
+        verify(filterRepository, times(2)).deleteFilterList(eq(listOf(filter)))
+        verify(resultMock, times(2)).invoke()
     }
 
     @Test
@@ -101,14 +118,15 @@ class DetailsFilterUseCaseTest {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(filterRepository).updateFilter(eq(filter), any())
-        detailsFilterUseCase.updateFilter(filter, resultMock)
+        }.`when`(realDataBaseRepository).insertFilter(eq(filter), any())
+        Mockito.`when`(filterRepository.updateFilter(eq(filter))).thenReturn(Unit)
+        detailsFilterUseCase.updateFilter(filter, true, resultMock)
+        verify(realDataBaseRepository).insertFilter(eq(filter), any())
+        verify(filterRepository).updateFilter(eq(filter))
         verify(resultMock).invoke()
-    }
-
-    @Before
-    fun setUp() {
-        MockitoAnnotations.openMocks(this)
-        detailsFilterUseCase = DetailsFilterUseCaseImpl(contactRepository, filterRepository, logCallRepository, filteredCallRepository)
+        detailsFilterUseCase.updateFilter(filter, false, resultMock)
+        verify(realDataBaseRepository, times(1)).insertFilter(eq(filter), any())
+        verify(filterRepository, times(2)).updateFilter(eq(filter))
+        verify(resultMock, times(2)).invoke()
     }
 }

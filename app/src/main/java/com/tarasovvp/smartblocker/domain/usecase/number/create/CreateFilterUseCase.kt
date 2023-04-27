@@ -15,10 +15,10 @@ interface CreateFilterUseCase {
 
     suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int): ArrayList<NumberData>
 
-    suspend fun createFilter(filter: Filter,  result: () -> Unit)
+    suspend fun createFilter(filter: Filter,  isLoggedInUser: Boolean, result: () -> Unit)
 
-    suspend fun updateFilter(filter: Filter,  result: () -> Unit)
+    suspend fun updateFilter(filter: Filter,  isLoggedInUser: Boolean, result: () -> Unit)
 
-    suspend fun deleteFilter(filter: Filter,  result: () -> Unit)
+    suspend fun deleteFilter(filter: Filter,  isLoggedInUser: Boolean, result: () -> Unit)
 
 }

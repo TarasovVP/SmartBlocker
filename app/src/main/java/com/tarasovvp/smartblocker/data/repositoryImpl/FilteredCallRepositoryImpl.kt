@@ -1,26 +1,20 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
-import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FilteredCallRepositoryImpl @Inject constructor(
-    private val filteredCallDao: FilteredCallDao,
-    private val realDataBaseRepository: RealDataBaseRepository
+    private val filteredCallDao: FilteredCallDao
 ) : FilteredCallRepository {
 
     override suspend fun setFilterToFilteredCall(filterList: List<Filter>, callList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall> =
-        withContext(
-            Dispatchers.Default
-        ) {
+        withContext(Dispatchers.Default) {
             callList.onEachIndexed { index, filteredCall ->
                 filteredCall.filter = filterList.filter { filter ->
                     (filteredCall.number == filter.filter && filter.isTypeFull())
@@ -38,13 +32,7 @@ class FilteredCallRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertFilteredCall(filteredCall: FilteredCall) {
-        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-            realDataBaseRepository.insertFilteredCall(filteredCall) {
-                filteredCallDao.insertFilteredCall(filteredCall)
-            }
-        } else {
-            filteredCallDao.insertFilteredCall(filteredCall)
-        }
+        filteredCallDao.insertFilteredCall(filteredCall)
     }
 
     override suspend fun allFilteredCalls(): List<FilteredCall> {
@@ -63,16 +51,8 @@ class FilteredCallRepositoryImpl @Inject constructor(
         return filteredCallDao.filteredCallsByNumber(number)
     }
 
-    override suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-            realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map { it.toString() }) {
-                filteredCallDao.deleteFilteredCalls(filteredCallIdList)
-                result.invoke()
-            }
-        } else {
-            filteredCallDao.deleteFilteredCalls(filteredCallIdList)
-            result.invoke()
-        }
+    override suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>) {
+        filteredCallDao.deleteFilteredCalls(filteredCallIdList)
     }
 
 }

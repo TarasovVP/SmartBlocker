@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
@@ -10,6 +11,7 @@ import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.utils.extensions.isDarkMode
 import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -66,7 +68,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel createFilter createFilter $filter filter.country ${filter?.country}")
         launch {
             filter?.let {
-                createFilterUseCase.createFilter(it) {
+                createFilterUseCase.createFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                     filterActionLiveData.postValue(it)
                 }
             }
@@ -77,7 +79,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel updateFilter")
         launch {
             filter?.let {
-                createFilterUseCase.updateFilter(it) {
+                createFilterUseCase.updateFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                     filterActionLiveData.postValue(it)
                 }
             }
@@ -88,7 +90,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel deleteFilter")
         launch {
             filter?.let {
-                createFilterUseCase.deleteFilter(it) {
+                createFilterUseCase.deleteFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                     filterActionLiveData.postValue(it)
                 }
             }

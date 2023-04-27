@@ -15,9 +15,7 @@ class CountryCodeRepositoryImpl @Inject constructor(
 ) : CountryCodeRepository {
 
     override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
-        withContext(
-            Dispatchers.Default
-        ) {
+        withContext(Dispatchers.Default) {
             PhoneNumberUtil.getInstance().countryCodeList { size, position ->
                 result.invoke(size, position)
             }
@@ -28,9 +26,7 @@ class CountryCodeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllCountryCodes(): List<CountryCode> =
-        withContext(
-            Dispatchers.Default
-        ) {
+        withContext(Dispatchers.Default) {
             countryCodeDao.getAllCountryCodes()
         }
 

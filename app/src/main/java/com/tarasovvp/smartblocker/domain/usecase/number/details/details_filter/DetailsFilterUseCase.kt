@@ -12,7 +12,7 @@ interface DetailsFilterUseCase {
 
     suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter>
 
-    suspend fun deleteFilter(filter: Filter, result: () -> Unit)
+    suspend fun deleteFilter(filter: Filter,  isLoggedInUser: Boolean, result: () -> Unit)
 
-    suspend fun updateFilter(filter: Filter, result: () -> Unit)
+    suspend fun updateFilter(filter: Filter,  isLoggedInUser: Boolean, result: () -> Unit)
 }

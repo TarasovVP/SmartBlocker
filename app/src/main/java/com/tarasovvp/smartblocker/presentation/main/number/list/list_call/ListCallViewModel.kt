@@ -2,9 +2,11 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -50,7 +52,7 @@ class ListCallViewModel @Inject constructor(
     fun deleteCallList(filteredCallIdList: List<Int>) {
         showProgress()
         launch {
-            listCallUseCase.deleteCallList(filteredCallIdList) {
+            listCallUseCase.deleteCallList(filteredCallIdList, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                 successDeleteNumberLiveData.postValue(true)
                 hideProgress()
             }

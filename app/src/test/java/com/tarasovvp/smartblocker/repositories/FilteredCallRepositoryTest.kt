@@ -10,7 +10,6 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithF
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
-import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -29,15 +28,12 @@ class FilteredCallRepositoryTest {
     @Mock
     private lateinit var filteredCallDao: FilteredCallDao
 
-    @Mock
-    private lateinit var realDataBaseRepository: RealDataBaseRepository
-
     private lateinit var filteredCallRepository: FilteredCallRepository
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        filteredCallRepository = FilteredCallRepositoryImpl(filteredCallDao, realDataBaseRepository)
+        filteredCallRepository = FilteredCallRepositoryImpl(filteredCallDao)
     }
 
     @Test
@@ -114,11 +110,9 @@ class FilteredCallRepositoryTest {
 
     @Test
     fun deleteFilteredCallsTest() = runTest {
-        val resultMock = mock<() -> Unit>()
         val filteredCallIdList = listOf(1, 2)
-        filteredCallRepository.deleteFilteredCalls(filteredCallIdList, resultMock)
+        filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
         verify(filteredCallDao).deleteFilteredCalls(filteredCallIdList)
-        verify(resultMock).invoke()
     }
 
 }

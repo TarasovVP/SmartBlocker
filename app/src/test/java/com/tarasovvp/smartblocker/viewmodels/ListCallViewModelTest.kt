@@ -70,9 +70,9 @@ class ListCallViewModelTest: BaseViewModelTest<ListCallViewModel>() {
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER, callId = 123)))
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
+            val result = it.arguments[2] as () -> Unit
             result.invoke()
-        }.`when`(useCase).deleteCallList(eq(callList.map { it.call?.callId.orZero() }), any())
+        }.`when`(useCase).deleteCallList(eq(callList.map { it.call?.callId.orZero() }), any(), any())
         viewModel.deleteCallList(callList.map { it.call?.callId.orZero() })
         advanceUntilIdle()
         val result = viewModel.successDeleteNumberLiveData.getOrAwaitValue()

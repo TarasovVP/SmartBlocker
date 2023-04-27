@@ -17,6 +17,7 @@ import com.tarasovvp.smartblocker.TestUtils.filterList
 import com.tarasovvp.smartblocker.TestUtils.filteredCallList
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
@@ -221,6 +222,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.details_number_data_create_blocker)).perform(click())
+            onView(isRoot()).perform(waitFor(3000))
             onView(withId(R.id.number_data_detail_add_filter_full))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(R.string.filter_condition_full)))
@@ -237,6 +239,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.details_number_data_create_blocker)).perform(click())
+            onView(isRoot()).perform(waitFor(3000))
             onView(withId(R.id.number_data_detail_add_filter_start))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(R.string.filter_condition_start)))
@@ -253,6 +256,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.details_number_data_create_permission)).perform(click())
+            onView(isRoot()).perform(waitFor(3000))
             onView(withId(R.id.number_data_detail_add_filter_contain))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(R.string.filter_condition_contain)))

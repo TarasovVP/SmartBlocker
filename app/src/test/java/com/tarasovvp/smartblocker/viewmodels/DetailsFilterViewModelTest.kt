@@ -52,7 +52,6 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 
-    //TODO
     @Test
     fun filteredCallsByFilterTest() = runTest {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
@@ -69,9 +68,9 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         val filter = Filter(filter = TEST_FILTER)
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
+            val result = it.arguments[2] as () -> Unit
             result.invoke()
-        }.`when`(useCase).deleteFilter(eq(filter), any())
+        }.`when`(useCase).deleteFilter(eq(filter), any(), any())
         viewModel.deleteFilter(filter)
         advanceUntilIdle()
         val result = viewModel.filterActionLiveData.getOrAwaitValue()
@@ -83,9 +82,9 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         val filter = Filter(filter = TEST_FILTER)
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
+            val result = it.arguments[2] as () -> Unit
             result.invoke()
-        }.`when`(useCase).updateFilter(eq(filter), any())
+        }.`when`(useCase).updateFilter(eq(filter), any(), any())
         viewModel.updateFilter(filter)
         advanceUntilIdle()
         val result = viewModel.filterActionLiveData.getOrAwaitValue()

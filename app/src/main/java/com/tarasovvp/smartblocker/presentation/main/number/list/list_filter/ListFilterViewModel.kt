@@ -2,10 +2,12 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -51,7 +53,7 @@ class ListFilterViewModel @Inject constructor(
     fun deleteFilterList(filterList: List<Filter?>) {
         showProgress()
         launch {
-            listFilterUseCase.deleteFilterList(filterList) {
+            listFilterUseCase.deleteFilterList(filterList, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                 successDeleteFilterLiveData.postValue(true)
             }
             hideProgress()

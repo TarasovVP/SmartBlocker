@@ -149,9 +149,8 @@ class RealDataBaseRepositoryTest {
             listener.onComplete(task)
             task
         }
-        realDataBaseRepository.insertFilteredCall(filteredCall, resultMock)
+        realDataBaseRepository.insertFilteredCall(filteredCall) {}
         verify(task).addOnCompleteListener(any())
-        verify(resultMock).invoke()
     }
 
     @Test

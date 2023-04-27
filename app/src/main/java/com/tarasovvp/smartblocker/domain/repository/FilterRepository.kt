@@ -15,11 +15,11 @@ interface FilterRepository {
 
     suspend fun getFilter(filter: FilterWithCountryCode): FilterWithCountryCode?
 
-    suspend fun updateFilter(filter: Filter, result: () -> Unit)
+    suspend fun updateFilter(filter: Filter)
 
-    suspend fun insertFilter(filter: Filter, result: () -> Unit)
+    suspend fun insertFilter(filter: Filter)
 
-    suspend fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit)
+    suspend fun deleteFilterList(filterList: List<Filter?>)
 
     suspend fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>): List<FilterWithCountryCode>
 

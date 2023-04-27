@@ -1,13 +1,12 @@
 package com.tarasovvp.smartblocker.usecases
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
@@ -28,6 +27,9 @@ class ListFilterUseCaseTest {
     private lateinit var filterRepository: FilterRepository
 
     @Mock
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
+
+    @Mock
     private lateinit var resultMock: () -> Unit
 
     private lateinit var listFilterUseCase: ListFilterUseCase
@@ -35,7 +37,7 @@ class ListFilterUseCaseTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        listFilterUseCase = ListFilterUseCaseImpl(filterRepository)
+        listFilterUseCase = ListFilterUseCaseImpl(filterRepository, realDataBaseRepository)
     }
 
     @Test
@@ -62,8 +64,15 @@ class ListFilterUseCaseTest {
             @Suppress("UNCHECKED_CAST")
             val result = it.arguments[1] as () -> Unit
             result.invoke()
-        }.`when`(filterRepository).deleteFilterList(eq(filterList), any())
-        listFilterUseCase.deleteFilterList(filterList, resultMock)
+        }.`when`(realDataBaseRepository).deleteFilterList(eq(filterList), any())
+        Mockito.`when`(filterRepository.deleteFilterList(eq(filterList))).thenReturn(Unit)
+        listFilterUseCase.deleteFilterList(filterList, true, resultMock)
+        verify(realDataBaseRepository).deleteFilterList(eq(filterList), any())
+        verify(filterRepository).deleteFilterList(eq(filterList))
         verify(resultMock).invoke()
+        listFilterUseCase.deleteFilterList(filterList, false, resultMock)
+        verify(realDataBaseRepository, times(1)).deleteFilterList(eq(filterList), any())
+        verify(filterRepository, times(2)).deleteFilterList(eq(filterList))
+        verify(resultMock, times(2)).invoke()
     }
 }

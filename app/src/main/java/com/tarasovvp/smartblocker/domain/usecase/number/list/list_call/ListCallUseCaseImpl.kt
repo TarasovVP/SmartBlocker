@@ -3,21 +3,22 @@ package com.tarasovvp.smartblocker.domain.usecase.number.list.list_call
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class ListCallUseCaseImpl @Inject constructor(
     private val logCallRepository: LogCallRepository,
-    private val filteredCallRepository: FilteredCallRepository
+    private val filteredCallRepository: FilteredCallRepository,
+    private val realDataBaseRepository: RealDataBaseRepository
 ): ListCallUseCase {
 
     override suspend fun getCallList(): List<CallWithFilter> {
             val logCalls = logCallRepository.getAllLogCallWithFilter()
             val filteredCalls =  filteredCallRepository.allFilteredCallWithFilter()
-            val filteredCallList = filteredCalls
-            val logCallList = logCalls
             val callList = ArrayList<CallWithFilter>().apply {
-                addAll(filteredCallList)
-                addAll(logCallList)
+                addAll(filteredCalls)
+                addAll(logCalls)
             }
             return callList.distinctBy {
                 it.call?.callId
@@ -30,7 +31,17 @@ class ListCallUseCaseImpl @Inject constructor(
         it.call?.callDate
     })
 
-    override suspend fun deleteCallList(filteredCallIdList: List<Int>, result: () -> Unit) = filteredCallRepository.deleteFilteredCalls(filteredCallIdList) {
-        result.invoke()
+    override suspend fun deleteCallList(filteredCallIdList: List<Int>, isLoggedInUser: Boolean, result: () -> Unit) {
+        if (isLoggedInUser) {
+            realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map { it.toString() }) {
+                runBlocking {
+                    filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
+                    result.invoke()
+                }
+            }
+        } else {
+            filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
+            result.invoke()
+        }
     }
 }

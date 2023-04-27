@@ -9,7 +9,6 @@ import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
-import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,18 +28,12 @@ class FilterRepositoryTest {
     @Mock
     private lateinit var filterDao: FilterDao
 
-    @Mock
-    private lateinit var realDataBaseRepository: RealDataBaseRepository
-
-    @Mock
-    private lateinit var resultMock: () -> Unit
-
     private lateinit var filterRepository: FilterRepository
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        filterRepository = FilterRepositoryImpl(filterDao, realDataBaseRepository)
+        filterRepository = FilterRepositoryImpl(filterDao)
     }
 
     @Test
@@ -85,25 +78,22 @@ class FilterRepositoryTest {
     @Test
     fun updateFilterTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        filterRepository.updateFilter(filter, resultMock)
+        filterRepository.updateFilter(filter)
         verify(filterDao).updateFilter(filter)
-        verify(resultMock).invoke()
     }
 
     @Test
     fun insertFilterTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        filterRepository.insertFilter(filter, resultMock)
+        filterRepository.insertFilter(filter)
         verify(filterDao).insertFilter(filter)
-        verify(resultMock).invoke()
     }
 
     @Test
     fun deleteFilterListTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        filterRepository.deleteFilterList(listOf(filter), resultMock)
+        filterRepository.deleteFilterList(listOf(filter))
         verify(filterDao).delete(filter)
-        verify(resultMock).invoke()
     }
 
     @Test

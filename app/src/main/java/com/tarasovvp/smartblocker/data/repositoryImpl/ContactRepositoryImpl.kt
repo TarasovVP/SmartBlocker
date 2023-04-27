@@ -66,8 +66,8 @@ class ContactRepositoryImpl @Inject constructor(
         contactList: List<ContactWithFilter>,
         searchQuery: String,
         filterIndexes: ArrayList<Int>,
-    ) = withContext(Dispatchers.Default) {
-        if (searchQuery.isBlank() && filterIndexes.isEmpty()) contactList else contactList.filter { contactWithFilter ->
+    ): List<ContactWithFilter> {
+        return if (searchQuery.isBlank() && filterIndexes.isEmpty()) contactList else contactList.filter { contactWithFilter ->
                 ((contactWithFilter.contact?.name isContaining searchQuery || contactWithFilter.contact?.trimmedPhone isContaining searchQuery))
                         && (contactWithFilter.filterWithCountryCode?.filter?.isBlocker().isTrue() && filterIndexes.contains(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
                         || contactWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && filterIndexes.contains(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal)
@@ -76,9 +76,7 @@ class ContactRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getHashMapFromContactList(contactList: List<ContactWithFilter>): Map<String, List<ContactWithFilter>> =
-        withContext(
-            Dispatchers.Default
-        ) {
+        withContext(Dispatchers.Default) {
             contactList.groupBy {
                 if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
             }
@@ -88,7 +86,7 @@ class ContactRepositoryImpl @Inject constructor(
         filter: Filter?,
         numberDataList: ArrayList<NumberData>,
         color: Int,
-    ): ArrayList<NumberData> = withContext(Dispatchers.Default) {
+    ): ArrayList<NumberData> {
         val filteredList = arrayListOf<NumberData>()
         val supposedFilteredList = arrayListOf<NumberData>()
         numberDataList.forEach { numberData ->
@@ -100,6 +98,6 @@ class ContactRepositoryImpl @Inject constructor(
             }
         }
         filteredList.addAll(supposedFilteredList)
-        filteredList
+        return filteredList
     }
 }

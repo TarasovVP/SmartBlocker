@@ -123,18 +123,18 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFilterRepository(
-        filterDao: FilterDao,
-        realDataBaseRepository: RealDataBaseRepository,
+        filterDao: FilterDao
     ): FilterRepository {
-        return FilterRepositoryImpl(filterDao, realDataBaseRepository)
+        return FilterRepositoryImpl(filterDao)
     }
 
     @Singleton
     @Provides
     fun provideListFilterUseCase(
-        filterRepository: FilterRepository
+        filterRepository: FilterRepository,
+        realDataBaseRepository: RealDataBaseRepository,
     ): ListFilterUseCase {
-        return ListFilterUseCaseImpl(filterRepository)
+        return ListFilterUseCaseImpl(filterRepository, realDataBaseRepository)
     }
 
     @Singleton
@@ -143,12 +143,14 @@ object AppModule {
         contactRepository: ContactRepository,
         countryCodeRepository: CountryCodeRepository,
         filterRepository: FilterRepository,
+        realDataBaseRepository: RealDataBaseRepository,
         logCallRepository: LogCallRepository
     ): CreateFilterUseCase {
         return CreateFilterUseCaseImpl(
             contactRepository,
             countryCodeRepository,
             filterRepository,
+            realDataBaseRepository,
             logCallRepository
         )
     }
@@ -158,12 +160,14 @@ object AppModule {
     fun provideDetailsFilterUseCase(
         contactRepository: ContactRepository,
         filterRepository: FilterRepository,
+        realDataBaseRepository: RealDataBaseRepository,
         logCallRepository: LogCallRepository,
         filteredCallRepository: FilteredCallRepository
     ): DetailsFilterUseCase {
         return DetailsFilterUseCaseImpl(
             contactRepository,
             filterRepository,
+            realDataBaseRepository,
             logCallRepository,
             filteredCallRepository
         )
@@ -186,9 +190,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFilteredCallRepository(
-        filteredCallDao: FilteredCallDao, realDataBaseRepository: RealDataBaseRepository
+        filteredCallDao: FilteredCallDao
     ): FilteredCallRepository {
-        return FilteredCallRepositoryImpl(filteredCallDao, realDataBaseRepository)
+        return FilteredCallRepositoryImpl(filteredCallDao)
     }
 
     @Singleton
@@ -225,9 +229,10 @@ object AppModule {
     @Provides
     fun provideListCallUseCase(
         logCallRepository: LogCallRepository,
-        filteredCallRepository: FilteredCallRepository
+        filteredCallRepository: FilteredCallRepository,
+        realDataBaseRepository: RealDataBaseRepository
     ): ListCallUseCase {
-        return ListCallUseCaseImpl(logCallRepository, filteredCallRepository)
+        return ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository)
     }
 
     @Singleton

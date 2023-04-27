@@ -2,10 +2,12 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_filt
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -58,7 +60,7 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filter?.let {
-                detailsFilterUseCase.deleteFilter(it) {
+                detailsFilterUseCase.deleteFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                     filterActionLiveData.postValue(it)
                 }
             }
@@ -70,7 +72,7 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filter?.let {
-                detailsFilterUseCase.updateFilter(it) {
+                detailsFilterUseCase.updateFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                     filterActionLiveData.postValue(it)
                 }
             }

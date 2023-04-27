@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.presentation.base
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tarasovvp.smartblocker.utils.extensions.launchIO
@@ -13,8 +12,8 @@ import kotlinx.coroutines.Job
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
     val exceptionLiveData = MutableLiveData<String>()
-    val isProgressProcessLiveData = MediatorLiveData<Boolean>()
-    val isMainProgressProcessLiveData = MediatorLiveData<Boolean>()
+    val isProgressProcessLiveData = MutableLiveData<Boolean>()
+    val isMainProgressProcessLiveData = MutableLiveData<Boolean>()
     val progressStatusLiveData = MutableLiveData<MainProgress>()
 
     fun showProgress() {

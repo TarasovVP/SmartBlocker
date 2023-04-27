@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 import android.content.Context
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
@@ -65,8 +64,8 @@ class LogCallRepositoryImpl @Inject constructor(private val logCallDao: LogCallD
         callList: List<CallWithFilter>,
         searchQuery: String,
         filterIndexes: ArrayList<Int>
-    ) = withContext(Dispatchers.Default) {
-        if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
+    ): List<CallWithFilter> {
+        return if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
                     && (callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
                     || callWithFilter.call?.isPermittedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
@@ -75,9 +74,7 @@ class LogCallRepositoryImpl @Inject constructor(private val logCallDao: LogCallD
     }
 
     override suspend fun getHashMapFromCallList(logCallList: List<CallWithFilter>): Map<String, List<CallWithFilter>> =
-        withContext(
-            Dispatchers.Default
-        ) {
+        withContext(Dispatchers.Default) {
             logCallList.groupBy { it.call?.dateFromCallDate().toString() }
         }
 }

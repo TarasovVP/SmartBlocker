@@ -68,9 +68,9 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
         val filterList = listOf(Filter())
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
+            val result = it.arguments[2] as () -> Unit
             result.invoke()
-        }.`when`(useCase).deleteFilterList(eq(filterList), any())
+        }.`when`(useCase).deleteFilterList(eq(filterList), any(), any())
         viewModel.deleteFilterList(filterList)
         advanceUntilIdle()
         val result = viewModel.successDeleteFilterLiveData.getOrAwaitValue()
