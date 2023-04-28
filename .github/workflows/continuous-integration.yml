@@ -67,17 +67,6 @@ jobs:
           gcloud firebase test android models list
           gcloud firebase test android run --type instrumentation --use-orchestrator --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=redfin,version=30,locale=en,orientation=portrait --timeout 44m --environment-variables coverage=true
 
-      - name: Download Test Results
-        run: |
-          TEST_RUN_ID=$(gcloud firebase test android describe --format="value(matrixId)" --type instrumentation)
-          gsutil -m cp -R "gs://test-lab-RESULTS_BUCKET/RESULTS_DIRECTORY/$TEST_RUN_ID/" .
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: ./$TEST_RUN_ID
-
       - name: Convert Test Coverage Report to XML
         run: |
           ./gradlew jacocoTestReport
