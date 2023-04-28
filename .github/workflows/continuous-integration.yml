@@ -66,11 +66,29 @@ jobs:
         run: |
           gcloud firebase test android models list
           gcloud firebase test android run --type instrumentation --use-orchestrator --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=redfin,version=30,locale=en,orientation=portrait --timeout 44m --environment-variables coverage=true
-          gcloud firebase test android coverage --type instrumentation --device model=redfin,version=30,locale=en,orientation=portrait --output-format xml > coverage.xml
-          adb shell am broadcast -a com.tarasovvp.smartblocker --es coverageFilePath /sdcard/coverage.ec
-          adb pull /sdcard/coverage.ec .
-          java -jar jacoco.jar report coverage.xml --classfiles app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/tarasovvp/smartblocker/ --html report
-          git add app/build/outputs/report/index.html
-          git commit -m "Add Jacoco code coverage report"
-          git push origin main
+
+      - name: Download Test Results
+        run: |
+          TEST_RUN_ID=$(gcloud firebase test android describe --format="value(matrixId)" --type instrumentation)
+          gsutil -m cp -R "gs://test-lab-RESULTS_BUCKET/RESULTS_DIRECTORY/$TEST_RUN_ID/" .
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: ./$TEST_RUN_ID
+
+      - name: Convert Test Coverage Report to XML
+        run: |
+          ./gradlew jacocoTestReport
+
+      - name: Commit and Push Test Coverage Report
+        run: |
+          git config --global user.name "TarasovVP"
+          git config --global user.email "vptarasov1998@gmail.com"
+          git checkout -b test-coverage-report
+          cp path/to/your/jacoco-report.xml ./coverage-report.xml
+          git add coverage-report.xml
+          git commit -m "Update test coverage report"
+          git push origin test-coverage-report
 
