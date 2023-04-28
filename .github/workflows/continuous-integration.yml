@@ -65,4 +65,12 @@ jobs:
       - name: Run Instrumentation Tests in Firebase Test Lab
         run: |
           gcloud firebase test android models list
-          gcloud firebase test android run --type instrumentation --use-orchestrator --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=redfin,version=30,locale=en,orientation=portrait --timeout 44m
+          gcloud firebase test android run --type instrumentation --use-orchestrator --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=redfin,version=30,locale=en,orientation=portrait --timeout 44m --environment-variables coverage=true
+          gcloud firebase test android coverage --type instrumentation --device model=redfin,version=30,locale=en,orientation=portrait --output-format xml > coverage.xml
+          adb shell am broadcast -a com.tarasovvp.smartblocker --es coverageFilePath /sdcard/coverage.ec
+          adb pull /sdcard/coverage.ec .
+          java -jar jacoco.jar report coverage.xml --classfiles app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/tarasovvp/smartblocker/ --html report
+          git add app/build/outputs/report/index.html
+          git commit -m "Add Jacoco code coverage report"
+  git     push origin main
+
