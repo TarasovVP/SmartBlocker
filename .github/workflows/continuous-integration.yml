@@ -82,12 +82,17 @@ jobs:
         run: |
           ./gradlew jacocoTestReport
 
+      - name: Find jacoco-report.xml
+        run: |
+          echo "The workspace directory is $GITHUB_WORKSPACE"
+          find $GITHUB_WORKSPACE -name "jacoco-report.xml" -type f
+
       - name: Commit and Push Test Coverage Report
         run: |
           git config --global user.name "TarasovVP"
           git config --global user.email "vptarasov1998@gmail.com"
           git checkout -b test-coverage-report
-          cp path/to/your/jacoco-report.xml ./coverage-report.xml
+          cp $(find $GITHUB_WORKSPACE -name "jacoco-report.xml" -type f) ./coverage-report.xml
           git add coverage-report.xml
           git commit -m "Update test coverage report"
           git push origin test-coverage-report
