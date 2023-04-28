@@ -74,8 +74,25 @@ android {
                 ]
         ))
         sourceDirectories.setFrom(coverageSourceDirs)
-        executionData.setFrom(files("${buildDir}/jacoco/testDebugUnitTest.exec"))
-        executionData.setFrom(fileTree(dir: "${buildDir}/jacoco", includes: ['testDebugAndroidTest.exec']))
+        executionData.setFrom(fileTree(
+                dir: "${buildDir}/jacoco",
+                includes: [
+                        'testDebugUnitTest.exec',
+                        'testDebugAndroidTest.exec'
+                ]
+        ))
+        sourceSets {
+            main {
+                java {
+                    exclude '**/*$*$*'
+                    exclude '**/*$lambda$*'
+                    exclude '**/R.class'
+                    exclude '**/R$*.class'
+                    exclude '**/BuildConfig.*'
+                    exclude '**/Manifest*.*'
+                }
+            }
+        }
     }
 }
 
