@@ -250,11 +250,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startBlocker() {
-        callIntent = Intent(this, ForegroundCallService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(callIntent)
-        } else {
-            startService(callIntent)
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
+            callIntent = Intent(this, ForegroundCallService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(callIntent)
+            } else {
+                startService(callIntent)
+            }
         }
     }
 

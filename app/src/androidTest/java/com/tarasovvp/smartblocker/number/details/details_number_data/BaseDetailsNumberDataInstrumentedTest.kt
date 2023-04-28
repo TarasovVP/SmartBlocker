@@ -320,13 +320,12 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             filterType = filterType
         ))
         if (phoneNumber.isNull() || filterCondition == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
-            assertEquals(filterWithCountryCode,
-                navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
+            assertEquals(filterWithCountryCode, navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
         } else {
             filterWithCountryCode.apply {
                 filter?.country = "UA"
                 filter?.filter = phoneNumber?.nationalNumber.toString()
-                countryCode = TestUtils.countryCode()
+                countryCode = CountryCode()
             }
             assertEquals(filterWithCountryCode,
                 navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))

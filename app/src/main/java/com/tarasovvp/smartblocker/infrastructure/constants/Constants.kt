@@ -70,7 +70,7 @@ object Constants {
     const val COUNTRY_CODE = "countryCode"
     const val COUNTRY_DEFAULT = "UA"
     const val COUNTRY_CODE_DEFAULT = "+380"
-    const val NUMBER_FORMAT_DEFAULT = "12 345 67 89"
+    const val NUMBER_FORMAT_DEFAULT = "50 123 4567"
 
     //Number
     const val PLUS_CHAR = '+'

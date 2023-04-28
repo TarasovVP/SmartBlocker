@@ -20,8 +20,6 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -374,6 +372,4 @@ object TestUtils {
         filteredCalls = 3
         created = 1681314350919
     }, countryCode = CountryCode(country = "UA"))
-
-    fun countryCode() = CountryCode(country = "UA", countryCode = "+380", numberFormat = "50 123 4567")
 }
