@@ -56,6 +56,10 @@ android {
 
     testOptions {
         animationsDisabled = true
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
     }
     task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
         reports {
@@ -74,7 +78,7 @@ android {
         }
         additionalSourceDirs.setFrom(files(android.sourceSets.androidTest.java.srcDirs))
         additionalClassDirs.setFrom(files(android.sourceSets.androidTest.output.resourcesDir))
-        executionData.setFrom(files("$buildDir/jacoco/connected/**/*.exec"))
+        executionData.setFrom(files("$buildDir/jacoco/testDebugAndroidTest.exec"))
     }
 }
 
