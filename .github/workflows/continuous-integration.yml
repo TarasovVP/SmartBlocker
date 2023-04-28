@@ -72,5 +72,5 @@ jobs:
           java -jar jacoco.jar report coverage.xml --classfiles app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/tarasovvp/smartblocker/ --html report
           git add app/build/outputs/report/index.html
           git commit -m "Add Jacoco code coverage report"
-  git     push origin main
+  git     git push origin main
 
