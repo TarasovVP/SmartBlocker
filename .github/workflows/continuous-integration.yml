@@ -29,7 +29,7 @@ jobs:
           git config --global user.name "TarasovVP"
           git config --global user.email "vptarasov1998@gmail.com"
           git checkout -b test-coverage-report
-          cp $(find $GITHUB_WORKSPACE -name "jacoco-report.xml" -type f) ./coverage-report.xml
+          cp /home/runner/work/SmartBlocker/SmartBlocker/jacoco-report.xml -type f) ./coverage-report.xml
           git add coverage-report.xml
           git commit -m "Update test coverage report"
           git push origin test-coverage-report
