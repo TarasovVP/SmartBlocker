@@ -15,22 +15,16 @@ jobs:
       - uses: actions/setup-java@v1
         with: { java-version: 1.11 }
 
-      - name: Convert Test Coverage Report to XML
+      - name: Build and test
         run: |
-          ./gradlew jacocoTestReport
+          ./gradlew clean build connectedCheck
 
-      - name: Find jacoco-report.xml
+      - name: Generate JaCoCo Reports
         run: |
-          echo "The workspace directory is $GITHUB_WORKSPACE"
-          find $GITHUB_WORKSPACE -name "jacoco-report.xml" -type f
+          ./gradlew jacocoTestReport jacocoAndroidTestReport
 
-      - name: Commit and Push Test Coverage Report
-        run: |
-          git config --global user.name "TarasovVP"
-          git config --global user.email "vptarasov1998@gmail.com"
-          git checkout -b test-coverage-report
-          ls -la $(find $GITHUB_WORKSPACE -name "jacoco-report.xml" -type f)
-          cp /home/runner/work/SmartBlocker/SmartBlocker/jacoco-report.xml ./coverage-report.xml
-          git add coverage-report.xml
-          git commit -m "Update test coverage report"
-          git push origin test-coverage-report
+      - name: Upload reports to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/reports/jacoco

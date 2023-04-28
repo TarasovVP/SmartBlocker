@@ -57,6 +57,25 @@ android {
     testOptions {
         animationsDisabled = true
     }
+    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
+        additionalSourceDirs.setFrom(files(android.sourceSets.main.java.srcDirs))
+        additionalClassDirs.setFrom(files(android.sourceSets.main.output.resourcesDir))
+        executionData.setFrom(files("$buildDir/jacoco/testDebugUnitTest.exec"))
+    }
+
+    task jacocoAndroidTestReport(type: JacocoReport, dependsOn: ['connectedCheck']) {
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
+        additionalSourceDirs.setFrom(files(android.sourceSets.androidTest.java.srcDirs))
+        additionalClassDirs.setFrom(files(android.sourceSets.androidTest.output.resourcesDir))
+        executionData.setFrom(files("$buildDir/jacoco/connected/**/*.exec"))
+    }
 }
 
 dependencies {
