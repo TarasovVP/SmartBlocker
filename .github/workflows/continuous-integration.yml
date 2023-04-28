@@ -33,6 +33,9 @@ jobs:
           name: app-debug-androidTest
           path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 
+      - name: Lint check
+        run: ./gradlew ktlintCheck
+
   run_ui_tests_on_firebase:
     runs-on: ubuntu-20.04
     needs: assemble_ui_test_artifacts
@@ -63,7 +66,3 @@ jobs:
         run: |
           gcloud firebase test android models list
           gcloud firebase test android run --type instrumentation --use-orchestrator --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=redfin,version=30,locale=en,orientation=portrait --timeout 44m
-        
-        
-
-
