@@ -32,6 +32,7 @@ android {
     buildTypes {
         debug {
             testCoverageEnabled = true
+
         }
         release {
             minifyEnabled false
@@ -56,29 +57,25 @@ android {
 
     testOptions {
         animationsDisabled = true
-        unitTests {
-            includeAndroidResources = true
-            returnDefaultValues = true
-        }
     }
-    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugAndroidTestCoverageReport']) {
         reports {
-            xml.required.set(true)
             html.required.set(true)
-        }
-        additionalSourceDirs.setFrom(files(android.sourceSets.main.java.srcDirs))
-        additionalClassDirs.setFrom(files(android.sourceSets.main.output.resourcesDir))
-        executionData.setFrom(files("$buildDir/jacoco/testDebugUnitTest.exec"))
-    }
-
-    task jacocoAndroidTestReport(type: JacocoReport, dependsOn: ['connectedCheck']) {
-        reports {
             xml.required.set(true)
-            html.required.set(true)
         }
-        additionalSourceDirs.setFrom(files(android.sourceSets.androidTest.java.srcDirs))
-        additionalClassDirs.setFrom(files(android.sourceSets.androidTest.output.resourcesDir))
-        executionData.setFrom(files("$buildDir/jacoco/testDebugAndroidTest.exec"))
+        def coverageSourceDirs = [
+                'src/main/java'
+        ]
+        classDirectories.setFrom(fileTree(
+                dir: './build/intermediates/javac/debug/classes',
+                excludes: [
+                        '**/*$*$*',
+                        '**/*$lambda$*'
+                ]
+        ))
+        sourceDirectories.setFrom(coverageSourceDirs)
+        executionData.setFrom(files("${buildDir}/jacoco/testDebugUnitTest.exec"))
+        executionData.setFrom(fileTree(dir: "${buildDir}/jacoco", includes: ['testDebugAndroidTest.exec']))
     }
 }
 
