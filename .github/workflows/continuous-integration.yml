@@ -34,7 +34,7 @@ jobs:
           path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 
       - name: Lint check
-        run: ./gradlew ktlintCheck
+        run: ./gradlew lintDebug
 
   run_ui_tests_on_firebase:
     runs-on: ubuntu-20.04
