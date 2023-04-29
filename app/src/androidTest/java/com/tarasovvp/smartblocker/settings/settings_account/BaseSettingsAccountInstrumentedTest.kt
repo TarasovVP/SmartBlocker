@@ -64,7 +64,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.settings_account_name)).apply {
             if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
                 check(matches(isDisplayed()))
-                check(matches(withText(SmartBlockerApp.instance?.auth?.currentUser?.email)))
+                check(matches(withText(SmartBlockerApp.instance?.firebaseAuth?.currentUser?.email)))
             } else {
                 check(matches(not(isDisplayed())))
             }

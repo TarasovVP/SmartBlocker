@@ -29,7 +29,7 @@ class SettingsAccountViewModel @Inject constructor(
     fun changePassword(currentPassword: String, newPassword: String) {
         showProgress()
         settingsAccountUseCase.changePassword(currentPassword, newPassword) {
-            SmartBlockerApp.instance?.auth = null
+            SmartBlockerApp.instance?.firebaseAuth = null
             successChangePasswordLiveData.postValue(true)
             hideProgress()
         }

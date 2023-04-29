@@ -14,7 +14,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DELETE_USER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NEW_PASSWORD
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
-import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -50,8 +49,8 @@ class SettingsAccountFragment :
     private fun initViews() {
         binding?.apply {
             isLoggedInUser = SmartBlockerApp.instance?.isLoggedInUser()
-            settingsAccountName.text = SmartBlockerApp.instance?.auth?.currentUser?.email
-            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SmartBlockerApp.instance?.auth?.currentUser?.email.nameInitial()))
+            settingsAccountName.text = SmartBlockerApp.instance?.firebaseAuth?.currentUser?.email
+            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SmartBlockerApp.instance?.firebaseAuth?.currentUser?.email.nameInitial()))
         }
     }
 

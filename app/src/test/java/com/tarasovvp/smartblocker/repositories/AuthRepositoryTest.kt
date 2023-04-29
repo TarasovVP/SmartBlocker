@@ -15,14 +15,9 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
 
-@ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 class AuthRepositoryTest {
 
     @MockK
@@ -41,13 +36,13 @@ class AuthRepositoryTest {
         MockKAnnotations.init(this)
         authRepository = AuthRepositoryImpl(smartBlockerApp)
         every { smartBlockerApp.checkNetworkUnAvailable() } returns false
-        every { smartBlockerApp.auth } returns mockk()
+        every { smartBlockerApp.firebaseAuth } returns mockk()
     }
 
     @Test
     fun sendPasswordResetEmailTest() {
         val task = mockk<Task<Void>>(relaxed = true)
-        every { smartBlockerApp.auth?.sendPasswordResetEmail(TEST_EMAIL) } returns task
+        every { smartBlockerApp.firebaseAuth?.sendPasswordResetEmail(TEST_EMAIL) } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
             listener.onComplete(task)
@@ -61,7 +56,7 @@ class AuthRepositoryTest {
     @Test
     fun signInWithEmailAndPasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
-        every { smartBlockerApp.auth?.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
+        every { smartBlockerApp.firebaseAuth?.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<AuthResult>>()
             listener.onComplete(task)
@@ -75,7 +70,7 @@ class AuthRepositoryTest {
     @Test
     fun signInWithGoogleTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
-        every { smartBlockerApp.auth?.signInWithCredential(any()) } returns task
+        every { smartBlockerApp.firebaseAuth?.signInWithCredential(any()) } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<AuthResult>>()
             listener.onComplete(task)
@@ -89,7 +84,7 @@ class AuthRepositoryTest {
     @Test
     fun createUserWithEmailAndPasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
-        every { smartBlockerApp.auth?.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
+        every { smartBlockerApp.firebaseAuth?.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<AuthResult>>()
             listener.onComplete(task)
@@ -103,7 +98,7 @@ class AuthRepositoryTest {
     @Test
     fun changePasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
-        every { smartBlockerApp.auth?.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
+        every { smartBlockerApp.firebaseAuth?.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<AuthResult>>()
             listener.onComplete(task)
@@ -118,7 +113,7 @@ class AuthRepositoryTest {
     fun deleteUserTest() {
         val currentUser = mockk<FirebaseUser>(relaxed = true)
         val deleteTask = mockk<Task<Void>>(relaxed = true)
-        every { smartBlockerApp.auth?.currentUser } returns currentUser
+        every { smartBlockerApp.firebaseAuth?.currentUser } returns currentUser
         every { currentUser.delete() } returns deleteTask
         every { deleteTask.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
@@ -134,7 +129,7 @@ class AuthRepositoryTest {
     fun signOutTest() {
         val task = mockk<Task<Void>>(relaxed = true)
         every { googleSignInClient.signOut() } returns task
-        every {  smartBlockerApp.auth?.signOut() } returns Unit
+        every {  smartBlockerApp.firebaseAuth?.signOut() } returns Unit
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
             listener.onComplete(task)
@@ -142,7 +137,7 @@ class AuthRepositoryTest {
         }
         authRepository.signOut(googleSignInClient, resultMock)
         verify { task.addOnCompleteListener(any()) }
-        verify { smartBlockerApp.auth?.signOut() }
+        verify { smartBlockerApp.firebaseAuth?.signOut() }
         verify { resultMock.invoke() }
     }
 }

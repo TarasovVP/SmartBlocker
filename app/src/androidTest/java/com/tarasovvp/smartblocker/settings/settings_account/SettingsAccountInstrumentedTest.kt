@@ -16,7 +16,7 @@ class SettingsAccountInstrumentedTest: BaseSettingsAccountInstrumentedTest() {
     @Before
     override fun setUp() {
         SmartBlockerApp.instance = SmartBlockerApp().apply {
-            auth = FirebaseAuth.getInstance()
+            firebaseAuth = FirebaseAuth.getInstance()
         }
         super.setUp()
     }

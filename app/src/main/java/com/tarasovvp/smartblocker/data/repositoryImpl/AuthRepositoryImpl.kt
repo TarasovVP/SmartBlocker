@@ -13,7 +13,7 @@ class AuthRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartB
 
     override fun sendPasswordResetEmail(email: String, result: () -> Unit) {
         if (smartBlockerApp.checkNetworkUnAvailable()) return
-        smartBlockerApp.auth?.sendPasswordResetEmail(email)
+        smartBlockerApp.firebaseAuth?.sendPasswordResetEmail(email)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -23,7 +23,7 @@ class AuthRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartB
 
     override fun signInWithEmailAndPassword(email: String, password: String, result: () -> Unit) {
         if (smartBlockerApp.checkNetworkUnAvailable()) return
-        smartBlockerApp.auth?.signInWithEmailAndPassword(email, password)
+        smartBlockerApp.firebaseAuth?.signInWithEmailAndPassword(email, password)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -34,7 +34,7 @@ class AuthRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartB
     override fun signInWithGoogle(idToken: String, result: () -> Unit) {
         if (smartBlockerApp.checkNetworkUnAvailable()) return
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        smartBlockerApp.auth?.signInWithCredential(credential)
+        smartBlockerApp.firebaseAuth?.signInWithCredential(credential)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -48,7 +48,7 @@ class AuthRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartB
         result: () -> Unit,
     ) {
         if (smartBlockerApp.checkNetworkUnAvailable()) return
-        smartBlockerApp.auth?.createUserWithEmailAndPassword(email, password)
+        smartBlockerApp.firebaseAuth?.createUserWithEmailAndPassword(email, password)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -77,7 +77,7 @@ class AuthRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartB
 
     override fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
         if (smartBlockerApp.checkNetworkUnAvailable()) return
-        smartBlockerApp.auth?.currentUser?.delete()
+        smartBlockerApp.firebaseAuth?.currentUser?.delete()
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -88,7 +88,7 @@ class AuthRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartB
     override fun signOut(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
         if (smartBlockerApp.checkNetworkUnAvailable()) return
         googleSignInClient.signOut().addOnCompleteListener {
-            smartBlockerApp.auth?.signOut()
+            smartBlockerApp.firebaseAuth?.signOut()
             result.invoke()
         }.addOnFailureListener { exception ->
             exception.localizedMessage.orEmpty().sendExceptionBroadCast()

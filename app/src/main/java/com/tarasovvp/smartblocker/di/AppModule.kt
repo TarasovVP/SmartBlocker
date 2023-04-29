@@ -1,8 +1,6 @@
 package com.tarasovvp.smartblocker.di
 
 import android.content.Context
-import com.google.firebase.database.FirebaseDatabase
-import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
@@ -78,7 +76,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRealDataBaseRepository(@ApplicationContext appContext: Context): RealDataBaseRepository {
-        return RealDataBaseRepositoryImpl(FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference, appContext as  SmartBlockerApp)
+        return RealDataBaseRepositoryImpl(appContext as  SmartBlockerApp)
     }
 
     @Singleton
