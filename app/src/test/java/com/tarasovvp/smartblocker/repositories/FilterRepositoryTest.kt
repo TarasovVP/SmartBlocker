@@ -10,6 +10,8 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountry
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -22,17 +24,16 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 class FilterRepositoryTest {
 
-    @Mock
+    @MockK
     private lateinit var filterDao: FilterDao
 
     private lateinit var filterRepository: FilterRepository
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         filterRepository = FilterRepositoryImpl(filterDao)
     }
 

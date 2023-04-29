@@ -10,6 +10,8 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithF
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -22,17 +24,16 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 class FilteredCallRepositoryTest {
 
-    @Mock
+    @MockK
     private lateinit var filteredCallDao: FilteredCallDao
 
     private lateinit var filteredCallRepository: FilteredCallRepository
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         filteredCallRepository = FilteredCallRepositoryImpl(filteredCallDao)
     }
 
