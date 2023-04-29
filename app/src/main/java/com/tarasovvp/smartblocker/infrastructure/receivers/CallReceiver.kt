@@ -13,10 +13,7 @@ import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
-import com.tarasovvp.smartblocker.utils.extensions.breakCallNougatAndLower
-import com.tarasovvp.smartblocker.utils.extensions.breakCallPieAndHigher
-import com.tarasovvp.smartblocker.utils.extensions.createFilteredCall
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,22 +35,23 @@ open class CallReceiver : BroadcastReceiver() {
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
-            val filter = if (number.isEmpty() && SharedPrefs.blockHidden.isTrue()) {
-                Filter(filterType = BLOCKER)
-            } else {
-                filterRepository.queryFilter(number)?.filter
-            }
-            if ((filter?.isBlocker()
-                    .isTrue()) && telephony.callState == TelephonyManager.CALL_STATE_RINGING
-            ) {
-                breakCall(context)
-            } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
-                delay(SECOND)
-                filter?.let { filterNotNull ->
-                    context.createFilteredCall(number, filterNotNull)?.let { filteredCallRepository.insertFilteredCall(it) }
+            matchedFilter(number)?.let { filter ->
+                if (filter.isBlocker() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+                    breakCall(context)
+                } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
+                    delay(SECOND)
+                    context.createFilteredCall(number, filter)?.let { filteredCallRepository.insertFilteredCall(it) }
+                    context.sendBroadcast(Intent(CALL_RECEIVE))
                 }
-                context.sendBroadcast(Intent(CALL_RECEIVE))
             }
+        }
+    }
+
+    private suspend fun matchedFilter(number: String): Filter? {
+        return if (number.isEmpty() && SharedPrefs.blockHidden.isTrue()) {
+            Filter(filterType = BLOCKER)
+        } else {
+            filterRepository.queryFilter(number)?.filter
         }
     }
 
