@@ -5,16 +5,15 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartBlockerApp) : AuthRepository {
 
     override fun sendPasswordResetEmail(email: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
-        auth?.sendPasswordResetEmail(email)
+        if (smartBlockerApp.checkNetworkUnAvailable()) return
+        smartBlockerApp.auth?.sendPasswordResetEmail(email)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -23,8 +22,8 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun signInWithEmailAndPassword(email: String, password: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
-        auth?.signInWithEmailAndPassword(email, password)
+        if (smartBlockerApp.checkNetworkUnAvailable()) return
+        smartBlockerApp.auth?.signInWithEmailAndPassword(email, password)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -33,9 +32,9 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun signInWithGoogle(idToken: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        if (smartBlockerApp.checkNetworkUnAvailable()) return
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth?.signInWithCredential(credential)
+        smartBlockerApp.auth?.signInWithCredential(credential)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -48,8 +47,8 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
         password: String,
         result: () -> Unit,
     ) {
-        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
-        auth?.createUserWithEmailAndPassword(email, password)
+        if (smartBlockerApp.checkNetworkUnAvailable()) return
+        smartBlockerApp.auth?.createUserWithEmailAndPassword(email, password)
             ?.addOnCompleteListener {
                 result.invoke()
             }?.addOnFailureListener { exception ->
@@ -58,7 +57,7 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun changePassword(currentPassword: String, newPassword: String, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
+        if (smartBlockerApp.checkNetworkUnAvailable()) return
         val user = FirebaseAuth.getInstance().currentUser
         val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), currentPassword)
         user?.reauthenticateAndRetrieveData(credential)
@@ -77,10 +76,9 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
-        auth?.currentUser?.delete()
+        if (smartBlockerApp.checkNetworkUnAvailable()) return
+        smartBlockerApp.auth?.currentUser?.delete()
             ?.addOnCompleteListener {
-                googleSignInClient.signOut()
                 result.invoke()
             }?.addOnFailureListener { exception ->
                 exception.localizedMessage.orEmpty().sendExceptionBroadCast()
@@ -88,9 +86,12 @@ class AuthRepositoryImpl @Inject constructor(private val auth: FirebaseAuth?) : 
     }
 
     override fun signOut(googleSignInClient: GoogleSignInClient, result: () -> Unit) {
-        if (SmartBlockerApp.instance?.checkNetworkUnAvailable().isTrue()) return
-        googleSignInClient.signOut()
-        auth?.signOut()
-        result.invoke()
+        if (smartBlockerApp.checkNetworkUnAvailable()) return
+        googleSignInClient.signOut().addOnCompleteListener {
+            smartBlockerApp.auth?.signOut()
+            result.invoke()
+        }.addOnFailureListener { exception ->
+            exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
@@ -36,6 +37,9 @@ import org.mockito.junit.MockitoJUnitRunner
 class RealDataBaseRepositoryTest {
 
     @Mock
+    private lateinit var smartBlockerApp: SmartBlockerApp
+
+    @Mock
     private lateinit var databaseReference: DatabaseReference
 
     @Mock
@@ -46,7 +50,7 @@ class RealDataBaseRepositoryTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        realDataBaseRepository = RealDataBaseRepositoryImpl(databaseReference, TEST_NUMBER)
+        realDataBaseRepository = RealDataBaseRepositoryImpl(databaseReference, smartBlockerApp)
     }
 
     @Test

@@ -17,6 +17,6 @@ class SettingsAccountUseCaseImpl @Inject constructor(
     }
 
     override fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit) = authRepository.deleteUser(googleSignInClient) {
-        result.invoke()
+        authRepository.signOut(googleSignInClient, result)
     }
 }

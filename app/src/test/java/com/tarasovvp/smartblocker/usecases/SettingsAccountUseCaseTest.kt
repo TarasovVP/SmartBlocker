@@ -66,6 +66,11 @@ class SettingsAccountUseCaseTest {
             val result = it.arguments[1] as () -> Unit
             result.invoke()
         }.`when`(authRepository).deleteUser(eq(googleSignInClient), any())
+        Mockito.doAnswer {
+            @Suppress("UNCHECKED_CAST")
+            val result = it.arguments[1] as () -> Unit
+            result.invoke()
+        }.`when`(authRepository).signOut(eq(googleSignInClient), any())
         settingsAccountUseCase.deleteUser(googleSignInClient, resultMock)
         verify(resultMock).invoke()
     }

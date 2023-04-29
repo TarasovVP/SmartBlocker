@@ -47,13 +47,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext appContext: Context) =
-        AppDatabase.getDatabase(appContext)
+    fun provideDatabase(@ApplicationContext appContext: Context): AppDatabase {
+        return AppDatabase.getDatabase(appContext)
+    }
 
     @Singleton
     @Provides
-    fun provideAuthRepository(): AuthRepository {
-        return AuthRepositoryImpl(SmartBlockerApp.instance?.auth)
+    fun provideAuthRepository(@ApplicationContext appContext: Context): AuthRepository {
+        return AuthRepositoryImpl(appContext as SmartBlockerApp)
     }
 
     @Singleton
@@ -76,8 +77,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRealDataBaseRepository(): RealDataBaseRepository {
-        return RealDataBaseRepositoryImpl(FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference, SmartBlockerApp.instance?.auth?.currentUser?.uid)
+    fun provideRealDataBaseRepository(@ApplicationContext appContext: Context): RealDataBaseRepository {
+        return RealDataBaseRepositoryImpl(FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE).reference, appContext as  SmartBlockerApp)
     }
 
     @Singleton
