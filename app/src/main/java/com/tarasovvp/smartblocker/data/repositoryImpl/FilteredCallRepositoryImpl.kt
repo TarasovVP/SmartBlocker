@@ -27,7 +27,6 @@ class FilteredCallRepositoryImpl @Inject constructor(
         }
 
     override suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
-        filteredCallDao.deleteAllFilteredCalls()
         filteredCallDao.insertAllFilteredCalls(filteredCallList)
     }
 
