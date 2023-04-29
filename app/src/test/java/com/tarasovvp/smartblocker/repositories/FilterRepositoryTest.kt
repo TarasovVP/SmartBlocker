@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.repositories
 
-import com.nhaarman.mockitokotlin2.*
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.FilterDao
@@ -10,18 +9,13 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountry
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
-import io.mockk.MockKAnnotations
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 class FilterRepositoryTest {
@@ -38,77 +32,81 @@ class FilterRepositoryTest {
     }
 
     @Test
-    fun insertAllFiltersTest() = runTest {
+    fun insertAllFiltersTest() = runBlocking {
         val filterList = listOf(Filter(filter = TEST_FILTER), Filter())
+        coEvery { filterDao.insertAllFilters(filterList) } just Runs
         filterRepository.insertAllFilters(filterList)
-        verify(filterDao, times(1)).insertAllFilters(filterList)
+        coVerify(exactly = 1) { filterDao.insertAllFilters(filterList) }
     }
 
     @Test
-    fun allFiltersTest() = runTest {
+    fun allFiltersTest() = runBlocking {
         val filterList = listOf(Filter(filter = TEST_FILTER), Filter())
-        Mockito.`when`(filterDao.allFilters()).thenReturn(filterList)
+        coEvery { filterDao.allFilters() } returns filterList
         val result = filterRepository.allFilters()
         assertEquals(filterList, result)
     }
 
     @Test
-    fun allFilterWithCountryCodeTest() = runTest {
+    fun allFilterWithCountryCodeTest() = runBlocking {
         val filterWithCountryCodeList = listOf(FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithCountryCode().apply { filter = Filter()})
-        Mockito.`when`(filterDao.allFilterWithCountryCode()).thenReturn(filterWithCountryCodeList)
+        coEvery { filterDao.allFilterWithCountryCode() } returns filterWithCountryCodeList
         val result = filterRepository.allFilterWithCountryCode()
         assertEquals(filterWithCountryCodeList, result)
     }
 
     @Test
-    fun allFiltersByTypeTest() = runTest {
+    fun allFiltersByTypeTest() = runBlocking {
         val filterWithCountryCodeList = listOf(FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithCountryCode().apply { filter = Filter()})
-        Mockito.`when`(filterDao.allFiltersByType(BLOCKER)).thenReturn(filterWithCountryCodeList)
+        coEvery { filterDao.allFiltersByType(BLOCKER) } returns filterWithCountryCodeList
         val result = filterRepository.allFiltersByType(BLOCKER)
         assertEquals(filterWithCountryCodeList, result)
     }
 
     @Test
-    fun getFilterTest() = runTest {
+    fun getFilterTest() = runBlocking {
         val filterWithCountryCode = FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)}
-        Mockito.`when`(filterDao.getFilter(TEST_FILTER)).thenReturn(filterWithCountryCode)
+        coEvery { filterDao.getFilter(TEST_FILTER) } returns filterWithCountryCode
         val result = filterRepository.getFilter(filterWithCountryCode)
         assertEquals(filterWithCountryCode, result)
     }
 
     @Test
-    fun updateFilterTest() = runTest {
+    fun updateFilterTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
+        coEvery { filterDao.updateFilter(filter) } just Runs
         filterRepository.updateFilter(filter)
-        verify(filterDao).updateFilter(filter)
+        coVerify(exactly = 1) { filterDao.updateFilter(filter) }
     }
 
     @Test
-    fun insertFilterTest() = runTest {
+    fun insertFilterTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
+        coEvery { filterDao.insertFilter(filter) } just Runs
         filterRepository.insertFilter(filter)
-        verify(filterDao).insertFilter(filter)
+        coVerify(exactly = 1) { filterDao.insertFilter(filter) }
     }
 
     @Test
-    fun deleteFilterListTest() = runTest {
+    fun deleteFilterListTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
+        coEvery { filterDao.delete(filter) } just Runs
         filterRepository.deleteFilterList(listOf(filter))
-        verify(filterDao).delete(filter)
+        coVerify(exactly = 1) { filterDao.delete(filter) }
     }
 
     @Test
-    fun queryFilterListTest() = runTest {
+    fun queryFilterListTest() = runBlocking {
         val filterWithCountryCodeList = listOf(FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithCountryCode().apply { filter = Filter()})
-        Mockito.`when`(filterDao.queryFullMatchFilterList(TEST_NUMBER)).thenReturn(filterWithCountryCodeList)
+        coEvery { filterDao.queryFullMatchFilterList(TEST_NUMBER) } returns filterWithCountryCodeList
         val result = filterRepository.queryFilterList(TEST_NUMBER)
         assertEquals(filterWithCountryCodeList, result)
     }
 
     @Test
-    fun queryFilterTest() = runTest {
+    fun queryFilterTest() = runBlocking {
         val filterWithCountryCode = FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)}
-        Mockito.`when`(filterDao.queryFullMatchFilterList(TEST_NUMBER)).thenReturn(listOf(filterWithCountryCode))
+        coEvery { filterDao.queryFullMatchFilterList(TEST_NUMBER) } returns listOf(filterWithCountryCode)
         val result = filterRepository.queryFilter(TEST_NUMBER)
         assertEquals(filterWithCountryCode, result)
     }

@@ -14,7 +14,6 @@ class FilterRepositoryImpl @Inject constructor(
 ) : FilterRepository {
 
     override suspend fun insertAllFilters(filterList: List<Filter>) {
-        filterDao.deleteAllFilters()
         filterDao.insertAllFilters(filterList)
     }
 

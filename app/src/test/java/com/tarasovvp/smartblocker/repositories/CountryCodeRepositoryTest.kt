@@ -14,7 +14,6 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.junit.Before
 import org.junit.Test
@@ -34,7 +33,7 @@ class CountryCodeRepositoryTest {
     }
 
     @Test
-    fun getSystemCountryCodeListTest() = runTest {
+    fun getSystemCountryCodeListTest() = runBlocking {
         val mockPhoneNumberUtil = mockk<PhoneNumberUtil>()
         val countryCodeMap = arrayListOf<CountryCode>()
         val region1 = "region1"
@@ -71,7 +70,7 @@ class CountryCodeRepositoryTest {
     }
 
     @Test
-    fun getAllCountryCodesTest() = runTest {
+    fun getAllCountryCodesTest() = runBlocking {
         val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
         coEvery { countryCodeDao.getAllCountryCodes() } returns countryCodeList
         val result = countryCodeRepository.getAllCountryCodes()
@@ -79,7 +78,7 @@ class CountryCodeRepositoryTest {
     }
 
     @Test
-    fun getCountryCodeWithCodeTest() = runTest {
+    fun getCountryCodeWithCodeTest() = runBlocking {
         val countryCode = CountryCode(country = TEST_COUNTRY, countryCode = TEST_COUNTRY)
         coEvery { countryCodeDao.getCountryCodeWithCode(TEST_COUNTRY_CODE) } returns countryCode
         val result = countryCodeRepository.getCountryCodeWithCode(380)

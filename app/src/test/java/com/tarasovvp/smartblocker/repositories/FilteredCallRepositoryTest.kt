@@ -13,7 +13,7 @@ import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
@@ -32,7 +32,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun setFilterToFilteredCallTest() = runTest {
+    fun setFilterToFilteredCallTest() = runBlocking {
         val filterList = listOf(
             Filter("1234567890", conditionType = FilterCondition.FILTER_CONDITION_FULL.index),
             Filter("345", conditionType = FilterCondition.FILTER_CONDITION_START.index),
@@ -54,7 +54,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun insertAllFilteredCallsTest() = runTest {
+    fun insertAllFilteredCallsTest() = runBlocking {
         val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER }, FilteredCall())
         coEvery { filteredCallDao.insertAllFilteredCalls(filteredCallList) } just Runs
         filteredCallRepository.insertAllFilteredCalls(filteredCallList)
@@ -62,7 +62,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun insertFilteredCallTest() = runTest {
+    fun insertFilteredCallTest() = runBlocking {
         val filteredCall = FilteredCall().apply { number = TEST_NUMBER }
         coEvery { filteredCallDao.insertFilteredCall(filteredCall) } just Runs
         filteredCallRepository.insertFilteredCall(filteredCall)
@@ -70,7 +70,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun allFilteredCallsTest() = runTest {
+    fun allFilteredCallsTest() = runBlocking {
         val filteredCallList = listOf(FilteredCall(callId = 1), FilteredCall(callId = 3))
         coEvery { filteredCallDao.allFilteredCalls() } returns filteredCallList
         val result = filteredCallRepository.allFilteredCalls()
@@ -78,7 +78,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun allFilteredCallWithFilterTest() = runTest {
+    fun allFilteredCallWithFilterTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.allFilteredCallWithFilter() } returns filteredCallList
         val result = filteredCallRepository.allFilteredCallWithFilter()
@@ -86,7 +86,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun filteredCallsByFilterTest() = runTest {
+    fun filteredCallsByFilterTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         val result = filteredCallRepository.filteredCallsByFilter(TEST_FILTER)
@@ -94,7 +94,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun filteredCallsByNumberTest() = runTest {
+    fun filteredCallsByNumberTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.filteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
         val result = filteredCallRepository.filteredCallsByNumber(TEST_NUMBER)
@@ -102,7 +102,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun deleteFilteredCallsTest() = runTest {
+    fun deleteFilteredCallsTest() = runBlocking {
         val filteredCallIdList = listOf(1, 2)
         coEvery { filteredCallDao.deleteFilteredCalls(filteredCallIdList) } just Runs
         filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
