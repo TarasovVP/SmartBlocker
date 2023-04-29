@@ -7,6 +7,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
 import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCaseImpl
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,20 +17,19 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class LoginUseCaseTest {
 
-    @Mock
+    @MockK
     private lateinit var authRepository: AuthRepository
 
-    @Mock
+    @MockK(relaxed = true)
     private lateinit var resultMock: () -> Unit
 
     private lateinit var loginUseCase: LoginUseCase
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         loginUseCase = LoginUseCaseImpl(authRepository)
     }
 

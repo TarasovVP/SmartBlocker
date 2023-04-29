@@ -14,7 +14,10 @@ import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCaseImpl
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -24,28 +27,27 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class DetailsNumberDataUseCaseTest {
 
-    @Mock
+    @MockK
     private lateinit var countryCodeRepository: CountryCodeRepository
 
-    @Mock
+    @MockK
     private lateinit var filterRepository: FilterRepository
 
-    @Mock
+    @MockK
     private lateinit var filteredCallRepository: FilteredCallRepository
 
     private lateinit var detailsNumberDataUseCase: DetailsNumberDataUseCase
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         detailsNumberDataUseCase = DetailsNumberDataUseCaseImpl(countryCodeRepository, filterRepository, filteredCallRepository)
     }
 
     @Test
-    fun filterListWithNumberTest() = runTest {
+    fun filterListWithNumberTest() = runBlocking {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
         Mockito.`when`(filterRepository.queryFilterList(TEST_NUMBER))
             .thenReturn(filterList)
@@ -54,7 +56,7 @@ class DetailsNumberDataUseCaseTest {
     }
 
     @Test
-    fun filteredCallsByNumberTest() = runTest {
+    fun filteredCallsByNumberTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number =
             TEST_NUMBER
         } })
@@ -65,7 +67,7 @@ class DetailsNumberDataUseCaseTest {
     }
 
     @Test
-    fun getCountryCodeTest() = runTest {
+    fun getCountryCodeTest() = runBlocking {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         Mockito.`when`(countryCodeRepository.getCountryCodeWithCode(countryCode))

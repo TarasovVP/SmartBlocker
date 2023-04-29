@@ -10,7 +10,10 @@ import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -20,28 +23,27 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class ListFilterUseCaseTest {
 
-    @Mock
+    @MockK
     private lateinit var filterRepository: FilterRepository
 
-    @Mock
+    @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
-    @Mock
+    @MockK(relaxed = true)
     private lateinit var resultMock: () -> Unit
 
     private lateinit var listFilterUseCase: ListFilterUseCase
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         listFilterUseCase = ListFilterUseCaseImpl(filterRepository, realDataBaseRepository)
     }
 
     @Test
-    fun getFilterListTest() = runTest {
+    fun getFilterListTest() = runBlocking {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
         Mockito.`when`(filterRepository.allFiltersByType(BLOCKER))
             .thenReturn(filterList)
@@ -50,7 +52,7 @@ class ListFilterUseCaseTest {
     }
 
     @Test
-    fun getHashMapFromFilterListTest() = runTest {
+    fun getHashMapFromFilterListTest() = runBlocking {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
         val filterMap = mapOf(String.EMPTY to filterList)
         val result = listFilterUseCase.getHashMapFromFilterList(filterList)
@@ -58,7 +60,7 @@ class ListFilterUseCaseTest {
     }
 
     @Test
-    fun deleteFilterListTest() = runTest {
+    fun deleteFilterListTest() = runBlocking {
         val filterList = listOf(Filter())
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")

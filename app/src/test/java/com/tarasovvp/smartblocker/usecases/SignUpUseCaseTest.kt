@@ -8,28 +8,25 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.usecase.authorization.sign_up.SignUpUseCase
 import com.tarasovvp.smartblocker.domain.usecase.authorization.sign_up.SignUpUseCaseImpl
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class SignUpUseCaseTest {
 
-    @Mock
+    @MockK
     private lateinit var authRepository: AuthRepository
 
-    @Mock
+    @MockK(relaxed = true)
     private lateinit var resultMock: () -> Unit
 
     private lateinit var signUpUseCase: SignUpUseCase
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         signUpUseCase = SignUpUseCaseImpl(authRepository)
     }
 

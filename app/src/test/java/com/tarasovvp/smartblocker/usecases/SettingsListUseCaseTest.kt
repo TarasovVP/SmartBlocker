@@ -9,6 +9,8 @@ import com.tarasovvp.smartblocker.domain.models.Review
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCase
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCaseImpl
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,20 +19,19 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class SettingsListUseCaseTest {
 
-    @Mock
+    @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
-    @Mock
+    @MockK(relaxed = true)
     private lateinit var resultMock: () -> Unit
 
     private lateinit var settingsListUseCase: SettingsListUseCase
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         settingsListUseCase = SettingsListUseCaseImpl(realDataBaseRepository)
     }
 

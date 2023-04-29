@@ -20,7 +20,10 @@ import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -30,31 +33,30 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class ListCallUseCaseTest {
 
-    @Mock
+    @MockK
     private lateinit var logCallRepository: LogCallRepository
 
-    @Mock
+    @MockK
     private lateinit var filteredCallRepository: FilteredCallRepository
 
-    @Mock
+    @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
-    @Mock
+    @MockK(relaxed = true)
     private lateinit var resultMock: () -> Unit
 
     private lateinit var listCallUseCase: ListCallUseCase
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository)
     }
 
     @Test
-    fun getCallListTest() = runTest {
+    fun getCallListTest() = runBlocking {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1) }, LogCallWithFilter().apply { call = LogCall(callId = 2) })
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
         val commonCallList = ArrayList<CallWithFilter>().apply {
@@ -72,7 +74,7 @@ class ListCallUseCaseTest {
     }
 
     @Test
-    fun getFilteredCallListTest() = runTest {
+    fun getFilteredCallListTest() = runBlocking {
         val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
         val searchQuery = String.EMPTY
         val filterIndexes = arrayListOf(
@@ -91,7 +93,7 @@ class ListCallUseCaseTest {
     }
 
     @Test
-    fun getHashMapFromCallListTest() = runTest {
+    fun getHashMapFromCallListTest() = runBlocking {
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "567")))
         val callMap = mapOf("1" to callList)
         Mockito.`when`(logCallRepository.getHashMapFromCallList(callList))
@@ -101,7 +103,7 @@ class ListCallUseCaseTest {
     }
 
     @Test
-    fun deleteCallListTest() = runTest {
+    fun deleteCallListTest() = runBlocking {
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER, callId = 123)))
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")

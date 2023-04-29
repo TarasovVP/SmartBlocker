@@ -10,7 +10,10 @@ import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
 import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCaseImpl
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -20,40 +23,39 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class MainUseCaseTest {
 
-    @Mock
+    @MockK
     private lateinit var application: Application
 
-    @Mock
+    @MockK
     private lateinit var contactRepository: ContactRepository
 
-    @Mock
+    @MockK
     private lateinit var countryCodeRepository: CountryCodeRepository
 
-    @Mock
+    @MockK
     private lateinit var filterRepository: FilterRepository
 
-    @Mock
+    @MockK
     private lateinit var logCallRepository: LogCallRepository
 
-    @Mock
+    @MockK
     private lateinit var filteredCallRepository: FilteredCallRepository
 
-    @Mock
+    @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     private lateinit var mainUseCase: MainUseCase
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         mainUseCase = MainUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository, filteredCallRepository, realDataBaseRepository)
     }
 
     @Test
-    fun getCurrentUserTest() = runTest {
+    fun getCurrentUserTest() = runBlocking {
         val currentUser = CurrentUser()
         Mockito.doAnswer {
             @Suppress("UNCHECKED_CAST")
@@ -67,21 +69,21 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun insertUserFiltersTest() = runTest {
+    fun insertUserFiltersTest() = runBlocking {
         val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
         mainUseCase.insertAllFilters(filterList)
         verify(filterRepository, times(1)).insertAllFilters(filterList)
     }
 
     @Test
-    fun insertUserFilteredCallsTest() = runTest {
+    fun insertUserFilteredCallsTest() = runBlocking {
         val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_FILTER }, FilteredCall().apply { number = UnitTestUtils.TEST_FILTER })
         mainUseCase.insertAllFilteredCalls(filteredCallList)
         verify(filteredCallRepository, times(1)).insertAllFilteredCalls(filteredCallList)
     }
 
     @Test
-    fun getSystemCountryCodeListTest() = runTest {
+    fun getSystemCountryCodeListTest() = runBlocking {
         val countryCodeList = listOf(CountryCode(country = UnitTestUtils.TEST_COUNTRY))
         Mockito.`when`(countryCodeRepository.getSystemCountryCodeList(any()))
             .thenReturn(countryCodeList)
@@ -90,14 +92,14 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun insertAllCountryCodesTest() = runTest {
+    fun insertAllCountryCodesTest() = runBlocking {
         val countryCodeList = listOf(CountryCode(), CountryCode())
         mainUseCase.insertAllCountryCodes(countryCodeList)
         verify(countryCodeRepository, times(1)).insertAllCountryCodes(countryCodeList)
     }
 
     @Test
-    fun getAllFiltersTest() = runTest {
+    fun getAllFiltersTest() = runBlocking {
         val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
         Mockito.`when`(filterRepository.allFilters())
             .thenReturn(filterList)
@@ -106,7 +108,7 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun getSystemContactListTest() = runTest {
+    fun getSystemContactListTest() = runBlocking {
         val contactList = arrayListOf(Contact(name = UnitTestUtils.TEST_NAME))
         Mockito.`when`(contactRepository.getSystemContactList(eq(application), any()))
             .thenReturn(contactList)
@@ -115,7 +117,7 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun setFilterToContactTest() = runTest {
+    fun setFilterToContactTest() = runBlocking {
         val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
         val contactList = listOf(Contact(name = UnitTestUtils.TEST_NAME))
         Mockito.`when`(contactRepository.setFilterToContact(eq(filterList), eq(contactList), any()))
@@ -125,14 +127,14 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun insertContactsTest() = runTest {
+    fun insertContactsTest() = runBlocking {
         val contactList = listOf(Contact(), Contact())
         mainUseCase.insertContacts(contactList)
         verify(contactRepository, times(1)).insertContacts(contactList)
     }
 
     @Test
-    fun getSystemLogCallListTest() = runTest {
+    fun getSystemLogCallListTest() = runBlocking {
         val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(logCallRepository.getSystemLogCallList(eq(application), any()))
             .thenReturn(logCallList)
@@ -141,7 +143,7 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun setFilterToLogCallTest() = runTest {
+    fun setFilterToLogCallTest() = runBlocking {
         val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
         val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(logCallRepository.setFilterToLogCall(eq(filterList), eq(logCallList), any()))
@@ -151,7 +153,7 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun getAllFilteredCallsTest() = runTest {
+    fun getAllFilteredCallsTest() = runBlocking {
         val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(filteredCallRepository.allFilteredCalls())
             .thenReturn(filteredCallList)
@@ -160,7 +162,7 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun setFilterToFilteredCallTest() = runTest {
+    fun setFilterToFilteredCallTest() = runBlocking {
         val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
         val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_NUMBER })
         Mockito.`when`(filteredCallRepository.setFilterToFilteredCall(eq(filterList), eq(filteredCallList), any()))
@@ -170,7 +172,7 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun insertAllFilteredCallsTest() = runTest {
+    fun insertAllFilteredCallsTest() = runBlocking {
         val filteredCallList = listOf(FilteredCall(), FilteredCall())
         mainUseCase.insertAllFilteredCalls(filteredCallList)
         verify(filteredCallRepository, times(1)).insertAllFilteredCalls(filteredCallList)
