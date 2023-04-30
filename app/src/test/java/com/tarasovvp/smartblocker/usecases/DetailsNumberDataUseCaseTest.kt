@@ -15,17 +15,12 @@ import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCaseImpl
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 class DetailsNumberDataUseCaseTest {
 
@@ -49,8 +44,7 @@ class DetailsNumberDataUseCaseTest {
     @Test
     fun filterListWithNumberTest() = runBlocking {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        Mockito.`when`(filterRepository.queryFilterList(TEST_NUMBER))
-            .thenReturn(filterList)
+        coEvery { filterRepository.queryFilterList(TEST_NUMBER) } returns filterList
         val result = detailsNumberDataUseCase.filterListWithNumber(TEST_NUMBER)
         assertEquals(UnitTestUtils.TEST_FILTER, (result[0] as FilterWithCountryCode).filter?.filter)
     }
@@ -60,8 +54,7 @@ class DetailsNumberDataUseCaseTest {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number =
             TEST_NUMBER
         } })
-        Mockito.`when`(filteredCallRepository.filteredCallsByNumber(TEST_NUMBER))
-            .thenReturn(filteredCallList)
+        coEvery { filteredCallRepository.filteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
         val result = detailsNumberDataUseCase.filteredCallsByNumber(TEST_NUMBER)
         assertEquals(TEST_NUMBER, (result[0] as FilteredCallWithFilter).call?.number)
     }
@@ -70,9 +63,7 @@ class DetailsNumberDataUseCaseTest {
     fun getCountryCodeTest() = runBlocking {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        Mockito.`when`(countryCodeRepository.getCountryCodeWithCode(countryCode))
-            .thenReturn(expectedCountryCode)
-
+        coEvery { countryCodeRepository.getCountryCodeWithCode(countryCode) } returns expectedCountryCode
         val result = detailsNumberDataUseCase.getCountryCode(countryCode)
         assertEquals(TEST_COUNTRY, result?.country)
     }

@@ -1,9 +1,5 @@
 package com.tarasovvp.smartblocker.usecases
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
@@ -12,21 +8,16 @@ import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.domain.models.entities.Call
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCaseImpl
-import io.mockk.MockKAnnotations
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 class DetailsFilterUseCaseTest {
 
@@ -67,10 +58,8 @@ class DetailsFilterUseCaseTest {
         }.sortedBy {
             if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
         }
-        Mockito.`when`(logCallRepository.getLogCallWithFilterByFilter(filter.filter))
-            .thenReturn(callList)
-        Mockito.`when`(contactRepository.getContactsWithFilterByFilter(filter.filter))
-            .thenReturn(contactList)
+        coEvery { logCallRepository.getLogCallWithFilterByFilter(filter.filter) } returns callList
+        coEvery { contactRepository.getContactsWithFilterByFilter(filter.filter) } returns contactList
         val result = detailsFilterUseCase.getQueryContactCallList(filter)
         assertEquals(numberDataList, result)
     }
@@ -79,8 +68,7 @@ class DetailsFilterUseCaseTest {
     fun filteredNumberDataListTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
         val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
-        Mockito.`when`(contactRepository.filteredNumberDataList(filter, numberDataList, 0))
-            .thenReturn(numberDataList)
+        coEvery { contactRepository.filteredNumberDataList(filter, numberDataList, 0) } returns numberDataList
         val result = detailsFilterUseCase.filteredNumberDataList(filter, numberDataList, 0)
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
@@ -88,8 +76,7 @@ class DetailsFilterUseCaseTest {
     @Test
     fun filteredCallsByFilterTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
-        Mockito.`when`(filteredCallRepository.filteredCallsByFilter(TEST_FILTER))
-            .thenReturn(filteredCallList)
+        coEvery { filteredCallRepository.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         val result = detailsFilterUseCase.filteredCallsByFilter(TEST_FILTER)
         assertEquals(TEST_NUMBER, result[0].call?.number)
     }
@@ -97,38 +84,44 @@ class DetailsFilterUseCaseTest {
     @Test
     fun deleteFilterTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(realDataBaseRepository).deleteFilterList(eq(listOf(filter)), any())
-        Mockito.`when`(filterRepository.deleteFilterList(eq(listOf(filter)))).thenReturn(Unit)
+        every { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) } coAnswers {
+            val callback = secondArg<() -> Unit>()
+            callback.invoke()
+        }
+        coEvery { filterRepository.deleteFilterList(eq(listOf(filter))) } just Runs
+
         detailsFilterUseCase.deleteFilter(filter, true, resultMock)
-        verify(realDataBaseRepository).deleteFilterList(eq(listOf(filter)), any())
-        verify(filterRepository).deleteFilterList(eq(listOf(filter)))
-        verify(resultMock).invoke()
+
+        verify { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) }
+        coVerify { filterRepository.deleteFilterList(eq(listOf(filter))) }
+        verify { resultMock.invoke() }
+
         detailsFilterUseCase.deleteFilter(filter, false, resultMock)
-        verify(realDataBaseRepository, times(1)).deleteFilterList(eq(listOf(filter)), any())
-        verify(filterRepository, times(2)).deleteFilterList(eq(listOf(filter)))
-        verify(resultMock, times(2)).invoke()
+
+        verify(exactly = 1) { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) }
+        coVerify(exactly = 2) { filterRepository.deleteFilterList(eq(listOf(filter))) }
+        verify(exactly = 2) { resultMock.invoke() }
     }
 
     @Test
     fun updateFilterTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(realDataBaseRepository).insertFilter(eq(filter), any())
-        Mockito.`when`(filterRepository.updateFilter(eq(filter))).thenReturn(Unit)
+        every { realDataBaseRepository.insertFilter(eq(filter), any()) } coAnswers {
+            val callback = secondArg<() -> Unit>()
+            callback.invoke()
+        }
+        coEvery { filterRepository.updateFilter(eq(filter)) } just Runs
+
         detailsFilterUseCase.updateFilter(filter, true, resultMock)
-        verify(realDataBaseRepository).insertFilter(eq(filter), any())
-        verify(filterRepository).updateFilter(eq(filter))
-        verify(resultMock).invoke()
+
+        verify { realDataBaseRepository.insertFilter(eq(filter), any()) }
+        coVerify { filterRepository.updateFilter(eq(filter)) }
+        verify { resultMock.invoke() }
+
         detailsFilterUseCase.updateFilter(filter, false, resultMock)
-        verify(realDataBaseRepository, times(1)).insertFilter(eq(filter), any())
-        verify(filterRepository, times(2)).updateFilter(eq(filter))
-        verify(resultMock, times(2)).invoke()
+
+        verify(exactly = 1) { realDataBaseRepository.insertFilter(eq(filter), any()) }
+        coVerify(exactly = 2) { filterRepository.updateFilter(eq(filter)) }
+        verify(exactly = 2) { resultMock.invoke() }
     }
 }

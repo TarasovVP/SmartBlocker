@@ -1,22 +1,14 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCaseImpl
-import io.mockk.MockKAnnotations
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 class SettingsAccountUseCaseTest {
 
@@ -39,40 +31,32 @@ class SettingsAccountUseCaseTest {
 
     @Test
     fun signOutTest() {
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(authRepository).signOut(eq(googleSignInClient), any())
+        every { authRepository.signOut(eq(googleSignInClient), any()) } answers {
+            resultMock.invoke()
+        }
         settingsAccountUseCase.signOut(googleSignInClient, resultMock)
-        verify(resultMock).invoke()
+        verify(exactly = 1) { resultMock.invoke() }
     }
 
     @Test
     fun changePasswordTest() {
         val newPassword = "newPassword"
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[2] as () -> Unit
-            result.invoke()
-        }.`when`(authRepository).changePassword(eq(TEST_PASSWORD), eq(newPassword), any())
+        every { authRepository.changePassword(eq(TEST_PASSWORD), eq(newPassword), any()) } answers {
+            resultMock.invoke()
+        }
         settingsAccountUseCase.changePassword(TEST_PASSWORD, newPassword, resultMock)
-        verify(resultMock).invoke()
+        verify(exactly = 1) { resultMock.invoke() }
     }
 
     @Test
     fun deleteUserTest() {
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(authRepository).deleteUser(eq(googleSignInClient), any())
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(authRepository).signOut(eq(googleSignInClient), any())
+        every { authRepository.signOut(eq(googleSignInClient), any()) } answers {
+            resultMock.invoke()
+        }
+        every { authRepository.deleteUser(eq(googleSignInClient), any()) } answers {
+            resultMock.invoke()
+        }
         settingsAccountUseCase.deleteUser(googleSignInClient, resultMock)
-        verify(resultMock).invoke()
+        verify(exactly = 1) { resultMock.invoke() }
     }
 }

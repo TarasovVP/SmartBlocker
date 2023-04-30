@@ -13,17 +13,12 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 class ListContactUseCaseTest {
 
@@ -41,8 +36,7 @@ class ListContactUseCaseTest {
     @Test
     fun getContactsWithFiltersTest() = runBlocking {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)))
-        Mockito.`when`(contactRepository.getContactsWithFilters())
-            .thenReturn(contactList)
+        coEvery { contactRepository.getContactsWithFilters() } returns contactList
         val result = listContactUseCase.getContactsWithFilters()
         assertEquals(TEST_NAME, result[0].contact?.name)
     }
@@ -50,8 +44,7 @@ class ListContactUseCaseTest {
     @Test
     fun getFilteredContactListTest() = runBlocking {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), ContactWithFilter(contact = Contact(name = "zxy")))
-        Mockito.`when`(contactRepository.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)))
-            .thenReturn(contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() })
+        coEvery { contactRepository.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)) } returns contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }
         val result = listContactUseCase.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))
         assertEquals(contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }, result)
     }
@@ -60,8 +53,7 @@ class ListContactUseCaseTest {
     fun getHashMapFromContactListTest() = runBlocking {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)), ContactWithFilter(contact = Contact(name = "zxy")))
         val contactMap = mapOf("a" to contactList)
-        Mockito.`when`(contactRepository.getHashMapFromContactList(contactList))
-            .thenReturn(contactMap)
+        coEvery { contactRepository.getHashMapFromContactList(contactList) } returns contactMap
         val result = listContactUseCase.getHashMapFromContactList(contactList)
         assertEquals(TEST_NAME, result.get("a")?.get(0)?.contact?.name)
     }

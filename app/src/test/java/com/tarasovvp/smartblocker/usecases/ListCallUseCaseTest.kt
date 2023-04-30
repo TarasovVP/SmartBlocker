@@ -1,15 +1,12 @@
 package com.tarasovvp.smartblocker.usecases
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.domain.models.entities.Call
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
@@ -20,18 +17,12 @@ import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
-import io.mockk.MockKAnnotations
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 class ListCallUseCaseTest {
 
@@ -65,10 +56,8 @@ class ListCallUseCaseTest {
         }.distinctBy {
             it.call?.callId
         }
-        Mockito.`when`(logCallRepository.getAllLogCallWithFilter())
-            .thenReturn(logCallList)
-        Mockito.`when`(filteredCallRepository.allFilteredCallWithFilter())
-            .thenReturn(filteredCallList)
+        coEvery { logCallRepository.getAllLogCallWithFilter() } returns logCallList
+        coEvery { filteredCallRepository.allFilteredCallWithFilter() } returns filteredCallList
         val result = listCallUseCase.getCallList()
         assertEquals(commonCallList, result)
     }
@@ -85,9 +74,8 @@ class ListCallUseCaseTest {
                     || callWithFilter.call?.isPermittedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
                     || filterIndexes.isEmpty())
         }
-        Mockito.`when`(logCallRepository.getFilteredCallList(callList, String.EMPTY, arrayListOf(
-            NumberDataFiltering.CALL_BLOCKED.ordinal)))
-            .thenReturn(expectedCallList)
+        coEvery { logCallRepository.getFilteredCallList(callList, String.EMPTY, arrayListOf(
+            NumberDataFiltering.CALL_BLOCKED.ordinal)) } returns expectedCallList
         val result = listCallUseCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal))
         assertEquals(expectedCallList, result)
     }
@@ -96,8 +84,7 @@ class ListCallUseCaseTest {
     fun getHashMapFromCallListTest() = runBlocking {
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "567")))
         val callMap = mapOf("1" to callList)
-        Mockito.`when`(logCallRepository.getHashMapFromCallList(callList))
-            .thenReturn(callMap)
+        coEvery { logCallRepository.getHashMapFromCallList(callList) } returns callMap
         val result = listCallUseCase.getHashMapFromCallList(callList)
         assertEquals(TEST_NUMBER, result?.get("1")?.get(0)?.call?.number)
     }
@@ -105,19 +92,22 @@ class ListCallUseCaseTest {
     @Test
     fun deleteCallListTest() = runBlocking {
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER, callId = 123)))
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(realDataBaseRepository).deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any())
-        Mockito.`when`(filteredCallRepository.deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() }))).thenReturn(Unit)
+        every { realDataBaseRepository.deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any()) } coAnswers {
+            val callback = secondArg<() -> Unit>()
+            callback.invoke()
+        }
+        coEvery { filteredCallRepository.deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() })) } just Runs
+
         listCallUseCase.deleteCallList(callList.map { it.call?.callId.orZero() }, true, resultMock)
-        verify(realDataBaseRepository).deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any())
-        verify(filteredCallRepository).deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() }))
-        verify(resultMock).invoke()
+
+        verify { realDataBaseRepository.deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any()) }
+        coVerify { filteredCallRepository.deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() })) }
+        verify { resultMock.invoke() }
+
         listCallUseCase.deleteCallList(callList.map { it.call?.callId.orZero() }, false, resultMock)
-        verify(realDataBaseRepository, times(1)).deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any())
-        verify(filteredCallRepository, times(2)).deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() }))
-        verify(resultMock, times(2)).invoke()
+
+        verify(exactly = 1) {  realDataBaseRepository.deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any()) }
+        coVerify(exactly = 2) { filteredCallRepository.deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() })) }
+        verify(exactly = 2) { resultMock.invoke() }
     }
 }

@@ -94,8 +94,9 @@ class CreateFilterUseCaseTest {
     @Test
     fun createFilterTest() = runBlocking {
         val filter = Filter(filter = UnitTestUtils.TEST_FILTER)
-        every { realDataBaseRepository.insertFilter(eq(filter), any()) } answers {
-            resultMock.invoke()
+        every { realDataBaseRepository.insertFilter(eq(filter), any()) } coAnswers {
+            val callback = secondArg<() -> Unit>()
+            callback.invoke()
         }
         coEvery { filterRepository.insertFilter(eq(filter)) } just Runs
 
@@ -114,8 +115,9 @@ class CreateFilterUseCaseTest {
     @Test
     fun updateFilterTest() = runBlocking {
         val filter = Filter(filter = UnitTestUtils.TEST_FILTER)
-        every { realDataBaseRepository.insertFilter(eq(filter), any()) } answers {
-            resultMock.invoke()
+        every { realDataBaseRepository.insertFilter(eq(filter), any()) } coAnswers {
+            val callback = secondArg<() -> Unit>()
+            callback.invoke()
         }
         coEvery { filterRepository.updateFilter(eq(filter)) } just Runs
 
@@ -135,8 +137,9 @@ class CreateFilterUseCaseTest {
     @Test
     fun deleteFilterTest() = runBlocking {
         val filter = Filter(filter = UnitTestUtils.TEST_FILTER)
-        every { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) } answers {
-            resultMock.invoke()
+        every { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) } coAnswers {
+            val callback = secondArg<() -> Unit>()
+            callback.invoke()
         }
         coEvery { filterRepository.deleteFilterList(eq(listOf(filter))) } just Runs
 
@@ -146,7 +149,7 @@ class CreateFilterUseCaseTest {
         coVerify { filterRepository.deleteFilterList(eq(listOf(filter))) }
         verify { resultMock.invoke() }
 
-        createFilterUseCase.updateFilter(filter, false, resultMock)
+        createFilterUseCase.deleteFilter(filter, false, resultMock)
 
         verify(exactly = 1) { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) }
         coVerify(exactly = 2) { filterRepository.deleteFilterList(eq(listOf(filter))) }

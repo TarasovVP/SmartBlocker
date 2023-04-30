@@ -1,21 +1,15 @@
 package com.tarasovvp.smartblocker.usecases
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
 import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
 import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCaseImpl
 import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 class LoginUseCaseTest {
 
@@ -35,37 +29,28 @@ class LoginUseCaseTest {
 
     @Test
     fun sendPasswordResetEmailTest() {
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(authRepository).sendPasswordResetEmail(eq(UnitTestUtils.TEST_EMAIL), any())
-
+        every { authRepository.sendPasswordResetEmail(eq(UnitTestUtils.TEST_EMAIL), any()) } answers {
+            resultMock.invoke()
+        }
         loginUseCase.sendPasswordResetEmail(UnitTestUtils.TEST_EMAIL, resultMock)
-        verify(resultMock).invoke()
+        verify { resultMock.invoke() }
     }
 
     @Test
     fun signInWithEmailAndPasswordTest() {
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[2] as () -> Unit
-            result.invoke()
-        }.`when`(authRepository).signInWithEmailAndPassword(eq(UnitTestUtils.TEST_EMAIL), eq(UnitTestUtils.TEST_PASSWORD), any())
-
+        every { authRepository.signInWithEmailAndPassword(eq(UnitTestUtils.TEST_EMAIL), eq(UnitTestUtils.TEST_PASSWORD), any()) } answers {
+            resultMock.invoke()
+        }
         loginUseCase.signInWithEmailAndPassword(UnitTestUtils.TEST_EMAIL, UnitTestUtils.TEST_PASSWORD, resultMock)
-        verify(resultMock).invoke()
+        verify { resultMock.invoke() }
     }
 
     @Test
     fun firebaseAuthWithGoogleTest() {
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[1] as () -> Unit
-            result.invoke()
-        }.`when`(authRepository).signInWithGoogle(eq(UnitTestUtils.TEST_TOKEN), any())
-
+        every { authRepository.signInWithGoogle(eq(UnitTestUtils.TEST_TOKEN), any()) } answers {
+            resultMock.invoke()
+        }
         loginUseCase.firebaseAuthWithGoogle(UnitTestUtils.TEST_TOKEN, resultMock)
-        verify(resultMock).invoke()
+        verify { resultMock.invoke() }
     }
 }
