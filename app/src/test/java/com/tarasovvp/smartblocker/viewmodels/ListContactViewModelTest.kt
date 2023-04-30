@@ -12,29 +12,25 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactViewModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 class ListContactViewModelTest: BaseViewModelTest<ListContactViewModel>() {
 
 
-    @Mock
+    @MockK
     private lateinit var useCase: ListContactUseCase
     override fun createViewModel() = ListContactViewModel(application, useCase)
 
     @Test
     fun getContactsWithFiltersTest() = runTest {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)))
-        Mockito.`when`(useCase.getContactsWithFilters())
-            .thenReturn(contactList)
+        coEvery { useCase.getContactsWithFilters() } returns contactList
         viewModel.getContactsWithFilters(false)
         advanceUntilIdle()
         val result = viewModel.contactListLiveData.getOrAwaitValue()
@@ -44,8 +40,7 @@ class ListContactViewModelTest: BaseViewModelTest<ListContactViewModel>() {
     @Test
     fun getFilteredContactListTest() = runTest {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = BLOCKER))), ContactWithFilter(contact = Contact(name = "zxy")))
-        Mockito.`when`(useCase.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)))
-            .thenReturn(contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() })
+        coEvery { useCase.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)) } returns contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }
         viewModel.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))
         advanceUntilIdle()
         val result = viewModel.filteredContactListLiveData.getOrAwaitValue()
@@ -56,8 +51,7 @@ class ListContactViewModelTest: BaseViewModelTest<ListContactViewModel>() {
     fun getHashMapFromContactListTest() = runTest {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)), ContactWithFilter(contact = Contact(name = "zxy")))
         val contactMap = mapOf("a" to contactList)
-        Mockito.`when`(useCase.getHashMapFromContactList(contactList))
-            .thenReturn(contactMap)
+        coEvery { useCase.getHashMapFromContactList(contactList) } returns contactMap
         viewModel.getHashMapFromContactList(contactList, false)
         advanceUntilIdle()
         val result = viewModel.contactHashMapLiveData.getOrAwaitValue()

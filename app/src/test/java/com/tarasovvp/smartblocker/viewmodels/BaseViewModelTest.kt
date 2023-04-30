@@ -3,26 +3,23 @@ package com.tarasovvp.smartblocker.viewmodels
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 abstract class BaseViewModelTest<VM: BaseViewModel> {
 
     @Rule
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK
     protected lateinit var application: Application
 
     protected lateinit var viewModel:VM
@@ -31,7 +28,7 @@ abstract class BaseViewModelTest<VM: BaseViewModel> {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
+        MockKAnnotations.init(this)
         Dispatchers.setMain(StandardTestDispatcher())
         viewModel = createViewModel()
     }

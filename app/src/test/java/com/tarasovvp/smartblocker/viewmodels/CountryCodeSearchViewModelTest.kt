@@ -6,20 +6,17 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecase.countrycode_search.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchViewModel
+import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 class CountryCodeSearchViewModelTest: BaseViewModelTest<CountryCodeSearchViewModel>() {
 
-    @Mock
+    @MockK
     private lateinit var useCase: CountryCodeSearchUseCase
 
     override fun createViewModel(): CountryCodeSearchViewModel {
@@ -29,9 +26,7 @@ class CountryCodeSearchViewModelTest: BaseViewModelTest<CountryCodeSearchViewMod
     @Test
     fun getCountryCodeList() = runTest {
         val countryCodeList = listOf(CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_NUMBER), CountryCode(countryCode = "+123", country = "AI"))
-        Mockito.`when`(useCase.getCountryCodeList())
-            .thenReturn(countryCodeList)
-
+        coEvery { useCase.getCountryCodeList() } returns countryCodeList
         viewModel.getCountryCodeList()
         advanceUntilIdle()
         val result = viewModel.countryCodeListLiveData.getOrAwaitValue()

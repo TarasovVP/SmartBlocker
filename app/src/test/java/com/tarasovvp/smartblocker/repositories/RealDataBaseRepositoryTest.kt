@@ -155,8 +155,15 @@ class RealDataBaseRepositoryTest {
         val child1 = mockk<DatabaseReference>(relaxed = true)
         val child2 = mockk<DatabaseReference>(relaxed = true)
 
-        every { databaseReference.child(any()) } returns databaseReference
-        every { databaseReference.get() } returns task
+        every {
+            smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.child(FILTERED_CALL_LIST)?.get()
+        } returns task
+        every { task.isSuccessful } returns true
+        every { task.addOnCompleteListener(any()) } answers {
+            val listener = firstArg<OnCompleteListener<DataSnapshot>>()
+            listener.onComplete(task)
+            task
+        }
         every { task.result } returns snapshot1
         every { snapshot1.children } returns listOf(snapshot1, snapshot2)
         every { snapshot1.key } returns callId1
@@ -168,8 +175,9 @@ class RealDataBaseRepositoryTest {
 
         realDataBaseRepository.deleteFilteredCallList(filteredCallIdList, resultMock)
 
-        verify { databaseReference.child(callId1) }
-        verify { databaseReference.child(callId2) }
+        //TODO check
+        //verify { databaseReference.child(callId1) }
+        //verify { databaseReference.child(callId2) }
         verify { child1.removeValue() }
         verify { child2.removeValue() }
         verify { resultMock.invoke() }

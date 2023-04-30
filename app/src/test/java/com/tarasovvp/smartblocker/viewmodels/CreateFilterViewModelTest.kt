@@ -1,7 +1,5 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
@@ -12,21 +10,18 @@ import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterViewModel
+import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@RunWith(MockitoJUnitRunner::class)
 class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
 
 
-    @Mock
+    @MockK
     private lateinit var useCase: CreateFilterUseCase
 
     override fun createViewModel() = CreateFilterViewModel(application, useCase)
@@ -35,9 +30,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     fun getCountryCodeWithCodeTest() = runTest {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        Mockito.`when`(useCase.getCountryCodeWithCode(countryCode))
-            .thenReturn(expectedCountryCode)
-
+        coEvery { useCase.getCountryCodeWithCode(countryCode) } returns expectedCountryCode
         viewModel.getCountryCodeWithCode(countryCode)
         advanceUntilIdle()
         val result = viewModel.countryCodeLiveData.getOrAwaitValue()
@@ -47,8 +40,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun getNumberDataListTest() = runTest {
         val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
-        Mockito.`when`(useCase.getNumberDataList())
-            .thenReturn(numberDataList)
+        coEvery { useCase.getNumberDataList() } returns numberDataList
         viewModel.getNumberDataList()
         advanceUntilIdle()
         val result = viewModel.numberDataListLiveData.getOrAwaitValue()
@@ -58,8 +50,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun checkFilterExistTest() = runTest {
         val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TEST_FILTER))
-        Mockito.`when`(useCase.checkFilterExist(filterWithCountryCode))
-            .thenReturn(filterWithCountryCode)
+        coEvery { useCase.checkFilterExist(filterWithCountryCode) } returns filterWithCountryCode
         viewModel.checkFilterExist(filterWithCountryCode)
         advanceUntilIdle()
         val result = viewModel.existingFilterLiveData.getOrAwaitValue()
@@ -82,11 +73,10 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun createFilterTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[2] as () -> Unit
+        coEvery { useCase.createFilter(eq(filter), any(), any()) } answers {
+            val result = thirdArg<() -> Unit>()
             result.invoke()
-        }.`when`(useCase).createFilter(eq(filter), any(), any())
+        }
         viewModel.createFilter(filter)
         advanceUntilIdle()
         val result = viewModel.filterActionLiveData.getOrAwaitValue()
@@ -96,11 +86,10 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun updateFilterTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[2] as () -> Unit
+        coEvery { useCase.updateFilter(eq(filter), any(), any()) } answers {
+            val result = thirdArg<() -> Unit>()
             result.invoke()
-        }.`when`(useCase).updateFilter(eq(filter), any(), any())
+        }
         viewModel.updateFilter(filter)
         advanceUntilIdle()
         val result = viewModel.filterActionLiveData.getOrAwaitValue()
@@ -110,11 +99,10 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun deleteFilterTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        Mockito.doAnswer {
-            @Suppress("UNCHECKED_CAST")
-            val result = it.arguments[2] as () -> Unit
+        coEvery { useCase.deleteFilter(eq(filter), any(), any()) } answers {
+            val result = thirdArg<() -> Unit>()
             result.invoke()
-        }.`when`(useCase).deleteFilter(eq(filter), any(), any())
+        }
         viewModel.deleteFilter(filter)
         advanceUntilIdle()
         val result = viewModel.filterActionLiveData.getOrAwaitValue()
