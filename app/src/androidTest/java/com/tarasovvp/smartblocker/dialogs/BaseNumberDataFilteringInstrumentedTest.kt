@@ -68,13 +68,13 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
         )).apply {
             if (previousDestination == R.id.listBlockerFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.title)))
+                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.title())))
                 check(matches(withTagValue(equalTo(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(withText(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.title))))
+                check(matches(not(withText(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.title()))))
             }
         }
     }
@@ -87,13 +87,13 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
         )).apply {
             if (previousDestination == R.id.listBlockerFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.title)))
+                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.title())))
                 check(matches(withTagValue(equalTo(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(withText(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.title))))
+                check(matches(not(withText(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.title()))))
             }
         }
     }
@@ -106,7 +106,7 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
         )).apply {
             if (previousDestination == R.id.listBlockerFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.title)))
+                check(matches(withText(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.title())))
                 check(matches(withTagValue(equalTo(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
@@ -126,13 +126,13 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
         )).apply {
             if (previousDestination == R.id.listContactFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(NumberDataFiltering.CONTACT_WITH_BLOCKER.title)))
+                check(matches(withText(NumberDataFiltering.CONTACT_WITH_BLOCKER.title())))
                 check(matches(withTagValue(equalTo(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(withText(NumberDataFiltering.CONTACT_WITH_BLOCKER.title))))
+                check(matches(not(withText(NumberDataFiltering.CONTACT_WITH_BLOCKER.title()))))
             }
         }
     }
@@ -145,13 +145,13 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
         )).apply {
             if (previousDestination == R.id.listContactFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(NumberDataFiltering.CONTACT_WITH_PERMISSION.title)))
+                check(matches(withText(NumberDataFiltering.CONTACT_WITH_PERMISSION.title())))
                 check(matches(withTagValue(equalTo(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(withText(NumberDataFiltering.CONTACT_WITH_PERMISSION.title))))
+                check(matches(not(withText(NumberDataFiltering.CONTACT_WITH_PERMISSION.title()))))
             }
         }
     }
@@ -164,13 +164,13 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
         )).apply {
             if (previousDestination == R.id.listCallFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(NumberDataFiltering.CALL_BLOCKED.title)))
+                check(matches(withText(NumberDataFiltering.CALL_BLOCKED.title())))
                 check(matches(withTagValue(equalTo(NumberDataFiltering.CALL_BLOCKED.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(withText(NumberDataFiltering.CALL_BLOCKED.title))))
+                check(matches(not(withText(NumberDataFiltering.CALL_BLOCKED.title()))))
             }
         }
     }
@@ -183,13 +183,13 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
         )).apply {
             if (previousDestination == R.id.listCallFragment) {
                 check(matches(isDisplayed()))
-                check(matches(withText(NumberDataFiltering.CALL_PERMITTED.title)))
+                check(matches(withText(NumberDataFiltering.CALL_PERMITTED.title())))
                 check(matches(withTagValue(equalTo(NumberDataFiltering.CALL_PERMITTED.ordinal))))
                 check(matches(not(isChecked())))
                 perform(click())
                 check(matches(isChecked()))
             } else {
-                check(matches(not(withText(NumberDataFiltering.CALL_PERMITTED.title))))
+                check(matches(not(withText(NumberDataFiltering.CALL_PERMITTED.title()))))
             }
         }
     }

@@ -38,7 +38,7 @@ open class BaseSingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
     fun checkOnBoardingTitle() {
         onView(withId(R.id.single_on_boarding_title))
             .check(matches(isDisplayed()))
-            .check(matches(withText(onBoardingPage?.description.orZero())))
+            .check(matches(withText(onBoardingPage?.description().orZero())))
     }
 
     @Test
@@ -60,6 +60,6 @@ open class BaseSingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
     fun checkOnBoardingTabs() {
         onView(withId(R.id.single_on_boarding_tab_layout))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(onBoardingPage?.tabImage)))
+            .check(matches(withDrawable(onBoardingPage?.tabImage())))
     }
 }

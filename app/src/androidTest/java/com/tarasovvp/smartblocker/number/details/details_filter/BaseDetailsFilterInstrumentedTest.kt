@@ -40,7 +40,7 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     override fun setUp() {
         super.setUp()
         filterWithCountryCode = TestUtils.filterWithCountryCode().apply {
-            filter?.conditionType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) FilterCondition.FILTER_CONDITION_CONTAIN.index else FilterCondition.FILTER_CONDITION_START.index
+            filter?.conditionType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) FilterCondition.FILTER_CONDITION_CONTAIN.ordinal else FilterCondition.FILTER_CONDITION_START.ordinal
             filter?.filterType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) BLOCKER else PERMISSION
         }
         launchFragmentInHiltContainer<DetailsFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to filterWithCountryCode)) {
