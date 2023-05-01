@@ -65,7 +65,7 @@ class FilterRepositoryTest {
 
     @Test
     fun getFilterTest() = runBlocking {
-        val filterWithCountryCode = FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)}
+        val filterWithCountryCode = FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)}
         coEvery { filterDao.getFilter(TEST_FILTER) } returns filterWithCountryCode
         val result = filterRepository.getFilter(filterWithCountryCode)
         assertEquals(filterWithCountryCode, result)
@@ -105,7 +105,7 @@ class FilterRepositoryTest {
 
     @Test
     fun queryFilterTest() = runBlocking {
-        val filterWithCountryCode = FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)}
+        val filterWithCountryCode = FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)}
         coEvery { filterDao.queryFullMatchFilterList(TEST_NUMBER) } returns listOf(filterWithCountryCode)
         val result = filterRepository.queryFilter(TEST_NUMBER)
         assertEquals(filterWithCountryCode, result)

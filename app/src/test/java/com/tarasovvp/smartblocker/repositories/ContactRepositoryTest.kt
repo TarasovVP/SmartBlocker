@@ -53,9 +53,9 @@ class ContactRepositoryTest {
     @Test
     fun setFilterToContactTest() = runBlocking {
         val filterList = listOf(
-            Filter("1234567890", conditionType = FilterCondition.FILTER_CONDITION_FULL.index),
-            Filter("345", conditionType = FilterCondition.FILTER_CONDITION_START.index),
-            Filter("789", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)
+            Filter("1234567890", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal),
+            Filter("345", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal),
+            Filter("789", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)
         )
         val contactList = listOf(
             Contact(number = "1234567890"),
@@ -137,7 +137,7 @@ class ContactRepositoryTest {
 
     @Test
     fun filteredNumberDataListTest() = runBlocking {
-        val filter = Filter(filter = "123", conditionType = FilterCondition.FILTER_CONDITION_START.index)
+        val filter = Filter(filter = "123", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)
         val numberDataList = arrayListOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, LogCallWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, NumberData().apply { Contact().apply { number = TEST_NUMBER }})
         val result = contactRepository.filteredNumberDataList(filter, numberDataList, 0)
         assertEquals(arrayListOf(numberDataList[1], numberDataList[2], numberDataList[0]), result)

@@ -34,9 +34,9 @@ class FilteredCallRepositoryTest {
     @Test
     fun setFilterToFilteredCallTest() = runBlocking {
         val filterList = listOf(
-            Filter("1234567890", conditionType = FilterCondition.FILTER_CONDITION_FULL.index),
-            Filter("345", conditionType = FilterCondition.FILTER_CONDITION_START.index),
-            Filter("789", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index)
+            Filter("1234567890", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal),
+            Filter("345", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal),
+            Filter("789", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)
         )
         val filteredCallList = listOf(
             FilteredCall().apply { number = "1234567890" },
