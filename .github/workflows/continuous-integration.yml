@@ -15,6 +15,55 @@ jobs:
       - uses: actions/setup-java@v1
         with: { java-version: 1.11 }
 
+      - name: Build APK for UI test after Unit tests
+        run: |
+          ./gradlew test
+          ./gradlew assembleDebug
+          ./gradlew assembleDebugAndroidTest
+
+      - name: Upload app-debug APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload app-debug-androidTest APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-debug-androidTest
+          path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+
+  run_ui_tests_on_firebase:
+    runs-on: ubuntu-20.04
+    needs: assemble_ui_test_artifacts
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download app-debug APK
+        uses: actions/download-artifact@v1
+        with:
+          name: app-debug
+
+      - name: Download app-debug-androidTest APK
+        uses: actions/download-artifact@v1
+        with:
+          name: app-debug-androidTest
+
+      - name: Firebase auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.FIREBASE_KEY }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Set current project
+        run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
+
+      - name: Run Instrumentation Tests in Firebase Test Lab
+        run: |
+          gcloud firebase test android models list
+          gcloud firebase test android run --type instrumentation --use-orchestrator --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=redfin,version=30,locale=en,orientation=portrait --timeout 30m
+
       - name: Build and test
         run: |
           ./gradlew clean build connectedCheck
@@ -28,3 +77,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: build/reports/jacoco
+
+
