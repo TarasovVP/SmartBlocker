@@ -109,8 +109,8 @@ open class ListContactFragment :
         findNavController().navigate(
             ListContactFragmentDirections.startInfoFragment(
                 info = InfoData(
-                    title = getString(Info.INFO_CONTACT_LIST.title),
-                    description = getString(Info.INFO_CONTACT_LIST.description)
+                    title = getString(Info.INFO_CONTACT_LIST.title()),
+                    description = getString(Info.INFO_CONTACT_LIST.description())
                 )
             )
         )

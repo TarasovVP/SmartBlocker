@@ -1,17 +1,21 @@
 package com.tarasovvp.smartblocker.domain.enums
 
-import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
 
-enum class EmptyState(val description: Int) {
-    EMPTY_STATE_BLOCKERS(R.string.empty_state_blockers),
-    EMPTY_STATE_PERMISSIONS(R.string.empty_state_permissions),
-    EMPTY_STATE_CONTACTS(R.string.empty_state_contacts),
-    EMPTY_STATE_CALLS(R.string.empty_state_calls),
-    EMPTY_STATE_QUERY(R.string.empty_state_query),
-    EMPTY_STATE_CREATE_FILTER(R.string.empty_state_add_filter),
-    EMPTY_STATE_FILTERS(R.string.empty_state_filters),
-    EMPTY_STATE_NUMBERS(R.string.empty_state_numbers),
-    EMPTY_STATE_FILTERED_CALLS(R.string.empty_state_filtered_calls),
-    EMPTY_STATE_HIDDEN(R.string.empty_state_hidden),
-    EMPTY_STATE_ACCOUNT(R.string.empty_state_account)
+enum class EmptyState {
+    EMPTY_STATE_BLOCKERS,
+    EMPTY_STATE_PERMISSIONS,
+    EMPTY_STATE_CONTACTS,
+    EMPTY_STATE_CALLS,
+    EMPTY_STATE_QUERY,
+    EMPTY_STATE_CREATE_FILTER,
+    EMPTY_STATE_FILTERS,
+    EMPTY_STATE_NUMBERS,
+    EMPTY_STATE_FILTERED_CALLS,
+    EMPTY_STATE_HIDDEN,
+    EMPTY_STATE_ACCOUNT;
+
+    fun description(): Int {
+        return descriptionRes()
+    }
 }

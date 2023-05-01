@@ -165,7 +165,7 @@ class DetailsFilterFragment :
 
     private fun handleSuccessFilterAction(filter: Filter) {
         (activity as MainActivity).apply {
-            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
+            showInfoMessage(String.format(filter.filterAction?.successText()?.let { getString(it) }
                 .orEmpty(), binding?.filterWithCountryCode?.filter?.filter.orEmpty()), false)
             //TODO interstitial
             //showInterstitial()
@@ -187,8 +187,8 @@ class DetailsFilterFragment :
         findNavController().navigate(
             DetailsFilterFragmentDirections.startInfoFragment(
                 info = InfoData(
-                    title = getString(Info.INFO_DETAILS_FILTER.title),
-                    description = getString(Info.INFO_DETAILS_FILTER.description)
+                    title = getString(Info.INFO_DETAILS_FILTER.title()),
+                    description = getString(Info.INFO_DETAILS_FILTER.description())
                 )
             )
         )

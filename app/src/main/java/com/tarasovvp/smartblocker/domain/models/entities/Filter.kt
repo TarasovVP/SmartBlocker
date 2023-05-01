@@ -84,7 +84,7 @@ data class Filter(
 
     @Exclude
     fun filterActionTextTint(): Int {
-        return if (isCreateFilterAction()) R.color.white else filterAction?.color ?: R.color.white
+        return if (isCreateFilterAction()) R.color.white else filterAction?.color() ?: R.color.white
     }
 
     @Exclude
@@ -110,17 +110,17 @@ data class Filter(
 
     @Exclude
     fun conditionTypeName(): Int {
-        return FilterCondition.getTitleByIndex(conditionType)
+        return FilterCondition.values()[conditionType].title()
     }
 
     @Exclude
     fun conditionTypeIcon(): Int {
-        return FilterCondition.getMainIconByIndex(conditionType)
+        return FilterCondition.values()[conditionType].mainIcon()
     }
 
     @Exclude
     fun conditionTypeSmallIcon(): Int {
-        return FilterCondition.getSmallIconByIndex(conditionType, isBlocker())
+        return FilterCondition.values()[conditionType].smallIcon(isBlocker())
     }
 
     @Exclude
@@ -151,17 +151,17 @@ data class Filter(
 
     @Exclude
     fun isTypeStart(): Boolean {
-        return conditionType == FilterCondition.FILTER_CONDITION_START.index
+        return conditionType == FilterCondition.FILTER_CONDITION_START.ordinal
     }
 
     @Exclude
     fun isTypeFull(): Boolean {
-        return conditionType == FilterCondition.FILTER_CONDITION_FULL.index
+        return conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal
     }
 
     @Exclude
     fun isTypeContain(): Boolean {
-        return conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.index
+        return conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
     }
 
     @Exclude

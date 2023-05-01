@@ -179,8 +179,8 @@ class ListCallFragment :
         findNavController().navigate(
             ListCallFragmentDirections.startInfoFragment(
                 info = InfoData(
-                    title = getString(Info.INFO_CALL_LIST.title),
-                    description = getString(Info.INFO_CALL_LIST.description)
+                    title = getString(Info.INFO_CALL_LIST.title()),
+                    description = getString(Info.INFO_CALL_LIST.description())
                 )
             )
         )

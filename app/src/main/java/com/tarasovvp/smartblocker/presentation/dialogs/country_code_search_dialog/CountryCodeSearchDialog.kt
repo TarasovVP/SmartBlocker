@@ -36,7 +36,7 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
             }
         binding?.apply {
             countryCodeSearchList.adapter = countryCodeSearchAdapter
-            countryCodeEmpty.setDescription(EmptyState.EMPTY_STATE_QUERY.description)
+            countryCodeEmpty.setDescription(EmptyState.EMPTY_STATE_QUERY.description())
             countryCodeSearchCancel.setSafeOnClickListener {
                 dismiss()
             }

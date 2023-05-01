@@ -1,55 +1,36 @@
 package com.tarasovvp.smartblocker.domain.enums
 
-import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.utils.extensions.*
 
-enum class FilterAction(
-    val title: Int,
-    val color: Int,
-    val icon: Int,
-    val descriptionText: Int,
-    val requestText: Int,
-    val successText: Int
-) {
-    FILTER_ACTION_INVALID(R.string.filter_action_create,
-        R.color.inactive_bg,
-        R.drawable.ic_blocker_inactive,
-        R.string.filter_action_create_number_invalid,
-        0,
-        0),
-    FILTER_ACTION_BLOCKER_CREATE(R.string.filter_action_create,
-        R.color.button_bg,
-        R.drawable.ic_blocker,
-        R.string.filter_action_create_blocker_description,
-        R.string.filter_action_create_blocker_request,
-        R.string.filter_action_create_blocker_success),
-    FILTER_ACTION_PERMISSION_CREATE(R.string.filter_action_create,
-        R.color.button_bg,
-        R.drawable.ic_permission,
-        R.string.filter_action_create_permission_description,
-        R.string.filter_action_create_permission_request,
-        R.string.filter_action_create_permission_success),
-    FILTER_ACTION_BLOCKER_DELETE(R.string.filter_action_delete,
-        R.color.sunset,
-        R.drawable.ic_delete,
-        R.string.filter_action_delete_blocker_description,
-        R.string.filter_action_delete_blocker_request,
-        R.string.filter_action_delete_blocker_success),
-    FILTER_ACTION_PERMISSION_DELETE(R.string.filter_action_delete,
-        R.color.sunset,
-        R.drawable.ic_delete,
-        R.string.filter_action_delete_permission_description,
-        R.string.filter_action_delete_permission_request,
-        R.string.filter_action_delete_permission_success),
-    FILTER_ACTION_PERMISSION_TRANSFER(R.string.filter_action_transfer,
-        R.color.button_bg,
-        R.drawable.ic_blocker,
-        R.string.filter_action_transfer_blocker_description,
-        R.string.filter_action_transfer_blocker_request,
-        R.string.filter_action_transfer_blocker_success),
-    FILTER_ACTION_BLOCKER_TRANSFER(R.string.filter_action_transfer,
-        R.color.button_bg,
-        R.drawable.ic_permission,
-        R.string.filter_action_transfer_permission_description,
-        R.string.filter_action_transfer_permission_request,
-        R.string.filter_action_transfer_permission_success),
+enum class FilterAction {
+    FILTER_ACTION_INVALID,
+    FILTER_ACTION_BLOCKER_CREATE,
+    FILTER_ACTION_PERMISSION_CREATE,
+    FILTER_ACTION_BLOCKER_DELETE,
+    FILTER_ACTION_PERMISSION_DELETE,
+    FILTER_ACTION_PERMISSION_TRANSFER,
+    FILTER_ACTION_BLOCKER_TRANSFER;
+    fun title(): Int {
+        return titleRes()
+    }
+
+    fun color(): Int {
+        return colorRes()
+    }
+
+    fun icon(): Int {
+        return iconRes()
+    }
+
+    fun descriptionText(): Int {
+        return descriptionRes()
+    }
+
+    fun requestText(): Int {
+        return requestRes()
+    }
+
+    fun successText(): Int {
+        return successRes()
+    }
 }

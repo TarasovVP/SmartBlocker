@@ -129,13 +129,13 @@ class DetailsNumberDataFragment :
                 setAddFilterConditions(false, numberDataDetailAddFilterFull.isShown.isTrue())
             }
             numberDataDetailAddFilterFull.setSafeOnClickListener {
-                createFilter(FilterCondition.FILTER_CONDITION_FULL.index)
+                createFilter(FilterCondition.FILTER_CONDITION_FULL.ordinal)
             }
             numberDataDetailAddFilterStart.setSafeOnClickListener {
-                createFilter(FilterCondition.FILTER_CONDITION_START.index)
+                createFilter(FilterCondition.FILTER_CONDITION_START.ordinal)
             }
             numberDataDetailAddFilterContain.setSafeOnClickListener {
-                createFilter(FilterCondition.FILTER_CONDITION_CONTAIN.index)
+                createFilter(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)
             }
         }
     }
@@ -153,7 +153,7 @@ class DetailsNumberDataFragment :
             filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION))
         val phoneNumber = if (number.getPhoneNumber(String.EMPTY).isNull()) number.getPhoneNumber(context?.getUserCountry().orEmpty().uppercase())
         else number.getPhoneNumber(String.EMPTY)
-        if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
+        if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             startAddFilterScreen()
         } else {
             viewModel.getCountryCode(phoneNumber?.countryCode)
@@ -179,13 +179,13 @@ class DetailsNumberDataFragment :
                 isShown.not() && isBlocker.not()
             )
             numberDataDetailAddFilterFull.changeFilterConditionButtonState(
-                FilterCondition.FILTER_CONDITION_FULL.mainIcon, isShown
+                FilterCondition.FILTER_CONDITION_FULL.mainIcon(), isShown
             )
             numberDataDetailAddFilterStart.changeFilterConditionButtonState(
-                FilterCondition.FILTER_CONDITION_START.mainIcon, isShown
+                FilterCondition.FILTER_CONDITION_START.mainIcon(), isShown
             )
             numberDataDetailAddFilterContain.changeFilterConditionButtonState(
-                FilterCondition.FILTER_CONDITION_CONTAIN.mainIcon, isShown
+                FilterCondition.FILTER_CONDITION_CONTAIN.mainIcon(), isShown
             )
         }
     }
@@ -220,10 +220,10 @@ class DetailsNumberDataFragment :
     }
 
     private fun ExtendedFloatingActionButton.changeFilterConditionButtonState(
-        iconRes: Int,
+        iconRes: Int?,
         isShown: Boolean,
     ) {
-        setIconResource(iconRes)
+        iconRes?.let { setIconResource(it) }
         if (isShown) hide() else show()
     }
 
@@ -248,8 +248,8 @@ class DetailsNumberDataFragment :
         findNavController().navigate(
             DetailsNumberDataFragmentDirections.startInfoFragment(
                 info = InfoData(
-                    title = getString(Info.INFO_DETAILS_NUMBER_DATA.title),
-                    description = getString(Info.INFO_DETAILS_NUMBER_DATA.description)
+                    title = getString(Info.INFO_DETAILS_NUMBER_DATA.title()),
+                    description = getString(Info.INFO_DETAILS_NUMBER_DATA.description())
                 )
             )
         )

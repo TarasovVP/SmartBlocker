@@ -9,6 +9,7 @@ import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.junit.Rule
@@ -71,9 +72,9 @@ abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
             if (dataList.isEmpty()) {
                 check(matches(isDisplayed()))
                 val descriptionText = when(this@BaseSingleDetailsInstrumentedTest) {
-                    is SingleDetailsFiltersInstrumentedTest -> EmptyState.EMPTY_STATE_NUMBERS.description
-                    is SingleDetailsNumberDataInstrumentedTest -> EmptyState.EMPTY_STATE_FILTERS.description
-                    else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description
+                    is SingleDetailsFiltersInstrumentedTest -> EmptyState.EMPTY_STATE_NUMBERS.descriptionRes()
+                    is SingleDetailsNumberDataInstrumentedTest -> EmptyState.EMPTY_STATE_FILTERS.descriptionRes()
+                    else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.descriptionRes()
                 }
                 onView(withId(R.id.empty_state_description)).check(matches(withText(descriptionText)))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))

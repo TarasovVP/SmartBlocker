@@ -31,10 +31,10 @@ data class FilterWithCountryCode(
                 when {
                     filter?.isTypeContain().isTrue() && filter?.filter?.isEmpty().isTrue() -> R.string.filter_action_create_number_empty
                     filter?.isTypeFull().isTrue() && filter?.filter?.length.orZero() < countryCode?.numberFormat.digitsTrimmed().length -> R.string.filter_action_create_number_incomplete
-                    else -> action.descriptionText
+                    else -> action.descriptionText()
                 }
             } else {
-                action.descriptionText
+                action.descriptionText()
             })
         }.orEmpty()
     }
@@ -78,10 +78,10 @@ data class FilterWithCountryCode(
     @Exclude
     fun filterToInput(): String {
         return when (filter?.conditionType) {
-            FilterCondition.FILTER_CONDITION_FULL.index -> if (filter?.filter.getPhoneNumber(countryCode?.country.orEmpty()).isNull())
+            FilterCondition.FILTER_CONDITION_FULL.ordinal -> if (filter?.filter.getPhoneNumber(countryCode?.country.orEmpty()).isNull())
                 filter?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY) else filter?.filter.getPhoneNumber(
                 countryCode?.country.orEmpty())?.nationalNumber.toString()
-            FilterCondition.FILTER_CONDITION_START.index -> filter?.filter?.replaceFirst(countryCode?.countryCode.orEmpty(), String.EMPTY).orEmpty()
+            FilterCondition.FILTER_CONDITION_START.ordinal -> filter?.filter?.replaceFirst(countryCode?.countryCode.orEmpty(), String.EMPTY).orEmpty()
             else -> filter?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
         }
     }

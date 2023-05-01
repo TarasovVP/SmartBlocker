@@ -32,7 +32,7 @@ class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>()
             dialogNumberDataFilteringContainer.removeAllViews()
             numberDataFiltering.forEach { dataFiltering ->
                 val checkBox = ItemCheckBoxBinding.inflate(LayoutInflater.from(context))
-                checkBox.itemCheckBox.setText(dataFiltering.title)
+                checkBox.itemCheckBox.setText(dataFiltering.title())
                 checkBox.itemCheckBox.tag = dataFiltering.ordinal
                 checkBox.itemCheckBox.isChecked = args.filteringList?.contains(dataFiltering.ordinal).isTrue()
                 dialogNumberDataFilteringContainer.addView(checkBox.root)

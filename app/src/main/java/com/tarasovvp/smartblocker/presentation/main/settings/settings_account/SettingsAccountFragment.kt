@@ -14,6 +14,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DELETE_USER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NEW_PASSWORD
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
+import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -28,6 +29,7 @@ class SettingsAccountFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.includeEmptyState?.setDescription(EmptyState.EMPTY_STATE_ACCOUNT.descriptionRes())
         initViews()
         setOnclickListeners()
         setFragmentResults()

@@ -158,7 +158,7 @@ open class Call(
     fun callFilterIcon(): Int? {
         return when {
             isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
-            isCallFiltered() -> FilterCondition.getSmallIconByIndex(conditionType, type == BLOCKED_CALL)
+            isCallFiltered() -> FilterCondition.values()[conditionType].smallIcon(type == BLOCKED_CALL)
             else -> null
         }
     }

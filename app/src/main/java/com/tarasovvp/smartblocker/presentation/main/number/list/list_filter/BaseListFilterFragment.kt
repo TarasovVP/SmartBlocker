@@ -123,13 +123,13 @@ open class BaseListFilterFragment :
                 if (fabContain.isVisible) fabContain.hide() else fabContain.show()
             }
             fabFull.setSafeOnClickListener {
-                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
+                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
             }
             fabStart.setSafeOnClickListener {
-                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
+                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
             }
             fabContain.setSafeOnClickListener {
-                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
+                startNextScreen(FilterWithCountryCode(filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION), countryCode = SharedPrefs.countryCode))
             }
         }
     }
@@ -236,8 +236,8 @@ open class BaseListFilterFragment :
             findNavController().navigate(
                 ListBlockerFragmentDirections.startInfoFragment(
                     InfoData(
-                        title = getString(Info.INFO_BLOCKER_LIST.title),
-                        description = getString(Info.INFO_BLOCKER_LIST.description)
+                        title = getString(Info.INFO_BLOCKER_LIST.title()),
+                        description = getString(Info.INFO_BLOCKER_LIST.description())
                     )
                 )
             )
@@ -245,8 +245,8 @@ open class BaseListFilterFragment :
             findNavController().navigate(
                 ListPermissionFragmentDirections.startInfoFragment(
                     InfoData(
-                        title = getString(Info.INFO_PERMISSION_LIST.title),
-                        description = getString(Info.INFO_PERMISSION_LIST.description)
+                        title = getString(Info.INFO_PERMISSION_LIST.title()),
+                        description = getString(Info.INFO_PERMISSION_LIST.description())
                     )
                 )
             )

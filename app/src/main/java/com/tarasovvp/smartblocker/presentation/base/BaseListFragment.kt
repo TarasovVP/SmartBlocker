@@ -123,11 +123,11 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         recyclerView?.isVisible = isEmpty.not()
         emptyStateContainer?.setDescription(
             if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
-                is ListPermissionFragment -> EmptyState.EMPTY_STATE_PERMISSIONS.description
-                is ListContactFragment -> EmptyState.EMPTY_STATE_CONTACTS.description
-                is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS.description
-                else -> EmptyState.EMPTY_STATE_BLOCKERS.description
-            } else EmptyState.EMPTY_STATE_QUERY.description)
+                is ListPermissionFragment -> EmptyState.EMPTY_STATE_PERMISSIONS.descriptionRes()
+                is ListContactFragment -> EmptyState.EMPTY_STATE_CONTACTS.descriptionRes()
+                is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS.descriptionRes()
+                else -> EmptyState.EMPTY_STATE_BLOCKERS.descriptionRes()
+            } else EmptyState.EMPTY_STATE_QUERY.descriptionRes())
         if (isEmpty) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()

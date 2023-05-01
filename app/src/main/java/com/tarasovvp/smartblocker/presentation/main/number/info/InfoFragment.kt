@@ -30,8 +30,8 @@ class InfoFragment :
                         findNavController().navigate(
                             InfoFragmentDirections.startInfoFragment(
                                 info = InfoData(
-                                    title = getString(title),
-                                    description = getString(description)
+                                    title = getString(title()),
+                                    description = getString(description())
                                 )
                             )
                         )

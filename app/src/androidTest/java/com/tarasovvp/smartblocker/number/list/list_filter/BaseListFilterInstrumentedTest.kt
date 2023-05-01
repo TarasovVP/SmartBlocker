@@ -268,7 +268,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
             onView(withId(R.id.empty_state_description)).check(matches(isDisplayed()))
-                .check(matches(withText(EmptyState.EMPTY_STATE_BLOCKERS.description)))
+                .check(matches(withText(EmptyState.EMPTY_STATE_BLOCKERS.descriptionRes)))
             onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
             onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {

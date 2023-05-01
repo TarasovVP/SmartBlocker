@@ -247,7 +247,7 @@ open class CreateFilterFragment :
     private fun handleSuccessFilterAction(filter: Filter) {
         Timber.e("CreateFilterFragment handleSuccessFilterAction")
         (activity as MainActivity).apply {
-            showInfoMessage(String.format(filter.filterAction?.successText?.let { getString(it) }
+            showInfoMessage(String.format(filter.filterAction?.successText()?.let { getString(it) }
                 .orEmpty(),
                 filter.filter, getString(filter.conditionTypeName())), false)
             showInterstitial()
@@ -268,8 +268,8 @@ open class CreateFilterFragment :
         }
         findNavController().navigate(
             DetailsNumberDataFragmentDirections.startInfoFragment(info = InfoData(
-            title = getString(info.title),
-            description = getString(info.description))
+            title = getString(info.title()),
+            description = getString(info.description()))
         ))
     }
 }

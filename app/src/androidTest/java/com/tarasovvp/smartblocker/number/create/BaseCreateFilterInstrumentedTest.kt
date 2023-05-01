@@ -189,7 +189,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.create_filter_empty_list)).apply {
             if (numberDataList.isEmpty()) {
                 check(matches(isDisplayed()))
-                onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_CREATE_FILTER.description)))
+                onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_CREATE_FILTER.descriptionRes)))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
                 //TODO drawable
                 //onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))

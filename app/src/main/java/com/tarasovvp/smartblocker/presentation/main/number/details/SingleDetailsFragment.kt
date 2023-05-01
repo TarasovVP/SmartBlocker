@@ -30,9 +30,9 @@ class SingleDetailsFragment :
                     this.isFilteredCallItemDisable = isFilteredCallItemDisable
                 }
             singleDetailsListEmpty.setDescription( when (numberType) {
-                Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description
-                NumberData::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description
-                else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description
+                Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description()
+                NumberData::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description()
+                else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description()
             })
             singleDetailsListEmpty.isVisible = numberDataList.isEmpty()
         }
