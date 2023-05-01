@@ -52,7 +52,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideAuthRepository(@ApplicationContext appContext: Context): AuthRepository {
-        return AuthRepositoryImpl(appContext as SmartBlockerApp)
+        return AuthRepositoryImpl(appContext as? SmartBlockerApp)
     }
 
     @Singleton
@@ -76,7 +76,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRealDataBaseRepository(@ApplicationContext appContext: Context): RealDataBaseRepository {
-        return RealDataBaseRepositoryImpl(appContext as  SmartBlockerApp)
+        return RealDataBaseRepositoryImpl(appContext as?  SmartBlockerApp)
     }
 
     @Singleton
