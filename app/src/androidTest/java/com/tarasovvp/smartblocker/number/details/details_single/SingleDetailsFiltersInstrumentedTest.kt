@@ -63,7 +63,7 @@ class SingleDetailsFiltersInstrumentedTest: BaseSingleDetailsInstrumentedTest() 
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_name),
                 isDisplayed(),
                 withText(if (filterWithCountryCode?.filter.isNull()) filterWithCountryCode?.filter?.filter else targetContext.getString(filterWithCountryCode?.filter?.conditionTypeName().orZero())),
-                withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) R.color.text_color_grey else filterWithCountryCode?.filter?.filterAction?.color.orZero()))))))
+                withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) R.color.text_color_grey else filterWithCountryCode?.filter?.filterAction?.color().orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_delete),
                 if (filterWithCountryCode?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
                 if (filterWithCountryCode?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
