@@ -119,8 +119,8 @@ data class Filter(
     }
 
     @Exclude
-    fun conditionTypeSmallIcon(): Int {
-        return FilterCondition.values()[conditionType].smallIcon(isBlocker())
+    fun conditionTypeSmallIcon(): Int? {
+        return conditionType.takeIf { it >= 0 }?.let { FilterCondition.values()[conditionType].smallIcon(isBlocker()) }
     }
 
     @Exclude
