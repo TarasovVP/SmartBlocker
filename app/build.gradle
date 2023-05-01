@@ -55,7 +55,7 @@ android {
     testOptions {
         animationsDisabled = true
     }
-    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugAndroidTestCoverageReport']) {
+    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
         reports {
             html.required.set(true)
             xml.required.set(true)
