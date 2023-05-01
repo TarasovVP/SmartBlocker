@@ -138,7 +138,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             assertEquals(FilterWithCountryCode().apply {
-                filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.index,
+                filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
                     filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)
                 countryCode = CountryCode()
             }, navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
@@ -157,7 +157,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             assertEquals(FilterWithCountryCode().apply {
-                filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.index,
+                filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
                     filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)
                 countryCode = CountryCode()
             }, navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
@@ -176,7 +176,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             assertEquals(FilterWithCountryCode().apply {
-                filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.index,
+                filter = Filter(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
                     filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)
                 countryCode = CountryCode()
             }, navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
@@ -268,7 +268,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
             onView(withId(R.id.empty_state_description)).check(matches(isDisplayed()))
-                .check(matches(withText(EmptyState.EMPTY_STATE_BLOCKERS.descriptionRes)))
+                .check(matches(withText(EmptyState.EMPTY_STATE_BLOCKERS.description())))
             onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
             onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {
@@ -290,7 +290,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_name),
                 isDisplayed(),
                 withText(if (filterWithCountryCode?.filter.isNull()) filterWithCountryCode?.filter?.filter else targetContext.getString(filterWithCountryCode?.filter?.conditionTypeName().orZero())),
-                withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) R.color.text_color_grey else filterWithCountryCode?.filter?.filterAction?.color.orZero()))))))
+                withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) R.color.text_color_grey else filterWithCountryCode?.filter?.filterAction?.color().orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_delete),
                 if (filterWithCountryCode?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
                 if (filterWithCountryCode?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))

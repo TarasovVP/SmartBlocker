@@ -122,7 +122,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))
-                onView(withId(R.id.empty_state_description)).check(matches(isDisplayed())).check(matches(withText(EmptyState.EMPTY_STATE_ACCOUNT.descriptionRes)))
+                onView(withId(R.id.empty_state_description)).check(matches(isDisplayed())).check(matches(withText(EmptyState.EMPTY_STATE_ACCOUNT.description())))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
                 onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
             }

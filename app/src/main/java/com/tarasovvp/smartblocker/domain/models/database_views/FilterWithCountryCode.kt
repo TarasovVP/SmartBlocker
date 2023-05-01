@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.parcelize.Parcelize
+
 @DatabaseView("SELECT * FROM filters LEFT JOIN country_codes ON filters.country = country_codes.country")
 @Parcelize
 data class FilterWithCountryCode(

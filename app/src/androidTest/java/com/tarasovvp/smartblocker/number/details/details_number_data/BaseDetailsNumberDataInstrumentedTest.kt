@@ -58,14 +58,14 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             callDate = "1678603872094"
             isFilteredCall = true
             filteredNumber = "12345"
-            conditionType = FilterCondition.FILTER_CONDITION_FULL.index},
+            conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
             FilterWithCountryCode(Filter(), CountryCode()))
         else ContactWithFilter(
             Contact("5",
                 name = "C Name",
                 number = "+380502711344",
                 filter = "123"),
-            if (isHiddenCall) FilterWithCountryCode(Filter(), countryCode = CountryCode()) else FilterWithCountryCode(Filter(filter = "38050", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.index), countryCode = CountryCode("UA")))
+            if (isHiddenCall) FilterWithCountryCode(Filter(), countryCode = CountryCode()) else FilterWithCountryCode(Filter(filter = "38050", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA")))
         launchFragmentInHiltContainer<DetailsNumberDataFragment> (fragmentArgs = bundleOf("numberData" to numberData)) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsNumberDataFragment)
@@ -225,10 +225,10 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.number_data_detail_add_filter_full))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(R.string.filter_condition_full)))
-                .check(matches(withDrawable(FilterCondition.FILTER_CONDITION_FULL.mainIcon)))
+                .check(matches(withDrawable(FilterCondition.FILTER_CONDITION_FULL.mainIcon())))
                 .perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
-            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_FULL.index, BLOCKER)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_FULL.ordinal, BLOCKER)
         }
     }
 
@@ -245,7 +245,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
                 .check(matches(withDrawable(R.drawable.ic_condition_start)))
                 .perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
-            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_START.index, BLOCKER)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_START.ordinal, BLOCKER)
         }
     }
 
@@ -262,7 +262,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
                 .check(matches(withDrawable(R.drawable.ic_condition_contain)))
                 .perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
-            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.index, PERMISSION)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, PERMISSION)
         }
     }
 
@@ -271,7 +271,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.details_number_data_hidden)).apply {
             if (isHiddenCall) {
                 check(matches(isDisplayed()))
-                onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_HIDDEN.descriptionRes)))
+                onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_HIDDEN.description())))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
                 //TODO drawable
                 //onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
@@ -318,7 +318,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             conditionType = filterCondition,
             filterType = filterType
         ))
-        if (phoneNumber.isNull() || filterCondition == FilterCondition.FILTER_CONDITION_CONTAIN.index) {
+        if (phoneNumber.isNull() || filterCondition == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             assertEquals(filterWithCountryCode, navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
         } else {
             filterWithCountryCode.apply {

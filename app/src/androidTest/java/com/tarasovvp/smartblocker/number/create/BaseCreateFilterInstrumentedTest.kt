@@ -50,9 +50,9 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
         super.setUp()
         numberDataList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else TestUtils.numberDataList()
         val filterCondition = when(this) {
-            is CreateFilterConditionFullInstrumentedTest -> FilterCondition.FILTER_CONDITION_FULL.index
-            is CreateFilterConditionStartInstrumentedTest -> FilterCondition.FILTER_CONDITION_START.index
-            else -> FilterCondition.FILTER_CONDITION_CONTAIN.index
+            is CreateFilterConditionFullInstrumentedTest -> FilterCondition.FILTER_CONDITION_FULL.ordinal
+            is CreateFilterConditionStartInstrumentedTest -> FilterCondition.FILTER_CONDITION_START.ordinal
+            else -> FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
         }
         launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCode(filter = Filter(filterType = BLOCKER, conditionType = filterCondition), countryCode = CountryCode()))) {
             navController?.setGraph(R.navigation.navigation)
@@ -167,7 +167,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkCreateFilterSubmit() {
         onView(withId(R.id.create_filter_submit))
             .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCode?.filter?.filterAction?.title.orZero())))
+            .check(matches(withText(filterWithCountryCode?.filter?.filterAction?.title().orZero())))
             .check(matches(withTextColor(filterWithCountryCode?.filter?.filterActionTextTint().orZero())))
             .check(matches(withAlpha(if (filterWithCountryCode?.filter?.isInvalidFilterAction().isTrue()) 0.5f else 1f)))
             .check(matches(if (filterWithCountryCode?.filter?.isInvalidFilterAction().isTrue()) not(isEnabled()) else isEnabled()))
@@ -189,7 +189,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.create_filter_empty_list)).apply {
             if (numberDataList.isEmpty()) {
                 check(matches(isDisplayed()))
-                onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_CREATE_FILTER.descriptionRes)))
+                onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_CREATE_FILTER.description())))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
                 //TODO drawable
                 //onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
