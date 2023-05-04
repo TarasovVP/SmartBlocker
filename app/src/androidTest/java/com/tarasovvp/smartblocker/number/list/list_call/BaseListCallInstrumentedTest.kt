@@ -25,7 +25,7 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -43,7 +43,7 @@ import org.junit.Test
 @HiltAndroidTest
 open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
 
-    private var callList: List<CallWithFilter>? = null
+    private var callList: List<CallWithFilterUIModel>? = null
     private var filterIndexList: ArrayList<Int> = arrayListOf()
     private var fragment: Fragment? = null
 
@@ -61,7 +61,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                 viewModel.callListLiveData.postValue(callList)
             }
         }
-        waitUntilViewIsDisplayed(if (this is EmptyListCallInstrumentedTest) withId(R.id.list_call_empty) else withText(callList?.get(0)?.call?.callName))
+        waitUntilViewIsDisplayed(if (this is EmptyListCallInstrumentedTest) withId(R.id.list_call_empty) else withText(callList?.get(0)?.callUIModel?.callName))
     }
 
     @Test
@@ -164,7 +164,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_call_recycler_view))
                 .check(matches(isDisplayed()))
                 .check(matches(hasItemCount(callList?.size.orZero() + callList?.groupBy {
-                    it.call?.dateFromCallDate().toString()
+                    it.callUIModel?.dateFromCallDate().toString()
                 }?.size.orZero())))
         }
     }
@@ -175,7 +175,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_call_empty)).check(matches(isDisplayed()))
         } else {
             val firstHeader = callList?.groupBy {
-                it.call?.dateFromCallDate().toString()
+                it.callUIModel?.dateFromCallDate().toString()
             }?.keys?.first()
             onView(withId(R.id.list_call_recycler_view)).check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
         }
@@ -206,8 +206,8 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             val callWithFilter = callList?.get(1)
             onView(withId(R.id.list_call_recycler_view)).apply {
                 check(matches(atPosition(1, hasDescendant(allOf(withId(R.id.item_call_delete),
-                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
-                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                    if (callWithFilter?.callUIModel?.isDeleteMode.isTrue() && callWithFilter?.callUIModel?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.callUIModel?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
                 perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, longClick()))
                 waitUntilViewIsDisplayed(withText(R.string.list_call_delete_info))
             }
@@ -222,17 +222,17 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             val callWithFilter = callList?.get(1)
             onView(withId(R.id.list_call_recycler_view)).apply {
                 check(matches(atPosition(2, hasDescendant(allOf(withId(R.id.item_call_delete),
-                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
-                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                    if (callWithFilter?.callUIModel?.isDeleteMode.isTrue() && callWithFilter?.callUIModel?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.callUIModel?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
                 perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, longClick()))
                 perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
                 check(matches(atPosition(2, hasDescendant(allOf(withId(R.id.item_call_delete),
-                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
-                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                    if (callWithFilter?.callUIModel?.isDeleteMode.isTrue() && callWithFilter?.callUIModel?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.callUIModel?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
                 perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
                 check(matches(atPosition(2, hasDescendant(allOf(withId(R.id.item_call_delete),
-                    if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
-                    if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                    if (callWithFilter?.callUIModel?.isDeleteMode.isTrue() && callWithFilter?.callUIModel?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                    if (callWithFilter?.callUIModel?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
             }
         }
     }
@@ -250,50 +250,50 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
         }
     }
 
-    private fun checkCallItem(position: Int, callWithFilter: CallWithFilter?) {
+    private fun checkCallItem(position: Int, callWithFilterUIModel: CallWithFilterUIModel?) {
         onView(withId(R.id.list_call_recycler_view)).apply {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),
-                withAlpha(if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isFilteredCall.isNotTrue()) 0.5f else 1f))))))
+                withAlpha(if (callWithFilterUIModel?.callUIModel?.isDeleteMode.isTrue() && callWithFilterUIModel?.callUIModel?.isFilteredCall.isNotTrue()) 0.5f else 1f))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_avatar),
                 isDisplayed(),
-                withBitmap(callWithFilter?.call?.placeHolder(targetContext)?.toBitmap()))))))
+                withBitmap(callWithFilterUIModel?.callUIModel?.placeHolder(targetContext)?.toBitmap()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter),
-                if (callWithFilter?.call?.isExtract.isNotTrue() || callWithFilter?.filterWithCountryCode?.filter?.filterType == 0) not(isDisplayed()) else isDisplayed(),
-                withDrawable(callWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon()))))))
+                if (callWithFilterUIModel?.callUIModel?.isExtract.isNotTrue() || callWithFilterUIModel?.filterWithCountryCode?.filter?.filterType == 0) not(isDisplayed()) else isDisplayed(),
+                withDrawable(callWithFilterUIModel?.filterWithCountryCode?.filter?.filterTypeIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_number),
                 isDisplayed(),
-                withText(if (callWithFilter?.call?.number.isNullOrEmpty()) targetContext.getString(R.string.details_number_hidden) else callWithFilter?.highlightedSpanned.toString()))))))
+                withText(if (callWithFilterUIModel?.callUIModel?.number.isNullOrEmpty()) targetContext.getString(R.string.details_number_hidden) else callWithFilterUIModel?.highlightedSpanned.toString()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_time),
-                if (callWithFilter?.call?.isExtract.isTrue() || callWithFilter?.call?.isFilteredCallDetails.isTrue() || callWithFilter?.call?.isFilteredCallDelete().isTrue()) not(isDisplayed()) else isDisplayed(),
-                withText(callWithFilter?.call?.timeFromCallDate()))))))
+                if (callWithFilterUIModel?.callUIModel?.isExtract.isTrue() || callWithFilterUIModel?.callUIModel?.isFilteredCallDetails.isTrue() || callWithFilterUIModel?.callUIModel?.isFilteredCallDelete().isTrue()) not(isDisplayed()) else isDisplayed(),
+                withText(callWithFilterUIModel?.callUIModel?.timeFromCallDate()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_name),
                 isDisplayed(),
-                withText(if (callWithFilter?.call?.isNameEmpty().isTrue()) if (callWithFilter?.call?.isExtract.isTrue()) targetContext.getString(R.string.details_number_from_call_log) else targetContext.getString(R.string.details_number_not_from_contacts) else callWithFilter?.call?.callName))))))
+                withText(if (callWithFilterUIModel?.callUIModel?.isNameEmpty().isTrue()) if (callWithFilterUIModel?.callUIModel?.isExtract.isTrue()) targetContext.getString(R.string.details_number_from_call_log) else targetContext.getString(R.string.details_number_not_from_contacts) else callWithFilterUIModel?.callUIModel?.callName))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_type_icon),
-                if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue() || callWithFilter?.call?.isExtract.isTrue()) not(isDisplayed()) else isDisplayed(),
-                withDrawable(callWithFilter?.call?.callIcon()))))))
+                if (callWithFilterUIModel?.callUIModel?.isDeleteMode.isTrue() && callWithFilterUIModel?.callUIModel?.isCallFiltered().isTrue() || callWithFilterUIModel?.callUIModel?.isExtract.isTrue()) not(isDisplayed()) else isDisplayed(),
+                withDrawable(callWithFilterUIModel?.callUIModel?.callIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_delete),
-                if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
-                if (callWithFilter?.call?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                if (callWithFilterUIModel?.callUIModel?.isDeleteMode.isTrue() && callWithFilterUIModel?.callUIModel?.isCallFiltered().isTrue()) isDisplayed() else not(isDisplayed()),
+                if (callWithFilterUIModel?.callUIModel?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_divider),
                 isDisplayed(),
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_title),
                 isDisplayed(),
-                withText(callWithFilter?.call?.callFilterTitle(callWithFilter.filterWithCountryCode?.filter).orZero()),
-                withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithCountryCode?.filter).orZero()))))))
+                withText(callWithFilterUIModel?.callUIModel?.callFilterTitle(callWithFilterUIModel.filterWithCountryCode?.filter).orZero()),
+                withTextColor(callWithFilterUIModel?.callUIModel?.callFilterTint(callWithFilterUIModel.filterWithCountryCode?.filter).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilter?.call?.callFilterValue().orEmpty()),
-                withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithCountryCode?.filter).orZero()),
-                withDrawable(callWithFilter?.call?.callFilterIcon()))))))
+                withText(callWithFilterUIModel?.callUIModel?.callFilterValue().orEmpty()),
+                withTextColor(callWithFilterUIModel?.callUIModel?.callFilterTint(callWithFilterUIModel.filterWithCountryCode?.filter).orZero()),
+                withDrawable(callWithFilterUIModel?.callUIModel?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),
-                withAlpha(if (callWithFilter?.call?.isDeleteMode.isTrue() && callWithFilter?.call?.isFilteredCall.isNotTrue()) 0.5f else 1f))))))
+                withAlpha(if (callWithFilterUIModel?.callUIModel?.isDeleteMode.isTrue() && callWithFilterUIModel?.callUIModel?.isFilteredCall.isNotTrue()) 0.5f else 1f))))))
             perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
             assertEquals(R.id.detailsNumberDataFragment, navController?.currentDestination?.id)
-            assertEquals(callWithFilter, navController?.backStack?.last()?.arguments?.parcelable<CallWithFilter>("numberData"))
+            assertEquals(callWithFilterUIModel, navController?.backStack?.last()?.arguments?.parcelable<CallWithFilterUIModel>("numberData"))
         }
     }
 }

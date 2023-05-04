@@ -31,6 +31,8 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_COD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
@@ -77,9 +79,7 @@ fun Context.systemCallLogCursor(): Cursor? {
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
         CallLog.Calls.TYPE,
-        CallLog.Calls.DATE,
-        CallLog.Calls.CACHED_NORMALIZED_NUMBER,
-        CallLog.Calls.COUNTRY_ISO
+        CallLog.Calls.DATE
     )
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
@@ -94,17 +94,15 @@ fun Context.systemCallLogCursor(): Cursor? {
     )
 }
 
-fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
-    val logCall = if (isFilteredCall) FilteredCall() else LogCall()
+fun Cursor.createCallObject(): LogCall {
+    val logCall = LogCall()
     logCall.callId = this.getInt(0)
     logCall.callName = this.getString(1)
     logCall.number = this.getString(2)
     logCall.type = this.getString(3)
     logCall.callDate = this.getString(4)
-    logCall.normalizedNumber = this.getString(5)
-    logCall.countryIso = this.getString(6)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        logCall.photoUrl = this.getString(7)
+        logCall.photoUrl = this.getString(5)
     }
     return logCall
 }
@@ -113,7 +111,7 @@ fun Context.systemLogCallList(result: (Int, Int) -> Unit): List<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
-            val logCall = callLogCursor.createCallObject(false) as LogCall
+            val logCall = callLogCursor.createCallObject() as LogCall
             logCallList.add(logCall)
             result.invoke(callLogCursor.count, logCallList.size)
         }
@@ -135,7 +133,6 @@ fun Context.createFilteredCall(
                     }
                     this.filteredNumber = filter.filter
                     this.conditionType = filter.conditionType
-                    this.isFilteredCall = true
                 }
                 if (filter.isBlocker()) {
                     try {
@@ -233,9 +230,8 @@ fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<Count
 
 fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
     if (this.isNullOrEmpty()) null
-    else if (this.startsWith(PLUS_CHAR)) PhoneNumberUtil.getInstance()
-        .parse(this.digitsTrimmed(), String.EMPTY)
-    else PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), country)
+    else PhoneNumberUtil.getInstance()
+        .parse(this.digitsTrimmed(), if (this.startsWith(PLUS_CHAR)) String.EMPTY else country)
 } catch (e: Exception) {
     e.printStackTrace()
     null
@@ -244,8 +240,7 @@ fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
 @AddTrace(name = "isValidPhoneNumber")
 fun String?.isValidPhoneNumber(country: String): Boolean {
     return try {
-        if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance()
-            .isValidNumberForRegion(getPhoneNumber(country), country)
+        if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance().isValidNumberForRegion(getPhoneNumber(country), country)
     } catch (e: Exception) {
         return false
     }
@@ -253,8 +248,7 @@ fun String?.isValidPhoneNumber(country: String): Boolean {
 
 fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
     return try {
-        if (this.isNull()) false else PhoneNumberUtil.getInstance()
-            .isValidNumber(this)
+        if (this.isNull()) false else PhoneNumberUtil.getInstance().isValidNumber(this)
     } catch (e: Exception) {
         return false
     }
@@ -266,16 +260,16 @@ fun Context.numberDataFilteringText(filterIndexes: ArrayList<Int>): String {
     }
 }
 
-fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString? {
+fun NumberDataUIModel.highlightedSpanned(filter: Filter?, color: Int): SpannableString? {
     when (this) {
-        is CallWithFilter -> {
+        is CallWithFilterUIModel -> {
             return when {
-                filter?.filter.isNullOrEmpty() -> call?.number.highlightedSpanned(
+                filter?.filter.isNullOrEmpty() -> callUIModel?.number.highlightedSpanned(
                     String.EMPTY,
                     null,
                     color
                 )
-                else -> call?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+                else -> callUIModel?.number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }
         is ContactWithFilter -> {

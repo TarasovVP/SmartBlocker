@@ -3,26 +3,27 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
+import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 open class ListContactFragment :
-    BaseListFragment<FragmentListContactBinding, ListContactViewModel, ContactWithFilter>() {
+    BaseListFragment<FragmentListContactBinding, ListContactViewModel, ContactWithFilterUIModel>() {
 
     override var layoutId = R.layout.fragment_list_contact
     override val viewModelClass = ListContactViewModel::class.java
 
     private var contactWithFilterList: List<ContactWithFilter>? = null
 
-    override fun createAdapter(): BaseAdapter<ContactWithFilter>? {
+    override fun createAdapter(): BaseAdapter<ContactWithFilterUIModel>? {
         return context?.let {
             ContactAdapter { numberData ->
                 findNavController().navigate(

@@ -105,9 +105,9 @@ fun String.flagEmoji(): String {
 
 fun String?.digitsTrimmed() = this?.filter { it.isDigit() || it == PLUS_CHAR }.orEmpty()
 
-fun String.sendExceptionBroadCast() {
-    val intent = Intent(EXCEPTION).putExtra(EXCEPTION, this)
-    SmartBlockerApp.instance?.baseContext?.sendBroadcast(intent)
+fun Context.sendExceptionBroadCast(exception: String) {
+    val intent = Intent(EXCEPTION).putExtra(EXCEPTION, exception)
+    sendBroadcast(intent)
 }
 
 fun Context.dpToPx(dp: Float): Float {

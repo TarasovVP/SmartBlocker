@@ -1,37 +1,42 @@
 package com.tarasovvp.smartblocker.di
 
 import android.content.Context
-import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.data.repositoryImpl.*
+import com.tarasovvp.smartblocker.domain.mappers.ContactWithFilterMapper
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
-import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.authorization.sign_up.SignUpUseCase
-import com.tarasovvp.smartblocker.domain.usecase.authorization.sign_up.SignUpUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.countrycode_search.CountryCodeSearchUseCase
-import com.tarasovvp.smartblocker.domain.usecase.countrycode_search.CountryCodeSearchUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
-import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCase
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_account.SettingsAccountUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_blocker.SettingsBlockerUseCase
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_blocker.SettingsBlockerUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCase
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.LoginUseCase
+import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.SignUpUseCase
+import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.CountryCodeSearchUseCase
+import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
+import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.DetailsNumberDataUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.ListCallUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.ListContactUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.ListFilterUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.SettingsAccountUseCase
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.SettingsBlockerUseCase
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.SettingsListUseCase
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.mappersImpl.ContactWithFilterMapperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,8 +56,26 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAuthRepository(@ApplicationContext appContext: Context): AuthRepository {
-        return AuthRepositoryImpl(appContext as? SmartBlockerApp)
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseDatabase(): FirebaseDatabase {
+        return FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE)
+    }
+
+    @Singleton
+    @Provides
+    fun providePhoneNumberUtil(): PhoneNumberUtil {
+        return PhoneNumberUtil.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository {
+        return AuthRepositoryImpl(firebaseAuth)
     }
 
     @Singleton
@@ -75,8 +98,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRealDataBaseRepository(@ApplicationContext appContext: Context): RealDataBaseRepository {
-        return RealDataBaseRepositoryImpl(appContext as?  SmartBlockerApp)
+    fun provideRealDataBaseRepository(firebaseDatabase: FirebaseDatabase, firebaseAuth: FirebaseAuth): RealDataBaseRepository {
+        return RealDataBaseRepositoryImpl(firebaseDatabase, firebaseAuth)
     }
 
     @Singleton
@@ -105,8 +128,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeRepository(countryCodeDao: CountryCodeDao): CountryCodeRepository {
-        return CountryCodeRepositoryImpl(countryCodeDao)
+    fun provideCountryCodeRepository(phoneNumberUtil: PhoneNumberUtil, countryCodeDao: CountryCodeDao): CountryCodeRepository {
+        return CountryCodeRepositoryImpl(phoneNumberUtil, countryCodeDao)
     }
 
     @Singleton
@@ -198,6 +221,7 @@ object AppModule {
     @Provides
     fun provideContactDao(db: AppDatabase) = db.contactDao()
 
+
     @Singleton
     @Provides
     fun provideContactRepository(contactDao: ContactDao): ContactRepository {
@@ -209,6 +233,13 @@ object AppModule {
     fun provideListContactUseCase(contactRepository: ContactRepository): ListContactUseCase {
         return ListContactUseCaseImpl(contactRepository)
     }
+
+    @Singleton
+    @Provides
+    fun provideContactWithFilterMapper(): ContactWithFilterMapper {
+        return ContactWithFilterMapperImpl()
+    }
+
 
     @Singleton
     @Provides

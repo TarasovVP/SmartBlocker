@@ -1,23 +1,15 @@
 package com.tarasovvp.smartblocker.domain.models.entities
 
-import android.content.Context
 import android.os.Parcelable
 import androidx.room.*
 import com.google.firebase.database.Exclude
-import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DATE_FORMAT
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERS
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.domain.enums.FilterAction
-import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.quantityString
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Entity(tableName = FILTERS)
 @Parcelize
@@ -40,115 +32,6 @@ data class Filter(
     @get:Exclude
     var filteredCalls: Int = 0
 
-    @IgnoredOnParcel
-    @get:Exclude
-    var isCheckedForDelete = false
-
-    @IgnoredOnParcel
-    @get:Exclude
-    var isDeleteMode = false
-
-    @IgnoredOnParcel
-    @Ignore
-    @get:Exclude
-    var filterAction: FilterAction? = null
-
-    @Exclude
-    fun filterTypeTitle(): Int {
-        return when (filterType) {
-            PERMISSION -> R.string.filter_type_permission
-            else -> R.string.filter_type_blocker
-        }
-    }
-
-    @Exclude
-    fun filterTypeIcon(): Int {
-        return when (filterType) {
-            PERMISSION -> R.drawable.ic_permission
-            else -> R.drawable.ic_blocker
-        }
-    }
-
-    @Exclude
-    fun filterTypeTint(): Int {
-        return when (filterType) {
-            PERMISSION -> R.color.islamic_green
-            else -> R.color.sunset
-        }
-    }
-
-    @Exclude
-    fun filterDetailTint(): Int {
-        return if (isDeleteFilterAction()) R.color.sunset else R.color.text_color_grey
-    }
-
-    @Exclude
-    fun filterActionTextTint(): Int {
-        return if (isCreateFilterAction()) R.color.white else filterAction?.color() ?: R.color.white
-    }
-
-    @Exclude
-    fun filterActionBgTint(): Int {
-        return if (isCreateFilterAction()) R.color.button_bg else R.color.transparent
-    }
-
-    @Exclude
-    fun filteredContactsText(context: Context): String {
-        return context.resources.getQuantityString(when (filterType) {
-            PERMISSION -> R.plurals.details_number_permit_contacts
-            else -> R.plurals.details_number_block_contacts
-        }, filteredContacts.quantityString(), filteredContacts)
-    }
-
-    @Exclude
-    fun filteredCallsText(context: Context): String {
-        return context.resources.getQuantityString(when (filterType) {
-            PERMISSION -> R.plurals.details_number_permitted_calls
-            else -> R.plurals.details_number_blocked_calls
-        }, filteredCalls.quantityString(), filteredCalls)
-    }
-
-    @Exclude
-    fun conditionTypeName(): Int {
-        return FilterCondition.values()[conditionType].title()
-    }
-
-    @Exclude
-    fun conditionTypeIcon(): Int {
-        return FilterCondition.values()[conditionType].mainIcon()
-    }
-
-    @Exclude
-    fun conditionTypeSmallIcon(): Int? {
-        return conditionType.takeIf { it >= 0 }?.let { FilterCondition.values()[conditionType].smallIcon(isBlocker()) }
-    }
-
-    @Exclude
-    fun filterCreatedDate(): String {
-        return created?.let { SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(it) }
-            .orEmpty()
-    }
-
-    @Exclude
-    fun isInvalidFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_INVALID
-    }
-
-    @Exclude
-    fun isCreateFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
-    }
-
-    @Exclude
-    fun isDeleteFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
-    }
-
-    @Exclude
-    fun isChangeFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_TRANSFER || filterAction == FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
-    }
-
     @Exclude
     fun isTypeStart(): Boolean {
         return conditionType == FilterCondition.FILTER_CONDITION_START.ordinal
@@ -166,12 +49,12 @@ data class Filter(
 
     @Exclude
     fun isBlocker(): Boolean {
-        return filterType == BLOCKER
+        return filterType == Constants.BLOCKER
     }
 
     @Exclude
     fun isPermission(): Boolean {
-        return filterType == PERMISSION
+        return filterType == Constants.PERMISSION
     }
 
     override fun equals(other: Any?): Boolean {

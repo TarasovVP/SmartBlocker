@@ -48,7 +48,7 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
             navController?.setCurrentDestination(R.id.detailsFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
             (this as? DetailsFilterFragment)?.apply {
-                viewModel.filteredNumberDataListLiveData.postValue(numberDataList())
+                viewModel.filteredNumberDataListLiveDataUIModel.postValue(numberDataList())
                 viewModel.filteredCallListLiveData.postValue(filteredCallList())
             }
         }

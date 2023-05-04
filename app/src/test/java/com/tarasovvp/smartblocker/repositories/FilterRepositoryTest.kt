@@ -48,14 +48,6 @@ class FilterRepositoryTest {
     }
 
     @Test
-    fun allFilterWithCountryCodeTest() = runBlocking {
-        val filterWithCountryCodeList = listOf(FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithCountryCode().apply { filter = Filter()})
-        coEvery { filterDao.allFilterWithCountryCode() } returns filterWithCountryCodeList
-        val result = filterRepository.allFilterWithCountryCode()
-        assertEquals(filterWithCountryCodeList, result)
-    }
-
-    @Test
     fun allFiltersByTypeTest() = runBlocking {
         val filterWithCountryCodeList = listOf(FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithCountryCode().apply { filter = Filter()})
         coEvery { filterDao.allFiltersByType(BLOCKER) } returns filterWithCountryCodeList
@@ -90,9 +82,9 @@ class FilterRepositoryTest {
     @Test
     fun deleteFilterListTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
-        coEvery { filterDao.delete(filter) } just Runs
+        coEvery { filterDao.deleteFilter(filter) } just Runs
         filterRepository.deleteFilterList(listOf(filter))
-        coVerify(exactly = 1) { filterDao.delete(filter) }
+        coVerify(exactly = 1) { filterDao.deleteFilter(filter) }
     }
 
     @Test

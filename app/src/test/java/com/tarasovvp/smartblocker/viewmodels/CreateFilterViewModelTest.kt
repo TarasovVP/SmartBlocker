@@ -8,8 +8,9 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterViewModel
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -39,18 +40,18 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
 
     @Test
     fun getNumberDataListTest() = runTest {
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
+        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilterUIModel().apply { callUIModel = Call(number = TEST_NUMBER) })
         coEvery { useCase.getNumberDataList() } returns numberDataList
         viewModel.getNumberDataList()
         advanceUntilIdle()
-        val result = viewModel.numberDataListLiveData.getOrAwaitValue()
+        val result = viewModel.numberDataListLiveDataUIModel.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 
     @Test
     fun checkFilterExistTest() = runTest {
         val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TEST_FILTER))
-        coEvery { useCase.checkFilterExist(filterWithCountryCode) } returns filterWithCountryCode
+        coEvery { useCase.getFilter(filterWithCountryCode) } returns filterWithCountryCode
         viewModel.checkFilterExist(filterWithCountryCode)
         advanceUntilIdle()
         val result = viewModel.existingFilterLiveData.getOrAwaitValue()

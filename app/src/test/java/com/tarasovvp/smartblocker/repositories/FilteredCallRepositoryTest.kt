@@ -79,7 +79,7 @@ class FilteredCallRepositoryTest {
 
     @Test
     fun allFilteredCallWithFilterTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { callUIModel=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { callUIModel=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.allFilteredCallWithFilter() } returns filteredCallList
         val result = filteredCallRepository.allFilteredCallWithFilter()
         assertEquals(filteredCallList, result)
@@ -87,7 +87,7 @@ class FilteredCallRepositoryTest {
 
     @Test
     fun filteredCallsByFilterTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { callUIModel=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { callUIModel=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         val result = filteredCallRepository.filteredCallsByFilter(TEST_FILTER)
         assertEquals(filteredCallList, result)
@@ -95,7 +95,7 @@ class FilteredCallRepositoryTest {
 
     @Test
     fun filteredCallsByNumberTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { callUIModel=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { callUIModel=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.filteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
         val result = filteredCallRepository.filteredCallsByNumber(TEST_NUMBER)
         assertEquals(filteredCallList, result)

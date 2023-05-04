@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.HiltAndroidApp
@@ -17,15 +18,11 @@ import java.util.*
 @HiltAndroidApp
 class SmartBlockerApp : Application() {
 
-    var firebaseAuth: FirebaseAuth? = null
-    var firebaseDatabase: FirebaseDatabase? = null
     var isNetworkAvailable: Boolean? = null
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        firebaseAuth = Firebase.auth
-        firebaseDatabase = FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE)
         SharedPrefs.init(this)
         MobileAds.initialize(this)
         FirebaseAnalytics.getInstance(this)
@@ -42,13 +39,7 @@ class SmartBlockerApp : Application() {
 
     fun isLoggedInUser() = firebaseAuth?.currentUser.isNotNull().isTrue()
 
-    fun checkNetworkUnAvailable(): Boolean {
-        if (isNetworkAvailable.isNotTrue()) {
-            baseContext?.getString(R.string.app_network_unavailable_repeat)?.sendExceptionBroadCast()
-            return true
-        }
-        return false
-    }
+    fun checkNetworkUnAvailable() = isNetworkAvailable.isNotTrue()
 
     companion object {
         var instance: SmartBlockerApp? = null

@@ -2,10 +2,11 @@ package com.tarasovvp.smartblocker.usecases
 
 import android.app.Application
 import com.tarasovvp.smartblocker.UnitTestUtils
+import com.tarasovvp.smartblocker.domain.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
-import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
+import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -120,9 +121,9 @@ class MainUseCaseTest {
     @Test
     fun insertContactsTest() = runBlocking {
         val contactList = listOf(Contact(), Contact())
-        coEvery { contactRepository.insertContacts(contactList) } just Runs
+        coEvery { contactRepository.insertAllContacts(contactList) } just Runs
         mainUseCase.insertContacts(contactList)
-        coVerify { contactRepository.insertContacts(contactList) }
+        coVerify { contactRepository.insertAllContacts(contactList) }
     }
 
     @Test

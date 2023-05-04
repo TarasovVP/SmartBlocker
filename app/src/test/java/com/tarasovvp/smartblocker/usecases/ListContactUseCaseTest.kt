@@ -7,8 +7,8 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountry
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.ListContactUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactUseCaseImpl
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue

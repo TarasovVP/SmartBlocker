@@ -30,7 +30,7 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.*
@@ -43,7 +43,8 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.OUT_GOING_C
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -273,12 +274,12 @@ object TestUtils {
     )
 
     fun callWithFilterList() = listOf(
-        CallWithFilter(LogCall(1).apply { callName = "A Name"
+        CallWithFilterUIModel(LogCall(1).apply { callName = "A Name"
             number = "+380502711344"
             type = IN_COMING_CALL
             callDate = "1678603872094"},
             FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(FilteredCall(2).apply { callName = "a Name"
+        CallWithFilterUIModel(FilteredCall(2).apply { callName = "a Name"
             number = "12345"
             type = BLOCKED_CALL
             callDate = "1678603872094"
@@ -286,27 +287,27 @@ object TestUtils {
             filteredNumber = "12345"
             conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(FilteredCall(3).apply {  callName = "B Name"
+        CallWithFilterUIModel(FilteredCall(3).apply {  callName = "B Name"
             number = "12345"
             type = MISSED_CALL
             callDate = "1611995776162" },
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(LogCall(4).apply {  callName = String.EMPTY
+        CallWithFilterUIModel(LogCall(4).apply {  callName = String.EMPTY
             number = "12345"
             type = REJECTED_CALL
             callDate = "1612258705769"},
             FilterWithCountryCode(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
+        CallWithFilterUIModel(FilteredCall(5).apply {  callName = "C Name"
             number = "12345"
             type = OUT_GOING_CALL
             callDate = "1612525268071"},
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(FilteredCall(6).apply { callName = "D Name"
+        CallWithFilterUIModel(FilteredCall(6).apply { callName = "D Name"
             number = "12345"
             type = BLOCKED_CALL
             callDate = "1615110430251"},
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(LogCall(7).apply { callName = "Y Name"
+        CallWithFilterUIModel(LogCall(7).apply { callName = "Y Name"
             number = "12345"
             type = IN_COMING_CALL
             callDate = "1619427342586"}, null)
@@ -328,7 +329,8 @@ object TestUtils {
         ContactWithFilter(Contact("7", name = "Y Name", number = "12345"), null)
     )
 
-    fun numberDataList() = arrayListOf(CallWithFilter(LogCall(1).apply { callName = "A Name"
+    fun numberDataList() = arrayListOf(
+        CallWithFilterUIModel(LogCall(1).apply { callName = "A Name"
         number = "+380502711344"
         type = IN_COMING_CALL
         callDate = "1678603872094"},
@@ -338,26 +340,28 @@ object TestUtils {
         ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))))
 
-    fun filteredCallList() = arrayListOf<NumberData>(CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
+    fun filteredCallList() = arrayListOf<NumberDataUIModel>(
+        CallWithFilterUIModel(FilteredCall(5).apply {  callName = "C Name"
         number = "12345"
         type = OUT_GOING_CALL
         callDate = "1612525268071"},
         FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(FilteredCall(6).apply { callName = "D Name"
+        CallWithFilterUIModel(FilteredCall(6).apply { callName = "D Name"
             number = "12345"
             type = BLOCKED_CALL
             callDate = "1615110430251"},
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
-        CallWithFilter(FilteredCall(2).apply { callName = "a Name"
+        CallWithFilterUIModel(FilteredCall(2).apply { callName = "a Name"
             number = "12345"
             type = BLOCKED_CALL
             callDate = "1678603872094"
             isFilteredCall = true
             filteredNumber = "12345"
             conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
-            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))))
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA")))
+    )
 
-    fun filterList() = arrayListOf<NumberData>(FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { filteredContacts = 3
+    fun filterList() = arrayListOf<NumberDataUIModel>(FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { filteredContacts = 3
         created = 1681315250919}, countryCode = CountryCode("UA")),
         FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply {
             filteredContacts = 1

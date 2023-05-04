@@ -5,7 +5,7 @@ import android.view.View
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsPrivacyBinding
 import com.tarasovvp.smartblocker.utils.extensions.initWebView
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
 
 class SettingsPrivacyFragment :

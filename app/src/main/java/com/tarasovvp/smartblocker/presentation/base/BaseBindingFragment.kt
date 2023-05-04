@@ -12,7 +12,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_EXIT
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 
 abstract class BaseBindingFragment<B : ViewDataBinding> : Fragment() {
 

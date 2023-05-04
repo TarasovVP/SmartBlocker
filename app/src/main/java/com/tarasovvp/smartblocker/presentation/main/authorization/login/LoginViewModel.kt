@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.authorization.login
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
+import com.tarasovvp.smartblocker.domain.usecase.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

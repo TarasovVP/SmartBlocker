@@ -3,8 +3,8 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.domain.usecase.ListCallUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,9 +16,9 @@ class ListCallViewModel @Inject constructor(
     private val listCallUseCase: ListCallUseCase
 ) : BaseViewModel(application) {
 
-    val callListLiveData = MutableLiveData<List<CallWithFilter>>()
-    val filteredCallListLiveData = MutableLiveData<List<CallWithFilter>>()
-    val callHashMapLiveData = MutableLiveData<Map<String, List<CallWithFilter>>?>()
+    val callListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
+    val filteredCallListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
+    val callHashMapLiveData = MutableLiveData<Map<String, List<CallWithFilterUIModel>>?>()
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun getCallList(refreshing: Boolean) {
@@ -30,19 +30,19 @@ class ListCallViewModel @Inject constructor(
         }
     }
 
-    fun getFilteredCallList(callList: List<CallWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>) {
+    fun getFilteredCallList(callList: List<CallWithFilterUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
             filteredCallListLiveData.postValue(listCallUseCase.getFilteredCallList(callList, searchQuery, filterIndexes))
             hideProgress()
         }
     }
 
-    fun getHashMapFromCallList(callList: List<CallWithFilter>, refreshing: Boolean) {
+    fun getHashMapFromCallList(callList: List<CallWithFilterUIModel>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
             val hashMapList =
                 listCallUseCase.getHashMapFromCallList(callList.sortedByDescending {
-                    it.call?.callDate
+                    it.callUIModel?.callDate
                 })
             callHashMapLiveData.postValue(hashMapList)
             hideProgress()

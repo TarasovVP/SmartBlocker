@@ -4,7 +4,7 @@ import androidx.core.view.isVisible
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog
 
 class UnavailableNetworkDialog : BaseDialog<DialogConfirmBinding>() {

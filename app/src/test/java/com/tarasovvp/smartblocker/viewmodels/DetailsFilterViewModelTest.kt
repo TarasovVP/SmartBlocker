@@ -6,8 +6,9 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterViewModel
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -26,28 +27,28 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
     @Test
     fun getQueryContactCallListTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
+        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilterUIModel().apply { callUIModel = Call(number = TEST_FILTER) })
         coEvery { useCase.getQueryContactCallList(filter) } returns numberDataList
         viewModel.getQueryContactCallList(filter)
         advanceUntilIdle()
-        val result = viewModel.numberDataListLiveData.getOrAwaitValue()
+        val result = viewModel.numberDataListLiveDataUIModel.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 
     @Test
     fun filteredNumberDataListTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
+        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilterUIModel().apply { callUIModel = Call(number = TEST_FILTER) })
         coEvery { useCase.filteredNumberDataList(filter, numberDataList, 0) } returns numberDataList
         viewModel.filteredNumberDataList(filter, numberDataList, 0)
         advanceUntilIdle()
-        val result = viewModel.filteredNumberDataListLiveData.getOrAwaitValue()
+        val result = viewModel.filteredNumberDataListLiveDataUIModel.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 
     @Test
     fun filteredCallsByFilterTest() = runTest {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { callUIModel = FilteredCall().apply { this.number = TEST_NUMBER } })
         coEvery { useCase.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         viewModel.filteredCallsByFilter(TEST_FILTER)
         advanceUntilIdle()

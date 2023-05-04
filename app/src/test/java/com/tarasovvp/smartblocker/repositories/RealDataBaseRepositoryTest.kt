@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.data.repositoryImpl.RealDataBaseRepositoryImpl
 import com.tarasovvp.smartblocker.domain.models.Review
-import com.tarasovvp.smartblocker.domain.models.entities.CurrentUser
+import com.tarasovvp.smartblocker.domain.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository

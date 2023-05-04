@@ -7,17 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_DATA_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
-import com.tarasovvp.smartblocker.domain.models.HeaderDataItem
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.domain.models.HeaderData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import kotlinx.parcelize.Parcelize
 
-abstract class BaseAdapter<D : NumberData> :
+abstract class BaseAdapter<D : NumberDataUIModel> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var mData: ArrayList<NumberData>? = null
+    private var mData: ArrayList<NumberDataUIModel>? = null
 
     override fun getItemViewType(position: Int): Int {
-        return if (mData?.get(position) is HeaderData) HEADER_TYPE else NUMBER_DATA_TYPE
+        return if (mData?.get(position) is HeaderDataUIModel) HEADER_TYPE else NUMBER_DATA_TYPE
     }
 
     override fun onBindViewHolder(
@@ -45,10 +45,10 @@ abstract class BaseAdapter<D : NumberData> :
         return mData?.size ?: 0
     }
 
-    fun setHeaderAndData(dataList: List<D>, header: HeaderDataItem) {
+    fun setHeaderAndData(dataList: List<D>, header: HeaderData) {
         mData = mData ?: ArrayList()
         if (header.header.isNotEmpty()) mData?.add(header)
-        mData?.addAll(dataList as Collection<NumberData>)
+        mData?.addAll(dataList as Collection<NumberDataUIModel>)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -56,8 +56,8 @@ abstract class BaseAdapter<D : NumberData> :
         return mData?.get(position) as D
     }
 
-    protected fun getHeaderDataInPosition(position: Int): HeaderDataItem {
-        return mData?.get(position) as HeaderDataItem
+    protected fun getHeaderDataInPosition(position: Int): HeaderData {
+        return mData?.get(position) as HeaderData
     }
 
     fun clearData() {
@@ -65,6 +65,6 @@ abstract class BaseAdapter<D : NumberData> :
     }
 
     @Parcelize
-    open class HeaderData : NumberData(), Parcelable
+    open class HeaderDataUIModel : NumberDataUIModel(), Parcelable
 
 }

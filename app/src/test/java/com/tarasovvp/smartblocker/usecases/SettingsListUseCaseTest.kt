@@ -4,8 +4,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.domain.models.Review
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCase
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.SettingsListUseCase
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

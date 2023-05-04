@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,9 +17,9 @@ class DetailsFilterViewModel @Inject constructor(
     private val detailsFilterUseCase: DetailsFilterUseCase
 ) : BaseViewModel(application) {
 
-    val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filteredCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
+    val numberDataListLiveDataUIModel = MutableLiveData<ArrayList<NumberDataUIModel>>()
+    val filteredNumberDataListLiveDataUIModel = MutableLiveData<ArrayList<NumberDataUIModel>>()
+    val filteredCallListLiveData = MutableLiveData<ArrayList<NumberDataUIModel>>()
 
     val filterActionLiveData = MutableLiveData<Filter>()
 
@@ -27,20 +27,20 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             val numberDataList = detailsFilterUseCase.getQueryContactCallList(filter)
-            numberDataListLiveData.postValue(numberDataList)
+            numberDataListLiveDataUIModel.postValue(numberDataList)
         }
     }
 
     fun filteredNumberDataList(
         filter: Filter?,
-        numberDataList: ArrayList<NumberData>,
+        numberDataUIModelList: ArrayList<NumberDataUIModel>,
         color: Int,
     ) {
         launch {
-            filteredNumberDataListLiveData.postValue(
+            filteredNumberDataListLiveDataUIModel.postValue(
                 detailsFilterUseCase.filteredNumberDataList(
                     filter,
-                    numberDataList, color
+                    numberDataUIModelList, color
                 )
             )
             hideProgress()

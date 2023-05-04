@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
@@ -18,7 +18,7 @@ import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 
 class CallAdapter(val callClickListener: CallClickListener) :
-    BaseAdapter<CallWithFilter>() {
+    BaseAdapter<CallWithFilterUIModel>() {
 
     var isDeleteMode: Boolean = false
     var searchQuery = String.EMPTY
@@ -62,14 +62,14 @@ class CallAdapter(val callClickListener: CallClickListener) :
         fun bindData(position: Int) {
             val callWithFilter = getDataInPosition(position)
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
-                callWithFilter.call?.isDeleteMode = isDeleteMode
+                callWithFilter.callUIModel?.isDeleteMode = isDeleteMode
                 callWithFilter.searchText = searchQuery
-                callWithFilter.highlightedSpanned = callWithFilter.call?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                callWithFilter.call?.isExtract = false
+                callWithFilter.highlightedSpanned = callWithFilter.callUIModel?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                callWithFilter.callUIModel?.isExtract = false
                 this.callWithFilter = callWithFilter
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        if (callWithFilter.call?.isCallFiltered().isTrue()) {
+                        if (callWithFilter.callUIModel?.isCallFiltered().isTrue()) {
                             itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
                         } else {
                             callClickListener.onCallDeleteInfoClick()
@@ -78,23 +78,23 @@ class CallAdapter(val callClickListener: CallClickListener) :
                         callClickListener.onCallClick(callWithFilter.apply {
                             callWithFilter.searchText = String.EMPTY
                             callWithFilter.highlightedSpanned =
-                                callWithFilter.call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                                callWithFilter.callUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         })
                     }
                 }
                 root.setOnLongClickListener {
-                    if (callWithFilter.call?.isDeleteMode.isTrue().not()) {
-                        if (callWithFilter.call?.isCallFiltered().isTrue()) {
-                            callWithFilter.call?.isCheckedForDelete = callWithFilter.call?.isCallFiltered().isTrue()
+                    if (callWithFilter.callUIModel?.isDeleteMode.isTrue().not()) {
+                        if (callWithFilter.callUIModel?.isCallFiltered().isTrue()) {
+                            callWithFilter.callUIModel?.isCheckedForDelete = callWithFilter.callUIModel?.isCallFiltered().isTrue()
                             callClickListener.onCallLongClick()
                         } else {
                             callClickListener.onCallDeleteInfoClick()
                         }
                     }
-                    return@setOnLongClickListener callWithFilter.call?.isDeleteMode.isTrue().not()
+                    return@setOnLongClickListener callWithFilter.callUIModel?.isDeleteMode.isTrue().not()
                 }
                 itemCallDelete.setOnCheckedChangeListener { _, checked ->
-                    callWithFilter.call?.isCheckedForDelete = checked
+                    callWithFilter.callUIModel?.isCheckedForDelete = checked
                     callClickListener.onCallDeleteCheckChange(callWithFilter)
                 }
                 executePendingBindings()

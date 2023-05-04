@@ -8,7 +8,7 @@
 
         <variable
             name="contactWithFilter"
-            type="com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -34,8 +34,8 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageUrl="@{contactWithFilter.contact.photoUrl}"
-                app:placeHolder="@{contactWithFilter.contact.placeHolder(context)}"
+                app:imageUrl="@{contactWithFilter.contactUIModel.photoUrl}"
+                app:placeHolder="@{contactWithFilter.contactUIModel.placeHolder(context)}"
                 app:shapeAppearanceOverlay="@style/RoundedImageViewStyle"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_number"
@@ -46,7 +46,7 @@
                 android:id="@+id/item_contact_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                app:imageResource="@{contactWithFilter.filterWithCountryCode.filter.filterTypeIcon}"
+                app:imageResource="@{contactWithFilter.filterWithCountryCodeUIModel.filterUIModel.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
 
@@ -65,7 +65,7 @@
                 android:id="@+id/item_contact_validity"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_0"
-                android:text="@{contactWithFilter.contact.phoneNumberValidity() == null ? `` : context.getString(contactWithFilter.contact.phoneNumberValidity())}"
+                android:text="@{contactWithFilter.contactUIModel.phoneNumberValidity() == null ? `` : context.getString(contactWithFilter.contactUIModel.phoneNumberValidity())}"
                 android:textColor="@color/text_color_grey"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintTop_toTopOf="@+id/item_contact_number"
@@ -84,7 +84,7 @@
                 app:layout_constraintStart_toStartOf="@+id/item_contact_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
-                app:mainText="@{ contactWithFilter.contact.nameEmpty ? @string/details_number_not_from_contacts : contactWithFilter.contact.name}"
+                app:mainText="@{ contactWithFilter.contactUIModel.nameEmpty ? @string/details_number_not_from_contacts : contactWithFilter.contactUIModel.name}"
                 app:searchText="@{contactWithFilter.searchText}" />
 
             <View
@@ -101,8 +101,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_10"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? @string/details_number_contact_without_filter : contactWithFilter.filterWithCountryCode.filter.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
-                android:textColor="@{contactWithFilter.contact.filterNullOrEmpty ? @color/text_color_grey : contactWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{contactWithFilter.contactUIModel.filterNullOrEmpty ? @string/details_number_contact_without_filter : contactWithFilter.filterWithCountryCodeUIModel.filterUIModel.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
+                android:textColor="@{contactWithFilter.contactUIModel.filterNullOrEmpty ? @color/text_color_grey : contactWithFilter.filterWithCountryCodeUIModel.filterUIModel.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"/>
@@ -112,13 +112,13 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
                 android:textSize="@dimen/text_size_10"
-                android:text="@{contactWithFilter.contact.filterNullOrEmpty ? `` : contactWithFilter.filterWithCountryCode.filter.filter}"
-                android:textColor="@{contactWithFilter.filterWithCountryCode.filter.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{contactWithFilter.contactUIModel.filterNullOrEmpty ? `` : contactWithFilter.filterWithCountryCodeUIModel.filterUIModel.filter}"
+                android:textColor="@{contactWithFilter.filterWithCountryCodeUIModel.filterUIModel.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toTopOf="@+id/item_contact_filter_title"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_filter_title"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:drawableStart="@{contactWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon == null ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterWithCountryCode.filter.conditionTypeSmallIcon)}" />
+                android:drawableStart="@{contactWithFilter.filterWithCountryCodeUIModel.filterUIModel.conditionTypeSmallIcon == null ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterWithCountryCodeUIModel.filterUIModel.conditionTypeSmallIcon)}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

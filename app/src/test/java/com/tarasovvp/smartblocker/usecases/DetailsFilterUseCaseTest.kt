@@ -5,13 +5,13 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.models.entities.Call
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -50,24 +50,24 @@ class DetailsFilterUseCaseTest {
     @Test
     fun getQueryContactCallListTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
-        val callList = listOf(LogCallWithFilter().apply { call = LogCall().apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall().apply { number = "2"} })
+        val callList = listOf(LogCallWithFilter().apply { callUIModel = LogCall().apply { number = "1" } }, LogCallWithFilter().apply { callUIModel = LogCall().apply { number = "2"} })
         val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
-        val numberDataList = ArrayList<NumberData>().apply {
+        val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
             addAll(callList)
             addAll(contactList)
         }.sortedBy {
-            if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
+            if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.callUIModel?.number else String.EMPTY
         }
         coEvery { logCallRepository.getLogCallWithFilterByFilter(filter.filter) } returns callList
         coEvery { contactRepository.getContactsWithFilterByFilter(filter.filter) } returns contactList
         val result = detailsFilterUseCase.getQueryContactCallList(filter)
-        assertEquals(numberDataList, result)
+        assertEquals(numberDataUIModelList, result)
     }
 
     @Test
     fun filteredNumberDataListTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
+        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilterUIModel().apply { callUIModel = Call(number = TEST_FILTER) })
         coEvery { contactRepository.filteredNumberDataList(filter, numberDataList, 0) } returns numberDataList
         val result = detailsFilterUseCase.filteredNumberDataList(filter, numberDataList, 0)
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
@@ -75,10 +75,10 @@ class DetailsFilterUseCaseTest {
 
     @Test
     fun filteredCallsByFilterTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
+        val filteredCallList = listOf(FilteredCallWithFilter().apply { callUIModel = FilteredCall().apply { this.number = TEST_NUMBER } })
         coEvery { filteredCallRepository.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         val result = detailsFilterUseCase.filteredCallsByFilter(TEST_FILTER)
-        assertEquals(TEST_NUMBER, result[0].call?.number)
+        assertEquals(TEST_NUMBER, result[0].callUIModel?.number)
     }
 
     @Test

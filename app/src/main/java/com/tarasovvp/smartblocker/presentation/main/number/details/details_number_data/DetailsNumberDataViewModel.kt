@@ -3,8 +3,8 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_numb
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
-import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.domain.usecase.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,8 +15,8 @@ class DetailsNumberDataViewModel @Inject constructor(
     private val detailsNumberDataUseCase: DetailsNumberDataUseCase
 ) : BaseViewModel(application) {
 
-    val filterListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filteredCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
+    val filterListLiveData = MutableLiveData<ArrayList<NumberDataUIModel>>()
+    val filteredCallListLiveData = MutableLiveData<ArrayList<NumberDataUIModel>>()
     val countryCodeLiveData = MutableLiveData<CountryCode>()
 
     fun filterListWithNumber(number: String) {

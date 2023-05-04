@@ -12,14 +12,14 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.domain.models.entities.Contact
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
@@ -46,17 +46,17 @@ class DetailsNumberDataFragment :
 
     override fun initViews() {
         binding?.apply {
-            contactWithFilter = if (args.numberData is CallWithFilter) {
-                val callWithFilter = args.numberData as? CallWithFilter
-                isHiddenCall = callWithFilter?.call?.callId.orZero() > 0
-                        && callWithFilter?.call?.number?.isEmpty().isTrue()
-                ContactWithFilter(filterWithCountryCode = callWithFilter?.filterWithCountryCode,
+            contactWithFilter = if (args.numberDataUIModel is CallWithFilterUIModel) {
+                val callWithFilterUIModel = args.numberDataUIModel as? CallWithFilterUIModel
+                isHiddenCall = callWithFilterUIModel?.callUIModel?.callId.orZero() > 0
+                        && callWithFilterUIModel?.callUIModel?.number?.isEmpty().isTrue()
+                ContactWithFilter(filterWithCountryCode = callWithFilterUIModel?.filterWithCountryCode,
                     contact = Contact(name = getString(R.string.details_number_from_call_log),
-                    photoUrl = callWithFilter?.call?.photoUrl,
-                    number = callWithFilter?.call?.number.orEmpty(),
-                filter = callWithFilter?.filterWithCountryCode?.filter?.filter.orEmpty()))
+                    photoUrl = callWithFilterUIModel?.callUIModel?.photoUrl,
+                    number = callWithFilterUIModel?.callUIModel?.number.orEmpty(),
+                filter = callWithFilterUIModel?.filterWithCountryCode?.filter?.filter.orEmpty()))
             } else {
-                args.numberData as ContactWithFilter
+                args.numberDataUIModel as ContactWithFilter
             }
             detailsNumberDataItemContact.root.isEnabled = false
             context?.let { contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned(contactWithFilter?.filterWithCountryCode?.filter, ContextCompat.getColor(it, R.color.sunset)) }
@@ -86,12 +86,12 @@ class DetailsNumberDataFragment :
     }
 
     override fun createAdapter() {
-        filtersScreen = SingleDetailsFragment.newInstance(NumberData::class.simpleName.orEmpty())
+        filtersScreen = SingleDetailsFragment.newInstance(NumberDataUIModel::class.simpleName.orEmpty())
         filtersScreen?.setNumberDataClick(object : NumberDataClickListener {
-            override fun onNumberDataClick(numberData: NumberData) {
+            override fun onNumberDataClick(numberDataUIModel: NumberDataUIModel) {
                 findNavController().navigate(
                     DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                        filterWithCountryCode = numberData as FilterWithCountryCode
+                        filterWithCountryCode = numberDataUIModel as FilterWithCountryCode
                     )
                 )
             }

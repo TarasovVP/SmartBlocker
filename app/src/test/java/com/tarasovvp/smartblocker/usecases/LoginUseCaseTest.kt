@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
-import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
-import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.LoginUseCase
+import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

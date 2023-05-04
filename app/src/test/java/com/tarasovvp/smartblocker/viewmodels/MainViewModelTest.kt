@@ -5,9 +5,10 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
+import com.tarasovvp.smartblocker.domain.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
-import com.tarasovvp.smartblocker.presentation.MainViewModel
+import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
+import com.tarasovvp.smartblocker.presentation.main.MainViewModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals

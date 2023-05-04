@@ -15,8 +15,8 @@ import com.tarasovvp.smartblocker.databinding.FragmentDetailsFilterBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
-import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
@@ -93,20 +93,20 @@ class DetailsFilterFragment :
     override fun createAdapter() {
         numberDataScreen = SingleDetailsFragment.newInstance(Filter::class.simpleName.orEmpty())
         numberDataScreen?.setNumberDataClick(object : NumberDataClickListener {
-            override fun onNumberDataClick(numberData: NumberData) {
+            override fun onNumberDataClick(numberDataUIModel: NumberDataUIModel) {
                 findNavController().navigate(
                     DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
-                        numberData = numberData
+                        numberDataUIModel = numberDataUIModel
                     )
                 )
             }
         })
         filteredCallsScreen = SingleDetailsFragment.newInstance(FilteredCallWithFilter::class.simpleName.orEmpty())
         filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
-            override fun onNumberDataClick(numberData: NumberData) {
+            override fun onNumberDataClick(numberDataUIModel: NumberDataUIModel) {
                 findNavController().navigate(
                     DetailsFilterFragmentDirections.startDetailsNumberDataFragment(
-                        numberData = numberData
+                        numberDataUIModel = numberDataUIModel
                     )
                 )
             }
@@ -145,12 +145,12 @@ class DetailsFilterFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
+            numberDataListLiveDataUIModel.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 context?.let {
                     filteredNumberDataList(binding?.filterWithCountryCode?.filter, numberDataList, ContextCompat.getColor(it, R.color.text_color_black))
                 }
             }
-            filteredNumberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
+            filteredNumberDataListLiveDataUIModel.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 numberDataScreen?.updateNumberDataList(numberDataList)
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->

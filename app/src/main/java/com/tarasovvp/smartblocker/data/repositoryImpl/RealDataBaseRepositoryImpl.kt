@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
-import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
@@ -8,22 +9,21 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CA
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
-import com.tarasovvp.smartblocker.domain.models.entities.CurrentUser
+import com.tarasovvp.smartblocker.domain.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.models.Review
-import com.tarasovvp.smartblocker.utils.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
 import javax.inject.Inject
 
-class RealDataBaseRepositoryImpl @Inject constructor(private val smartBlockerApp: SmartBlockerApp?) :
+class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase, private val firebaseAuth: FirebaseAuth) :
     RealDataBaseRepository {
 
-    override fun getCurrentUser(result: (CurrentUser?) -> Unit) {
-        var currentUserDatabase = smartBlockerApp?.firebaseDatabase?.reference?.child(USERS)?.child(smartBlockerApp.firebaseAuth?.currentUser?.uid.orEmpty())
-        if (currentUserDatabase?.key != smartBlockerApp?.firebaseAuth?.currentUser?.uid.orEmpty()) currentUserDatabase =
-            smartBlockerApp?.firebaseDatabase?.reference?.child(USERS)?.child(smartBlockerApp.firebaseAuth?.currentUser?.uid.orEmpty())
-        currentUserDatabase?.get()
-            ?.addOnCompleteListener { task ->
+    override fun getCurrentUser(result: (OperationResult<CurrentUser>) -> Unit) {
+        var currentUserDatabase = firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+        if (currentUserDatabase.key != firebaseAuth.currentUser?.uid.orEmpty()) currentUserDatabase =
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+        currentUserDatabase.get()
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful.not()) return@addOnCompleteListener
                 val currentUser = CurrentUser()
                 task.result.children.forEach { snapshot ->
@@ -40,84 +40,79 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val smartBlockerApp
                         }
                     }
                 }
-                result.invoke(currentUser)
-            }?.addOnFailureListener {
-                it.localizedMessage.orEmpty().sendExceptionBroadCast()
+                result.invoke(OperationResult.Success(currentUser))
+            }.addOnFailureListener { exception ->
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun insertFilter(filter: Filter, result: () -> Unit) {
-        if (smartBlockerApp?.checkNetworkUnAvailable().isTrue()) return
-        smartBlockerApp?.firebaseDatabase?.reference?.child(USERS)?.child(smartBlockerApp.firebaseAuth?.currentUser?.uid.orEmpty())?.child(FILTER_LIST)?.child(filter.filter)?.setValue(filter)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                result.invoke()
-            }?.addOnFailureListener {
-                it.localizedMessage.orEmpty().sendExceptionBroadCast()
+    override fun insertFilter(filter: Filter, result: (OperationResult<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTER_LIST).child(filter.filter).setValue(filter)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) result.invoke(OperationResult.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun deleteFilterList(filterList: List<Filter?>, result: () -> Unit) {
-        if (smartBlockerApp?.checkNetworkUnAvailable().isTrue()) return
-        smartBlockerApp?.firebaseDatabase?.reference?.child(USERS)?.child(smartBlockerApp.firebaseAuth?.currentUser?.uid.orEmpty())?.child(FILTER_LIST)?.get()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                task.result.children.forEach { snapshot ->
-                    if (filterList.map { it?.filter }.contains(snapshot.key)) {
-                        snapshot.ref.removeValue()
+    override fun deleteFilterList(filterList: List<Filter?>, result: (OperationResult<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTER_LIST).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result.children.forEach { snapshot ->
+                        if (filterList.map { it?.filter }.contains(snapshot.key)) {
+                            snapshot.ref.removeValue()
+                        }
                     }
+                    result.invoke(OperationResult.Success())
+                } else {
+                    result.invoke(OperationResult.Failure(task.exception?.localizedMessage))
                 }
-                result.invoke()
-            }?.addOnFailureListener {
-                it.localizedMessage.orEmpty().sendExceptionBroadCast()
+            }.addOnFailureListener { exception ->
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun insertFilteredCall(filteredCall: FilteredCall, result: () -> Unit) {
-        if (smartBlockerApp?.checkNetworkUnAvailable().isTrue()) return
-        smartBlockerApp?.firebaseDatabase?.reference?.child(USERS)?.child(smartBlockerApp.firebaseAuth?.currentUser?.uid.orEmpty())?.child(FILTERED_CALL_LIST)?.child(filteredCall.callId.toString())
-            ?.setValue(filteredCall)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                result.invoke()
-            }?.addOnFailureListener {
-                it.localizedMessage.orEmpty().sendExceptionBroadCast()
+    override fun insertFilteredCall(filteredCall: FilteredCall, result: (OperationResult<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) result.invoke(OperationResult.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun deleteFilteredCallList(filteredCallIdList: List<String>, result: () -> Unit) {
-        if (smartBlockerApp?.checkNetworkUnAvailable().isTrue()) return
-        smartBlockerApp?.firebaseDatabase?.reference?.child(USERS)?.child(smartBlockerApp.firebaseAuth?.currentUser?.uid.orEmpty())?.child(FILTERED_CALL_LIST)?.get()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                task.result.children.forEach { snapshot ->
-                    if (filteredCallIdList.contains(snapshot.key)) snapshot.ref.removeValue()
+    override fun deleteFilteredCallList(filteredCallIdList: List<String>, result: (OperationResult<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTERED_CALL_LIST).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result.children.forEach { snapshot ->
+                        if (filteredCallIdList.contains(snapshot.key)) snapshot.ref.removeValue()
+                    }
+                    result.invoke(OperationResult.Success())
+                } else {
+                    result.invoke(OperationResult.Failure(task.exception?.localizedMessage))
                 }
-                result.invoke()
-            }?.addOnFailureListener {
-               it.localizedMessage.orEmpty().sendExceptionBroadCast()
+            }.addOnFailureListener { exception ->
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun changeBlockHidden(blockUnanimous: Boolean, result: () -> Unit) {
-        if (smartBlockerApp?.checkNetworkUnAvailable().isTrue()) return
-        smartBlockerApp?.firebaseDatabase?.reference?.child(USERS)?.child(smartBlockerApp.firebaseAuth?.currentUser?.uid.orEmpty())?.child(BLOCK_HIDDEN)?.setValue(blockUnanimous)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                result.invoke()
-            }?.addOnFailureListener {
-                it.localizedMessage.orEmpty().sendExceptionBroadCast()
+    override fun changeBlockHidden(blockUnanimous: Boolean, result: (OperationResult<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(BLOCK_HIDDEN).setValue(blockUnanimous)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) result.invoke(OperationResult.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun insertReview(review: Review, result: () -> Unit) {
-        if (smartBlockerApp?.checkNetworkUnAvailable().isTrue()) return
-        smartBlockerApp?.firebaseDatabase?.reference?.child(REVIEWS)?.child(review.time.toString())?.setValue(review)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
-                result.invoke()
-            }?.addOnFailureListener {
-                it.localizedMessage.orEmpty().sendExceptionBroadCast()
+    override fun insertReview(review: Review, result: (OperationResult<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(REVIEWS).child(review.time.toString()).setValue(review)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) result.invoke(OperationResult.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 }

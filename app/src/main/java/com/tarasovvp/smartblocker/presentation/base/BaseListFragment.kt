@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.domain.models.HeaderDataItem
-import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.domain.models.HeaderData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
@@ -25,7 +25,7 @@ import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 import com.tarasovvp.smartblocker.utils.EmptyStateView
 import com.tarasovvp.smartblocker.utils.extensions.*
 
-abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberData> :
+abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberDataUIModel> :
     BaseNumberDataFragment<B, T>() {
 
     protected val adapter: BaseAdapter<D>? by lazy { createAdapter() }
@@ -140,7 +140,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         dataListHashMap.forEach { dataEntry ->
             adapter?.setHeaderAndData(
                 dataEntry.value,
-                HeaderDataItem(
+                HeaderData(
                     header = dataEntry.key
                 )
             )

@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import com.tarasovvp.smartblocker.domain.usecase.settings.settings_blocker.SettingsBlockerUseCase
+import com.tarasovvp.smartblocker.domain.usecase.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel
 import junit.framework.TestCase.assertEquals
 import io.mockk.coEvery

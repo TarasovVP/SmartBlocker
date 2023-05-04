@@ -7,12 +7,12 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.models.entities.Call
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -60,32 +60,32 @@ class CreateFilterUseCaseTest {
 
     @Test
     fun getNumberDataListTest() = runBlocking {
-        val callList = listOf(LogCallWithFilter().apply { call = LogCall().apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall().apply { number = "2"} })
+        val callList = listOf(LogCallWithFilter().apply { callUIModel = LogCall().apply { number = "1" } }, LogCallWithFilter().apply { callUIModel = LogCall().apply { number = "2"} })
         val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
-        val numberDataList = ArrayList<NumberData>().apply {
+        val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
             addAll(contactList)
             addAll(callList)
         }.sortedBy {
-            if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
+            if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.callUIModel?.number else String.EMPTY
         }
         coEvery { logCallRepository.allCallNumberWithFilter() } returns callList
         coEvery { contactRepository.getContactsWithFilters() } returns contactList
         val result = createFilterUseCase.getNumberDataList()
-        assertEquals(numberDataList, result)
+        assertEquals(numberDataUIModelList, result)
     }
 
     @Test
     fun checkFilterExistTest() = runBlocking {
         val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
         coEvery { filterRepository.getFilter(filterWithCountryCode) } returns filterWithCountryCode
-        val result = createFilterUseCase.checkFilterExist(filterWithCountryCode)
+        val result = createFilterUseCase.getFilter(filterWithCountryCode)
         assertEquals(UnitTestUtils.TEST_FILTER, result?.filter?.filter)
     }
 
     @Test
     fun filterNumberDataListTest() = runBlocking {
         val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
+        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilterUIModel().apply { callUIModel = Call(number = TEST_NUMBER) })
         coEvery { contactRepository.filteredNumberDataList(filterWithCountryCode.filter, numberDataList, 0) } returns numberDataList
         val result = createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataList, 0)
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)

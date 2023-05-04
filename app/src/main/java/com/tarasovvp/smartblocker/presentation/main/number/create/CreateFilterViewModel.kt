@@ -7,9 +7,9 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountry
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isDarkMode
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +23,9 @@ class CreateFilterViewModel @Inject constructor(
 ) : BaseViewModel(application) {
 
     val countryCodeLiveData = MutableLiveData<CountryCode>()
-    val numberDataListLiveData = MutableLiveData<List<NumberData>>()
+    val numberDataListLiveDataUIModel = MutableLiveData<List<NumberDataUIModel>>()
     val existingFilterLiveData = MutableLiveData<FilterWithCountryCode>()
-    val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
+    val filteredNumberDataListLiveDataUIModel = MutableLiveData<ArrayList<NumberDataUIModel>>()
     val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getCountryCodeWithCode(code: Int?) {
@@ -41,24 +41,24 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel getNumberDataList showProgress")
         launch {
             val numberDataList = createFilterUseCase.getNumberDataList()
-            numberDataListLiveData.postValue(numberDataList)
+            numberDataListLiveDataUIModel.postValue(numberDataList)
         }
     }
 
-    fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode) {
-        Timber.e("CreateFilterViewModel checkFilterExist filter?.filter ${filterWithCountryCode.filter} createFilter ${filterWithCountryCode.createFilter()}")
+    fun checkFilterExist(filter: String) {
+        Timber.e("CreateFilterViewModel checkFilterExist filter $filter")
         launch {
-            val result = createFilterUseCase.checkFilterExist(filterWithCountryCode)
+            val result = createFilterUseCase.getFilter(filter)
             existingFilterLiveData.postValue(result ?: FilterWithCountryCode(Filter(filterType = DEFAULT_FILTER)))
         }
     }
 
-    fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int) {
-        Timber.e("CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} createFilter ${filterWithCountryCode?.createFilter()} numberDataList.size ${numberDataList.size}")
+    fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataUIModelList: ArrayList<NumberDataUIModel>, color: Int) {
+        Timber.e("CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} createFilter ${filterWithCountryCode?.createFilter()} numberDataList.size ${numberDataUIModelList.size}")
         showProgress()
         launch {
-            val filteredNumberDataList = createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataList, color)
-            filteredNumberDataListLiveData.postValue(filteredNumberDataList)
+            val filteredNumberDataList = createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataUIModelList, color)
+            filteredNumberDataListLiveDataUIModel.postValue(filteredNumberDataList)
             hideProgress()
             Timber.e("CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}")
         }

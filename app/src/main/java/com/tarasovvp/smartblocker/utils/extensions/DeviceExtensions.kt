@@ -28,7 +28,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.END_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.GET_IT_TELEPHONY
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import java.util.*
 
 fun Context.registerForNetworkUpdates(isNetworkAvailable: (Boolean) -> Unit) {
