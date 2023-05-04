@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithF
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
+import com.tarasovvp.smartblocker.domain.usecase.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataViewModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

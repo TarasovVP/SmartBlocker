@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.utils.extensions.*

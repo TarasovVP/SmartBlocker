@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterViewModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

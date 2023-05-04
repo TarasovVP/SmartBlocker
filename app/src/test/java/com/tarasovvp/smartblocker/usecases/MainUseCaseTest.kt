@@ -4,8 +4,8 @@ import android.app.Application
 import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCase
-import com.tarasovvp.smartblocker.domain.usecase.main.MainUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
+import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals

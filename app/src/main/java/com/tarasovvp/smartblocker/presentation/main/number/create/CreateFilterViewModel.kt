@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.utils.extensions.isDarkMode
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel

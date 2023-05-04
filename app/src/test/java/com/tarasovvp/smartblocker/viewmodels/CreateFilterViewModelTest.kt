@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.usecase.number.create.CreateFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterViewModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

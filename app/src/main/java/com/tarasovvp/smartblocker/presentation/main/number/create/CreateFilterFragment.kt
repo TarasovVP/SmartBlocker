@@ -23,7 +23,7 @@ import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.models.InfoData
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections

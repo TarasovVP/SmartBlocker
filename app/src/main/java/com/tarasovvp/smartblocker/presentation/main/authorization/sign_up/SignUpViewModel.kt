@@ -2,7 +2,8 @@ package com.tarasovvp.smartblocker.presentation.main.authorization.sign_up
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.domain.usecase.authorization.sign_up.SignUpUseCase
+import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
+import com.tarasovvp.smartblocker.domain.usecase.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,8 +18,11 @@ class SignUpViewModel @Inject constructor(
 
     fun createUserWithEmailAndPassword(email: String, password: String) {
         showProgress()
-        signUpUseCase.createUserWithEmailAndPassword(email, password) {
-            successSignInLiveData.postValue(it)
+        signUpUseCase.createUserWithEmailAndPassword(email, password) { operationResult ->
+            when(operationResult) {
+                is OperationResult.Success -> operationResult.data?.let { successSignInLiveData.postValue(it) }
+                is OperationResult.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+            }
             hideProgress()
         }
     }

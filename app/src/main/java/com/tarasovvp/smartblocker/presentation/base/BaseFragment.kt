@@ -5,7 +5,7 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 
 abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : BaseBindingFragment<B>() {
 

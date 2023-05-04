@@ -5,7 +5,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
+import com.tarasovvp.smartblocker.domain.usecase.ListCallUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallViewModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY

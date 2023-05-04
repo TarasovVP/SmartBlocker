@@ -12,8 +12,8 @@ import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.DetailsNumberDataUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

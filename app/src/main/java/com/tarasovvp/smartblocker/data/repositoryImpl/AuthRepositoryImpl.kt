@@ -4,81 +4,77 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tarasovvp.smartblocker.utils.extensions.sendExceptionBroadCast
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
+import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAuth, private val googleSignInClient: GoogleSignInClient) : AuthRepository {
 
-    override fun sendPasswordResetEmail(email: String, result: () -> Unit) {
+    override fun sendPasswordResetEmail(email: String, result: (OperationResult<Unit>) -> Unit) {
         firebaseAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener {
-                result.invoke()
+                result.invoke(OperationResult.Success())
             }.addOnFailureListener { exception ->
-                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String, result: (String?) -> Unit) {
+    override fun signInWithEmailAndPassword(email: String, password: String, result: (OperationResult<String?>) -> Unit) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
-                result.invoke(it.result.user?.email)
+            .addOnCompleteListener { authResult ->
+                result.invoke(OperationResult.Success(authResult.result.user?.email))
             }.addOnFailureListener { exception ->
-                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun signInWithGoogle(idToken: String, result: (String?) -> Unit) {
+    override fun signInWithGoogle(idToken: String, result: (OperationResult<String?>) -> Unit) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener {
-                result.invoke(it.result.user?.email)
+            .addOnCompleteListener { authResult ->
+                result.invoke(OperationResult.Success(authResult.result.user?.email))
             }.addOnFailureListener { exception ->
-                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun createUserWithEmailAndPassword(email: String, password: String, result: (String?) -> Unit) {
+    override fun createUserWithEmailAndPassword(email: String, password: String, result: (OperationResult<String?>) -> Unit) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
-                result.invoke(it.result.user?.email)
+            .addOnCompleteListener { authResult ->
+                result.invoke(OperationResult.Success(authResult.result.user?.email))
             }.addOnFailureListener { exception ->
-                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun changePassword(currentPassword: String, newPassword: String, result: () -> Unit) {
+    override fun changePassword(currentPassword: String, newPassword: String, result: (OperationResult<Unit>) -> Unit) {
         val user = firebaseAuth.currentUser
         val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), currentPassword)
         user?.reauthenticateAndRetrieveData(credential)
-            ?.addOnCompleteListener { passwordTask ->
+            ?.addOnCompleteListener {
                 user.updatePassword(newPassword).addOnCompleteListener {
-                    if (passwordTask.isSuccessful) {
-                        result.invoke()
-                    } else {
-                        passwordTask.exception?.localizedMessage.orEmpty()
-                            .sendExceptionBroadCast()
-                    }
+                    result.invoke(OperationResult.Success())
                 }
             }?.addOnFailureListener { exception ->
-                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun deleteUser(result: () -> Unit) {
-        firebaseAuth.currentUser?.delete()?.addOnCompleteListener {
-                result.invoke()
+    override fun deleteUser(result: (OperationResult<Unit>) -> Unit) {
+        firebaseAuth.currentUser?.delete()
+            ?.addOnCompleteListener {
+                result.invoke(OperationResult.Success())
             }?.addOnFailureListener { exception ->
-                exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+                result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun signOut(result: () -> Unit) {
+    override fun signOut(result: (OperationResult<Unit>) -> Unit) {
         googleSignInClient.signOut().addOnCompleteListener {
-           firebaseAuth.signOut()
-            result.invoke()
+            firebaseAuth.signOut()
+            result.invoke(OperationResult.Success())
         }.addOnFailureListener { exception ->
-            exception.localizedMessage.orEmpty().sendExceptionBroadCast()
+            result.invoke(OperationResult.Failure(exception.localizedMessage))
         }
     }
 }

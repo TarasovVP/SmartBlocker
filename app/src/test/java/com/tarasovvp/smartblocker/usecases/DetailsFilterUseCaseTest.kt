@@ -10,8 +10,8 @@ import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithF
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.models.entities.Call
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_filter.DetailsFilterUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals

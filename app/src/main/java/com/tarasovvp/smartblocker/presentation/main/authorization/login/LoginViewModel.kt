@@ -2,7 +2,8 @@ package com.tarasovvp.smartblocker.presentation.main.authorization.login
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.domain.usecase.authorization.login.LoginUseCase
+import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
+import com.tarasovvp.smartblocker.domain.usecase.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -26,16 +27,22 @@ class LoginViewModel @Inject constructor(
 
     fun signInWithEmailAndPassword(email: String, password: String) {
         showProgress()
-        loginUseCase.signInWithEmailAndPassword(email, password) {
-            successSignInLiveData.postValue(it)
+        loginUseCase.signInWithEmailAndPassword(email, password) { operationResult ->
+            when(operationResult) {
+                is OperationResult.Success -> operationResult.data?.let { successSignInLiveData.postValue(it) }
+                is OperationResult.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+            }
             hideProgress()
         }
     }
 
     fun firebaseAuthWithGoogle(idToken: String) {
         showProgress()
-        loginUseCase.firebaseAuthWithGoogle(idToken) {
-            successSignInLiveData.postValue(it)
+        loginUseCase.firebaseAuthWithGoogle(idToken) { operationResult ->
+            when(operationResult) {
+                is OperationResult.Success -> operationResult.data?.let { successSignInLiveData.postValue(it) }
+                is OperationResult.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+            }
             hideProgress()
         }
     }

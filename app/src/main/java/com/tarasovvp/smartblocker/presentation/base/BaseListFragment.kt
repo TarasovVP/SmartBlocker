@@ -16,7 +16,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.models.HeaderDataItem
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment

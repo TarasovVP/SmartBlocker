@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.usecase.number.details.details_number_data.DetailsNumberDataUseCase
+import com.tarasovvp.smartblocker.domain.usecase.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

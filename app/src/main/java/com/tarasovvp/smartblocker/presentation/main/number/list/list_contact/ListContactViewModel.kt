@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_contact.ListContactUseCase
+import com.tarasovvp.smartblocker.domain.usecase.ListContactUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

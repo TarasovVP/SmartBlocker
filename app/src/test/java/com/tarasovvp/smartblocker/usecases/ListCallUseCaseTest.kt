@@ -10,8 +10,8 @@ import com.tarasovvp.smartblocker.domain.models.entities.Call
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCase
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_call.ListCallUseCaseImpl
+import com.tarasovvp.smartblocker.domain.usecase.ListCallUseCase
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallUseCaseImpl
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isContaining

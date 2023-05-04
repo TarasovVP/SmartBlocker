@@ -16,7 +16,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NEW_PASSWOR
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint

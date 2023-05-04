@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.domain.usecase.number.list.list_filter.ListFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecase.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -43,7 +43,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.OUT_GOING_C
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.presentation.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
