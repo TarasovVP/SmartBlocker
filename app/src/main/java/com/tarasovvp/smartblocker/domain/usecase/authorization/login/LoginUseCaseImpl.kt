@@ -10,11 +10,11 @@ class LoginUseCaseImpl @Inject constructor(private val authRepository: AuthRepos
         result.invoke()
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String, result: () -> Unit) = authRepository.signInWithEmailAndPassword(email, password) {
-        result.invoke()
+    override fun signInWithEmailAndPassword(email: String, password: String, result: (String?) -> Unit) = authRepository.signInWithEmailAndPassword(email, password) {
+        result.invoke(it)
     }
 
-    override fun firebaseAuthWithGoogle(idToken: String, result: () -> Unit) = authRepository.signInWithGoogle(idToken) {
-        result.invoke()
+    override fun firebaseAuthWithGoogle(idToken: String, result: (String?) -> Unit) = authRepository.signInWithGoogle(idToken) {
+        result.invoke(it)
     }
 }

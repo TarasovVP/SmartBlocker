@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.domain.usecase.settings.settings_account
 
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import javax.inject.Inject
 
@@ -8,7 +7,7 @@ class SettingsAccountUseCaseImpl @Inject constructor(
     private val authRepository: AuthRepository
 ): SettingsAccountUseCase {
 
-    override fun signOut(googleSignInClient: GoogleSignInClient, result: () -> Unit) = authRepository.signOut(googleSignInClient) {
+    override fun signOut(result: () -> Unit) = authRepository.signOut {
         result.invoke()
     }
 
@@ -16,7 +15,7 @@ class SettingsAccountUseCaseImpl @Inject constructor(
         result.invoke()
     }
 
-    override fun deleteUser(googleSignInClient: GoogleSignInClient, result: () -> Unit) = authRepository.deleteUser(googleSignInClient) {
-        authRepository.signOut(googleSignInClient, result)
+    override fun deleteUser(result: () -> Unit) = authRepository.deleteUser {
+        authRepository.signOut(result)
     }
 }

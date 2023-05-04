@@ -1,7 +1,13 @@
 package com.tarasovvp.smartblocker.di
 
 import android.content.Context
-import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.data.repositoryImpl.*
@@ -51,8 +57,36 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAuthRepository(@ApplicationContext appContext: Context): AuthRepository {
-        return AuthRepositoryImpl(appContext as? SmartBlockerApp)
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
+            .requestEmail()
+            .build()
+        return GoogleSignIn.getClient(context, gso)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseDatabase(): FirebaseDatabase {
+        return FirebaseDatabase.getInstance(BuildConfig.REALTIME_DATABASE)
+    }
+
+    @Singleton
+    @Provides
+    fun providePhoneNumberUtil(): PhoneNumberUtil {
+        return PhoneNumberUtil.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthRepository(firebaseAuth: FirebaseAuth, googleSignInClient: GoogleSignInClient): AuthRepository {
+        return AuthRepositoryImpl(firebaseAuth, googleSignInClient)
     }
 
     @Singleton
@@ -75,8 +109,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRealDataBaseRepository(@ApplicationContext appContext: Context): RealDataBaseRepository {
-        return RealDataBaseRepositoryImpl(appContext as?  SmartBlockerApp)
+    fun provideRealDataBaseRepository(firebaseDatabase: FirebaseDatabase, firebaseAuth: FirebaseAuth): RealDataBaseRepository {
+        return RealDataBaseRepositoryImpl(firebaseDatabase, firebaseAuth)
     }
 
     @Singleton
@@ -105,8 +139,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeRepository(countryCodeDao: CountryCodeDao): CountryCodeRepository {
-        return CountryCodeRepositoryImpl(countryCodeDao)
+    fun provideCountryCodeRepository(phoneNumberUtil: PhoneNumberUtil, countryCodeDao: CountryCodeDao): CountryCodeRepository {
+        return CountryCodeRepositoryImpl(phoneNumberUtil, countryCodeDao)
     }
 
     @Singleton

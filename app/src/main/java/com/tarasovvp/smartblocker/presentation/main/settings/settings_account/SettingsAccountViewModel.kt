@@ -18,9 +18,9 @@ class SettingsAccountViewModel @Inject constructor(
     val successLiveData = MutableLiveData<Boolean>()
     val successChangePasswordLiveData = MutableLiveData<Boolean>()
 
-    fun signOut(googleSignInClient: GoogleSignInClient) {
+    fun signOut() {
         showProgress()
-        settingsAccountUseCase.signOut(googleSignInClient) {
+        settingsAccountUseCase.signOut() {
             successLiveData.postValue(true)
             hideProgress()
         }
@@ -29,15 +29,16 @@ class SettingsAccountViewModel @Inject constructor(
     fun changePassword(currentPassword: String, newPassword: String) {
         showProgress()
         settingsAccountUseCase.changePassword(currentPassword, newPassword) {
-            SmartBlockerApp.instance?.firebaseAuth = null
+            //TODO
+            //SmartBlockerApp.instance?.firebaseAuth = null
             successChangePasswordLiveData.postValue(true)
             hideProgress()
         }
     }
 
-    fun deleteUser(googleSignInClient: GoogleSignInClient) {
+    fun deleteUser() {
         showProgress()
-        settingsAccountUseCase.deleteUser(googleSignInClient) {
+        settingsAccountUseCase.deleteUser() {
             successLiveData.postValue(true)
             hideProgress()
         }

@@ -91,11 +91,12 @@ object Constants {
     const val APP_LANG_EN = "en"
 
     //Settings
-    const val SETTINGS_REVIEW = "settingsReview"
     const val ON_BOARDING_SEEN = "onBoardingSeen"
+    const val ACCOUNT_EMAIL = "accountEmail"
     const val APP_LANG = "appLang"
     const val APP_THEME = "appTheme"
     const val BLOCK_TURN_OFF = "blockTurnOff"
+    const val SETTINGS_REVIEW = "settingsReview"
 
     //WebView
     const val MIME_TYPE = "text/html; charset=utf-8"

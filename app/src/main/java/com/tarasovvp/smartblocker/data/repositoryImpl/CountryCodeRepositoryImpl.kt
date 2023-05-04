@@ -11,12 +11,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CountryCodeRepositoryImpl @Inject constructor(
+    private val phoneNumberUtil: PhoneNumberUtil,
     private val countryCodeDao: CountryCodeDao
 ) : CountryCodeRepository {
 
     override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
         withContext(Dispatchers.Default) {
-            PhoneNumberUtil.getInstance().countryCodeList { size, position ->
+            phoneNumberUtil.countryCodeList { size, position ->
                 result.invoke(size, position)
             }
         }

@@ -46,7 +46,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
             }
             setFragmentResultListener(SETTINGS_REVIEW) { _, bundle ->
                 viewModel.insertReview(
-                    Review(SmartBlockerApp.instance?.firebaseAuth?.currentUser?.email.toString(),
+                    Review(SharedPrefs.accountEmail.orEmpty(),
                     bundle.getString(SETTINGS_REVIEW, String.EMPTY),
                     Date().time)
                 )

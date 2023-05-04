@@ -14,7 +14,7 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel(application) {
 
     val successPasswordResetLiveData = MutableLiveData<Boolean>()
-    val successSignInLiveData = MutableLiveData<Boolean>()
+    val successSignInLiveData = MutableLiveData<String>()
 
     fun sendPasswordResetEmail(email: String) {
         showProgress()
@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     fun signInWithEmailAndPassword(email: String, password: String) {
         showProgress()
         loginUseCase.signInWithEmailAndPassword(email, password) {
-            successSignInLiveData.postValue(true)
+            successSignInLiveData.postValue(it)
             hideProgress()
         }
     }
@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
     fun firebaseAuthWithGoogle(idToken: String) {
         showProgress()
         loginUseCase.firebaseAuthWithGoogle(idToken) {
-            successSignInLiveData.postValue(true)
+            successSignInLiveData.postValue(it)
             hideProgress()
         }
     }

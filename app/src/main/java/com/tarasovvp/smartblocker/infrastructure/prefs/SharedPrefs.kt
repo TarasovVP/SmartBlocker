@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ACCOUNT_EMAIL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_EN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME
@@ -12,6 +13,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_OFF
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_SEEN
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 
@@ -28,6 +30,12 @@ object SharedPrefs {
         get() = get(ON_BOARDING_SEEN, Boolean::class.java, false)
         set(isOnBoardingSeen) {
             put(ON_BOARDING_SEEN, isOnBoardingSeen)
+        }
+
+    var accountEmail: String?
+        get() = get(ACCOUNT_EMAIL, String::class.java, String.EMPTY)
+        set(accountEmail) {
+            put(ACCOUNT_EMAIL, accountEmail)
         }
 
     var appLang: String?

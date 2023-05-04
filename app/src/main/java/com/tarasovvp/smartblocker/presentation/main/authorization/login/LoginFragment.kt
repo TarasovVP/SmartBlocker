@@ -10,6 +10,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.tarasovvp.smartblocker.R
@@ -22,9 +23,13 @@ import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
+
+    @Inject
+    lateinit var googleSignInClient: GoogleSignInClient
 
     override var layoutId = R.layout.fragment_login
     override val viewModelClass = LoginViewModel::class.java
@@ -49,9 +54,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.inputText()))
             }
             loginGoogleAuth.setSafeOnClickListener {
-                context?.googleSignInClient()?.signInIntent?.let {
-                    googleSignInLauncher.launch(it)
-                }
+                googleSignInLauncher.launch(googleSignInClient.signInIntent)
             }
         }
     }
@@ -92,7 +95,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun observeLiveData() {
         with(viewModel) {
-            successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
+            successSignInLiveData.safeSingleObserve(viewLifecycleOwner) { email ->
+                SharedPrefs.accountEmail = email
                 (activity as MainActivity).apply {
                     getAllData()
                     if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()

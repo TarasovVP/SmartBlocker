@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NEW_PASSWORD
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
+import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -37,10 +38,10 @@ class SettingsAccountFragment :
 
     private fun setFragmentResults() {
         setFragmentResultListener(LOG_OUT) { _, _ ->
-            context?.googleSignInClient()?.let {viewModel.signOut(it)}
+           viewModel.signOut()
         }
         setFragmentResultListener(DELETE_USER) { _, _ ->
-            context?.googleSignInClient()?.let { viewModel.deleteUser(it)  }
+           viewModel.deleteUser()
         }
         setFragmentResultListener(CHANGE_PASSWORD) { _, bundle ->
             viewModel.changePassword(bundle.getString(CURRENT_PASSWORD, String.EMPTY),
@@ -51,8 +52,8 @@ class SettingsAccountFragment :
     private fun initViews() {
         binding?.apply {
             isLoggedInUser = SmartBlockerApp.instance?.isLoggedInUser()
-            settingsAccountName.text = SmartBlockerApp.instance?.firebaseAuth?.currentUser?.email
-            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SmartBlockerApp.instance?.firebaseAuth?.currentUser?.email.nameInitial()))
+            settingsAccountName.text = SharedPrefs.accountEmail
+            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SharedPrefs.accountEmail.nameInitial()))
         }
     }
 
@@ -60,12 +61,9 @@ class SettingsAccountFragment :
         binding?.apply {
             settingsAccountLogOut.setSafeOnClickListener {
                 (activity as MainActivity).stopBlocker()
-                findNavController().navigate(
-                    SettingsAccountFragmentDirections.startAccountActionDialog(isLogOut = true)
-                )
+                findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog(isLogOut = true))
             }
             settingsAccountDelete.setSafeOnClickListener {
-                (activity as MainActivity).stopBlocker()
                 findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog())
             }
             settingsAccountChangePassword.setSafeOnClickListener {
@@ -82,6 +80,7 @@ class SettingsAccountFragment :
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
                 context?.let { context -> AppDatabase.getDatabase(context).clearAllTables() }
                 (activity as MainActivity).apply {
+                    stopBlocker()
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
