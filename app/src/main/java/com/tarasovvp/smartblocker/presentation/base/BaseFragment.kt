@@ -18,8 +18,15 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : BaseBindi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setExceptionMessageDisplaying()
         observeLiveData()
         setProgressVisibility()
+    }
+
+    private fun setExceptionMessageDisplaying() {
+        viewModel.exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { exception ->
+            showMessage(exception, true)
+        }
     }
 
     private fun setProgressVisibility() {

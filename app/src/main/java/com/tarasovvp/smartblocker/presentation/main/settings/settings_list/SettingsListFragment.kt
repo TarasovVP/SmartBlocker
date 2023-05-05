@@ -50,11 +50,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
                 }
             }
             setFragmentResultListener(SETTINGS_REVIEW) { _, bundle ->
-                viewModel.insertReview(
-                    Review(firebaseAuth.currentUser?.email.orEmpty(),
-                    bundle.getString(SETTINGS_REVIEW, String.EMPTY),
-                    Date().time)
-                )
+                viewModel.insertReview(Review(firebaseAuth.currentUser?.email.orEmpty(), bundle.getString(SETTINGS_REVIEW, String.EMPTY), Date().time))
             }
         }
     }
