@@ -6,11 +6,11 @@ interface AuthRepository {
 
     fun sendPasswordResetEmail(email: String, result: (OperationResult<Unit>) -> Unit)
 
-    fun signInWithEmailAndPassword(email: String, password: String, result: (OperationResult<String?>) -> Unit)
+    fun signInWithEmailAndPassword(email: String, password: String, result: (OperationResult<Unit>) -> Unit)
 
-    fun signInWithGoogle(idToken: String, result: (OperationResult<String?>) -> Unit)
+    fun signInWithGoogle(idToken: String, result: (OperationResult<Unit>) -> Unit)
 
-    fun createUserWithEmailAndPassword(email: String, password: String, result: (OperationResult<String?>) -> Unit)
+    fun createUserWithEmailAndPassword(email: String, password: String, result: (OperationResult<Unit>) -> Unit)
 
     fun changePassword(currentPassword: String, newPassword: String, result: (OperationResult<Unit>) -> Unit)
 

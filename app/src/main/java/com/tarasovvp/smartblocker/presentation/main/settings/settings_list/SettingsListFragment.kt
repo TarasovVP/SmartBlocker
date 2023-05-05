@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_REVIEW
@@ -16,9 +17,13 @@ import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsListViewModel>() {
+
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
 
     override var layoutId = R.layout.fragment_settings_list
     override val viewModelClass = SettingsListViewModel::class.java
@@ -46,7 +51,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
             }
             setFragmentResultListener(SETTINGS_REVIEW) { _, bundle ->
                 viewModel.insertReview(
-                    Review(SharedPrefs.accountEmail.orEmpty(),
+                    Review(firebaseAuth.currentUser?.email.orEmpty(),
                     bundle.getString(SETTINGS_REVIEW, String.EMPTY),
                     Date().time)
                 )

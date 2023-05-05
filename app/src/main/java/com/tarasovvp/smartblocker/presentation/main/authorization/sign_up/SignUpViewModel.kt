@@ -14,13 +14,13 @@ class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase
 ) : BaseViewModel(application) {
 
-    val successSignInLiveData = MutableLiveData<String>()
+    val successSignInLiveData = MutableLiveData<Unit>()
 
     fun createUserWithEmailAndPassword(email: String, password: String) {
         showProgress()
         signUpUseCase.createUserWithEmailAndPassword(email, password) { operationResult ->
             when(operationResult) {
-                is OperationResult.Success -> operationResult.data?.let { successSignInLiveData.postValue(it) }
+                is OperationResult.Success -> successSignInLiveData.postValue(Unit)
                 is OperationResult.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
             }
             hideProgress()

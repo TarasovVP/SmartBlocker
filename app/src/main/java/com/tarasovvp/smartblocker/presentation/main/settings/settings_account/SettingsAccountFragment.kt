@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.data.database.AppDatabase
@@ -15,15 +16,18 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NEW_PASSWORD
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsAccountFragment :
     BaseFragment<FragmentSettingsAccountBinding, SettingsAccountViewModel>() {
+
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
 
     override var layoutId = R.layout.fragment_settings_account
     override val viewModelClass = SettingsAccountViewModel::class.java
@@ -52,8 +56,8 @@ class SettingsAccountFragment :
     private fun initViews() {
         binding?.apply {
             isLoggedInUser = SmartBlockerApp.instance?.isLoggedInUser()
-            settingsAccountName.text = SharedPrefs.accountEmail
-            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable(SharedPrefs.accountEmail.nameInitial()))
+            settingsAccountName.text = firebaseAuth.currentUser?.email
+            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable( firebaseAuth.currentUser?.email.nameInitial()))
         }
     }
 

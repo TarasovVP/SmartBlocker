@@ -92,7 +92,6 @@ object Constants {
 
     //Settings
     const val ON_BOARDING_SEEN = "onBoardingSeen"
-    const val ACCOUNT_EMAIL = "accountEmail"
     const val APP_LANG = "appLang"
     const val APP_THEME = "appTheme"
     const val BLOCK_TURN_OFF = "blockTurnOff"

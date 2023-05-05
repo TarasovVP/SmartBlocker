@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SignUpUseCaseImpl @Inject constructor(private val authRepository: AuthRepository) :
     SignUpUseCase {
 
-    override fun createUserWithEmailAndPassword(email: String, password: String, result: (OperationResult<String?>) -> Unit) = authRepository.createUserWithEmailAndPassword(email, password) { operationResult ->
+    override fun createUserWithEmailAndPassword(email: String, password: String, result: (OperationResult<Unit>) -> Unit) = authRepository.createUserWithEmailAndPassword(email, password) { operationResult ->
         result.invoke(operationResult)
     }
 }

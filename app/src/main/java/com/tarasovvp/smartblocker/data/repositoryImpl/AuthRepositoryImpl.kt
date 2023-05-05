@@ -19,29 +19,29 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             }
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String, result: (OperationResult<String?>) -> Unit) {
+    override fun signInWithEmailAndPassword(email: String, password: String, result: (OperationResult<Unit>) -> Unit) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { authResult ->
-                result.invoke(OperationResult.Success(authResult.result.user?.email))
+            .addOnCompleteListener {
+                result.invoke(OperationResult.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun signInWithGoogle(idToken: String, result: (OperationResult<String?>) -> Unit) {
+    override fun signInWithGoogle(idToken: String, result: (OperationResult<Unit>) -> Unit) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener { authResult ->
-                result.invoke(OperationResult.Success(authResult.result.user?.email))
+            .addOnCompleteListener {
+                result.invoke(OperationResult.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(OperationResult.Failure(exception.localizedMessage))
             }
     }
 
-    override fun createUserWithEmailAndPassword(email: String, password: String, result: (OperationResult<String?>) -> Unit) {
+    override fun createUserWithEmailAndPassword(email: String, password: String, result: (OperationResult<Unit>) -> Unit) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { authResult ->
-                result.invoke(OperationResult.Success(authResult.result.user?.email))
+            .addOnCompleteListener {
+                result.invoke(OperationResult.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(OperationResult.Failure(exception.localizedMessage))
             }

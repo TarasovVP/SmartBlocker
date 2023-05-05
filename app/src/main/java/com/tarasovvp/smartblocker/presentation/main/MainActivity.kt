@@ -25,13 +25,14 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
-import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
 import com.tarasovvp.smartblocker.infrastructure.receivers.ExceptionReceiver
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
@@ -43,9 +44,13 @@ import com.tarasovvp.smartblocker.infrastructure.services.ForegroundCallService
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
 
     private var binding: ActivityMainBinding? = null
     var navController: NavController? = null
@@ -153,7 +158,7 @@ class MainActivity : AppCompatActivity() {
         setOnDestinationChangedListener()
         observeLiveData()
         if (SharedPrefs.isOnBoardingSeen.isTrue()
-            && SmartBlockerApp.instance?.isLoggedInUser().isTrue()
+            && firebaseAuth.currentUser.isNotNull()
             && savedInstanceState.isNull()
         ) {
             if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
@@ -174,7 +179,7 @@ class MainActivity : AppCompatActivity() {
             navGraph.setStartDestination(
                 when {
                     SharedPrefs.isOnBoardingSeen.isNotTrue() -> R.id.onBoardingFragment
-                    SmartBlockerApp.instance?.isLoggedInUser().isTrue() -> {
+                    firebaseAuth.currentUser.isNotNull() -> {
                         R.id.listBlockerFragment
                     }
                     else -> R.id.loginFragment
@@ -301,7 +306,7 @@ class MainActivity : AppCompatActivity() {
     fun getAllData() {
         if (checkPermissions().isTrue()) {
             setMainProgressVisibility(true)
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (firebaseAuth.currentUser.isNotNull()) {
                 mainViewModel.getCurrentUser()
             } else {
                 mainViewModel.getAllData()
