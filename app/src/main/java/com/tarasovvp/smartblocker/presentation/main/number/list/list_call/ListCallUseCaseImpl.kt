@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
@@ -24,12 +24,7 @@ class ListCallUseCaseImpl @Inject constructor(
 ): ListCallUseCase {
 
     override suspend fun getCallList(): List<CallWithFilter> {
-            val logCalls = logCallRepository.getAllLogCallWithFilter()
-            val filteredCalls =  filteredCallRepository.allFilteredCallWithFilter()
-            val callList = ArrayList<CallWithFilter>().apply {
-                addAll(filteredCalls)
-                addAll(logCalls)
-            }
+            val callList = logCallRepository.getAllCallWithFilter()
             return callList.distinctBy {
                 it.call?.callId
             }

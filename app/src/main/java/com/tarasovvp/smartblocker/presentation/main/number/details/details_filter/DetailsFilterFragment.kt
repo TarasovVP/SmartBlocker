@@ -6,12 +6,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsFilterBinding
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.entities.models.InfoData
@@ -101,7 +101,7 @@ class DetailsFilterFragment :
                 )
             }
         })
-        filteredCallsScreen = SingleDetailsFragment.newInstance(FilteredCallWithFilter::class.simpleName.orEmpty())
+        filteredCallsScreen = SingleDetailsFragment.newInstance(CallWithFilter::class.simpleName.orEmpty())
         filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
             override fun onNumberDataClick(numberData: NumberData) {
                 findNavController().navigate(

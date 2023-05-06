@@ -6,11 +6,10 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterUseCaseImpl
@@ -69,7 +68,7 @@ class CreateFilterUseCaseTest {
         }.sortedBy {
             if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
         }
-        coEvery { logCallRepository.allCallNumberWithFilter() } returns callList
+        coEvery { logCallRepository.allDistinctCallWithFilter() } returns callList
         coEvery { contactRepository.getContactsWithFilters() } returns contactList
         val result = createFilterUseCase.getNumberDataList()
         assertEquals(numberDataList, result)

@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
@@ -37,8 +35,6 @@ class NumberDataAdapter(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_contact, parent, false)
             )
-            LogCallWithFilter::class.java.simpleName.hashCode(),
-            FilteredCallWithFilter::class.java.simpleName.hashCode(),
             CallWithFilter::class.java.simpleName.hashCode() -> CallViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_call, parent, false)

@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
@@ -19,6 +18,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FIL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.entities.models.InfoData
@@ -53,7 +53,7 @@ open class CreateFilterFragment :
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
             val number = when (numberData) {
                 is ContactWithFilter -> numberData.contact?.number
-                is LogCallWithFilter -> numberData.call?.number
+                is CallWithFilter -> numberData.call?.number
                 else -> String.EMPTY
             }
             binding?.apply {

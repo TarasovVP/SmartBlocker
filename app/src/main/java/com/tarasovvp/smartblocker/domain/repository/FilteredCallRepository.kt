@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 
 interface FilteredCallRepository {
 
@@ -11,11 +11,9 @@ interface FilteredCallRepository {
 
     suspend fun allFilteredCalls(): List<FilteredCall>
 
-    suspend fun allFilteredCallWithFilter(): List<FilteredCallWithFilter>
+    suspend fun filteredCallsByFilter(filter: String): List<CallWithFilter>
 
-    suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter>
-
-    suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter>
+    suspend fun filteredCallsByNumber(number: String): List<CallWithFilter>
 
     suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>)
 }

@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 
 
 interface CallClickListener {

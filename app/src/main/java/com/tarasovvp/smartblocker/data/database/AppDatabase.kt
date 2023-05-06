@@ -7,13 +7,12 @@ import androidx.room.RoomDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 
 @Database(
     entities = [LogCall::class, FilteredCall::class, Contact::class, Filter::class, CountryCode::class],
-    views = [ContactWithFilter::class, LogCallWithFilter::class, FilteredCallWithFilter::class, FilterWithCountryCode::class],
+    views = [ContactWithFilter::class, CallWithFilter::class, FilterWithCountryCode::class],
     version = 1,
     exportSchema = false
 )

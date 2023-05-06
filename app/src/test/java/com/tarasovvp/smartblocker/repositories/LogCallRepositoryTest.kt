@@ -11,8 +11,7 @@ import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
@@ -76,24 +75,24 @@ class LogCallRepositoryTest {
     @Test
     fun getAllLogCallWithFilterTest() = runBlocking {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1) }, LogCallWithFilter().apply { call = LogCall(callId = 2) })
-        coEvery { logCallDao.allLogCallWithFilter() } returns logCallList
-        val result = logCallRepository.getAllLogCallWithFilter()
+        coEvery { logCallDao.allCallWithFilter() } returns logCallList
+        val result = logCallRepository.getAllCallWithFilter()
         assertEquals(logCallList, result)
     }
 
     @Test
     fun allCallNumberWithFilterTest() = runBlocking {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        coEvery { logCallDao.allCallNumberWithFilter() } returns logCallList
-        val result = logCallRepository.allCallNumberWithFilter()
+        coEvery { logCallDao.allDistinctCallWithFilter() } returns logCallList
+        val result = logCallRepository.allDistinctCallWithFilter()
         assertEquals(logCallList.distinctBy { it.call?.number }, result)
     }
 
     @Test
     fun getLogCallWithFilterByFilterTest() = runBlocking {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        coEvery { logCallDao.queryCallList(TEST_FILTER) } returns logCallList
-        val result = logCallRepository.getLogCallWithFilterByFilter(TEST_FILTER)
+        coEvery { logCallDao.allCallWithFilterByFilter(TEST_FILTER) } returns logCallList
+        val result = logCallRepository.allCallWithFilterByFilter(TEST_FILTER)
         assertEquals(logCallList.distinctBy { it.call?.number }, result)
     }
 

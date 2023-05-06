@@ -11,8 +11,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
@@ -97,7 +96,7 @@ class DetailsNumberDataFragment :
             }
         })
         filteredCallsScreen =
-            SingleDetailsFragment.newInstance(FilteredCallWithFilter::class.simpleName.orEmpty())
+            SingleDetailsFragment.newInstance(CallWithFilter::class.simpleName.orEmpty())
         val fragmentList = arrayListOf(filtersScreen, filteredCallsScreen)
 
         binding?.detailsNumberDataViewPager?.adapter =

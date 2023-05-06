@@ -93,16 +93,16 @@ class MainUseCaseImpl @Inject constructor(
         return filteredCallRepository.allFilteredCalls()
     }
 
-    override suspend fun setFilterToFilteredCall(filterList: List<Filter>, callList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall> =
+    override suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall> =
         withContext(Dispatchers.Default) {
-            callList.onEachIndexed { index, filteredCall ->
+            filteredCallList.onEachIndexed { index, filteredCall ->
                 filteredCall.filter = filterList.filter { filter ->
                     (filteredCall.number == filter.filter && filter.isTypeFull())
                             || (filteredCall.number.startsWith(filter.filter) && filter.isTypeStart())
                             || (filteredCall.number.contains(filter.filter) && filter.isTypeContain())
                 }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { filteredCall.number.indexOf(it.filter) })
                     .firstOrNull()?.filter.orEmpty()
-                result.invoke(callList.size, index)
+                result.invoke(filteredCallList.size, index)
             }
         }
 

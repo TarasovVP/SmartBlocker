@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 
 @Dao
 interface FilteredCallDao {
@@ -15,24 +15,19 @@ interface FilteredCallDao {
     @Query("SELECT * FROM filtered_calls")
     suspend fun allFilteredCalls(): List<FilteredCall>
 
-    @RewriteQueriesToDropUnusedColumns
-    @Transaction
-    @Query("SELECT * FROM FilteredCallWithFilter")
-    suspend fun allFilteredCallWithFilter(): List<FilteredCallWithFilter>
+    @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1")
+    suspend fun allFilteredCallWithFilter(): List<CallWithFilter>
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM FilteredCallWithFilter WHERE filter = :filter ORDER BY callDate DESC")
-    suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter>
+    @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1 AND filter = :filter ORDER BY callDate DESC")
+    suspend fun filteredCallsByFilter(filter: String): List<CallWithFilter>
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM FilteredCallWithFilter WHERE number = :number ORDER BY callDate DESC")
-    suspend fun filteredCallsByNumber(number: String): List<FilteredCallWithFilter>
+    @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1 AND number = :number ORDER BY callDate DESC")
+    suspend fun filteredCallsByNumber(number: String): List<CallWithFilter>
 
-    @Query("delete from filtered_calls where callId  in (:callIdList)")
+    @Query("delete from filtered_calls where callId in (:callIdList)")
     fun deleteFilteredCalls(callIdList: List<Int>)
-
-    @Query("delete from filtered_calls")
-    fun deleteAllFilteredCalls()
 }

@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.domain.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 
 interface LogCallRepository {
 
@@ -10,10 +10,10 @@ interface LogCallRepository {
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>)
 
-    suspend fun getAllLogCallWithFilter(): List<LogCallWithFilter>
+    suspend fun getAllCallWithFilter(): List<CallWithFilter>
 
-    suspend fun getLogCallWithFilterByFilter(filter: String): List<LogCallWithFilter>
+    suspend fun allCallWithFilterByFilter(filter: String): List<CallWithFilter>
 
-    suspend fun allCallNumberWithFilter(): List<LogCallWithFilter>
+    suspend fun allDistinctCallWithFilter(): List<CallWithFilter>
 
 }

@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
@@ -26,7 +26,7 @@ class SingleDetailsFragment :
                 numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
                     numberDataClickListener?.onNumberDataClick(numberData)
                 }.apply {
-                    this.isFilteredCallDetails = numberType == FilteredCallWithFilter::class.simpleName
+                    this.isFilteredCallDetails = numberType == CallWithFilter::class.simpleName
                     this.isFilteredCallItemDisable = isFilteredCallItemDisable
                 }
             singleDetailsListEmpty.setDescription( when (numberType) {

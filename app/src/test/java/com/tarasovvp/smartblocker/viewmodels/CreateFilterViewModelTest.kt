@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterViewModel
 import io.mockk.coEvery

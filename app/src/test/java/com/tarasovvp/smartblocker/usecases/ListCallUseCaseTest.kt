@@ -3,11 +3,9 @@ package com.tarasovvp.smartblocker.usecases
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
@@ -57,7 +55,7 @@ class ListCallUseCaseTest {
         }.distinctBy {
             it.call?.callId
         }
-        coEvery { logCallRepository.getAllLogCallWithFilter() } returns logCallList
+        coEvery { logCallRepository.getAllCallWithFilter() } returns logCallList
         coEvery { filteredCallRepository.allFilteredCallWithFilter() } returns filteredCallList
         val result = listCallUseCase.getCallList()
         assertEquals(commonCallList, result)

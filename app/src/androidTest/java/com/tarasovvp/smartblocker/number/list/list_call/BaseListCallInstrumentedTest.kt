@@ -25,7 +25,7 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.utils.extensions.*

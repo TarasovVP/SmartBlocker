@@ -3,8 +3,8 @@ package com.tarasovvp.smartblocker.presentation.main.number.create
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import com.tarasovvp.smartblocker.domain.repository.*
@@ -30,12 +30,12 @@ class CreateFilterUseCaseImpl @Inject constructor(
 
     override suspend fun getNumberDataList(): ArrayList<NumberData> {
             val contacts =  contactRepository.getContactsWithFilters()
-            val calls =  logCallRepository.allCallNumberWithFilter()
+            val calls =  logCallRepository.allDistinctCallWithFilter()
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contacts)
                 addAll(calls.filter { it.call?.number.isNullOrEmpty().not() })
                 sortBy {
-                    if (it is ContactWithFilter) it.contact?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else if (it is LogCallWithFilter) it.call?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else String.EMPTY
+                    if (it is ContactWithFilter) it.contact?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else if (it is CallWithFilter) it.call?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else String.EMPTY
                 }
             }
             return numberDataList

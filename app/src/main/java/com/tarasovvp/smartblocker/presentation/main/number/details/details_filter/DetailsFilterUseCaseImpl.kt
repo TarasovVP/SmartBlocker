@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_filt
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import com.tarasovvp.smartblocker.domain.repository.*
@@ -26,13 +26,13 @@ class DetailsFilterUseCaseImpl @Inject constructor(
 ): DetailsFilterUseCase {
 
     override suspend fun getQueryContactCallList(filter: Filter): ArrayList<NumberData> {
-            val calls =  logCallRepository.getLogCallWithFilterByFilter(filter.filter)
+            val calls =  logCallRepository.allCallWithFilterByFilter(filter.filter)
             val contacts =  contactRepository.getContactsWithFilterByFilter(filter.filter)
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(calls)
                 addAll(contacts)
                 sortBy {
-                    if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
+                    if (it is ContactWithFilter) it.contact?.number else if (it is CallWithFilter) it.call?.number else String.EMPTY
                 }
             }
             return numberDataList

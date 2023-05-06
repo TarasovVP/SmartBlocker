@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface ListCallUseCase {
