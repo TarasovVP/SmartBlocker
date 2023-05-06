@@ -79,9 +79,7 @@ fun Context.systemCallLogCursor(): Cursor? {
         CallLog.Calls.CACHED_NAME,
         CallLog.Calls.NUMBER,
         CallLog.Calls.TYPE,
-        CallLog.Calls.DATE,
-        CallLog.Calls.CACHED_NORMALIZED_NUMBER,
-        CallLog.Calls.COUNTRY_ISO
+        CallLog.Calls.DATE
     )
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         projection.add(CallLog.Calls.CACHED_PHOTO_URI)
@@ -103,10 +101,8 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     logCall.number = this.getString(2)
     logCall.type = this.getString(3)
     logCall.callDate = this.getString(4)
-    logCall.normalizedNumber = this.getString(5)
-    logCall.countryIso = this.getString(6)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        logCall.photoUrl = this.getString(7)
+        logCall.photoUrl = this.getString(5)
     }
     return logCall
 }

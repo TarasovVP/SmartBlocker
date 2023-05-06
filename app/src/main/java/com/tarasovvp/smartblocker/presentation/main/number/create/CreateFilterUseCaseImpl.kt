@@ -43,10 +43,10 @@ class CreateFilterUseCaseImpl @Inject constructor(
 
     override suspend fun getFilter(filter: String) = filterRepository.getFilter(filter)
 
-    override suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataUIModelList: ArrayList<NumberData>, color: Int): ArrayList<NumberData> {
+    override suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int): ArrayList<NumberData> {
         val filteredList = arrayListOf<NumberData>()
         val supposedFilteredList = arrayListOf<NumberData>()
-        numberDataUIModelList.forEach { numberData ->
+        numberDataList.forEach { numberData ->
             numberData.highlightedSpanned = numberData.highlightedSpanned(filterWithCountryCode?.filter, color)
             if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR).isTrue().not()) {
                 supposedFilteredList.add(numberData)

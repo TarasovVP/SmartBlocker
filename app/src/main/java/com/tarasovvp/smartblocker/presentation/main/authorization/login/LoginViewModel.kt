@@ -23,8 +23,11 @@ class LoginViewModel @Inject constructor(
     fun sendPasswordResetEmail(email: String) {
         if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
             showProgress()
-            loginUseCase.sendPasswordResetEmail(email) {
-                successPasswordResetLiveData.postValue(true)
+            loginUseCase.sendPasswordResetEmail(email) { authResult ->
+                when(authResult) {
+                    is Result.Success -> successPasswordResetLiveData.postValue(true)
+                    is Result.Failure -> authResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
                 hideProgress()
             }
         } else {
@@ -35,10 +38,10 @@ class LoginViewModel @Inject constructor(
     fun signInWithEmailAndPassword(email: String, password: String) {
         if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
             showProgress()
-            loginUseCase.signInWithEmailAndPassword(email, password) { operationResult ->
-                when(operationResult) {
+            loginUseCase.signInWithEmailAndPassword(email, password) { authResult ->
+                when(authResult) {
                     is Result.Success -> successSignInLiveData.postValue(Unit)
-                    is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                    is Result.Failure -> authResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
                 hideProgress()
             }
