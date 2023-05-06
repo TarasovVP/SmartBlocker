@@ -32,8 +32,5 @@ class FilterRepositoryImpl @Inject constructor(
         filterDao.deleteFilters(filterList)
 
     override suspend fun queryFilterList(number: String): List<FilterWithCountryCode> =
-        filterDao.queryFullMatchFilterList(number).sortedWith(
-            compareByDescending<FilterWithCountryCode> { it.filter?.filter?.length }
-                .thenBy { number.indexOf(it.filter?.filter.orEmpty()) }
-        )
+        filterDao.queryFullMatchFilterList(number)
 }

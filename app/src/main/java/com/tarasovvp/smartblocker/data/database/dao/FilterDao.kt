@@ -29,7 +29,7 @@ interface FilterDao {
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM FilterWithCountryCode WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2)")
+    @Query("SELECT * FROM FilterWithCountryCode WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2) ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)")
     suspend fun queryFullMatchFilterList(number: String): List<FilterWithCountryCode>
 
     @Delete
