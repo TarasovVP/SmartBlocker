@@ -3,10 +3,12 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.Call
+import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
+import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterViewModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

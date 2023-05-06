@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.usecases
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
-import com.tarasovvp.smartblocker.domain.usecase.SignUpUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.every

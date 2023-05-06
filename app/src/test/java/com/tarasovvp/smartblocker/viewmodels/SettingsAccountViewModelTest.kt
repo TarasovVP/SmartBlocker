@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
-import com.tarasovvp.smartblocker.domain.usecase.SettingsAccountUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountViewModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

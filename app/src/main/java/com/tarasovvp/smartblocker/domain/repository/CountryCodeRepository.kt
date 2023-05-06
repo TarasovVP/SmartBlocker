@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 
 interface CountryCodeRepository {
 

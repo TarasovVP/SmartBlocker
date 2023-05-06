@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DATE_FORMAT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER

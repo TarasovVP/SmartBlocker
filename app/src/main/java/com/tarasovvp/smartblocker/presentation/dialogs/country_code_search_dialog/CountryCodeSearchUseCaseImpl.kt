@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog
 
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
-import com.tarasovvp.smartblocker.domain.usecase.CountryCodeSearchUseCase
+import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
 import javax.inject.Inject
 
 class CountryCodeSearchUseCaseImpl @Inject constructor(private val countryCodeRepository: CountryCodeRepository):

@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.tarasovvp.smartblocker.data.database.dao.FilterDao
-import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import javax.inject.Inject
 

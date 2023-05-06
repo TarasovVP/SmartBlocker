@@ -30,10 +30,11 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.NumberData
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IN_COMING_CALL
@@ -328,7 +329,8 @@ object TestUtils {
         ContactWithFilter(Contact("7", name = "Y Name", number = "12345"), null)
     )
 
-    fun numberDataList() = arrayListOf(CallWithFilter(LogCall(1).apply { callName = "A Name"
+    fun numberDataList() = arrayListOf(
+        CallWithFilter(LogCall(1).apply { callName = "A Name"
         number = "+380502711344"
         type = IN_COMING_CALL
         callDate = "1678603872094"},
@@ -338,7 +340,8 @@ object TestUtils {
         ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))))
 
-    fun filteredCallList() = arrayListOf<NumberData>(CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
+    fun filteredCallList() = arrayListOf<NumberData>(
+        CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
         number = "12345"
         type = OUT_GOING_CALL
         callDate = "1612525268071"},
@@ -355,7 +358,8 @@ object TestUtils {
             isFilteredCall = true
             filteredNumber = "12345"
             conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
-            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))))
+            FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA")))
+    )
 
     fun filterList() = arrayListOf<NumberData>(FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { filteredContacts = 3
         created = 1681315250919}, countryCode = CountryCode("UA")),

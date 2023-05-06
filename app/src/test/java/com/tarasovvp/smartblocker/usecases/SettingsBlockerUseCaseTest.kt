@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.usecase.SettingsBlockerUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.every

@@ -1,12 +1,12 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.usecase.ListFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import io.mockk.*

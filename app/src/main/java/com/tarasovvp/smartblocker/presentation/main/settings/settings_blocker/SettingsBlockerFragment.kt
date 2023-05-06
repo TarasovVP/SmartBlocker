@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
@@ -55,7 +55,7 @@ class SettingsBlockerFragment :
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
             settingsBlockerHiddenSwitch.setSafeOnClickListener {
-                viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked.not())
+                viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked)
             }
         }
     }

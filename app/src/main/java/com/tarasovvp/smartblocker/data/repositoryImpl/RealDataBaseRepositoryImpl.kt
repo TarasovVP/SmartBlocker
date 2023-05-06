@@ -2,15 +2,15 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
-import com.tarasovvp.smartblocker.domain.models.entities.CurrentUser
-import com.tarasovvp.smartblocker.domain.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
             firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) return@addOnCompleteListener
+                if (task.isSuccessful.not()) result.invoke(Result.Failure(task.exception?.localizedMessage))
                 val currentUser = CurrentUser()
                 task.result.children.forEach { snapshot ->
                     when (snapshot.key) {

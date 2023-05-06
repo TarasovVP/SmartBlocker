@@ -9,7 +9,7 @@
 
         <variable
             name="callWithFilter"
-            type="com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter" />
+            type="com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

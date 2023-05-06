@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import android.content.Context
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
-import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.utils.extensions.systemLogCallList
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import kotlinx.coroutines.Dispatchers

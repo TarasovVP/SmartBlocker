@@ -9,10 +9,10 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.data.repositoryImpl.RealDataBaseRepositoryImpl
-import com.tarasovvp.smartblocker.domain.models.Review
-import com.tarasovvp.smartblocker.domain.models.entities.CurrentUser
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST

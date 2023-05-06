@@ -2,15 +2,16 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.models.database_views.LogCallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.LogCallWithFilter
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.domain.models.NumberData
-import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.models.entities.Call
+import com.tarasovvp.smartblocker.domain.entities.models.NumberData
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.Call
+import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
 import io.mockk.*
 import io.mockk.impl.annotations.MockK

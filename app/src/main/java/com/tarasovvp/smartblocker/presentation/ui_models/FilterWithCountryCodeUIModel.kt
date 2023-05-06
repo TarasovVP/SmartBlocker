@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.parcelize.Parcelize
 

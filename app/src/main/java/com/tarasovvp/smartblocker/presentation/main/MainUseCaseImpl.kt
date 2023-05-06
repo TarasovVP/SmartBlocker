@@ -1,10 +1,11 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.app.Application
-import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
+import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

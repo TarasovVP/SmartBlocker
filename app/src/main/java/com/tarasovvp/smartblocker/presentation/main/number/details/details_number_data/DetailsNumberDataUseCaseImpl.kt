@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_numb
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
-import com.tarasovvp.smartblocker.domain.usecase.DetailsNumberDataUseCase
+import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
 import javax.inject.Inject
 
 class DetailsNumberDataUseCaseImpl @Inject constructor(

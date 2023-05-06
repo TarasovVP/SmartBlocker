@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.ui_models
 
 import android.os.Parcelable
-import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

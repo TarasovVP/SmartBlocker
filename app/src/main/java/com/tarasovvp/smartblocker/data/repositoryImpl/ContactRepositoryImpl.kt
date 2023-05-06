@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import android.content.Context
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
-import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.coroutines.Dispatchers

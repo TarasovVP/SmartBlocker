@@ -8,7 +8,7 @@
 
         <variable
             name="contactWithFilter"
-            type="com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter" />
+            type="com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

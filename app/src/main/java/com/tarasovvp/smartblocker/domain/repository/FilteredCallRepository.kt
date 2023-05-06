@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
-import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 
 interface FilteredCallRepository {
 

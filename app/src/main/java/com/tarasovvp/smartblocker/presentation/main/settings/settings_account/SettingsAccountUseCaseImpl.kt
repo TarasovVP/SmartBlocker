@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import com.tarasovvp.smartblocker.domain.usecase.SettingsAccountUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import javax.inject.Inject
 
 class SettingsAccountUseCaseImpl @Inject constructor(

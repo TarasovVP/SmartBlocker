@@ -1,9 +1,9 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.models.entities.Filter
-import com.tarasovvp.smartblocker.domain.models.entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.models.entities.CurrentUser
-import com.tarasovvp.smartblocker.domain.models.Review
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface RealDataBaseRepository {

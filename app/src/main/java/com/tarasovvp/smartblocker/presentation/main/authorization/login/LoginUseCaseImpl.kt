@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.authorization.login
 
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import com.tarasovvp.smartblocker.domain.usecase.LoginUseCase
+import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 
 import javax.inject.Inject
 

@@ -2,9 +2,10 @@ package com.tarasovvp.smartblocker.usecases
 
 import android.app.Application
 import com.tarasovvp.smartblocker.UnitTestUtils
-import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
+import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
 import io.mockk.*
 import io.mockk.impl.annotations.MockK

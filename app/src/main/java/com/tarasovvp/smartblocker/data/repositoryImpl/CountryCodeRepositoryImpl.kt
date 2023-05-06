@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.smartblocker.data.database.dao.CountryCodeDao
-import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.utils.extensions.countryCodeList
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_START

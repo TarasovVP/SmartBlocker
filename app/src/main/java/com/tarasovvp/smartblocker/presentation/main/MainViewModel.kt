@@ -4,12 +4,13 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.domain.models.MainProgress
-import com.tarasovvp.smartblocker.domain.models.entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.MainProgress
+import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
+import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
 import com.tarasovvp.smartblocker.utils.extensions.isNull

@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentInfoBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages
-import com.tarasovvp.smartblocker.domain.models.InfoData
+import com.tarasovvp.smartblocker.domain.entities.models.InfoData
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.TextViewLinkHandler

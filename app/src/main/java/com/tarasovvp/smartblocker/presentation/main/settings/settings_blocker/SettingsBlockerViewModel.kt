@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.domain.usecase.SettingsBlockerUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -26,7 +26,7 @@ class SettingsBlockerViewModel @Inject constructor(
         if (firebaseAuth.currentUser.isNotNull()) {
             if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
                 settingsBlockerUseCase.changeBlockHidden(blockHidden) {
-                    successBlockHiddenLiveData.postValue(blockHidden.not())
+                    successBlockHiddenLiveData.postValue(blockHidden)
                 }
             } else {
                 exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))

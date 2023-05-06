@@ -2,8 +2,8 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
-import com.tarasovvp.smartblocker.domain.models.Review
-import com.tarasovvp.smartblocker.domain.usecase.SettingsListUseCase
+import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListViewModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

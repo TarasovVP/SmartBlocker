@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
-import com.tarasovvp.smartblocker.domain.usecase.SignUpUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpViewModel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

@@ -2,12 +2,12 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.models.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import com.tarasovvp.smartblocker.domain.usecase.ListCallUseCase
+import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
 import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -50,9 +50,9 @@ class ListCallUseCaseImpl @Inject constructor(
         }
     }
 
-    override suspend fun getHashMapFromCallList(logCallList: List<CallWithFilter>): Map<String, List<CallWithFilter>> =
+    override suspend fun getHashMapFromCallList(callList: List<CallWithFilter>): Map<String, List<CallWithFilter>> =
         withContext(Dispatchers.Default) {
-            logCallList.sortedByDescending {
+            callList.sortedByDescending {
                 it.call?.callDate
             }.groupBy { it.call?.dateFromCallDate().toString() }
         }
