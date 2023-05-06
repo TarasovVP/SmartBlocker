@@ -276,8 +276,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository): SettingsBlockerUseCase {
-        return SettingsBlockerUseCaseImpl(realDataBaseRepository)
+    fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository, firebaseAuth: FirebaseAuth): SettingsBlockerUseCase {
+        return SettingsBlockerUseCaseImpl(realDataBaseRepository, firebaseAuth)
     }
 
     @Singleton

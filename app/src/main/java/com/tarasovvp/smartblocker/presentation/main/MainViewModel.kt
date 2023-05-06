@@ -47,6 +47,7 @@ class MainViewModel @Inject constructor(
         launch {
             insertUserFilters(currentUser.filterList)
             insertUserFilteredCalls(currentUser.filteredCallList)
+            SharedPrefs.blockHidden = currentUser.isBlockHidden
             getAllData()
         }
     }

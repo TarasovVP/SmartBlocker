@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import kotlinx.parcelize.Parcelize
 
-@DatabaseView("SELECT * FROM contacts LEFT JOIN filters ON contacts.filter = filters.filter LEFT JOIN FilterWithCountryCode ON filters.filter = FilterWithCountryCode.filter")
+@DatabaseView("SELECT * FROM contacts LEFT JOIN filters ON contacts.filter = filters.filter")
 @Parcelize
 data class ContactWithFilter(
     @Embedded
