@@ -2,11 +2,11 @@ package com.tarasovvp.smartblocker.domain.usecase
 
 import android.app.Application
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface MainUseCase {
 
-    fun getCurrentUser(result: (OperationResult<CurrentUser>) -> Unit)
+    fun getCurrentUser(result: (Result<CurrentUser>) -> Unit)
 
     suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): List<CountryCode>
 

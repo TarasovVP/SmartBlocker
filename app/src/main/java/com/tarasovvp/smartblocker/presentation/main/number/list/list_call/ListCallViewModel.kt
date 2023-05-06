@@ -2,8 +2,10 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.ListCallUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -12,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListCallViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val listCallUseCase: ListCallUseCase
 ) : BaseViewModel(application) {
 
@@ -52,8 +54,11 @@ class ListCallViewModel @Inject constructor(
     fun deleteCallList(filteredCallIdList: List<Int>) {
         showProgress()
         launch {
-            listCallUseCase.deleteCallList(filteredCallIdList, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                successDeleteNumberLiveData.postValue(true)
+            listCallUseCase.deleteCallList(filteredCallIdList, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                when(operationResult) {
+                    is Result.Success -> successDeleteNumberLiveData.postValue(true)
+                    is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                }
                 hideProgress()
             }
         }

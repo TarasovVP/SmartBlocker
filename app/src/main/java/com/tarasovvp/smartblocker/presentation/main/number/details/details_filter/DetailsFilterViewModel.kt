@@ -2,9 +2,11 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_filt
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -13,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsFilterViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val detailsFilterUseCase: DetailsFilterUseCase
 ) : BaseViewModel(application) {
 
@@ -60,8 +62,11 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filter?.let {
-                detailsFilterUseCase.deleteFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                    filterActionLiveData.postValue(it)
+                detailsFilterUseCase.deleteFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                    when(operationResult) {
+                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                    }
                 }
             }
             hideProgress()
@@ -72,8 +77,11 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filter?.let {
-                detailsFilterUseCase.updateFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                    filterActionLiveData.postValue(it)
+                detailsFilterUseCase.updateFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                    when(operationResult) {
+                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                    }
                 }
             }
             hideProgress()

@@ -34,7 +34,6 @@ import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
-import com.tarasovvp.smartblocker.infrastructure.receivers.ExceptionReceiver
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity() {
 
     val mainViewModel: MainViewModel by viewModels()
 
-    private var exceptionReceiver: ExceptionReceiver? = null
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
     private var isDialog: Boolean = false
@@ -95,11 +93,6 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.getAllData()
         }
         registerReceiver(callHandleReceiver, IntentFilter(Constants.CALL_RECEIVE))
-        exceptionReceiver = ExceptionReceiver { exception ->
-            mainViewModel.exceptionLiveData.postValue(exception)
-            setProgressVisibility(false)
-        }
-        registerReceiver(exceptionReceiver, IntentFilter(Constants.EXCEPTION))
         try {
             MobileAds.initialize(this) {}
         } catch (e: Exception) {
@@ -116,7 +109,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         unregisterReceiver(callHandleReceiver)
-        unregisterReceiver(exceptionReceiver)
     }
 
     override fun onPause() {
@@ -161,11 +153,11 @@ class MainActivity : AppCompatActivity() {
             && firebaseAuth.currentUser.isNotNull()
             && savedInstanceState.isNull()
         ) {
-            if (SmartBlockerApp.instance?.isNetworkAvailable.isNotTrue()) {
-                navController?.navigate(R.id.startUnavailableNetworkDialog)
-            } else {
+            if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
                 if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()
                 getAllData()
+            } else {
+                navController?.navigate(R.id.startUnavailableNetworkDialog)
             }
         }
     }

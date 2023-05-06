@@ -2,9 +2,11 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -14,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListFilterViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val listFilterUseCase: ListFilterUseCase
 ) : BaseViewModel(application) {
 
@@ -53,8 +55,11 @@ class ListFilterViewModel @Inject constructor(
     fun deleteFilterList(filterList: List<Filter?>) {
         showProgress()
         launch {
-            listFilterUseCase.deleteFilterList(filterList, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                successDeleteFilterLiveData.postValue(true)
+            listFilterUseCase.deleteFilterList(filterList, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                when(operationResult) {
+                    is Result.Success -> successDeleteFilterLiveData.postValue(true)
+                    is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                }
             }
             hideProgress()
         }

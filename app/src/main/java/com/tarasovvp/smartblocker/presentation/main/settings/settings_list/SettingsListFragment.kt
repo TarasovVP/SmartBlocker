@@ -8,7 +8,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
@@ -35,7 +34,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
                 0,
                 SharedPrefs.appLang.orEmpty().flagDrawable(),
                 0)
-            settingsReview.isVisible = SmartBlockerApp.instance?.isLoggedInUser().isTrue()
+            settingsReview.isVisible = firebaseAuth.currentUser.isNotNull()
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener {
                     val direction = when (it.id) {

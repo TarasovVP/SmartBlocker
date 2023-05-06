@@ -2,12 +2,14 @@ package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.models.database_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.CountryCode
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.domain.models.NumberData
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.utils.extensions.isDarkMode
 import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateFilterViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val createFilterUseCase: CreateFilterUseCase
 ) : BaseViewModel(application) {
 
@@ -68,8 +70,11 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel createFilter createFilter $filter filter.country ${filter?.country}")
         launch {
             filter?.let {
-                createFilterUseCase.createFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                    filterActionLiveData.postValue(it)
+                createFilterUseCase.createFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                    when(operationResult) {
+                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                    }
                 }
             }
         }
@@ -79,8 +84,11 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel updateFilter")
         launch {
             filter?.let {
-                createFilterUseCase.updateFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                    filterActionLiveData.postValue(it)
+                createFilterUseCase.updateFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                    when(operationResult) {
+                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                    }
                 }
             }
         }
@@ -90,11 +98,13 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel deleteFilter")
         launch {
             filter?.let {
-                createFilterUseCase.deleteFilter(it, SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
-                    filterActionLiveData.postValue(it)
+                createFilterUseCase.deleteFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                    when(operationResult) {
+                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                    }
                 }
             }
         }
     }
-
 }

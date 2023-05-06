@@ -4,7 +4,6 @@ object Constants {
     //General
     const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val APP_EXIT = "appExit"
-    const val EXCEPTION = "exception"
     const val DIALOG = "dialog"
     const val IS_INSTRUMENTAL_TEST = "isInstrumentalTest"
 

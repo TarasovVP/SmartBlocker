@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -37,8 +37,8 @@ class LoginViewModel @Inject constructor(
             showProgress()
             loginUseCase.signInWithEmailAndPassword(email, password) { operationResult ->
                 when(operationResult) {
-                    is OperationResult.Success -> successSignInLiveData.postValue(Unit)
-                    is OperationResult.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                    is Result.Success -> successSignInLiveData.postValue(Unit)
+                    is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
                 hideProgress()
             }
@@ -52,8 +52,8 @@ class LoginViewModel @Inject constructor(
             showProgress()
             loginUseCase.firebaseAuthWithGoogle(idToken) { operationResult ->
                 when(operationResult) {
-                    is OperationResult.Success -> successSignInLiveData.postValue(Unit)
-                    is OperationResult.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                    is Result.Success -> successSignInLiveData.postValue(Unit)
+                    is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
                 hideProgress()
             }

@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.presentation.main
 import android.app.Application
 import com.tarasovvp.smartblocker.domain.models.entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class MainUseCaseImpl @Inject constructor(
     private val realDataBaseRepository: RealDataBaseRepository
 ): MainUseCase {
 
-    override fun getCurrentUser(result: (OperationResult<CurrentUser>) -> Unit) = realDataBaseRepository.getCurrentUser { operationResult ->
+    override fun getCurrentUser(result: (Result<CurrentUser>) -> Unit) = realDataBaseRepository.getCurrentUser { operationResult ->
         result.invoke(operationResult)
     }
 

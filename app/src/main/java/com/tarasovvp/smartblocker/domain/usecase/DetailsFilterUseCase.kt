@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.domain.usecase
 import com.tarasovvp.smartblocker.domain.models.entities.Filter
 import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.models.database_views.FilteredCallWithFilter
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface DetailsFilterUseCase {
 
@@ -12,7 +13,7 @@ interface DetailsFilterUseCase {
 
     suspend fun filteredCallsByFilter(filter: String): List<FilteredCallWithFilter>
 
-    suspend fun deleteFilter(filter: Filter,  isLoggedInUser: Boolean, result: () -> Unit)
+    suspend fun deleteFilter(filter: Filter, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 
-    suspend fun updateFilter(filter: Filter,  isLoggedInUser: Boolean, result: () -> Unit)
+    suspend fun updateFilter(filter: Filter, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 }

@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.utils.extensions
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,12 +18,10 @@ import androidx.core.text.parseAsHtml
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DRAWABLE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DRAWABLE_RES
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ENCODING
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXCEPTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MIME_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import kotlinx.coroutines.*
@@ -104,11 +101,6 @@ fun String.flagEmoji(): String {
 }
 
 fun String?.digitsTrimmed() = this?.filter { it.isDigit() || it == PLUS_CHAR }.orEmpty()
-
-fun String.sendExceptionBroadCast() {
-    val intent = Intent(EXCEPTION).putExtra(EXCEPTION, this)
-    SmartBlockerApp.instance?.baseContext?.sendBroadcast(intent)
-}
 
 fun Context.dpToPx(dp: Float): Float {
     return dp * (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)

@@ -166,8 +166,9 @@ object AppModule {
     fun provideListFilterUseCase(
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
+        firebaseAuth: FirebaseAuth
     ): ListFilterUseCase {
-        return ListFilterUseCaseImpl(filterRepository, realDataBaseRepository)
+        return ListFilterUseCaseImpl(filterRepository, realDataBaseRepository, firebaseAuth)
     }
 
     @Singleton
@@ -177,14 +178,16 @@ object AppModule {
         countryCodeRepository: CountryCodeRepository,
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        logCallRepository: LogCallRepository
+        logCallRepository: LogCallRepository,
+        firebaseAuth: FirebaseAuth
     ): CreateFilterUseCase {
         return CreateFilterUseCaseImpl(
             contactRepository,
             countryCodeRepository,
             filterRepository,
             realDataBaseRepository,
-            logCallRepository
+            logCallRepository,
+            firebaseAuth
         )
     }
 
@@ -195,14 +198,16 @@ object AppModule {
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
         logCallRepository: LogCallRepository,
-        filteredCallRepository: FilteredCallRepository
+        filteredCallRepository: FilteredCallRepository,
+        firebaseAuth: FirebaseAuth
     ): DetailsFilterUseCase {
         return DetailsFilterUseCaseImpl(
             contactRepository,
             filterRepository,
             realDataBaseRepository,
             logCallRepository,
-            filteredCallRepository
+            filteredCallRepository,
+            firebaseAuth
         )
     }
 
@@ -263,9 +268,10 @@ object AppModule {
     fun provideListCallUseCase(
         logCallRepository: LogCallRepository,
         filteredCallRepository: FilteredCallRepository,
-        realDataBaseRepository: RealDataBaseRepository
+        realDataBaseRepository: RealDataBaseRepository,
+        firebaseAuth: FirebaseAuth
     ): ListCallUseCase {
-        return ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository)
+        return ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth)
     }
 
     @Singleton

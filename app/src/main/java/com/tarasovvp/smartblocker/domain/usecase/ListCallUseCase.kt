@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.domain.usecase
 
 import com.tarasovvp.smartblocker.domain.models.entities.CallWithFilter
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface ListCallUseCase {
 
@@ -10,5 +11,5 @@ interface ListCallUseCase {
 
     suspend fun getHashMapFromCallList(callList: List<CallWithFilter>): Map<String, List<CallWithFilter>>?
 
-    suspend fun deleteCallList(filteredCallIdList: List<Int>, isLoggedInUser: Boolean, result: () -> Unit)
+    suspend fun deleteCallList(filteredCallIdList: List<Int>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 }

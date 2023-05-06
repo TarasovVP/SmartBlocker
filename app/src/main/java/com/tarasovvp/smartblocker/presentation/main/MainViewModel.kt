@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.domain.models.MainProgress
 import com.tarasovvp.smartblocker.domain.models.entities.*
-import com.tarasovvp.smartblocker.domain.sealed_classes.OperationResult
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.MainUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
@@ -35,8 +35,8 @@ class MainViewModel @Inject constructor(
             })
             mainUseCase.getCurrentUser { operationResult ->
                 when(operationResult) {
-                    is OperationResult.Success -> operationResult.data?.let { currentUserLiveData.postValue(it) }
-                    is OperationResult.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                    is Result.Success -> operationResult.data?.let { currentUserLiveData.postValue(it) }
+                    is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
             }
         }

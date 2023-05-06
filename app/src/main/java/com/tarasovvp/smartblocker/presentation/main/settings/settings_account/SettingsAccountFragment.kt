@@ -7,7 +7,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CHANGE_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CURRENT_PASSWORD
@@ -55,7 +54,7 @@ class SettingsAccountFragment :
 
     private fun initViews() {
         binding?.apply {
-            isLoggedInUser = SmartBlockerApp.instance?.isLoggedInUser()
+            isLoggedInUser = firebaseAuth.currentUser.isNotNull()
             settingsAccountName.text = firebaseAuth.currentUser?.email
             settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable( firebaseAuth.currentUser?.email.nameInitial()))
         }
