@@ -9,7 +9,10 @@ import com.tarasovvp.smartblocker.domain.models.NumberData
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -35,7 +38,20 @@ class DetailsFilterUseCaseImpl @Inject constructor(
             return numberDataList
         }
 
-    override suspend fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int, ) = contactRepository.filteredNumberDataList(filter, numberDataList, color)
+    override suspend fun filteredNumberDataList(filter: Filter?, numberDataUIModelList: ArrayList<NumberData>, color: Int, ): ArrayList<NumberData> {
+        val filteredList = arrayListOf<NumberData>()
+        val supposedFilteredList = arrayListOf<NumberData>()
+        numberDataUIModelList.forEach { numberData ->
+            numberData.highlightedSpanned = numberData.highlightedSpanned(filter, color)
+            if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR).isTrue().not()) {
+                supposedFilteredList.add(numberData)
+            } else {
+                filteredList.add(numberData)
+            }
+        }
+        filteredList.addAll(supposedFilteredList)
+        return filteredList
+    }
 
     override suspend fun filteredCallsByFilter(filter: String) = filteredCallRepository.filteredCallsByFilter(filter)
 

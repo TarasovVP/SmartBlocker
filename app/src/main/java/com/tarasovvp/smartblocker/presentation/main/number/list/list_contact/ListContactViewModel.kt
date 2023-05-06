@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.domain.models.database_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.usecase.ListContactUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,9 +23,7 @@ class ListContactViewModel @Inject constructor(
         if (refreshing.not()) showProgress()
         launch {
             val contactList = listContactUseCase.getContactsWithFilters()
-            contactList.apply {
-                contactListLiveData.postValue(this)
-            }
+            contactListLiveData.postValue(contactList)
             hideProgress()
         }
     }
@@ -39,11 +38,14 @@ class ListContactViewModel @Inject constructor(
     fun getHashMapFromContactList(contactList: List<ContactWithFilter>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
-            contactHashMapLiveData.postValue(
-                listContactUseCase.getHashMapFromContactList(
-                    contactList
-                )
-            )
+            val contactsWithFilterUIMap = contactList.groupBy {
+                if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
+            }/*.mapValues { (_, contactsWithFilterList) ->
+                contactsWithFilterList.map { contactWithFilter ->
+                    contactWithFilterMapper.mapToUIModel(contactWithFilter)
+                }
+            }*/
+            contactHashMapLiveData.postValue(contactsWithFilterUIMap)
             hideProgress()
         }
     }

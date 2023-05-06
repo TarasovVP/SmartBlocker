@@ -11,7 +11,9 @@ import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecase.CreateFilterUseCase
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -39,9 +41,22 @@ class CreateFilterUseCaseImpl @Inject constructor(
             return numberDataList
     }
 
-    override suspend fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode) = filterRepository.getFilter(filterWithCountryCode)
+    override suspend fun getFilter(filter: String) = filterRepository.getFilter(filter)
 
-    override suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int) = contactRepository.filteredNumberDataList(filterWithCountryCode?.filter, numberDataList, color)
+    override suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataUIModelList: ArrayList<NumberData>, color: Int): ArrayList<NumberData> {
+        val filteredList = arrayListOf<NumberData>()
+        val supposedFilteredList = arrayListOf<NumberData>()
+        numberDataUIModelList.forEach { numberData ->
+            numberData.highlightedSpanned = numberData.highlightedSpanned(filterWithCountryCode?.filter, color)
+            if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR).isTrue().not()) {
+                supposedFilteredList.add(numberData)
+            } else {
+                filteredList.add(numberData)
+            }
+        }
+        filteredList.addAll(supposedFilteredList)
+        return filteredList
+    }
 
     override suspend fun createFilter(filter: Filter,  isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
         if (firebaseAuth.currentUser.isNotNull()) {

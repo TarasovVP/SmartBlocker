@@ -159,7 +159,7 @@ open class CreateFilterFragment :
                 filterToInput = false
                 filterWithCountryCode = filterWithCountryCode?.apply {
                     filter?.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY).replace(Constants.SPACE, String.EMPTY)
-                    viewModel.checkFilterExist(this)
+                    viewModel.checkFilterExist(this.createFilter())
                 }
                 Timber.e( "CreateFilterFragment setFilterTextChangeListener filter?.filterAction ${filterWithCountryCode?.filter?.filterAction}")
                 filterNumberDataList()

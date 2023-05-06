@@ -9,15 +9,15 @@ import javax.inject.Inject
 class LoginUseCaseImpl @Inject constructor(private val authRepository: AuthRepository):
     LoginUseCase {
 
-    override fun sendPasswordResetEmail(email: String, result: (Result<Unit>) -> Unit) = authRepository.sendPasswordResetEmail(email) { operationResult ->
-        result.invoke(operationResult)
+    override fun sendPasswordResetEmail(email: String, result: (Result<Unit>) -> Unit) = authRepository.sendPasswordResetEmail(email) { authResult ->
+        result.invoke(authResult)
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String, result: (Result<Unit>) -> Unit) = authRepository.signInWithEmailAndPassword(email, password) { operationResult ->
-        result.invoke(operationResult)
+    override fun signInWithEmailAndPassword(email: String, password: String, result: (Result<Unit>) -> Unit) = authRepository.signInWithEmailAndPassword(email, password) { authResult ->
+        result.invoke(authResult)
     }
 
-    override fun firebaseAuthWithGoogle(idToken: String, result: (Result<Unit>) -> Unit) = authRepository.signInWithGoogle(idToken) { operationResult ->
-        result.invoke(operationResult)
+    override fun firebaseAuthWithGoogle(idToken: String, result: (Result<Unit>) -> Unit) = authRepository.signInWithGoogle(idToken) { authResult ->
+        result.invoke(authResult)
     }
 }

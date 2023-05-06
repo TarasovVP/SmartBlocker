@@ -15,28 +15,19 @@ class CountryCodeRepositoryImpl @Inject constructor(
     private val countryCodeDao: CountryCodeDao
 ) : CountryCodeRepository {
 
-    override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> =
+    override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): List<CountryCode> =
         withContext(Dispatchers.Default) {
             phoneNumberUtil.countryCodeList { size, position ->
                 result.invoke(size, position)
             }
         }
 
-    override suspend fun insertAllCountryCodes(list: List<CountryCode>) {
+    override suspend fun insertAllCountryCodes(list: List<CountryCode>) =
         countryCodeDao.insertAllCountryCode(list)
-    }
 
     override suspend fun getAllCountryCodes(): List<CountryCode> =
-        withContext(Dispatchers.Default) {
-            countryCodeDao.getAllCountryCodes()
-        }
+        countryCodeDao.getAllCountryCodes()
 
-    override suspend fun getCountryCodeWithCode(code: Int): CountryCode? {
-        return countryCodeDao.getCountryCodeWithCode(
-            String.format(
-                COUNTRY_CODE_START,
-                code.toString()
-            )
-        )
-    }
+    override suspend fun getCountryCodeWithCode(code: Int): CountryCode? =
+        countryCodeDao.getCountryCodeWithCode(String.format(COUNTRY_CODE_START, code.toString()))
 }

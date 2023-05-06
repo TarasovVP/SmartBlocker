@@ -9,12 +9,12 @@ class SettingsAccountUseCaseImpl @Inject constructor(
     private val authRepository: AuthRepository
 ): SettingsAccountUseCase {
 
-    override fun signOut(result: (Result<Unit>) -> Unit) = authRepository.signOut() { operationResult ->
-        result.invoke(operationResult)
+    override fun signOut(result: (Result<Unit>) -> Unit) = authRepository.signOut { authResult ->
+        result.invoke(authResult)
     }
 
-    override fun changePassword(currentPassword: String, newPassword: String, result: (Result<Unit>) -> Unit) = authRepository.changePassword(currentPassword, newPassword) { operationResult ->
-        result.invoke(operationResult)
+    override fun changePassword(currentPassword: String, newPassword: String, result: (Result<Unit>) -> Unit) = authRepository.changePassword(currentPassword, newPassword) { authResult ->
+        result.invoke(authResult)
     }
 
     override fun deleteUser(result: (Result<Unit>) -> Unit) = authRepository.deleteUser {

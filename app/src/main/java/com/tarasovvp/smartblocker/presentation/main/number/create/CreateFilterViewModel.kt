@@ -47,10 +47,10 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode) {
-        Timber.e("CreateFilterViewModel checkFilterExist filter?.filter ${filterWithCountryCode.filter} createFilter ${filterWithCountryCode.createFilter()}")
+    fun checkFilterExist(filter: String) {
+        Timber.e("CreateFilterViewModel checkFilterExist filter $filter")
         launch {
-            val result = createFilterUseCase.checkFilterExist(filterWithCountryCode)
+            val result = createFilterUseCase.getFilter(filter)
             existingFilterLiveData.postValue(result ?: FilterWithCountryCode(Filter(filterType = DEFAULT_FILTER)))
         }
     }

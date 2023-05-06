@@ -51,7 +51,7 @@ open class CallReceiver : BroadcastReceiver() {
         return if (number.isEmpty() && SharedPrefs.blockHidden.isTrue()) {
             Filter(filterType = BLOCKER)
         } else {
-            filterRepository.queryFilter(number)?.filter
+            filterRepository.queryFilterList(number).firstOrNull()?.filter
         }
     }
 

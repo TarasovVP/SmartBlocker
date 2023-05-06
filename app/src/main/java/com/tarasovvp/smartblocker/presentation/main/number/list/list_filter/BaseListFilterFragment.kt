@@ -138,7 +138,7 @@ open class BaseListFilterFragment :
         setFragmentResultListener(FILTER_ACTION) { _, _ ->
             val checkedFilterList = filterWithCountryCodeList?.filter { it.filter?.isCheckedForDelete.isTrue() }.orEmpty()
             val mappedFilterList = checkedFilterList.map { it.filter }
-            viewModel.deleteFilterList(mappedFilterList)
+            viewModel.deleteFilterList(mappedFilterList.filterNotNull())
         }
         setFragmentResultListener(FILTER_CONDITION_LIST) { _, bundle ->
             filterIndexes = bundle.getIntegerArrayList(FILTER_CONDITION_LIST)

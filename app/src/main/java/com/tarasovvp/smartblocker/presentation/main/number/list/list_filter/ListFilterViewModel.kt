@@ -52,7 +52,7 @@ class ListFilterViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilterList(filterList: List<Filter?>) {
+    fun deleteFilterList(filterList: List<Filter>) {
         showProgress()
         launch {
             listFilterUseCase.deleteFilterList(filterList, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->

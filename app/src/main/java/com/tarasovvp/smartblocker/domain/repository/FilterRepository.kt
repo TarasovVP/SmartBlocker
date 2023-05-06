@@ -9,21 +9,15 @@ interface FilterRepository {
 
     suspend fun allFilters(): List<Filter>
 
-    suspend fun allFilterWithCountryCode(): List<FilterWithCountryCode>
-
     suspend fun allFiltersByType(filterType: Int): List<FilterWithCountryCode>
 
-    suspend fun getFilter(filter: FilterWithCountryCode): FilterWithCountryCode?
+    suspend fun getFilter(filter: String): FilterWithCountryCode?
 
     suspend fun updateFilter(filter: Filter)
 
     suspend fun insertFilter(filter: Filter)
 
-    suspend fun deleteFilterList(filterList: List<Filter?>)
-
-    suspend fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>): List<FilterWithCountryCode>
+    suspend fun deleteFilterList(filterList: List<Filter>)
 
     suspend fun queryFilterList(number: String): List<FilterWithCountryCode>
-
-    suspend fun queryFilter(number: String): FilterWithCountryCode?
 }

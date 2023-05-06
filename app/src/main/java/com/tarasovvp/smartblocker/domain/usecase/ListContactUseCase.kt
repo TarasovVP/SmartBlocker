@@ -7,6 +7,4 @@ interface ListContactUseCase {
     suspend fun getContactsWithFilters() : List<ContactWithFilter>
 
     suspend fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>): List<ContactWithFilter>
-
-    suspend fun getHashMapFromContactList(contactList: List<ContactWithFilter>): Map<String, List<ContactWithFilter>>
 }

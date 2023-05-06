@@ -12,7 +12,7 @@ interface CreateFilterUseCase {
 
     suspend fun getNumberDataList(): ArrayList<NumberData>
 
-    suspend fun checkFilterExist(filterWithCountryCode: FilterWithCountryCode): FilterWithCountryCode?
+    suspend fun getFilter(filter: String): FilterWithCountryCode?
 
     suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int): ArrayList<NumberData>
 
