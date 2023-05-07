@@ -9,7 +9,7 @@ interface ContactRepository {
 
     suspend fun insertAllContacts(contactList: List<Contact>)
 
-    suspend fun getContactsWithFilters(): List<ContactWithFilter>
+    suspend fun allContactWithFilters(): List<ContactWithFilter>
 
-    suspend fun getContactsWithFilterByFilter(filter: String): List<ContactWithFilter>
+    suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
 }

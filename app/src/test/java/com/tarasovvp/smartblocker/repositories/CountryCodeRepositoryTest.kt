@@ -64,16 +64,16 @@ class CountryCodeRepositoryTest {
     @Test
     fun insertAllCountryCodesTest() = runBlocking {
         val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
-        coEvery { countryCodeDao.insertAllCountryCode(countryCodeList) } just Runs
+        coEvery { countryCodeDao.insertAllCountryCodes(countryCodeList) } just Runs
         countryCodeRepository.insertAllCountryCodes(countryCodeList)
-        coVerify(exactly = 1) { countryCodeDao.insertAllCountryCode(countryCodeList) }
+        coVerify(exactly = 1) { countryCodeDao.insertAllCountryCodes(countryCodeList) }
     }
 
     @Test
     fun getAllCountryCodesTest() = runBlocking {
         val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
-        coEvery { countryCodeDao.getAllCountryCodes() } returns countryCodeList
-        val result = countryCodeRepository.getAllCountryCodes()
+        coEvery { countryCodeDao.allCountryCodes() } returns countryCodeList
+        val result = countryCodeRepository.allCountryCodes()
         assertEquals(countryCodeList, result)
     }
 

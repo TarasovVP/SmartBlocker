@@ -36,8 +36,8 @@ class ListContactUseCaseTest {
     @Test
     fun getContactsWithFiltersTest() = runBlocking {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)))
-        coEvery { contactRepository.getContactsWithFilters() } returns contactList
-        val result = listContactUseCase.getContactsWithFilters()
+        coEvery { contactRepository.allContactWithFilters() } returns contactList
+        val result = listContactUseCase.allContactWithFilters()
         assertEquals(TEST_NAME, result[0].contact?.name)
     }
 

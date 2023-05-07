@@ -23,19 +23,14 @@ class ListCallUseCaseImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): ListCallUseCase {
 
-    override suspend fun getCallList(): List<CallWithFilter> {
-            val callList = logCallRepository.getAllCallWithFilter()
-            return callList.distinctBy {
-                it.call?.callId
-            }
-    }
+    override suspend fun allCallWithFilters() = logCallRepository.allCallWithFilters()
 
     override suspend fun getFilteredCallList(
         callList: List<CallWithFilter>,
         searchQuery: String,
         filterIndexes: ArrayList<Int>
-    ): List<CallWithFilter> {
-        return if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
+    ) = withContext(Dispatchers.Default) {
+        if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
                     && (callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(
                 NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
@@ -45,7 +40,7 @@ class ListCallUseCaseImpl @Inject constructor(
         }
     }
 
-    override suspend fun getHashMapFromCallList(callList: List<CallWithFilter>): Map<String, List<CallWithFilter>> =
+    override suspend fun getHashMapFromCallList(callList: List<CallWithFilter>) =
         withContext(Dispatchers.Default) {
             callList.sortedByDescending {
                 it.call?.callDate

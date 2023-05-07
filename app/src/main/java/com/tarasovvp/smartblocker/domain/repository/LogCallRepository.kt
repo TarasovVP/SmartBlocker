@@ -10,10 +10,10 @@ interface LogCallRepository {
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>)
 
-    suspend fun getAllCallWithFilter(): List<CallWithFilter>
+    suspend fun allCallWithFilters(): List<CallWithFilter>
 
-    suspend fun allCallWithFilterByFilter(filter: String): List<CallWithFilter>
+    suspend fun allCallWithFiltersByFilter(filter: String): List<CallWithFilter>
 
-    suspend fun allDistinctCallWithFilter(): List<CallWithFilter>
+    suspend fun allDistinctCallsWithFilter(): List<CallWithFilter>
 
 }

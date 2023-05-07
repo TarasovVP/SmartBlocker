@@ -5,7 +5,7 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface ListCallUseCase {
 
-    suspend fun getCallList(): List<CallWithFilter>
+    suspend fun allCallWithFilters(): List<CallWithFilter>
 
     suspend fun getFilteredCallList(callList: List<CallWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>): List<CallWithFilter>
 

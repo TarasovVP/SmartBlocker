@@ -12,9 +12,9 @@ class DetailsNumberDataUseCaseImpl @Inject constructor(
     private val filteredCallRepository: FilteredCallRepository
 ): DetailsNumberDataUseCase {
 
-    override suspend fun filterListWithNumber(number: String) = filterRepository.queryFilterList(number)
+    override suspend fun allFilterWithCountryCodesByNumber(number: String) = filterRepository.allFilterWithCountryCodesByNumber(number)
 
-    override suspend fun filteredCallsByNumber(number: String) = filteredCallRepository.filteredCallsByNumber(number)
+    override suspend fun allFilteredCallsByNumber(number: String) = filteredCallRepository.allFilteredCallsByNumber(number)
 
-    override suspend fun getCountryCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
+    override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
 }

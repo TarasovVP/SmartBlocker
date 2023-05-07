@@ -55,9 +55,9 @@ class ListCallUseCaseTest {
         }.distinctBy {
             it.call?.callId
         }
-        coEvery { logCallRepository.getAllCallWithFilter() } returns logCallList
+        coEvery { logCallRepository.allCallWithFilters() } returns logCallList
         coEvery { filteredCallRepository.allFilteredCallWithFilter() } returns filteredCallList
-        val result = listCallUseCase.getCallList()
+        val result = listCallUseCase.allCallWithFilters()
         assertEquals(commonCallList, result)
     }
 

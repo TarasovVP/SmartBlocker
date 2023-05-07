@@ -74,16 +74,16 @@ class ContactRepositoryTest {
     @Test
     fun getContactsWithFiltersTest() = runBlocking {
         val contactWithFilterList = listOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, ContactWithFilter().apply {Contact()})
-        coEvery { contactDao.getContactsWithFilters() } returns contactWithFilterList
-        val result = contactRepository.getContactsWithFilters()
+        coEvery { contactDao.allContactsWithFilters() } returns contactWithFilterList
+        val result = contactRepository.allContactWithFilters()
         assertEquals(contactWithFilterList, result)
     }
 
     @Test
     fun getContactsWithFilterByFilterTest() = runBlocking {
         val contactWithFilterList = listOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, ContactWithFilter().apply {Contact()})
-        coEvery { contactDao.getContactsWithFiltersByFilter(TEST_FILTER) } returns contactWithFilterList
-        val result = contactRepository.getContactsWithFilterByFilter(TEST_FILTER)
+        coEvery { contactDao.allContactsWithFiltersByFilter(TEST_FILTER) } returns contactWithFilterList
+        val result = contactRepository.allContactsWithFiltersByFilter(TEST_FILTER)
         assertEquals(contactWithFilterList, result)
     }
 

@@ -24,9 +24,9 @@ class ContactRepositoryImpl @Inject constructor(
     override suspend fun insertAllContacts(contactList: List<Contact>) =
         contactDao.insertAllContacts(contactList)
 
-    override suspend fun getContactsWithFilters(): List<ContactWithFilter> =
-        contactDao.getContactsWithFilters()
+    override suspend fun allContactWithFilters(): List<ContactWithFilter> =
+        contactDao.allContactsWithFilters()
 
-    override suspend fun getContactsWithFilterByFilter(filter: String) =
-        contactDao.getContactsWithFiltersByFilter(filter)
+    override suspend fun allContactsWithFiltersByFilter(filter: String) =
+        contactDao.allContactsWithFiltersByFilter(filter)
 }

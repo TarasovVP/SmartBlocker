@@ -12,10 +12,10 @@ interface ContactDao {
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM ContactWithFilter")
-    suspend fun getContactsWithFilters(): List<ContactWithFilter>
+    suspend fun allContactsWithFilters(): List<ContactWithFilter>
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM ContactWithFilter WHERE filter = :filter")
-    suspend fun getContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
+    suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
 }

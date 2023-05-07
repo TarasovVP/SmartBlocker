@@ -21,7 +21,7 @@ interface FilterDao {
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilterWithCountryCode WHERE filterType = :filterType")
-    suspend fun allFiltersByType(filterType: Int): List<FilterWithCountryCode>
+    suspend fun allFilterWithCountryCodesByType(filterType: Int): List<FilterWithCountryCode>
 
     @Transaction
     @Query("SELECT * FROM filters WHERE filter = :filter")
@@ -30,7 +30,7 @@ interface FilterDao {
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM FilterWithCountryCode WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2) ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)")
-    suspend fun queryFullMatchFilterList(number: String): List<FilterWithCountryCode>
+    suspend fun allFilterWithCountryCodesByNumber(number: String): List<FilterWithCountryCode>
 
     @Delete
     fun deleteFilters(filterList: List<Filter>)

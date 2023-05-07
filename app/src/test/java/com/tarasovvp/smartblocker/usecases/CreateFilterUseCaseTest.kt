@@ -68,8 +68,8 @@ class CreateFilterUseCaseTest {
         }.sortedBy {
             if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
         }
-        coEvery { logCallRepository.allDistinctCallWithFilter() } returns callList
-        coEvery { contactRepository.getContactsWithFilters() } returns contactList
+        coEvery { logCallRepository.allDistinctCallsWithFilter() } returns callList
+        coEvery { contactRepository.allContactWithFilters() } returns contactList
         val result = createFilterUseCase.getNumberDataList()
         assertEquals(numberDataList, result)
     }

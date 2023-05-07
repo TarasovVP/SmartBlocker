@@ -25,9 +25,9 @@ class DetailsFilterUseCaseImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): DetailsFilterUseCase {
 
-    override suspend fun getQueryContactCallList(filter: Filter): ArrayList<NumberData> {
-            val calls =  logCallRepository.allCallWithFilterByFilter(filter.filter)
-            val contacts =  contactRepository.getContactsWithFilterByFilter(filter.filter)
+    override suspend fun numberDataListByFilter(filter: Filter): ArrayList<NumberData> {
+            val calls =  logCallRepository.allCallWithFiltersByFilter(filter.filter)
+            val contacts =  contactRepository.allContactsWithFiltersByFilter(filter.filter)
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(calls)
                 addAll(contacts)
@@ -53,7 +53,7 @@ class DetailsFilterUseCaseImpl @Inject constructor(
         return filteredList
     }
 
-    override suspend fun filteredCallsByFilter(filter: String) = filteredCallRepository.filteredCallsByFilter(filter)
+    override suspend fun allFilteredCallsByFilter(filter: String) = filteredCallRepository.allFilteredCallsByFilter(filter)
 
     override suspend fun deleteFilter(filter: Filter, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
         if (firebaseAuth.currentUser.isNotNull()) {

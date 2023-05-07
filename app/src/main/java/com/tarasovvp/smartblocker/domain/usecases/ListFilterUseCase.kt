@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface ListFilterUseCase {
 
-    suspend fun getFilterList(isBlackList: Boolean): List<FilterWithCountryCode>?
+    suspend fun allFilterWithCountryCodesByType(isBlockerList: Boolean): List<FilterWithCountryCode>?
 
     suspend fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>): List<FilterWithCountryCode>
 

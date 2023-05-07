@@ -14,7 +14,9 @@ import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ListFilterUseCaseImpl @Inject constructor(
@@ -23,14 +25,14 @@ class ListFilterUseCaseImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): ListFilterUseCase {
 
-    override suspend fun getFilterList(isBlackList: Boolean) = filterRepository.allFiltersByType(if (isBlackList) BLOCKER else PERMISSION)
+    override suspend fun allFilterWithCountryCodesByType(isBlockerList: Boolean) = filterRepository.allFilterWithCountryCodesByType(if (isBlockerList) BLOCKER else PERMISSION)
 
     override suspend fun getFilteredFilterList(
         filterList: List<FilterWithCountryCode>,
         searchQuery: String,
         filterIndexes: ArrayList<Int>
-    ): List<FilterWithCountryCode> {
-        return if (searchQuery.isBlank() && filterIndexes.isEmpty()) filterList else filterList.filter { filterWithCountryCode ->
+    ) = withContext(Dispatchers.Default) {
+        if (searchQuery.isBlank() && filterIndexes.isEmpty()) filterList else filterList.filter { filterWithCountryCode ->
             (filterWithCountryCode.filter?.filter isContaining  searchQuery)
                     && (filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) && filterWithCountryCode.filter?.isTypeFull().isTrue()
                     || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) && filterWithCountryCode.filter?.isTypeStart().isTrue()

@@ -30,7 +30,7 @@ class ListContactViewModelTest: BaseViewModelTest<ListContactViewModel>() {
     @Test
     fun getContactsWithFiltersTest() = runTest {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)))
-        coEvery { useCase.getContactsWithFilters() } returns contactList
+        coEvery { useCase.allContactWithFilters() } returns contactList
         viewModel.getContactsWithFilters(false)
         advanceUntilIdle()
         val result = viewModel.contactListLiveData.getOrAwaitValue()

@@ -25,7 +25,7 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
     @Test
     fun getFilterListTest() = runTest {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { useCase.getFilterList(true) } returns filterList
+        coEvery { useCase.allFilterWithCountryCodesByType(true) } returns filterList
         viewModel.getFilterList(isBlackList = true, refreshing = false)
         advanceUntilIdle()
         val result = viewModel.filterListLiveData.getOrAwaitValue()

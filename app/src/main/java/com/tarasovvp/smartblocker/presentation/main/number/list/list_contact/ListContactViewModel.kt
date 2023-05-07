@@ -22,7 +22,7 @@ class ListContactViewModel @Inject constructor(
     fun getContactsWithFilters(refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
-            val contactList = listContactUseCase.getContactsWithFilters()
+            val contactList = listContactUseCase.allContactWithFilters()
             contactListLiveData.postValue(contactList)
             hideProgress()
         }
@@ -30,7 +30,8 @@ class ListContactViewModel @Inject constructor(
 
     fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
-            filteredContactListLiveData.postValue(listContactUseCase.getFilteredContactList(contactList, searchQuery, filterIndexes))
+            val filteredContactList = listContactUseCase.getFilteredContactList(contactList, searchQuery, filterIndexes)
+            filteredContactListLiveData.postValue(filteredContactList)
             hideProgress()
         }
     }
@@ -38,14 +39,14 @@ class ListContactViewModel @Inject constructor(
     fun getHashMapFromContactList(contactList: List<ContactWithFilter>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
-            val contactsWithFilterUIMap = contactList.groupBy {
+            val contactsWithFilters = contactList.groupBy {
                 if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
             }/*.mapValues { (_, contactsWithFilterList) ->
                 contactsWithFilterList.map { contactWithFilter ->
                     contactWithFilterMapper.mapToUIModel(contactWithFilter)
                 }
             }*/
-            contactHashMapLiveData.postValue(contactsWithFilterUIMap)
+            contactHashMapLiveData.postValue(contactsWithFilters)
             hideProgress()
         }
     }

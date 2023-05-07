@@ -7,11 +7,11 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface DetailsFilterUseCase {
 
-    suspend fun getQueryContactCallList(filter: Filter): ArrayList<NumberData>
+    suspend fun numberDataListByFilter(filter: Filter): ArrayList<NumberData>
 
     suspend fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) : ArrayList<NumberData>
 
-    suspend fun filteredCallsByFilter(filter: String): List<CallWithFilter>
+    suspend fun allFilteredCallsByFilter(filter: String): List<CallWithFilter>
 
     suspend fun deleteFilter(filter: Filter, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 

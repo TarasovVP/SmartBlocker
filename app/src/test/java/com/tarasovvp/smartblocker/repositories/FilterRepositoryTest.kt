@@ -58,8 +58,8 @@ class FilterRepositoryTest {
     @Test
     fun allFiltersByTypeTest() = runBlocking {
         val filterWithCountryCodeList = listOf(FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithCountryCode().apply { filter = Filter()})
-        coEvery { filterDao.allFiltersByType(BLOCKER) } returns filterWithCountryCodeList
-        val result = filterRepository.allFiltersByType(BLOCKER)
+        coEvery { filterDao.allFilterWithCountryCodesByType(BLOCKER) } returns filterWithCountryCodeList
+        val result = filterRepository.allFilterWithCountryCodesByType(BLOCKER)
         assertEquals(filterWithCountryCodeList, result)
     }
 
@@ -98,15 +98,15 @@ class FilterRepositoryTest {
     @Test
     fun queryFilterListTest() = runBlocking {
         val filterWithCountryCodeList = listOf(FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithCountryCode().apply { filter = Filter()})
-        coEvery { filterDao.queryFullMatchFilterList(TEST_NUMBER) } returns filterWithCountryCodeList
-        val result = filterRepository.queryFilterList(TEST_NUMBER)
+        coEvery { filterDao.allFilterWithCountryCodesByNumber(TEST_NUMBER) } returns filterWithCountryCodeList
+        val result = filterRepository.allFilterWithCountryCodesByNumber(TEST_NUMBER)
         assertEquals(filterWithCountryCodeList, result)
     }
 
     @Test
     fun queryFilterTest() = runBlocking {
         val filterWithCountryCode = FilterWithCountryCode().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)}
-        coEvery { filterDao.queryFullMatchFilterList(TEST_NUMBER) } returns listOf(filterWithCountryCode)
+        coEvery { filterDao.allFilterWithCountryCodesByNumber(TEST_NUMBER) } returns listOf(filterWithCountryCode)
         val result = filterRepository.queryFilter(TEST_NUMBER)
         assertEquals(filterWithCountryCode, result)
     }

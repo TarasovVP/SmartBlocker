@@ -9,7 +9,7 @@ interface FilterRepository {
 
     suspend fun allFilters(): List<Filter>
 
-    suspend fun allFiltersByType(filterType: Int): List<FilterWithCountryCode>
+    suspend fun allFilterWithCountryCodesByType(filterType: Int): List<FilterWithCountryCode>
 
     suspend fun getFilter(filter: String): FilterWithCountryCode?
 
@@ -19,5 +19,5 @@ interface FilterRepository {
 
     suspend fun deleteFilterList(filterList: List<Filter>)
 
-    suspend fun queryFilterList(number: String): List<FilterWithCountryCode>
+    suspend fun allFilterWithCountryCodesByNumber(number: String): List<FilterWithCountryCode>
 }

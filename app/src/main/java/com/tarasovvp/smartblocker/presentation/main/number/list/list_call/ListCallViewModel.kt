@@ -26,7 +26,7 @@ class ListCallViewModel @Inject constructor(
     fun getCallList(refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
-            val callList = listCallUseCase.getCallList()
+            val callList = listCallUseCase.allCallWithFilters()
             callListLiveData.postValue(callList)
             hideProgress()
         }
@@ -34,7 +34,8 @@ class ListCallViewModel @Inject constructor(
 
     fun getFilteredCallList(callList: List<CallWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
-            filteredCallListLiveData.postValue(listCallUseCase.getFilteredCallList(callList, searchQuery, filterIndexes))
+            val filteredCallList = listCallUseCase.getFilteredCallList(callList, searchQuery, filterIndexes)
+            filteredCallListLiveData.postValue(filteredCallList)
             hideProgress()
         }
     }

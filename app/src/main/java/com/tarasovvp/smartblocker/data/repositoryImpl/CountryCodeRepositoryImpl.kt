@@ -23,10 +23,10 @@ class CountryCodeRepositoryImpl @Inject constructor(
         }
 
     override suspend fun insertAllCountryCodes(list: List<CountryCode>) =
-        countryCodeDao.insertAllCountryCode(list)
+        countryCodeDao.insertAllCountryCodes(list)
 
-    override suspend fun getAllCountryCodes(): List<CountryCode> =
-        countryCodeDao.getAllCountryCodes()
+    override suspend fun allCountryCodes(): List<CountryCode> =
+        countryCodeDao.allCountryCodes()
 
     override suspend fun getCountryCodeWithCode(code: Int): CountryCode? =
         countryCodeDao.getCountryCodeWithCode(String.format(COUNTRY_CODE_START, code.toString()))

@@ -22,39 +22,28 @@ class DetailsFilterViewModel @Inject constructor(
     val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filteredCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
-
     val filterActionLiveData = MutableLiveData<Filter>()
 
     fun getQueryContactCallList(filter: Filter) {
         showProgress()
         launch {
-            val numberDataList = detailsFilterUseCase.getQueryContactCallList(filter)
+            val numberDataList = detailsFilterUseCase.numberDataListByFilter(filter)
             numberDataListLiveData.postValue(numberDataList)
         }
     }
 
-    fun filteredNumberDataList(
-        filter: Filter?,
-        numberDataList: ArrayList<NumberData>,
-        color: Int,
-    ) {
+    fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) {
         launch {
-            filteredNumberDataListLiveData.postValue(
-                detailsFilterUseCase.filteredNumberDataList(
-                    filter,
-                    numberDataList, color
-                )
-            )
+            val filteredNumberDataList = detailsFilterUseCase.filteredNumberDataList(filter, numberDataList, color)
+            filteredNumberDataListLiveData.postValue(filteredNumberDataList)
             hideProgress()
         }
     }
 
     fun filteredCallsByFilter(filter: String) {
         launch {
-            val filteredCallList = detailsFilterUseCase.filteredCallsByFilter(filter)
-            filteredCallList.let { filteredCalls ->
-                filteredCallListLiveData.postValue(ArrayList(filteredCalls))
-            }
+            val filteredCallList = detailsFilterUseCase.allFilteredCallsByFilter(filter)
+            filteredCallListLiveData.postValue(ArrayList(filteredCallList))
         }
     }
 

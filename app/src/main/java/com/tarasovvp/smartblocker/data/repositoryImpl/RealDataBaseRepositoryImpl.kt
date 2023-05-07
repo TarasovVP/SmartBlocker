@@ -14,7 +14,6 @@ import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import javax.inject.Inject
 
 class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase, private val firebaseAuth: FirebaseAuth) :

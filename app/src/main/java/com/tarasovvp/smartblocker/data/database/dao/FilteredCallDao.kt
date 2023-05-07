@@ -16,17 +16,17 @@ interface FilteredCallDao {
     suspend fun allFilteredCalls(): List<FilteredCall>
 
     @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1")
-    suspend fun allFilteredCallWithFilter(): List<CallWithFilter>
+    suspend fun allFilteredCallsWithFilter(): List<CallWithFilter>
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1 AND filter = :filter ORDER BY callDate DESC")
-    suspend fun filteredCallsByFilter(filter: String): List<CallWithFilter>
+    suspend fun allFilteredCallsByFilter(filter: String): List<CallWithFilter>
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1 AND number = :number ORDER BY callDate DESC")
-    suspend fun filteredCallsByNumber(number: String): List<CallWithFilter>
+    suspend fun allFilteredCallsByNumber(number: String): List<CallWithFilter>
 
     @Query("delete from filtered_calls where callId in (:callIdList)")
     fun deleteFilteredCalls(callIdList: List<Int>)

@@ -16,8 +16,8 @@ class FilterRepositoryImpl @Inject constructor(
     override suspend fun allFilters(): List<Filter> =
         filterDao.allFilters()
 
-    override suspend fun allFiltersByType(filterType: Int): List<FilterWithCountryCode> =
-        filterDao.allFiltersByType(filterType)
+    override suspend fun allFilterWithCountryCodesByType(filterType: Int): List<FilterWithCountryCode> =
+        filterDao.allFilterWithCountryCodesByType(filterType)
 
     override suspend fun getFilter(filter: String): FilterWithCountryCode? =
         filterDao.getFilter(filter)
@@ -31,6 +31,6 @@ class FilterRepositoryImpl @Inject constructor(
     override suspend fun deleteFilterList(filterList: List<Filter>) =
         filterDao.deleteFilters(filterList)
 
-    override suspend fun queryFilterList(number: String): List<FilterWithCountryCode> =
-        filterDao.queryFullMatchFilterList(number)
+    override suspend fun allFilterWithCountryCodesByNumber(number: String): List<FilterWithCountryCode> =
+        filterDao.allFilterWithCountryCodesByNumber(number)
 }

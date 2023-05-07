@@ -22,7 +22,7 @@ class DetailsNumberDataViewModel @Inject constructor(
     fun filterListWithNumber(number: String) {
         showProgress()
         launch {
-            val filterList = detailsNumberDataUseCase.filterListWithNumber(number)
+            val filterList = detailsNumberDataUseCase.allFilterWithCountryCodesByNumber(number)
             filterList.let {
                 filterListLiveData.postValue(ArrayList(it))
             }
@@ -31,10 +31,8 @@ class DetailsNumberDataViewModel @Inject constructor(
 
     fun filteredCallsByNumber(number: String) {
         launch {
-            val filteredCallList = detailsNumberDataUseCase.filteredCallsByNumber(number)
-            filteredCallList.let { filteredCalls ->
-                filteredCallListLiveData.postValue(ArrayList(filteredCalls))
-            }
+            val filteredCallList = detailsNumberDataUseCase.allFilteredCallsByNumber(number)
+            filteredCallListLiveData.postValue(ArrayList(filteredCallList))
             hideProgress()
         }
     }
@@ -42,7 +40,7 @@ class DetailsNumberDataViewModel @Inject constructor(
     fun getCountryCode(code: Int?) {
         launch {
             val countryCode =
-                code?.let { detailsNumberDataUseCase.getCountryCode(it) } ?: CountryCode()
+                code?.let { detailsNumberDataUseCase.getCountryCodeWithCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(countryCode)
         }
     }

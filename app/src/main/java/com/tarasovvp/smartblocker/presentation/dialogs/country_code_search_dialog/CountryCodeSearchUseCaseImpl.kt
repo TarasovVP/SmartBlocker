@@ -8,5 +8,5 @@ import javax.inject.Inject
 class CountryCodeSearchUseCaseImpl @Inject constructor(private val countryCodeRepository: CountryCodeRepository):
     CountryCodeSearchUseCase {
 
-    override suspend fun getCountryCodeList(): List<CountryCode> = countryCodeRepository.getAllCountryCodes()
+    override suspend fun getCountryCodeList(): List<CountryCode> = countryCodeRepository.allCountryCodes()
 }

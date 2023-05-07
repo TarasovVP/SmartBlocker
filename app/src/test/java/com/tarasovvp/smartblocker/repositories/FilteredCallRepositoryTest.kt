@@ -79,7 +79,7 @@ class FilteredCallRepositoryTest {
     @Test
     fun allFilteredCallWithFilterTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
-        coEvery { filteredCallDao.allFilteredCallWithFilter() } returns filteredCallList
+        coEvery { filteredCallDao.allFilteredCallsWithFilter() } returns filteredCallList
         val result = filteredCallRepository.allFilteredCallWithFilter()
         assertEquals(filteredCallList, result)
     }
@@ -87,16 +87,16 @@ class FilteredCallRepositoryTest {
     @Test
     fun filteredCallsByFilterTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
-        coEvery { filteredCallDao.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
-        val result = filteredCallRepository.filteredCallsByFilter(TEST_FILTER)
+        coEvery { filteredCallDao.allFilteredCallsByFilter(TEST_FILTER) } returns filteredCallList
+        val result = filteredCallRepository.allFilteredCallsByFilter(TEST_FILTER)
         assertEquals(filteredCallList, result)
     }
 
     @Test
     fun filteredCallsByNumberTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
-        coEvery { filteredCallDao.filteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
-        val result = filteredCallRepository.filteredCallsByNumber(TEST_NUMBER)
+        coEvery { filteredCallDao.allFilteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
+        val result = filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER)
         assertEquals(filteredCallList, result)
     }
 

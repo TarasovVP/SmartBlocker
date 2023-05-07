@@ -29,8 +29,8 @@ class CreateFilterUseCaseImpl @Inject constructor(
     override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
 
     override suspend fun getNumberDataList(): ArrayList<NumberData> {
-            val contacts =  contactRepository.getContactsWithFilters()
-            val calls =  logCallRepository.allDistinctCallWithFilter()
+            val contacts =  contactRepository.allContactWithFilters()
+            val calls =  logCallRepository.allDistinctCallsWithFilter()
             val numberDataList = ArrayList<NumberData>().apply {
                 addAll(contacts)
                 addAll(calls.filter { it.call?.number.isNullOrEmpty().not() })

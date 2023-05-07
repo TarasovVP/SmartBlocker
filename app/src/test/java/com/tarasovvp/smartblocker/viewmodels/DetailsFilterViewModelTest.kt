@@ -28,7 +28,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
     fun getQueryContactCallListTest() = runTest {
         val filter = Filter(filter = TEST_FILTER)
         val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
-        coEvery { useCase.getQueryContactCallList(filter) } returns numberDataList
+        coEvery { useCase.numberDataListByFilter(filter) } returns numberDataList
         viewModel.getQueryContactCallList(filter)
         advanceUntilIdle()
         val result = viewModel.numberDataListLiveData.getOrAwaitValue()
@@ -49,7 +49,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
     @Test
     fun filteredCallsByFilterTest() = runTest {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
-        coEvery { useCase.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
+        coEvery { useCase.allFilteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         viewModel.filteredCallsByFilter(TEST_FILTER)
         advanceUntilIdle()
         val result = viewModel.filteredCallListLiveData.getOrAwaitValue()

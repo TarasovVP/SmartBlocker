@@ -75,24 +75,24 @@ class LogCallRepositoryTest {
     @Test
     fun getAllLogCallWithFilterTest() = runBlocking {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1) }, LogCallWithFilter().apply { call = LogCall(callId = 2) })
-        coEvery { logCallDao.allCallWithFilter() } returns logCallList
-        val result = logCallRepository.getAllCallWithFilter()
+        coEvery { logCallDao.allCallWithFilters() } returns logCallList
+        val result = logCallRepository.allCallWithFilters()
         assertEquals(logCallList, result)
     }
 
     @Test
     fun allCallNumberWithFilterTest() = runBlocking {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        coEvery { logCallDao.allDistinctCallWithFilter() } returns logCallList
-        val result = logCallRepository.allDistinctCallWithFilter()
+        coEvery { logCallDao.allDistinctCallsWithFilter() } returns logCallList
+        val result = logCallRepository.allDistinctCallsWithFilter()
         assertEquals(logCallList.distinctBy { it.call?.number }, result)
     }
 
     @Test
     fun getLogCallWithFilterByFilterTest() = runBlocking {
         val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        coEvery { logCallDao.allCallWithFilterByFilter(TEST_FILTER) } returns logCallList
-        val result = logCallRepository.allCallWithFilterByFilter(TEST_FILTER)
+        coEvery { logCallDao.allCallWithFiltersByFilter(TEST_FILTER) } returns logCallList
+        val result = logCallRepository.allCallWithFiltersByFilter(TEST_FILTER)
         assertEquals(logCallList.distinctBy { it.call?.number }, result)
     }
 

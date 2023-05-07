@@ -38,8 +38,8 @@ class ListFilterUseCaseTest {
     @Test
     fun getFilterListTest() = runBlocking {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { filterRepository.allFiltersByType(BLOCKER) } returns filterList
-        val result = listFilterUseCase.getFilterList(isBlackList = true)
+        coEvery { filterRepository.allFilterWithCountryCodesByType(BLOCKER) } returns filterList
+        val result = listFilterUseCase.allFilterWithCountryCodesByType(isBlackList = true)
         assertEquals(TEST_FILTER, result?.get(0)?.filter?.filter)
     }
 

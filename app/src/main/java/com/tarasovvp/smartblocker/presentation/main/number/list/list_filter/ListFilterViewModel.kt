@@ -29,7 +29,7 @@ class ListFilterViewModel @Inject constructor(
         if (refreshing.not()) showProgress()
         launch {
             val filterArrayList =
-                listFilterUseCase.getFilterList(isBlackList).orEmpty()
+                listFilterUseCase.allFilterWithCountryCodesByType(isBlackList).orEmpty()
             filterListLiveData.postValue(ArrayList(filterArrayList))
             Timber.e("ListFilterViewModel getFilterList $filterArrayList")
             hideProgress()
@@ -38,7 +38,8 @@ class ListFilterViewModel @Inject constructor(
 
     fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
-            filteredFilterListLiveData.postValue(listFilterUseCase.getFilteredFilterList(filterList, searchQuery, filterIndexes))
+            val filteredFilterList = listFilterUseCase.getFilteredFilterList(filterList, searchQuery, filterIndexes)
+            filteredFilterListLiveData.postValue(filteredFilterList)
         }
     }
 

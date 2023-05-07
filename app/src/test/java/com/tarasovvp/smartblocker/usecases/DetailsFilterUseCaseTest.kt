@@ -57,9 +57,9 @@ class DetailsFilterUseCaseTest {
         }.sortedBy {
             if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
         }
-        coEvery { logCallRepository.allCallWithFilterByFilter(filter.filter) } returns callList
-        coEvery { contactRepository.getContactsWithFilterByFilter(filter.filter) } returns contactList
-        val result = detailsFilterUseCase.getQueryContactCallList(filter)
+        coEvery { logCallRepository.allCallWithFiltersByFilter(filter.filter) } returns callList
+        coEvery { contactRepository.allContactsWithFiltersByFilter(filter.filter) } returns contactList
+        val result = detailsFilterUseCase.numberDataListByFilter(filter)
         assertEquals(numberDataList, result)
     }
 
@@ -75,8 +75,8 @@ class DetailsFilterUseCaseTest {
     @Test
     fun filteredCallsByFilterTest() = runBlocking {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
-        coEvery { filteredCallRepository.filteredCallsByFilter(TEST_FILTER) } returns filteredCallList
-        val result = detailsFilterUseCase.filteredCallsByFilter(TEST_FILTER)
+        coEvery { filteredCallRepository.allFilteredCallsByFilter(TEST_FILTER) } returns filteredCallList
+        val result = detailsFilterUseCase.allFilteredCallsByFilter(TEST_FILTER)
         assertEquals(TEST_NUMBER, result[0].call?.number)
     }
 

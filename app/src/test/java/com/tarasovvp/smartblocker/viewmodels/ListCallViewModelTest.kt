@@ -31,7 +31,7 @@ class ListCallViewModelTest: BaseViewModelTest<ListCallViewModel>() {
     @Test
     fun getCallListTest() = runTest {
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)))
-        coEvery { useCase.getCallList() } returns callList
+        coEvery { useCase.allCallWithFilters() } returns callList
         viewModel.getCallList(false)
         advanceUntilIdle()
         val result = viewModel.callListLiveData.getOrAwaitValue()

@@ -43,8 +43,8 @@ class DetailsNumberDataUseCaseTest {
     @Test
     fun filterListWithNumberTest() = runBlocking {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { filterRepository.queryFilterList(TEST_NUMBER) } returns filterList
-        val result = detailsNumberDataUseCase.filterListWithNumber(TEST_NUMBER)
+        coEvery { filterRepository.allFilterWithCountryCodesByNumber(TEST_NUMBER) } returns filterList
+        val result = detailsNumberDataUseCase.allFilterWithCountryCodesByNumber(TEST_NUMBER)
         assertEquals(UnitTestUtils.TEST_FILTER, (result[0] as FilterWithCountryCode).filter?.filter)
     }
 
@@ -53,8 +53,8 @@ class DetailsNumberDataUseCaseTest {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number =
             TEST_NUMBER
         } })
-        coEvery { filteredCallRepository.filteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
-        val result = detailsNumberDataUseCase.filteredCallsByNumber(TEST_NUMBER)
+        coEvery { filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
+        val result = detailsNumberDataUseCase.allFilteredCallsByNumber(TEST_NUMBER)
         assertEquals(TEST_NUMBER, (result[0] as FilteredCallWithFilter).call?.number)
     }
 
@@ -63,7 +63,7 @@ class DetailsNumberDataUseCaseTest {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         coEvery { countryCodeRepository.getCountryCodeWithCode(countryCode) } returns expectedCountryCode
-        val result = detailsNumberDataUseCase.getCountryCode(countryCode)
+        val result = detailsNumberDataUseCase.getCountryCodeWithCode(countryCode)
         assertEquals(TEST_COUNTRY, result?.country)
     }
 }

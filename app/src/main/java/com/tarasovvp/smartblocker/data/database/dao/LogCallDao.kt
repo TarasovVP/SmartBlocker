@@ -11,16 +11,16 @@ interface LogCallDao {
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM callWithFilter")
-    suspend fun allCallWithFilter(): List<CallWithFilter>
+    @Query("SELECT DISTINCT callId, * FROM callWithFilter WHERE isFilteredCall = 1 OR callId NOT IN (SELECT callId FROM callWithFilter WHERE isFilteredCall = 1)")
+    suspend fun allCallWithFilters(): List<CallWithFilter>
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT DISTINCT * FROM callWithFilter WHERE type != '2' GROUP BY number")
-    suspend fun allDistinctCallWithFilter(): List<CallWithFilter>
+    suspend fun allDistinctCallsWithFilter(): List<CallWithFilter>
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT DISTINCT * FROM callWithFilter WHERE filter = :filter GROUP BY number")
-    suspend fun allCallWithFilterByFilter(filter: String): List<CallWithFilter>
+    suspend fun allCallWithFiltersByFilter(filter: String): List<CallWithFilter>
 }

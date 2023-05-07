@@ -30,7 +30,7 @@ class CountryCodeSearchUseCaseTest {
     @Test
     fun getCountryCodeList() = runBlocking{
         val countryCodeList = listOf(CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY), CountryCode(countryCode = "+123", country = "AI"))
-        coEvery { countryCodeRepository.getAllCountryCodes() } returns countryCodeList
+        coEvery { countryCodeRepository.allCountryCodes() } returns countryCodeList
         val result = countryCodeSearchUseCase.getCountryCodeList()
         assertEquals(TEST_COUNTRY, result[0].country)
     }

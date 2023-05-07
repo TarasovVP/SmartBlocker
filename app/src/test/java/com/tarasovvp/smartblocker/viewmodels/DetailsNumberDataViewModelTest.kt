@@ -29,7 +29,7 @@ class DetailsNumberDataViewModelTest: BaseViewModelTest<DetailsNumberDataViewMod
     @Test
     fun filterListWithNumberTest() = runTest {
         val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { useCase.filterListWithNumber(TEST_NUMBER) } returns filterList
+        coEvery { useCase.allFilterWithCountryCodesByNumber(TEST_NUMBER) } returns filterList
         viewModel.filterListWithNumber(TEST_NUMBER)
         advanceUntilIdle()
         val result = viewModel.filterListLiveData.getOrAwaitValue()
@@ -39,7 +39,7 @@ class DetailsNumberDataViewModelTest: BaseViewModelTest<DetailsNumberDataViewMod
     @Test
     fun filteredCallsByNumberTest() = runTest {
         val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
-        coEvery { useCase.filteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
+        coEvery { useCase.allFilteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
         viewModel.filteredCallsByNumber(TEST_NUMBER)
         advanceUntilIdle()
         val result = viewModel.filteredCallListLiveData.getOrAwaitValue()
@@ -50,7 +50,7 @@ class DetailsNumberDataViewModelTest: BaseViewModelTest<DetailsNumberDataViewMod
     fun getCountryCodeTest() = runTest {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        coEvery { useCase.getCountryCode(countryCode) } returns expectedCountryCode
+        coEvery { useCase.getCountryCodeWithCode(countryCode) } returns expectedCountryCode
         viewModel.getCountryCode(countryCode)
         advanceUntilIdle()
         val result = viewModel.countryCodeLiveData.getOrAwaitValue()

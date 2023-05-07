@@ -40,7 +40,9 @@ open class CallReceiver : BroadcastReceiver() {
                     breakCall(context)
                 } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                     delay(SECOND)
-                    context.createFilteredCall(number, filter)?.let { filteredCallRepository.insertFilteredCall(it) }
+                    val test = context.createFilteredCall(number, filter)
+                    test?.
+                    let { filteredCallRepository.insertFilteredCall(it) }
                     context.sendBroadcast(Intent(CALL_RECEIVE))
                 }
             }
@@ -51,7 +53,7 @@ open class CallReceiver : BroadcastReceiver() {
         return if (number.isEmpty() && SharedPrefs.blockHidden.isTrue()) {
             Filter(filterType = BLOCKER)
         } else {
-            filterRepository.queryFilterList(number).firstOrNull()?.filter
+            filterRepository.allFilterWithCountryCodesByNumber(number).firstOrNull()?.filter
         }
     }
 
