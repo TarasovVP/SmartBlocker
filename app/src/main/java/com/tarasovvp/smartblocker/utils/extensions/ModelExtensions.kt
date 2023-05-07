@@ -14,8 +14,6 @@ import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.perf.metrics.AddTrace
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.*
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
@@ -29,15 +27,16 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ASC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_ID
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.utils.PhoneNumber
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
 
-fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
+fun Context.systemContactList(phoneNumber: PhoneNumber, result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Contacts.DISPLAY_NAME,
@@ -59,14 +58,15 @@ fun Context.systemContactList(result: (Int, Int) -> Unit): ArrayList<Contact> {
     val contactList = arrayListOf<Contact>()
     cursor?.use { contactCursor ->
         while (contactCursor.moveToNext()) {
-            contactList.add(
-                Contact(
-                    id = contactCursor.getString(0),
-                    name = contactCursor.getString(1),
-                    photoUrl = contactCursor.getString(2),
-                    number = contactCursor.getString(3),
-                )
-            )
+            val contact = Contact(
+                id = contactCursor.getString(0),
+                name = contactCursor.getString(1),
+                photoUrl = contactCursor.getString(2),
+                number = contactCursor.getString(3),
+            ).apply {
+                phoneNumberValue = phoneNumber.phoneNumberValue(number, SharedPrefs.countryCode?.country.orEmpty())
+                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, SharedPrefs.countryCode?.country.orEmpty()) }
+            contactList.add(contact)
             result.invoke(cursor.count, contactList.size)
         }
     }
@@ -107,12 +107,14 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     return logCall
 }
 
-fun Context.systemLogCallList(result: (Int, Int) -> Unit): List<LogCall> {
+fun Context.systemLogCallList(phoneNumber: PhoneNumber, result: (Int, Int) -> Unit): List<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
-            logCallList.add(logCall)
+            logCallList.add(logCall.apply {
+                phoneNumberValue = phoneNumber.phoneNumberValue(number, SharedPrefs.countryCode?.country.orEmpty())
+                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, SharedPrefs.countryCode?.country.orEmpty()) })
             result.invoke(callLogCursor.count, logCallList.size)
         }
     }
@@ -134,6 +136,8 @@ fun Context.createFilteredCall(
                     this.filteredNumber = filter.filter
                     this.conditionType = filter.conditionType
                     this.isFilteredCall = true
+                    this.phoneNumberValue = number
+                    this.isPhoneNumberValid = true
                 }
                 if (filter.isBlocker()) {
                     try {
@@ -212,52 +216,6 @@ fun Context.getUserCountry(): String? {
     return null
 }
 
-fun PhoneNumberUtil.countryCodeList(result: (Int, Int) -> Unit): ArrayList<CountryCode> {
-    val countryCodeMap = arrayListOf<CountryCode>()
-    supportedRegions.sorted().forEachIndexed { index, region ->
-        val countryCode =
-            String.format(COUNTRY_CODE_START, getCountryCodeForRegion(region).toString())
-        val numberFormat = try {
-            format(getExampleNumberForType(region, PhoneNumberUtil.PhoneNumberType.MOBILE),
-                PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replace("$countryCode ", String.EMPTY)
-        } catch (e: Exception) {
-            String.EMPTY
-        }
-        countryCodeMap.add(CountryCode(region, countryCode, numberFormat))
-        result.invoke(supportedRegions.size, index)
-    }
-    return countryCodeMap
-}
-
-fun String?.getPhoneNumber(country: String): Phonenumber.PhoneNumber? = try {
-    if (this.isNullOrEmpty()) null
-    else if (this.startsWith(PLUS_CHAR)) PhoneNumberUtil.getInstance()
-        .parse(this.digitsTrimmed(), String.EMPTY)
-    else PhoneNumberUtil.getInstance().parse(this.digitsTrimmed(), country)
-} catch (e: Exception) {
-    e.printStackTrace()
-    null
-}
-
-@AddTrace(name = "isValidPhoneNumber")
-fun String?.isValidPhoneNumber(country: String): Boolean {
-    return try {
-        if (getPhoneNumber(country).isNull()) false else PhoneNumberUtil.getInstance()
-            .isValidNumberForRegion(getPhoneNumber(country), country)
-    } catch (e: Exception) {
-        return false
-    }
-}
-
-fun Phonenumber.PhoneNumber?.isValidPhoneNumber(): Boolean {
-    return try {
-        if (this.isNull()) false else PhoneNumberUtil.getInstance()
-            .isValidNumber(this)
-    } catch (e: Exception) {
-        return false
-    }
-}
-
 fun Context.numberDataFilteringText(filterIndexes: ArrayList<Int>): String {
     return if (filterIndexes.isEmpty()) getString(R.string.filter_no_filter) else filterIndexes.joinToString { index ->
         NumberDataFiltering.values().find { it.ordinal == index }?.title()?.let { getString(it) } ?: String.EMPTY
@@ -283,15 +241,15 @@ fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString?
                     null,
                     color
                 )
-                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber()
-                    .isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR)
+                filter?.isTypeContain().isNotTrue() && contact?.isPhoneNumberValid.isTrue()
+                        && contact?.number?.startsWith(PLUS_CHAR)
                     .isNotTrue() -> contact?.number.highlightedSpanned(
                     filter?.filter,
                     filter?.countryCode,
                     color
                 )
-                filter?.isTypeContain().isNotTrue() && contact?.phoneNumber()
-                    .isValidPhoneNumber() && contact?.number?.startsWith(PLUS_CHAR)
+                filter?.isTypeContain().isNotTrue() && contact?.isPhoneNumberValid.isTrue()
+                        && contact?.number?.startsWith(PLUS_CHAR)
                     .isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
                 else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
             }

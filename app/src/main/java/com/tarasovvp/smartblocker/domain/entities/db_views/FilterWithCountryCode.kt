@@ -10,6 +10,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
+import com.tarasovvp.smartblocker.utils.PhoneNumber
 import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.parcelize.Parcelize
 
@@ -78,18 +79,18 @@ data class FilterWithCountryCode(
 
     @Exclude
     fun filterToInput(): String {
+        //TODO
+        val phoneNumber = PhoneNumber()
         return when (filter?.conditionType) {
-            FilterCondition.FILTER_CONDITION_FULL.ordinal -> if (filter?.filter.getPhoneNumber(countryCode?.country.orEmpty()).isNull())
-                filter?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY) else filter?.filter.getPhoneNumber(
-                countryCode?.country.orEmpty())?.nationalNumber.toString()
+            FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (phoneNumber.getPhoneNumber(filter?.filter, countryCode?.country.orEmpty()).isNull()) phoneNumber.getPhoneNumber(filter?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCode?.country.orEmpty()) else phoneNumber.getPhoneNumber(filter?.filter, countryCode?.country.orEmpty()))?.nationalNumber.toString()
             FilterCondition.FILTER_CONDITION_START.ordinal -> filter?.filter?.replaceFirst(countryCode?.countryCode.orEmpty(), String.EMPTY).orEmpty()
             else -> filter?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
         }
     }
 
     @Exclude
-    fun isInValidPhoneNumber(): Boolean {
-        return (filter?.isTypeFull().isTrue() && filter?.filter.isValidPhoneNumber(countryCode?.country.orEmpty()).not())
+    fun isInValidPhoneNumber(phoneNumber: PhoneNumber): Boolean {
+        return (filter?.isTypeFull().isTrue() && phoneNumber.isPhoneNumberValid(filter?.filter, countryCode?.country.orEmpty()))
                 || (filter?.isTypeStart().isTrue().not() && filter?.filter.orEmpty().isEmpty())
     }
 

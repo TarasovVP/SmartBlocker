@@ -50,11 +50,11 @@ class MainUseCaseImpl @Inject constructor(
         ) {
             contactList.onEachIndexed { index, contact ->
                 val filter = filterList.filter { filter ->
-                    (contact.phoneNumberValue() == filter.filter && filter.isTypeFull())
-                            || (contact.phoneNumberValue().startsWith(filter.filter) && filter.isTypeStart())
-                            || (contact.phoneNumberValue().contains(filter.filter) && filter.isTypeContain())
+                    (contact.phoneNumberValue == filter.filter && filter.isTypeFull())
+                            || (contact.phoneNumberValue.startsWith(filter.filter) && filter.isTypeStart())
+                            || (contact.phoneNumberValue.contains(filter.filter) && filter.isTypeContain())
                 }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy {
-                    contact.phoneNumberValue().indexOf(it.filter)
+                    contact.phoneNumberValue.indexOf(it.filter)
                 }).firstOrNull()
                 contact.filter = filter?.filter.orEmpty()
                 filter?.filteredContacts = filter?.filteredContacts.orZero() + 1
@@ -70,18 +70,18 @@ class MainUseCaseImpl @Inject constructor(
         result.invoke(size, position)
     }
 
-    override suspend fun setFilterToLogCall(filterList: List<Filter>, callList: List<LogCall>, result: (Int, Int) -> Unit): List<LogCall> =
+    override suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>, result: (Int, Int) -> Unit): List<LogCall> =
         withContext(
             Dispatchers.Default
         ) {
-            callList.onEachIndexed { index, logCall ->
+            logCallList.onEachIndexed { index, logCall ->
                 logCall.filter = filterList.filter { filter ->
-                    (logCall.phoneNumberValue() == filter.filter && filter.isTypeFull())
-                            || (logCall.phoneNumberValue().startsWith(filter.filter) && filter.isTypeStart())
-                            || (logCall.phoneNumberValue().contains(filter.filter) && filter.isTypeContain())
-                }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { logCall.phoneNumberValue().indexOf(it.filter) })
+                    (logCall.phoneNumberValue == filter.filter && filter.isTypeFull())
+                            || (logCall.phoneNumberValue.startsWith(filter.filter) && filter.isTypeStart())
+                            || (logCall.phoneNumberValue.contains(filter.filter) && filter.isTypeContain())
+                }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { logCall.phoneNumberValue.indexOf(it.filter) })
                     .firstOrNull()?.filter.orEmpty()
-                result.invoke(callList.size, index)
+                result.invoke(logCallList.size, index)
             }
         }
 

@@ -39,7 +39,7 @@ data class FilterWithCountryCodeUIModel(
             ?.replaceFirst(Constants.MASK_CHAR.toString(), String.EMPTY).orEmpty()
     }
 
-    fun createFilter(): String {
+  /*  fun createFilter(): String {
         return when {
             filterUIModel?.isTypeContain().isTrue() -> filterUIModel?.filter.orEmpty()
             else -> String.format("%s%s", countryCodeUIModel?.countryCode, filterToInput())
@@ -68,11 +68,6 @@ data class FilterWithCountryCodeUIModel(
             FilterCondition.FILTER_CONDITION_START.ordinal -> filterUIModel?.filter?.replaceFirst(countryCodeUIModel?.countryCode.orEmpty(), String.EMPTY).orEmpty()
             else -> filterUIModel?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
         }
-    }
-
-    fun isInValidPhoneNumber(): Boolean {
-        return (filterUIModel?.isTypeFull().isTrue() && filterUIModel?.filter.isValidPhoneNumber(countryCodeUIModel?.country.orEmpty()).not())
-                || (filterUIModel?.isTypeStart().isTrue().not() && filterUIModel?.filter.orEmpty().isEmpty())
-    }
+    }*/
 
 }

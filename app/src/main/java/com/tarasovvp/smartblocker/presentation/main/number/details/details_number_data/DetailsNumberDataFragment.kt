@@ -26,12 +26,17 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
+import com.tarasovvp.smartblocker.utils.PhoneNumber
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsNumberDataFragment :
     BaseDetailsFragment<FragmentDetailsNumberDataBinding, DetailsNumberDataViewModel>() {
+
+    @Inject
+    lateinit var phoneNumber: PhoneNumber
 
     override var layoutId = R.layout.fragment_details_number_data
     override val viewModelClass = DetailsNumberDataViewModel::class.java
@@ -140,8 +145,8 @@ class DetailsNumberDataFragment :
     }
 
     override fun getData() {
-        viewModel.filterListWithNumber(binding?.contactWithFilter?.contact?.phoneNumberValue().orEmpty())
-        viewModel.filteredCallsByNumber(binding?.contactWithFilter?.contact?.phoneNumberValue().orEmpty())
+        viewModel.filterListWithNumber(binding?.contactWithFilter?.contact?.phoneNumberValue.orEmpty())
+        viewModel.filteredCallsByNumber(binding?.contactWithFilter?.contact?.phoneNumberValue.orEmpty())
     }
 
     private fun createFilter(conditionIndex: Int) {
@@ -150,8 +155,8 @@ class DetailsNumberDataFragment :
             filter = number,
             conditionType = conditionIndex,
             filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION))
-        val phoneNumber = if (number.getPhoneNumber(String.EMPTY).isNull()) number.getPhoneNumber(context?.getUserCountry().orEmpty().uppercase())
-        else number.getPhoneNumber(String.EMPTY)
+        val phoneNumber = if (phoneNumber.getPhoneNumber(number, String.EMPTY).isNull()) phoneNumber.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
+        else phoneNumber.getPhoneNumber(number, String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             startAddFilterScreen()
         } else {

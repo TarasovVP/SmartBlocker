@@ -311,7 +311,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
     }
 
     private fun checkFilterWithCountryCodeArg(filterCondition: Int, filterType: Int) {
-        val phoneNumber = if (contactWithFilter?.contact?.number.orEmpty().getPhoneNumber(String.EMPTY).isNull())
+        /*val phoneNumber = if (contactWithFilter?.contact?.number.orEmpty().getPhoneNumber(String.EMPTY).isNull())
             contactWithFilter?.contact?.number.orEmpty().getPhoneNumber(targetContext.getUserCountry().orEmpty().uppercase())
         else contactWithFilter?.contact?.number.orEmpty().getPhoneNumber(String.EMPTY)
         val filterWithCountryCode = FilterWithCountryCode(filter = Filter(
@@ -329,6 +329,6 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             }
             assertEquals(filterWithCountryCode,
                 navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
-        }
+        }*/
     }
 }

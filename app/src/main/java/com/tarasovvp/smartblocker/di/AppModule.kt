@@ -6,7 +6,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
@@ -38,6 +37,7 @@ import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.utils.PhoneNumber
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -79,8 +79,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePhoneNumberUtil(): PhoneNumberUtil {
-        return PhoneNumberUtil.getInstance()
+    fun providePhoneNumberUtil(): PhoneNumber {
+        return PhoneNumber()
     }
 
     @Singleton
@@ -139,8 +139,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeRepository(phoneNumberUtil: PhoneNumberUtil, countryCodeDao: CountryCodeDao): CountryCodeRepository {
-        return CountryCodeRepositoryImpl(phoneNumberUtil, countryCodeDao)
+    fun provideCountryCodeRepository(phoneNumber: PhoneNumber, countryCodeDao: CountryCodeDao): CountryCodeRepository {
+        return CountryCodeRepositoryImpl(phoneNumber, countryCodeDao)
     }
 
     @Singleton
@@ -217,8 +217,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLogCallRepository(logCallDao: LogCallDao): LogCallRepository {
-        return LogCallRepositoryImpl(logCallDao)
+    fun provideLogCallRepository(phoneNumber: PhoneNumber, logCallDao: LogCallDao): LogCallRepository {
+        return LogCallRepositoryImpl(phoneNumber, logCallDao)
     }
 
     @Singleton
@@ -239,8 +239,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactRepository(contactDao: ContactDao): ContactRepository {
-        return ContactRepositoryImpl(contactDao)
+    fun provideContactRepository(phoneNumber: PhoneNumber, contactDao: ContactDao): ContactRepository {
+        return ContactRepositoryImpl(phoneNumber, contactDao)
     }
 
     @Singleton

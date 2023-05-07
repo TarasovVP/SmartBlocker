@@ -27,14 +27,19 @@ import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
+import com.tarasovvp.smartblocker.utils.PhoneNumber
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 open class CreateFilterFragment :
     BaseDetailsFragment<FragmentCreateFilterBinding, CreateFilterViewModel>() {
+
+    @Inject
+    lateinit var phoneNumber: PhoneNumber
 
     override var layoutId = R.layout.fragment_create_filter
     override val viewModelClass = CreateFilterViewModel::class.java
@@ -63,7 +68,7 @@ open class CreateFilterFragment :
                         this.filter = number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
                 } else {
-                    val phoneNumber = number.getPhoneNumber(filterWithCountryCode?.countryCode?.country.orEmpty())
+                    val phoneNumber = phoneNumber.getPhoneNumber(number, filterWithCountryCode?.countryCode?.country.orEmpty())
                     if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
                         filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
                             this.filter = phoneNumber?.nationalNumber?.toString() ?: number.digitsTrimmed()
@@ -226,7 +231,7 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter filterAction ${ binding?.filterWithCountryCode?.filter?.filterAction}")
                 binding?.filterWithCountryCode = binding?.filterWithCountryCode?.apply {
                     filter?.filterAction = when (existingFilter.filter?.filterType) {
-                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber().isTrue()) FilterAction.FILTER_ACTION_INVALID else if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(phoneNumber).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         filter?.filterType -> if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                         else -> if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
                     }

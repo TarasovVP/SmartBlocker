@@ -56,7 +56,7 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int) {
-        Timber.e("CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} createFilter ${filterWithCountryCode?.createFilter()} numberDataList.size ${numberDataList.size}")
+        Timber.e("CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} numberDataList.size ${numberDataList.size}")
         showProgress()
         launch {
             val filteredNumberDataList = createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataList, color)
