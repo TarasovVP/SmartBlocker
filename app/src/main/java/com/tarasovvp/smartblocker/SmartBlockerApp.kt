@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber

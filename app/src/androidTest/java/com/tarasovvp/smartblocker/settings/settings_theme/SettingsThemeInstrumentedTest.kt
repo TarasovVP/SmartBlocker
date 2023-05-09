@@ -9,7 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

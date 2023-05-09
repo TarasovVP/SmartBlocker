@@ -11,7 +11,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog

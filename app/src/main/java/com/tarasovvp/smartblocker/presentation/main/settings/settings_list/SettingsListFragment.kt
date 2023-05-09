@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*

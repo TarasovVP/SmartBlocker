@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_COD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_FORMAT_DEFAULT
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import kotlinx.parcelize.Parcelize
 import java.util.*

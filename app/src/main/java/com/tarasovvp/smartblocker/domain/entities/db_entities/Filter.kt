@@ -25,7 +25,7 @@ data class Filter(
     @PrimaryKey var filter: String = String.EMPTY,
     var conditionType: Int = DEFAULT_FILTER,
     var filterType: Int = DEFAULT_FILTER,
-    var name: String? = String.EMPTY,
+    var filterName: String? = String.EMPTY,
     var countryCode: String = String.EMPTY,
     var country: String = String.EMPTY,
     var filterWithoutCountryCode: String = String.EMPTY,

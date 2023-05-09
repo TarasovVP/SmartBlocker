@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.infrastructure.prefs
+package com.tarasovvp.smartblocker.data.prefs
 
 import android.content.Context
 import android.content.SharedPreferences

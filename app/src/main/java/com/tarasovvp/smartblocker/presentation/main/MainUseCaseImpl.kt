@@ -6,7 +6,6 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
-import com.tarasovvp.smartblocker.utils.extensions.orZero
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,7 +23,7 @@ class MainUseCaseImpl @Inject constructor(
         result.invoke(operationResult)
     }
 
-    override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit) = countryCodeRepository.getSystemCountryCodeList { size, position ->
+    override suspend fun getSystemCountryCodes(result: (Int, Int) -> Unit) = countryCodeRepository.getSystemCountryCodeList { size, position ->
         result.invoke(size, position)
     }
 
@@ -36,37 +35,15 @@ class MainUseCaseImpl @Inject constructor(
         return filterRepository.allFilters()
     }
 
-    override suspend fun getSystemContactList(application: Application, result: (Int, Int) -> Unit) = contactRepository.getSystemContactList(application) { size, position ->
+    override suspend fun getSystemContacts(application: Application, result: (Int, Int) -> Unit) = contactRepository.getSystemContactList(application) { size, position ->
         result.invoke(size, position)
     }
-
-    override suspend fun setFilterToContact(
-        filterList: List<Filter>,
-        contactList: List<Contact>,
-        result: (Int, Int) -> Unit,
-    ) =
-        withContext(
-            Dispatchers.Default
-        ) {
-            contactList.onEachIndexed { index, contact ->
-                val filter = filterList.filter { filter ->
-                    (contact.phoneNumberValue == filter.filter && filter.isTypeFull())
-                            || (contact.phoneNumberValue.startsWith(filter.filter) && filter.isTypeStart())
-                            || (contact.phoneNumberValue.contains(filter.filter) && filter.isTypeContain())
-                }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy {
-                    contact.phoneNumberValue.indexOf(it.filter)
-                }).firstOrNull()
-                contact.filter = filter?.filter.orEmpty()
-                filter?.filteredContacts = filter?.filteredContacts.orZero() + 1
-                result.invoke(contactList.size, index)
-            }
-        }
 
     override suspend fun insertContacts(contactList: List<Contact>) {
         contactRepository.insertAllContacts(contactList)
     }
 
-    override suspend fun getSystemLogCallList(application: Application, result: (Int, Int) -> Unit) = logCallRepository.getSystemLogCallList(application) { size, position ->
+    override suspend fun getSystemLogCalls(application: Application, result: (Int, Int) -> Unit) = logCallRepository.getSystemLogCallList(application) { size, position ->
         result.invoke(size, position)
     }
 

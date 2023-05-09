@@ -11,7 +11,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.filterList
 import com.tarasovvp.smartblocker.TestUtils.filteredCallList
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
@@ -31,7 +30,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -65,7 +64,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             Contact("5",
                 name = "C Name",
                 number = "+380502711344",
-                filter = "123"),
+                filterValue = "123"),
             if (isHiddenCall) FilterWithCountryCode(Filter(), countryCode = CountryCode()) else FilterWithCountryCode(Filter(filter = "38050", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA")))
         launchFragmentInHiltContainer<DetailsNumberDataFragment> (fragmentArgs = bundleOf("numberData" to numberData)) {
             navController?.setGraph(R.navigation.navigation)
@@ -76,7 +75,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
                 contact = Contact(name = getString(R.string.details_number_from_call_log),
                     photoUrl = numberDataFromBundle.call?.photoUrl,
                     number = numberDataFromBundle.call?.number.orEmpty(),
-                    filter = numberDataFromBundle.filterWithCountryCode?.filter?.filter.orEmpty())) else numberDataFromBundle as ContactWithFilter
+                    filterValue = numberDataFromBundle.filterWithCountryCode?.filter?.filter.orEmpty())) else numberDataFromBundle as ContactWithFilter
             (this as? DetailsNumberDataFragment)?.apply {
                 viewModel.filterListLiveData.postValue(filterList())
                 viewModel.filteredCallListLiveData.postValue(filteredCallList())

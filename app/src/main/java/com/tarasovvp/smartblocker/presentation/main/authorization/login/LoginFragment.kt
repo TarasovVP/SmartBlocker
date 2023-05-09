@@ -18,7 +18,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.UNAUTHORIZED_ENTER
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*

@@ -30,7 +30,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_ID
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.PhoneNumber
 import java.util.*
 import kotlin.collections.ArrayList

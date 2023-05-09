@@ -56,7 +56,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     @Test
     fun getSystemCountryCodeList() = runTest {
         val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY))
-        coEvery { mainUseCase.getSystemCountryCodeList(any()) } returns countryCodeList
+        coEvery { mainUseCase.getSystemCountryCodes(any()) } returns countryCodeList
         val resultCountryCodeList = viewModel.getSystemCountryCodeList()
         assertEquals(countryCodeList, resultCountryCodeList)
     }
@@ -72,7 +72,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     @Test
     fun getSystemContactList() = runTest {
         val contactList = listOf(Contact(name = TEST_NAME))
-        coEvery { mainUseCase.getSystemContactList(eq(application), any()) } returns contactList
+        coEvery { mainUseCase.getSystemContacts(eq(application), any()) } returns contactList
         val resultContactList = viewModel.getSystemContactList()
         assertEquals(contactList, resultContactList)
     }
@@ -97,7 +97,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     @Test
     fun getSystemLogCallList() = runTest {
         val logCallList = listOf(LogCall().apply { number = TEST_NUMBER })
-        coEvery { mainUseCase.getSystemLogCallList(eq(application), any()) } returns logCallList
+        coEvery { mainUseCase.getSystemLogCalls(eq(application), any()) } returns logCallList
         val resultLogCallList = viewModel.getSystemLogCallList()
         assertEquals(logCallList, resultLogCallList)
     }

@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import com.tarasovvp.smartblocker.utils.extensions.isTrue

@@ -6,7 +6,7 @@ import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.utils.extensions.orZero
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.domain.entities.models.MainProgress
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -85,7 +85,7 @@ class MainViewModel @Inject constructor(
     }
 
     suspend fun getSystemCountryCodeList(): List<CountryCode> {
-        return mainUseCase.getSystemCountryCodeList { size, position ->
+        return mainUseCase.getSystemCountryCodes { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
@@ -110,21 +110,11 @@ class MainViewModel @Inject constructor(
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_contacts_change
         })
-        val updatedContactList = setFilterToContact(filterList, contactList)
-        insertContacts(updatedContactList)
+        insertContacts(contactList)
     }
 
     suspend fun getSystemContactList(): List<Contact> {
-        return mainUseCase.getSystemContactList(getApplication()) { size, position ->
-            progressStatusLiveData.postValue(mainProgress.apply {
-                progressMax = size
-                progressPosition = position
-            })
-        }
-    }
-
-    suspend fun setFilterToContact(filterList: List<Filter>, contactList: List<Contact>): List<Contact> {
-        return mainUseCase.setFilterToContact(filterList, contactList) { size, position ->
+        return mainUseCase.getSystemContacts(getApplication()) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
@@ -153,7 +143,7 @@ class MainViewModel @Inject constructor(
     }
 
     suspend fun getSystemLogCallList(): List<LogCall> {
-        return mainUseCase.getSystemLogCallList(getApplication()) { size, position ->
+        return mainUseCase.getSystemLogCalls(getApplication()) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position

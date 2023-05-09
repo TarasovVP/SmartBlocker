@@ -11,10 +11,10 @@ class ContactWithFilterMapper {
 
     fun mapToUIModel(contactWithFilter: ContactWithFilter): ContactWithFilterUIModel {
         return ContactWithFilterUIModel(contactUIModel = contactWithFilter.contact?.run {
-                ContactUIModel(id, name, photoUrl, number, filter) },
+                ContactUIModel(id, name, photoUrl, number) },
             filterWithCountryCodeUIModel =  FilterWithCountryCodeUIModel(
                 filterUIModel = contactWithFilter.filterWithCountryCode?.filter?.run {
-                    FilterUIModel(filter, conditionType, filterType, name, countryCode, country, filterWithoutCountryCode, created) },
+                    FilterUIModel(filter, conditionType, filterType, filterName, countryCode, country, filterWithoutCountryCode, created) },
                 countryCodeUIModel = contactWithFilter.filterWithCountryCode?.countryCode?.run {
                     CountryCodeUIModel(country, countryCode, numberFormat) }
             )

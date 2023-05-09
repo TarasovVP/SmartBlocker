@@ -13,7 +13,7 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_EN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

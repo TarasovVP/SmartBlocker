@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsThemeBinding
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
 
 class SettingsThemeFragment :

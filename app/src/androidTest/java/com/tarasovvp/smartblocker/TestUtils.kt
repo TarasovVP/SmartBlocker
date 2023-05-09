@@ -43,7 +43,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.OUT_GOING_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
 import org.hamcrest.Description
@@ -314,15 +314,15 @@ object TestUtils {
     )
 
     fun contactWithFilterList() = listOf(
-        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filter = "+380502711344"),
+        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filterValue = "+380502711344"),
             FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("2", name = "a Name", number = "12345", filter = "123"),
+        ContactWithFilter(Contact("2", name = "a Name", number = "12345", filterValue = "123"),
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("3", name = "B Name", number = "12345", filter = "123"),
+        ContactWithFilter(Contact("3", name = "B Name", number = "12345", filterValue = "123"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("4", name = "B Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("5", name = "C Name", number = "12345", filter = "123"),
+        ContactWithFilter(Contact("5", name = "C Name", number = "12345", filterValue = "123"),
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("6", name = " D Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
@@ -335,7 +335,7 @@ object TestUtils {
         type = IN_COMING_CALL
         callDate = "1678603872094"},
         FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filter = "+380502711344"),
+        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filterValue = "+380502711344"),
             FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
         ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))))

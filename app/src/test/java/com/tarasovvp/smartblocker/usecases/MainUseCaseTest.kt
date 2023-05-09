@@ -81,7 +81,7 @@ class MainUseCaseTest {
     fun getSystemCountryCodeListTest() = runBlocking {
         val countryCodeList = listOf(CountryCode(country = UnitTestUtils.TEST_COUNTRY))
         coEvery { countryCodeRepository.getSystemCountryCodeList(any()) } returns countryCodeList
-        val resultCountryCodeList = mainUseCase.getSystemCountryCodeList(resultMock)
+        val resultCountryCodeList = mainUseCase.getSystemCountryCodes(resultMock)
         assertEquals(countryCodeList, resultCountryCodeList)
     }
 
@@ -105,7 +105,7 @@ class MainUseCaseTest {
     fun getSystemContactListTest() = runBlocking {
         val contactList = arrayListOf(Contact(name = UnitTestUtils.TEST_NAME))
         coEvery { contactRepository.getSystemContactList(eq(application), any()) } returns contactList
-        val resultContactList = mainUseCase.getSystemContactList(application, resultMock)
+        val resultContactList = mainUseCase.getSystemContacts(application, resultMock)
         assertEquals(contactList, resultContactList)
     }
 
@@ -130,7 +130,7 @@ class MainUseCaseTest {
     fun getSystemLogCallListTest() = runBlocking {
         val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
         coEvery { logCallRepository.getSystemLogCallList(eq(application), any()) } returns logCallList
-        val resultLogCallList = mainUseCase.getSystemLogCallList(application, resultMock)
+        val resultLogCallList = mainUseCase.getSystemLogCalls(application, resultMock)
         assertEquals(logCallList, resultLogCallList)
     }
 

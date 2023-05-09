@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.domain.enums.OnBoarding
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray

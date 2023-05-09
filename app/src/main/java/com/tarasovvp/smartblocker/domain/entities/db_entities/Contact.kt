@@ -20,7 +20,6 @@ data class Contact(
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var number: String = String.EMPTY,
-    var filter: String = String.EMPTY,
     var phoneNumberValue: String = String.EMPTY,
     var isPhoneNumberValid: Boolean = false
 ) : Parcelable {
@@ -35,10 +34,6 @@ data class Contact(
     fun placeHolder(context: Context): Drawable? {
         return if (name.nameInitial().isEmpty()) ContextCompat.getDrawable(context,
             R.drawable.ic_contact) else context.getInitialDrawable(name.nameInitial())
-    }
-
-    fun isFilterNullOrEmpty(): Boolean {
-        return filter.isEmpty()
     }
 
     fun phoneNumberValidity(): Int? {

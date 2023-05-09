@@ -21,7 +21,7 @@ import com.tarasovvp.smartblocker.domain.entities.models.InfoData
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
@@ -57,8 +57,7 @@ class DetailsNumberDataFragment :
                 ContactWithFilter(filterWithCountryCode = callWithFilter?.filterWithCountryCode,
                     contact = Contact(name = getString(R.string.details_number_from_call_log),
                     photoUrl = callWithFilter?.call?.photoUrl,
-                    number = callWithFilter?.call?.number.orEmpty(),
-                filter = callWithFilter?.filterWithCountryCode?.filter?.filter.orEmpty()))
+                    number = callWithFilter?.call?.number.orEmpty()))
             } else {
                 args.numberData as ContactWithFilter
             }

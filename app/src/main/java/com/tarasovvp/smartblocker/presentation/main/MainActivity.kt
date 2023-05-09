@@ -34,7 +34,7 @@ import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
-import com.tarasovvp.smartblocker.infrastructure.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions

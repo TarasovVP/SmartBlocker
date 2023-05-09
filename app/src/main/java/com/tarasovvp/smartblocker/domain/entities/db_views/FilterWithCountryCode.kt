@@ -22,8 +22,7 @@ data class FilterWithCountryCode(
     @Relation(
         parentColumn = "country",
         entityColumn = "country",
-        entity = CountryCode::class
-        )
+        entity = CountryCode::class)
     var countryCode: CountryCode? = null
 ) : Parcelable, NumberData() {
     @Exclude
