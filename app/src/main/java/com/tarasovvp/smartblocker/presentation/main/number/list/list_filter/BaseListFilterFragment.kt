@@ -44,9 +44,9 @@ open class BaseListFilterFragment :
                 }
 
                 override fun onFilterDeleteCheckChange(filterWithCountryCode: FilterWithCountryCode) {
-                    filterWithCountryCodeList?.find { it.filter == filterWithCountryCode.filter }?.filter?.isCheckedForDelete =
-                        filterWithCountryCode.filter?.isCheckedForDelete.isTrue()
-                    if (filterWithCountryCodeList?.any { it.filter?.isCheckedForDelete.isTrue() }.isNotTrue() && isDeleteMode) {
+                    filterWithCountryCodeList?.find { it.filter == filterWithCountryCode.filter }?.isCheckedForDelete =
+                        filterWithCountryCode.isCheckedForDelete.isTrue()
+                    if (filterWithCountryCodeList?.any { it.isCheckedForDelete.isTrue() }.isNotTrue() && isDeleteMode) {
                         changeDeleteMode()
                     }
                 }
@@ -136,7 +136,7 @@ open class BaseListFilterFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(FILTER_ACTION) { _, _ ->
-            val checkedFilterList = filterWithCountryCodeList?.filter { it.filter?.isCheckedForDelete.isTrue() }.orEmpty()
+            val checkedFilterList = filterWithCountryCodeList?.filter { it.isCheckedForDelete.isTrue() }.orEmpty()
             val mappedFilterList = checkedFilterList.map { it.filter }
             viewModel.deleteFilterList(mappedFilterList.filterNotNull())
         }
@@ -167,15 +167,15 @@ open class BaseListFilterFragment :
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.apply {
             setOnMenuItemClickListener {
-                val deleteFilterCount = filterWithCountryCodeList?.filter { it.filter?.isCheckedForDelete.isTrue() }.orEmpty().size
-                val firstFilterWithCountryCode = filterWithCountryCodeList?.firstOrNull { it.filter?.isCheckedForDelete.isTrue() } as FilterWithCountryCode
+                val deleteFilterCount = filterWithCountryCodeList?.filter { it.isCheckedForDelete }.orEmpty().size
+                val firstFilterWithCountryCode = filterWithCountryCodeList?.firstOrNull { it.isCheckedForDelete } as FilterWithCountryCode
                 val filterWithCountryCode = firstFilterWithCountryCode.apply {
-                    filter?.filterAction =
-                        if (firstFilterWithCountryCode.filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                    filterAction =
+                        if (firstFilterWithCountryCode.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                     filter?.filter =
                         if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_filter_delete_amount,
                             deleteFilterCount.quantityString(),
-                            deleteFilterCount) else filterWithCountryCodeList?.firstOrNull { it.filter?.isCheckedForDelete.isTrue() }?.filter?.filter.orEmpty()
+                            deleteFilterCount) else filterWithCountryCodeList?.firstOrNull { it.isCheckedForDelete }?.filter?.filter.orEmpty()
                 }
                 val direction =
                     if (this@BaseListFilterFragment is ListBlockerFragment) {

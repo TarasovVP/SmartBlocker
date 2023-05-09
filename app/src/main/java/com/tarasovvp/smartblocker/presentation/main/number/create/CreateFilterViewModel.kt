@@ -28,7 +28,7 @@ class CreateFilterViewModel @Inject constructor(
     val numberDataListLiveData = MutableLiveData<List<NumberData>>()
     val existingFilterLiveData = MutableLiveData<FilterWithCountryCode>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filterActionLiveData = MutableLiveData<Filter>()
+    val filterActionLiveData = MutableLiveData<FilterWithCountryCode>()
 
     fun getCountryCodeWithCode(code: Int?) {
         Timber.e("CreateFilterViewModel getCountryCodeWithCode code $code")
@@ -66,13 +66,13 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun createFilter(filter: Filter?) {
-        Timber.e("CreateFilterViewModel createFilter createFilter $filter filter.country ${filter?.country}")
+    fun createFilter(filterWithCountryCode: FilterWithCountryCode?) {
+        Timber.e("CreateFilterViewModel createFilter createFilter $filterWithCountryCode filter.country ${filterWithCountryCode?.filter?.country}")
         launch {
-            filter?.let {
-                createFilterUseCase.createFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+            filterWithCountryCode?.filter?.let { filter ->
+                createFilterUseCase.createFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
-                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
                     }
                 }
@@ -80,13 +80,13 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun updateFilter(filter: Filter?) {
+    fun updateFilter(filterWithCountryCode: FilterWithCountryCode?) {
         Timber.e("CreateFilterViewModel updateFilter")
         launch {
-            filter?.let {
-                createFilterUseCase.updateFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+            filterWithCountryCode?.filter?.let { filter ->
+                createFilterUseCase.updateFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
-                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
                     }
                 }
@@ -94,13 +94,13 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilter(filter: Filter?) {
+    fun deleteFilter(filterWithCountryCode: FilterWithCountryCode?) {
         Timber.e("CreateFilterViewModel deleteFilter")
         launch {
-            filter?.let {
-                createFilterUseCase.deleteFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+            filterWithCountryCode?.filter?.let { filter ->
+                createFilterUseCase.deleteFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
-                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
                     }
                 }

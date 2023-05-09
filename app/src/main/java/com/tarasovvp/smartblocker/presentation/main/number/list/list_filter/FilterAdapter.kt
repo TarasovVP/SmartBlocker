@@ -56,7 +56,7 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
         fun bindData(position: Int) {
             val filterWithCountryCode = getDataInPosition(position)
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
-                filterWithCountryCode.filter?.isDeleteMode = isDeleteMode
+                filterWithCountryCode.isDeleteMode = isDeleteMode
                 filterWithCountryCode.searchText = searchQuery
                 filterWithCountryCode.highlightedSpanned = filterWithCountryCode.filter?.filter.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 this.filterWithCountryCode = filterWithCountryCode
@@ -68,14 +68,14 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                     }
                 }
                 root.setOnLongClickListener {
-                    if (filterWithCountryCode.filter?.isDeleteMode.isTrue().not()) {
-                        filterWithCountryCode.filter?.isCheckedForDelete = true
+                    if (filterWithCountryCode.isDeleteMode.isTrue().not()) {
+                        filterWithCountryCode.isCheckedForDelete = true
                         filterClickListener.onFilterLongClick()
                     }
-                    return@setOnLongClickListener filterWithCountryCode.filter?.isDeleteMode.isTrue().not()
+                    return@setOnLongClickListener filterWithCountryCode.isDeleteMode.isTrue().not()
                 }
                 itemFilterDelete.setOnCheckedChangeListener { _, checked ->
-                    filterWithCountryCode.filter?.isCheckedForDelete = checked
+                    filterWithCountryCode.isCheckedForDelete = checked
                     filterClickListener.onFilterDeleteCheckChange(filterWithCountryCode)
                 }
                 executePendingBindings()

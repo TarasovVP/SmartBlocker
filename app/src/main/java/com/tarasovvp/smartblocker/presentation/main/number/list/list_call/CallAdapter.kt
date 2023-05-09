@@ -62,14 +62,14 @@ class CallAdapter(val callClickListener: CallClickListener) :
         fun bindData(position: Int) {
             val callWithFilter = getDataInPosition(position)
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
-                callWithFilter.call?.isDeleteMode = isDeleteMode
+                callWithFilter.isDeleteMode = isDeleteMode
                 callWithFilter.searchText = searchQuery
                 callWithFilter.highlightedSpanned = callWithFilter.call?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                callWithFilter.call?.isExtract = false
+                callWithFilter.isExtract = false
                 this.callWithFilter = callWithFilter
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
-                        if (callWithFilter.call?.isCallFiltered().isTrue()) {
+                        if (callWithFilter.isCallFiltered()) {
                             itemCallDelete.isChecked = itemCallDelete.isChecked.isTrue().not()
                         } else {
                             callClickListener.onCallDeleteInfoClick()
@@ -83,18 +83,18 @@ class CallAdapter(val callClickListener: CallClickListener) :
                     }
                 }
                 root.setOnLongClickListener {
-                    if (callWithFilter.call?.isDeleteMode.isTrue().not()) {
-                        if (callWithFilter.call?.isCallFiltered().isTrue()) {
-                            callWithFilter.call?.isCheckedForDelete = callWithFilter.call?.isCallFiltered().isTrue()
+                    if (callWithFilter.isDeleteMode.not()) {
+                        if (callWithFilter.isCallFiltered()) {
+                            callWithFilter.isCheckedForDelete = callWithFilter.isCallFiltered()
                             callClickListener.onCallLongClick()
                         } else {
                             callClickListener.onCallDeleteInfoClick()
                         }
                     }
-                    return@setOnLongClickListener callWithFilter.call?.isDeleteMode.isTrue().not()
+                    return@setOnLongClickListener callWithFilter.isDeleteMode.not()
                 }
                 itemCallDelete.setOnCheckedChangeListener { _, checked ->
-                    callWithFilter.call?.isCheckedForDelete = checked
+                    callWithFilter.isCheckedForDelete = checked
                     callClickListener.onCallDeleteCheckChange(callWithFilter)
                 }
                 executePendingBindings()

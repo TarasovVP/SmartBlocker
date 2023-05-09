@@ -23,8 +23,6 @@ interface MainUseCase {
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>)
 
-    suspend fun getAllFilteredCalls(): List<FilteredCall>
-
     suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>)
 
     suspend fun insertAllFilters(filterList: List<Filter>)

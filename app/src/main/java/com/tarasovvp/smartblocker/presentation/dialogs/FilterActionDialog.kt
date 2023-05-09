@@ -24,7 +24,7 @@ class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
             }
             filterActionConfirm.setSafeOnClickListener {
                 findNavController().navigateUp()
-                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterWithCountryCode?.filter?.filterAction))
+                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterWithCountryCode?.filterAction))
             }
         }
     }

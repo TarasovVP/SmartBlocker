@@ -57,7 +57,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     fun getSystemCountryCodeList() = runTest {
         val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY))
         coEvery { mainUseCase.getSystemCountryCodes(any()) } returns countryCodeList
-        val resultCountryCodeList = viewModel.getSystemCountryCodeList()
+        val resultCountryCodeList = viewModel.getSystemCountryCodes()
         assertEquals(countryCodeList, resultCountryCodeList)
     }
 

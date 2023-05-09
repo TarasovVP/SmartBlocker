@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
@@ -22,7 +23,7 @@ class DetailsFilterViewModel @Inject constructor(
     val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
     val filteredCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filterActionLiveData = MutableLiveData<Filter>()
+    val filterActionLiveData = MutableLiveData<FilterWithCountryCode>()
 
     fun getQueryContactCallList(filter: Filter) {
         showProgress()
@@ -47,13 +48,13 @@ class DetailsFilterViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilter(filter: Filter?) {
+    fun deleteFilter(filterWithCountryCode: FilterWithCountryCode?) {
         showProgress()
         launch {
-            filter?.let {
-                detailsFilterUseCase.deleteFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+            filterWithCountryCode?.filter?.let { filter ->
+                detailsFilterUseCase.deleteFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
-                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
                     }
                 }
@@ -62,13 +63,13 @@ class DetailsFilterViewModel @Inject constructor(
         }
     }
 
-    fun updateFilter(filter: Filter?) {
+    fun updateFilter(filterWithCountryCode: FilterWithCountryCode?) {
         showProgress()
         launch {
-            filter?.let {
-                detailsFilterUseCase.updateFilter(it, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+            filterWithCountryCode?.filter?.let { filter ->
+                detailsFilterUseCase.updateFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
-                        is Result.Success -> filterActionLiveData.postValue(it)
+                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
                     }
                 }

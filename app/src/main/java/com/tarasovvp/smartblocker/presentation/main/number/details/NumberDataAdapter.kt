@@ -8,12 +8,12 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.models.NumberData
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
@@ -71,7 +71,7 @@ class NumberDataAdapter(
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,
-                    if (adapterPosition == 0) filterWithCountryCode?.filter?.filterTypeTint() ?: R.color.transparent
+                    if (adapterPosition == 0) filterWithCountryCode?.filterTypeTint() ?: R.color.transparent
                     else R.color.transparent)
                 root.setSafeOnClickListener {
                     filterWithCountryCode?.let { it1 -> numberDataClick.invoke(it1) }
@@ -105,8 +105,8 @@ class NumberDataAdapter(
             binding?.apply {
                 root.isEnabled = isFilteredCallItemDisable.not()
                 this.callWithFilter = callWithFilter
-                this.callWithFilter?.call?.isExtract = isFilteredCallDetails.not()
-                this.callWithFilter?.call?.isFilteredCallDetails = isFilteredCallDetails
+                this.callWithFilter?.isExtract = isFilteredCallDetails.not()
+                this.callWithFilter?.isFilteredCallDetails = isFilteredCallDetails
                 this.callWithFilter?.highlightedSpanned = this.callWithFilter?.highlightedSpanned
                     ?: this.callWithFilter?.call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {

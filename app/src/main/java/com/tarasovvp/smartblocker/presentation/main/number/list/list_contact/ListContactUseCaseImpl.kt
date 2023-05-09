@@ -23,9 +23,9 @@ class ListContactUseCaseImpl @Inject constructor(private val contactRepository: 
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) contactList else contactList.filter { contactWithFilter ->
             ((contactWithFilter.contact?.name isContaining searchQuery || contactWithFilter.contact?.number.digitsTrimmed() isContaining searchQuery))
-                    && (contactWithFilter.filterWithCountryCode?.filter?.isBlocker().isTrue() && filterIndexes.contains(
+                    && (contactWithFilter.filterWithCountryCode?.isBlocker().isTrue() && filterIndexes.contains(
                 NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
-                    || contactWithFilter.filterWithCountryCode?.filter?.isPermission().isTrue() && filterIndexes.contains(
+                    || contactWithFilter.filterWithCountryCode?.isPermission().isTrue() && filterIndexes.contains(
                 NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal)
                     || filterIndexes.isEmpty())
         }

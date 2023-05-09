@@ -49,10 +49,6 @@ class MainUseCaseImpl @Inject constructor(
         logCallRepository.insertAllLogCalls(logCallList)
     }
 
-    override suspend fun getAllFilteredCalls(): List<FilteredCall> {
-        return filteredCallRepository.allFilteredCalls()
-    }
-
     override suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
         filteredCallRepository.insertAllFilteredCalls(filteredCallList)
     }

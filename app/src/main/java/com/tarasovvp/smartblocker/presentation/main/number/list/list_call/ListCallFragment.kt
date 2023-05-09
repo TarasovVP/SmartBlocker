@@ -40,9 +40,9 @@ class ListCallFragment :
                 }
 
                 override fun onCallDeleteCheckChange(callWithFilter: CallWithFilter) {
-                    callWithFilterList?.find { it.call?.callDate == callWithFilter.call?.callDate }?.call?.isCheckedForDelete =
-                        callWithFilter.call?.isCheckedForDelete.isTrue()
-                    if (callWithFilterList?.any { it.call?.isCheckedForDelete.isTrue() }.isNotTrue() && isDeleteMode) {
+                    callWithFilterList?.find { it.call?.callDate == callWithFilter.call?.callDate }?.isCheckedForDelete =
+                        callWithFilter.isCheckedForDelete
+                    if (callWithFilterList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode) {
                         changeDeleteMode()
                     }
                 }
@@ -88,7 +88,7 @@ class ListCallFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(CALL_DELETE) { _, _ ->
-            callWithFilterList?.filter { it.call?.isCheckedForDelete.isTrue() }?.map { it.call?.callId.orZero() }?.let { viewModel.deleteCallList(it) }
+            callWithFilterList?.filter { it.isCheckedForDelete }?.map { it.call?.callId.orZero() }?.let { viewModel.deleteCallList(it) }
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
             filterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
@@ -120,17 +120,14 @@ class ListCallFragment :
     private fun setDeleteMenuClickListener() {
         (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.delete_menu_item) {
-                val deleteCallCount = callWithFilterList?.filter { it.call?.isCheckedForDelete.isTrue() }.orEmpty().size
+                val deleteCallCount = callWithFilterList?.filter { it.isCheckedForDelete.isTrue() }.orEmpty().size
                 this@ListCallFragment.findNavController()
                     .navigate(ListCallFragmentDirections.startFilteredCallDeleteDialog(callDelete =
                     resources.getQuantityString(R.plurals.list_call_delete_amount,
                         deleteCallCount.quantityString(),
-                        if (deleteCallCount > 1) deleteCallCount else if (callWithFilterList?.firstOrNull { it.call?.isCheckedForDelete.isTrue() }?.call?.number.isNullOrEmpty()) getString(
+                        if (deleteCallCount > 1) deleteCallCount else if (callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.call?.number.isNullOrEmpty()) getString(
                             R.string.details_number_hidden
-                        ) else callWithFilterList?.firstOrNull { it.call?.isCheckedForDelete.isTrue() }?.call?.number
-                    )
-                    )
-                    )
+                        ) else callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.call?.number)))
             }
             true
         }

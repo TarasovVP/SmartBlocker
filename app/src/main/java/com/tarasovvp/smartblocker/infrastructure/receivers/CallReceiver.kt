@@ -36,7 +36,7 @@ open class CallReceiver : BroadcastReceiver() {
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
             matchedFilter(number)?.let { filter ->
-                if (filter.isBlocker() && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+                if (filter.filterType == BLOCKER && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
                     breakCall(context)
                 } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
                     delay(SECOND)

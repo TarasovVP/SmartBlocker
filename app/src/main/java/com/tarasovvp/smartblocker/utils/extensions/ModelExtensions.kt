@@ -31,6 +31,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.utils.PhoneNumber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -130,7 +131,7 @@ fun Context.createFilteredCall(
             val filteredCall = cursor.createCallObject(true) as? FilteredCall
             if (number == filteredCall?.number) {
                 filteredCall.apply {
-                    if (filter.isBlocker()) {
+                    if (filter.filterType == BLOCKER) {
                         type = BLOCKED_CALL
                     }
                     this.filteredNumber = filter.filter
@@ -139,7 +140,7 @@ fun Context.createFilteredCall(
                     this.phoneNumberValue = number
                     this.isPhoneNumberValid = true
                 }
-                if (filter.isBlocker()) {
+                if (filter.filterType == BLOCKER) {
                     try {
                         this.contentResolver.delete(
                             Uri.parse(LOG_CALL_CALL),
@@ -241,16 +242,16 @@ fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString?
                     null,
                     color
                 )
-                filter?.isTypeContain().isNotTrue() && contact?.isPhoneNumberValid.isTrue()
+                filter?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contact?.isPhoneNumberValid.isTrue()
                         && contact?.number?.startsWith(PLUS_CHAR)
                     .isNotTrue() -> contact?.number.highlightedSpanned(
                     filter?.filter,
                     filter?.countryCode,
                     color
                 )
-                filter?.isTypeContain().isNotTrue() && contact?.isPhoneNumberValid.isTrue()
+                filter?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contact?.isPhoneNumberValid.isTrue()
                         && contact?.number?.startsWith(PLUS_CHAR)
-                    .isTrue() -> contact?.number.highlightedSpanned(filter?.filter, null, color)
+                    .isTrue() -> contact?.number.highlightedSpanned(filter.filter, null, color)
                 else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }

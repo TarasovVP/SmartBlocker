@@ -125,8 +125,8 @@ open class CallUIModel(
     fun callFilterTitle(filter: Filter?): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
-                filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
-                filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
+                /*filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
+                filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter*/
                 number.isEmpty() && SharedPrefs.blockHidden.isTrue() -> R.string.details_number_hidden_on
                 number.isEmpty() && SharedPrefs.blockHidden.isNotTrue() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
@@ -157,8 +157,8 @@ open class CallUIModel(
     @Exclude
     fun callFilterTint(filter: Filter?): Int {
         return when {
-            (isCallFiltered() && isBlockedCall()) || (isExtract && filter?.isBlocker().isTrue()) -> R.color.sunset
-            (isCallFiltered() && isPermittedCall()) || (isExtract && filter?.isPermission().isTrue()) -> R.color.islamic_green
+            /*(isCallFiltered() && isBlockedCall()) || (isExtract && filter?.isBlocker().isTrue()) -> R.color.sunset
+            (isCallFiltered() && isPermittedCall()) || (isExtract && filter?.isPermission().isTrue()) -> R.color.islamic_green*/
             else -> R.color.text_color_grey
         }
     }

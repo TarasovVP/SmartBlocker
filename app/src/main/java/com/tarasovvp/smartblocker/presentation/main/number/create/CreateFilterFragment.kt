@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_START
@@ -19,6 +18,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTI
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.entities.models.InfoData
@@ -63,7 +63,7 @@ open class CreateFilterFragment :
             }
             binding?.apply {
                 binding?.filterToInput = true
-                if (filterWithCountryCode?.filter?.isTypeContain().isTrue()) {
+                if (filterWithCountryCode?.isTypeContain().isTrue()) {
                     filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
                         this.filter = number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
@@ -88,11 +88,11 @@ open class CreateFilterFragment :
         Timber.e("CreateFilterFragment initViews")
         binding?.apply {
             filterWithCountryCode = args.filterWithCountryCode?.apply {
-                filter?.filterAction = filter?.filterAction ?: FilterAction.FILTER_ACTION_INVALID
+                filterAction = filterAction ?: FilterAction.FILTER_ACTION_INVALID
             }
-            Timber.e( "CreateFilterFragment initViews filter?.filterAction ${filterWithCountryCode?.filter?.filterAction}")
+            Timber.e( "CreateFilterFragment initViews filter?.filterAction ${filterWithCountryCode?.filterAction}")
             setCountryCode(filterWithCountryCode?.countryCode)
-            (activity as MainActivity).toolbar?.title = getString(if (filterWithCountryCode?.filter?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
+            (activity as MainActivity).toolbar?.title = getString(if (filterWithCountryCode?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
             container.hideKeyboardWithLayoutTouch()
             createFilterNumberList.hideKeyboardWithLayoutTouch()
             createFilterInput.setupClearButtonWithAction()
@@ -106,7 +106,7 @@ open class CreateFilterFragment :
             createFilterSubmit.setSafeOnClickListener {
                 findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(filterWithCountryCode = filterWithCountryCode?.apply {
                     filter?.filter = filterWithCountryCode?.createFilter().orEmpty()
-                    filter?.filterAction = filter?.filterAction ?: if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE }))
+                    filterAction = filterAction ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE }))
             }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
                 findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
@@ -129,24 +129,24 @@ open class CreateFilterFragment :
                 when (val filterAction = bundle.serializable<FilterAction>(FILTER_ACTION)) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-                    -> viewModel.updateFilter(filter.filter?.apply {
+                    -> viewModel.updateFilter(filter.apply {
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                    -> viewModel.deleteFilter(filter.filter?.apply {
-                        this.filter = filter.createFilter()
+                    -> viewModel.deleteFilter(filter.apply {
+                        this.filter?.filter = filter.createFilter()
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_CREATE,
                     FilterAction.FILTER_ACTION_PERMISSION_CREATE,
-                    -> viewModel.createFilter(filter.filter?.apply {
-                        this.filter = filter.createFilter()
-                        filterWithoutCountryCode = filter.extractFilterWithoutCountryCode()
+                    -> viewModel.createFilter(filter.apply {
+                        this.filter?.filter = filter.createFilter()
+                        this.filter?.filterWithoutCountryCode = filter.extractFilterWithoutCountryCode()
                         this.filterAction = filterAction
-                        created = Date().time
-                        country = filter.countryCode?.country.orEmpty()
-                        countryCode = filter.countryCode?.countryCode.orEmpty()
+                        this.filter?.created = Date().time
+                        this.filter?.country = filter.countryCode?.country.orEmpty()
+                        this.filter?.countryCode = filter.countryCode?.countryCode.orEmpty()
                     })
                     else -> Unit
                 }
@@ -158,15 +158,15 @@ open class CreateFilterFragment :
         binding?.apply {
             createFilterInput.doAfterTextChanged {
                 Timber.e( "CreateFilterFragment setFilterTextChangeListener doAfterTextChanged it $it")
-                if ((filterWithCountryCode?.conditionTypeFullHint() == it.toString() && filterWithCountryCode?.filter?.isTypeFull().isTrue())
-                    || (filterWithCountryCode?.conditionTypeStartHint() == it.toString() && filterWithCountryCode?.filter?.isTypeStart().isTrue())) return@doAfterTextChanged
+                if ((filterWithCountryCode?.conditionTypeFullHint() == it.toString() && filterWithCountryCode?.isTypeFull().isTrue())
+                    || (filterWithCountryCode?.conditionTypeStartHint() == it.toString() && filterWithCountryCode?.isTypeStart().isTrue())) return@doAfterTextChanged
                 Timber.e("CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
                 filterWithCountryCode = filterWithCountryCode?.apply {
                     filter?.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY).replace(Constants.SPACE, String.EMPTY)
                     viewModel.checkFilterExist(this.createFilter())
                 }
-                Timber.e( "CreateFilterFragment setFilterTextChangeListener filter?.filterAction ${filterWithCountryCode?.filter?.filterAction}")
+                Timber.e( "CreateFilterFragment setFilterTextChangeListener filter?.filterAction ${filterWithCountryCode?.filterAction}")
                 filterNumberDataList()
             }
         }
@@ -177,9 +177,9 @@ open class CreateFilterFragment :
     }
 
     private fun setCountryCode(countryCode: CountryCode?) {
-        Timber.e("CreateFilterFragment setCountryCode countryCode.country ${countryCode?.country} filter?.filterAction ${binding?.filterWithCountryCode?.filter?.filterAction}")
+        Timber.e("CreateFilterFragment setCountryCode countryCode.country ${countryCode?.country} filter?.filterAction ${binding?.filterWithCountryCode?.filterAction}")
         binding?.apply {
-            filterWithCountryCode?.filter = filterWithCountryCode?.filter?.apply {
+            filterWithCountryCode = filterWithCountryCode?.apply {
                 if (isTypeContain()) {
                     createFilterInput.setHint(R.string.creating_filter_enter_hint)
                 } else {
@@ -191,7 +191,7 @@ open class CreateFilterFragment :
                     }
                 }
             }
-            Timber.e( "CreateFilterFragment setCountryCode filter?.filterAction ${filterWithCountryCode?.filter?.filterAction}")
+            Timber.e( "CreateFilterFragment setCountryCode filter?.filterAction ${filterWithCountryCode?.filterAction}")
         }
     }
 
@@ -216,7 +216,7 @@ open class CreateFilterFragment :
             numberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 Timber.e("CreateFilterFragment observeLiveData numberDataListLiveData")
                 this@CreateFilterFragment.numberDataList = ArrayList(numberDataList)
-                if (binding?.filterWithCountryCode?.filter?.isTypeContain().isTrue().not()) {
+                if (binding?.filterWithCountryCode?.isTypeContain().isTrue().not()) {
                     context?.let {viewModel.filterNumberDataList(binding?.filterWithCountryCode, this@CreateFilterFragment.numberDataList,
                         ContextCompat.getColor(it, R.color.text_color_black)) }
                 } else {
@@ -228,15 +228,15 @@ open class CreateFilterFragment :
                 (activity as MainActivity).setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
-                Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter filterAction ${ binding?.filterWithCountryCode?.filter?.filterAction}")
+                Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter filterAction ${ binding?.filterWithCountryCode?.filterAction}")
                 binding?.filterWithCountryCode = binding?.filterWithCountryCode?.apply {
-                    filter?.filterAction = when (existingFilter.filter?.filterType) {
-                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(phoneNumber).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
-                        filter?.filterType -> if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                        else -> if (filter?.isBlocker().isTrue()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
+                    filterAction = when (existingFilter.filter?.filterType) {
+                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(phoneNumber).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                        filter?.filterType -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                        else -> if (isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
                     }
                 }
-                Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData filterAction ${ binding?.filterWithCountryCode?.filter?.filterAction}")
+                Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData filterAction ${ binding?.filterWithCountryCode?.filterAction}")
             }
             filteredNumberDataListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredNumberDataList ->
                 Timber.e( "CreateFilterFragment observeLiveData filteredNumberDataListLiveData")
@@ -249,7 +249,7 @@ open class CreateFilterFragment :
         }
     }
 
-    private fun handleSuccessFilterAction(filter: Filter) {
+    private fun handleSuccessFilterAction(filter: FilterWithCountryCode) {
         Timber.e("CreateFilterFragment handleSuccessFilterAction")
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText()?.let { getString(it) }
@@ -257,7 +257,7 @@ open class CreateFilterFragment :
                 filter.filter, getString(filter.conditionTypeName())), false)
             showInterstitial()
             getAllData()
-            findNavController().navigate(if (binding?.filterWithCountryCode?.filter?.isBlocker().isTrue())
+            findNavController().navigate(if (binding?.filterWithCountryCode?.isBlocker().isTrue())
                 CreateFilterFragmentDirections.startListBlockerFragment()
             else CreateFilterFragmentDirections.startListPermissionFragment()
             )
@@ -267,8 +267,8 @@ open class CreateFilterFragment :
     override fun showInfoScreen() {
         Timber.e("CreateFilterFragment showInfoScreen")
         val info = when {
-            binding?.filterWithCountryCode?.filter?.isTypeStart().isTrue() -> Info.INFO_CREATE_FILTER_START
-            binding?.filterWithCountryCode?.filter?.isTypeContain().isTrue() -> Info.INFO_CREATE_FILTER_CONTAIN
+            binding?.filterWithCountryCode?.isTypeStart().isTrue() -> Info.INFO_CREATE_FILTER_START
+            binding?.filterWithCountryCode?.isTypeContain().isTrue() -> Info.INFO_CREATE_FILTER_CONTAIN
             else -> Info.INFO_CREATE_FILTER_FULL
         }
         findNavController().navigate(

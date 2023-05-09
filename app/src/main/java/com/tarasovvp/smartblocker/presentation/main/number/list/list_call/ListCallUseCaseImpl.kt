@@ -32,9 +32,9 @@ class ListCallUseCaseImpl @Inject constructor(
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
-                    && (callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(
+                    && (callWithFilter.isBlockedCall() && filterIndexes.contains(
                 NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
-                    || callWithFilter.call?.isPermittedCall().isTrue() && filterIndexes.contains(
+                    || callWithFilter.isPermittedCall() && filterIndexes.contains(
                 NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
                     || filterIndexes.isEmpty())
         }
@@ -44,7 +44,7 @@ class ListCallUseCaseImpl @Inject constructor(
         withContext(Dispatchers.Default) {
             callList.sortedByDescending {
                 it.call?.callDate
-            }.groupBy { it.call?.dateFromCallDate().toString() }
+            }.groupBy { it.dateFromCallDate().toString() }
         }
 
     override suspend fun deleteCallList(filteredCallIdList: List<Int>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
