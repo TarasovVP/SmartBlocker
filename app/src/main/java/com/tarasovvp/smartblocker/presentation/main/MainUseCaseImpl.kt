@@ -6,8 +6,6 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MainUseCaseImpl @Inject constructor(
@@ -47,21 +45,6 @@ class MainUseCaseImpl @Inject constructor(
         result.invoke(size, position)
     }
 
-    override suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>, result: (Int, Int) -> Unit): List<LogCall> =
-        withContext(
-            Dispatchers.Default
-        ) {
-            logCallList.onEachIndexed { index, logCall ->
-                logCall.filter = filterList.filter { filter ->
-                    (logCall.phoneNumberValue == filter.filter && filter.isTypeFull())
-                            || (logCall.phoneNumberValue.startsWith(filter.filter) && filter.isTypeStart())
-                            || (logCall.phoneNumberValue.contains(filter.filter) && filter.isTypeContain())
-                }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { logCall.phoneNumberValue.indexOf(it.filter) })
-                    .firstOrNull()?.filter.orEmpty()
-                result.invoke(logCallList.size, index)
-            }
-        }
-
     override suspend fun insertAllLogCalls(logCallList: List<LogCall>) {
         logCallRepository.insertAllLogCalls(logCallList)
     }
@@ -69,19 +52,6 @@ class MainUseCaseImpl @Inject constructor(
     override suspend fun getAllFilteredCalls(): List<FilteredCall> {
         return filteredCallRepository.allFilteredCalls()
     }
-
-    override suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall> =
-        withContext(Dispatchers.Default) {
-            filteredCallList.onEachIndexed { index, filteredCall ->
-                filteredCall.filter = filterList.filter { filter ->
-                    (filteredCall.number == filter.filter && filter.isTypeFull())
-                            || (filteredCall.number.startsWith(filter.filter) && filter.isTypeStart())
-                            || (filteredCall.number.contains(filter.filter) && filter.isTypeContain())
-                }.sortedWith(compareByDescending<Filter> { it.filter.length }.thenBy { filteredCall.number.indexOf(it.filter) })
-                    .firstOrNull()?.filter.orEmpty()
-                result.invoke(filteredCallList.size, index)
-            }
-        }
 
     override suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {
         filteredCallRepository.insertAllFilteredCalls(filteredCallList)

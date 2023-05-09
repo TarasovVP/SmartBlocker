@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
-import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.domain.entities.models.MainProgress
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
@@ -135,24 +134,11 @@ class MainViewModel @Inject constructor(
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_calls_change
         })
-        val updatedLocCallList = setFilterToLogCall(filterList, logCallList)
-        mainUseCase.insertAllLogCalls(updatedLocCallList)
-        filterList.onEach { filter ->
-            filter.filteredContacts = filter.filteredContacts.orZero() + logCallList.filter { filter.filter == it.filter }.distinctBy { it.number }.size
-        }
+        mainUseCase.insertAllLogCalls(logCallList)
     }
 
     suspend fun getSystemLogCallList(): List<LogCall> {
         return mainUseCase.getSystemLogCalls(getApplication()) { size, position ->
-            progressStatusLiveData.postValue(mainProgress.apply {
-                progressMax = size
-                progressPosition = position
-            })
-        }
-    }
-
-    suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>): List<LogCall> {
-        return mainUseCase.setFilterToLogCall(filterList, logCallList) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
@@ -166,27 +152,11 @@ class MainViewModel @Inject constructor(
             progressDescription = R.string.progress_update_filtered_calls
         })
         val filteredCallList = getAllFilteredCalls()
-        mainUseCase.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
-            progressStatusLiveData.postValue(mainProgress.apply {
-                progressMax = size
-                progressPosition = position
-            })
-        }
-        val updatedFilteredCallList = setFilterToFilteredCall(filterList, filteredCallList)
-        insertAllFilteredCalls(updatedFilteredCallList)
+        insertAllFilteredCalls(filteredCallList)
     }
 
     suspend fun getAllFilteredCalls(): List<FilteredCall> {
         return mainUseCase.getAllFilteredCalls()
-    }
-
-    suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>): List<FilteredCall> {
-        return mainUseCase.setFilterToFilteredCall(filterList, filteredCallList) { size, position ->
-            progressStatusLiveData.postValue(mainProgress.apply {
-                progressMax = size
-                progressPosition = position
-            })
-        }
     }
 
     suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>) {

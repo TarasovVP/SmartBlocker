@@ -21,13 +21,9 @@ interface MainUseCase {
 
     suspend fun getSystemLogCalls(application: Application, result: (Int, Int) -> Unit): List<LogCall>
 
-    suspend fun setFilterToLogCall(filterList: List<Filter>, logCallList: List<LogCall>, result: (Int, Int) -> Unit): List<LogCall>
-
     suspend fun insertAllLogCalls(logCallList: List<LogCall>)
 
     suspend fun getAllFilteredCalls(): List<FilteredCall>
-
-    suspend fun setFilterToFilteredCall(filterList: List<Filter>, filteredCallList: List<FilteredCall>, result: (Int, Int) -> Unit): List<FilteredCall>
 
     suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>)
 

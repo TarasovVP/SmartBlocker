@@ -285,7 +285,7 @@ object TestUtils {
             callDate = "1678603872094"
             isFilteredCall = true
             filteredNumber = "12345"
-            conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
+            filteredConditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
         CallWithFilter(FilteredCall(3).apply {  callName = "B Name"
             number = "12345"
@@ -357,7 +357,7 @@ object TestUtils {
             callDate = "1678603872094"
             isFilteredCall = true
             filteredNumber = "12345"
-            conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
+            filteredConditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA")))
     )
 

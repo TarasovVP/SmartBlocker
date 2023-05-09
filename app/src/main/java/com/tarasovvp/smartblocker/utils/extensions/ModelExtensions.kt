@@ -134,7 +134,7 @@ fun Context.createFilteredCall(
                         type = BLOCKED_CALL
                     }
                     this.filteredNumber = filter.filter
-                    this.conditionType = filter.conditionType
+                    this.filteredConditionType = filter.conditionType
                     this.isFilteredCall = true
                     this.phoneNumberValue = number
                     this.isPhoneNumberValid = true

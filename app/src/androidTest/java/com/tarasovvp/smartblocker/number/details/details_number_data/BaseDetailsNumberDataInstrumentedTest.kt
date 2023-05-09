@@ -58,7 +58,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             callDate = "1678603872094"
             isFilteredCall = true
             filteredNumber = "12345"
-            conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
+            filteredConditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
             FilterWithCountryCode(Filter(), CountryCode()))
         else ContactWithFilter(
             Contact("5",

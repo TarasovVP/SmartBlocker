@@ -29,10 +29,9 @@ open class Call(
     var type: String? = String.EMPTY,
     var callDate: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
-    var filter: String? = String.EMPTY,
     var isFilteredCall: Boolean? = false,
     var filteredNumber: String = String.EMPTY,
-    var conditionType: Int = DEFAULT_FILTER,
+    var filteredConditionType: Int = DEFAULT_FILTER,
     var phoneNumberValue: String = String.EMPTY,
     var isPhoneNumberValid: Boolean = false
 ) : Parcelable {
@@ -108,11 +107,6 @@ open class Call(
     }
 
     @Exclude
-    fun isFilterNullOrEmpty(): Boolean {
-        return filter.isNullOrEmpty().isTrue()
-    }
-
-    @Exclude
     fun isCallFiltered(): Boolean {
         return isFilteredCall.isTrue() || isFilteredCallDetails
     }
@@ -127,7 +121,7 @@ open class Call(
         return when {
             isFilteredCallDetails -> dateTimeFromCallDate()
             isExtract.not() && isCallFiltered() -> filteredNumber
-            isExtract && isFilterNullOrEmpty().not() -> filter.orEmpty()
+            //isExtract && isFilterNullOrEmpty().not() -> filter.orEmpty()
             else -> String.EMPTY
         }
     }
@@ -159,7 +153,7 @@ open class Call(
     fun callFilterIcon(): Int? {
         return when {
             isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
-            isCallFiltered() -> FilterCondition.values()[conditionType].smallIcon(type == BLOCKED_CALL)
+            isCallFiltered() -> FilterCondition.values()[filteredConditionType].smallIcon(type == BLOCKED_CALL)
             else -> null
         }
     }
