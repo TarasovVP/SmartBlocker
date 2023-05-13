@@ -69,7 +69,7 @@ class SettingsBlockerFragment :
             }
         }
         binding?.apply {
-            settingsBlockerCountry.text = countryCode?.countryEmoji()
+            //settingsBlockerCountry.text = countryCode?.countryEmoji()
             settingsBlockerCountry.setSafeOnClickListener {
                 findNavController().navigate(SettingsBlockerFragmentDirections.startCountryCodeSearchDialog())
             }

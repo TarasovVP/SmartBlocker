@@ -5,7 +5,7 @@
     <data>
         <variable
             name="countryCode"
-            type="com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel" />
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -108,6 +108,9 @@ open class CreateFilterFragment :
                     filter?.filter = filterWithCountryCode?.createFilter().orEmpty()
                     filterAction = filterAction ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE }))
             }
+            createFilterCountryCodeValue.setSafeOnClickListener {
+                findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
+            }
             createFilterCountryCodeSpinner.setSafeOnClickListener {
                 findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
             }
@@ -184,7 +187,7 @@ open class CreateFilterFragment :
                     createFilterInput.setHint(R.string.creating_filter_enter_hint)
                 } else {
                     filterWithCountryCode?.countryCode = countryCode
-                    createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
+                    //createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
                     when {
                         isTypeFull().isTrue() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeFullHint().orEmpty())
                         isTypeStart().isTrue() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeStartHint().orEmpty())

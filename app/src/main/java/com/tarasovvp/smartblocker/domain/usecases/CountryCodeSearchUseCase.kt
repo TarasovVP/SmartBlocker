@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 
 interface CountryCodeSearchUseCase  {
 
-    suspend fun getCountryCodeList(): List<CountryCode>
+    suspend fun getCountryCodeList(): List<CountryCodeUIModel>
 }

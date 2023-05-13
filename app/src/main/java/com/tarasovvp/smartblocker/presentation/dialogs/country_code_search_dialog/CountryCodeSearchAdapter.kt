@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.databinding.ItemCountryCodeBinding
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class CountryCodeSearchAdapter(
-    var countryCodeList: List<CountryCode>? = null,
-    private val countryCodeClick: (CountryCode) -> Unit
+    var countryCodeList: List<CountryCodeUIModel>? = null,
+    private val countryCodeClick: (CountryCodeUIModel) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,7 +34,7 @@ class CountryCodeSearchAdapter(
     internal inner class CountryCodeViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemCountryCodeBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(countryCode: CountryCode?) {
+        fun bindData(countryCode: CountryCodeUIModel?) {
             binding?.countryCode = countryCode
             binding?.root?.setSafeOnClickListener {
                 countryCode?.let { it1 -> countryCodeClick.invoke(it1) }

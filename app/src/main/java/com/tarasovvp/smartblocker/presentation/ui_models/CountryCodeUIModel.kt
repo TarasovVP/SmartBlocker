@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.ui_models
 
 import android.os.Parcelable
-import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_FORMAT_DEFAULT

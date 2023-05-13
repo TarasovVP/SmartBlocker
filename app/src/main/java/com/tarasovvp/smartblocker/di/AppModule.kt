@@ -10,6 +10,7 @@ import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.data.repositoryImpl.*
+import com.tarasovvp.smartblocker.domain.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
@@ -37,6 +38,7 @@ import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.CountryCodeUIMapperImpl
 import com.tarasovvp.smartblocker.utils.PhoneNumber
 import dagger.Module
 import dagger.Provides
@@ -145,8 +147,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeSearchUseCase(countryCodeRepository: CountryCodeRepository): CountryCodeSearchUseCase {
-        return CountryCodeSearchUseCaseImpl(countryCodeRepository)
+    fun provideCountryCodeMapper(): CountryCodeUIMapper {
+        return CountryCodeUIMapperImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCountryCodeSearchUseCase(countryCodeRepository: CountryCodeRepository, countryCodeUIMapper: CountryCodeUIMapper): CountryCodeSearchUseCase {
+        return CountryCodeSearchUseCaseImpl(countryCodeRepository, countryCodeUIMapper)
     }
 
     @Singleton

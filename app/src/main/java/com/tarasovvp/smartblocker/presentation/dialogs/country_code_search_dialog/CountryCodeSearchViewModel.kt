@@ -2,9 +2,9 @@ package com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dial
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ class CountryCodeSearchViewModel @Inject constructor(
     private val countryCodeSearchUseCase: CountryCodeSearchUseCase
 ) : BaseViewModel(application) {
 
-    val countryCodeListLiveData = MutableLiveData<List<CountryCode>>()
+    val countryCodeListLiveData = MutableLiveData<List<CountryCodeUIModel>>()
 
     fun getCountryCodeList() {
         launch {

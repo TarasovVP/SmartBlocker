@@ -12,9 +12,11 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_COD
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.domain.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -47,7 +49,7 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
         }
     }
 
-    private fun setCountryCodeSearchList(countryCodeList: List<CountryCode>) {
+    private fun setCountryCodeSearchList(countryCodeList: List<CountryCodeUIModel>) {
         binding?.apply {
             countryCodeSearchAdapter?.countryCodeList = countryCodeList
             countryCodeEmpty.isVisible = countryCodeList.isEmpty()
