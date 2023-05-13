@@ -45,7 +45,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
         coEvery { useCase.getNumberDataList() } returns numberDataList
         viewModel.getNumberDataList()
         advanceUntilIdle()
-        val result = viewModel.numberDataListLiveData.getOrAwaitValue()
+        val result = viewModel.numberDataListLiveDataUIModel.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 

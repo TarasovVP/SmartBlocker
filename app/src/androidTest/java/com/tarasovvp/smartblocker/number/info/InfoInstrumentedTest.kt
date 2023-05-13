@@ -11,7 +11,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.clickLinkWithText
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.domain.entities.models.InfoData
+import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment
 import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages
 import com.tarasovvp.smartblocker.utils.extensions.parcelable

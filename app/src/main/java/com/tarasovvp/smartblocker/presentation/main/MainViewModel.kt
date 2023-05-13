@@ -6,7 +6,7 @@ import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.domain.entities.models.MainProgress
+import com.tarasovvp.smartblocker.presentation.ui_models.MainProgress
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase

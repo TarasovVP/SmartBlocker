@@ -21,7 +21,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class DetailsNumberDataUseCaseTest {
+class DetailsNumberDataUIModelUseCaseTest {
 
     @MockK
     private lateinit var countryCodeRepository: CountryCodeRepository

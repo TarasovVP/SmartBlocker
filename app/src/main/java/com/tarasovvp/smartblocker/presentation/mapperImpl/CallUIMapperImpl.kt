@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.mapperImpl
 
 import com.tarasovvp.smartblocker.domain.entities.models.Call
-import com.tarasovvp.smartblocker.domain.mappers.CallUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.CallUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero

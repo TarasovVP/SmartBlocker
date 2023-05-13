@@ -31,7 +31,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         coEvery { useCase.numberDataListByFilter(filter) } returns numberDataList
         viewModel.getQueryContactCallList(filter)
         advanceUntilIdle()
-        val result = viewModel.numberDataListLiveData.getOrAwaitValue()
+        val result = viewModel.numberDataListLiveDataUIModel.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 
@@ -42,7 +42,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         coEvery { useCase.filteredNumberDataList(filter, numberDataList, 0) } returns numberDataList
         viewModel.filteredNumberDataList(filter, numberDataList, 0)
         advanceUntilIdle()
-        val result = viewModel.filteredNumberDataListLiveData.getOrAwaitValue()
+        val result = viewModel.filteredNumberDataListLiveDataUIModel.getOrAwaitValue()
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 

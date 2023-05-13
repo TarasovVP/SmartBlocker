@@ -17,21 +17,13 @@ data class ContactUIModel(
     var number: String = String.EMPTY,
     var phoneNumberValue: String = String.EMPTY,
     var isPhoneNumberValid: Boolean? = false
-) : Parcelable, NumberData() {
+) : Parcelable, NumberDataUIModel() {
 
     @IgnoredOnParcel
     var trimmedPhone = number.digitsTrimmed()
 
-    fun isNameEmpty(): Boolean {
-        return name.isNullOrEmpty()
-    }
-
     fun placeHolder(context: Context): Drawable? {
         return if (name.nameInitial().isEmpty()) ContextCompat.getDrawable(context,
             R.drawable.ic_contact) else context.getInitialDrawable(name.nameInitial())
-    }
-
-    fun isFilterNullOrEmpty(): Boolean {
-        return filter.isEmpty()
     }
 }

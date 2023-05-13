@@ -4,29 +4,21 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
-import androidx.room.DatabaseView
-import androidx.room.Embedded
 import androidx.room.Ignore
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.domain.entities.models.Call
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
-@DatabaseView("SELECT log_calls.*, filters.* FROM log_calls LEFT JOIN filters ON (filters.filter = log_calls.phoneNumberValue AND filters.conditionType = 0) OR (log_calls.phoneNumberValue LIKE filters.filter || '%' AND filters.conditionType = 1) OR (log_calls.phoneNumberValue LIKE '%' || filters.filter || '%' AND filters.conditionType = 2) WHERE filters.filter = (SELECT filter FROM filters WHERE log_calls.phoneNumberValue LIKE filter || '%' OR log_calls.phoneNumberValue LIKE '%' || filter || '%' ORDER BY LENGTH(filter) DESC LIMIT 1) OR filters.filter IS NULL " +
-        "UNION SELECT filtered_calls.*, filters.* FROM filtered_calls LEFT JOIN filters ON (filters.filter = filtered_calls.phoneNumberValue AND filters.conditionType = 0) OR (filtered_calls.phoneNumberValue LIKE filters.filter || '%' AND filters.conditionType = 1) OR (filtered_calls.phoneNumberValue LIKE '%' || filters.filter || '%' AND filters.conditionType = 2) WHERE filters.filter = (SELECT filter FROM filters WHERE filtered_calls.phoneNumberValue LIKE filter || '%' OR filtered_calls.phoneNumberValue LIKE '%' || filter || '%' ORDER BY LENGTH(filter) DESC LIMIT 1) OR filters.filter IS NULL")
 @Parcelize
 open class CallWithFilterUIModel(
-    @Embedded
-    var call: Call? = Call(),
-    @Embedded
-    var filterWithCountryCode: FilterWithCountryCode? = FilterWithCountryCode()
-) : Parcelable, NumberData() {
+    var callUIModel: CallUIModel? = CallUIModel(),
+    var filterUIModel: FilterUIModel? = FilterUIModel()
+) : Parcelable, NumberDataUIModel() {
 
     @IgnoredOnParcel
     @Ignore
@@ -50,12 +42,12 @@ open class CallWithFilterUIModel(
 
     @Exclude
     fun isNameEmpty(): Boolean {
-        return call?.callName.isNullOrEmpty()
+        return callUIModel?.callName.isNullOrEmpty()
     }
 
     @Exclude
     fun callIcon(): Int {
-        return when (call?.type) {
+        return when (callUIModel?.type) {
             Constants.IN_COMING_CALL -> if (isCallFiltered()) R.drawable.ic_call_incoming_permitted else R.drawable.ic_call_incoming
             Constants.MISSED_CALL -> if (isCallFiltered()) R.drawable.ic_call_missed_permitted else R.drawable.ic_call_missed
             Constants.REJECTED_CALL -> if (isCallFiltered()) R.drawable.ic_call_rejected_permitted else R.drawable.ic_call_rejected
@@ -66,21 +58,21 @@ open class CallWithFilterUIModel(
 
     @Exclude
     fun timeFromCallDate(): String? {
-        return call?.callDate?.toDateFromMilliseconds(Constants.TIME_FORMAT)
+        return callUIModel?.callDate?.toDateFromMilliseconds(Constants.TIME_FORMAT)
     }
 
     @Exclude
     fun dateFromCallDate(): String? {
-        return call?.callDate?.toDateFromMilliseconds(Constants.DATE_FORMAT)
+        return callUIModel?.callDate?.toDateFromMilliseconds(Constants.DATE_FORMAT)
     }
 
     @Exclude
     fun placeHolder(context: Context): Drawable? {
-        return if (call?.callName.isNullOrEmpty()) ContextCompat.getDrawable(context,
-            R.drawable.ic_call) else if (call?.callName.nameInitial()
+        return if (callUIModel?.callName.isNullOrEmpty()) ContextCompat.getDrawable(context,
+            R.drawable.ic_call) else if (callUIModel?.callName.nameInitial()
                 .isEmpty()
         ) ContextCompat.getDrawable(context,
-            R.drawable.ic_contact) else context.getInitialDrawable(call?.callName.nameInitial())
+            R.drawable.ic_contact) else context.getInitialDrawable(callUIModel?.callName.nameInitial())
     }
 
     @Exclude
@@ -90,7 +82,7 @@ open class CallWithFilterUIModel(
 
     @Exclude
     fun isBlockedCall(): Boolean {
-        return call?.type == Constants.BLOCKED_CALL
+        return callUIModel?.type == Constants.BLOCKED_CALL
     }
 
     @Exclude
@@ -100,38 +92,38 @@ open class CallWithFilterUIModel(
 
     @Exclude
     fun isCallFiltered(): Boolean {
-        return call?.isFilteredCall.isTrue() || isFilteredCallDetails
+        return callUIModel?.isFilteredCall.isTrue() || isFilteredCallDetails
     }
 
     @Exclude
     fun isFilteredCallDelete(): Boolean {
-        return (isCallFiltered() || call?.number.orEmpty().isEmpty()) && isDeleteMode
+        return (isCallFiltered() || callUIModel?.number.orEmpty().isEmpty()) && isDeleteMode
     }
 
     @Exclude
     fun callFilterValue(): String {
         return when {
             isFilteredCallDetails -> dateTimeFromCallDate()
-            isExtract.not() && isCallFiltered() -> call?.filteredNumber.orEmpty()
+            isExtract.not() && isCallFiltered() -> callUIModel?.filteredNumber.orEmpty()
             //isExtract && isFilterNullOrEmpty().not() -> filter.orEmpty()
             else -> String.EMPTY
         }
     }
 
     @Exclude
-    fun callFilterTitle(filter: FilterWithCountryCode?): Int {
+    fun callFilterTitle(filter: FilterUIModel?): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
-                call?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isTrue() -> R.string.details_number_hidden_on
-                call?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isNotTrue() -> R.string.details_number_hidden_off
+                callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isTrue() -> R.string.details_number_hidden_on
+                callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isNotTrue() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {
             if (isCallFiltered()) {
                 when {
-                    call?.number.orEmpty().isEmpty() -> R.string.details_number_blocked_by_settings
+                    callUIModel?.number.orEmpty().isEmpty() -> R.string.details_number_blocked_by_settings
                     isPermittedCall() -> R.string.details_number_permitted_by_filter
                     else -> R.string.details_number_blocked_by_filter
                 }
@@ -144,14 +136,14 @@ open class CallWithFilterUIModel(
     @Exclude
     fun callFilterIcon(): Int? {
         return when {
-            isCallFiltered() && call?.filteredNumber.orEmpty().isEmpty() -> R.drawable.ic_settings_small
-            isCallFiltered() -> FilterCondition.values()[call?.filteredConditionType.orZero()].smallIcon(call?.type == Constants.BLOCKED_CALL)
+            isCallFiltered() && callUIModel?.filteredNumber.orEmpty().isEmpty() -> R.drawable.ic_settings_small
+            isCallFiltered() -> FilterCondition.values()[callUIModel?.conditionType.orZero()].smallIcon(callUIModel?.type == Constants.BLOCKED_CALL)
             else -> null
         }
     }
 
     @Exclude
-    fun callFilterTint(filter: FilterWithCountryCode?): Int {
+    fun callFilterTint(filter: FilterUIModel?): Int {
         return when {
             (isCallFiltered() && isBlockedCall()) || (isExtract && filter?.isBlocker().isTrue()) -> R.color.sunset
             (isCallFiltered() && isPermittedCall()) || (isExtract && filter?.isPermission().isTrue()) -> R.color.islamic_green

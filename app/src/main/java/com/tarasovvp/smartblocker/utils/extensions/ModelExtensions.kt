@@ -16,12 +16,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.*
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ASC
@@ -32,6 +28,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CA
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.PhoneNumber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -223,39 +220,39 @@ fun Context.numberDataFilteringText(filterIndexes: ArrayList<Int>): String {
     }
 }
 
-fun NumberData.highlightedSpanned(filter: Filter?, color: Int): SpannableString? {
+fun NumberDataUIModel.highlightedSpanned(filter: FilterUIModel?, color: Int): SpannableString? {
     when (this) {
-        is CallWithFilter -> {
+        is CallWithFilterUIModel -> {
             return when {
-                filter?.filter.isNullOrEmpty() -> call?.number.highlightedSpanned(
+                filter?.filter.isNullOrEmpty() -> callUIModel?.number.highlightedSpanned(
                     String.EMPTY,
                     null,
                     color
                 )
-                else -> call?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+                else -> callUIModel?.number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }
-        is ContactWithFilter -> {
+        is ContactWithFilterUIModel -> {
             return when {
-                filter?.filter.isNullOrEmpty() -> contact?.number.highlightedSpanned(
+                filter?.filter.isNullOrEmpty() -> contactUIModel?.number.highlightedSpanned(
                     String.EMPTY,
                     null,
                     color
                 )
-                filter?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contact?.isPhoneNumberValid.isTrue()
-                        && contact?.number?.startsWith(PLUS_CHAR)
-                    .isNotTrue() -> contact?.number.highlightedSpanned(
+                filter?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contactUIModel?.isPhoneNumberValid.isTrue()
+                        && contactUIModel?.number?.startsWith(PLUS_CHAR)
+                    .isNotTrue() -> contactUIModel?.number.highlightedSpanned(
                     filter?.filter,
                     filter?.countryCode,
                     color
                 )
-                filter?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contact?.isPhoneNumberValid.isTrue()
-                        && contact?.number?.startsWith(PLUS_CHAR)
-                    .isTrue() -> contact?.number.highlightedSpanned(filter.filter, null, color)
-                else -> contact?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+                filter?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contactUIModel?.isPhoneNumberValid.isTrue()
+                        && contactUIModel?.number?.startsWith(PLUS_CHAR)
+                    .isTrue() -> contactUIModel?.number.highlightedSpanned(filter.filter, null, color)
+                else -> contactUIModel?.number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }
-        is FilterWithCountryCode -> {
+        is FilterWithCountryCodeUIModel -> {
             return filter?.filter.highlightedSpanned(String.EMPTY, null, color)
         }
         else -> return null

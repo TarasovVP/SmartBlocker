@@ -5,7 +5,7 @@
     <data>
         <variable
             name="mainProgress"
-            type="com.tarasovvp.smartblocker.domain.entities.models.MainProgress" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.MainProgress" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

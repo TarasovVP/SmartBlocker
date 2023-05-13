@@ -9,7 +9,7 @@
 
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:gravity="center"
-                android:text="@{String.format(context.getString(filterWithCountryCode.filterAction.requestText), filterWithCountryCode.filter.filter, context.getString(filterWithCountryCode.conditionTypeName))}"
+                android:text="@{String.format(context.getString(filterWithCountryCode.filterAction.requestText), filterWithCountryCode.filterUIModel.filter, context.getString(filterWithCountryCode.conditionTypeName))}"
                 android:textSize="@dimen/text_size_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

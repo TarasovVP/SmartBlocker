@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
@@ -51,7 +51,7 @@ class DetailsFilterUseCaseTest {
         val filter = Filter(filter = TEST_FILTER)
         val callList = listOf(LogCallWithFilter().apply { call = LogCall().apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall().apply { number = "2"} })
         val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
-        val numberDataList = ArrayList<NumberData>().apply {
+        val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
             addAll(callList)
             addAll(contactList)
         }.sortedBy {
@@ -60,7 +60,7 @@ class DetailsFilterUseCaseTest {
         coEvery { logCallRepository.allCallWithFiltersByFilter(filter.filter) } returns callList
         coEvery { contactRepository.allContactsWithFiltersByFilter(filter.filter) } returns contactList
         val result = detailsFilterUseCase.numberDataListByFilter(filter)
-        assertEquals(numberDataList, result)
+        assertEquals(numberDataUIModelList, result)
     }
 
     @Test

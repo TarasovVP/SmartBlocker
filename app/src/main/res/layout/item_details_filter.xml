@@ -10,7 +10,7 @@
             type="Boolean" />
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -73,7 +73,7 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="@color/text_color_grey"
-                android:text="@{filterWithCountryCode.filter == null ? filterWithCountryCode.filter.filter : context.getString(filterWithCountryCode.conditionTypeName)}"
+                android:text="@{filterWithCountryCode.filterUIModel == null ? filterWithCountryCode.filterUIModel.filter : context.getString(filterWithCountryCode.conditionTypeName)}"
                 app:layout_constraintEnd_toEndOf="@+id/item_details_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_details_filter_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_details_filter_value"
@@ -109,7 +109,7 @@
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/text_color_grey"
-                android:text="@{filterWithCountryCode.filter.created == 0 ? `` : String.format(@string/filter_action_created, filterWithCountryCode.filterCreatedDate)}"
+                android:text="@{filterWithCountryCode.filterUIModel.created == 0 ? `` : String.format(@string/filter_action_created, filterWithCountryCode.filterCreatedDate)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_details_filter_details"
                 app:layout_constraintTop_toTopOf="@+id/item_details_filter_details"

@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_DATA_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
-import com.tarasovvp.smartblocker.domain.entities.models.HeaderDataItem
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import kotlinx.parcelize.Parcelize
 
-abstract class BaseAdapter<D : NumberData> :
+abstract class BaseAdapter<D : NumberDataUIModel> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var mData: ArrayList<NumberData>? = null
+    private var mData: ArrayList<NumberDataUIModel>? = null
 
     override fun getItemViewType(position: Int): Int {
         return if (mData?.get(position) is HeaderData) HEADER_TYPE else NUMBER_DATA_TYPE
@@ -48,7 +48,7 @@ abstract class BaseAdapter<D : NumberData> :
     fun setHeaderAndData(dataList: List<D>, header: HeaderDataItem) {
         mData = mData ?: ArrayList()
         if (header.header.isNotEmpty()) mData?.add(header)
-        mData?.addAll(dataList as Collection<NumberData>)
+        mData?.addAll(dataList as Collection<NumberDataUIModel>)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -65,6 +65,6 @@ abstract class BaseAdapter<D : NumberData> :
     }
 
     @Parcelize
-    open class HeaderData : NumberData(), Parcelable
+    open class HeaderData : NumberDataUIModel(), Parcelable
 
 }

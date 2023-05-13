@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.mapperImpl
 
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.mappers.FilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 
@@ -9,7 +9,7 @@ class FilterUIMapperImpl : FilterUIMapper {
 
     override fun mapToUIModel(from: Filter): FilterUIModel {
         return FilterUIModel(from.filter, from.conditionType.orZero(), from.filterType.orZero(),
-            from.filterName.orEmpty(), from.countryCode.orEmpty(), from.country.orEmpty(), from.created)
+            from.filterName.orEmpty(), from.countryCode.orEmpty(), from.country.orEmpty(), from.created ?: 0)
     }
 
     override fun mapFromUIModel(to: FilterUIModel): Filter {

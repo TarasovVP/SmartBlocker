@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_COD
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.domain.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog

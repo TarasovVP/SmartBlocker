@@ -26,7 +26,7 @@ data class FilterUIModel(
     var countryCode: String = String.EMPTY,
     var country: String = String.EMPTY,
     var created: Long = 0
-) : Parcelable, NumberData() {
+) : Parcelable, NumberDataUIModel() {
 
     @IgnoredOnParcel
     var filteredContacts: Int = 0

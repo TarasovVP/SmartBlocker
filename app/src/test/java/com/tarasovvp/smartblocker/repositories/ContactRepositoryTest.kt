@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.data.database.dao.ContactDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.ContactRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
@@ -137,8 +137,8 @@ class ContactRepositoryTest {
     @Test
     fun filteredNumberDataListTest() = runBlocking {
         val filter = Filter(filter = "123", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)
-        val numberDataList = arrayListOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, LogCallWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, NumberData().apply { Contact().apply { number = TEST_NUMBER }})
-        val result = contactRepository.filteredNumberDataList(filter, numberDataList, 0)
-        assertEquals(arrayListOf(numberDataList[1], numberDataList[2], numberDataList[0]), result)
+        val numberDataUIModelList = arrayListOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, LogCallWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, NumberDataUIModel().apply { Contact().apply { number = TEST_NUMBER }})
+        val result = contactRepository.filteredNumberDataList(filter, numberDataUIModelList, 0)
+        assertEquals(arrayListOf(numberDataUIModelList[1], numberDataUIModelList[2], numberDataUIModelList[0]), result)
     }
 }

@@ -9,16 +9,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.domain.entities.models.InfoData
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
@@ -26,6 +20,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.PhoneNumber
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,24 +40,25 @@ class DetailsNumberDataFragment :
 
     private var filtersScreen: SingleDetailsFragment? = null
     private var filteredCallsScreen: SingleDetailsFragment? = null
-    private var filterWithCountryCode: FilterWithCountryCode? = null
+    private var filterWithCountryCode: FilterWithCountryCodeUIModel? = null
     private var isHiddenCall = false
 
     override fun initViews() {
         binding?.apply {
-            contactWithFilter = if (args.numberData is CallWithFilter) {
-                val callWithFilter = args.numberData as? CallWithFilter
-                isHiddenCall = callWithFilter?.call?.callId.orZero() > 0
-                        && callWithFilter?.call?.number?.isEmpty().isTrue()
-                ContactWithFilter(filterWithCountryCode = callWithFilter?.filterWithCountryCode,
-                    contact = Contact(name = getString(R.string.details_number_from_call_log),
-                    photoUrl = callWithFilter?.call?.photoUrl,
-                    number = callWithFilter?.call?.number.orEmpty()))
+            contactWithFilter = if (args.numberData is CallWithFilterUIModel) {
+                val callWithFilter = args.numberData as? CallWithFilterUIModel
+                isHiddenCall = callWithFilter?.callUIModel?.callId.orZero() > 0
+                        && callWithFilter?.callUIModel?.number?.isEmpty().isTrue()
+                ContactWithFilterUIModel(filterUIModel = callWithFilter?.filterUIModel,
+                    contactUIModel = ContactUIModel(name = getString(R.string.details_number_from_call_log),
+                    photoUrl = callWithFilter?.callUIModel?.photoUrl.orEmpty(),
+                    number = callWithFilter?.callUIModel?.number.orEmpty())
+                )
             } else {
-                args.numberData as ContactWithFilter
+                args.numberData as ContactWithFilterUIModel
             }
             detailsNumberDataItemContact.root.isEnabled = false
-            context?.let { contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned(contactWithFilter?.filterWithCountryCode?.filter, ContextCompat.getColor(it, R.color.sunset)) }
+            context?.let { contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned(contactWithFilter?.filterUIModel, ContextCompat.getColor(it, R.color.sunset)) }
             executePendingBindings()
             if (isHiddenCall) setHiddenCallScreen()
         }
@@ -89,12 +85,12 @@ class DetailsNumberDataFragment :
     }
 
     override fun createAdapter() {
-        filtersScreen = SingleDetailsFragment.newInstance(NumberData::class.simpleName.orEmpty())
+        filtersScreen = SingleDetailsFragment.newInstance(NumberDataUIModel::class.simpleName.orEmpty())
         filtersScreen?.setNumberDataClick(object : NumberDataClickListener {
-            override fun onNumberDataClick(numberData: NumberData) {
+            override fun onNumberDataClick(numberDataUIModel: NumberDataUIModel) {
                 findNavController().navigate(
                     DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                        filterWithCountryCode = numberData as FilterWithCountryCode
+                        filterWithCountryCode = numberDataUIModel as FilterWithCountryCodeUIModel
                     )
                 )
             }
@@ -144,16 +140,17 @@ class DetailsNumberDataFragment :
     }
 
     override fun getData() {
-        viewModel.filterListWithNumber(binding?.contactWithFilter?.contact?.phoneNumberValue.orEmpty())
-        viewModel.filteredCallsByNumber(binding?.contactWithFilter?.contact?.phoneNumberValue.orEmpty())
+        viewModel.filterListWithNumber(binding?.contactWithFilter?.contactUIModel?.phoneNumberValue.orEmpty())
+        viewModel.filteredCallsByNumber(binding?.contactWithFilter?.contactUIModel?.phoneNumberValue.orEmpty())
     }
 
     private fun createFilter(conditionIndex: Int) {
-        val number = binding?.contactWithFilter?.contact?.number.orEmpty()
-        filterWithCountryCode = FilterWithCountryCode(filter = Filter(
+        val number = binding?.contactWithFilter?.contactUIModel?.number.orEmpty()
+        filterWithCountryCode = FilterWithCountryCodeUIModel(filterUIModel = FilterUIModel(
             filter = number,
             conditionType = conditionIndex,
-            filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION))
+            filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION)
+        )
         val phoneNumber = if (phoneNumber.getPhoneNumber(number, String.EMPTY).isNull()) phoneNumber.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
         else phoneNumber.getPhoneNumber(number, String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
@@ -233,15 +230,15 @@ class DetailsNumberDataFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                filtersScreen?.updateNumberDataList(filterList)
+                filtersScreen?.updateNumberDataList(ArrayList(filterList))
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
-                filteredCallsScreen?.updateNumberDataList(filteredCallList, true)
+                filteredCallsScreen?.updateNumberDataList(ArrayList(filteredCallList), true)
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
-                filterWithCountryCode?.filter?.country = countryCode.country
-                filterWithCountryCode?.countryCode = countryCode
-                filterWithCountryCode?.filter?.filter = filterWithCountryCode?.filterToInput().orEmpty()
+                filterWithCountryCode?.filterUIModel?.country = countryCode.country
+                filterWithCountryCode?.countryCodeUIModel = countryCode
+                filterWithCountryCode?.filterUIModel?.filter = filterWithCountryCode?.filterToInput().orEmpty()
                 startAddFilterScreen()
             }
         }

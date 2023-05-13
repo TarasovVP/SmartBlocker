@@ -19,7 +19,7 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -43,12 +43,12 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     private var fragment: CreateFilterFragment? = null
     private var filterWithCountryCode: FilterWithCountryCode? = null
-    private var numberDataList = arrayListOf<NumberData>()
+    private var numberDataUIModelList = arrayListOf<NumberDataUIModel>()
 
     @Before
     override fun setUp() {
         super.setUp()
-        numberDataList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else TestUtils.numberDataList()
+        numberDataUIModelList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else TestUtils.numberDataList()
         val filterCondition = when(this) {
             is CreateFilterConditionFullInstrumentedTest -> FilterCondition.FILTER_CONDITION_FULL.ordinal
             is CreateFilterConditionStartInstrumentedTest -> FilterCondition.FILTER_CONDITION_START.ordinal
@@ -61,7 +61,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
             fragment = this as? CreateFilterFragment
         }
         onView(isRoot()).perform(waitFor(2000))
-        fragment?.viewModel?.filteredNumberDataListLiveData?.postValue(numberDataList)
+        fragment?.viewModel?.filteredNumberDataListLiveDataUIModel?.postValue(numberDataUIModelList)
         filterWithCountryCode = fragment?.binding?.filterWithCountryCode
     }
 
@@ -175,19 +175,19 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkCreateFilterNumberList() {
-        if (numberDataList.isEmpty()) {
+        if (numberDataUIModelList.isEmpty()) {
             onView(withId(R.id.create_filter_empty_list)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.create_filter_number_list))
                 .check(matches(isDisplayed()))
-                .check(matches(hasChildCount(numberDataList.size)))
+                .check(matches(hasChildCount(numberDataUIModelList.size)))
         }
     }
 
     @Test
     fun checkCreateFilterListEmpty() {
         onView(withId(R.id.create_filter_empty_list)).apply {
-            if (numberDataList.isEmpty()) {
+            if (numberDataUIModelList.isEmpty()) {
                 check(matches(isDisplayed()))
                 onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_CREATE_FILTER.description())))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))

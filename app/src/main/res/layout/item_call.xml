@@ -9,7 +9,7 @@
 
         <variable
             name="callWithFilter"
-            type="com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -37,7 +37,7 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageUrl="@{callWithFilter.call.photoUrl}"
+                app:imageUrl="@{callWithFilter.callUIModel.photoUrl}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_number"
@@ -48,8 +48,8 @@
                 android:id="@+id/item_call_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                android:visibility="@{!callWithFilter.extract || callWithFilter.filterWithCountryCode.filter.filterType == 0 ? View.GONE : View.VISIBLE}"
-                app:imageResource="@{callWithFilter.filterWithCountryCode.filterTypeIcon}"
+                android:visibility="@{!callWithFilter.extract || callWithFilter.filterUIModel.filterType == 0 ? View.GONE : View.VISIBLE}"
+                app:imageResource="@{callWithFilter.filterUIModel.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
 
@@ -58,7 +58,7 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@{callWithFilter.call.number.empty ? @string/details_number_hidden : callWithFilter.highlightedSpanned}"
+                android:text="@{callWithFilter.callUIModel.number.empty ? @string/details_number_hidden : callWithFilter.highlightedSpanned}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_time"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
@@ -88,7 +88,7 @@
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:mainText="@{callWithFilter.nameEmpty ? callWithFilter.isExtract ? @string/details_number_from_call_log : @string/details_number_not_from_contacts : callWithFilter.call.callName}"
+                app:mainText="@{callWithFilter.nameEmpty ? callWithFilter.isExtract ? @string/details_number_from_call_log : @string/details_number_not_from_contacts : callWithFilter.callUIModel.callName}"
                 app:searchText="@{callWithFilter.searchText}" />
 
             <ImageView
@@ -126,8 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{callWithFilter.callFilterTitle(callWithFilter.filterWithCountryCode)}"
-                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterWithCountryCode))}"
+                android:text="@{callWithFilter.callFilterTitle(callWithFilter.filterUIModel)}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterUIModel))}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_divider" />
@@ -140,7 +140,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{callWithFilter.callFilterValue}"
-                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterWithCountryCode))}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterUIModel))}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"

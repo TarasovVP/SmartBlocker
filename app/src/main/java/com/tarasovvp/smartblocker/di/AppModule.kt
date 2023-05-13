@@ -10,10 +10,6 @@ import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.data.repositoryImpl.*
-import com.tarasovvp.smartblocker.domain.mappers.CallUIMapper
-import com.tarasovvp.smartblocker.domain.mappers.ContactUIMapper
-import com.tarasovvp.smartblocker.domain.mappers.CountryCodeUIMapper
-import com.tarasovvp.smartblocker.domain.mappers.FilterUIMapper
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
@@ -41,10 +37,8 @@ import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
-import com.tarasovvp.smartblocker.presentation.mapperImpl.CallUIMapperImpl
-import com.tarasovvp.smartblocker.presentation.mapperImpl.ContactUIMapperImpl
-import com.tarasovvp.smartblocker.presentation.mapperImpl.CountryCodeUIMapperImpl
-import com.tarasovvp.smartblocker.presentation.mapperImpl.FilterUIMapperImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.*
+import com.tarasovvp.smartblocker.presentation.mappers.*
 import com.tarasovvp.smartblocker.utils.PhoneNumber
 import dagger.Module
 import dagger.Provides
@@ -159,8 +153,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeSearchUseCase(countryCodeRepository: CountryCodeRepository, countryCodeUIMapper: CountryCodeUIMapper): CountryCodeSearchUseCase {
-        return CountryCodeSearchUseCaseImpl(countryCodeRepository, countryCodeUIMapper)
+    fun provideCountryCodeSearchUseCase(countryCodeRepository: CountryCodeRepository): CountryCodeSearchUseCase {
+        return CountryCodeSearchUseCaseImpl(countryCodeRepository)
     }
 
     @Singleton
@@ -179,6 +173,12 @@ object AppModule {
     @Provides
     fun provideFilterUIMapper(): FilterUIMapper {
         return FilterUIMapperImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFilterWithCountryCodeUIMapper(filterUIMapper: FilterUIMapper, countryCodeUIMapper: CountryCodeUIMapper): FilterWithCountryCodeUIMapper {
+        return FilterWithCountryCodeUIMapperImpl(filterUIMapper, countryCodeUIMapper)
     }
 
     @Singleton
@@ -261,6 +261,12 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideCallWithFilterUIMapper(callUIMapper: CallUIMapper, filterUIMapper: FilterUIMapper): CallWithFilterUIMapper {
+        return CallWithFilterUIMapperImpl(callUIMapper, filterUIMapper)
+    }
+
+    @Singleton
+    @Provides
     fun provideListCallUseCase(
         logCallRepository: LogCallRepository,
         filteredCallRepository: FilteredCallRepository,
@@ -285,6 +291,12 @@ object AppModule {
     @Provides
     fun provideContactUIMapper(): ContactUIMapper {
         return ContactUIMapperImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideContactWithFilterUIMapper(contactUIMapper: ContactUIMapper, filterUIMapper: FilterUIMapper): ContactWithFilterUIMapper {
+        return ContactWithFilterUIMapperImpl(contactUIMapper, filterUIMapper)
     }
 
     @Singleton

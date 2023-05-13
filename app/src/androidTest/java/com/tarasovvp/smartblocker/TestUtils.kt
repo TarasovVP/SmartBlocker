@@ -30,7 +30,7 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
@@ -340,7 +340,7 @@ object TestUtils {
         ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))))
 
-    fun filteredCallList() = arrayListOf<NumberData>(
+    fun filteredCallList() = arrayListOf<NumberDataUIModel>(
         CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
         number = "12345"
         type = OUT_GOING_CALL
@@ -361,7 +361,7 @@ object TestUtils {
             FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA")))
     )
 
-    fun filterList() = arrayListOf<NumberData>(FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { filteredContacts = 3
+    fun filterList() = arrayListOf<NumberDataUIModel>(FilterWithCountryCode(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { filteredContacts = 3
         created = 1681315250919}, countryCode = CountryCode("UA")),
         FilterWithCountryCode(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply {
             filteredContacts = 1

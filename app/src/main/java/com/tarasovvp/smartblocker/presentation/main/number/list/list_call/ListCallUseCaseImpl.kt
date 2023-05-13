@@ -8,6 +8,8 @@ import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -32,20 +34,13 @@ class ListCallUseCaseImpl @Inject constructor(
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
-                    && (callWithFilter.isBlockedCall() && filterIndexes.contains(
+                    && (callWithFilter.filterWithCountryCode?.filter?.filterType == BLOCKER && filterIndexes.contains(
                 NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
-                    || callWithFilter.isPermittedCall() && filterIndexes.contains(
+                    || callWithFilter.filterWithCountryCode?.filter?.filterType == PERMISSION && filterIndexes.contains(
                 NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
                     || filterIndexes.isEmpty())
         }
     }
-
-    override suspend fun getHashMapFromCallList(callList: List<CallWithFilter>) =
-        withContext(Dispatchers.Default) {
-            callList.sortedByDescending {
-                it.call?.callDate
-            }.groupBy { it.dateFromCallDate().toString() }
-        }
 
     override suspend fun deleteCallList(filteredCallIdList: List<Int>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
         if (firebaseAuth.currentUser.isNotNull()) {

@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.domain.mappers
+package com.tarasovvp.smartblocker.presentation.mappers
 
 interface BaseMapper<From, To> {
 

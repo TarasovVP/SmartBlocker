@@ -9,7 +9,7 @@
 
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

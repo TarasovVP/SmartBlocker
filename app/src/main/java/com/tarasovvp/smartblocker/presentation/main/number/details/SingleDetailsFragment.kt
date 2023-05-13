@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
 
 class SingleDetailsFragment :
@@ -19,11 +19,11 @@ class SingleDetailsFragment :
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataClickListener: NumberDataClickListener? = null
 
-    fun updateNumberDataList(numberDataList: ArrayList<NumberData>, isFilteredCallItemDisable: Boolean = false) {
+    fun updateNumberDataList(numberDataUIModelList: ArrayList<NumberDataUIModel>, isFilteredCallItemDisable: Boolean = false) {
         val numberType = arguments?.getString(NUMBER_TYPE)
         binding?.apply {
             singleDetailsList.adapter =
-                numberDataAdapter ?: NumberDataAdapter(numberDataList) { numberData ->
+                numberDataAdapter ?: NumberDataAdapter(numberDataUIModelList) { numberData ->
                     numberDataClickListener?.onNumberDataClick(numberData)
                 }.apply {
                     this.isFilteredCallDetails = numberType == CallWithFilter::class.simpleName
@@ -31,10 +31,10 @@ class SingleDetailsFragment :
                 }
             singleDetailsListEmpty.setDescription( when (numberType) {
                 Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description()
-                NumberData::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description()
+                NumberDataUIModel::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description()
                 else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description()
             })
-            singleDetailsListEmpty.isVisible = numberDataList.isEmpty()
+            singleDetailsListEmpty.isVisible = numberDataUIModelList.isEmpty()
         }
     }
 

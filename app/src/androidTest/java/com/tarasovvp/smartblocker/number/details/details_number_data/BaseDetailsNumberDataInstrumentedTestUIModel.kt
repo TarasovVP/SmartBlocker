@@ -22,7 +22,7 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
@@ -41,7 +41,7 @@ import org.junit.Test
 
 @androidx.test.filters.Suppress
 @HiltAndroidTest
-open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
+open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() {
 
     private var contactWithFilter: ContactWithFilter? = null
     private var isHiddenCall = false
@@ -49,7 +49,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        isHiddenCall = this is DetailsNumberDataHiddenInstrumentedTest
+        isHiddenCall = this is DetailsNumberDataUIModelHiddenInstrumentedTest
         val numberData = if (isHiddenCall) CallWithFilter(
             FilteredCall(2).apply { callId = 5
                 callName = "a Name"
@@ -70,12 +70,12 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsNumberDataFragment)
             Navigation.setViewNavController(requireView(), navController)
-            val numberDataFromBundle = arguments?.parcelable<NumberData>("numberData")
-            contactWithFilter = if (numberDataFromBundle is CallWithFilter) ContactWithFilter(filterWithCountryCode = numberDataFromBundle.filterWithCountryCode,
+            val numberDataUIModelFromBundle = arguments?.parcelable<NumberDataUIModel>("numberData")
+            contactWithFilter = if (numberDataUIModelFromBundle is CallWithFilter) ContactWithFilter(filterWithCountryCode = numberDataUIModelFromBundle.filterWithCountryCode,
                 contact = Contact(name = getString(R.string.details_number_from_call_log),
-                    photoUrl = numberDataFromBundle.call?.photoUrl,
-                    number = numberDataFromBundle.call?.number.orEmpty(),
-                    filterValue = numberDataFromBundle.filterWithCountryCode?.filter?.filter.orEmpty())) else numberDataFromBundle as ContactWithFilter
+                    photoUrl = numberDataUIModelFromBundle.call?.photoUrl,
+                    number = numberDataUIModelFromBundle.call?.number.orEmpty(),
+                    filterValue = numberDataUIModelFromBundle.filterWithCountryCode?.filter?.filter.orEmpty())) else numberDataUIModelFromBundle as ContactWithFilter
             (this as? DetailsNumberDataFragment)?.apply {
                 viewModel.filterListLiveData.postValue(filterList())
                 viewModel.filteredCallListLiveData.postValue(filteredCallList())

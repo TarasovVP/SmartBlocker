@@ -8,7 +8,7 @@
 
         <variable
             name="headerDataItem"
-            type="com.tarasovvp.smartblocker.domain.entities.models.HeaderDataItem" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem" />
 
     </data>
 

@@ -31,7 +31,7 @@ open class CallUIModel(
     var isFilteredCall: Boolean = false,
     var filteredNumber: String = String.EMPTY,
     var conditionType: Int = DEFAULT_FILTER,
-) : Parcelable, NumberData() {
+) : Parcelable, NumberDataUIModel() {
 
     @IgnoredOnParcel
     var isCheckedForDelete = false
@@ -94,11 +94,6 @@ open class CallUIModel(
     }
 
     @Exclude
-    fun isFilterNullOrEmpty(): Boolean {
-        return filter.isNullOrEmpty().isTrue()
-    }
-
-    @Exclude
     fun isCallFiltered(): Boolean {
         return isFilteredCall.isTrue() || isFilteredCallDetails
     }
@@ -108,15 +103,7 @@ open class CallUIModel(
         return (isCallFiltered() || number.isEmpty()) && isDeleteMode
     }
 
-    @Exclude
-    fun callFilterValue(): String {
-        return when {
-            isFilteredCallDetails -> dateTimeFromCallDate()
-            isExtract.not() && isCallFiltered() -> filteredNumber
-            isExtract && isFilterNullOrEmpty().not() -> filter.orEmpty()
-            else -> String.EMPTY
-        }
-    }
+
 
     @Exclude
     fun callFilterTitle(filter: Filter?): Int {

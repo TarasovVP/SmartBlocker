@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
@@ -25,7 +25,7 @@ abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
 
     abstract fun checkListItem(position: Int)
 
-    protected var dataList = arrayListOf<NumberData>()
+    protected var dataList = arrayListOf<NumberDataUIModel>()
 
     @Test
     fun checkSingleDetailsList() {
@@ -73,7 +73,7 @@ abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
                 check(matches(isDisplayed()))
                 val descriptionText = when(this@BaseSingleDetailsInstrumentedTest) {
                     is SingleDetailsFiltersInstrumentedTest -> EmptyState.EMPTY_STATE_NUMBERS.descriptionRes()
-                    is SingleDetailsNumberDataInstrumentedTest -> EmptyState.EMPTY_STATE_FILTERS.descriptionRes()
+                    is SingleDetailsNumberDataInstrumentedTestUIModel -> EmptyState.EMPTY_STATE_FILTERS.descriptionRes()
                     else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.descriptionRes()
                 }
                 onView(withId(R.id.empty_state_description)).check(matches(withText(descriptionText)))

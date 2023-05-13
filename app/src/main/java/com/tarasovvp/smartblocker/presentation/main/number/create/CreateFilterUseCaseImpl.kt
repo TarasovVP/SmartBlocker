@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
@@ -28,35 +28,11 @@ class CreateFilterUseCaseImpl @Inject constructor(
 
     override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
 
-    override suspend fun getNumberDataList(): ArrayList<NumberData> {
-            val contacts =  contactRepository.allContactWithFilters()
-            val calls =  logCallRepository.allDistinctCallsWithFilter()
-            val numberDataList = ArrayList<NumberData>().apply {
-                addAll(contacts)
-                addAll(calls.filter { it.call?.number.isNullOrEmpty().not() })
-                sortBy {
-                    if (it is ContactWithFilter) it.contact?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else if (it is CallWithFilter) it.call?.number?.replace(PLUS_CHAR.toString(), String.EMPTY) else String.EMPTY
-                }
-            }
-            return numberDataList
-    }
+    override suspend fun allCallsByFilter(filter: String) = logCallRepository.allCallWithFiltersByFilter(filter)
+
+    override suspend fun allContactsByFilter(filter: String) = contactRepository.allContactsWithFiltersByFilter(filter)
 
     override suspend fun getFilter(filter: String) = filterRepository.getFilter(filter)
-
-    override suspend fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int): ArrayList<NumberData> {
-        val filteredList = arrayListOf<NumberData>()
-        val supposedFilteredList = arrayListOf<NumberData>()
-        numberDataList.forEach { numberData ->
-            numberData.highlightedSpanned = numberData.highlightedSpanned(filterWithCountryCode?.filter, color)
-            if (numberData is ContactWithFilter && numberData.contact?.number?.startsWith(PLUS_CHAR).isTrue().not()) {
-                supposedFilteredList.add(numberData)
-            } else {
-                filteredList.add(numberData)
-            }
-        }
-        filteredList.addAll(supposedFilteredList)
-        return filteredList
-    }
 
     override suspend fun createFilter(filter: Filter,  isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
         if (firebaseAuth.currentUser.isNotNull()) {

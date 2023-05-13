@@ -4,12 +4,18 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithCountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,41 +23,56 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsFilterViewModel @Inject constructor(
     private val application: Application,
-    private val detailsFilterUseCase: DetailsFilterUseCase
+    private val detailsFilterUseCase: DetailsFilterUseCase,
+    private val filterWithCountryCodeUIMapper: FilterWithCountryCodeUIMapper,
+    private val callWithFilterUIMapper: CallWithFilterUIMapper,
+    private val contactWithFilterUIMapper: ContactWithFilterUIMapper
 ) : BaseViewModel(application) {
 
-    val numberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filteredCallListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filterActionLiveData = MutableLiveData<FilterWithCountryCode>()
+    val numberDataListLiveDataUIModel = MutableLiveData<ArrayList<NumberDataUIModel>>()
+    val filteredCallListLiveData = MutableLiveData<ArrayList<NumberDataUIModel>>()
+    val filterActionLiveData = MutableLiveData<FilterWithCountryCodeUIModel>()
 
-    fun getQueryContactCallList(filter: Filter) {
+    fun getQueryContactCallList(filter: String) {
         showProgress()
         launch {
-            val numberDataList = detailsFilterUseCase.numberDataListByFilter(filter)
-            numberDataListLiveData.postValue(numberDataList)
-        }
-    }
-
-    fun filteredNumberDataList(filter: Filter?, numberDataList: ArrayList<NumberData>, color: Int) {
-        launch {
-            val filteredNumberDataList = detailsFilterUseCase.filteredNumberDataList(filter, numberDataList, color)
-            filteredNumberDataListLiveData.postValue(filteredNumberDataList)
-            hideProgress()
+            val calls =  detailsFilterUseCase.allCallsByFilter(filter)
+            val contacts =  detailsFilterUseCase.allContactsByFilter(filter)
+            val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
+                addAll(callWithFilterUIMapper.mapToUIModelList(calls))
+                addAll(contactWithFilterUIMapper.mapToUIModelList(contacts))
+                sortWith(compareBy(
+                    {
+                        when (it) {
+                            is ContactWithFilterUIModel -> it.contactUIModel?.number?.startsWith(PLUS_CHAR)
+                            is CallWithFilterUIModel -> it.callUIModel?.number?.startsWith(PLUS_CHAR)
+                            else -> false
+                        }
+                    },
+                    {
+                        when (it) {
+                            is ContactWithFilterUIModel -> it.contactUIModel?.number
+                            is CallWithFilterUIModel -> it.callUIModel?.number
+                            else -> String.EMPTY
+                        }
+                    }
+                ))
+            }
+            numberDataListLiveDataUIModel.postValue(numberDataUIModelList)
         }
     }
 
     fun filteredCallsByFilter(filter: String) {
         launch {
             val filteredCallList = detailsFilterUseCase.allFilteredCallsByFilter(filter)
-            filteredCallListLiveData.postValue(ArrayList(filteredCallList))
+            filteredCallListLiveData.postValue(ArrayList(callWithFilterUIMapper.mapToUIModelList(filteredCallList)))
         }
     }
 
-    fun deleteFilter(filterWithCountryCode: FilterWithCountryCode?) {
+    fun deleteFilter(filterWithCountryCode: FilterWithCountryCodeUIModel) {
         showProgress()
         launch {
-            filterWithCountryCode?.filter?.let { filter ->
+            filterWithCountryCodeUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 detailsFilterUseCase.deleteFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
@@ -63,10 +84,10 @@ class DetailsFilterViewModel @Inject constructor(
         }
     }
 
-    fun updateFilter(filterWithCountryCode: FilterWithCountryCode?) {
+    fun updateFilter(filterWithCountryCode: FilterWithCountryCodeUIModel) {
         showProgress()
         launch {
-            filterWithCountryCode?.filter?.let { filter ->
+            filterWithCountryCodeUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 detailsFilterUseCase.updateFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }

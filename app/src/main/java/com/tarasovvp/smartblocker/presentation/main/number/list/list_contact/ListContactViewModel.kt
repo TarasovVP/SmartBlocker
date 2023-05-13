@@ -2,9 +2,10 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,40 +13,37 @@ import javax.inject.Inject
 @HiltViewModel
 class ListContactViewModel @Inject constructor(
     application: Application,
-    private val listContactUseCase: ListContactUseCase
+    private val listContactUseCase: ListContactUseCase,
+    private val contactWithFilterUIMapper: ContactWithFilterUIMapper
 ) : BaseViewModel(application) {
 
-    val contactListLiveData = MutableLiveData<List<ContactWithFilter>>()
-    val filteredContactListLiveData = MutableLiveData<List<ContactWithFilter>>()
-    val contactHashMapLiveData = MutableLiveData<Map<String, List<ContactWithFilter>>?>()
+    val contactListLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
+    val filteredContactListLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
+    val contactHashMapLiveData = MutableLiveData<Map<String, List<ContactWithFilterUIModel>>>()
 
     fun getContactsWithFilters(refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
             val contactList = listContactUseCase.allContactWithFilters()
-            contactListLiveData.postValue(contactList)
+            contactListLiveData.postValue(contactWithFilterUIMapper.mapToUIModelList(contactList))
             hideProgress()
         }
     }
 
-    fun getFilteredContactList(contactList: List<ContactWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>) {
+    fun getFilteredContactList(contactList: List<ContactWithFilterUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
-            val filteredContactList = listContactUseCase.getFilteredContactList(contactList, searchQuery, filterIndexes)
-            filteredContactListLiveData.postValue(filteredContactList)
+            val filteredContactList = listContactUseCase.getFilteredContactList(contactWithFilterUIMapper.mapFromUIModelList(contactList), searchQuery, filterIndexes)
+            filteredContactListLiveData.postValue(contactWithFilterUIMapper.mapToUIModelList(filteredContactList))
             hideProgress()
         }
     }
 
-    fun getHashMapFromContactList(contactList: List<ContactWithFilter>, refreshing: Boolean) {
+    fun getHashMapFromContactList(contactList: List<ContactWithFilterUIModel>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
         launch {
             val contactsWithFilters = contactList.groupBy {
-                if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
-            }/*.mapValues { (_, contactsWithFilterList) ->
-                contactsWithFilterList.map { contactWithFilter ->
-                    contactWithFilterMapper.mapToUIModel(contactWithFilter)
-                }
-            }*/
+                if (it.contactUIModel?.name.isNullOrEmpty()) String.EMPTY else it.contactUIModel?.name?.get(0).toString()
+            }
             contactHashMapLiveData.postValue(contactsWithFilters)
             hideProgress()
         }

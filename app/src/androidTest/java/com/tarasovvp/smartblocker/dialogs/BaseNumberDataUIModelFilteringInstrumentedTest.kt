@@ -28,7 +28,7 @@ import org.junit.Test
 
 @androidx.test.filters.Suppress
 @HiltAndroidTest
-open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
+open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest() {
 
     private var fragment: Fragment? = null
     private var previousDestination = 0
@@ -37,8 +37,8 @@ open class BaseNumberDataFilteringInstrumentedTest: BaseInstrumentedTest() {
     override fun setUp() {
         super.setUp()
         val previousDestinationId = when(this) {
-            is CallNumberDataFilteringInstrumentedTest -> R.id.listCallFragment
-            is ContactNumberDataFilteringInstrumentedTest -> R.id.listContactFragment
+            is CallNumberDataUIModelFilteringInstrumentedTest -> R.id.listCallFragment
+            is ContactNumberDataUIModelFilteringInstrumentedTest -> R.id.listContactFragment
             else -> R.id.listBlockerFragment
         }
         launchFragmentInHiltContainer<NumberDataFilteringDialog>(

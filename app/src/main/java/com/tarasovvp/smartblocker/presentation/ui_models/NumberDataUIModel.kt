@@ -9,7 +9,7 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-open class NumberData : Parcelable {
+open class NumberDataUIModel : Parcelable {
 
     @IgnoredOnParcel
     @get:Exclude

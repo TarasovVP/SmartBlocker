@@ -8,11 +8,16 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import com.tarasovvp.smartblocker.utils.extensions.isDarkMode
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithCountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -21,55 +26,69 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateFilterViewModel @Inject constructor(
     private val application: Application,
-    private val createFilterUseCase: CreateFilterUseCase
+    private val createFilterUseCase: CreateFilterUseCase,
+    private val countryCodeUIMapper: CountryCodeUIMapper,
+    private val filterWithCountryCodeUIMapper: FilterWithCountryCodeUIMapper,
+    private val callWithFilterUIMapper: CallWithFilterUIMapper,
+    private val contactWithFilterUIMapper: ContactWithFilterUIMapper
 ) : BaseViewModel(application) {
 
-    val countryCodeLiveData = MutableLiveData<CountryCode>()
-    val numberDataListLiveData = MutableLiveData<List<NumberData>>()
-    val existingFilterLiveData = MutableLiveData<FilterWithCountryCode>()
-    val filteredNumberDataListLiveData = MutableLiveData<ArrayList<NumberData>>()
-    val filterActionLiveData = MutableLiveData<FilterWithCountryCode>()
+    val countryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
+    val numberDataListLiveDataUIModel = MutableLiveData<List<NumberDataUIModel>>()
+    val existingFilterLiveData = MutableLiveData<FilterWithCountryCodeUIModel>()
+    val filteredNumberDataListLiveDataUIModel = MutableLiveData<ArrayList<NumberDataUIModel>>()
+    val filterActionLiveData = MutableLiveData<FilterWithCountryCodeUIModel>()
 
     fun getCountryCodeWithCode(code: Int?) {
         Timber.e("CreateFilterViewModel getCountryCodeWithCode code $code")
         launch {
             val countryCode =
                 code?.let { createFilterUseCase.getCountryCodeWithCode(it) } ?: CountryCode()
-            countryCodeLiveData.postValue(countryCode)
+            countryCodeLiveData.postValue(countryCodeUIMapper.mapToUIModel(countryCode))
         }
     }
 
-    fun getNumberDataList() {
+    fun getNumberDataList(filter: String) {
         Timber.e("CreateFilterViewModel getNumberDataList showProgress")
         launch {
-            val numberDataList = createFilterUseCase.getNumberDataList()
-            numberDataListLiveData.postValue(numberDataList)
+            val calls =  createFilterUseCase.allCallsByFilter(filter)
+            val contacts =  createFilterUseCase.allContactsByFilter(filter)
+            val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
+                addAll(callWithFilterUIMapper.mapToUIModelList(calls))
+                addAll(contactWithFilterUIMapper.mapToUIModelList(contacts))
+                sortWith(compareBy(
+                        {
+                            when (it) {
+                                is ContactWithFilterUIModel -> it.contactUIModel?.number?.startsWith(Constants.PLUS_CHAR)
+                                is CallWithFilterUIModel -> it.callUIModel?.number?.startsWith(Constants.PLUS_CHAR)
+                                else -> false
+                            }
+                        },
+                        {
+                            when (it) {
+                                is ContactWithFilterUIModel -> it.contactUIModel?.number
+                                is CallWithFilterUIModel -> it.callUIModel?.number
+                                else -> String.EMPTY
+                            }
+                        }
+                    ))
+            }
+            numberDataListLiveDataUIModel.postValue(numberDataUIModelList)
         }
     }
 
     fun checkFilterExist(filter: String) {
         Timber.e("CreateFilterViewModel checkFilterExist filter $filter")
         launch {
-            val result = createFilterUseCase.getFilter(filter)
-            existingFilterLiveData.postValue(result ?: FilterWithCountryCode(Filter(filterType = DEFAULT_FILTER)))
+            val existingFilter = createFilterUseCase.getFilter(filter) ?: FilterWithCountryCode(Filter(filterType = DEFAULT_FILTER))
+            existingFilterLiveData.postValue(filterWithCountryCodeUIMapper.mapToUIModel(existingFilter))
         }
     }
 
-    fun filterNumberDataList(filterWithCountryCode: FilterWithCountryCode?, numberDataList: ArrayList<NumberData>, color: Int) {
-        Timber.e("CreateFilterViewModel filterNumberDataList showProgress filter?.filter ${filterWithCountryCode?.filter} numberDataList.size ${numberDataList.size}")
-        showProgress()
+    fun createFilter(filterWithCountryCode: FilterWithCountryCodeUIModel) {
+        Timber.e("CreateFilterViewModel createFilter createFilter $filterWithCountryCode filter.country ${filterWithCountryCode.filterUIModel?.country}")
         launch {
-            val filteredNumberDataList = createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataList, color)
-            filteredNumberDataListLiveData.postValue(filteredNumberDataList)
-            hideProgress()
-            Timber.e("CreateFilterViewModel filterNumberDataList hideProgress filteredNumberDataList.size ${filteredNumberDataList.size} isDarkMode ${getApplication<Application>().isDarkMode()}")
-        }
-    }
-
-    fun createFilter(filterWithCountryCode: FilterWithCountryCode?) {
-        Timber.e("CreateFilterViewModel createFilter createFilter $filterWithCountryCode filter.country ${filterWithCountryCode?.filter?.country}")
-        launch {
-            filterWithCountryCode?.filter?.let { filter ->
+            filterWithCountryCodeUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 createFilterUseCase.createFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
@@ -80,10 +99,10 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun updateFilter(filterWithCountryCode: FilterWithCountryCode?) {
+    fun updateFilter(filterWithCountryCode: FilterWithCountryCodeUIModel) {
         Timber.e("CreateFilterViewModel updateFilter")
         launch {
-            filterWithCountryCode?.filter?.let { filter ->
+            filterWithCountryCodeUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 createFilterUseCase.updateFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
@@ -94,10 +113,10 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilter(filterWithCountryCode: FilterWithCountryCode?) {
+    fun deleteFilter(filterWithCountryCode: FilterWithCountryCodeUIModel) {
         Timber.e("CreateFilterViewModel deleteFilter")
         launch {
-            filterWithCountryCode?.filter?.let { filter ->
+            filterWithCountryCodeUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 createFilterUseCase.deleteFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }

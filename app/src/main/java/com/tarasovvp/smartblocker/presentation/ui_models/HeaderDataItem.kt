@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.domain.entities.models
+package com.tarasovvp.smartblocker.presentation.ui_models
 
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY

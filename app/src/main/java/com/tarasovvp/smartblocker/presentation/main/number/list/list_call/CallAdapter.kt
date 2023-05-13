@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
@@ -16,9 +15,10 @@ import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 
 class CallAdapter(val callClickListener: CallClickListener) :
-    BaseAdapter<CallWithFilter>() {
+    BaseAdapter<CallWithFilterUIModel>() {
 
     var isDeleteMode: Boolean = false
     var searchQuery = String.EMPTY
@@ -64,7 +64,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 callWithFilter.isDeleteMode = isDeleteMode
                 callWithFilter.searchText = searchQuery
-                callWithFilter.highlightedSpanned = callWithFilter.call?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                callWithFilter.highlightedSpanned = callWithFilter.callUIModel?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 callWithFilter.isExtract = false
                 this.callWithFilter = callWithFilter
                 root.setSafeOnClickListener {
@@ -78,7 +78,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                         callClickListener.onCallClick(callWithFilter.apply {
                             callWithFilter.searchText = String.EMPTY
                             callWithFilter.highlightedSpanned =
-                                callWithFilter.call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                                callWithFilter.callUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         })
                     }
                 }

@@ -18,7 +18,7 @@ import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
@@ -31,7 +31,7 @@ import org.junit.Before
 import org.junit.Rule
 
 @HiltAndroidTest
-class SingleDetailsNumberDataInstrumentedTest: BaseSingleDetailsInstrumentedTest() {
+class SingleDetailsNumberDataInstrumentedTestUIModel: BaseSingleDetailsInstrumentedTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -40,7 +40,7 @@ class SingleDetailsNumberDataInstrumentedTest: BaseSingleDetailsInstrumentedTest
     override fun setUp() {
         super.setUp()
         dataList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else numberDataList()
-        launchFragmentInHiltContainer<SingleDetailsFragment> (fragmentArgs = bundleOf(NUMBER_TYPE to NumberData::class.simpleName.orEmpty())) {
+        launchFragmentInHiltContainer<SingleDetailsFragment> (fragmentArgs = bundleOf(NUMBER_TYPE to NumberDataUIModel::class.simpleName.orEmpty())) {
             (this as SingleDetailsFragment).updateNumberDataList(dataList)
         }
     }

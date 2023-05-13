@@ -14,15 +14,18 @@ import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class NumberDataAdapter(
-    var numberDataList: ArrayList<NumberData>? = null,
-    private val numberDataClick: (NumberData) -> Unit
+    var numberDataUIModelList: ArrayList<NumberDataUIModel>? = null,
+    private val numberDataClick: (NumberDataUIModel) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -47,27 +50,27 @@ class NumberDataAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return numberDataList?.get(position)?.let { it::class.java.simpleName.hashCode() }.orZero()
+        return numberDataUIModelList?.get(position)?.let { it::class.java.simpleName.hashCode() }.orZero()
 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val numberData = numberDataList?.get(position)
+        val numberData = numberDataUIModelList?.get(position)
         when (holder) {
-            is FilterViewHolder -> holder.bindData(numberData as? FilterWithCountryCode)
-            is ContactViewHolder -> holder.bindData(numberData as? ContactWithFilter)
-            is CallViewHolder -> holder.bindData(numberData as? CallWithFilter)
+            is FilterViewHolder -> holder.bindData(numberData as? FilterWithCountryCodeUIModel)
+            is ContactViewHolder -> holder.bindData(numberData as? ContactWithFilterUIModel)
+            is CallViewHolder -> holder.bindData(numberData as? CallWithFilterUIModel)
         }
     }
 
     internal inner class FilterViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemFilterBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(filterWithCountryCode: FilterWithCountryCode?) {
+        fun bindData(filterWithCountryCode: FilterWithCountryCodeUIModel?) {
             binding?.apply {
                 this.filterWithCountryCode = filterWithCountryCode?.apply {
                     highlightedSpanned =
-                        highlightedSpanned ?: filterWithCountryCode.highlightedSpanned(filterWithCountryCode.filter, Color.GREEN)
+                        highlightedSpanned ?: filterWithCountryCode.highlightedSpanned(filterWithCountryCode.filterUIModel, Color.GREEN)
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,
@@ -84,13 +87,13 @@ class NumberDataAdapter(
     internal inner class ContactViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemContactBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(contactWithFilter: ContactWithFilter?) {
+        fun bindData(contactWithFilter: ContactWithFilterUIModel?) {
             binding?.apply {
                 this.contactWithFilter = contactWithFilter
                 root.setSafeOnClickListener {
                     contactWithFilter?.let { it1 -> numberDataClick.invoke(it1.apply {
                         searchText = String.EMPTY
-                        highlightedSpanned = contact?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        highlightedSpanned = contactUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                     }) }
                 }
                 executePendingBindings()
@@ -101,18 +104,18 @@ class NumberDataAdapter(
     internal inner class CallViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemCallBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(callWithFilter: CallWithFilter?) {
+        fun bindData(callWithFilter: CallWithFilterUIModel?) {
             binding?.apply {
                 root.isEnabled = isFilteredCallItemDisable.not()
                 this.callWithFilter = callWithFilter
                 this.callWithFilter?.isExtract = isFilteredCallDetails.not()
                 this.callWithFilter?.isFilteredCallDetails = isFilteredCallDetails
                 this.callWithFilter?.highlightedSpanned = this.callWithFilter?.highlightedSpanned
-                    ?: this.callWithFilter?.call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                    ?: this.callWithFilter?.callUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {
                     this.callWithFilter?.apply {
                         searchText = String.EMPTY
-                        highlightedSpanned = call?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        highlightedSpanned = callUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         numberDataClick.invoke(this)
                     }
                 }
@@ -121,5 +124,5 @@ class NumberDataAdapter(
         }
     }
 
-    override fun getItemCount() = numberDataList?.size.orZero()
+    override fun getItemCount() = numberDataUIModelList?.size.orZero()
 }

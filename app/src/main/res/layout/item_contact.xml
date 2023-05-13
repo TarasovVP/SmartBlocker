@@ -8,7 +8,7 @@
 
         <variable
             name="contactWithFilter"
-            type="com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -34,7 +34,7 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageUrl="@{contactWithFilter.contact.photoUrl}"
+                app:imageUrl="@{contactWithFilter.contactUIModel.photoUrl}"
                 app:placeHolder="@{contactWithFilter.placeHolder(context)}"
                 app:shapeAppearanceOverlay="@style/RoundedImageViewStyle"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
@@ -46,7 +46,7 @@
                 android:id="@+id/item_contact_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                app:imageResource="@{contactWithFilter.filterWithCountryCode.filterTypeIcon}"
+                app:imageResource="@{contactWithFilter.filterUIModel.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
 
@@ -84,7 +84,7 @@
                 app:layout_constraintStart_toStartOf="@+id/item_contact_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
-                app:mainText="@{ contactWithFilter.contact.name.empty ? @string/details_number_not_from_contacts : contactWithFilter.contact.name}"
+                app:mainText="@{ contactWithFilter.contactUIModel.name.empty ? @string/details_number_not_from_contacts : contactWithFilter.contactUIModel.name}"
                 app:searchText="@{contactWithFilter.searchText}" />
 
             <View
@@ -101,8 +101,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_10"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{contactWithFilter.filterWithCountryCode == null ? @string/details_number_contact_without_filter : contactWithFilter.filterWithCountryCode.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
-                android:textColor="@{contactWithFilter.filterWithCountryCode == null ? @color/text_color_grey : contactWithFilter.filterWithCountryCode.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{contactWithFilter.filterUIModel == null ? @string/details_number_contact_without_filter : contactWithFilter.filterUIModel.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
+                android:textColor="@{contactWithFilter.filterUIModel == null ? @color/text_color_grey : contactWithFilter.filterUIModel.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"/>
@@ -112,13 +112,13 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
                 android:textSize="@dimen/text_size_10"
-                android:text="@{contactWithFilter.filterWithCountryCode == null ? `` : contactWithFilter.filterWithCountryCode.filter.filter}"
-                android:textColor="@{contactWithFilter.filterWithCountryCode.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{contactWithFilter.filterUIModel == null ? `` : contactWithFilter.filterUIModel.filter}"
+                android:textColor="@{contactWithFilter.filterUIModel.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toTopOf="@+id/item_contact_filter_title"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_filter_title"
                 app:layout_constraintStart_toEndOf="@+id/item_contact_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:drawableStart="@{contactWithFilter.filterWithCountryCode.conditionTypeSmallIcon == null ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterWithCountryCode.conditionTypeSmallIcon)}" />
+                android:drawableStart="@{contactWithFilter.filterUIModel.conditionTypeSmallIcon == 0 ? null :  ContextCompat.getDrawable(context, contactWithFilter.filterUIModel.conditionTypeSmallIcon)}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

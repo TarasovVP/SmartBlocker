@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="contactWithFilter"
-            type="com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

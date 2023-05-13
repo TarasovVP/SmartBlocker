@@ -13,7 +13,7 @@
             type="Boolean" />
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +67,7 @@
                     android:layout_height="@dimen/size_0"
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/padding_8"
-                    android:text="@{filterWithCountryCode.countryCode.countryCode}"
+                    android:text="@{filterWithCountryCode.countryCodeUIModel.countryCode}"
                     android:textColor="@color/text_color_grey"
                     android:textSize="@dimen/text_size_16"
                     app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
