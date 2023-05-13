@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.domain.entities.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not

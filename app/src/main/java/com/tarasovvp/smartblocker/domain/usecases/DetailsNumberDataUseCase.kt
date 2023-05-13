@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.entities.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 
 interface DetailsNumberDataUseCase {
 

@@ -13,7 +13,7 @@ data class Contact(
     @PrimaryKey var id: String = String.EMPTY,
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
-    var number: String = String.EMPTY,
-    var phoneNumberValue: String = String.EMPTY,
-    var isPhoneNumberValid: Boolean = false
+    var number: String? = String.EMPTY,
+    var phoneNumberValue: String? = String.EMPTY,
+    var isPhoneNumberValid: Boolean? = false
 ) : Parcelable

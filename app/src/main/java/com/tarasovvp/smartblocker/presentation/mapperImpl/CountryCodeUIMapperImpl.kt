@@ -7,7 +7,7 @@ import com.tarasovvp.smartblocker.presentation.ui_models.*
 class CountryCodeUIMapperImpl : CountryCodeUIMapper {
 
     override fun mapToUIModel(from: CountryCode): CountryCodeUIModel {
-        return CountryCodeUIModel(from.country, from.countryCode, from.numberFormat)
+        return CountryCodeUIModel(from.country, from.countryCode.orEmpty(), from.numberFormat.orEmpty())
     }
 
     override fun mapFromUIModel(to: CountryCodeUIModel): CountryCode {

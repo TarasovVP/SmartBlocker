@@ -39,7 +39,6 @@ class CountryCodeSearchAdapter(
             binding?.root?.setSafeOnClickListener {
                 countryCode?.let { it1 -> countryCodeClick.invoke(it1) }
             }
-            binding?.executePendingBindings()
         }
     }
 }

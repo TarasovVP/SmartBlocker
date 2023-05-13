@@ -22,7 +22,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.domain.entities.models.InfoData
-import com.tarasovvp.smartblocker.domain.entities.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataAdapter
@@ -145,7 +145,6 @@ open class CreateFilterFragment :
                     FilterAction.FILTER_ACTION_PERMISSION_CREATE,
                     -> viewModel.createFilter(filter.apply {
                         this.filter?.filter = filter.createFilter()
-                        this.filter?.filterWithoutCountryCode = filter.extractFilterWithoutCountryCode()
                         this.filterAction = filterAction
                         this.filter?.created = Date().time
                         this.filter?.country = filter.countryCode?.country.orEmpty()
@@ -187,6 +186,7 @@ open class CreateFilterFragment :
                     createFilterInput.setHint(R.string.creating_filter_enter_hint)
                 } else {
                     filterWithCountryCode?.countryCode = countryCode
+                    //TODO
                     //createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
                     when {
                         isTypeFull().isTrue() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeFullHint().orEmpty())

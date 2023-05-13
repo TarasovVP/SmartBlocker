@@ -9,15 +9,20 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
 import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.domain.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsBlockerFragment :
     BaseFragment<FragmentSettingsBlockerBinding, SettingsBlockerViewModel>() {
+
+    @Inject
+    lateinit var countryCodeUIMapper: CountryCodeUIMapper
 
     override var layoutId = R.layout.fragment_settings_blocker
     override val viewModelClass = SettingsBlockerViewModel::class.java
@@ -26,7 +31,7 @@ class SettingsBlockerFragment :
         super.onViewCreated(view, savedInstanceState)
         setSmartBlockerOnSettings()
         setBlockHiddenSettings()
-        setCountryCodeSettings(SharedPrefs.countryCode)
+        SharedPrefs.countryCode?.let { setCountryCodeSettings(it) }
     }
 
     private fun setSmartBlockerOnSettings() {
@@ -60,7 +65,7 @@ class SettingsBlockerFragment :
         }
     }
 
-    private fun setCountryCodeSettings(countryCode: CountryCode?) {
+    private fun setCountryCodeSettings(countryCode: CountryCode) {
         setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
             bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let {
                 SharedPrefs.countryCode = it
@@ -69,7 +74,7 @@ class SettingsBlockerFragment :
             }
         }
         binding?.apply {
-            //settingsBlockerCountry.text = countryCode?.countryEmoji()
+            settingsBlockerCountry.text = countryCodeUIMapper.mapToUIModel(countryCode).countryEmoji()
             settingsBlockerCountry.setSafeOnClickListener {
                 findNavController().navigate(SettingsBlockerFragmentDirections.startCountryCodeSearchDialog())
             }

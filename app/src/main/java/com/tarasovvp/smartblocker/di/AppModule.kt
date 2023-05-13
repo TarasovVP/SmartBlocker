@@ -10,7 +10,10 @@ import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.data.repositoryImpl.*
+import com.tarasovvp.smartblocker.domain.mappers.CallUIMapper
+import com.tarasovvp.smartblocker.domain.mappers.ContactUIMapper
 import com.tarasovvp.smartblocker.domain.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.domain.mappers.FilterUIMapper
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
@@ -38,7 +41,10 @@ import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.CallUIMapperImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.ContactUIMapperImpl
 import com.tarasovvp.smartblocker.presentation.mapperImpl.CountryCodeUIMapperImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.FilterUIMapperImpl
 import com.tarasovvp.smartblocker.utils.PhoneNumber
 import dagger.Module
 import dagger.Provides
@@ -147,7 +153,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeMapper(): CountryCodeUIMapper {
+    fun provideCountryCodeUIMapper(): CountryCodeUIMapper {
         return CountryCodeUIMapperImpl()
     }
 
@@ -167,6 +173,12 @@ object AppModule {
         filterDao: FilterDao
     ): FilterRepository {
         return FilterRepositoryImpl(filterDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFilterUIMapper(): FilterUIMapper {
+        return FilterUIMapperImpl()
     }
 
     @Singleton
@@ -243,12 +255,36 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideCallUIMapper(): CallUIMapper {
+        return CallUIMapperImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideListCallUseCase(
+        logCallRepository: LogCallRepository,
+        filteredCallRepository: FilteredCallRepository,
+        realDataBaseRepository: RealDataBaseRepository,
+        firebaseAuth: FirebaseAuth
+    ): ListCallUseCase {
+        return ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth)
+    }
+
+
+    @Singleton
+    @Provides
     fun provideContactDao(db: AppDatabase) = db.contactDao()
 
     @Singleton
     @Provides
     fun provideContactRepository(phoneNumber: PhoneNumber, contactDao: ContactDao): ContactRepository {
         return ContactRepositoryImpl(phoneNumber, contactDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideContactUIMapper(): ContactUIMapper {
+        return ContactUIMapperImpl()
     }
 
     @Singleton
@@ -269,17 +305,6 @@ object AppModule {
             filterRepository,
             filteredCallRepository
         )
-    }
-
-    @Singleton
-    @Provides
-    fun provideListCallUseCase(
-        logCallRepository: LogCallRepository,
-        filteredCallRepository: FilteredCallRepository,
-        realDataBaseRepository: RealDataBaseRepository,
-        firebaseAuth: FirebaseAuth
-    ): ListCallUseCase {
-        return ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth)
     }
 
     @Singleton

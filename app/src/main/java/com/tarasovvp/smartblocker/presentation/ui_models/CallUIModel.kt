@@ -23,18 +23,15 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 open class CallUIModel(
     open var callId: Int = 0,
-    var callName: String? = String.EMPTY,
+    var callName: String = String.EMPTY,
     var number: String = String.EMPTY,
-    var normalizedNumber: String? = String.EMPTY,
-    var type: String? = String.EMPTY,
-    var callDate: String? = String.EMPTY,
-    var photoUrl: String? = String.EMPTY,
-    var countryIso: String? = String.EMPTY,
-    var filter: String? = String.EMPTY,
-    var isFilteredCall: Boolean? = false,
+    var type: String = String.EMPTY,
+    var callDate: String = String.EMPTY,
+    var photoUrl: String = String.EMPTY,
+    var isFilteredCall: Boolean = false,
     var filteredNumber: String = String.EMPTY,
     var conditionType: Int = DEFAULT_FILTER,
-) : Parcelable {
+) : Parcelable, NumberData() {
 
     @IgnoredOnParcel
     var isCheckedForDelete = false

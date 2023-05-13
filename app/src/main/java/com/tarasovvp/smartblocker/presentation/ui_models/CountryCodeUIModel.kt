@@ -18,5 +18,6 @@ data class CountryCodeUIModel(
 
     fun countryEmoji(): String = String.format("%s %s", country.flagEmoji(), country)
 
+    //TODO shared prefs
     fun countryNameEmoji(): String = String.format("%s %s", country.flagEmoji(), Locale(SharedPrefs.appLang.orEmpty(), country).displayCountry)
 }

@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.domain.usecases
 
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.models.NumberData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberData
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface DetailsFilterUseCase {
