@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -30,10 +29,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
-            settingsLanguage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language,
-                0,
-                SharedPrefs.appLang.orEmpty().flagDrawable(),
-                0)
+            viewModel.getAppLanguage()
             settingsReview.isVisible = firebaseAuth.currentUser.isNotNull()
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener {
@@ -55,6 +51,11 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
     }
 
     override fun observeLiveData() {
+        with(viewModel) {
+            appLanguageLiveData.safeSingleObserve(viewLifecycleOwner) { appLang ->
+                binding?.settingsLanguage?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language, 0, appLang.flagDrawable(), 0)
+            }
+        }
         viewModel.successReviewLiveData.safeSingleObserve(viewLifecycleOwner) { review ->
             showMessage(String.format(getString(R.string.settings_review_send_success), review),
                 false)

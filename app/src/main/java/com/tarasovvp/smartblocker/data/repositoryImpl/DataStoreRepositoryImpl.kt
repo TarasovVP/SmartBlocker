@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.data.prefs
+package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import android.content.Context
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY
@@ -7,6 +7,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
@@ -15,24 +18,24 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class DataStorePrefsImpl(private val context: Context) : DataStorePrefs {
+class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepository {
 
     private val Context.dataStore by preferencesDataStore(context.packageName)
 
-    override suspend fun saveIsOnBoardingSeen(isOnBoardingSeen: Boolean) {
+    override suspend fun setOnBoardingSeen(isOnBoardingSeen: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[booleanPreferencesKey(ON_BOARDING_SEEN)] = isOnBoardingSeen
         }
     }
 
-    override suspend fun isOnBoardingSeen(): Flow<Boolean?> {
+    override suspend fun onBoardingSeen(): Flow<Boolean?> {
         return context.dataStore.data
             .map { preferences ->
                 preferences[booleanPreferencesKey(ON_BOARDING_SEEN)]
             }
     }
 
-    override suspend fun saveAppLang(appLang: String) {
+    override suspend fun setAppLang(appLang: String) {
         context.dataStore.edit { preferences ->
             preferences[stringPreferencesKey(APP_LANG)] = appLang
         }
@@ -45,7 +48,7 @@ class DataStorePrefsImpl(private val context: Context) : DataStorePrefs {
             }
     }
 
-    override suspend fun saveAppTheme(appTheme: Int) {
+    override suspend fun setAppTheme(appTheme: Int) {
         context.dataStore.edit { preferences ->
             preferences[intPreferencesKey(APP_THEME)] = appTheme
         }
@@ -58,26 +61,26 @@ class DataStorePrefsImpl(private val context: Context) : DataStorePrefs {
             }
     }
 
-    override suspend fun saveIsSmartBlockerTurnOff(smartBlockerTurnOff: Boolean) {
+    override suspend fun setBlockerTurnOff(smartBlockerTurnOff: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[booleanPreferencesKey(BLOCK_TURN_OFF)] = smartBlockerTurnOff
         }
     }
 
-    override suspend fun isSmartBlockerTurnOff(): Flow<Boolean?> {
+    override suspend fun blockerTurnOff(): Flow<Boolean?> {
         return context.dataStore.data
             .map { preferences ->
                 preferences[booleanPreferencesKey(BLOCK_TURN_OFF)]
             }
     }
 
-    override suspend fun saveIsBlockHidden(smartBlockerTurnOff: Boolean) {
+    override suspend fun setBlockHidden(smartBlockerTurnOff: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[booleanPreferencesKey(BLOCK_HIDDEN)] = smartBlockerTurnOff
         }
     }
 
-    override suspend fun isBlockHidden(): Flow<Boolean?> {
+    override suspend fun blockHidden(): Flow<Boolean?> {
         return context.dataStore.data
             .map { preferences ->
                 preferences[booleanPreferencesKey(BLOCK_HIDDEN)]
@@ -85,22 +88,20 @@ class DataStorePrefsImpl(private val context: Context) : DataStorePrefs {
     }
 
 
-    override suspend fun saveCountry(country: String) {
+    override suspend fun setCountryCode(countryCode: CountryCode) {
         context.dataStore.edit { preferences ->
-            preferences[stringPreferencesKey(COUNTRY)] = country
+            preferences[stringPreferencesKey(COUNTRY)] = Gson().toJson(countryCode)
         }
     }
 
-    override suspend fun getCountry(): Flow<String?> {
+    override suspend fun getCountryCode(): Flow<CountryCode?> {
         return context.dataStore.data
             .map { preferences ->
-                preferences[stringPreferencesKey(COUNTRY)]
+                try {
+                    Gson().fromJson(preferences[stringPreferencesKey(COUNTRY)],  CountryCode::class.java)
+                } catch (e: java.lang.Exception) {
+                    CountryCode()
+                }
             }
-    }
-
-    override suspend fun saveTest(country: String) {
-        context.dataStore.edit { preferences ->
-            preferences[stringPreferencesKey(COUNTRY)] = country
-        }
     }
 }

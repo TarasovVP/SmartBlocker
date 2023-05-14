@@ -6,8 +6,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
@@ -15,7 +13,6 @@ import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
@@ -66,12 +63,12 @@ class DetailsNumberDataFragment :
 
     private fun setHiddenCallScreen() {
         binding?.apply {
+            viewModel.getBlockHidden()
             detailsNumberDataCreatePermission.isVisible = false
             detailsNumberDataHidden.isVisible = true
             detailsNumberDataTabs.isVisible = false
             detailsNumberDataViewPager.isVisible = false
             detailsNumberDataItemContact.itemContactNumber.setText(R.string.details_number_hidden)
-            detailsNumberDataItemContact.itemContactFilterTitle.setText(if (SharedPrefs.blockHidden.isTrue()) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
             with(detailsNumberDataCreateBlocker) {
                 setText(R.string.settings)
                 context?.let {
@@ -190,43 +187,6 @@ class DetailsNumberDataFragment :
         }
     }
 
-    private fun MaterialButton.changeFilterTypeButtonState(
-        isButtonEnabled: Boolean,
-        isClose: Boolean,
-    ) {
-        backgroundTintList = ContextCompat.getColorStateList(
-            context,
-            if (isButtonEnabled) R.color.button_bg else R.color.transparent
-        )
-        strokeColor = ContextCompat.getColorStateList(
-            context,
-            if (isButtonEnabled) R.color.button_bg else R.color.comet
-        )
-        compoundDrawables.onEach {
-            iconTint = ContextCompat.getColorStateList(
-                context,
-                if (isButtonEnabled) R.color.white else R.color.comet
-            )
-        }
-        setTextColor(
-            ContextCompat.getColorStateList(
-                context,
-                if (isButtonEnabled) R.color.white else R.color.comet
-            )
-        )
-        isEnabled = isButtonEnabled
-        alpha = if (isButtonEnabled) 1f else 0.5f
-        setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)
-    }
-
-    private fun ExtendedFloatingActionButton.changeFilterConditionButtonState(
-        iconRes: Int?,
-        isShown: Boolean,
-    ) {
-        iconRes?.let { setIconResource(it) }
-        if (isShown) hide() else show()
-    }
-
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
@@ -240,6 +200,9 @@ class DetailsNumberDataFragment :
                 filterWithCountryCode?.countryCodeUIModel = countryCode
                 filterWithCountryCode?.filterUIModel?.filter = filterWithCountryCode?.filterToInput().orEmpty()
                 startAddFilterScreen()
+            }
+            blockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
+                binding?.detailsNumberDataItemContact?.itemContactFilterTitle?.setText(if (blockHidden) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
             }
         }
     }

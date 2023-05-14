@@ -9,6 +9,7 @@ import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,8 +18,16 @@ class SettingsListViewModel @Inject constructor(
     private val settingsListUseCase: SettingsListUseCase
 ) : BaseViewModel(application) {
 
+    val appLanguageLiveData = MutableLiveData<String>()
     val successReviewLiveData = MutableLiveData<String>()
 
+    fun getAppLanguage() {
+        launch {
+            settingsListUseCase.getAppLanguage().collect { appLang ->
+                appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
+            }
+        }
+    }
     fun insertReview(review: Review) {
         if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
             showProgress()

@@ -7,12 +7,9 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.DialogCountryCodeSearchBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog
@@ -43,21 +40,31 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
                 dismiss()
             }
         }
-        viewModel.getCountryCodeList()
-        viewModel.countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
-            setCountryCodeSearchList(countryCodeList)
+        getAppLanguage()
+    }
+
+    private fun getAppLanguage() {
+        viewModel.getAppLanguage()
+        viewModel.appLangLiveDataLiveData.safeSingleObserve(viewLifecycleOwner) { appLang ->
+            getCountryCodeSearchList(appLang)
         }
     }
 
-    private fun setCountryCodeSearchList(countryCodeList: List<CountryCodeUIModel>) {
+    private fun getCountryCodeSearchList(appLang: String) {
+        viewModel.getCountryCodeList()
+        viewModel.countryCodeListLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeList ->
+            setCountryCodeSearchList(countryCodeList, appLang)
+        }
+    }
+
+    private fun setCountryCodeSearchList(countryCodeList: List<CountryCodeUIModel>, appLang: String) {
         binding?.apply {
             countryCodeSearchAdapter?.countryCodeList = countryCodeList
             countryCodeEmpty.isVisible = countryCodeList.isEmpty()
             countryCodeSearchInput.doAfterTextChanged { searchText ->
                 countryCodeSearchAdapter?.countryCodeList =
                     countryCodeList.filter {
-                        it.countryCode.contains(searchText.toString().lowercase())
-                                || Locale(SharedPrefs.appLang.orEmpty(), it.country).displayCountry.lowercase().contains(searchText.toString().lowercase())
+                        it.countryCode.contains(searchText.toString().lowercase()) || Locale(appLang, it.country).displayCountry.lowercase().contains(searchText.toString().lowercase())
                     }
                 countryCodeSearchAdapter?.notifyDataSetChanged()
                 countryCodeEmpty.isVisible =

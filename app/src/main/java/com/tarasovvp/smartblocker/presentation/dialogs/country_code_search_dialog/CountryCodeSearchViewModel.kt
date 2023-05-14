@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,7 +17,16 @@ class CountryCodeSearchViewModel @Inject constructor(
     private val countryCodeUIMapper: CountryCodeUIMapper
 ) : BaseViewModel(application) {
 
+    val appLangLiveDataLiveData = MutableLiveData<String>()
     val countryCodeListLiveData = MutableLiveData<List<CountryCodeUIModel>>()
+
+    fun getAppLanguage() {
+        launch {
+            countryCodeSearchUseCase.getAppLanguage().collect { appLang ->
+                appLangLiveDataLiveData.postValue(appLang ?: Locale.getDefault().language)
+            }
+        }
+    }
 
     fun getCountryCodeList() {
         launch {

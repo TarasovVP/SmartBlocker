@@ -1,8 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.animation.Animator
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
@@ -34,7 +32,6 @@ import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.utils.*
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
@@ -42,7 +39,6 @@ import com.tarasovvp.smartblocker.infrastructure.receivers.CallHandleReceiver
 import com.tarasovvp.smartblocker.infrastructure.services.ForegroundCallService
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -52,19 +48,19 @@ class MainActivity : AppCompatActivity() {
     lateinit var firebaseAuth: FirebaseAuth
 
     private var binding: ActivityMainBinding? = null
-    var navController: NavController? = null
-    var bottomNavigationView: BottomNavigationView? = null
-    var bottomNavigationDivider: View? = null
-    var toolbar: androidx.appcompat.widget.Toolbar? = null
-
-    val mainViewModel: MainViewModel by viewModels()
-
+    private var navController: NavController? = null
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
     private var isDialog: Boolean = false
     private var adRequest: AdRequest? = null
     private var interstitialAd: InterstitialAd? = null
     private var adIsLoading: Boolean = false
+    private var isSavedInstanceStateNull: Boolean? = null
+    var bottomNavigationView: BottomNavigationView? = null
+    var bottomNavigationDivider: View? = null
+    var toolbar: androidx.appcompat.widget.Toolbar? = null
+
+    val mainViewModel: MainViewModel by viewModels()
 
     var navigationScreens = arrayListOf(
         R.id.listCallFragment,
@@ -81,11 +77,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    override fun attachBaseContext(newBase: Context) {
+    //TODO
+    /*override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(
-            SharedPrefs.appLang
-            ?: Locale.getDefault().language)))
-    }
+            SharedPrefs.appLang ?: Locale.getDefault().language)))
+    }*/
 
     override fun onStart() {
         super.onStart()
@@ -129,7 +125,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_SmartBlocker)
         super.onCreate(savedInstanceState)
+        isSavedInstanceStateNull = savedInstanceState.isNull()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setAnimatorListener()
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
+            mainViewModel.getOnBoardingSeen()
+            setAppLanguage()
+            setCurrentTheme()
+        }
+        observeLiveData()
+    }
+
+    private fun setAnimatorListener() {
         binding?.mainSplash?.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationEnd(p0: Animator) {
                 binding?.mainSplash?.isVisible = false
@@ -142,38 +149,37 @@ class MainActivity : AppCompatActivity() {
             override fun onAnimationRepeat(p0: Animator) {
             }
         })
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
-            setNavController()
-            setToolBar()
-            setBottomNavigationView()
-        }
+    }
+
+    private fun setAppLanguage() {
+        mainViewModel.setAppLanguage()
+    }
+
+    private fun setCurrentTheme() {
+        mainViewModel.setAppTheme()
+    }
+
+    private fun setNavigationComponents(isOnBoardingSeen: Boolean) {
+        setNavController()
+        setStartDestination(isOnBoardingSeen)
+        setToolBar()
+        setBottomNavigationView()
         setOnDestinationChangedListener()
-        observeLiveData()
-        if (SharedPrefs.isOnBoardingSeen.isTrue()
-            && firebaseAuth.currentUser.isNotNull()
-            && savedInstanceState.isNull()
-        ) {
-            if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
-                if (SharedPrefs.smartBlockerTurnOff.isNotTrue() && isBlockerLaunched().not()) startBlocker()
-                getAllData()
-            } else {
-                navController?.navigate(R.id.startUnavailableNetworkDialog)
-            }
-        }
     }
 
     private fun setNavController() {
         navController = (supportFragmentManager.findFragmentById(
             R.id.host_main_fragment
         ) as NavHostFragment).navController
+    }
+
+    private fun setStartDestination(isOnBoardingSeen: Boolean) {
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
                 when {
-                    SharedPrefs.isOnBoardingSeen.isNotTrue() -> R.id.onBoardingFragment
-                    firebaseAuth.currentUser.isNotNull() -> {
-                        R.id.listBlockerFragment
-                    }
+                    isOnBoardingSeen.not() -> R.id.onBoardingFragment
+                    firebaseAuth.currentUser.isNotNull() -> R.id.listBlockerFragment
                     else -> R.id.loginFragment
                 }
             )
@@ -246,27 +252,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun startBlocker() {
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
-            callIntent = Intent(this, ForegroundCallService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(callIntent)
-            } else {
-                startService(callIntent)
-            }
-        }
-    }
-
-    fun stopBlocker() {
-        if (callIntent.isNotNull()) stopService(callIntent)
-    }
-
-    fun isBlockerLaunched(): Boolean {
-        return callIntent.isNotNull()
-    }
-
     private fun observeLiveData() {
         with(mainViewModel) {
+            onBoardingSeenLiveData.safeSingleObserve(this@MainActivity) { isOnBoardingSeen ->
+                setNavigationComponents(isOnBoardingSeen)
+                if (isOnBoardingSeen && firebaseAuth.currentUser.isNotNull() && isSavedInstanceStateNull.isTrue()) {
+                    startBlocker()
+                    if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+                        getAllData()
+                    } else {
+                        navController?.navigate(R.id.startUnavailableNetworkDialog)
+                    }
+                }
+            }
+            blockerTurnOffLiveData.safeSingleObserve(this@MainActivity) { isSmartBlockerTurnOff ->
+                if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not() && isSmartBlockerTurnOff.not() && isBlockerLaunched().not()) {
+                    callIntent = Intent(this@MainActivity, ForegroundCallService::class.java)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(callIntent)
+                    } else {
+                        startService(callIntent)
+                    }
+                }
+            }
             currentUserLiveData.safeSingleObserve(this@MainActivity) { currentUser ->
                 setCurrentUserData(currentUser)
             }
@@ -281,6 +289,18 @@ class MainActivity : AppCompatActivity() {
                 binding?.mainProgressBarAnimation?.mainProgress = mainProgress
             }
         }
+    }
+
+    fun startBlocker() {
+        mainViewModel.getBlockerTurnOff()
+    }
+
+    fun stopBlocker() {
+        if (callIntent.isNotNull()) stopService(callIntent)
+    }
+
+    private fun isBlockerLaunched(): Boolean {
+        return callIntent.isNotNull()
     }
 
     fun showInfoMessage(message: String, isError: Boolean) {

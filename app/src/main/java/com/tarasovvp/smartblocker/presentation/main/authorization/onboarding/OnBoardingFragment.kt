@@ -9,18 +9,15 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ACCEPT_PERMISSIONS_SCREEN
 import com.tarasovvp.smartblocker.databinding.FragmentOnBoardingBinding
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
-import com.tarasovvp.smartblocker.utils.extensions.orZero
-import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
-import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
+import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray
-import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
+import com.tarasovvp.smartblocker.utils.extensions.*
 
-class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
+class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, OnBoardingViewModel>() {
 
     override var layoutId = R.layout.fragment_on_boarding
+    override val viewModelClass = OnBoardingViewModel::class.java
 
     var adapter: OnBoardingAdapter? = null
     private var currentPosition = 0
@@ -30,7 +27,7 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
             if (isGranted?.values?.contains(false).isTrue()) {
                 showMessage(getString(R.string.app_need_permissions), true)
             } else {
-                startLoginScreen()
+                viewModel.setOnBoardingSeen()
             }
         }
 
@@ -81,13 +78,13 @@ class OnBoardingFragment : BaseBindingFragment<FragmentOnBoardingBinding>() {
         if (context?.checkPermissions().isNotTrue()) {
             requestPermissionLauncher.launch(permissionsArray())
         } else {
-            startLoginScreen()
+            viewModel.setOnBoardingSeen()
         }
     }
 
-    private fun startLoginScreen() {
-        SharedPrefs.isOnBoardingSeen = true
-        findNavController().navigate(R.id.startLoginScreen)
+    override fun observeLiveData() {
+        viewModel.onBoardingSeenLiveData.safeSingleObserve(viewLifecycleOwner) {
+            findNavController().navigate(R.id.startLoginScreen)
+        }
     }
-
 }

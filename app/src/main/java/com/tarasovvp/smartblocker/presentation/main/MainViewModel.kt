@@ -1,19 +1,20 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.ui_models.MainProgress
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
-import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,10 +23,44 @@ class MainViewModel @Inject constructor(
     private val mainUseCase: MainUseCase
 ) : BaseViewModel(application) {
 
+    val onBoardingSeenLiveData = MutableLiveData<Boolean>()
+    val blockerTurnOffLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
     val currentUserLiveData = MutableLiveData<CurrentUser>()
 
     private val mainProgress = MainProgress()
+
+    fun setAppLanguage() {
+        launch {
+            mainUseCase.getAppLanguage().collect { appLang ->
+                mainUseCase.setAppLanguage(appLang ?: Locale.getDefault().language)
+            }
+        }
+    }
+
+    fun setAppTheme() {
+        launch {
+            mainUseCase.getAppTheme().collect { appTheme ->
+                AppCompatDelegate.setDefaultNightMode(appTheme ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+        }
+    }
+
+    fun getOnBoardingSeen() {
+        launch {
+            mainUseCase.getOnBoardingSeen().collect { isOnBoardingSeen ->
+                onBoardingSeenLiveData.postValue(isOnBoardingSeen.isTrue())
+            }
+        }
+    }
+
+    fun getBlockerTurnOff() {
+        launch {
+            mainUseCase.getBlockerTurnOff().collect { isSmartBlockerTurnOff ->
+                blockerTurnOffLiveData.postValue(isSmartBlockerTurnOff.isTrue())
+            }
+        }
+    }
 
     fun getCurrentUser() {
         launch {
@@ -46,7 +81,7 @@ class MainViewModel @Inject constructor(
         launch {
             insertUserFilters(currentUser.filterList)
             insertUserFilteredCalls(currentUser.filteredCallList)
-            SharedPrefs.blockHidden = currentUser.isBlockHidden
+            mainUseCase.setBlockHidden(currentUser.isBlockHidden)
             getAllData()
         }
     }
@@ -78,10 +113,16 @@ class MainViewModel @Inject constructor(
                 progressMax = size
                 progressPosition = position
             }) }
-        if (SharedPrefs.countryCode.isNull()) {
-            SharedPrefs.countryCode = countryCodeList.firstOrNull { it.country == getApplication<Application>().getUserCountry() } ?: CountryCode()
-        }
+        getCurrentCountryCode(countryCodeList)
         mainUseCase.insertAllCountryCodes(countryCodeList)
+    }
+
+    private suspend fun getCurrentCountryCode(countryCodeList: List<CountryCode>) {
+        mainUseCase.getCurrentCountryCode().collect { countryCode ->
+            countryCode?.let {
+                mainUseCase.setCurrentCountryCode(countryCodeList.firstOrNull { it.country == getApplication<Application>().getUserCountry() } ?: CountryCode())
+            }
+        }
     }
 
     @AddTrace(name = "setContactData")

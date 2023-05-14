@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.room.Ignore
 import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -116,8 +115,8 @@ open class CallWithFilterUIModel(
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
-                callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isTrue() -> R.string.details_number_hidden_on
-                callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isNotTrue() -> R.string.details_number_hidden_off
+                //callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isTrue() -> R.string.details_number_hidden_on
+                //callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isNotTrue() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {

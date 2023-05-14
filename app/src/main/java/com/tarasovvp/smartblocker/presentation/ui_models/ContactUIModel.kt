@@ -17,7 +17,7 @@ data class ContactUIModel(
     var number: String = String.EMPTY,
     var phoneNumberValue: String = String.EMPTY,
     var isPhoneNumberValid: Boolean? = false
-) : Parcelable, NumberDataUIModel() {
+) : Parcelable {
 
     @IgnoredOnParcel
     var trimmedPhone = number.digitsTrimmed()

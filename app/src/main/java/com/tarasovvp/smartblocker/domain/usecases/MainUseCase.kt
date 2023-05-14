@@ -4,12 +4,28 @@ import android.app.Application
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import kotlinx.coroutines.flow.Flow
 
 interface MainUseCase {
+    suspend fun getAppLanguage(): Flow<String?>
+
+    suspend fun setAppLanguage(appLang: String)
+
+    suspend fun getAppTheme(): Flow<Int?>
+
+    suspend fun getOnBoardingSeen(): Flow<Boolean?>
+
+    suspend fun getBlockerTurnOff(): Flow<Boolean?>
+
+    suspend fun setBlockHidden(blockHidden: Boolean)
 
     fun getCurrentUser(result: (Result<CurrentUser>) -> Unit)
 
     suspend fun getSystemCountryCodes(result: (Int, Int) -> Unit): List<CountryCode>
+
+    suspend fun getCurrentCountryCode(): Flow<CountryCode?>
+
+    suspend fun setCurrentCountryCode(countryCode: CountryCode)
 
     suspend fun insertAllCountryCodes(countryCodeList: List<CountryCode>)
 

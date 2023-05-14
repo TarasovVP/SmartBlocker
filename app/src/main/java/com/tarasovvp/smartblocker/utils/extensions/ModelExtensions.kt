@@ -26,7 +26,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_ID
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.PhoneNumber
@@ -62,8 +61,8 @@ fun Context.systemContactList(phoneNumber: PhoneNumber, result: (Int, Int) -> Un
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
             ).apply {
-                phoneNumberValue = phoneNumber.phoneNumberValue(number, SharedPrefs.countryCode?.country.orEmpty())
-                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, SharedPrefs.countryCode?.country.orEmpty()) }
+                phoneNumberValue = phoneNumber.phoneNumberValue(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY)
+                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY) }
             contactList.add(contact)
             result.invoke(cursor.count, contactList.size)
         }
@@ -111,8 +110,8 @@ fun Context.systemLogCallList(phoneNumber: PhoneNumber, result: (Int, Int) -> Un
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             logCallList.add(logCall.apply {
-                phoneNumberValue = phoneNumber.phoneNumberValue(number, SharedPrefs.countryCode?.country.orEmpty())
-                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, SharedPrefs.countryCode?.country.orEmpty()) })
+                phoneNumberValue = phoneNumber.phoneNumberValue(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY)
+                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY) })
             result.invoke(callLogCursor.count, logCallList.size)
         }
     }

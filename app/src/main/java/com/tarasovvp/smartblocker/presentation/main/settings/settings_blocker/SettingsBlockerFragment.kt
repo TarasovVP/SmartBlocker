@@ -8,13 +8,11 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,34 +27,26 @@ class SettingsBlockerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSmartBlockerOnSettings()
-        setBlockHiddenSettings()
-        SharedPrefs.countryCode?.let { setCountryCodeSettings(it) }
+        observeLiveData()
+        viewModel.getBlockerTurnOff()
+        viewModel.getBlockHidden()
+        viewModel.getCurrentCountryCode()
     }
 
-    private fun setSmartBlockerOnSettings() {
+    private fun setBlockerTurnOffSettings(blockerTurnOff: Boolean) {
         binding?.apply {
-            settingsBlockerSwitch.isChecked = SharedPrefs.smartBlockerTurnOff.isNotTrue()
+            settingsBlockerSwitch.isChecked = blockerTurnOff.not()
             settingsBlockerDescribe.text =
                 getString(if (settingsBlockerSwitch.isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
             settingsBlockerSwitch.setOnCheckedChangeListener { _, isChecked ->
-                SharedPrefs.smartBlockerTurnOff = isChecked.not()
-                settingsBlockerDescribe.text =
-                    getString(if (isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
-                (activity as MainActivity).apply {
-                    if (isChecked) {
-                        startBlocker()
-                    } else {
-                        stopBlocker()
-                    }
-                }
+                viewModel.setBlockerTurnOff(isChecked.not())
             }
         }
     }
 
-    private fun setBlockHiddenSettings() {
+    private fun setBlockHiddenSettings(blockHidden: Boolean) {
         binding?.apply {
-            settingsBlockerHiddenSwitch.isChecked = SharedPrefs.blockHidden.isTrue()
+            settingsBlockerHiddenSwitch.isChecked = blockHidden
             settingsBlockerHiddenDescribe.text =
                 getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
             settingsBlockerHiddenSwitch.setSafeOnClickListener {
@@ -67,9 +57,8 @@ class SettingsBlockerFragment :
 
     private fun setCountryCodeSettings(countryCode: CountryCode) {
         setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
-            bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let {
-                SharedPrefs.countryCode = it
-                setCountryCodeSettings(it)
+            bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { currentCountryCode ->
+                viewModel.setCurrentCountryCode(currentCountryCode)
                 (activity as? MainActivity)?.getAllData()
             }
         }
@@ -83,12 +72,24 @@ class SettingsBlockerFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
+            blockerTurnOffLiveData.safeSingleObserve(viewLifecycleOwner) { blockerTurnOff ->
+                setBlockerTurnOffSettings(blockerTurnOff)
+                (activity as MainActivity).apply {
+                    if (blockerTurnOff) {
+                        startBlocker()
+                    } else {
+                        stopBlocker()
+                    }
+                }
+            }
+            blockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
+                setBlockHiddenSettings(blockHidden)
+            }
+            currentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { currentCountryCode ->
+                setCountryCodeSettings(currentCountryCode)
+            }
             successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
-                binding?.settingsBlockerHiddenDescribe?.text =
-                    getString(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
-                binding?.settingsBlockerHiddenSwitch?.isChecked = blockHidden
-                SharedPrefs.blockHidden = blockHidden
-                Timber.e("SettingsBlockerFragment successBlockHiddenLiveData blockHidden $blockHidden")
+                setBlockHidden(blockHidden)
             }
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { error ->
                 binding?.settingsBlockerHiddenSwitch?.isChecked =

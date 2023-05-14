@@ -11,32 +11,23 @@ import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.data.repositoryImpl.*
 import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
+import com.tarasovvp.smartblocker.domain.usecases.*
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
+import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.OnBoardingUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
-import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.mapperImpl.*
 import com.tarasovvp.smartblocker.presentation.mappers.*
 import com.tarasovvp.smartblocker.utils.PhoneNumber
@@ -50,6 +41,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideDataStoreRepository(@ApplicationContext context: Context):  DataStoreRepository {
+        return DataStoreRepositoryImpl(context)
+    }
 
     @Singleton
     @Provides
@@ -83,6 +80,12 @@ object AppModule {
     @Provides
     fun providePhoneNumberUtil(): PhoneNumber {
         return PhoneNumber()
+    }
+
+    @Singleton
+    @Provides
+    fun provideOnBoardingUseCase(dataStoreRepository: DataStoreRepository): OnBoardingUseCase {
+        return OnBoardingUseCaseImpl(dataStoreRepository)
     }
 
     @Singleton
@@ -123,7 +126,8 @@ object AppModule {
         filterRepository: FilterRepository,
         logCallRepository: LogCallRepository,
         filteredCallRepository: FilteredCallRepository,
-        realDataBaseRepository: RealDataBaseRepository
+        realDataBaseRepository: RealDataBaseRepository,
+        dataStoreRepository: DataStoreRepository
     ): MainUseCase {
         return MainUseCaseImpl(
             contactRepository,
@@ -131,7 +135,8 @@ object AppModule {
             filterRepository,
             logCallRepository,
             filteredCallRepository,
-            realDataBaseRepository
+            realDataBaseRepository,
+            dataStoreRepository
         )
     }
 
@@ -153,8 +158,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeSearchUseCase(countryCodeRepository: CountryCodeRepository): CountryCodeSearchUseCase {
-        return CountryCodeSearchUseCaseImpl(countryCodeRepository)
+    fun provideCountryCodeSearchUseCase(countryCodeRepository: CountryCodeRepository, dataStoreRepository: DataStoreRepository): CountryCodeSearchUseCase {
+        return CountryCodeSearchUseCaseImpl(countryCodeRepository, dataStoreRepository)
     }
 
     @Singleton
@@ -310,24 +315,38 @@ object AppModule {
     fun provideDetailsNumberDataUseCase(
         countryCodeRepository: CountryCodeRepository,
         filterRepository: FilterRepository,
-        filteredCallRepository: FilteredCallRepository
+        filteredCallRepository: FilteredCallRepository,
+        dataStoreRepository: DataStoreRepository
     ): DetailsNumberDataUseCase {
         return DetailsNumberDataUseCaseImpl(
             countryCodeRepository,
             filterRepository,
-            filteredCallRepository
+            filteredCallRepository,
+            dataStoreRepository
         )
     }
 
     @Singleton
     @Provides
-    fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository, firebaseAuth: FirebaseAuth): SettingsBlockerUseCase {
-        return SettingsBlockerUseCaseImpl(realDataBaseRepository, firebaseAuth)
+    fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository, dataStoreRepository: DataStoreRepository, firebaseAuth: FirebaseAuth): SettingsBlockerUseCase {
+        return SettingsBlockerUseCaseImpl(realDataBaseRepository, dataStoreRepository, firebaseAuth)
     }
 
     @Singleton
     @Provides
-    fun provideSettingsListUseCase(realDataBaseRepository: RealDataBaseRepository): SettingsListUseCase {
-        return SettingsListUseCaseImpl(realDataBaseRepository)
+    fun provideSettingsListUseCase(dataStoreRepository: DataStoreRepository, realDataBaseRepository: RealDataBaseRepository): SettingsListUseCase {
+        return SettingsListUseCaseImpl(dataStoreRepository, realDataBaseRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSettingsLanguageUseCase(dataStoreRepository: DataStoreRepository): SettingsLanguageUseCase {
+        return SettingsLanguageUseCaseImpl(dataStoreRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSettingsThemeUseCase(dataStoreRepository: DataStoreRepository): SettingsThemeUseCase {
+        return SettingsThemeUseCaseImpl(dataStoreRepository)
     }
 }

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_FORMAT_DEFAULT
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import kotlinx.parcelize.Parcelize
 import java.util.*
@@ -19,5 +19,6 @@ data class CountryCodeUIModel(
     fun countryEmoji(): String = String.format("%s %s", country.flagEmoji(), country)
 
     //TODO shared prefs
-    fun countryNameEmoji(): String = String.format("%s %s", country.flagEmoji(), Locale(SharedPrefs.appLang.orEmpty(), country).displayCountry)
+    fun countryNameEmoji(): String = String.format("%s %s", country.flagEmoji(), Locale(/*SharedPrefs.appLang.orEmpty()*/
+        String.EMPTY, country).displayCountry)
 }

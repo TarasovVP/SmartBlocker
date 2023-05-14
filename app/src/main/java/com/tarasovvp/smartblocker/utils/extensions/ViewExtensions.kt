@@ -28,6 +28,8 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
@@ -246,4 +248,35 @@ fun EditText.setupClearButtonWithAction() {
         }
         return@OnTouchListener false
     })
+}
+
+fun MaterialButton.changeFilterTypeButtonState(isButtonEnabled: Boolean, isClose: Boolean, ) {
+    backgroundTintList = ContextCompat.getColorStateList(
+        context,
+        if (isButtonEnabled) R.color.button_bg else R.color.transparent
+    )
+    strokeColor = ContextCompat.getColorStateList(
+        context,
+        if (isButtonEnabled) R.color.button_bg else R.color.comet
+    )
+    compoundDrawables.onEach {
+        iconTint = ContextCompat.getColorStateList(
+            context,
+            if (isButtonEnabled) R.color.white else R.color.comet
+        )
+    }
+    setTextColor(
+        ContextCompat.getColorStateList(
+            context,
+            if (isButtonEnabled) R.color.white else R.color.comet
+        )
+    )
+    isEnabled = isButtonEnabled
+    alpha = if (isButtonEnabled) 1f else 0.5f
+    setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)
+}
+
+fun ExtendedFloatingActionButton.changeFilterConditionButtonState(iconRes: Int?, isShown: Boolean, ) {
+    iconRes?.let { setIconResource(it) }
+    if (isShown) hide() else show()
 }
