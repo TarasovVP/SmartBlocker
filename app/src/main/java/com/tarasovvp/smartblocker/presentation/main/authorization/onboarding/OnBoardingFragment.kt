@@ -13,7 +13,9 @@ import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.PermissionUtil.permissionsArray
 import com.tarasovvp.smartblocker.utils.extensions.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, OnBoardingViewModel>() {
 
     override var layoutId = R.layout.fragment_on_boarding
@@ -84,7 +86,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, OnBoardingVie
 
     override fun observeLiveData() {
         viewModel.onBoardingSeenLiveData.safeSingleObserve(viewLifecycleOwner) {
-            findNavController().navigate(R.id.startLoginScreen)
+            findNavController().navigate(OnBoardingFragmentDirections.startLoginScreen())
         }
     }
 }

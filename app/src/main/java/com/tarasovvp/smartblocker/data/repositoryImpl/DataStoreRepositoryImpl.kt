@@ -17,6 +17,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_SEEN
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.take
 
 class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepository {
 
@@ -32,7 +33,7 @@ class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepositor
         return context.dataStore.data
             .map { preferences ->
                 preferences[booleanPreferencesKey(ON_BOARDING_SEEN)]
-            }
+            }.take(1)
     }
 
     override suspend fun setAppLang(appLang: String) {
@@ -45,7 +46,7 @@ class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepositor
         return context.dataStore.data
             .map { preferences ->
                 preferences[stringPreferencesKey(APP_LANG)]
-            }
+            }.take(1)
     }
 
     override suspend fun setAppTheme(appTheme: Int) {
@@ -58,7 +59,7 @@ class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepositor
         return context.dataStore.data
             .map { preferences ->
                 preferences[intPreferencesKey(APP_THEME)]
-            }
+            }.take(1)
     }
 
     override suspend fun setBlockerTurnOff(smartBlockerTurnOff: Boolean) {
@@ -71,7 +72,7 @@ class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepositor
         return context.dataStore.data
             .map { preferences ->
                 preferences[booleanPreferencesKey(BLOCK_TURN_OFF)]
-            }
+            }.take(1)
     }
 
     override suspend fun setBlockHidden(smartBlockerTurnOff: Boolean) {
@@ -84,7 +85,7 @@ class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepositor
         return context.dataStore.data
             .map { preferences ->
                 preferences[booleanPreferencesKey(BLOCK_HIDDEN)]
-            }
+            }.take(1)
     }
 
 
@@ -102,6 +103,6 @@ class DataStoreRepositoryImpl(private val context: Context) : DataStoreRepositor
                 } catch (e: java.lang.Exception) {
                     CountryCode()
                 }
-            }
+            }.take(1)
     }
 }

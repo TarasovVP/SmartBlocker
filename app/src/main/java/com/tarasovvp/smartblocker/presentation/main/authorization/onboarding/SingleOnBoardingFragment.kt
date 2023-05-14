@@ -17,7 +17,6 @@ class SingleOnBoardingFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.onBoarding = arguments?.serializable(ON_BOARDING_PAGE) as OnBoarding?
-        binding?.executePendingBindings()
     }
 
     companion object {
