@@ -1,6 +1,8 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.animation.Animator
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
@@ -28,6 +30,7 @@ import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.data.repositoryImpl.DataStoreRepositoryImpl
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
@@ -39,6 +42,9 @@ import com.tarasovvp.smartblocker.infrastructure.receivers.CallHandleReceiver
 import com.tarasovvp.smartblocker.infrastructure.services.ForegroundCallService
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -77,11 +83,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    //TODO
-    /*override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(
-            SharedPrefs.appLang ?: Locale.getDefault().language)))
-    }*/
+    override fun attachBaseContext(newBase: Context) {
+        val appLang = runBlocking {
+            DataStoreRepositoryImpl(newBase).getAppLang().first()
+        } ?: Locale.getDefault().language
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(appLang)))
+    }
 
     override fun onStart() {
         super.onStart()

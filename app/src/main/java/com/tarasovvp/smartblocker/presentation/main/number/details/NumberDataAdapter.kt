@@ -93,7 +93,7 @@ class NumberDataAdapter(
                 root.setSafeOnClickListener {
                     contactWithFilter?.let { it1 -> numberDataClick.invoke(it1.apply {
                         searchText = String.EMPTY
-                        highlightedSpanned = contactUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                     }) }
                 }
                 executePendingBindings()
@@ -111,11 +111,11 @@ class NumberDataAdapter(
                 this.callWithFilter?.isExtract = isFilteredCallDetails.not()
                 this.callWithFilter?.isFilteredCallDetails = isFilteredCallDetails
                 this.callWithFilter?.highlightedSpanned = this.callWithFilter?.highlightedSpanned
-                    ?: this.callWithFilter?.callUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                    ?: this.callWithFilter?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {
                     this.callWithFilter?.apply {
                         searchText = String.EMPTY
-                        highlightedSpanned = callUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         numberDataClick.invoke(this)
                     }
                 }

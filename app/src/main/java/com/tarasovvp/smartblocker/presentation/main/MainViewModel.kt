@@ -22,12 +22,10 @@ class MainViewModel @Inject constructor(
     application: Application,
     private val mainUseCase: MainUseCase
 ) : BaseViewModel(application) {
-
     val onBoardingSeenLiveData = MutableLiveData<Boolean>()
     val blockerTurnOffLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
     val currentUserLiveData = MutableLiveData<CurrentUser>()
-
     private val mainProgress = MainProgress()
 
     fun setAppLanguage() {
@@ -107,8 +105,8 @@ class MainViewModel @Inject constructor(
     private suspend fun setCountryCodeData() {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_localizations
-        })
-        val countryCodeList = mainUseCase.getSystemCountryCodes { size, position ->
+    })
+    val countryCodeList = mainUseCase.getSystemCountryCodes { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position

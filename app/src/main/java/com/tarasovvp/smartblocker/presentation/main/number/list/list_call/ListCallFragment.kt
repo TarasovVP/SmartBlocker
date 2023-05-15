@@ -40,7 +40,7 @@ class ListCallFragment :
                 }
 
                 override fun onCallDeleteCheckChange(callWithFilter: CallWithFilterUIModel) {
-                    callWithFilterList?.find { it.callUIModel?.callDate == callWithFilter.callUIModel?.callDate }?.isCheckedForDelete =
+                    callWithFilterList?.find { it.callDate == callWithFilter.callDate }?.isCheckedForDelete =
                         callWithFilter.isCheckedForDelete
                     if (callWithFilterList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode) {
                         changeDeleteMode()
@@ -88,7 +88,7 @@ class ListCallFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(CALL_DELETE) { _, _ ->
-            callWithFilterList?.filter { it.isCheckedForDelete }?.map { it.callUIModel?.callId.orZero() }?.let { viewModel.deleteCallList(it) }
+            callWithFilterList?.filter { it.isCheckedForDelete }?.map { it.callId }?.let { viewModel.deleteCallList(it) }
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
             filterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
@@ -125,9 +125,9 @@ class ListCallFragment :
                     .navigate(ListCallFragmentDirections.startFilteredCallDeleteDialog(callDelete =
                     resources.getQuantityString(R.plurals.list_call_delete_amount,
                         deleteCallCount.quantityString(),
-                        if (deleteCallCount > 1) deleteCallCount else if (callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.callUIModel?.number.isNullOrEmpty()) getString(
+                        if (deleteCallCount > 1) deleteCallCount else if (callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number.isNullOrEmpty()) getString(
                             R.string.details_number_hidden
-                        ) else callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.callUIModel?.number)))
+                        ) else callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number)))
             }
             true
         }

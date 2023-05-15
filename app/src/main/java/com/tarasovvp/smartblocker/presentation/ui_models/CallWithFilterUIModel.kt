@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
-import androidx.room.Ignore
-import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
@@ -15,38 +13,39 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 open class CallWithFilterUIModel(
-    var callUIModel: CallUIModel? = CallUIModel(),
+    var callId: Int = 0,
+    var callName: String = String.EMPTY,
+    var number: String = String.EMPTY,
+    var type: String = String.EMPTY,
+    var callDate: String = String.EMPTY,
+    var photoUrl: String = String.EMPTY,
+    var isFilteredCall: Boolean = false,
+    var filteredNumber: String = String.EMPTY,
+    var conditionType: Int = Constants.DEFAULT_FILTER,
     var filterUIModel: FilterUIModel? = FilterUIModel()
 ) : Parcelable, NumberDataUIModel() {
 
     @IgnoredOnParcel
-    @Ignore
-    @get:Exclude
+    private val isBlockHidden = false
+
+    @IgnoredOnParcel
     var isCheckedForDelete = false
 
     @IgnoredOnParcel
-    @Ignore
-    @get:Exclude
     var isDeleteMode = false
 
     @IgnoredOnParcel
-    @Ignore
-    @get:Exclude
     var isExtract = false
 
     @IgnoredOnParcel
-    @Ignore
-    @get:Exclude
     var isFilteredCallDetails = false
 
-    @Exclude
     fun isNameEmpty(): Boolean {
-        return callUIModel?.callName.isNullOrEmpty()
+        return callName.isEmpty()
     }
 
-    @Exclude
     fun callIcon(): Int {
-        return when (callUIModel?.type) {
+        return when (type) {
             Constants.IN_COMING_CALL -> if (isCallFiltered()) R.drawable.ic_call_incoming_permitted else R.drawable.ic_call_incoming
             Constants.MISSED_CALL -> if (isCallFiltered()) R.drawable.ic_call_missed_permitted else R.drawable.ic_call_missed
             Constants.REJECTED_CALL -> if (isCallFiltered()) R.drawable.ic_call_rejected_permitted else R.drawable.ic_call_rejected
@@ -55,74 +54,64 @@ open class CallWithFilterUIModel(
         }
     }
 
-    @Exclude
-    fun timeFromCallDate(): String? {
-        return callUIModel?.callDate?.toDateFromMilliseconds(Constants.TIME_FORMAT)
+    fun timeFromCallDate(): String {
+        return callDate.toDateFromMilliseconds(Constants.TIME_FORMAT)
     }
 
-    @Exclude
-    fun dateFromCallDate(): String? {
-        return callUIModel?.callDate?.toDateFromMilliseconds(Constants.DATE_FORMAT)
+    fun dateFromCallDate(): String {
+        return callDate.toDateFromMilliseconds(Constants.DATE_FORMAT)
     }
 
-    @Exclude
     fun placeHolder(context: Context): Drawable? {
-        return if (callUIModel?.callName.isNullOrEmpty()) ContextCompat.getDrawable(context,
-            R.drawable.ic_call) else if (callUIModel?.callName.nameInitial()
+        return if (callName.isEmpty()) ContextCompat.getDrawable(context,
+            R.drawable.ic_call) else if (callName.nameInitial()
                 .isEmpty()
         ) ContextCompat.getDrawable(context,
-            R.drawable.ic_contact) else context.getInitialDrawable(callUIModel?.callName.nameInitial())
+            R.drawable.ic_contact) else context.getInitialDrawable(callName.nameInitial())
     }
 
-    @Exclude
     private fun dateTimeFromCallDate(): String {
         return String.format("%s, %s", dateFromCallDate(), timeFromCallDate())
     }
 
-    @Exclude
     fun isBlockedCall(): Boolean {
-        return callUIModel?.type == Constants.BLOCKED_CALL
+        return type == Constants.BLOCKED_CALL
     }
 
-    @Exclude
     fun isPermittedCall(): Boolean {
         return isCallFiltered() && isBlockedCall().not()
     }
 
-    @Exclude
     fun isCallFiltered(): Boolean {
-        return callUIModel?.isFilteredCall.isTrue() || isFilteredCallDetails
+        return isFilteredCall || isFilteredCallDetails
     }
 
-    @Exclude
     fun isFilteredCallDelete(): Boolean {
-        return (isCallFiltered() || callUIModel?.number.orEmpty().isEmpty()) && isDeleteMode
+        return (isCallFiltered() || number.isEmpty()) && isDeleteMode
     }
 
-    @Exclude
     fun callFilterValue(): String {
         return when {
             isFilteredCallDetails -> dateTimeFromCallDate()
-            isExtract.not() && isCallFiltered() -> callUIModel?.filteredNumber.orEmpty()
-            //isExtract && isFilterNullOrEmpty().not() -> filter.orEmpty()
+            isExtract.not() && isCallFiltered() -> filteredNumber
+            isExtract && filteredNumber.isNotEmpty() -> filteredNumber
             else -> String.EMPTY
         }
     }
 
-    @Exclude
     fun callFilterTitle(filter: FilterUIModel?): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
-                //callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isTrue() -> R.string.details_number_hidden_on
-                //callUIModel?.number.orEmpty().isEmpty() && SharedPrefs.blockHidden.isNotTrue() -> R.string.details_number_hidden_off
+                number.isEmpty() && isBlockHidden -> R.string.details_number_hidden_on
+                number.isEmpty() && isBlockHidden.isNotTrue() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {
             if (isCallFiltered()) {
                 when {
-                    callUIModel?.number.orEmpty().isEmpty() -> R.string.details_number_blocked_by_settings
+                    number.isEmpty() -> R.string.details_number_blocked_by_settings
                     isPermittedCall() -> R.string.details_number_permitted_by_filter
                     else -> R.string.details_number_blocked_by_filter
                 }
@@ -132,16 +121,14 @@ open class CallWithFilterUIModel(
         }
     }
 
-    @Exclude
     fun callFilterIcon(): Int? {
         return when {
-            isCallFiltered() && callUIModel?.filteredNumber.orEmpty().isEmpty() -> R.drawable.ic_settings_small
-            isCallFiltered() -> FilterCondition.values()[callUIModel?.conditionType.orZero()].smallIcon(callUIModel?.type == Constants.BLOCKED_CALL)
+            isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
+            isCallFiltered() -> FilterCondition.values()[conditionType].smallIcon(type == Constants.BLOCKED_CALL)
             else -> null
         }
     }
 
-    @Exclude
     fun callFilterTint(filter: FilterUIModel?): Int {
         return when {
             (isCallFiltered() && isBlockedCall()) || (isExtract && filter?.isBlocker().isTrue()) -> R.color.sunset

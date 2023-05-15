@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = CONTACTS)
 @Parcelize
 data class Contact(
-    @PrimaryKey var id: String = String.EMPTY,
+    @PrimaryKey var contactId: String = String.EMPTY,
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var number: String? = String.EMPTY,

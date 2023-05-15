@@ -59,15 +59,15 @@ class CreateFilterViewModel @Inject constructor(
                 sortWith(compareBy(
                         {
                             when (it) {
-                                is ContactWithFilterUIModel -> it.contactUIModel?.number?.startsWith(Constants.PLUS_CHAR)
-                                is CallWithFilterUIModel -> it.callUIModel?.number?.startsWith(Constants.PLUS_CHAR)
+                                is ContactWithFilterUIModel -> it.number.startsWith(Constants.PLUS_CHAR)
+                                is CallWithFilterUIModel -> it.number.startsWith(Constants.PLUS_CHAR)
                                 else -> false
                             }
                         },
                         {
                             when (it) {
-                                is ContactWithFilterUIModel -> it.contactUIModel?.number
-                                is CallWithFilterUIModel -> it.callUIModel?.number
+                                is ContactWithFilterUIModel -> it.number
+                                is CallWithFilterUIModel -> it.number
                                 else -> String.EMPTY
                             }
                         }

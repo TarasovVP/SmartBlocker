@@ -100,7 +100,7 @@
     <string name="progress_update_calls_change">Обработка звонков</string>
     <string name="progress_update_filtered_calls">Обработка отфильтрованных звонков</string>
     <!--List screens-->
-    <string name="list_blocker">Блокировщики</string>
+    <string name="list_blocker">Блокувальники</string>
     <string name="list_permission">Разрешения</string>
     <plurals name="list_filter_delete_amount">
         <item quantity="one">%s фильтр</item>

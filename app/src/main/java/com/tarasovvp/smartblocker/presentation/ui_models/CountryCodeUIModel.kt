@@ -7,18 +7,16 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_FORM
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
 @Parcelize
 data class CountryCodeUIModel(
     var country: String = COUNTRY_DEFAULT,
     var countryCode: String = COUNTRY_CODE_DEFAULT,
-    var numberFormat: String = NUMBER_FORMAT_DEFAULT
+    var numberFormat: String = NUMBER_FORMAT_DEFAULT,
+    var displayCountry: String = String.EMPTY
 ) : Parcelable {
 
     fun countryEmoji(): String = String.format("%s %s", country.flagEmoji(), country)
 
-    //TODO shared prefs
-    fun countryNameEmoji(): String = String.format("%s %s", country.flagEmoji(), Locale(/*SharedPrefs.appLang.orEmpty()*/
-        String.EMPTY, country).displayCountry)
+    fun countryNameEmoji(): String = String.format("%s %s", country.flagEmoji(), displayCountry)
 }

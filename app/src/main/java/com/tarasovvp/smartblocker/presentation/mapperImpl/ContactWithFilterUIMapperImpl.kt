@@ -1,21 +1,24 @@
 package com.tarasovvp.smartblocker.presentation.mapperImpl
 
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
-import com.tarasovvp.smartblocker.presentation.mappers.ContactUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 
-class ContactWithFilterUIMapperImpl(private val contactUIMapper: ContactUIMapper, private val filterUIMapper: FilterUIMapper) : ContactWithFilterUIMapper {
+class ContactWithFilterUIMapperImpl(private val filterUIMapper: FilterUIMapper) : ContactWithFilterUIMapper {
 
     override fun mapToUIModel(from: ContactWithFilter): ContactWithFilterUIModel {
-        return ContactWithFilterUIModel(contactUIModel = from.contact?.let { contactUIMapper.mapToUIModel(it) },
+        return ContactWithFilterUIModel(from.contact?.contactId.orEmpty(), from.contact?.name.orEmpty(), from.contact?.photoUrl.orEmpty(),
+            from.contact?.number.orEmpty(), from.contact?.phoneNumberValue.orEmpty(), from.contact?.isPhoneNumberValid.isTrue(),
             filterUIModel = from.filterWithCountryCode?.filter?.let { filterUIMapper.mapToUIModel(it) })
     }
 
     override fun mapFromUIModel(to: ContactWithFilterUIModel): ContactWithFilter {
-        return ContactWithFilter(contact = to.contactUIModel?.let { contactUIMapper.mapFromUIModel(it) },
+        return ContactWithFilter(contact = Contact(to.contactId, to.contactName, to.photoUrl,
+            to.number, to.phoneNumberValue, to.isPhoneNumberValid),
             filterWithCountryCode = FilterWithCountryCode(filter = to.filterUIModel?.let { filterUIMapper.mapFromUIModel(it) }))
     }
 

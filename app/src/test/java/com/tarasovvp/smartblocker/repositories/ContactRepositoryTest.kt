@@ -103,7 +103,7 @@ class ContactRepositoryTest {
         every { cursor.moveToNext() } answers {
             index++ < expectedSize
         }
-        every { cursor.getString(0) } returns contact.id
+        every { cursor.getString(0) } returns contact.contactId
         every { cursor.getString(1) } returns contact.name
         every { cursor.getString(2) } returns contact.photoUrl
         every { cursor.getString(3) } returns contact.number

@@ -37,7 +37,7 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageUrl="@{callWithFilter.callUIModel.photoUrl}"
+                app:imageUrl="@{callWithFilter.photoUrl}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_call_number"
@@ -58,7 +58,7 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@{callWithFilter.callUIModel.number.empty ? @string/details_number_hidden : callWithFilter.highlightedSpanned}"
+                android:text="@{callWithFilter.number.empty ? @string/details_number_hidden : callWithFilter.highlightedSpanned}"
                 app:layout_constraintBottom_toTopOf="@+id/item_call_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_call_time"
                 app:layout_constraintStart_toEndOf="@+id/item_call_avatar"
@@ -88,7 +88,7 @@
                 app:layout_constraintStart_toStartOf="@+id/item_call_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
-                app:mainText="@{callWithFilter.nameEmpty ? callWithFilter.isExtract ? @string/details_number_from_call_log : @string/details_number_not_from_contacts : callWithFilter.callUIModel.callName}"
+                app:mainText="@{callWithFilter.nameEmpty ? callWithFilter.isExtract ? @string/details_number_from_call_log : @string/details_number_not_from_contacts : callWithFilter.callName}"
                 app:searchText="@{callWithFilter.searchText}" />
 
             <ImageView

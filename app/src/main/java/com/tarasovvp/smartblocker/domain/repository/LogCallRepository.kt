@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 
 interface LogCallRepository {
 
-    suspend fun getSystemLogCallList(context: Context, result: (Int, Int) -> Unit) : List<LogCall>
+    suspend fun getSystemLogCallList(context: Context, country: String, result: (Int, Int) -> Unit) : List<LogCall>
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>)
 

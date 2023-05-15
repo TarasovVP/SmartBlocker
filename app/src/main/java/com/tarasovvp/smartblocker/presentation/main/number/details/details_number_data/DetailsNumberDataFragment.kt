@@ -18,7 +18,7 @@ import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerA
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.*
-import com.tarasovvp.smartblocker.utils.PhoneNumber
+import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class DetailsNumberDataFragment :
     BaseDetailsFragment<FragmentDetailsNumberDataBinding, DetailsNumberDataViewModel>() {
 
     @Inject
-    lateinit var phoneNumber: PhoneNumber
+    lateinit var phoneNumberUtil: PhoneNumberUtil
 
     override var layoutId = R.layout.fragment_details_number_data
     override val viewModelClass = DetailsNumberDataViewModel::class.java
@@ -44,13 +44,12 @@ class DetailsNumberDataFragment :
         binding?.apply {
             contactWithFilter = if (args.numberData is CallWithFilterUIModel) {
                 val callWithFilter = args.numberData as? CallWithFilterUIModel
-                isHiddenCall = callWithFilter?.callUIModel?.callId.orZero() > 0
-                        && callWithFilter?.callUIModel?.number?.isEmpty().isTrue()
+                isHiddenCall = callWithFilter?.callId.orZero() > 0
+                        && callWithFilter?.number?.isEmpty().isTrue()
                 ContactWithFilterUIModel(filterUIModel = callWithFilter?.filterUIModel,
-                    contactUIModel = ContactUIModel(name = getString(R.string.details_number_from_call_log),
-                    photoUrl = callWithFilter?.callUIModel?.photoUrl.orEmpty(),
-                    number = callWithFilter?.callUIModel?.number.orEmpty())
-                )
+                    contactName = getString(R.string.details_number_from_call_log),
+                    photoUrl = callWithFilter?.photoUrl.orEmpty(),
+                    number = callWithFilter?.number.orEmpty())
             } else {
                 args.numberData as ContactWithFilterUIModel
             }
@@ -137,19 +136,19 @@ class DetailsNumberDataFragment :
     }
 
     override fun getData() {
-        viewModel.filterListWithNumber(binding?.contactWithFilter?.contactUIModel?.phoneNumberValue.orEmpty())
-        viewModel.filteredCallsByNumber(binding?.contactWithFilter?.contactUIModel?.phoneNumberValue.orEmpty())
+        viewModel.filterListWithNumber(binding?.contactWithFilter?.phoneNumberValue.orEmpty())
+        viewModel.filteredCallsByNumber(binding?.contactWithFilter?.phoneNumberValue.orEmpty())
     }
 
     private fun createFilter(conditionIndex: Int) {
-        val number = binding?.contactWithFilter?.contactUIModel?.number.orEmpty()
+        val number = binding?.contactWithFilter?.number.orEmpty()
         filterWithCountryCode = FilterWithCountryCodeUIModel(filterUIModel = FilterUIModel(
             filter = number,
             conditionType = conditionIndex,
             filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION)
         )
-        val phoneNumber = if (phoneNumber.getPhoneNumber(number, String.EMPTY).isNull()) phoneNumber.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
-        else phoneNumber.getPhoneNumber(number, String.EMPTY)
+        val phoneNumber = if (phoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull()) phoneNumberUtil.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
+        else phoneNumberUtil.getPhoneNumber(number, String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             startAddFilterScreen()
         } else {

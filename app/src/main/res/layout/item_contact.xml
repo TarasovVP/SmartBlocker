@@ -34,7 +34,7 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageUrl="@{contactWithFilter.contactUIModel.photoUrl}"
+                app:imageUrl="@{contactWithFilter.photoUrl}"
                 app:placeHolder="@{contactWithFilter.placeHolder(context)}"
                 app:shapeAppearanceOverlay="@style/RoundedImageViewStyle"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_name"
@@ -84,7 +84,7 @@
                 app:layout_constraintStart_toStartOf="@+id/item_contact_number"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_number"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
-                app:mainText="@{ contactWithFilter.contactUIModel.name.empty ? @string/details_number_not_from_contacts : contactWithFilter.contactUIModel.name}"
+                app:mainText="@{ contactWithFilter.contactName.empty ? @string/details_number_not_from_contacts : contactWithFilter.contactName}"
                 app:searchText="@{contactWithFilter.searchText}" />
 
             <View

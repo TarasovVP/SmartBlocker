@@ -28,12 +28,12 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CA
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.ui_models.*
-import com.tarasovvp.smartblocker.utils.PhoneNumber
+import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
 
-fun Context.systemContactList(phoneNumber: PhoneNumber, result: (Int, Int) -> Unit): ArrayList<Contact> {
+fun Context.systemContactList(phoneNumberUtil: PhoneNumberUtil, country: String, result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Contacts.DISPLAY_NAME,
@@ -56,13 +56,13 @@ fun Context.systemContactList(phoneNumber: PhoneNumber, result: (Int, Int) -> Un
     cursor?.use { contactCursor ->
         while (contactCursor.moveToNext()) {
             val contact = Contact(
-                id = contactCursor.getString(0),
+                contactId = contactCursor.getString(0),
                 name = contactCursor.getString(1),
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
             ).apply {
-                phoneNumberValue = phoneNumber.phoneNumberValue(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY)
-                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY) }
+                phoneNumberValue = phoneNumberUtil.phoneNumberValue(number, country)
+                isPhoneNumberValid = phoneNumberUtil.isPhoneNumberValid(number, country) }
             contactList.add(contact)
             result.invoke(cursor.count, contactList.size)
         }
@@ -104,14 +104,14 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     return logCall
 }
 
-fun Context.systemLogCallList(phoneNumber: PhoneNumber, result: (Int, Int) -> Unit): List<LogCall> {
+fun Context.systemLogCallList(phoneNumberUtil: PhoneNumberUtil, country: String, result: (Int, Int) -> Unit): List<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             logCallList.add(logCall.apply {
-                phoneNumberValue = phoneNumber.phoneNumberValue(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY)
-                isPhoneNumberValid = phoneNumber.isPhoneNumberValid(number, /*SharedPrefs.countryCode?.country.orEmpty()*/String.EMPTY) })
+                phoneNumberValue = phoneNumberUtil.phoneNumberValue(number, country)
+                isPhoneNumberValid = phoneNumberUtil.isPhoneNumberValid(number, country) })
             result.invoke(callLogCursor.count, logCallList.size)
         }
     }
@@ -223,32 +223,32 @@ fun NumberDataUIModel.highlightedSpanned(filter: FilterUIModel?, color: Int): Sp
     when (this) {
         is CallWithFilterUIModel -> {
             return when {
-                filter?.filter.isNullOrEmpty() -> callUIModel?.number.highlightedSpanned(
+                filter?.filter.isNullOrEmpty() -> number.highlightedSpanned(
                     String.EMPTY,
                     null,
                     color
                 )
-                else -> callUIModel?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+                else -> number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }
         is ContactWithFilterUIModel -> {
             return when {
-                filter?.filter.isNullOrEmpty() -> contactUIModel?.number.highlightedSpanned(
+                filter?.filter.isNullOrEmpty() -> number.highlightedSpanned(
                     String.EMPTY,
                     null,
                     color
                 )
-                filter?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contactUIModel?.isPhoneNumberValid.isTrue()
-                        && contactUIModel?.number?.startsWith(PLUS_CHAR)
-                    .isNotTrue() -> contactUIModel?.number.highlightedSpanned(
+                filter?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && isPhoneNumberValid.isTrue()
+                        && number.startsWith(PLUS_CHAR)
+                    .isNotTrue() -> number.highlightedSpanned(
                     filter?.filter,
                     filter?.countryCode,
                     color
                 )
-                filter?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && contactUIModel?.isPhoneNumberValid.isTrue()
-                        && contactUIModel?.number?.startsWith(PLUS_CHAR)
-                    .isTrue() -> contactUIModel?.number.highlightedSpanned(filter.filter, null, color)
-                else -> contactUIModel?.number.highlightedSpanned(filter?.filter, null, Color.RED)
+                filter?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && isPhoneNumberValid.isTrue()
+                        && number.startsWith(PLUS_CHAR)
+                    .isTrue() -> number.highlightedSpanned(filter.filter, null, color)
+                else -> number.highlightedSpanned(filter?.filter, null, Color.RED)
             }
         }
         is FilterWithCountryCodeUIModel -> {

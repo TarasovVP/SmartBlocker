@@ -5,7 +5,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 
 interface ContactRepository {
-    suspend fun getSystemContactList(context: Context, result: (Int, Int) -> Unit): ArrayList<Contact>
+    suspend fun getSystemContactList(context: Context, country: String, result: (Int, Int) -> Unit): ArrayList<Contact>
 
     suspend fun insertAllContacts(contactList: List<Contact>)
 

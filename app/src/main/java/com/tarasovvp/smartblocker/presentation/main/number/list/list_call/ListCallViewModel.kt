@@ -46,8 +46,8 @@ class ListCallViewModel @Inject constructor(
         if (refreshing.not()) showProgress()
         launch {
             val hashMapList = callList.sortedByDescending {
-                it.callUIModel?.callDate.orEmpty()
-            }.groupBy { it.callUIModel?.callDate.orEmpty() }
+                it.callDate
+            }.groupBy { it.callDate }
             callHashMapLiveData.postValue(hashMapList)
             hideProgress()
         }

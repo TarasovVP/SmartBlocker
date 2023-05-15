@@ -42,7 +42,7 @@ class ListContactViewModel @Inject constructor(
         if (refreshing.not()) showProgress()
         launch {
             val contactsWithFilters = contactList.groupBy {
-                if (it.contactUIModel?.name.isNullOrEmpty()) String.EMPTY else it.contactUIModel?.name?.get(0).toString()
+                if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
             }
             contactHashMapLiveData.postValue(contactsWithFilters)
             hideProgress()

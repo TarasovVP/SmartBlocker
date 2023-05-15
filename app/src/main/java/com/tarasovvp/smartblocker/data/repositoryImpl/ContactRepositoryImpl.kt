@@ -4,20 +4,20 @@ import android.content.Context
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.utils.PhoneNumber
+import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ContactRepositoryImpl @Inject constructor(
-    private val phoneNumber: PhoneNumber,
-    private val contactDao: ContactDao,
+    private val phoneNumberUtil: PhoneNumberUtil,
+    private val contactDao: ContactDao
 ) : ContactRepository {
 
-    override suspend fun getSystemContactList(context: Context, result: (Int, Int) -> Unit, ) =
+    override suspend fun getSystemContactList(context: Context, country: String, result: (Int, Int) -> Unit, ) =
         withContext(Dispatchers.Default) {
-            context.systemContactList(phoneNumber) { size, position ->
+            context.systemContactList(phoneNumberUtil, country) { size, position ->
                 result.invoke(size, position)
             }
         }

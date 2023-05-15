@@ -30,7 +30,7 @@ import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.Setti
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.mapperImpl.*
 import com.tarasovvp.smartblocker.presentation.mappers.*
-import com.tarasovvp.smartblocker.utils.PhoneNumber
+import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -78,8 +78,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePhoneNumberUtil(): PhoneNumber {
-        return PhoneNumber()
+    fun providePhoneNumberUtil(): PhoneNumberUtil {
+        return PhoneNumberUtil()
     }
 
     @Singleton
@@ -146,14 +146,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeRepository(phoneNumber: PhoneNumber, countryCodeDao: CountryCodeDao): CountryCodeRepository {
-        return CountryCodeRepositoryImpl(phoneNumber, countryCodeDao)
+    fun provideCountryCodeRepository(phoneNumberUtil: PhoneNumberUtil, countryCodeDao: CountryCodeDao): CountryCodeRepository {
+        return CountryCodeRepositoryImpl(phoneNumberUtil, countryCodeDao)
     }
 
     @Singleton
     @Provides
-    fun provideCountryCodeUIMapper(): CountryCodeUIMapper {
-        return CountryCodeUIMapperImpl()
+    fun provideCountryCodeUIMapper(dataStoreRepository: DataStoreRepository): CountryCodeUIMapper {
+        return CountryCodeUIMapperImpl(dataStoreRepository)
     }
 
     @Singleton
@@ -242,8 +242,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLogCallRepository(phoneNumber: PhoneNumber, logCallDao: LogCallDao): LogCallRepository {
-        return LogCallRepositoryImpl(phoneNumber, logCallDao)
+    fun provideLogCallRepository(phoneNumberUtil: PhoneNumberUtil, logCallDao: LogCallDao): LogCallRepository {
+        return LogCallRepositoryImpl(phoneNumberUtil, logCallDao)
     }
 
     @Singleton
@@ -260,14 +260,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCallUIMapper(): CallUIMapper {
-        return CallUIMapperImpl()
-    }
-
-    @Singleton
-    @Provides
-    fun provideCallWithFilterUIMapper(callUIMapper: CallUIMapper, filterUIMapper: FilterUIMapper): CallWithFilterUIMapper {
-        return CallWithFilterUIMapperImpl(callUIMapper, filterUIMapper)
+    fun provideCallWithFilterUIMapper(filterUIMapper: FilterUIMapper): CallWithFilterUIMapper {
+        return CallWithFilterUIMapperImpl(filterUIMapper)
     }
 
     @Singleton
@@ -288,20 +282,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactRepository(phoneNumber: PhoneNumber, contactDao: ContactDao): ContactRepository {
-        return ContactRepositoryImpl(phoneNumber, contactDao)
+    fun provideContactRepository(phoneNumberUtil: PhoneNumberUtil, contactDao: ContactDao): ContactRepository {
+        return ContactRepositoryImpl(phoneNumberUtil, contactDao)
     }
 
     @Singleton
     @Provides
-    fun provideContactUIMapper(): ContactUIMapper {
-        return ContactUIMapperImpl()
-    }
-
-    @Singleton
-    @Provides
-    fun provideContactWithFilterUIMapper(contactUIMapper: ContactUIMapper, filterUIMapper: FilterUIMapper): ContactWithFilterUIMapper {
-        return ContactWithFilterUIMapperImpl(contactUIMapper, filterUIMapper)
+    fun provideContactWithFilterUIMapper(filterUIMapper: FilterUIMapper): ContactWithFilterUIMapper {
+        return ContactWithFilterUIMapperImpl(filterUIMapper)
     }
 
     @Singleton

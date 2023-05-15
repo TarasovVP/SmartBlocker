@@ -77,6 +77,7 @@ fun Boolean?.isNotTrue() = this notEquals true
 
 fun Int?.orZero() = this ?: 0
 
+//TODO remove
 fun Int.quantityString(): Int {
     return when (if (this > 20) this % 10 else this) {
         1 -> 1
@@ -157,5 +158,3 @@ inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = whe
 infix fun String?.isContaining(searchQuery: String?) = this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
 
 infix fun Any?.notEquals(any: Any?) = this != any
-
-infix fun <T> Boolean.then(param: T): T? = if (this) param else null

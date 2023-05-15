@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.*
 
-class PhoneNumber {
+class PhoneNumberUtil {
 
     private var phoneNumberUtil: PhoneNumberUtil? = null
 

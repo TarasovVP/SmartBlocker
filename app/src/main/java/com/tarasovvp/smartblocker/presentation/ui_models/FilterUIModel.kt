@@ -43,7 +43,6 @@ data class FilterUIModel(
     @IgnoredOnParcel
     var filterAction: FilterAction? = null
 
-    @Exclude
     fun filterTypeTitle(): Int {
         return when (filterType) {
             PERMISSION -> R.string.filter_type_permission

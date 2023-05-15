@@ -7,6 +7,8 @@ import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import java.util.Locale
 import javax.inject.Inject
 
 class MainUseCaseImpl @Inject constructor(
@@ -67,16 +69,22 @@ class MainUseCaseImpl @Inject constructor(
         return filterRepository.allFilters()
     }
 
-    override suspend fun getSystemContacts(application: Application, result: (Int, Int) -> Unit) = contactRepository.getSystemContactList(application) { size, position ->
-        result.invoke(size, position)
+    override suspend fun getSystemContacts(application: Application, result: (Int, Int) -> Unit): ArrayList<Contact> {
+        val country = dataStoreRepository.getCountryCode().first()?.country ?: Locale.getDefault().country
+        return contactRepository.getSystemContactList(application, country) { size, position ->
+            result.invoke(size, position)
+        }
     }
 
     override suspend fun insertContacts(contactList: List<Contact>) {
         contactRepository.insertAllContacts(contactList)
     }
 
-    override suspend fun getSystemLogCalls(application: Application, result: (Int, Int) -> Unit) = logCallRepository.getSystemLogCallList(application) { size, position ->
-        result.invoke(size, position)
+    override suspend fun getSystemLogCalls(application: Application, result: (Int, Int) -> Unit): List<LogCall> {
+        val country = dataStoreRepository.getCountryCode().first()?.country ?: Locale.getDefault().country
+        return logCallRepository.getSystemLogCallList(application, country) { size, position ->
+            result.invoke(size, position)
+        }
     }
 
     override suspend fun insertAllLogCalls(logCallList: List<LogCall>) {

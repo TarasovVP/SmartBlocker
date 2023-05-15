@@ -60,12 +60,12 @@ class ContactAdapter(private val contactClick: (ContactWithFilterUIModel) -> Uni
             val contactWithFilter = getDataInPosition(position)
             DataBindingUtil.bind<ItemContactBinding>(itemView)?.apply {
                 contactWithFilter.searchText = searchQuery
-                contactWithFilter.highlightedSpanned =  contactWithFilter.contactUIModel?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                contactWithFilter.highlightedSpanned =  contactWithFilter.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 this.contactWithFilter = contactWithFilter
                 root.setSafeOnClickListener {
                     contactClick.invoke(contactWithFilter.apply {
                             searchText = String.EMPTY
-                            highlightedSpanned = contactUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                            highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                     })
                 }
                 executePendingBindings()

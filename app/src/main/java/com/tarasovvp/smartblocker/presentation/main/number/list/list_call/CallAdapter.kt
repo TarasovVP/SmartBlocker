@@ -64,7 +64,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 callWithFilter.isDeleteMode = isDeleteMode
                 callWithFilter.searchText = searchQuery
-                callWithFilter.highlightedSpanned = callWithFilter.callUIModel?.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                callWithFilter.highlightedSpanned = callWithFilter.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 callWithFilter.isExtract = false
                 this.callWithFilter = callWithFilter
                 root.setSafeOnClickListener {
@@ -78,7 +78,7 @@ class CallAdapter(val callClickListener: CallClickListener) :
                         callClickListener.onCallClick(callWithFilter.apply {
                             callWithFilter.searchText = String.EMPTY
                             callWithFilter.highlightedSpanned =
-                                callWithFilter.callUIModel?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                                callWithFilter.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                         })
                     }
                 }

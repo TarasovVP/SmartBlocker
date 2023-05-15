@@ -1,15 +1,12 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_START
@@ -17,8 +14,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FIL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
@@ -26,7 +21,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import com.tarasovvp.smartblocker.presentation.ui_models.*
-import com.tarasovvp.smartblocker.utils.PhoneNumber
+import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -38,7 +33,7 @@ open class CreateFilterFragment :
     BaseDetailsFragment<FragmentCreateFilterBinding, CreateFilterViewModel>() {
 
     @Inject
-    lateinit var phoneNumber: PhoneNumber
+    lateinit var phoneNumberUtil: PhoneNumberUtil
 
     override var layoutId = R.layout.fragment_create_filter
     override val viewModelClass = CreateFilterViewModel::class.java
@@ -56,8 +51,8 @@ open class CreateFilterFragment :
     override fun createAdapter() {
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataUIModelList) { numberData ->
             val number = when (numberData) {
-                is ContactWithFilterUIModel -> numberData.contactUIModel?.number
-                is CallWithFilterUIModel -> numberData.callUIModel?.number
+                is ContactWithFilterUIModel -> numberData.number
+                is CallWithFilterUIModel -> numberData.number
                 else -> String.EMPTY
             }
             binding?.apply {
@@ -67,7 +62,7 @@ open class CreateFilterFragment :
                         this.filter = number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
                 } else {
-                    val phoneNumber = phoneNumber.getPhoneNumber(number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
+                    val phoneNumber = phoneNumberUtil.getPhoneNumber(number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
                     if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
                         filterWithCountryCode?.filterUIModel = filterWithCountryCode?.filterUIModel?.apply {
                             this.filter = phoneNumber?.nationalNumber?.toString() ?: number.digitsTrimmed()
@@ -232,7 +227,7 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter filterAction ${ binding?.filterWithCountryCode?.filterAction}")
                 binding?.filterWithCountryCode = binding?.filterWithCountryCode?.apply {
                     filterAction = when (existingFilter.filterUIModel?.filterType) {
-                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(phoneNumber).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(phoneNumberUtil).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         filterUIModel?.filterType -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                         else -> if (isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
                     }
