@@ -13,7 +13,7 @@
             type="Boolean" />
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterViewModel
@@ -24,8 +24,8 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
 
     @Test
     fun getFilterListTest() = runTest {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { useCase.allFilterWithCountryCodesByType(true) } returns filterList
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        coEvery { useCase.allFilterWithFilteredNumbersByType(true) } returns filterList
         viewModel.getFilterList(isBlackList = true, refreshing = false)
         advanceUntilIdle()
         val result = viewModel.filterListLiveData.getOrAwaitValue()
@@ -34,7 +34,7 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
 
     @Test
     fun getFilteredFilterListTest() = runTest {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
         coEvery { useCase.getFilteredFilterList(filterList, String.EMPTY, arrayListOf(
             NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)) } returns filterList.filter { it.filter?.filter == TEST_FILTER }
         viewModel.getFilteredFilterList(filterList, String.EMPTY, arrayListOf(
@@ -46,7 +46,7 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
 
     @Test
     fun getHashMapFromFilterListTest() = runTest {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
         val filterMap = mapOf(String.EMPTY to filterList)
         coEvery { useCase.getHashMapFromFilterList(filterList) } returns filterMap
         viewModel.getHashMapFromFilterList(filterList, false)

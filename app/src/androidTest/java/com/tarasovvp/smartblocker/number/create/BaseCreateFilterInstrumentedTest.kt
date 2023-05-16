@@ -20,7 +20,7 @@ import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
@@ -42,7 +42,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     var name: TestName = TestName()
 
     private var fragment: CreateFilterFragment? = null
-    private var filterWithCountryCode: FilterWithCountryCode? = null
+    private var filterWithFilteredNumbers: FilterWithFilteredNumbers? = null
     private var numberDataUIModelList = arrayListOf<NumberDataUIModel>()
 
     @Before
@@ -54,7 +54,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
             is CreateFilterConditionStartInstrumentedTest -> FilterCondition.FILTER_CONDITION_START.ordinal
             else -> FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
         }
-        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCode(filter = Filter(filterType = BLOCKER, conditionType = filterCondition), countryCode = CountryCode()))) {
+        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithFilteredNumbers(filter = Filter(filterType = BLOCKER, conditionType = filterCondition), countryCode = CountryCode()))) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.createFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -62,7 +62,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
         }
         onView(isRoot()).perform(waitFor(2000))
         fragment?.viewModel?.filteredNumberDataListLiveDataUIModel?.postValue(numberDataUIModelList)
-        filterWithCountryCode = fragment?.binding?.filterWithCountryCode
+        filterWithFilteredNumbers = fragment?.binding?.filterWithCountryCode
     }
 
     @Test
@@ -74,27 +74,27 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkItemDetailsFilterAvatar() {
         onView(withId(R.id.item_details_filter_avatar))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(filterWithCountryCode?.filter?.conditionTypeIcon())))
+            .check(matches(withDrawable(filterWithFilteredNumbers?.filter?.conditionTypeIcon())))
     }
 
     @Test
     fun checkItemDetailsFilterFilter() {
         onView(withId(R.id.item_details_filter_filter))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(filterWithCountryCode?.filter?.filterTypeIcon())))
+            .check(matches(withDrawable(filterWithFilteredNumbers?.filter?.filterTypeIcon())))
     }
 
     @Test
     fun checkItemDetailsFilterValue() {
         onView(withId(R.id.item_details_filter_value))
             .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCode?.createFilterValue(targetContext))))
+            .check(matches(withText(filterWithFilteredNumbers?.createFilterValue(targetContext))))
     }
 
     @Test
     fun checkItemDetailsFilterTypeTitle() {
         onView(withId(R.id.item_details_filter_type_title)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter.isNull()) filterWithCountryCode?.filter?.filter else targetContext.getString(filterWithCountryCode?.filter?.conditionTypeName().orZero()))))
+            .check(matches(withText(if (filterWithFilteredNumbers?.filter.isNull()) filterWithFilteredNumbers?.filter?.filter else targetContext.getString(filterWithFilteredNumbers?.filter?.conditionTypeName().orZero()))))
     }
 
     @Test
@@ -106,25 +106,25 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkItemDetailsFilterContactsDetails() {
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter?.filterAction.isNull())
-                filterWithCountryCode?.filter?.filteredContactsText(targetContext) else filterWithCountryCode?.filterActionText(targetContext))))
-            .check(matches(withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) filterWithCountryCode?.filter?.filterTypeTint().orZero() else filterWithCountryCode?.filter?.filterDetailTint().orZero())))
+            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.filterAction.isNull())
+                filterWithFilteredNumbers?.filter?.filteredContactsText(targetContext) else filterWithFilteredNumbers?.filterActionText(targetContext))))
+            .check(matches(withTextColor(if (filterWithFilteredNumbers?.filter?.filterAction.isNull()) filterWithFilteredNumbers?.filter?.filterTypeTint().orZero() else filterWithFilteredNumbers?.filter?.filterDetailTint().orZero())))
     }
 
     @Test
     fun checkItemDetailsFilterFilteredCallsDetails() {
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter?.filterAction.isNull())
-                filterWithCountryCode?.filter?.filteredCallsText(targetContext) else filterWithCountryCode?.filterActionText(targetContext))))
-            .check(matches(withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) filterWithCountryCode?.filter?.filterTypeTint().orZero() else filterWithCountryCode?.filter?.filterDetailTint().orZero())))
+            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.filterAction.isNull())
+                filterWithFilteredNumbers?.filter?.filteredCallsText(targetContext) else filterWithFilteredNumbers?.filterActionText(targetContext))))
+            .check(matches(withTextColor(if (filterWithFilteredNumbers?.filter?.filterAction.isNull()) filterWithFilteredNumbers?.filter?.filterTypeTint().orZero() else filterWithFilteredNumbers?.filter?.filterDetailTint().orZero())))
     }
 
     @Test
     fun checkItemDetailsFilterCreated() {
         onView(withId(R.id.item_details_filter_created)).apply {
-            if ((filterWithCountryCode?.filter?.created ?: 0) > 0L) {
+            if ((filterWithFilteredNumbers?.filter?.created ?: 0) > 0L) {
                 check(matches(isDisplayed()))
-                check(matches(withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithCountryCode?.filter?.filterCreatedDate()))))
+                check(matches(withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumbers?.filter?.filterCreatedDate()))))
             } else {
                 check(matches(withText(String.EMPTY)))
             }
@@ -141,7 +141,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkCreateFilterCountryCodeSpinner() {
         onView(withId(R.id.create_filter_country_code_spinner)).apply {
-            if (filterWithCountryCode?.filter?.isTypeContain().isTrue()) {
+            if (filterWithFilteredNumbers?.filter?.isTypeContain().isTrue()) {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))
@@ -155,7 +155,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkCreateFilterCountryCodeValue() {
         onView(withId(R.id.create_filter_country_code_value))
             .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCode?.countryCode?.countryCode)))
+            .check(matches(withText(filterWithFilteredNumbers?.countryCode?.countryCode)))
     }
 
     @Test
@@ -167,10 +167,10 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkCreateFilterSubmit() {
         onView(withId(R.id.create_filter_submit))
             .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCode?.filter?.filterAction?.title().orZero())))
-            .check(matches(withTextColor(filterWithCountryCode?.filter?.filterActionTextTint().orZero())))
-            .check(matches(withAlpha(if (filterWithCountryCode?.filter?.isInvalidFilterAction().isTrue()) 0.5f else 1f)))
-            .check(matches(if (filterWithCountryCode?.filter?.isInvalidFilterAction().isTrue()) not(isEnabled()) else isEnabled()))
+            .check(matches(withText(filterWithFilteredNumbers?.filter?.filterAction?.title().orZero())))
+            .check(matches(withTextColor(filterWithFilteredNumbers?.filter?.filterActionTextTint().orZero())))
+            .check(matches(withAlpha(if (filterWithFilteredNumbers?.filter?.isInvalidFilterAction().isTrue()) 0.5f else 1f)))
+            .check(matches(if (filterWithFilteredNumbers?.filter?.isInvalidFilterAction().isTrue()) not(isEnabled()) else isEnabled()))
     }
 
     @Test

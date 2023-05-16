@@ -10,5 +10,5 @@ interface CountryCodeRepository {
 
     suspend fun allCountryCodes(): List<CountryCode>
 
-    suspend fun getCountryCodeWithCode(code: Int): CountryCode?
+    suspend fun getCountryCodeByCode(code: Int): CountryCode?
 }

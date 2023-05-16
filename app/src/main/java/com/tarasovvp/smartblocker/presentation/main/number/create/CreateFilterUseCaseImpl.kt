@@ -1,19 +1,11 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import com.google.firebase.auth.FirebaseAuth
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -26,7 +18,7 @@ class CreateFilterUseCaseImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : CreateFilterUseCase {
 
-    override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
+    override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeByCode(code)
 
     override suspend fun allCallsByFilter(filter: String) = logCallRepository.allCallWithFiltersByFilter(filter)
 

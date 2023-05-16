@@ -20,7 +20,7 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterFragment
@@ -34,16 +34,16 @@ import org.junit.Test
 @HiltAndroidTest
 open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
 
-    private var filterWithCountryCode: FilterWithCountryCode? = null
+    private var filterWithFilteredNumbers: FilterWithFilteredNumbers? = null
 
     @Before
     override fun setUp() {
         super.setUp()
-        filterWithCountryCode = TestUtils.filterWithCountryCode().apply {
+        filterWithFilteredNumbers = TestUtils.filterWithCountryCode().apply {
             filter?.conditionType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) FilterCondition.FILTER_CONDITION_CONTAIN.ordinal else FilterCondition.FILTER_CONDITION_START.ordinal
             filter?.filterType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) BLOCKER else PERMISSION
         }
-        launchFragmentInHiltContainer<DetailsFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to filterWithCountryCode)) {
+        launchFragmentInHiltContainer<DetailsFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to filterWithFilteredNumbers)) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -63,27 +63,27 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkItemDetailsFilterAvatar() {
         onView(withId(R.id.item_details_filter_avatar))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(filterWithCountryCode?.filter?.conditionTypeIcon())))
+            .check(matches(withDrawable(filterWithFilteredNumbers?.filter?.conditionTypeIcon())))
     }
 
     @Test
     fun checkItemDetailsFilterFilter() {
         onView(withId(R.id.item_details_filter_filter))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(filterWithCountryCode?.filter?.filterTypeIcon())))
+            .check(matches(withDrawable(filterWithFilteredNumbers?.filter?.filterTypeIcon())))
     }
 
     @Test
     fun checkItemDetailsFilterValue() {
         onView(withId(R.id.item_details_filter_value))
             .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCode?.createFilterValue(targetContext))))
+            .check(matches(withText(filterWithFilteredNumbers?.createFilterValue(targetContext))))
     }
 
     @Test
     fun checkItemDetailsFilterTypeTitle() {
         onView(withId(R.id.item_details_filter_type_title)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter.isNull()) filterWithCountryCode?.filter?.filter else targetContext.getString(filterWithCountryCode?.filter?.conditionTypeName().orZero()))))
+            .check(matches(withText(if (filterWithFilteredNumbers?.filter.isNull()) filterWithFilteredNumbers?.filter?.filter else targetContext.getString(filterWithFilteredNumbers?.filter?.conditionTypeName().orZero()))))
     }
 
     @Test
@@ -95,25 +95,25 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkItemDetailsFilterContactsDetails() {
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter?.filterAction.isNull())
-                filterWithCountryCode?.filter?.filteredContactsText(targetContext) else filterWithCountryCode?.filterActionText(targetContext))))
-            .check(matches(withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) filterWithCountryCode?.filter?.filterTypeTint().orZero() else filterWithCountryCode?.filter?.filterDetailTint().orZero())))
+            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.filterAction.isNull())
+                filterWithFilteredNumbers?.filter?.filteredContactsText(targetContext) else filterWithFilteredNumbers?.filterActionText(targetContext))))
+            .check(matches(withTextColor(if (filterWithFilteredNumbers?.filter?.filterAction.isNull()) filterWithFilteredNumbers?.filter?.filterTypeTint().orZero() else filterWithFilteredNumbers?.filter?.filterDetailTint().orZero())))
     }
 
     @Test
     fun checkItemDetailsFilterFilteredCallsDetails() {
         onView(withId(R.id.details_filter_view_pager)).perform(swipeLeft())
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter?.filterAction.isNull())
-                filterWithCountryCode?.filter?.filteredCallsText(targetContext) else filterWithCountryCode?.filterActionText(targetContext))))
-            .check(matches(withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) filterWithCountryCode?.filter?.filterTypeTint().orZero() else filterWithCountryCode?.filter?.filterDetailTint().orZero())))
+            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.filterAction.isNull())
+                filterWithFilteredNumbers?.filter?.filteredCallsText(targetContext) else filterWithFilteredNumbers?.filterActionText(targetContext))))
+            .check(matches(withTextColor(if (filterWithFilteredNumbers?.filter?.filterAction.isNull()) filterWithFilteredNumbers?.filter?.filterTypeTint().orZero() else filterWithFilteredNumbers?.filter?.filterDetailTint().orZero())))
     }
 
     @Test
     fun checkItemDetailsFilterCreated() {
         onView(withId(R.id.item_details_filter_created))
             .check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithCountryCode?.filter?.created == 0L) String.EMPTY else String.format(targetContext.getString(R.string.filter_action_created), filterWithCountryCode?.filter?.filterCreatedDate()))))
+            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.created == 0L) String.EMPTY else String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumbers?.filter?.filterCreatedDate()))))
     }
 
     @Test
@@ -124,9 +124,9 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withTextColor(R.color.sunset)))
             .perform(click())
         assertEquals(R.id.filterActionDialog, navController?.currentDestination?.id)
-        assertEquals(filterWithCountryCode.apply { this?.filter?.filterAction = if (filterWithCountryCode?.filter?.isBlocker().isTrue())
+        assertEquals(filterWithFilteredNumbers.apply { this?.filter?.filterAction = if (filterWithFilteredNumbers?.filter?.isBlocker().isTrue())
             FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE },
-            navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
+            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumbers>(FILTER_WITH_COUNTRY_CODE))
     }
 
     @Test
@@ -136,9 +136,9 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withText(R.string.filter_action_transfer)))
             .perform(click())
         assertEquals(R.id.filterActionDialog, navController?.currentDestination?.id)
-        assertEquals(filterWithCountryCode.apply { this?.filter?.filterAction = if (filterWithCountryCode?.filter?.isBlocker().isTrue())
+        assertEquals(filterWithFilteredNumbers.apply { this?.filter?.filterAction = if (filterWithFilteredNumbers?.filter?.isBlocker().isTrue())
             FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER },
-            navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
+            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumbers>(FILTER_WITH_COUNTRY_CODE))
     }
 
     @Test

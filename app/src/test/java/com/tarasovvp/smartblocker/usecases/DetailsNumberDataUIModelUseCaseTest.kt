@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
@@ -42,10 +42,10 @@ class DetailsNumberDataUIModelUseCaseTest {
 
     @Test
     fun filterListWithNumberTest() = runBlocking {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { filterRepository.allFilterWithCountryCodesByNumber(TEST_NUMBER) } returns filterList
-        val result = detailsNumberDataUseCase.allFilterWithCountryCodesByNumber(TEST_NUMBER)
-        assertEquals(UnitTestUtils.TEST_FILTER, (result[0] as FilterWithCountryCode).filter?.filter)
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        coEvery { filterRepository.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterList
+        val result = detailsNumberDataUseCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER)
+        assertEquals(UnitTestUtils.TEST_FILTER, (result[0] as FilterWithFilteredNumbers).filter?.filter)
     }
 
     @Test
@@ -62,8 +62,8 @@ class DetailsNumberDataUIModelUseCaseTest {
     fun getCountryCodeTest() = runBlocking {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        coEvery { countryCodeRepository.getCountryCodeWithCode(countryCode) } returns expectedCountryCode
-        val result = detailsNumberDataUseCase.getCountryCodeWithCode(countryCode)
+        coEvery { countryCodeRepository.getCountryCodeByCode(countryCode) } returns expectedCountryCode
+        val result = detailsNumberDataUseCase.getCountryCodeByCode(countryCode)
         assertEquals(TEST_COUNTRY, result?.country)
     }
 }

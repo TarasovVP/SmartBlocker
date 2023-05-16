@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
-import com.tarasovvp.smartblocker.presentation.mappers.FilterWithCountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class DetailsNumberDataViewModel @Inject constructor(
     application: Application,
     private val detailsNumberDataUseCase: DetailsNumberDataUseCase,
-    private val filterWithCountryCodeUIMapper: FilterWithCountryCodeUIMapper,
+    private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
     private val callWithFilterUIMapper: CallWithFilterUIMapper,
     private val countryCodeUIMapper: CountryCodeUIMapper
 ) : BaseViewModel(application) {
@@ -31,8 +31,8 @@ class DetailsNumberDataViewModel @Inject constructor(
     fun filterListWithNumber(number: String) {
         showProgress()
         launch {
-            val filterList = detailsNumberDataUseCase.allFilterWithCountryCodesByNumber(number)
-            filterListLiveData.postValue(filterWithCountryCodeUIMapper.mapToUIModelList(filterList))
+            val filterList = detailsNumberDataUseCase.allFilterWithFilteredNumbersByNumber(number)
+            filterListLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModelList(filterList))
         }
     }
 
@@ -46,7 +46,7 @@ class DetailsNumberDataViewModel @Inject constructor(
 
     fun getCountryCode(code: Int?) {
         launch {
-            val countryCode = code?.let { detailsNumberDataUseCase.getCountryCodeWithCode(it) } ?: CountryCode()
+            val countryCode = code?.let { detailsNumberDataUseCase.getCountryCodeByCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(countryCodeUIMapper.mapToUIModel(countryCode))
         }
     }

@@ -34,9 +34,9 @@ class ListCallUseCaseImpl @Inject constructor(
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
-                    && (callWithFilter.filterWithCountryCode?.filter?.filterType == BLOCKER && filterIndexes.contains(
+                    && (callWithFilter.filterWithFilteredNumbers?.filter?.filterType == BLOCKER && filterIndexes.contains(
                 NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
-                    || callWithFilter.filterWithCountryCode?.filter?.filterType == PERMISSION && filterIndexes.contains(
+                    || callWithFilter.filterWithFilteredNumbers?.filter?.filterType == PERMISSION && filterIndexes.contains(
                 NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
                     || filterIndexes.isEmpty())
         }

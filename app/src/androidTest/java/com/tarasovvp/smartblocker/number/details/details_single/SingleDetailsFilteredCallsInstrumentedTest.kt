@@ -57,8 +57,8 @@ class SingleDetailsFilteredCallsInstrumentedTest: BaseSingleDetailsInstrumentedT
                 isDisplayed(),
                 withBitmap(callWithFilter?.call?.placeHolder(targetContext)?.toBitmap()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter),
-                if (callWithFilter?.call?.isExtract.isNotTrue() || callWithFilter?.filterWithCountryCode?.filter?.filterType == 0) not(isDisplayed()) else isDisplayed(),
-                withDrawable(callWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon()))))))
+                if (callWithFilter?.call?.isExtract.isNotTrue() || callWithFilter?.filterWithFilteredNumbers?.filter?.filterType == 0) not(isDisplayed()) else isDisplayed(),
+                withDrawable(callWithFilter?.filterWithFilteredNumbers?.filter?.filterTypeIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_number),
                 isDisplayed(),
                 withText(if (callWithFilter?.call?.number.isNullOrEmpty()) targetContext.getString(R.string.details_number_hidden) else callWithFilter?.highlightedSpanned.toString()))))))
@@ -79,12 +79,12 @@ class SingleDetailsFilteredCallsInstrumentedTest: BaseSingleDetailsInstrumentedT
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_title),
                 isDisplayed(),
-                withText(callWithFilter?.call?.callFilterTitle(callWithFilter.filterWithCountryCode?.filter).orZero()),
-                withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithCountryCode?.filter).orZero()))))))
+                withText(callWithFilter?.call?.callFilterTitle(callWithFilter.filterWithFilteredNumbers?.filter).orZero()),
+                withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithFilteredNumbers?.filter).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
                 withText(callWithFilter?.call?.callFilterValue().orEmpty()),
-                withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithCountryCode?.filter).orZero()),
+                withTextColor(callWithFilter?.call?.callFilterTint(callWithFilter.filterWithFilteredNumbers?.filter).orZero()),
                 withDrawable(callWithFilter?.call?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

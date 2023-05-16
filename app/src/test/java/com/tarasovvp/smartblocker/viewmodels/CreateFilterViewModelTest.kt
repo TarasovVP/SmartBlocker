@@ -5,7 +5,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
@@ -51,9 +51,9 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
 
     @Test
     fun checkFilterExistTest() = runTest {
-        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TEST_FILTER))
-        coEvery { useCase.checkFilterExist(filterWithCountryCode) } returns filterWithCountryCode
-        viewModel.checkFilterExist(filterWithCountryCode)
+        val filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        coEvery { useCase.checkFilterExist(filterWithFilteredNumbers) } returns filterWithFilteredNumbers
+        viewModel.checkFilterExist(filterWithFilteredNumbers)
         advanceUntilIdle()
         val result = viewModel.existingFilterLiveData.getOrAwaitValue()
         assertEquals(TEST_FILTER, result.filter?.filter)

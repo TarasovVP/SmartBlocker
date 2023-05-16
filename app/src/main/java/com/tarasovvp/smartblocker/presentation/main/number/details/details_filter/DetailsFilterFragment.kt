@@ -20,7 +20,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,22 +37,22 @@ class DetailsFilterFragment :
 
     override fun initViews() {
         binding?.apply {
-            args.filterWithCountryCode?.let { filterWithCountryCode ->
-                (activity as MainActivity).toolbar?.title = getString(filterWithCountryCode.filterTypeTitle().orZero())
-                this.filterWithCountryCode = filterWithCountryCode
+            args.filterWithFilteredNumberUIModel?.let { filterWithFilteredNumberUIModel ->
+                (activity as MainActivity).toolbar?.title = getString(filterWithFilteredNumberUIModel.filterTypeTitle())
+                this.filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel
             }
             executePendingBindings()
         }
     }
 
     override fun setFragmentResultListeners() {
-        binding?.filterWithCountryCode?.let { filter ->
+        binding?.filterWithFilteredNumberUIModel?.let { filter ->
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction = bundle.serializable(FILTER_ACTION) as? FilterAction) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
                     -> { viewModel.updateFilter(filter.apply {
-                        this.filterUIModel?.filterType = if (filter.isBlocker()) PERMISSION else BLOCKER
+                        this.filterWithFilteredNumberUIModel?.filterType = if (filter.isBlocker()) PERMISSION else BLOCKER
                         filter.filterAction = filterAction
                     })
                     }
@@ -70,12 +70,12 @@ class DetailsFilterFragment :
     override fun setClickListeners() {
         binding?.apply {
             detailsFilterChangeFilter.setSafeOnClickListener {
-                startFilterActionDialog(if (filterWithCountryCode?.isBlocker()
+                startFilterActionDialog(if (filterWithFilteredNumberUIModel?.isBlocker()
                         .isTrue()
                 ) FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER)
             }
             detailsFilterDeleteFilter.setSafeOnClickListener {
-                startFilterActionDialog(if (filterWithCountryCode?.isBlocker()
+                startFilterActionDialog(if (filterWithFilteredNumberUIModel?.isBlocker()
                         .isTrue()
                 ) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE)
             }
@@ -85,7 +85,7 @@ class DetailsFilterFragment :
     private fun startFilterActionDialog(filterAction: FilterAction) {
         findNavController().navigate(
             DetailsFilterFragmentDirections.startFilterActionDialog(
-                filterWithCountryCode = binding?.filterWithCountryCode?.apply {
+                filterWithFilteredNumberUIModel = binding?.filterWithFilteredNumberUIModel?.apply {
                     this@apply.filterAction = filterAction
                 })
         )
@@ -138,7 +138,7 @@ class DetailsFilterFragment :
     }
 
     override fun getData() {
-        binding?.filterWithCountryCode?.filterUIModel?.let {
+        binding?.filterWithFilteredNumberUIModel?.let {
             viewModel.getQueryContactCallList(it.filter)
             viewModel.filteredCallsByFilter(it.filter)
         }
@@ -150,7 +150,7 @@ class DetailsFilterFragment :
                 numberDataScreen?.updateNumberDataList(numberDataList)
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
-                binding?.filterWithCountryCode?.filteredCalls = filteredCallList.size
+                binding?.filterWithFilteredNumberUIModel?.filteredCalls = filteredCallList.size
                 filteredCallsScreen?.updateNumberDataList(filteredCallList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
@@ -159,10 +159,10 @@ class DetailsFilterFragment :
         }
     }
 
-    private fun handleSuccessFilterAction(filter: FilterWithCountryCodeUIModel) {
+    private fun handleSuccessFilterAction(filter: FilterWithFilteredNumberUIModel) {
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText()?.let { getString(it) }
-                .orEmpty(), binding?.filterWithCountryCode?.filterUIModel?.filter.orEmpty()), false)
+                .orEmpty(), binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter.orEmpty()), false)
             //TODO interstitial
             //showInterstitial()
             getAllData()
@@ -172,7 +172,7 @@ class DetailsFilterFragment :
                     filter.filterUIModel?.let { it1 -> viewModel.getQueryContactCallList(it1.filter) }
                 }
             } else {
-                findNavController().navigate(if (binding?.filterWithCountryCode?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
+                findNavController().navigate(if (binding?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
                 else DetailsFilterFragmentDirections.startListPermissionFragment()
                 )
             }

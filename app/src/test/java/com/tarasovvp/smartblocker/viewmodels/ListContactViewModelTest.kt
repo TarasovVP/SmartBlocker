@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
@@ -39,12 +39,12 @@ class ListContactViewModelTest: BaseViewModelTest<ListContactViewModel>() {
 
     @Test
     fun getFilteredContactListTest() = runTest {
-        val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = BLOCKER))), ContactWithFilter(contact = Contact(name = "zxy")))
-        coEvery { useCase.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)) } returns contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }
+        val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filterType = BLOCKER))), ContactWithFilter(contact = Contact(name = "zxy")))
+        coEvery { useCase.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)) } returns contactList.filter { it.filterWithFilteredNumbers?.filter?.isBlocker().isTrue() }
         viewModel.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))
         advanceUntilIdle()
         val result = viewModel.filteredContactListLiveData.getOrAwaitValue()
-        assertEquals(contactList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }, result)
+        assertEquals(contactList.filter { it.filterWithFilteredNumbers?.filter?.isBlocker().isTrue() }, result)
     }
 
     @Test

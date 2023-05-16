@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
@@ -63,7 +63,7 @@ class ListCallUseCaseTest {
 
     @Test
     fun getFilteredCallListTest() = runBlocking {
-        val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
+        val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
         val searchQuery = String.EMPTY
         val filterIndexes = arrayListOf(
             NumberDataFiltering.CALL_BLOCKED.ordinal)

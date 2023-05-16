@@ -5,7 +5,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
@@ -28,12 +28,12 @@ class DetailsNumberDataUIModelViewModelTest: BaseViewModelTest<DetailsNumberData
 
     @Test
     fun filterListWithNumberTest() = runTest {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { useCase.allFilterWithCountryCodesByNumber(TEST_NUMBER) } returns filterList
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        coEvery { useCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterList
         viewModel.filterListWithNumber(TEST_NUMBER)
         advanceUntilIdle()
         val result = viewModel.filterListLiveData.getOrAwaitValue()
-        assertEquals(TEST_FILTER, (result[0] as FilterWithCountryCode).filter?.filter)
+        assertEquals(TEST_FILTER, (result[0] as FilterWithFilteredNumbers).filter?.filter)
     }
 
     @Test
@@ -50,7 +50,7 @@ class DetailsNumberDataUIModelViewModelTest: BaseViewModelTest<DetailsNumberData
     fun getCountryCodeTest() = runTest {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        coEvery { useCase.getCountryCodeWithCode(countryCode) } returns expectedCountryCode
+        coEvery { useCase.getCountryCodeByCode(countryCode) } returns expectedCountryCode
         viewModel.getCountryCode(countryCode)
         advanceUntilIdle()
         val result = viewModel.countryCodeLiveData.getOrAwaitValue()

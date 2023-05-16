@@ -16,7 +16,7 @@ import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.TestUtils.filterList
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
@@ -46,24 +46,24 @@ class SingleDetailsFiltersInstrumentedTest: BaseSingleDetailsInstrumentedTest() 
     }
 
     override fun checkListItem(position: Int) {
-        val filterWithCountryCode = dataList[position] as? FilterWithCountryCode
+        val filterWithFilteredNumbers = dataList[position] as? FilterWithFilteredNumbers
         onView(withId(R.id.single_details_list)).apply {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
                 isDisplayed(),
-                withDrawable(filterWithCountryCode?.filter?.conditionTypeIcon()))))))
+                withDrawable(filterWithFilteredNumbers?.filter?.conditionTypeIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_filter),
                 isDisplayed(),
-                withDrawable(filterWithCountryCode?.filter?.filterTypeIcon()))))))
+                withDrawable(filterWithFilteredNumbers?.filter?.filterTypeIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_value),
                 isDisplayed(),
-                withText(filterWithCountryCode?.highlightedSpanned.toString()))))))
+                withText(filterWithFilteredNumbers?.highlightedSpanned.toString()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_name),
                 isDisplayed(),
-                withText(if (filterWithCountryCode?.filter.isNull()) filterWithCountryCode?.filter?.filter else targetContext.getString(filterWithCountryCode?.filter?.conditionTypeName().orZero())),
-                withTextColor(if (filterWithCountryCode?.filter?.filterAction.isNull()) R.color.text_color_grey else filterWithCountryCode?.filter?.filterAction?.color().orZero()))))))
+                withText(if (filterWithFilteredNumbers?.filter.isNull()) filterWithFilteredNumbers?.filter?.filter else targetContext.getString(filterWithFilteredNumbers?.filter?.conditionTypeName().orZero())),
+                withTextColor(if (filterWithFilteredNumbers?.filter?.filterAction.isNull()) R.color.text_color_grey else filterWithFilteredNumbers?.filter?.filterAction?.color().orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_delete),
-                if (filterWithCountryCode?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
-                if (filterWithCountryCode?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                if (filterWithFilteredNumbers?.filter?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
+                if (filterWithFilteredNumbers?.filter?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_divider),
                 isDisplayed(),
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
@@ -71,10 +71,10 @@ class SingleDetailsFiltersInstrumentedTest: BaseSingleDetailsInstrumentedTest() 
                 isDisplayed(),
                 //TODO localisation
                 //withText(filterWithCountryCode?.filter?.filteredContactsText(targetContext)),
-                withTextColor(if (filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
+                withTextColor(if (filterWithFilteredNumbers?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_created),
                 isDisplayed(),
-                withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithCountryCode?.filter?.filterCreatedDate())))))))
+                withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumbers?.filter?.filterCreatedDate())))))))
             perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
         }
     }

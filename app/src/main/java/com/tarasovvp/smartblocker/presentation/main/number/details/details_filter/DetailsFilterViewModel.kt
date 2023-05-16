@@ -11,10 +11,10 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
-import com.tarasovvp.smartblocker.presentation.mappers.FilterWithCountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,14 +24,14 @@ import javax.inject.Inject
 class DetailsFilterViewModel @Inject constructor(
     private val application: Application,
     private val detailsFilterUseCase: DetailsFilterUseCase,
-    private val filterWithCountryCodeUIMapper: FilterWithCountryCodeUIMapper,
+    private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
     private val callWithFilterUIMapper: CallWithFilterUIMapper,
     private val contactWithFilterUIMapper: ContactWithFilterUIMapper
 ) : BaseViewModel(application) {
 
     val numberDataListLiveDataUIModel = MutableLiveData<ArrayList<NumberDataUIModel>>()
     val filteredCallListLiveData = MutableLiveData<ArrayList<NumberDataUIModel>>()
-    val filterActionLiveData = MutableLiveData<FilterWithCountryCodeUIModel>()
+    val filterActionLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
 
     fun getQueryContactCallList(filter: String) {
         showProgress()
@@ -69,10 +69,10 @@ class DetailsFilterViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilter(filterWithCountryCode: FilterWithCountryCodeUIModel) {
+    fun deleteFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
         showProgress()
         launch {
-            filterWithCountryCodeUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
+            filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 detailsFilterUseCase.deleteFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
@@ -84,10 +84,10 @@ class DetailsFilterViewModel @Inject constructor(
         }
     }
 
-    fun updateFilter(filterWithCountryCode: FilterWithCountryCodeUIModel) {
+    fun updateFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
         showProgress()
         launch {
-            filterWithCountryCodeUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
+            filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 detailsFilterUseCase.updateFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }

@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
@@ -40,12 +40,12 @@ class ListCallViewModelTest: BaseViewModelTest<ListCallViewModel>() {
 
     @Test
     fun getFilteredCallListTest() = runTest {
-        val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithCountryCode = FilterWithCountryCode(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
-        coEvery { useCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal)) } returns callList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }
+        val callList = listOf(CallWithFilter(call = FilteredCall(), filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filterType = Constants.BLOCKER))), CallWithFilter(call = LogCall().apply { number = "567" }))
+        coEvery { useCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal)) } returns callList.filter { it.filterWithFilteredNumbers?.filter?.isBlocker().isTrue() }
         viewModel.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal))
         advanceUntilIdle()
         val result = viewModel.filteredCallListLiveData.getOrAwaitValue()
-        assertEquals(callList.filter { it.filterWithCountryCode?.filter?.isBlocker().isTrue() }, result)
+        assertEquals(callList.filter { it.filterWithFilteredNumbers?.filter?.isBlocker().isTrue() }, result)
     }
 
     @Test

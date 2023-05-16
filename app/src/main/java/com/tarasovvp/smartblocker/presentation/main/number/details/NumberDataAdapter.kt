@@ -12,11 +12,10 @@ import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
@@ -57,7 +56,7 @@ class NumberDataAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val numberData = numberDataUIModelList?.get(position)
         when (holder) {
-            is FilterViewHolder -> holder.bindData(numberData as? FilterWithCountryCodeUIModel)
+            is FilterViewHolder -> holder.bindData(numberData as? FilterWithFilteredNumberUIModel)
             is ContactViewHolder -> holder.bindData(numberData as? ContactWithFilterUIModel)
             is CallViewHolder -> holder.bindData(numberData as? CallWithFilterUIModel)
         }
@@ -66,18 +65,18 @@ class NumberDataAdapter(
     internal inner class FilterViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemFilterBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(filterWithCountryCode: FilterWithCountryCodeUIModel?) {
+        fun bindData(FilterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel?) {
             binding?.apply {
-                this.filterWithCountryCode = filterWithCountryCode?.apply {
+                this.filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel?.apply {
                     highlightedSpanned =
-                        highlightedSpanned ?: filterWithCountryCode.highlightedSpanned(filterWithCountryCode.filterUIModel, Color.GREEN)
+                        highlightedSpanned ?: FilterWithFilteredNumberUIModel.highlightedSpanned(FilterWithFilteredNumberUIModel, Color.GREEN)
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,
-                    if (adapterPosition == 0) filterWithCountryCode?.filterTypeTint() ?: R.color.transparent
+                    if (adapterPosition == 0) FilterWithFilteredNumberUIModel?.filterTypeTint() ?: R.color.transparent
                     else R.color.transparent)
                 root.setSafeOnClickListener {
-                    filterWithCountryCode?.let { it1 -> numberDataClick.invoke(it1) }
+                    FilterWithFilteredNumberUIModel?.let { it1 -> numberDataClick.invoke(it1) }
                 }
                 executePendingBindings()
             }

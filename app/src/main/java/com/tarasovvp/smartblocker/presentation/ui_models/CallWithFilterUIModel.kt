@@ -22,7 +22,7 @@ open class CallWithFilterUIModel(
     var isFilteredCall: Boolean = false,
     var filteredNumber: String = String.EMPTY,
     var conditionType: Int = Constants.DEFAULT_FILTER,
-    var filterUIModel: FilterUIModel? = FilterUIModel()
+    var filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel()
 ) : Parcelable, NumberDataUIModel() {
 
     @IgnoredOnParcel
@@ -99,7 +99,7 @@ open class CallWithFilterUIModel(
         }
     }
 
-    fun callFilterTitle(filter: FilterUIModel?): Int {
+    fun callFilterTitle(filter: FilterWithFilteredNumberUIModel?): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
@@ -129,7 +129,7 @@ open class CallWithFilterUIModel(
         }
     }
 
-    fun callFilterTint(filter: FilterUIModel?): Int {
+    fun callFilterTint(filter: FilterWithFilteredNumberUIModel?): Int {
         return when {
             (isCallFiltered() && isBlockedCall()) || (isExtract && filter?.isBlocker().isTrue()) -> R.color.sunset
             (isCallFiltered() && isPermittedCall()) || (isExtract && filter?.isPermission().isTrue()) -> R.color.islamic_green

@@ -5,7 +5,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.models.Call
@@ -53,7 +53,7 @@ class CreateFilterUseCaseTest {
     fun getCountryCodeWithCodeTest() = runBlocking {
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        coEvery { countryCodeRepository.getCountryCodeWithCode(countryCode) } returns expectedCountryCode
+        coEvery { countryCodeRepository.getCountryCodeByCode(countryCode) } returns expectedCountryCode
         val result =  createFilterUseCase.getCountryCodeWithCode(countryCode)
         assertEquals(result?.country, TEST_COUNTRY)
     }
@@ -76,18 +76,18 @@ class CreateFilterUseCaseTest {
 
     @Test
     fun checkFilterExistTest() = runBlocking {
-        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
-        coEvery { filterRepository.getFilter(filterWithCountryCode) } returns filterWithCountryCode
-        val result = createFilterUseCase.checkFilterExist(filterWithCountryCode)
+        val filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
+        coEvery { filterRepository.getFilter(filterWithFilteredNumbers) } returns filterWithFilteredNumbers
+        val result = createFilterUseCase.checkFilterExist(filterWithFilteredNumbers)
         assertEquals(UnitTestUtils.TEST_FILTER, result?.filter?.filter)
     }
 
     @Test
     fun filterNumberDataListTest() = runBlocking {
-        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
+        val filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filter = UnitTestUtils.TEST_FILTER))
         val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
-        coEvery { contactRepository.filteredNumberDataList(filterWithCountryCode.filter, numberDataList, 0) } returns numberDataList
-        val result = createFilterUseCase.filterNumberDataList(filterWithCountryCode, numberDataList, 0)
+        coEvery { contactRepository.filteredNumberDataList(filterWithFilteredNumbers.filter, numberDataList, 0) } returns numberDataList
+        val result = createFilterUseCase.filterNumberDataList(filterWithFilteredNumbers, numberDataList, 0)
         assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
     }
 

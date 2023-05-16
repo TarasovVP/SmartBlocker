@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 
 interface FilterRepository {
@@ -9,9 +9,9 @@ interface FilterRepository {
 
     suspend fun allFilters(): List<Filter>
 
-    suspend fun allFilterWithCountryCodesByType(filterType: Int): List<FilterWithCountryCode>
+    suspend fun allFilterWithFilteredNumbersByType(filterType: Int): List<FilterWithFilteredNumbers>
 
-    suspend fun getFilter(filter: String): FilterWithCountryCode?
+    suspend fun getFilter(filter: String): FilterWithFilteredNumbers?
 
     suspend fun updateFilter(filter: Filter)
 
@@ -19,5 +19,5 @@ interface FilterRepository {
 
     suspend fun deleteFilterList(filterList: List<Filter>)
 
-    suspend fun allFilterWithCountryCodesByNumber(number: String): List<FilterWithCountryCode>
+    suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumbers>
 }

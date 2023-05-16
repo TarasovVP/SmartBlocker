@@ -37,7 +37,7 @@ class DetailsNumberDataFragment :
 
     private var filtersScreen: SingleDetailsFragment? = null
     private var filteredCallsScreen: SingleDetailsFragment? = null
-    private var filterWithCountryCode: FilterWithCountryCodeUIModel? = null
+    private var filterWithCountryCode: FilterWithFilteredNumberUIModel? = null
     private var isHiddenCall = false
 
     override fun initViews() {
@@ -86,7 +86,7 @@ class DetailsNumberDataFragment :
             override fun onNumberDataClick(numberDataUIModel: NumberDataUIModel) {
                 findNavController().navigate(
                     DetailsNumberDataFragmentDirections.startDetailsFilterFragment(
-                        filterWithCountryCode = numberDataUIModel as FilterWithCountryCodeUIModel
+                        filterWithCountryCode = numberDataUIModel as FilterWithFilteredNumberUIModel
                     )
                 )
             }
@@ -142,7 +142,7 @@ class DetailsNumberDataFragment :
 
     private fun createFilter(conditionIndex: Int) {
         val number = binding?.contactWithFilter?.number.orEmpty()
-        filterWithCountryCode = FilterWithCountryCodeUIModel(filterUIModel = FilterUIModel(
+        filterWithCountryCode = FilterWithFilteredNumberUIModel(filterUIModel = FilterUIModel(
             filter = number,
             conditionType = conditionIndex,
             filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION)

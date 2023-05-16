@@ -8,8 +8,8 @@
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
-            name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
+            name="filterWithFilteredNumberUIModel"
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_2"
             android:layout_marginTop="@dimen/margin_8"
-            app:filterWithCountryCode="@{filterWithCountryCode}"
+            app:filterWithCountryCode="@{filterWithFilteredNumberUIModel}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton

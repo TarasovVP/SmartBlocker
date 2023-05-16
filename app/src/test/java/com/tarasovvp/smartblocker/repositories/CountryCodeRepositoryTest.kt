@@ -81,7 +81,7 @@ class CountryCodeRepositoryTest {
     fun getCountryCodeWithCodeTest() = runBlocking {
         val countryCode = CountryCode(country = TEST_COUNTRY, countryCode = TEST_COUNTRY)
         coEvery { countryCodeDao.getCountryCodeWithCode(TEST_COUNTRY_CODE) } returns countryCode
-        val result = countryCodeRepository.getCountryCodeWithCode(380)
+        val result = countryCodeRepository.getCountryCodeByCode(380)
         assertEquals(countryCode, result)
     }
 }

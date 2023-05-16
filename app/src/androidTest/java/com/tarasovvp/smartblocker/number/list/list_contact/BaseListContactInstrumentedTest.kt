@@ -217,7 +217,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 withBitmap(contactWithFilter?.contact?.placeHolder(targetContext)?.toBitmap()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter),
                 isDisplayed(),
-                withDrawable(contactWithFilter?.filterWithCountryCode?.filter?.filterTypeIcon().orZero()))))))
+                withDrawable(contactWithFilter?.filterWithFilteredNumbers?.filter?.filterTypeIcon().orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_number),
                 isDisplayed(),
                 withText(contactWithFilter?.highlightedSpanned.toString()))))))
@@ -232,13 +232,13 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_title),
                 isDisplayed(),
-                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) targetContext.getString(R.string.details_number_block_with_filter) else targetContext.getString(R.string.details_number_permit_with_filter)),
-                withTextColor(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) R.color.text_color_grey else if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
+                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilter?.filterWithFilteredNumbers?.filter?.isBlocker().isTrue()) targetContext.getString(R.string.details_number_block_with_filter) else targetContext.getString(R.string.details_number_permit_with_filter)),
+                withTextColor(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) R.color.text_color_grey else if (contactWithFilter?.filterWithFilteredNumbers?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_value),
                 isDisplayed(),
-                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) String.EMPTY else contactWithFilter?.filterWithCountryCode?.filter?.filter),
-                withTextColor(if (contactWithFilter?.filterWithCountryCode?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
-                withDrawable(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) null else contactWithFilter?.filterWithCountryCode?.filter?.conditionTypeSmallIcon()))))))
+                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) String.EMPTY else contactWithFilter?.filterWithFilteredNumbers?.filter?.filter),
+                withTextColor(if (contactWithFilter?.filterWithFilteredNumbers?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
+                withDrawable(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) null else contactWithFilter?.filterWithFilteredNumbers?.filter?.conditionTypeSmallIcon()))))))
             perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
             assertEquals(R.id.detailsNumberDataFragment, navController?.currentDestination?.id)
             assertEquals(contactWithFilter, navController?.backStack?.last()?.arguments?.parcelable<ContactWithFilter>("numberData"))

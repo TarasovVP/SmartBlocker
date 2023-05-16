@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
@@ -37,15 +37,15 @@ class ListFilterUseCaseTest {
 
     @Test
     fun getFilterListTest() = runBlocking {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
-        coEvery { filterRepository.allFilterWithCountryCodesByType(BLOCKER) } returns filterList
-        val result = listFilterUseCase.allFilterWithCountryCodesByType(isBlackList = true)
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        coEvery { filterRepository.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterList
+        val result = listFilterUseCase.allFilterWithFilteredNumbersByType(isBlackList = true)
         assertEquals(TEST_FILTER, result?.get(0)?.filter?.filter)
     }
 
     @Test
     fun getHashMapFromFilterListTest() = runBlocking {
-        val filterList = listOf(FilterWithCountryCode(filter = Filter(filter = TEST_FILTER)), FilterWithCountryCode(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
         val filterMap = mapOf(String.EMPTY to filterList)
         val result = listFilterUseCase.getHashMapFromFilterList(filterList)
         assertEquals(filterMap, result)

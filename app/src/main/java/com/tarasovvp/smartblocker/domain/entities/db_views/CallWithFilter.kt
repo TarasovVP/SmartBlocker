@@ -14,5 +14,5 @@ open class CallWithFilter(
     @Embedded
     var call: Call? = Call(),
     @Embedded
-    var filterWithCountryCode: FilterWithCountryCode? = FilterWithCountryCode()
+    var filterWithFilteredNumbers: FilterWithFilteredNumbers? = FilterWithFilteredNumbers()
 ) : Parcelable

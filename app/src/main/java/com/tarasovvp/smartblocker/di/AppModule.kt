@@ -177,14 +177,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFilterUIMapper(): FilterUIMapper {
-        return FilterUIMapperImpl()
-    }
-
-    @Singleton
-    @Provides
-    fun provideFilterWithCountryCodeUIMapper(filterUIMapper: FilterUIMapper, countryCodeUIMapper: CountryCodeUIMapper): FilterWithCountryCodeUIMapper {
-        return FilterWithCountryCodeUIMapperImpl(filterUIMapper, countryCodeUIMapper)
+    fun provideFilterWithFilteredNumberUIMapper(): FilterWithFilteredNumberUIMapper {
+        return FilterWithFilteredNumberUIMapperImpl()
     }
 
     @Singleton
@@ -261,8 +255,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCallWithFilterUIMapper(filterUIMapper: FilterUIMapper): CallWithFilterUIMapper {
-        return CallWithFilterUIMapperImpl(filterUIMapper)
+    fun provideCallWithFilterUIMapper(filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper): CallWithFilterUIMapper {
+        return CallWithFilterUIMapperImpl(filterWithFilteredNumberUIMapper)
     }
 
     @Singleton
@@ -289,8 +283,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactWithFilterUIMapper(filterUIMapper: FilterUIMapper): ContactWithFilterUIMapper {
-        return ContactWithFilterUIMapperImpl(filterUIMapper)
+    fun provideContactWithFilterUIMapper(filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper): ContactWithFilterUIMapper {
+        return ContactWithFilterUIMapperImpl(filterWithFilteredNumberUIMapper)
     }
 
     @Singleton

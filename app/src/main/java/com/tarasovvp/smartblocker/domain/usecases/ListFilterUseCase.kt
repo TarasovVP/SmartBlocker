@@ -1,14 +1,14 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithCountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface ListFilterUseCase {
 
-    suspend fun allFilterWithCountryCodesByType(isBlockerList: Boolean): List<FilterWithCountryCode>?
+    suspend fun allFilterWithFilteredNumbersByType(isBlockerList: Boolean): List<FilterWithFilteredNumbers>?
 
-    suspend fun getFilteredFilterList(filterList: List<FilterWithCountryCode>, searchQuery: String, filterIndexes: ArrayList<Int>): List<FilterWithCountryCode>
+    suspend fun getFilteredFilterList(filterList: List<FilterWithFilteredNumbers>, searchQuery: String, filterIndexes: ArrayList<Int>): List<FilterWithFilteredNumbers>
 
     suspend fun deleteFilterList(filterList: List<Filter>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 }

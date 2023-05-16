@@ -7,8 +7,8 @@
         <import type="androidx.core.content.ContextCompat" />
         <import type="android.view.View" />
         <variable
-            name="filterWithFilteredNumberUIModel"
-            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
+            name="filterWithCountryCodeUIModel"
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -35,7 +35,7 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageResource="@{filterWithFilteredNumberUIModel.conditionTypeIcon}"
+                app:imageResource="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_filter_name"
                 app:layout_constraintEnd_toStartOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
                 android:id="@+id/item_filter_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                app:imageResource="@{filterWithFilteredNumberUIModel.filterTypeIcon}"
+                app:imageResource="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_filter_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_avatar" />
 
@@ -57,9 +57,9 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{filterWithFilteredNumberUIModel.highlightedSpanned}"
+                android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter}"
                 app:layout_constraintBottom_toTopOf="@+id/item_filter_name"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_delete"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_avatar"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,20 +70,11 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
-                android:text="@{filterWithFilteredNumberUIModel.conditionTypeName}"
+                android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel == null ? filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter : context.getString(filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionTypeName)}"
+                android:textColor="@{filterWithCountryCodeUIModel.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterAction.color)}"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_filter_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_value" />
-
-            <CheckBox
-                android:id="@+id/item_filter_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@{filterWithFilteredNumberUIModel.checkedForDelete}"
-                android:visibility="@{filterWithFilteredNumberUIModel.deleteMode ? View.VISIBLE : View.GONE, default=gone}"
-                app:layout_constraintBottom_toTopOf="@+id/item_filter_divider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/item_filter_divider"
@@ -101,25 +92,11 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
-                android:textColor="@{filterWithFilteredNumberUIModel.blocker ? @color/sunset : @color/islamic_green}"
-                android:text="@{filterWithFilteredNumberUIModel.filteredContactsText(context)}"
+                android:textColor="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filteredContactsText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_created"/>
-
-            <TextView
-                android:id="@+id/item_filter_created"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_0"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="@dimen/text_size_10"
-                android:textColor="@color/text_color_grey"
-                android:text="@{String.format(@string/filter_action_created, filterWithCountryCode.filterCreatedDate)}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_filter_contacts"
-                app:layout_constraintTop_toTopOf="@+id/item_filter_contacts"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_contacts"/>
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

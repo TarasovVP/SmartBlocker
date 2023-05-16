@@ -11,11 +11,11 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 
 class FilterAdapter(val filterClickListener: FilterClickListener) :
-    BaseAdapter<FilterWithCountryCodeUIModel>() {
+    BaseAdapter<FilterWithFilteredNumberUIModel>() {
 
     var isDeleteMode: Boolean = false
     var searchQuery = String.EMPTY
@@ -54,29 +54,29 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
         RecyclerView.ViewHolder(itemView) {
 
         fun bindData(position: Int) {
-            val filterWithCountryCode = getDataInPosition(position)
+            val filterWithFilteredNumberUIModel = getDataInPosition(position)
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
-                filterWithCountryCode.isDeleteMode = isDeleteMode
-                filterWithCountryCode.searchText = searchQuery
-                filterWithCountryCode.highlightedSpanned = filterWithCountryCode.filterUIModel?.filter.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                this.filterWithCountryCode = filterWithCountryCode
+                filterWithFilteredNumberUIModel.isDeleteMode = isDeleteMode
+                filterWithFilteredNumberUIModel.searchText = searchQuery
+                filterWithFilteredNumberUIModel.highlightedSpanned = filterWithFilteredNumberUIModel.filter.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                this.filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
                         itemFilterDelete.isChecked = itemFilterDelete.isChecked.isNotTrue()
                     } else {
-                        filterClickListener.onFilterClick(filterWithCountryCode)
+                        filterClickListener.onFilterClick(filterWithFilteredNumberUIModel)
                     }
                 }
                 root.setOnLongClickListener {
-                    if (filterWithCountryCode.isDeleteMode.isTrue().not()) {
-                        filterWithCountryCode.isCheckedForDelete = true
+                    if (filterWithFilteredNumberUIModel.isDeleteMode.isTrue().not()) {
+                        filterWithFilteredNumberUIModel.isCheckedForDelete = true
                         filterClickListener.onFilterLongClick()
                     }
-                    return@setOnLongClickListener filterWithCountryCode.isDeleteMode.isTrue().not()
+                    return@setOnLongClickListener filterWithFilteredNumberUIModel.isDeleteMode.isTrue().not()
                 }
                 itemFilterDelete.setOnCheckedChangeListener { _, checked ->
-                    filterWithCountryCode.isCheckedForDelete = checked
-                    filterClickListener.onFilterDeleteCheckChange(filterWithCountryCode)
+                    filterWithFilteredNumberUIModel.isCheckedForDelete = checked
+                    filterClickListener.onFilterDeleteCheckChange(filterWithFilteredNumberUIModel)
                 }
                 executePendingBindings()
             }

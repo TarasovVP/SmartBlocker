@@ -20,12 +20,12 @@ data class ContactWithFilterUIModel(
     var number: String = String.EMPTY,
     var phoneNumberValue: String = String.EMPTY,
     var isPhoneNumberValid: Boolean = false,
-    var filterUIModel: FilterUIModel? = FilterUIModel()
+    var filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel()
 ) : Parcelable, NumberDataUIModel() {
 
     fun placeHolder(context: Context): Drawable? {
-        return if (contactName.nameInitial().isEmpty()) ContextCompat.getDrawable(context,
-            R.drawable.ic_contact) else context.getInitialDrawable(contactName.nameInitial())
+        return if (contactName.nameInitial().isEmpty()) ContextCompat.getDrawable(context, R.drawable.ic_contact)
+        else context.getInitialDrawable(contactName.nameInitial())
     }
 
     fun phoneNumberValidity(): Int? {

@@ -14,11 +14,11 @@ class DetailsNumberDataUseCaseImpl @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ): DetailsNumberDataUseCase {
 
-    override suspend fun allFilterWithCountryCodesByNumber(number: String) = filterRepository.allFilterWithCountryCodesByNumber(number)
+    override suspend fun allFilterWithFilteredNumbersByNumber(number: String) = filterRepository.allFilterWithFilteredNumbersByNumber(number)
 
     override suspend fun allFilteredCallsByNumber(number: String) = filteredCallRepository.allFilteredCallsByNumber(number)
 
-    override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeWithCode(code)
+    override suspend fun getCountryCodeByCode(code: Int) = countryCodeRepository.getCountryCodeByCode(code)
 
     override suspend fun getBlockHidden() = dataStoreRepository.blockHidden()
 }

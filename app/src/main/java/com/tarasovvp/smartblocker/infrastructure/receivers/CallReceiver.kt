@@ -58,7 +58,7 @@ open class CallReceiver : BroadcastReceiver() {
         return if (number.isEmpty() && isBlockHidden.isTrue()) {
             Filter(filterType = BLOCKER)
         } else {
-            filterRepository.allFilterWithCountryCodesByNumber(number).firstOrNull()?.filter
+            filterRepository.allFilterWithFilteredNumbersByNumber(number).firstOrNull()?.filter
         }
     }
 

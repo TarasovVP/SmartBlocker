@@ -58,13 +58,13 @@ open class CreateFilterFragment :
             binding?.apply {
                 binding?.filterToInput = true
                 if (filterWithCountryCode?.isTypeContain().isTrue()) {
-                    filterWithCountryCode?.filterUIModel = filterWithCountryCode?.filterUIModel?.apply {
+                    filterWithCountryCode?.filterWithFilteredNumberUIModel = filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
                         this.filter = number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                     }
                 } else {
                     val phoneNumber = phoneNumberUtil.getPhoneNumber(number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
                     if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
-                        filterWithCountryCode?.filterUIModel = filterWithCountryCode?.filterUIModel?.apply {
+                        filterWithCountryCode?.filterWithFilteredNumberUIModel = filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
                             this.filter = phoneNumber?.nationalNumber?.toString() ?: number.digitsTrimmed()
                         }
                         if (phoneNumber?.countryCode.orZero() > 0) {
@@ -99,7 +99,7 @@ open class CreateFilterFragment :
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
                 findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(filterWithCountryCode = filterWithCountryCode?.apply {
-                    filterUIModel?.filter = filterWithCountryCode?.createFilter().orEmpty()
+                    filterWithFilteredNumberUIModel?.filter = filterWithCountryCode?.createFilter().orEmpty()
                     filterAction = filterAction ?: if (isBlocker().isTrue()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE }))
             }
             createFilterCountryCodeValue.setSafeOnClickListener {
@@ -132,17 +132,17 @@ open class CreateFilterFragment :
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
                     -> viewModel.deleteFilter(filter.apply {
-                        this.filterUIModel?.filter = filter.createFilter()
+                        this.filterWithFilteredNumberUIModel?.filter = filter.createFilter()
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_CREATE,
                     FilterAction.FILTER_ACTION_PERMISSION_CREATE,
                     -> viewModel.createFilter(filter.apply {
-                        this.filterUIModel?.filter = filter.createFilter()
+                        this.filterWithFilteredNumberUIModel?.filter = filter.createFilter()
                         this.filterAction = filterAction
-                        this.filterUIModel?.created = Date().time
-                        this.filterUIModel?.country = filter.countryCodeUIModel?.country.orEmpty()
-                        this.filterUIModel?.countryCode = filter.countryCodeUIModel?.countryCode.orEmpty()
+                        this.filterWithFilteredNumberUIModel?.created = Date().time
+                        this.filterWithFilteredNumberUIModel?.country = filter.countryCodeUIModel?.country.orEmpty()
+                        this.filterWithFilteredNumberUIModel?.countryCode = filter.countryCodeUIModel?.countryCode.orEmpty()
                     })
                     else -> Unit
                 }
@@ -159,7 +159,7 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
                 filterWithCountryCode = filterWithCountryCode?.apply {
-                    filterUIModel?.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY).replace(Constants.SPACE, String.EMPTY)
+                    filterWithFilteredNumberUIModel?.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY).replace(Constants.SPACE, String.EMPTY)
                     viewModel.checkFilterExist(this.createFilter())
                 }
                 Timber.e( "CreateFilterFragment setFilterTextChangeListener filter?.filterAction ${filterWithCountryCode?.filterAction}")
@@ -220,7 +220,7 @@ open class CreateFilterFragment :
                     numberDataAdapter?.notifyDataSetChanged()
                 }
                 binding?.filterToInput = true
-                binding?.filterWithCountryCode?.filterUIModel = binding?.filterWithCountryCode?.filterUIModel
+                binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel = binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel
                 (activity as MainActivity).setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
@@ -228,7 +228,7 @@ open class CreateFilterFragment :
                 binding?.filterWithCountryCode = binding?.filterWithCountryCode?.apply {
                     filterAction = when (existingFilter.filterUIModel?.filterType) {
                         DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(phoneNumberUtil).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
-                        filterUIModel?.filterType -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                        filterWithFilteredNumberUIModel?.filterType -> if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                         else -> if (isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
                     }
                 }
@@ -245,7 +245,7 @@ open class CreateFilterFragment :
         }
     }
 
-    private fun handleSuccessFilterAction(filter: FilterWithCountryCodeUIModel) {
+    private fun handleSuccessFilterAction(filter: FilterWithFilteredNumberUIModel) {
         Timber.e("CreateFilterFragment handleSuccessFilterAction")
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filter.filterAction?.successText()?.let { getString(it) }
