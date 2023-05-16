@@ -33,6 +33,7 @@ import com.tarasovvp.smartblocker.presentation.mappers.*
 import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
@@ -337,4 +338,10 @@ object AppModule {
     fun provideSettingsThemeUseCase(dataStoreRepository: DataStoreRepository): SettingsThemeUseCase {
         return SettingsThemeUseCaseImpl(dataStoreRepository)
     }
+}
+
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface DataStoreEntryPoint {
+    val dataStoreRepository: DataStoreRepository
 }

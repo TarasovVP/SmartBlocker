@@ -30,8 +30,8 @@ import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.data.repositoryImpl.DataStoreRepositoryImpl
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
+import com.tarasovvp.smartblocker.di.DataStoreEntryPoint
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
@@ -42,6 +42,7 @@ import com.tarasovvp.smartblocker.infrastructure.receivers.CallHandleReceiver
 import com.tarasovvp.smartblocker.infrastructure.services.ForegroundCallService
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -84,8 +85,9 @@ class MainActivity : AppCompatActivity() {
         }
 
     override fun attachBaseContext(newBase: Context) {
+        val dataStoreRepository = EntryPointAccessors.fromApplication( newBase, DataStoreEntryPoint::class.java ).dataStoreRepository
         val appLang = runBlocking {
-            DataStoreRepositoryImpl(newBase).getAppLang().first()
+            dataStoreRepository.getAppLang().first()
         } ?: Locale.getDefault().language
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(appLang)))
     }
