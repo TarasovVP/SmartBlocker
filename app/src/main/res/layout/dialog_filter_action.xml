@@ -8,7 +8,7 @@
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
-            name="filterWithCountryCode"
+            name="filterWithFilteredNumberUIModel"
             type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
     </data>
 
@@ -28,7 +28,7 @@
                 android:id="@+id/filter_action_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@{ContextCompat.getDrawable(context, filterWithCountryCode.filterAction.icon)}"
+                android:src="@{ContextCompat.getDrawable(context, filterWithFilteredNumberUIModel.filterAction.icon)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:gravity="center"
-                android:text="@{String.format(context.getString(filterWithCountryCode.filterAction.requestText), filterWithCountryCode.filterUIModel.filter, context.getString(filterWithCountryCode.conditionTypeName))}"
+                android:text="@{String.format(context.getString(filterWithFilteredNumberUIModel.filterAction.requestText), filterWithFilteredNumberUIModel.filter, context.getString(filterWithFilteredNumberUIModel.conditionTypeName))}"
                 android:textSize="@dimen/text_size_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

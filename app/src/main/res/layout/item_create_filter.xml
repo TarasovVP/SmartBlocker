@@ -71,7 +71,7 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
                 android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel == null ? filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter : context.getString(filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionTypeName)}"
-                android:textColor="@{filterWithCountryCodeUIModel.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterAction.color)}"
+                android:textColor="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction.color)}"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_filter_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_value" />

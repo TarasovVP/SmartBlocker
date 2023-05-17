@@ -51,7 +51,7 @@ class DetailsNumberDataUIModelViewModelTest: BaseViewModelTest<DetailsNumberData
         val countryCode = 123
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         coEvery { useCase.getCountryCodeByCode(countryCode) } returns expectedCountryCode
-        viewModel.getCountryCode(countryCode)
+        viewModel.getCountryCode(phoneNumber.countryCode, countryCode)
         advanceUntilIdle()
         val result = viewModel.countryCodeLiveData.getOrAwaitValue()
         assertEquals(TEST_COUNTRY, result.country)

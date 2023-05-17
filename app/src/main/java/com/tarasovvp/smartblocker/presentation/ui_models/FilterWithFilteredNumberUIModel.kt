@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.presentation.ui_models
 import android.content.Context
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -29,6 +30,13 @@ data class FilterWithFilteredNumberUIModel(
 
     @IgnoredOnParcel
     var isDeleteMode = false
+
+    @IgnoredOnParcel
+    var filterAction: FilterAction? = null
+
+    fun isChangeFilterAction(): Boolean {
+        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_TRANSFER || filterAction == FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
+    }
 
     fun filterTypeTitle(): Int {
         return when (filterType) {

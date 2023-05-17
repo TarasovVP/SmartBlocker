@@ -13,7 +13,7 @@
             type="Boolean" />
         <variable
             name="filterWithCountryCode"
-            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
+            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,12 +24,12 @@
 
         <include
             android:id="@+id/create_filter_item_filter"
-            layout="@layout/item_details_filter"
+            layout="@layout/item_create_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_2"
             android:layout_marginTop="@dimen/margin_8"
-            app:filterWithCountryCode="@{filterWithCountryCode}"
+            app:filterWithCountryCodeUIModel="@{filterWithCountryCode}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
@@ -55,7 +55,7 @@
                     android:drawablePadding="@dimen/padding_8"
                     android:gravity="center_vertical"
                     android:textColor="@color/text_color_grey"
-                    android:visibility="@{filterWithCountryCode.typeContain ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{filterWithCountryCode.filterWithFilteredNumberUIModel.typeContain ? View.GONE : View.VISIBLE}"
                     app:drawableEndCompat="@drawable/ic_drop_down"
                     app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
                     app:layout_constraintStart_toStartOf="parent"
@@ -105,9 +105,9 @@
             android:layout_marginTop="@dimen/margin_8"
             android:alpha="@{filterWithCountryCode.invalidFilterAction ? 0.5f : 1f}"
             android:enabled="@{!filterWithCountryCode.invalidFilterAction}"
-            android:text="@{filterWithCountryCode.filterAction.title}"
+            android:text="@{filterWithCountryCode.filterWithFilteredNumberUIModel.filterAction.title}"
             android:textColor="@{ContextCompat.getColor(context, filterWithCountryCode.filterActionTextTint)}"
-            app:strokeColor="@{ContextCompat.getColor(context, filterWithCountryCode.filterAction.color)}"
+            app:strokeColor="@{ContextCompat.getColor(context, filterWithCountryCode.filterWithFilteredNumberUIModel.filterAction.color)}"
             android:backgroundTint="@{ContextCompat.getColor(context, filterWithCountryCode.filterActionBgTint)}"
             android:layout_marginHorizontal="@dimen/margin_2"
             app:layout_constraintEnd_toEndOf="parent"

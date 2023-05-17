@@ -8,7 +8,6 @@ import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -17,11 +16,8 @@ data class FilterWithCountryCodeUIModel(
     var countryCodeUIModel: CountryCodeUIModel = CountryCodeUIModel()
 ) : Parcelable {
 
-    @IgnoredOnParcel
-    var filterAction: FilterAction? = null
-
     fun filterActionText(context: Context): String {
-        return filterAction?.let { action ->
+        return filterWithFilteredNumberUIModel.filterAction?.let { action ->
             context.getString(if (isInvalidFilterAction()) {
                 when {
                     filterWithFilteredNumberUIModel.isTypeContain() && filterWithFilteredNumberUIModel.filter.isEmpty() -> R.string.filter_action_create_number_empty
@@ -87,7 +83,7 @@ data class FilterWithCountryCodeUIModel(
     }
 
     fun filterActionTextTint(): Int {
-        return if (isCreateFilterAction()) R.color.white else filterAction?.color() ?: R.color.white
+        return if (isCreateFilterAction()) R.color.white else filterWithFilteredNumberUIModel.filterAction?.color() ?: R.color.white
     }
 
     fun filterActionBgTint(): Int {
@@ -95,18 +91,14 @@ data class FilterWithCountryCodeUIModel(
     }
 
     fun isInvalidFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_INVALID
+        return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_INVALID
     }
 
     fun isCreateFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
+        return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE || filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
     }
 
     fun isDeleteFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE || filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
-    }
-
-    fun isChangeFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_TRANSFER || filterAction == FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
+        return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE || filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
     }
 }

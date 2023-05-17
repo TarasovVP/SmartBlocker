@@ -9,7 +9,7 @@
             name="isFilteredCallDetails"
             type="Boolean" />
         <variable
-            name="filterWithCountryCode"
+            name="filterWithFilteredNumberUIModel"
             type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
     </data>
 
@@ -37,7 +37,7 @@
                 android:layout_height="@dimen/margin_50"
                 android:background="@color/avatar_bg"
                 android:scaleType="center"
-                app:imageResource="@{filterWithCountryCode.conditionTypeIcon}"
+                app:imageResource="@{filterWithFilteredNumberUIModel.conditionTypeIcon}"
                 app:layout_constraintEnd_toStartOf="@+id/item_details_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_details_filter_value"
@@ -48,7 +48,7 @@
                 android:id="@+id/item_details_filter_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                app:imageResource="@{filterWithCountryCode.filterTypeIcon}"
+                app:imageResource="@{filterWithFilteredNumberUIModel.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_details_filter_avatar" />
 
@@ -59,7 +59,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                android:text="@{filterWithCountryCode.createFilterValue(context)}"
+                android:text="@{filterWithFilteredNumberUIModel.filter}"
                 app:layout_constraintBottom_toTopOf="@+id/item_details_filter_type_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_details_filter_avatar"
@@ -73,7 +73,7 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="@color/text_color_grey"
-                android:text="@{filterWithCountryCode.filterUIModel == null ? filterWithCountryCode.filterUIModel.filter : context.getString(filterWithCountryCode.conditionTypeName)}"
+                android:text="@{filterWithFilteredNumberUIModel.filterName}"
                 app:layout_constraintEnd_toEndOf="@+id/item_details_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_details_filter_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_details_filter_value"
@@ -95,8 +95,8 @@
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
-                android:textColor="@{ContextCompat.getColor(context, filterWithCountryCode.filterAction == null ? filterWithCountryCode.filterTypeTint : filterWithCountryCode.filterDetailTint)}"
-                android:text="@{filterWithCountryCode.filterAction == null ? isFilteredCallDetails ? filterWithCountryCode.filteredContactsText(context) : filterWithCountryCode.filteredCallsText(context) : filterWithCountryCode.filterActionText(context)}"
+                android:textColor="@{filterWithFilteredNumberUIModel.filterTypeTint}"
+                android:text="@{isFilteredCallDetails ? filterWithFilteredNumberUIModel.filteredContactsText(context) : filterWithFilteredNumberUIModel.filteredCallsText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_details_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_details_filter_created"/>
@@ -109,7 +109,7 @@
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/text_color_grey"
-                android:text="@{filterWithCountryCode.filterUIModel.created == 0 ? `` : String.format(@string/filter_action_created, filterWithCountryCode.filterCreatedDate)}"
+                android:text="@{filterWithFilteredNumberUIModel.created == 0 ? `` : String.format(@string/filter_action_created, filterWithFilteredNumberUIModel.filterCreatedDate)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_details_filter_details"
                 app:layout_constraintTop_toTopOf="@+id/item_details_filter_details"

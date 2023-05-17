@@ -18,13 +18,13 @@ class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
 
     override fun initUI() {
         binding?.apply {
-            filterWithCountryCode = args.filterWithCountryCode
+            filterWithFilteredNumberUIModel = args.filterWithFilteredNumberUIModel
             filterActionCancel.setSafeOnClickListener {
                 dismiss()
             }
             filterActionConfirm.setSafeOnClickListener {
                 findNavController().navigateUp()
-                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterWithCountryCode?.filterAction))
+                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterWithFilteredNumberUIModel?.filterAction))
             }
         }
     }

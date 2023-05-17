@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,8 +33,8 @@ open class BaseListFilterFragment :
     override fun createAdapter(): BaseAdapter<FilterWithFilteredNumberUIModel>? {
         return context?.let {
             FilterAdapter(object : FilterClickListener {
-                override fun onFilterClick(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
-                    startNextScreen(filterWithCountryCode)
+                override fun onFilterClick(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
+                    startNextScreen(filterWithFilteredNumberUIModel)
                 }
 
                 override fun onFilterLongClick() {
@@ -146,13 +147,13 @@ open class BaseListFilterFragment :
     private fun startNextScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
         val direction = if (this is ListBlockerFragment) {
             if (filterWithFilteredNumberUIModel.filter.isEmpty()) {
-                ListBlockerFragmentDirections.startCreateFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
+                ListBlockerFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel =  filterWithFilteredNumberUIModel))
             } else {
                 ListBlockerFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
             }
         } else {
             if (filterWithFilteredNumberUIModel.filter.isEmpty()) {
-                ListPermissionFragmentDirections.startCreateFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
+                ListPermissionFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel =  filterWithFilteredNumberUIModel))
             } else {
                 ListPermissionFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
             }

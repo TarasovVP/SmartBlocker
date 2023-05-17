@@ -46,20 +46,20 @@ class DetailsFilterFragment :
     }
 
     override fun setFragmentResultListeners() {
-        binding?.filterWithFilteredNumberUIModel?.let { filter ->
+        binding?.filterWithFilteredNumberUIModel?.let { filterWithFilteredNumberUIModel ->
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction = bundle.serializable(FILTER_ACTION) as? FilterAction) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-                    -> { viewModel.updateFilter(filter.apply {
-                        this.filterWithFilteredNumberUIModel?.filterType = if (filter.isBlocker()) PERMISSION else BLOCKER
-                        filter.filterAction = filterAction
+                    -> { viewModel.updateFilter(filterWithFilteredNumberUIModel.apply {
+                        this.filterType = if (filterWithFilteredNumberUIModel.isBlocker()) PERMISSION else BLOCKER
+                        filterWithFilteredNumberUIModel.filterAction = filterAction
                     })
                     }
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                    -> viewModel.deleteFilter(filter.apply {
-                        filter.filterAction = filterAction
+                    -> viewModel.deleteFilter(filterWithFilteredNumberUIModel.apply {
+                        filterWithFilteredNumberUIModel.filterAction = filterAction
                     })
                     else -> Unit
                 }
@@ -83,12 +83,11 @@ class DetailsFilterFragment :
     }
 
     private fun startFilterActionDialog(filterAction: FilterAction) {
-        findNavController().navigate(
-            DetailsFilterFragmentDirections.startFilterActionDialog(
-                filterWithFilteredNumberUIModel = binding?.filterWithFilteredNumberUIModel?.apply {
-                    this@apply.filterAction = filterAction
-                })
-        )
+        binding?.filterWithFilteredNumberUIModel?.let { filterWithFilteredNumberUIModel ->
+            findNavController().navigate(DetailsFilterFragmentDirections.startFilterActionDialog(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel.apply {
+                this.filterAction = filterAction
+            }))
+        }
     }
 
     override fun createAdapter() {
@@ -159,17 +158,17 @@ class DetailsFilterFragment :
         }
     }
 
-    private fun handleSuccessFilterAction(filter: FilterWithFilteredNumberUIModel) {
+    private fun handleSuccessFilterAction(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
         (activity as MainActivity).apply {
-            showInfoMessage(String.format(filter.filterAction?.successText()?.let { getString(it) }
-                .orEmpty(), binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter.orEmpty()), false)
+            showInfoMessage(String.format(filterWithFilteredNumberUIModel.filterAction?.successText()?.let { getString(it) }
+                .orEmpty(), binding?.filterWithFilteredNumberUIModel?.filter.orEmpty()), false)
             //TODO interstitial
             //showInterstitial()
             getAllData()
-            if (filter.isChangeFilterAction()) {
+            if (filterWithFilteredNumberUIModel.isChangeFilterAction()) {
                 mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
                     initViews()
-                    filter.filterUIModel?.let { it1 -> viewModel.getQueryContactCallList(it1.filter) }
+                    viewModel.getQueryContactCallList(filterWithFilteredNumberUIModel.filter)
                 }
             } else {
                 findNavController().navigate(if (binding?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()

@@ -112,9 +112,9 @@
         android:id="@+id/createFilterFragment"
         android:name="com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment" >
         <argument
-            android:name="filterWithFilteredNumberUIModel"
+            android:name="filterWithCountryCodeUIModel"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel"
+            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel"
             app:nullable="true" />
         <action
             android:id="@+id/startCountryCodeSearchDialog"

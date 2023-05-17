@@ -115,7 +115,7 @@
                 android:maxLines="1"
                 android:textSize="@dimen/text_size_10"
                 android:textColor="@color/text_color_grey"
-                android:text="@{String.format(@string/filter_action_created, filterWithCountryCode.filterCreatedDate)}"
+                android:text="@{String.format(@string/filter_action_created, filterWithFilteredNumberUIModel.filterCreatedDate)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_contacts"
                 app:layout_constraintTop_toTopOf="@+id/item_filter_contacts"

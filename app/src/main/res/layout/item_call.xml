@@ -48,8 +48,8 @@
                 android:id="@+id/item_call_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                android:visibility="@{!callWithFilter.extract || callWithFilter.filterUIModel.filterType == 0 ? View.GONE : View.VISIBLE}"
-                app:imageResource="@{callWithFilter.filterUIModel.filterTypeIcon}"
+                android:visibility="@{!callWithFilter.extract || callWithFilter.filterWithFilteredNumberUIModel.filterType == 0 ? View.GONE : View.VISIBLE}"
+                app:imageResource="@{callWithFilter.filterWithFilteredNumberUIModel.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_call_avatar" />
 
@@ -126,8 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{callWithFilter.callFilterTitle(callWithFilter.filterUIModel)}"
-                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterUIModel))}"
+                android:text="@{callWithFilter.callFilterTitle(callWithFilter.filterWithFilteredNumberUIModel)}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel))}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_call_divider" />
@@ -140,7 +140,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{callWithFilter.callFilterValue}"
-                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterUIModel))}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel))}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"
