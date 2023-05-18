@@ -48,15 +48,7 @@ class FilterRepositoryTest {
     }
 
     @Test
-    fun allFilterWithCountryCodeTest() = runBlocking {
-        val filterWithFilteredNumbersLists = listOf(FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithFilteredNumbers().apply { filter = Filter()})
-        coEvery { filterDao.allFilterWithCountryCode() } returns filterWithFilteredNumbersLists
-        val result = filterRepository.allFilterWithCountryCode()
-        assertEquals(filterWithFilteredNumbersLists, result)
-    }
-
-    @Test
-    fun allFiltersByTypeTest() = runBlocking {
+    fun allFilterWithFilteredNumbersByTypeTest() = runBlocking {
         val filterWithFilteredNumbersLists = listOf(FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithFilteredNumbers().apply { filter = Filter()})
         coEvery { filterDao.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterWithFilteredNumbersLists
         val result = filterRepository.allFilterWithFilteredNumbersByType(BLOCKER)
@@ -67,7 +59,7 @@ class FilterRepositoryTest {
     fun getFilterTest() = runBlocking {
         val filterWithFilteredNumbers = FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)}
         coEvery { filterDao.getFilter(TEST_FILTER) } returns filterWithFilteredNumbers
-        val result = filterRepository.getFilter(filterWithFilteredNumbers)
+        val result = filterRepository.getFilter(TEST_FILTER)
         assertEquals(filterWithFilteredNumbers, result)
     }
 
@@ -89,26 +81,17 @@ class FilterRepositoryTest {
 
     @Test
     fun deleteFilterListTest() = runBlocking {
-        val filter = Filter(filter = TEST_FILTER)
-        coEvery { filterDao.delete(filter) } just Runs
-        filterRepository.deleteFilterList(listOf(filter))
-        coVerify(exactly = 1) { filterDao.delete(filter) }
+        val filters = listOf( Filter(filter = TEST_FILTER))
+        coEvery { filterDao.deleteFilters(filters) } just Runs
+        filterRepository.deleteFilterList(filters)
+        coVerify(exactly = 1) { filterDao.deleteFilters(filters) }
     }
 
     @Test
-    fun queryFilterListTest() = runBlocking {
+    fun allFilterWithFilteredNumbersByNumberTest() = runBlocking {
         val filterWithFilteredNumbersLists = listOf(FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithFilteredNumbers().apply { filter = Filter()})
         coEvery { filterDao.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterWithFilteredNumbersLists
         val result = filterRepository.allFilterWithFilteredNumbersByNumber(TEST_NUMBER)
         assertEquals(filterWithFilteredNumbersLists, result)
     }
-
-    @Test
-    fun queryFilterTest() = runBlocking {
-        val filterWithFilteredNumbers = FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)}
-        coEvery { filterDao.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns listOf(filterWithFilteredNumbers)
-        val result = filterRepository.queryFilter(TEST_NUMBER)
-        assertEquals(filterWithFilteredNumbers, result)
-    }
-
 }

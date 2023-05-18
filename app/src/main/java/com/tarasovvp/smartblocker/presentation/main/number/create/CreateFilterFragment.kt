@@ -21,7 +21,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import com.tarasovvp.smartblocker.presentation.ui_models.*
-import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -33,7 +33,7 @@ open class CreateFilterFragment :
     BaseDetailsFragment<FragmentCreateFilterBinding, CreateFilterViewModel>() {
 
     @Inject
-    lateinit var phoneNumberUtil: PhoneNumberUtil
+    lateinit var appPhoneNumberUtil: AppPhoneNumberUtil
 
     override var layoutId = R.layout.fragment_create_filter
     override val viewModelClass = CreateFilterViewModel::class.java
@@ -63,7 +63,7 @@ open class CreateFilterFragment :
                             this.filter = number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                         }
                     } else {
-                        val phoneNumber = phoneNumberUtil.getPhoneNumber(number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
+                        val phoneNumber = appPhoneNumberUtil.getPhoneNumber(number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
                         if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
                             filterWithCountryCode?.filterWithFilteredNumberUIModel = this.apply {
                                 this.filter = phoneNumber?.nationalNumber?.toString() ?: number.digitsTrimmed()
@@ -229,7 +229,7 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter filterAction ${ binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
                 binding?.filterWithCountryCode = binding?.filterWithCountryCode?.apply {
                     filterWithFilteredNumberUIModel.filterAction = when (existingFilter.filterType) {
-                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(phoneNumberUtil).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(appPhoneNumberUtil).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
                         filterWithFilteredNumberUIModel?.filterType -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                         else -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
                     }

@@ -30,7 +30,7 @@ import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.Setti
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.mapperImpl.*
 import com.tarasovvp.smartblocker.presentation.mappers.*
-import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.EntryPoint
@@ -79,8 +79,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePhoneNumberUtil(): PhoneNumberUtil {
-        return PhoneNumberUtil()
+    fun providePhoneNumberUtil(): AppPhoneNumberUtil {
+        return AppPhoneNumberUtil()
     }
 
     @Singleton
@@ -147,8 +147,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeRepository(phoneNumberUtil: PhoneNumberUtil, countryCodeDao: CountryCodeDao): CountryCodeRepository {
-        return CountryCodeRepositoryImpl(phoneNumberUtil, countryCodeDao)
+    fun provideCountryCodeRepository(appPhoneNumberUtil: AppPhoneNumberUtil, countryCodeDao: CountryCodeDao): CountryCodeRepository {
+        return CountryCodeRepositoryImpl(appPhoneNumberUtil, countryCodeDao)
     }
 
     @Singleton
@@ -237,8 +237,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLogCallRepository(phoneNumberUtil: PhoneNumberUtil, logCallDao: LogCallDao): LogCallRepository {
-        return LogCallRepositoryImpl(phoneNumberUtil, logCallDao)
+    fun provideLogCallRepository(appPhoneNumberUtil: AppPhoneNumberUtil, logCallDao: LogCallDao): LogCallRepository {
+        return LogCallRepositoryImpl(appPhoneNumberUtil, logCallDao)
     }
 
     @Singleton
@@ -277,8 +277,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactRepository(phoneNumberUtil: PhoneNumberUtil, contactDao: ContactDao): ContactRepository {
-        return ContactRepositoryImpl(phoneNumberUtil, contactDao)
+    fun provideContactRepository(appPhoneNumberUtil: AppPhoneNumberUtil, contactDao: ContactDao): ContactRepository {
+        return ContactRepositoryImpl(appPhoneNumberUtil, contactDao)
     }
 
     @Singleton

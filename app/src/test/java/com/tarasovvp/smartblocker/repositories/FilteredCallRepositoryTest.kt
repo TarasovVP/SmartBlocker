@@ -4,9 +4,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.FilteredCallRepositoryImpl
-import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -28,28 +27,6 @@ class FilteredCallRepositoryTest {
     fun setUp() {
         MockKAnnotations.init(this)
         filteredCallRepository = FilteredCallRepositoryImpl(filteredCallDao)
-    }
-
-    @Test
-    fun setFilterToFilteredCallTest() = runBlocking {
-        val filterList = listOf(
-            Filter("1234567890", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal),
-            Filter("345", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal),
-            Filter("789", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)
-        )
-        val filteredCallList = listOf(
-            FilteredCall().apply { number = "1234567890" },
-            FilteredCall().apply { number = "3456789012" },
-            FilteredCall().apply { number = "5678901234" }
-        )
-
-        val resultMock = mockk<(Int, Int) -> Unit>(relaxed = true)
-        val modifiedContacts = filteredCallRepository.setFilterToFilteredCall(filterList, filteredCallList, resultMock)
-
-        assertEquals("1234567890", modifiedContacts[0].filter)
-        assertEquals("345", modifiedContacts[1].filter)
-        assertEquals("789", modifiedContacts[2].filter)
-        verify(exactly = filteredCallList.size) { resultMock.invoke(filteredCallList.size, any()) }
     }
 
     @Test
@@ -77,16 +54,8 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun allFilteredCallWithFilterTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
-        coEvery { filteredCallDao.allFilteredCallsWithFilter() } returns filteredCallList
-        val result = filteredCallRepository.allFilteredCallWithFilter()
-        assertEquals(filteredCallList, result)
-    }
-
-    @Test
     fun filteredCallsByFilterTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        val filteredCallList = listOf(CallWithFilter().apply { call=  FilteredCall(callId = 1)}, CallWithFilter().apply { call=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.allFilteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         val result = filteredCallRepository.allFilteredCallsByFilter(TEST_FILTER)
         assertEquals(filteredCallList, result)
@@ -94,7 +63,7 @@ class FilteredCallRepositoryTest {
 
     @Test
     fun filteredCallsByNumberTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
+        val filteredCallList = listOf(CallWithFilter().apply { call=  FilteredCall(callId = 1)}, CallWithFilter().apply { call=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.allFilteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
         val result = filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER)
         assertEquals(filteredCallList, result)

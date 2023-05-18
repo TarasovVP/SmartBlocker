@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
-import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.parcelize.Parcelize
 
@@ -63,18 +63,18 @@ data class FilterWithCountryCodeUIModel(
 
     fun filterToInput(): String {
         //TODO
-        val phoneNumberUtil = PhoneNumberUtil()
+        val appPhoneNumberUtil = AppPhoneNumberUtil()
         return when (filterWithFilteredNumberUIModel.conditionType) {
-            FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (phoneNumberUtil.getPhoneNumber(
-                    filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull()) phoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCodeUIModel?.country.orEmpty()) else phoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel?.filter, countryCodeUIModel?.country.orEmpty()))?.nationalNumber.toString()
+            FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (appPhoneNumberUtil.getPhoneNumber(
+                    filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull()) appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCodeUIModel?.country.orEmpty()) else appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel?.filter, countryCodeUIModel?.country.orEmpty()))?.nationalNumber.toString()
             FilterCondition.FILTER_CONDITION_START.ordinal -> filterWithFilteredNumberUIModel.filter?.replaceFirst(
                 countryCodeUIModel.countryCode, String.EMPTY).orEmpty()
             else -> filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
         }
     }
 
-    fun isInValidPhoneNumber(phoneNumberUtil: PhoneNumberUtil): Boolean {
-        return (filterWithFilteredNumberUIModel.isTypeFull() && phoneNumberUtil.isPhoneNumberValid(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country))
+    fun isInValidPhoneNumber(appPhoneNumberUtil: AppPhoneNumberUtil): Boolean {
+        return (filterWithFilteredNumberUIModel.isTypeFull() && appPhoneNumberUtil.isPhoneNumberValid(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country))
                 || (filterWithFilteredNumberUIModel.isTypeStart().not() && filterWithFilteredNumberUIModel.filter.isEmpty())
     }
 

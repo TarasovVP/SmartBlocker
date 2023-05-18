@@ -18,7 +18,7 @@ import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerA
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.*
-import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class DetailsNumberDataFragment :
     BaseDetailsFragment<FragmentDetailsNumberDataBinding, DetailsNumberDataViewModel>() {
 
     @Inject
-    lateinit var phoneNumberUtil: PhoneNumberUtil
+    lateinit var appPhoneNumberUtil: AppPhoneNumberUtil
 
     override var layoutId = R.layout.fragment_details_number_data
     override val viewModelClass = DetailsNumberDataViewModel::class.java
@@ -149,8 +149,8 @@ class DetailsNumberDataFragment :
             conditionType = conditionIndex,
             filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION)
         )
-        val phoneNumber = if (phoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull()) phoneNumberUtil.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
-        else phoneNumberUtil.getPhoneNumber(number, String.EMPTY)
+        val phoneNumber = if (appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull()) appPhoneNumberUtil.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
+        else appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             startCreateFilterScreen(filterWithCountryCode)
         } else {

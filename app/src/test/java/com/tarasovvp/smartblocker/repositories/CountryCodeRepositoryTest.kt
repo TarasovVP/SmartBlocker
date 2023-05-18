@@ -1,25 +1,25 @@
 package com.tarasovvp.smartblocker.repositories
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.data.database.dao.CountryCodeDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.CountryCodeRepositoryImpl
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
-import com.tarasovvp.smartblocker.utils.extensions.countryCodeList
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class CountryCodeRepositoryTest {
+
+    @MockK
+    private lateinit var appPhoneNumberUtil: AppPhoneNumberUtil
 
     @MockK
     private lateinit var countryCodeDao: CountryCodeDao
@@ -29,36 +29,23 @@ class CountryCodeRepositoryTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        countryCodeRepository = CountryCodeRepositoryImpl(countryCodeDao)
+        countryCodeRepository = CountryCodeRepositoryImpl(appPhoneNumberUtil, countryCodeDao)
     }
 
     @Test
     fun getSystemCountryCodeListTest() = runBlocking {
-        val mockPhoneNumberUtil = mockk<PhoneNumberUtil>()
-        val countryCodeMap = arrayListOf<CountryCode>()
-        val region1 = "region1"
-        val region2 = "region2"
-        val countryCode1 = "+1"
-        val countryCode2 = "+2"
-        val numberFormat1 = "(123) 456-7890"
-        val numberFormat2 = "(456) 789-0123"
-        every { mockPhoneNumberUtil.supportedRegions } returns setOf(region1, region2)
-        every { mockPhoneNumberUtil.getCountryCodeForRegion(region1) } returns 1
-        every { mockPhoneNumberUtil.getCountryCodeForRegion(region2) } returns 2
-        every { mockPhoneNumberUtil.format(any(), any()) } returnsMany listOf(numberFormat1, numberFormat2)
-        every { mockPhoneNumberUtil.getExampleNumberForType(any(), any()) } returns mockk()
-        every { mockPhoneNumberUtil.getExampleNumberForType(region1, PhoneNumberUtil.PhoneNumberType.MOBILE) } returns mockk()
-        every { mockPhoneNumberUtil.getExampleNumberForType(region2, PhoneNumberUtil.PhoneNumberType.MOBILE) } returns mockk()
+        val countryCodeList = arrayListOf(CountryCode(country = TEST_COUNTRY), CountryCode())
         val resultMock = mockk<(Int, Int) -> Unit>(relaxed = true)
-        val countryCodeList = withContext(Dispatchers.Default) {
-            mockPhoneNumberUtil.countryCodeList { size, position ->
-                resultMock.invoke(size, position)
+        coEvery { appPhoneNumberUtil.countryCodeList(any()) } answers {
+            val result: (Int, Int) -> Unit = arg(0)
+            for (i in countryCodeList.indices) {
+                result.invoke(countryCodeList.size, i)
             }
+            countryCodeList
         }
-        countryCodeMap.add(CountryCode(region1, countryCode1, numberFormat1))
-        countryCodeMap.add(CountryCode(region2, countryCode2, numberFormat2))
-        assertEquals(countryCodeMap, countryCodeList)
-        verify(exactly = 2) { resultMock.invoke(any(), any()) }
+        val result = countryCodeRepository.getSystemCountryCodeList(resultMock)
+        verify(exactly = countryCodeList.size) { resultMock.invoke(any(), any()) }
+        assertEquals(countryCodeList, result)
     }
 
     @Test

@@ -2,9 +2,10 @@ package com.tarasovvp.smartblocker.repositories
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
-import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
@@ -14,6 +15,7 @@ import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
@@ -27,28 +29,25 @@ import org.junit.Test
 class RealDataBaseRepositoryTest {
 
     @MockK
-    private lateinit var smartBlockerApp: SmartBlockerApp
+    private lateinit var firebaseDatabase: FirebaseDatabase
 
     @MockK
-    private lateinit var databaseReference: DatabaseReference
+    private lateinit var firebaseAuth: FirebaseAuth
 
     @MockK(relaxed = true)
-    private lateinit var resultMock: () -> Unit
+    private lateinit var resultMock: (Result<Unit>) -> Unit
 
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        realDataBaseRepository = RealDataBaseRepositoryImpl(smartBlockerApp)
-        every { smartBlockerApp.checkNetworkUnAvailable() } returns false
-        every { smartBlockerApp.firebaseDatabase?.reference } returns databaseReference
-        every { smartBlockerApp.firebaseAuth?.currentUser?.uid } returns TEST_EMAIL
+        realDataBaseRepository = RealDataBaseRepositoryImpl(firebaseDatabase, firebaseAuth)
     }
 
     @Test
     fun getCurrentUserTest() {
-        val resultMock = mockk<(CurrentUser?) -> Unit>(relaxed = true)
+        val resultMock = mockk<(Result<CurrentUser>?) -> Unit>(relaxed = true)
         val filterKey = "filter_list"
         val filteredCallKey = "filtered_call_list"
         val filter = Filter("test_filter")
@@ -57,9 +56,9 @@ class RealDataBaseRepositoryTest {
         val dataSnapshot = mockk<DataSnapshot>()
         val filterChild = mockk<DataSnapshot>()
         val filteredCallChild = mockk<DataSnapshot>()
-        every { smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.key } returns filterKey
+        every { firebaseDatabase.reference.child(USERS).child(any()).key } returns filterKey
         every {
-            smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.get()
+            firebaseDatabase.reference.child(USERS).child(any()).get()
         } returns task
         every { task.isSuccessful } returns true
         every { task.result } returns dataSnapshot
@@ -77,7 +76,7 @@ class RealDataBaseRepositoryTest {
         }
         realDataBaseRepository.getCurrentUser(resultMock)
         verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke(any()) }
+        verify { resultMock.invoke(Result.Success()) }
     }
 
     @Test
@@ -85,7 +84,9 @@ class RealDataBaseRepositoryTest {
         val filter = Filter(TEST_FILTER)
         val task = mockk<Task<Void>>(relaxed = true)
         every { task.isSuccessful } returns true
-        every { smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.child(FILTER_LIST)?.child(filter.filter)?.setValue(filter) } returns task
+        every {
+            firebaseDatabase.reference.child(USERS).child(any()).child(FILTER_LIST).child(filter.filter).setValue(filter)
+        } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
             listener.onComplete(task)
@@ -93,6 +94,7 @@ class RealDataBaseRepositoryTest {
         }
         realDataBaseRepository.insertFilter(filter) { }
         verify { task.addOnCompleteListener(any()) }
+        verify { resultMock.invoke(Result.Success()) }
     }
 
     @Test
@@ -105,7 +107,7 @@ class RealDataBaseRepositoryTest {
         val child1 = mockk<DataSnapshot>()
         val child2 = mockk<DataSnapshot>()
         every {
-            smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.child(FILTER_LIST)?.get()
+            firebaseDatabase.reference.child(USERS).child(any()).child(FILTER_LIST).get()
         } returns task
         every { task.isSuccessful } returns true
         every { task.result } returns dataSnapshot
@@ -121,7 +123,7 @@ class RealDataBaseRepositoryTest {
         }
         realDataBaseRepository.deleteFilterList(filterList, resultMock)
         verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
         //TODO check
         //verify { child1.ref.removeValue() }
         //verify { child2.ref.removeValue() }
@@ -131,7 +133,9 @@ class RealDataBaseRepositoryTest {
     fun insertFilteredCallTest() {
         val filteredCall = FilteredCall(callId = 1)
         val task = mockk<Task<Void>>(relaxed = true)
-        every { smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.child(FILTERED_CALL_LIST)?.child(filteredCall.callId.toString())?.setValue(filteredCall) } returns task
+        every {
+            firebaseDatabase.reference.child(USERS).child(any()).child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
+        } returns task
         every { task.isSuccessful } returns true
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
@@ -140,7 +144,7 @@ class RealDataBaseRepositoryTest {
         }
         realDataBaseRepository.insertFilteredCall(filteredCall, resultMock)
         verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
     }
 
     @Test
@@ -156,7 +160,7 @@ class RealDataBaseRepositoryTest {
         val child2 = mockk<DatabaseReference>(relaxed = true)
 
         every {
-            smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.child(FILTERED_CALL_LIST)?.get()
+            firebaseDatabase.reference.child(USERS).child(any()).child(FILTERED_CALL_LIST).get()
         } returns task
         every { task.isSuccessful } returns true
         every { task.addOnCompleteListener(any()) } answers {
@@ -171,7 +175,7 @@ class RealDataBaseRepositoryTest {
         every { snapshot1.ref } returns child1
         every { snapshot2.ref } returns child2
 
-        val resultMock = mockk<() -> Unit>(relaxed = true)
+        val resultMock = mockk<(Result<Unit>) -> Unit>(relaxed = true)
 
         realDataBaseRepository.deleteFilteredCallList(filteredCallIdList, resultMock)
 
@@ -180,14 +184,14 @@ class RealDataBaseRepositoryTest {
         //verify { databaseReference.child(callId2) }
         verify { child1.removeValue() }
         verify { child2.removeValue() }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
     }
 
     @Test
     fun changeBlockHiddenTest() {
         val task = mockk<Task<Void>>(relaxed = true)
         every {
-            smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.child(BLOCK_HIDDEN)?.setValue(any())
+            firebaseDatabase.reference.child(USERS).child(any()).child(BLOCK_HIDDEN).setValue(any())
         } returns task
         every { task.isSuccessful } returns true
         every { task.addOnCompleteListener(any()) } answers {
@@ -197,10 +201,10 @@ class RealDataBaseRepositoryTest {
         }
         realDataBaseRepository.changeBlockHidden(true, resultMock)
         verify {
-            smartBlockerApp.firebaseDatabase?.reference?.child(USERS)?.child(any())?.child(BLOCK_HIDDEN)?.setValue(true)
+            firebaseDatabase.reference.child(USERS).child(any()).child(BLOCK_HIDDEN).setValue(true)
         }
         verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
     }
 
     @Test
@@ -208,8 +212,7 @@ class RealDataBaseRepositoryTest {
         val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
         val task = mockk<Task<Void>>(relaxed = true)
         every {
-            smartBlockerApp.firebaseDatabase?.reference?.child(REVIEWS)?.child(review.time.toString())
-                ?.setValue(review)
+            firebaseDatabase.reference.child(REVIEWS).child(review.time.toString()).setValue(review)
         } returns task
         every { task.isSuccessful } returns true
         every { task.addOnCompleteListener(any()) } answers {
@@ -219,6 +222,6 @@ class RealDataBaseRepositoryTest {
         }
         realDataBaseRepository.insertReview(review, resultMock)
         verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
     }
 }

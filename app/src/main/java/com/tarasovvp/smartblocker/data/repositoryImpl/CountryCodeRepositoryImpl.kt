@@ -4,19 +4,19 @@ import com.tarasovvp.smartblocker.data.database.dao.CountryCodeDao
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_START
-import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CountryCodeRepositoryImpl @Inject constructor(
-    private val phoneNumberUtil: PhoneNumberUtil,
+    private val appPhoneNumberUtil: AppPhoneNumberUtil,
     private val countryCodeDao: CountryCodeDao
 ) : CountryCodeRepository {
 
     override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): List<CountryCode> =
         withContext(Dispatchers.Default) {
-            phoneNumberUtil.countryCodeList { size, position ->
+            appPhoneNumberUtil.countryCodeList { size, position ->
                 result.invoke(size, position)
             }
         }

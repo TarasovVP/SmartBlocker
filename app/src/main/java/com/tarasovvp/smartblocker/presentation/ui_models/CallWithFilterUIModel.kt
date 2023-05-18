@@ -26,7 +26,7 @@ open class CallWithFilterUIModel(
 ) : Parcelable, NumberDataUIModel() {
 
     @IgnoredOnParcel
-    private val isBlockHidden = false
+    private val isSystemBlockHidden = false
 
     @IgnoredOnParcel
     var isCheckedForDelete = false
@@ -104,8 +104,8 @@ open class CallWithFilterUIModel(
             when {
                 filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
                 filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
-                number.isEmpty() && isBlockHidden -> R.string.details_number_hidden_on
-                number.isEmpty() && isBlockHidden.isNotTrue() -> R.string.details_number_hidden_off
+                number.isEmpty() && isSystemBlockHidden -> R.string.details_number_hidden_on
+                number.isEmpty() && isSystemBlockHidden.isNotTrue() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
             }
         } else {

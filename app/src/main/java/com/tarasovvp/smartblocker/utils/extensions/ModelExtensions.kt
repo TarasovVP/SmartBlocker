@@ -28,12 +28,12 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CA
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.ui_models.*
-import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.max
 
-fun Context.systemContactList(phoneNumberUtil: PhoneNumberUtil, country: String, result: (Int, Int) -> Unit): ArrayList<Contact> {
+fun Context.systemContactList(appPhoneNumberUtil: AppPhoneNumberUtil, country: String, result: (Int, Int) -> Unit): ArrayList<Contact> {
     val projection = arrayOf(
         ContactsContract.Data.CONTACT_ID,
         ContactsContract.Contacts.DISPLAY_NAME,
@@ -61,8 +61,8 @@ fun Context.systemContactList(phoneNumberUtil: PhoneNumberUtil, country: String,
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
             ).apply {
-                phoneNumberValue = phoneNumberUtil.phoneNumberValue(number, country)
-                isPhoneNumberValid = phoneNumberUtil.isPhoneNumberValid(number, country) }
+                phoneNumberValue = appPhoneNumberUtil.phoneNumberValue(number, country)
+                isPhoneNumberValid = appPhoneNumberUtil.isPhoneNumberValid(number, country) }
             contactList.add(contact)
             result.invoke(cursor.count, contactList.size)
         }
@@ -104,14 +104,14 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     return logCall
 }
 
-fun Context.systemLogCallList(phoneNumberUtil: PhoneNumberUtil, country: String, result: (Int, Int) -> Unit): List<LogCall> {
+fun Context.systemLogCallList(appPhoneNumberUtil: AppPhoneNumberUtil, country: String, result: (Int, Int) -> Unit): List<LogCall> {
     val logCallList = ArrayList<LogCall>()
     systemCallLogCursor()?.use { callLogCursor ->
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             logCallList.add(logCall.apply {
-                phoneNumberValue = phoneNumberUtil.phoneNumberValue(number, country)
-                isPhoneNumberValid = phoneNumberUtil.isPhoneNumberValid(number, country) })
+                phoneNumberValue = appPhoneNumberUtil.phoneNumberValue(number, country)
+                isPhoneNumberValid = appPhoneNumberUtil.isPhoneNumberValid(number, country) })
             result.invoke(callLogCursor.count, logCallList.size)
         }
     }

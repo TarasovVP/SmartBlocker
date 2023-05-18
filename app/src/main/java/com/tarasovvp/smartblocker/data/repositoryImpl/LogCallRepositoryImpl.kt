@@ -6,18 +6,18 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.utils.extensions.systemLogCallList
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
-import com.tarasovvp.smartblocker.utils.PhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LogCallRepositoryImpl @Inject constructor(
-    private val phoneNumberUtil: PhoneNumberUtil,
+    private val appPhoneNumberUtil: AppPhoneNumberUtil,
     private val logCallDao: LogCallDao) : LogCallRepository {
 
     override suspend fun getSystemLogCallList(context: Context, country: String, result: (Int, Int) -> Unit): List<LogCall> =
         withContext(Dispatchers.Default) {
-            context.systemLogCallList(phoneNumberUtil, country) { size, position ->
+            context.systemLogCallList(appPhoneNumberUtil, country) { size, position ->
                 result.invoke(size, position)
             }
         }
