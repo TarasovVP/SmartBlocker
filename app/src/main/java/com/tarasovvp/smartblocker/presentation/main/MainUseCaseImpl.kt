@@ -76,7 +76,7 @@ class MainUseCaseImpl @Inject constructor(
         }
     }
 
-    override suspend fun insertContacts(contactList: List<Contact>) {
+    override suspend fun insertAllContacts(contactList: List<Contact>) {
         contactRepository.insertAllContacts(contactList)
     }
 

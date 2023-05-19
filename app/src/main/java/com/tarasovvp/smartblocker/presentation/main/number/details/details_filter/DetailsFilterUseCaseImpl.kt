@@ -18,9 +18,9 @@ class DetailsFilterUseCaseImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): DetailsFilterUseCase {
 
-    override suspend fun allCallsByFilter(filter: String) = logCallRepository.allCallWithFiltersByFilter(filter)
+    override suspend fun allCallWithFiltersByFilter(filter: String) = logCallRepository.allCallWithFiltersByFilter(filter)
 
-    override suspend fun allContactsByFilter(filter: String) = contactRepository.allContactsWithFiltersByFilter(filter)
+    override suspend fun allContactsWithFiltersByFilter(filter: String) = contactRepository.allContactsWithFiltersByFilter(filter)
 
     override suspend fun allFilteredCallsByFilter(filter: String) = filteredCallRepository.allFilteredCallsByFilter(filter)
 

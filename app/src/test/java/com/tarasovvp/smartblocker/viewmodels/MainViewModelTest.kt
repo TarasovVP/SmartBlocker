@@ -89,9 +89,9 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     @Test
     fun insertContacts() = runTest {
         val contactList = listOf(Contact(), Contact())
-        coEvery { mainUseCase.insertContacts(contactList) } just Runs
+        coEvery { mainUseCase.insertAllContacts(contactList) } just Runs
         viewModel.insertContacts(contactList)
-        coVerify { mainUseCase.insertContacts(contactList) }
+        coVerify { mainUseCase.insertAllContacts(contactList) }
     }
 
     @Test

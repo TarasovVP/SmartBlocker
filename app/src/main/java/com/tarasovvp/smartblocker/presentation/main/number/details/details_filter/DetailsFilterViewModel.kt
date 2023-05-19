@@ -36,8 +36,8 @@ class DetailsFilterViewModel @Inject constructor(
     fun getQueryContactCallList(filter: String) {
         showProgress()
         launch {
-            val calls =  detailsFilterUseCase.allCallsByFilter(filter)
-            val contacts =  detailsFilterUseCase.allContactsByFilter(filter)
+            val calls =  detailsFilterUseCase.allCallWithFiltersByFilter(filter)
+            val contacts =  detailsFilterUseCase.allContactsWithFiltersByFilter(filter)
             val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
                 addAll(callWithFilterUIMapper.mapToUIModelList(calls))
                 addAll(contactWithFilterUIMapper.mapToUIModelList(contacts))

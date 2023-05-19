@@ -4,6 +4,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
+import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchUseCaseImpl
 import io.mockk.MockKAnnotations
@@ -19,12 +20,15 @@ class CountryCodeSearchUseCaseTest {
     @MockK
     private lateinit var countryCodeRepository: CountryCodeRepository
 
+    @MockK
+    private lateinit var dataStoreRepository: DataStoreRepository
+
     private lateinit var countryCodeSearchUseCase: CountryCodeSearchUseCase
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        countryCodeSearchUseCase = CountryCodeSearchUseCaseImpl(countryCodeRepository)
+        countryCodeSearchUseCase = CountryCodeSearchUseCaseImpl(countryCodeRepository, dataStoreRepository)
     }
 
     @Test

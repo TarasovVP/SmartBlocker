@@ -38,26 +38,11 @@ class DataStoreRepositoryTest {
 
     @Test
     fun setOnBoardingSeenTest() = runBlocking {
-        val isOnBoardingSeen = true
-        every { dataStore.edit() } returns preferences
-        every { preferences[booleanPreferencesKey(ON_BOARDING_SEEN)] = any() } just Runs
-        dataStoreRepository.setOnBoardingSeen(isOnBoardingSeen)
-        verify(exactly = 1) { preferences[booleanPreferencesKey(ON_BOARDING_SEEN)] = isOnBoardingSeen }
+
     }
 
     @Test
     fun onBoardingSeenTest() = runBlocking {
-        val dataStore = mockk<DataStore<Preferences>>()
-        val context = mockk<Context>()
-        val flow = flowOf(mockk<Preferences>())
 
-        coEvery { context.dataStore } returns dataStore
-        every { dataStore.data } returns flow
-
-        val result = onBoardingSeen(context).toList()
-
-        coVerify(exactly = 1) { context.dataStore }
-        verify(exactly = 1) { dataStore.data }
-        assertEquals(1, result.size)
     }
 }

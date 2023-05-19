@@ -11,7 +11,6 @@ import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactUseCaseImpl
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -34,27 +33,21 @@ class ListContactUseCaseTest {
     }
 
     @Test
-    fun getContactsWithFiltersTest() = runBlocking {
+    fun allContactWithFiltersTest() = runBlocking {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)))
         coEvery { contactRepository.allContactWithFilters() } returns contactList
         val result = listContactUseCase.allContactWithFilters()
-        assertEquals(TEST_NAME, result[0].contact?.name)
+        assertEquals(contactList, result)
     }
 
     @Test
     fun getFilteredContactListTest() = runBlocking {
         val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filterType = Constants.BLOCKER))), ContactWithFilter(contact = Contact(name = "zxy")))
-        coEvery { contactRepository.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)) } returns contactList.filter { it.filterWithFilteredNumbers?.filter?.isBlocker().isTrue() }
-        val result = listContactUseCase.getFilteredContactList(contactList, String.EMPTY, arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal))
-        assertEquals(contactList.filter { it.filterWithFilteredNumbers?.filter?.isBlocker().isTrue() }, result)
-    }
-
-    @Test
-    fun getHashMapFromContactListTest() = runBlocking {
-        val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)), ContactWithFilter(contact = Contact(name = "zxy")))
-        val contactMap = mapOf("a" to contactList)
-        coEvery { contactRepository.getHashMapFromContactList(contactList) } returns contactMap
-        val result = listContactUseCase.getHashMapFromContactList(contactList)
-        assertEquals(TEST_NAME, result.get("a")?.get(0)?.contact?.name)
+        val searchQuery = String.EMPTY
+        val filterIndexes = arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
+        val expectedContactList = listOf(
+            ContactWithFilter(contact = Contact(name = TEST_NAME), filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filterType = Constants.BLOCKER))))
+        val result = listContactUseCase.getFilteredContactList(contactList, searchQuery, filterIndexes)
+        assertEquals(expectedContactList, result)
     }
 }

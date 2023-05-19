@@ -1,16 +1,15 @@
 package com.tarasovvp.smartblocker.usecases
 
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
-import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -35,49 +34,44 @@ class DetailsFilterUseCaseTest {
     @MockK
     private lateinit var filteredCallRepository: FilteredCallRepository
 
+    @MockK
+    private lateinit var firebaseAuth: FirebaseAuth
+
     @MockK(relaxed = true)
-    private lateinit var resultMock: () -> Unit
+    private lateinit var resultMock: (Result<Unit>) -> Unit
 
     private lateinit var detailsFilterUseCase: DetailsFilterUseCase
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        detailsFilterUseCase = DetailsFilterUseCaseImpl(contactRepository, filterRepository, realDataBaseRepository, logCallRepository, filteredCallRepository)
+        detailsFilterUseCase = DetailsFilterUseCaseImpl(contactRepository, filterRepository, realDataBaseRepository, logCallRepository, filteredCallRepository, firebaseAuth)
     }
 
     @Test
-    fun getQueryContactCallListTest() = runBlocking {
-        val filter = Filter(filter = TEST_FILTER)
-        val callList = listOf(LogCallWithFilter().apply { call = LogCall().apply { number = "1" } }, LogCallWithFilter().apply { call = LogCall().apply { number = "2"} })
+    fun allCallWithFiltersByFilterTest() = runBlocking {
+        val filter = TEST_FILTER
+        val callList = listOf(CallWithFilter().apply { call = LogCall().apply { number = "1" } }, CallWithFilter().apply { call = LogCall().apply { number = "2"} })
+        coEvery { logCallRepository.allCallWithFiltersByFilter(filter) } returns callList
+        val result = detailsFilterUseCase.allContactsWithFiltersByFilter(filter)
+        assertEquals(callList, result)
+    }
+
+    @Test
+    fun allContactsWithFiltersByFilterTest() = runBlocking {
+        val filter = TEST_FILTER
         val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
-        val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
-            addAll(callList)
-            addAll(contactList)
-        }.sortedBy {
-            if (it is ContactWithFilter) it.contact?.number else if (it is LogCallWithFilter) it.call?.number else String.EMPTY
-        }
-        coEvery { logCallRepository.allCallWithFiltersByFilter(filter.filter) } returns callList
-        coEvery { contactRepository.allContactsWithFiltersByFilter(filter.filter) } returns contactList
-        val result = detailsFilterUseCase.numberDataListByFilter(filter)
-        assertEquals(numberDataUIModelList, result)
+        coEvery { contactRepository.allContactsWithFiltersByFilter(filter) } returns contactList
+        val result = detailsFilterUseCase.allCallWithFiltersByFilter(filter)
+        assertEquals(contactList, result)
     }
 
     @Test
-    fun filteredNumberDataListTest() = runBlocking {
-        val filter = Filter(filter = TEST_FILTER)
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
-        coEvery { contactRepository.filteredNumberDataList(filter, numberDataList, 0) } returns numberDataList
-        val result = detailsFilterUseCase.filteredNumberDataList(filter, numberDataList, 0)
-        assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)
-    }
-
-    @Test
-    fun filteredCallsByFilterTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
+    fun allFilteredCallsByFilterTest() = runBlocking {
+        val filteredCallList = listOf(CallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
         coEvery { filteredCallRepository.allFilteredCallsByFilter(TEST_FILTER) } returns filteredCallList
         val result = detailsFilterUseCase.allFilteredCallsByFilter(TEST_FILTER)
-        assertEquals(TEST_NUMBER, result[0].call?.number)
+        assertEquals(filteredCallList, result)
     }
 
     @Test
@@ -93,13 +87,13 @@ class DetailsFilterUseCaseTest {
 
         verify { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) }
         coVerify { filterRepository.deleteFilterList(eq(listOf(filter))) }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
 
         detailsFilterUseCase.deleteFilter(filter, false, resultMock)
 
         verify(exactly = 1) { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) }
         coVerify(exactly = 2) { filterRepository.deleteFilterList(eq(listOf(filter))) }
-        verify(exactly = 2) { resultMock.invoke() }
+        verify(exactly = 2) { resultMock.invoke(Result.Success()) }
     }
 
     @Test
@@ -115,12 +109,12 @@ class DetailsFilterUseCaseTest {
 
         verify { realDataBaseRepository.insertFilter(eq(filter), any()) }
         coVerify { filterRepository.updateFilter(eq(filter)) }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
 
         detailsFilterUseCase.updateFilter(filter, false, resultMock)
 
         verify(exactly = 1) { realDataBaseRepository.insertFilter(eq(filter), any()) }
         coVerify(exactly = 2) { filterRepository.updateFilter(eq(filter)) }
-        verify(exactly = 2) { resultMock.invoke() }
+        verify(exactly = 2) { resultMock.invoke(Result.Success()) }
     }
 }

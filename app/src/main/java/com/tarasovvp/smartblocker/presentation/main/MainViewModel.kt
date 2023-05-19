@@ -134,7 +134,7 @@ class MainViewModel @Inject constructor(
                 progressPosition = position
             })
         }
-        mainUseCase.insertContacts(contactList)
+        mainUseCase.insertAllContacts(contactList)
     }
 
     @AddTrace(name = "setLogCallData")

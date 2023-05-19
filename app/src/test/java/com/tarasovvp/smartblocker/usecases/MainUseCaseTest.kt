@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import android.app.Application
 import com.tarasovvp.smartblocker.UnitTestUtils
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
@@ -37,6 +38,9 @@ class MainUseCaseTest {
     @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
+    @MockK
+    private lateinit var dataStoreRepository: DataStoreRepository
+
     @MockK(relaxed = true)
     private lateinit var resultMock: (Int, Int) -> Unit
 
@@ -45,7 +49,37 @@ class MainUseCaseTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        mainUseCase = MainUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository, filteredCallRepository, realDataBaseRepository)
+        mainUseCase = MainUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository, filteredCallRepository, realDataBaseRepository, dataStoreRepository)
+    }
+
+    @Test
+    fun getAppLanguageTest() = runBlocking {
+
+    }
+
+    @Test
+    fun setAppLanguageTest() = runBlocking {
+
+    }
+
+    @Test
+    fun getAppThemeTest() = runBlocking {
+
+    }
+
+    @Test
+    fun getOnBoardingSeenTest() = runBlocking {
+
+    }
+
+    @Test
+    fun getBlockerTurnOffTest() = runBlocking {
+
+    }
+
+    @Test
+    fun setBlockHiddenTest(blockHidden: Boolean) = runBlocking {
+
     }
 
     @Test
@@ -62,27 +96,21 @@ class MainUseCaseTest {
     }
 
     @Test
-    fun insertUserFiltersTest() = runBlocking {
-        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
-        coEvery { filterRepository.insertAllFilters(filterList) } just Runs
-        mainUseCase.insertAllFilters(filterList)
-        coVerify(exactly = 1) { filterRepository.insertAllFilters(filterList)  }
-    }
-
-    @Test
-    fun insertUserFilteredCallsTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_FILTER }, FilteredCall().apply { number = UnitTestUtils.TEST_FILTER })
-        coEvery { filteredCallRepository.insertAllFilteredCalls(filteredCallList) } just Runs
-        mainUseCase.insertAllFilteredCalls(filteredCallList)
-        coVerify(exactly = 1) { filteredCallRepository.insertAllFilteredCalls(filteredCallList)  }
-    }
-
-    @Test
     fun getSystemCountryCodeListTest() = runBlocking {
-        val countryCodeList = listOf(CountryCode(country = UnitTestUtils.TEST_COUNTRY))
+        val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY))
         coEvery { countryCodeRepository.getSystemCountryCodeList(any()) } returns countryCodeList
         val resultCountryCodeList = mainUseCase.getSystemCountryCodes(resultMock)
         assertEquals(countryCodeList, resultCountryCodeList)
+    }
+
+    @Test
+    fun getCurrentCountryCodeTest() = runBlocking {
+
+    }
+
+    @Test
+    fun setCurrentCountryCodeTest(blockHidden: Boolean) = runBlocking {
+
     }
 
     @Test
@@ -104,60 +132,27 @@ class MainUseCaseTest {
     @Test
     fun getSystemContactListTest() = runBlocking {
         val contactList = arrayListOf(Contact(name = UnitTestUtils.TEST_NAME))
-        coEvery { contactRepository.getSystemContactList(eq(application), any()) } returns contactList
+        val country = TEST_COUNTRY
+        coEvery { contactRepository.getSystemContactList(eq(application), eq(country), any()) } returns contactList
         val resultContactList = mainUseCase.getSystemContacts(application, resultMock)
         assertEquals(contactList, resultContactList)
     }
 
     @Test
-    fun setFilterToContactTest() = runBlocking {
-        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
-        val contactList = listOf(Contact(name = UnitTestUtils.TEST_NAME))
-        coEvery { contactRepository.setFilterToContact(eq(filterList), eq(contactList), any()) } returns contactList
-        val resultContactList = mainUseCase.setFilterToContact(filterList, contactList, resultMock)
-        assertEquals(contactList, resultContactList)
-    }
-
-    @Test
-    fun insertContactsTest() = runBlocking {
+    fun insertAllContactsTest() = runBlocking {
         val contactList = listOf(Contact(), Contact())
-        coEvery { contactRepository.insertContacts(contactList) } just Runs
-        mainUseCase.insertContacts(contactList)
-        coVerify { contactRepository.insertContacts(contactList) }
+        coEvery { contactRepository.insertAllContacts(contactList) } just Runs
+        mainUseCase.insertAllContacts(contactList)
+        coVerify { contactRepository.insertAllContacts(contactList) }
     }
 
     @Test
     fun getSystemLogCallListTest() = runBlocking {
         val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
-        coEvery { logCallRepository.getSystemLogCallList(eq(application), any()) } returns logCallList
+        val country = TEST_COUNTRY
+        coEvery { logCallRepository.getSystemLogCallList(eq(application), eq(country), any()) } returns logCallList
         val resultLogCallList = mainUseCase.getSystemLogCalls(application, resultMock)
         assertEquals(logCallList, resultLogCallList)
-    }
-
-    @Test
-    fun setFilterToLogCallTest() = runBlocking {
-        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
-        val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
-        coEvery { logCallRepository.setFilterToLogCall(eq(filterList), eq(logCallList), any()) } returns logCallList
-        val resultLogCallList = mainUseCase.setFilterToLogCall(filterList, logCallList, resultMock)
-        assertEquals(logCallList, resultLogCallList)
-    }
-
-    @Test
-    fun getAllFilteredCallsTest() = runBlocking {
-        val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_NUMBER })
-        coEvery { filteredCallRepository.allFilteredCalls() } returns filteredCallList
-        val resultFilteredCallList = mainUseCase.getAllFilteredCalls()
-        assertEquals(filteredCallList, resultFilteredCallList)
-    }
-
-    @Test
-    fun setFilterToFilteredCallTest() = runBlocking {
-        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER))
-        val filteredCallList = listOf(FilteredCall().apply { number = UnitTestUtils.TEST_NUMBER })
-        coEvery { filteredCallRepository.setFilterToFilteredCall(eq(filterList), eq(filteredCallList), any()) } returns filteredCallList
-        val resultFilteredCallList = mainUseCase.setFilterToFilteredCall(filterList, filteredCallList, resultMock)
-        assertEquals(filteredCallList, resultFilteredCallList)
     }
 
     @Test
@@ -166,5 +161,13 @@ class MainUseCaseTest {
         coEvery { filteredCallRepository.insertAllFilteredCalls(filteredCallList) } just Runs
         mainUseCase.insertAllFilteredCalls(filteredCallList)
         coVerify { filteredCallRepository.insertAllFilteredCalls(filteredCallList) }
+    }
+
+    @Test
+    fun insertAllFiltersTest() = runBlocking {
+        val filterList = listOf(Filter(filter = UnitTestUtils.TEST_FILTER), Filter(filter = "mockFilter2"))
+        coEvery { filterRepository.insertAllFilters(filterList) } just Runs
+        mainUseCase.insertAllFilters(filterList)
+        coVerify(exactly = 1) { filterRepository.insertAllFilters(filterList)  }
     }
 }

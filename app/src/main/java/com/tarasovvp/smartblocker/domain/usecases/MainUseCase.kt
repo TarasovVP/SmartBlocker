@@ -33,7 +33,7 @@ interface MainUseCase {
 
     suspend fun getSystemContacts(application: Application, result: (Int, Int) -> Unit): List<Contact>
 
-    suspend fun insertContacts(contactList: List<Contact>)
+    suspend fun insertAllContacts(contactList: List<Contact>)
 
     suspend fun getSystemLogCalls(application: Application, result: (Int, Int) -> Unit): List<LogCall>
 

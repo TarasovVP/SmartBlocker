@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.usecases
 
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
@@ -11,10 +12,9 @@ import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallUseCaseImpl
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.isContaining
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -34,31 +34,26 @@ class ListCallUseCaseTest {
     @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
+    @MockK
+    private lateinit var firebaseAuth: FirebaseAuth
+
     @MockK(relaxed = true)
-    private lateinit var resultMock: () -> Unit
+    private lateinit var resultMock: (Result<Unit>) -> Unit
 
     private lateinit var listCallUseCase: ListCallUseCase
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository)
+        listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth)
     }
 
     @Test
-    fun getCallListTest() = runBlocking {
-        val logCallList = listOf(LogCallWithFilter().apply { call = LogCall(callId = 1) }, LogCallWithFilter().apply { call = LogCall(callId = 2) })
-        val filteredCallList = listOf(FilteredCallWithFilter().apply { call=  FilteredCall(callId = 1)}, FilteredCallWithFilter().apply { call=  FilteredCall(callId = 3)})
-        val commonCallList = ArrayList<CallWithFilter>().apply {
-            addAll(filteredCallList)
-            addAll(logCallList)
-        }.distinctBy {
-            it.call?.callId
-        }
-        coEvery { logCallRepository.allCallWithFilters() } returns logCallList
-        coEvery { filteredCallRepository.allFilteredCallWithFilter() } returns filteredCallList
+    fun allCallWithFiltersTest() = runBlocking {
+        val callWithFilterList = listOf(CallWithFilter().apply { call = LogCall(callId = 1) }, CallWithFilter().apply { call = LogCall(callId = 2) })
+        coEvery { logCallRepository.allCallWithFilters() } returns callWithFilterList
         val result = listCallUseCase.allCallWithFilters()
-        assertEquals(commonCallList, result)
+        assertEquals(callWithFilterList, result)
     }
 
     @Test
@@ -67,25 +62,9 @@ class ListCallUseCaseTest {
         val searchQuery = String.EMPTY
         val filterIndexes = arrayListOf(
             NumberDataFiltering.CALL_BLOCKED.ordinal)
-        val expectedCallList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
-            (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
-                    && (callWithFilter.call?.isBlockedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
-                    || callWithFilter.call?.isPermittedCall().isTrue() && filterIndexes.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
-                    || filterIndexes.isEmpty())
-        }
-        coEvery { logCallRepository.getFilteredCallList(callList, String.EMPTY, arrayListOf(
-            NumberDataFiltering.CALL_BLOCKED.ordinal)) } returns expectedCallList
-        val result = listCallUseCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal))
+        val expectedCallList = listOf(CallWithFilter(call = FilteredCall(), filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filterType = Constants.BLOCKER))))
+        val result = listCallUseCase.getFilteredCallList(callList, searchQuery, filterIndexes)
         assertEquals(expectedCallList, result)
-    }
-
-    @Test
-    fun getHashMapFromCallListTest() = runBlocking {
-        val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "567")))
-        val callMap = mapOf("1" to callList)
-        coEvery { logCallRepository.getHashMapFromCallList(callList) } returns callMap
-        val result = listCallUseCase.getHashMapFromCallList(callList)
-        assertEquals(TEST_NUMBER, result?.get("1")?.get(0)?.call?.number)
     }
 
     @Test
@@ -101,12 +80,12 @@ class ListCallUseCaseTest {
 
         verify { realDataBaseRepository.deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any()) }
         coVerify { filteredCallRepository.deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() })) }
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
 
         listCallUseCase.deleteCallList(callList.map { it.call?.callId.orZero() }, false, resultMock)
 
         verify(exactly = 1) {  realDataBaseRepository.deleteFilteredCallList(eq(callList.map { it.call?.callId.toString() }), any()) }
         coVerify(exactly = 2) { filteredCallRepository.deleteFilteredCalls(eq(callList.map { it.call?.callId.orZero() })) }
-        verify(exactly = 2) { resultMock.invoke() }
+        verify(exactly = 2) { resultMock.invoke(Result.Success()) }
     }
 }

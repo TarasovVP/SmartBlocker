@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.usecases
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
@@ -16,6 +17,9 @@ import org.junit.Test
 class SettingsListUseCaseTest {
 
     @MockK
+    private lateinit var dataStoreRepository: DataStoreRepository
+
+    @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @MockK(relaxed = true)
@@ -26,7 +30,7 @@ class SettingsListUseCaseTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        settingsListUseCase = SettingsListUseCaseImpl(realDataBaseRepository)
+        settingsListUseCase = SettingsListUseCaseImpl(dataStoreRepository, realDataBaseRepository)
     }
 
     @Test
