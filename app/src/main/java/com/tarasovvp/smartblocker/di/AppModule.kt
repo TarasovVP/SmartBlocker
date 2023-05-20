@@ -1,6 +1,12 @@
 package com.tarasovvp.smartblocker.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -37,6 +43,9 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -45,8 +54,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDataStoreRepository(@ApplicationContext context: Context):  DataStoreRepository {
-        return DataStoreRepositoryImpl(context)
+    fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create(produceFile = { context.preferencesDataStoreFile(context.packageName) })
+    }
+
+    @Singleton
+    @Provides
+    fun provideDataStoreRepository(dataStore: DataStore<Preferences>):  DataStoreRepository {
+        return DataStoreRepositoryImpl(dataStore)
     }
 
     @Singleton
