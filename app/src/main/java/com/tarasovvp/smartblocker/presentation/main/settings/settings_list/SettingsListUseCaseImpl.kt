@@ -11,6 +11,7 @@ import javax.inject.Inject
 class SettingsListUseCaseImpl @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val realDataBaseRepository: RealDataBaseRepository): SettingsListUseCase {
+
     override suspend fun getAppLanguage(): Flow<String?> {
         return dataStoreRepository.getAppLang()
     }

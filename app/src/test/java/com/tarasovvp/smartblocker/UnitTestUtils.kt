@@ -15,6 +15,8 @@ object UnitTestUtils {
     const val TEST_NAME = "testName"
     const val TEST_COUNTRY = "UA"
     const val TEST_COUNTRY_CODE = "+380"
+    const val TEST_APP_LANGUAGE = "en"
+    const val TEST_APP_THEME = 1
     const val TEST_EMAIL = "test@email.com"
     const val TEST_PASSWORD = "Ua12345!"
     const val TEST_REVIEW = "review"

@@ -17,8 +17,11 @@ import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -50,7 +53,7 @@ class DetailsNumberDataUseCaseTest {
         val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
         coEvery { filterRepository.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterList
         val result = detailsNumberDataUseCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER)
-        assertEquals(UnitTestUtils.TEST_FILTER, (result[0] as FilterWithFilteredNumbers).filter?.filter)
+        assertEquals(filterList, result)
     }
 
     @Test
@@ -69,11 +72,16 @@ class DetailsNumberDataUseCaseTest {
         val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         coEvery { countryCodeRepository.getCountryCodeByCode(countryCode) } returns expectedCountryCode
         val result = detailsNumberDataUseCase.getCountryCodeByCode(countryCode)
-        assertEquals(TEST_COUNTRY, result?.country)
+        assertEquals(expectedCountryCode, result)
     }
 
     @Test
     fun getBlockHiddenTest() = runBlocking {
-
+        val blockHidden = true
+        val flow = flowOf(blockHidden)
+        coEvery { dataStoreRepository.blockHidden() } returns flow
+        val result = detailsNumberDataUseCase.getBlockHidden().single()
+        assertEquals(blockHidden, result)
+        coVerify { dataStoreRepository.blockHidden() }
     }
 }

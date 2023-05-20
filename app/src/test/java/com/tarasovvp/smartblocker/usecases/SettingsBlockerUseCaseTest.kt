@@ -1,15 +1,18 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.google.firebase.auth.FirebaseAuth
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
@@ -36,12 +39,67 @@ class SettingsBlockerUseCaseTest {
     }
 
     @Test
+    fun getBlockerTurnOffTest() = runBlocking{
+        val blockerTurnOff = true
+        val flow = flowOf(blockerTurnOff)
+        coEvery { dataStoreRepository.blockerTurnOff() } returns flow
+        val result = settingsBlockerUseCase.getBlockerTurnOff().single()
+        assertEquals(blockerTurnOff, result)
+        coVerify { dataStoreRepository.blockerTurnOff() }
+    }
+
+    @Test
+    fun setBlockerTurnOffTest() = runBlocking{
+        val blockerTurnOff = true
+        coEvery { dataStoreRepository.setBlockerTurnOff(blockerTurnOff) } just Runs
+        settingsBlockerUseCase.setBlockerTurnOff(blockerTurnOff)
+        coVerify { dataStoreRepository.setBlockerTurnOff(blockerTurnOff) }
+    }
+
+    @Test
+    fun getBlockHiddenTest() = runBlocking{
+        val blockHidden = true
+        val flow = flowOf(blockHidden)
+        coEvery { dataStoreRepository.blockerTurnOff() } returns flow
+        val result = settingsBlockerUseCase.getBlockerTurnOff().single()
+        assertEquals(blockHidden, result)
+        coVerify { dataStoreRepository.blockerTurnOff() }
+    }
+
+    @Test
+    fun setBlockHiddenTest() = runBlocking{
+        val blockHidden = true
+        coEvery { dataStoreRepository.setBlockHidden(blockHidden) } just Runs
+        settingsBlockerUseCase.setBlockHidden(blockHidden)
+        coVerify { dataStoreRepository.setBlockHidden(blockHidden) }
+    }
+
+    @Test
     fun changeBlockHiddenTest() {
+        every { firebaseAuth.currentUser } returns mockk()
         every { realDataBaseRepository.changeBlockHidden(eq(true), any()) } answers {
             resultMock.invoke(Result.Success())
         }
         settingsBlockerUseCase.changeBlockHidden(blockHidden = true, isNetworkAvailable = true, result = resultMock
         )
         verify(exactly = 1) { resultMock.invoke(Result.Success()) }
+    }
+
+    @Test
+    fun getCurrentCountryCodeTest() = runBlocking{
+        val countryCode = CountryCode()
+        val flow = flowOf(countryCode)
+        coEvery { dataStoreRepository.getCountryCode() } returns flow
+        val result = settingsBlockerUseCase.getCurrentCountryCode().single()
+        assertEquals(countryCode, result)
+        coVerify { dataStoreRepository.getCountryCode() }
+    }
+
+    @Test
+    fun setCurrentCountryCodeTest() = runBlocking{
+        val countryCode = CountryCode()
+        coEvery { dataStoreRepository.setCountryCode(countryCode) } just Runs
+        settingsBlockerUseCase.setCurrentCountryCode(countryCode)
+        coVerify { dataStoreRepository.setCountryCode(countryCode) }
     }
 }

@@ -2,15 +2,20 @@ package com.tarasovvp.smartblocker.usecases
 
 import android.app.Application
 import com.tarasovvp.smartblocker.UnitTestUtils
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_THEME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -54,43 +59,69 @@ class MainUseCaseTest {
 
     @Test
     fun getAppLanguageTest() = runBlocking {
-
+        val appLang = TEST_APP_LANGUAGE
+        val flow = flowOf(appLang)
+        coEvery { dataStoreRepository.getAppLang() } returns flow
+        val result = mainUseCase.getAppLanguage().single()
+        assertEquals(appLang, result)
+        coVerify { dataStoreRepository.getAppLang() }
     }
 
     @Test
     fun setAppLanguageTest() = runBlocking {
-
+        val appLang = TEST_APP_LANGUAGE
+        coEvery { dataStoreRepository.setAppLang(appLang) } just Runs
+        mainUseCase.setAppLanguage(appLang)
+        coVerify { dataStoreRepository.setAppLang(appLang) }
     }
 
     @Test
     fun getAppThemeTest() = runBlocking {
-
+        val appTheme = TEST_APP_THEME
+        val flow = flowOf(appTheme)
+        coEvery { dataStoreRepository.getAppTheme() } returns flow
+        val result = mainUseCase.getAppTheme().single()
+        assertEquals(appTheme, result)
+        coVerify { dataStoreRepository.getAppTheme() }
     }
 
     @Test
     fun getOnBoardingSeenTest() = runBlocking {
-
+        val onBoardingSeen = true
+        val flow = flowOf(onBoardingSeen)
+        coEvery { dataStoreRepository.onBoardingSeen() } returns flow
+        val result = mainUseCase.getOnBoardingSeen().single()
+        assertEquals(onBoardingSeen, result)
+        coVerify { dataStoreRepository.onBoardingSeen() }
     }
 
     @Test
     fun getBlockerTurnOffTest() = runBlocking {
-
+        val blockerTurnOff = true
+        val flow = flowOf(blockerTurnOff)
+        coEvery { dataStoreRepository.blockerTurnOff() } returns flow
+        val result = mainUseCase.getBlockerTurnOff().single()
+        assertEquals(blockerTurnOff, result)
+        coVerify { dataStoreRepository.blockerTurnOff() }
     }
 
     @Test
-    fun setBlockHiddenTest(blockHidden: Boolean) = runBlocking {
-
+    fun setBlockHiddenTest() = runBlocking {
+        val blockHidden = true
+        coEvery { dataStoreRepository.setBlockHidden(blockHidden) } just Runs
+        mainUseCase.setBlockHidden(blockHidden)
+        coVerify { dataStoreRepository.setBlockHidden(blockHidden) }
     }
 
     @Test
     fun getCurrentUserTest() = runBlocking {
-        val currentUser = CurrentUser()
+        val expectedResult = Result.Success(CurrentUser())
         every { realDataBaseRepository.getCurrentUser(any()) } answers {
-            val result = firstArg<(CurrentUser) -> Unit>()
-            result.invoke(currentUser)
+            val result = firstArg<(Result<CurrentUser>) -> Unit>()
+            result.invoke(expectedResult)
         }
         mainUseCase.getCurrentUser { resultUser ->
-            assertEquals(currentUser, resultUser)
+            assertEquals(expectedResult, resultUser)
         }
         verify { realDataBaseRepository.getCurrentUser(any()) }
     }
@@ -105,12 +136,20 @@ class MainUseCaseTest {
 
     @Test
     fun getCurrentCountryCodeTest() = runBlocking {
-
+        val countryCode = CountryCode()
+        val flow = flowOf(countryCode)
+        coEvery { dataStoreRepository.getCountryCode() } returns flow
+        val result = mainUseCase.getCurrentCountryCode().single()
+        assertEquals(countryCode, result)
+        coVerify { dataStoreRepository.getCountryCode() }
     }
 
     @Test
-    fun setCurrentCountryCodeTest(blockHidden: Boolean) = runBlocking {
-
+    fun setCurrentCountryCodeTest() = runBlocking {
+        val countryCode = CountryCode()
+        coEvery { dataStoreRepository.setCountryCode(countryCode) } just Runs
+        mainUseCase.setCurrentCountryCode(countryCode)
+        coVerify { dataStoreRepository.setCountryCode(countryCode) }
     }
 
     @Test
@@ -133,6 +172,7 @@ class MainUseCaseTest {
     fun getSystemContactListTest() = runBlocking {
         val contactList = arrayListOf(Contact(name = UnitTestUtils.TEST_NAME))
         val country = TEST_COUNTRY
+        coEvery { dataStoreRepository.getCountryCode() } returns flowOf(CountryCode())
         coEvery { contactRepository.getSystemContactList(eq(application), eq(country), any()) } returns contactList
         val resultContactList = mainUseCase.getSystemContacts(application, resultMock)
         assertEquals(contactList, resultContactList)
@@ -150,6 +190,7 @@ class MainUseCaseTest {
     fun getSystemLogCallListTest() = runBlocking {
         val logCallList = listOf(LogCall().apply { number = UnitTestUtils.TEST_NUMBER })
         val country = TEST_COUNTRY
+        coEvery { dataStoreRepository.getCountryCode() } returns flowOf(CountryCode())
         coEvery { logCallRepository.getSystemLogCallList(eq(application), eq(country), any()) } returns logCallList
         val resultLogCallList = mainUseCase.getSystemLogCalls(application, resultMock)
         assertEquals(logCallList, resultLogCallList)

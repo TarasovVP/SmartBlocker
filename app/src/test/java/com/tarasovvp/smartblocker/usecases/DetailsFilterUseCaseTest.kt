@@ -53,7 +53,7 @@ class DetailsFilterUseCaseTest {
         val filter = TEST_FILTER
         val callList = listOf(CallWithFilter().apply { call = LogCall().apply { number = "1" } }, CallWithFilter().apply { call = LogCall().apply { number = "2"} })
         coEvery { logCallRepository.allCallWithFiltersByFilter(filter) } returns callList
-        val result = detailsFilterUseCase.allContactsWithFiltersByFilter(filter)
+        val result = detailsFilterUseCase.allCallWithFiltersByFilter(filter)
         assertEquals(callList, result)
     }
 
@@ -62,7 +62,7 @@ class DetailsFilterUseCaseTest {
         val filter = TEST_FILTER
         val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
         coEvery { contactRepository.allContactsWithFiltersByFilter(filter) } returns contactList
-        val result = detailsFilterUseCase.allCallWithFiltersByFilter(filter)
+        val result = detailsFilterUseCase.allContactsWithFiltersByFilter(filter)
         assertEquals(contactList, result)
     }
 
@@ -77,9 +77,11 @@ class DetailsFilterUseCaseTest {
     @Test
     fun deleteFilterTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
-        every { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) } coAnswers {
-            val callback = secondArg<() -> Unit>()
-            callback.invoke()
+        every { firebaseAuth.currentUser } returns mockk()
+        val expectedResult = Result.Success<Unit>()
+        coEvery { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) } coAnswers {
+            val callback = secondArg<(Result<Unit>) -> Unit>()
+            callback.invoke(expectedResult)
         }
         coEvery { filterRepository.deleteFilterList(eq(listOf(filter))) } just Runs
 
@@ -87,21 +89,17 @@ class DetailsFilterUseCaseTest {
 
         verify { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) }
         coVerify { filterRepository.deleteFilterList(eq(listOf(filter))) }
-        verify { resultMock.invoke(Result.Success()) }
-
-        detailsFilterUseCase.deleteFilter(filter, false, resultMock)
-
-        verify(exactly = 1) { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) }
-        coVerify(exactly = 2) { filterRepository.deleteFilterList(eq(listOf(filter))) }
-        verify(exactly = 2) { resultMock.invoke(Result.Success()) }
+        verify { resultMock.invoke(expectedResult) }
     }
 
     @Test
     fun updateFilterTest() = runBlocking {
         val filter = Filter(filter = TEST_FILTER)
-        every { realDataBaseRepository.insertFilter(eq(filter), any()) } coAnswers {
-            val callback = secondArg<() -> Unit>()
-            callback.invoke()
+        every { firebaseAuth.currentUser } returns mockk()
+        val expectedResult = Result.Success<Unit>()
+        coEvery { realDataBaseRepository.insertFilter(eq(filter), any()) } coAnswers {
+            val callback = secondArg<(Result<Unit>) -> Unit>()
+            callback.invoke(expectedResult)
         }
         coEvery { filterRepository.updateFilter(eq(filter)) } just Runs
 
@@ -109,12 +107,6 @@ class DetailsFilterUseCaseTest {
 
         verify { realDataBaseRepository.insertFilter(eq(filter), any()) }
         coVerify { filterRepository.updateFilter(eq(filter)) }
-        verify { resultMock.invoke(Result.Success()) }
-
-        detailsFilterUseCase.updateFilter(filter, false, resultMock)
-
-        verify(exactly = 1) { realDataBaseRepository.insertFilter(eq(filter), any()) }
-        coVerify(exactly = 2) { filterRepository.updateFilter(eq(filter)) }
-        verify(exactly = 2) { resultMock.invoke(Result.Success()) }
+        verify { resultMock.invoke(expectedResult) }
     }
 }

@@ -3,6 +3,8 @@ package com.tarasovvp.smartblocker.repositories
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.google.gson.Gson
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_THEME
 import com.tarasovvp.smartblocker.data.repositoryImpl.DataStoreRepositoryImpl
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
@@ -59,7 +61,7 @@ class DataStoreRepositoryTest {
 
     @Test
     fun setAppLangTest() = runBlocking {
-        val appLang = "ua"
+        val appLang = TEST_APP_LANGUAGE
         val key = stringPreferencesKey(APP_LANG)
         val preferences = preferencesOf(key to appLang)
         coEvery { dataStore.updateData(any()) } returns flowOf(preferences).first()
@@ -70,7 +72,7 @@ class DataStoreRepositoryTest {
 
     @Test
     fun getAppLangTest() = runBlocking {
-        val appLang = "ua"
+        val appLang = TEST_APP_LANGUAGE
         val key = stringPreferencesKey(APP_LANG)
         val preferences = preferencesOf(key to appLang)
         coEvery { dataStore.data } returns flowOf(preferences)
@@ -80,7 +82,7 @@ class DataStoreRepositoryTest {
 
     @Test
     fun setAppThemeTest() = runBlocking {
-        val appTheme = 1
+        val appTheme = TEST_APP_THEME
         val key = intPreferencesKey(APP_THEME)
         val preferences = preferencesOf(key to appTheme)
         coEvery { dataStore.updateData(any()) } returns flowOf(preferences).first()
@@ -91,7 +93,7 @@ class DataStoreRepositoryTest {
 
     @Test
     fun getAppThemeTest() = runBlocking {
-        val appTheme = 1
+        val appTheme = TEST_APP_THEME
         val key = intPreferencesKey(APP_THEME)
         val preferences = preferencesOf(key to appTheme)
         coEvery { dataStore.data } returns flowOf(preferences)

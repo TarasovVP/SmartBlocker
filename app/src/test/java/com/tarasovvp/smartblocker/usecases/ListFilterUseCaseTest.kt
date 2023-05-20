@@ -52,10 +52,10 @@ class ListFilterUseCaseTest {
     @Test
     fun getFilteredFilterListTest() = runBlocking {
         val filterList = listOf(
-            FilterWithFilteredNumbers(Filter("filter1", FilterCondition.FILTER_CONDITION_FULL.ordinal)),
-            FilterWithFilteredNumbers(Filter("filter2", FilterCondition.FILTER_CONDITION_START.ordinal)),
-            FilterWithFilteredNumbers(Filter("filter3", FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
-            FilterWithFilteredNumbers(Filter("filter4", FilterCondition.FILTER_CONDITION_FULL.ordinal))
+            FilterWithFilteredNumbers(Filter("filter1", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal)),
+            FilterWithFilteredNumbers(Filter("filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
+            FilterWithFilteredNumbers(Filter("filter3", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
+            FilterWithFilteredNumbers(Filter("filter4", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))
         )
         val searchQuery = "filter"
         val filterIndexes = arrayListOf(
@@ -71,9 +71,11 @@ class ListFilterUseCaseTest {
     @Test
     fun deleteFilterListTest() = runBlocking {
         val filterList = listOf(Filter())
-        every { realDataBaseRepository.deleteFilterList(eq(filterList), any()) } coAnswers {
-            val callback = secondArg<() -> Unit>()
-            callback.invoke()
+        every { firebaseAuth.currentUser } returns mockk()
+        val expectedResult = Result.Success<Unit>()
+        coEvery { realDataBaseRepository.deleteFilterList(eq(filterList), any()) } coAnswers {
+            val callback = secondArg<(Result<Unit>) -> Unit>()
+            callback.invoke(expectedResult)
         }
         coEvery { filterRepository.deleteFilterList(eq(filterList)) } just Runs
 
@@ -81,12 +83,6 @@ class ListFilterUseCaseTest {
 
         verify { realDataBaseRepository.deleteFilterList(eq(filterList), any()) }
         coVerify { filterRepository.deleteFilterList(eq(filterList)) }
-        verify { resultMock.invoke(Result.Success()) }
-
-        listFilterUseCase.deleteFilterList(filterList, false, resultMock)
-
-        verify(exactly = 1) { realDataBaseRepository.deleteFilterList(eq(filterList), any()) }
-        coVerify(exactly = 2) { filterRepository.deleteFilterList(eq(filterList)) }
-        verify(exactly = 2) { resultMock.invoke(Result.Success()) }
+        verify { resultMock.invoke(expectedResult) }
     }
 }

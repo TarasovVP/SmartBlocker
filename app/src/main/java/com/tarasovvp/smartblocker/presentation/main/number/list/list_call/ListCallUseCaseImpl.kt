@@ -34,9 +34,9 @@ class ListCallUseCaseImpl @Inject constructor(
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
-                    && (callWithFilter.filterWithFilteredNumbers?.filter?.filterType == BLOCKER && filterIndexes.contains(
+                    && (callWithFilter.call?.filteredConditionType == BLOCKER && filterIndexes.contains(
                 NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
-                    || callWithFilter.filterWithFilteredNumbers?.filter?.filterType == PERMISSION && filterIndexes.contains(
+                    || callWithFilter.call?.filteredConditionType == PERMISSION && filterIndexes.contains(
                 NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
                     || filterIndexes.isEmpty())
         }
@@ -45,7 +45,7 @@ class ListCallUseCaseImpl @Inject constructor(
     override suspend fun deleteCallList(filteredCallIdList: List<Int>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
         if (firebaseAuth.currentUser.isNotNull()) {
             if (isNetworkAvailable) {
-                realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map { it.toString() }) {
+                realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map(Int::toString)) {
                     runBlocking {
                         filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
                         result.invoke(Result.Success())

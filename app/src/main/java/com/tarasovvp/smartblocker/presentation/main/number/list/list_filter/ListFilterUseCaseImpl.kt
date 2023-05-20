@@ -33,9 +33,9 @@ class ListFilterUseCaseImpl @Inject constructor(
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) filterList else filterList.filter { filterWithCountryCode ->
             (filterWithCountryCode.filter?.filter isContaining  searchQuery)
-                    && (filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) && filterWithCountryCode.filter?.filterType == FilterCondition.FILTER_CONDITION_FULL.ordinal
-                    || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) && filterWithCountryCode.filter?.filterType == FilterCondition.FILTER_CONDITION_START.ordinal
-                    || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) && filterWithCountryCode.filter?.filterType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
+                    && (filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) && filterWithCountryCode.filter?.conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal
+                    || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) && filterWithCountryCode.filter?.conditionType == FilterCondition.FILTER_CONDITION_START.ordinal
+                    || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) && filterWithCountryCode.filter?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
                     || filterIndexes.isEmpty())
         }
     }

@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.usecases
 
+import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.domain.entities.models.Review
@@ -8,10 +9,12 @@ import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
+import junit.framework.TestCase
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
@@ -32,6 +35,16 @@ class SettingsListUseCaseTest {
     fun setUp() {
         MockKAnnotations.init(this)
         settingsListUseCase = SettingsListUseCaseImpl(dataStoreRepository, realDataBaseRepository)
+    }
+
+    @Test
+    fun getAppLanguageTest() = runBlocking{
+        val appLanguage = UnitTestUtils.TEST_APP_LANGUAGE
+        val flow = flowOf(appLanguage)
+        coEvery { dataStoreRepository.getAppLang() } returns flow
+        val result = settingsListUseCase.getAppLanguage().single()
+        TestCase.assertEquals(appLanguage, result)
+        coVerify { dataStoreRepository.getAppLang() }
     }
 
     @Test
