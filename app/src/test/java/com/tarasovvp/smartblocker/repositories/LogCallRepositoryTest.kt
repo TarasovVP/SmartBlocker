@@ -9,8 +9,10 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -95,16 +97,21 @@ class LogCallRepositoryTest {
     @Test
     fun allDistinctCallsWithFilterTest() = runBlocking {
         val logCallList = listOf(CallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, CallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, CallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        coEvery { logCallDao.allDistinctCallsWithFilter() } returns logCallList
+        val expectedResult = logCallList.distinctBy { it.call?.number }
+        coEvery { logCallDao.allDistinctCallsWithFilter() } returns expectedResult
         val result = logCallRepository.allDistinctCallsWithFilter()
-        assertEquals(logCallList.distinctBy { it.call?.number }, result)
+        assertEquals(expectedResult, result)
     }
 
     @Test
     fun allCallWithFiltersByFilterTest() = runBlocking {
-        val logCallList = listOf(CallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, CallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, CallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        coEvery { logCallDao.allCallWithFiltersByFilter(TEST_FILTER) } returns logCallList
+        val logCallList = listOf(CallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" }
+            filterWithFilteredNumbers =  FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)) },
+            CallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } },
+            CallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
+        val expectedResult = logCallList.filter { it.filterWithFilteredNumbers?.filter?.filter ==  TEST_FILTER}
+        coEvery { logCallDao.allCallWithFiltersByFilter(TEST_FILTER) } returns expectedResult
         val result = logCallRepository.allCallWithFiltersByFilter(TEST_FILTER)
-        assertEquals(logCallList.distinctBy { it.call?.number }, result)
+        assertEquals(expectedResult, result)
     }
 }

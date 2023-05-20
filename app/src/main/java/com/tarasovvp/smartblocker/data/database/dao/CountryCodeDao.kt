@@ -15,5 +15,5 @@ interface CountryCodeDao {
     suspend fun allCountryCodes(): List<CountryCode>
 
     @Query("SELECT * FROM country_codes WHERE :code = countryCode")
-    suspend fun getCountryCodeWithCode(code: String): CountryCode?
+    suspend fun getCountryCodeByCode(code: String): CountryCode?
 }

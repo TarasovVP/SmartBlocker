@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -31,8 +32,11 @@ class SettingsListViewModel @Inject constructor(
     fun insertReview(review: Review) {
         if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
             showProgress()
-            settingsListUseCase.insertReview(review) {
-                successReviewLiveData.postValue(review.message)
+            settingsListUseCase.insertReview(review) { result ->
+                when (result) {
+                    is Result.Success -> successReviewLiveData.postValue(review.message)
+                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage)
+                }
             }
             hideProgress()
         } else {

@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -23,7 +24,7 @@ class SettingsListUseCaseTest {
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @MockK(relaxed = true)
-    private lateinit var resultMock: () -> Unit
+    private lateinit var resultMock: (Result<Unit>) -> Unit
 
     private lateinit var settingsListUseCase: SettingsListUseCase
 
@@ -37,9 +38,9 @@ class SettingsListUseCaseTest {
     fun insertReviewTest() {
         val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
         every { realDataBaseRepository.insertReview(eq(review), any()) } answers {
-            resultMock.invoke()
+            resultMock.invoke(Result.Success())
         }
         settingsListUseCase.insertReview(review, resultMock)
-        verify { resultMock.invoke() }
+        verify { resultMock.invoke(Result.Success()) }
     }
 }

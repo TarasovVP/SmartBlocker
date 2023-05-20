@@ -5,9 +5,12 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListViewModel
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import junit.framework.TestCase.assertEquals
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 
@@ -17,16 +20,21 @@ class SettingsListViewModelTest: BaseViewModelTest<SettingsListViewModel>() {
     @MockK
     private lateinit var useCase: SettingsListUseCase
 
+    @MockK(relaxed = true)
+    private lateinit var resultMock: (Result<Unit>) -> Unit
+
     override fun createViewModel() = SettingsListViewModel(application, useCase)
 
     @Test
     fun insertReviewTest() {
         val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
-        coEvery { useCase.insertReview(eq(review), any()) } answers {
-            val result = secondArg<() -> Unit>()
-            result.invoke()
+        every { application.isNetworkAvailable } returns true
+        coEvery { useCase.insertReview(eq(review), eq(resultMock)) } answers {
+            resultMock.invoke(Result.Success())
         }
         viewModel.insertReview(review)
-        assertEquals(review.message, viewModel.successReviewLiveData.value)
+        coVerify { useCase.insertReview(review, any()) }
+        verify { resultMock.invoke(Result.Success()) }
+        verify { viewModel.successReviewLiveData.postValue(review.message) }
     }
 }

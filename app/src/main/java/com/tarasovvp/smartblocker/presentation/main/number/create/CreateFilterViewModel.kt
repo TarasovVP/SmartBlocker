@@ -51,8 +51,8 @@ class CreateFilterViewModel @Inject constructor(
     fun getNumberDataList(filter: String) {
         Timber.e("CreateFilterViewModel getNumberDataList showProgress")
         launch {
-            val calls =  createFilterUseCase.allCallsByFilter(filter)
-            val contacts =  createFilterUseCase.allContactsByFilter(filter)
+            val calls =  createFilterUseCase.allCallWithFiltersByFilter(filter)
+            val contacts =  createFilterUseCase.allContactsWithFiltersByFilter(filter)
             val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
                 addAll(callWithFilterUIMapper.mapToUIModelList(calls))
                 addAll(contactWithFilterUIMapper.mapToUIModelList(contacts))

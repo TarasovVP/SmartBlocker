@@ -4,6 +4,7 @@ import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -14,7 +15,7 @@ class SettingsListUseCaseImpl @Inject constructor(
         return dataStoreRepository.getAppLang()
     }
 
-    override fun insertReview(review: Review, result: () -> Unit) = realDataBaseRepository.insertReview(review) {
-        result.invoke()
+    override fun insertReview(review: Review, result: (Result<Unit>) -> Unit) = realDataBaseRepository.insertReview(review) {
+        result.invoke(it)
     }
 }

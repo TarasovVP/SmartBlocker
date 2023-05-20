@@ -18,6 +18,7 @@ object UnitTestUtils {
     const val TEST_EMAIL = "test@email.com"
     const val TEST_PASSWORD = "Ua12345!"
     const val TEST_REVIEW = "review"
+    const val TEST_USER_ID = "testUserId"
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun <T> LiveData<T>.getOrAwaitValue(

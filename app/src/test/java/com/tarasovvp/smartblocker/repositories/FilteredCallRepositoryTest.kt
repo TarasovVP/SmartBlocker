@@ -62,7 +62,7 @@ class FilteredCallRepositoryTest {
     }
 
     @Test
-    fun filteredCallsByNumberTest() = runBlocking {
+    fun allFilteredCallsByNumberTest() = runBlocking {
         val filteredCallList = listOf(CallWithFilter().apply { call=  FilteredCall(callId = 1)}, CallWithFilter().apply { call=  FilteredCall(callId = 3)})
         coEvery { filteredCallDao.allFilteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
         val result = filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER)

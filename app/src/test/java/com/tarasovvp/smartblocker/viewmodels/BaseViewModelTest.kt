@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
@@ -20,7 +20,7 @@ abstract class BaseViewModelTest<VM: BaseViewModel> {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    protected lateinit var application: Application
+    protected lateinit var application: SmartBlockerApp
 
     protected lateinit var viewModel:VM
 

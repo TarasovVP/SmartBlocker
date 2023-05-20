@@ -11,9 +11,9 @@ interface CreateFilterUseCase {
 
     suspend fun getCountryCodeWithCode(code: Int):  CountryCode?
 
-    suspend fun allCallsByFilter(filter: String): List<CallWithFilter>
+    suspend fun allCallWithFiltersByFilter(filter: String): List<CallWithFilter>
 
-    suspend fun allContactsByFilter(filter: String): List<ContactWithFilter>
+    suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
 
     suspend fun getFilter(filter: String): FilterWithFilteredNumbers?
 

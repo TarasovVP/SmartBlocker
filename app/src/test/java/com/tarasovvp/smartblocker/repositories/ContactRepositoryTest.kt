@@ -72,7 +72,7 @@ class ContactRepositoryTest {
     }
 
     @Test
-    fun insertContactsTest() = runBlocking {
+    fun insertAllContactsTest() = runBlocking {
         val contactList = listOf(Contact().apply { number = TEST_NUMBER }, Contact())
         coEvery { contactDao.insertAllContacts(contactList) } just Runs
         contactRepository.insertAllContacts(contactList)

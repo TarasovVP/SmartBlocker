@@ -28,5 +28,5 @@ class CountryCodeRepositoryImpl @Inject constructor(
         countryCodeDao.allCountryCodes()
 
     override suspend fun getCountryCodeByCode(code: Int): CountryCode? =
-        countryCodeDao.getCountryCodeWithCode(String.format(COUNTRY_CODE_START, code.toString()))
+        countryCodeDao.getCountryCodeByCode(String.format(COUNTRY_CODE_START, code.toString()))
 }

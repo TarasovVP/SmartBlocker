@@ -6,6 +6,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -19,8 +20,11 @@ class CountryCodeSearchViewModelTest: BaseViewModelTest<CountryCodeSearchViewMod
     @MockK
     private lateinit var useCase: CountryCodeSearchUseCase
 
+    @MockK
+    private lateinit var countryCodeUIMapper: CountryCodeUIMapper
+
     override fun createViewModel(): CountryCodeSearchViewModel {
-        return CountryCodeSearchViewModel(application, useCase)
+        return CountryCodeSearchViewModel(application, useCase, countryCodeUIMapper)
     }
 
     @Test

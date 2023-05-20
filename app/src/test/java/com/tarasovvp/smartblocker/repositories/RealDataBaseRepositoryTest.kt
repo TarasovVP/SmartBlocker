@@ -3,12 +3,14 @@ package com.tarasovvp.smartblocker.repositories
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_USER_ID
 import com.tarasovvp.smartblocker.data.repositoryImpl.RealDataBaseRepositoryImpl
 import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
@@ -47,7 +49,7 @@ class RealDataBaseRepositoryTest {
 
     @Test
     fun getCurrentUserTest() {
-        val resultMock = mockk<(Result<CurrentUser>?) -> Unit>(relaxed = true)
+        val resultCurrentUserMock = mockk<(Result<CurrentUser>?) -> Unit>(relaxed = true)
         val filterKey = "filter_list"
         val filteredCallKey = "filtered_call_list"
         val filter = Filter("test_filter")
@@ -60,7 +62,10 @@ class RealDataBaseRepositoryTest {
         every {
             firebaseDatabase.reference.child(USERS).child(any()).get()
         } returns task
+        val currentUser = mockk<FirebaseUser>()
         every { task.isSuccessful } returns true
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.uid } returns TEST_USER_ID
         every { task.result } returns dataSnapshot
         every { dataSnapshot.children } returns listOf(filterChild, filteredCallChild)
         every { filterChild.key } returns filterKey
@@ -74,16 +79,19 @@ class RealDataBaseRepositoryTest {
             listener.onComplete(task)
             task
         }
-        realDataBaseRepository.getCurrentUser(resultMock)
+        realDataBaseRepository.getCurrentUser(resultCurrentUserMock)
         verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke(Result.Success()) }
+        verify { resultCurrentUserMock.invoke(Result.Success(CurrentUser())) }
     }
 
     @Test
     fun insertFilterTest() {
         val filter = Filter(TEST_FILTER)
         val task = mockk<Task<Void>>(relaxed = true)
+        val currentUser = mockk<FirebaseUser>()
         every { task.isSuccessful } returns true
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.uid } returns TEST_USER_ID
         every {
             firebaseDatabase.reference.child(USERS).child(any()).child(FILTER_LIST).child(filter.filter).setValue(filter)
         } returns task
@@ -92,7 +100,7 @@ class RealDataBaseRepositoryTest {
             listener.onComplete(task)
             task
         }
-        realDataBaseRepository.insertFilter(filter) { }
+        realDataBaseRepository.insertFilter(filter, resultMock)
         verify { task.addOnCompleteListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
@@ -109,7 +117,10 @@ class RealDataBaseRepositoryTest {
         every {
             firebaseDatabase.reference.child(USERS).child(any()).child(FILTER_LIST).get()
         } returns task
+        val currentUser = mockk<FirebaseUser>()
         every { task.isSuccessful } returns true
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.uid } returns TEST_USER_ID
         every { task.result } returns dataSnapshot
         every { dataSnapshot.children } returns listOf(child1, child2)
         every { child1.key } returns filter1.filter
@@ -136,7 +147,10 @@ class RealDataBaseRepositoryTest {
         every {
             firebaseDatabase.reference.child(USERS).child(any()).child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
         } returns task
+        val currentUser = mockk<FirebaseUser>()
         every { task.isSuccessful } returns true
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.uid } returns TEST_USER_ID
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
             listener.onComplete(task)
@@ -162,7 +176,10 @@ class RealDataBaseRepositoryTest {
         every {
             firebaseDatabase.reference.child(USERS).child(any()).child(FILTERED_CALL_LIST).get()
         } returns task
+        val currentUser = mockk<FirebaseUser>()
         every { task.isSuccessful } returns true
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.uid } returns TEST_USER_ID
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<DataSnapshot>>()
             listener.onComplete(task)
@@ -193,7 +210,10 @@ class RealDataBaseRepositoryTest {
         every {
             firebaseDatabase.reference.child(USERS).child(any()).child(BLOCK_HIDDEN).setValue(any())
         } returns task
+        val currentUser = mockk<FirebaseUser>()
         every { task.isSuccessful } returns true
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.uid } returns TEST_USER_ID
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
             listener.onComplete(task)
