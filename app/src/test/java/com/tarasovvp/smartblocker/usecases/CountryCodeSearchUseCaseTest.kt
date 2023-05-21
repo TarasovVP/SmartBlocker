@@ -38,8 +38,7 @@ class CountryCodeSearchUseCaseTest {
     @Test
     fun getAppLanguageTest() = runBlocking{
         val appLanguage = TEST_APP_LANGUAGE
-        val flow = flowOf(appLanguage)
-        coEvery { dataStoreRepository.getAppLang() } returns flow
+        coEvery { dataStoreRepository.getAppLang() } returns flowOf(appLanguage)
         val result = countryCodeSearchUseCase.getAppLanguage().single()
         assertEquals(appLanguage, result)
         coVerify { dataStoreRepository.getAppLang() }

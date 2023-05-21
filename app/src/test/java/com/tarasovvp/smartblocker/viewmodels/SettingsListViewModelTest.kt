@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.domain.entities.models.Review
@@ -10,8 +11,11 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -20,21 +24,29 @@ class SettingsListViewModelTest: BaseViewModelTest<SettingsListViewModel>() {
     @MockK
     private lateinit var useCase: SettingsListUseCase
 
-    @MockK(relaxed = true)
-    private lateinit var resultMock: (Result<Unit>) -> Unit
-
     override fun createViewModel() = SettingsListViewModel(application, useCase)
 
     @Test
-    fun insertReviewTest() {
+    fun getAppLanguageTest() = runTest {
+        val appLang = TEST_APP_LANGUAGE
+        coEvery { useCase.getAppLanguage() } returns flowOf(appLang)
+        viewModel.getAppLanguage()
+        advanceUntilIdle()
+        coVerify { useCase.getAppLanguage() }
+        assertEquals(appLang, viewModel.appLanguageLiveData.value)
+    }
+
+    @Test
+    fun insertReviewTest()  {
+        val expectedResult = Result.Success<Unit>()
         val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
         every { application.isNetworkAvailable } returns true
-        coEvery { useCase.insertReview(eq(review), eq(resultMock)) } answers {
-            resultMock.invoke(Result.Success())
+        coEvery { useCase.insertReview(eq(review), any()) } answers {
+            val callback = secondArg<(Result<Unit>) -> Unit>()
+            callback.invoke(expectedResult)
         }
         viewModel.insertReview(review)
         coVerify { useCase.insertReview(review, any()) }
-        verify { resultMock.invoke(Result.Success()) }
-        verify { viewModel.successReviewLiveData.postValue(review.message) }
+        assertEquals(review.message, viewModel.successReviewLiveData.value)
     }
 }

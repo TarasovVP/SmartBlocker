@@ -41,8 +41,7 @@ class SettingsBlockerUseCaseTest {
     @Test
     fun getBlockerTurnOffTest() = runBlocking{
         val blockerTurnOff = true
-        val flow = flowOf(blockerTurnOff)
-        coEvery { dataStoreRepository.blockerTurnOff() } returns flow
+        coEvery { dataStoreRepository.blockerTurnOff() } returns flowOf(blockerTurnOff)
         val result = settingsBlockerUseCase.getBlockerTurnOff().single()
         assertEquals(blockerTurnOff, result)
         coVerify { dataStoreRepository.blockerTurnOff() }
@@ -59,8 +58,7 @@ class SettingsBlockerUseCaseTest {
     @Test
     fun getBlockHiddenTest() = runBlocking{
         val blockHidden = true
-        val flow = flowOf(blockHidden)
-        coEvery { dataStoreRepository.blockerTurnOff() } returns flow
+        coEvery { dataStoreRepository.blockerTurnOff() } returns flowOf(blockHidden)
         val result = settingsBlockerUseCase.getBlockerTurnOff().single()
         assertEquals(blockHidden, result)
         coVerify { dataStoreRepository.blockerTurnOff() }
@@ -88,8 +86,7 @@ class SettingsBlockerUseCaseTest {
     @Test
     fun getCurrentCountryCodeTest() = runBlocking{
         val countryCode = CountryCode()
-        val flow = flowOf(countryCode)
-        coEvery { dataStoreRepository.getCountryCode() } returns flow
+        coEvery { dataStoreRepository.getCountryCode() } returns flowOf(countryCode)
         val result = settingsBlockerUseCase.getCurrentCountryCode().single()
         assertEquals(countryCode, result)
         coVerify { dataStoreRepository.getCountryCode() }

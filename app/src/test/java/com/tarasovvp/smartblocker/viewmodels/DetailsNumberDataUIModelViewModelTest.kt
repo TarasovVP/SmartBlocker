@@ -11,10 +11,16 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
 import org.junit.Test
 
@@ -24,7 +30,16 @@ class DetailsNumberDataUIModelViewModelTest: BaseViewModelTest<DetailsNumberData
     @MockK
     private lateinit var useCase: DetailsNumberDataUseCase
 
-    override fun createViewModel() = DetailsNumberDataViewModel(application, useCase)
+    @MockK
+    private lateinit var filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper
+
+    @MockK
+    private lateinit var callWithFilterUIMapper: CallWithFilterUIMapper
+
+    @MockK
+    private lateinit var countryCodeUIMapper: CountryCodeUIMapper
+
+    override fun createViewModel() = DetailsNumberDataViewModel(application, useCase, filterWithFilteredNumberUIMapper, callWithFilterUIMapper, countryCodeUIMapper)
 
     @Test
     fun filterListWithNumberTest() = runTest {
@@ -55,5 +70,15 @@ class DetailsNumberDataUIModelViewModelTest: BaseViewModelTest<DetailsNumberData
         advanceUntilIdle()
         val result = viewModel.countryCodeLiveData.getOrAwaitValue()
         assertEquals(TEST_COUNTRY, result.country)
+    }
+
+    @Test
+    fun getBlockHiddenTest() = runTest {
+        val blockHidden = true
+        coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
+        viewModel.getBlockHidden()
+        advanceUntilIdle()
+        coVerify { useCase.getBlockHidden() }
+        assertEquals(blockHidden, viewModel.blockHiddenLiveData.value)
     }
 }

@@ -40,12 +40,10 @@ class ListContactViewModel @Inject constructor(
 
     fun getHashMapFromContactList(contactList: List<ContactWithFilterUIModel>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
-        launch {
-            val contactsWithFilters = contactList.groupBy {
-                if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
-            }
-            contactHashMapLiveData.postValue(contactsWithFilters)
-            hideProgress()
+        val contactsWithFilters = contactList.groupBy {
+            if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
         }
+        contactHashMapLiveData.postValue(contactsWithFilters)
+        hideProgress()
     }
 }

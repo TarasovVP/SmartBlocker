@@ -5,10 +5,10 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpViewModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 
@@ -18,19 +18,18 @@ class SignUpViewModelTest: BaseViewModelTest<SignUpViewModel>() {
     @MockK
     private lateinit var useCase: SignUpUseCase
 
-    @MockK(relaxed = true)
-    private lateinit var resultMock: (Result<Unit>) -> Unit
-
     override fun createViewModel() = SignUpViewModel(application, useCase)
 
     @Test
     fun createUserWithEmailAndPasswordTest() {
-        coEvery { useCase.createUserWithEmailAndPassword(eq(TEST_EMAIL), eq(TEST_PASSWORD), eq(resultMock)) } answers {
-            resultMock.invoke(Result.Success())
+        val expectedResult = Result.Success<Unit>()
+        every { application.isNetworkAvailable } returns true
+        every { useCase.createUserWithEmailAndPassword(eq(TEST_EMAIL), eq(TEST_PASSWORD), any()) } answers {
+            val callback = thirdArg<(Result<Unit>) -> Unit>()
+            callback.invoke(expectedResult)
         }
         viewModel.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD)
-        coVerify { useCase.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, resultMock) }
-        verify { resultMock.invoke(Result.Success()) }
-        verify { viewModel.successSignInLiveData.postValue(Unit) }
+        verify { useCase.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, any()) }
+        assertEquals(Unit, viewModel.successSignInLiveData.value)
     }
 }

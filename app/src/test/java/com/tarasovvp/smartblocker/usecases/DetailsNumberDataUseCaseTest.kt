@@ -78,8 +78,7 @@ class DetailsNumberDataUseCaseTest {
     @Test
     fun getBlockHiddenTest() = runBlocking {
         val blockHidden = true
-        val flow = flowOf(blockHidden)
-        coEvery { dataStoreRepository.blockHidden() } returns flow
+        coEvery { dataStoreRepository.blockHidden() } returns flowOf(blockHidden)
         val result = detailsNumberDataUseCase.getBlockHidden().single()
         assertEquals(blockHidden, result)
         coVerify { dataStoreRepository.blockHidden() }

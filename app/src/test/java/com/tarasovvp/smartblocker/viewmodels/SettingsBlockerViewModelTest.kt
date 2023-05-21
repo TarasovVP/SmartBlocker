@@ -1,14 +1,16 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -17,21 +19,78 @@ class SettingsBlockerViewModelTest: BaseViewModelTest<SettingsBlockerViewModel>(
     @MockK
     private lateinit var useCase: SettingsBlockerUseCase
 
-    @MockK(relaxed = true)
-    private lateinit var resultMock: (Result<Unit>) -> Unit
-
     override fun createViewModel() = SettingsBlockerViewModel(application, useCase)
 
     @Test
+    fun getBlockerTurnOffTest() = runTest {
+        val blockerTurnOff = true
+        coEvery { useCase.getBlockerTurnOff() } returns flowOf(blockerTurnOff)
+        viewModel.getBlockerTurnOff()
+        advanceUntilIdle()
+        coVerify { useCase.getBlockerTurnOff() }
+        assertEquals(blockerTurnOff, viewModel.blockerTurnOffLiveData.value)
+    }
+
+    @Test
+    fun setBlockerTurnOffTest() = runTest {
+        val blockerTurnOff = true
+        coEvery { useCase.setBlockerTurnOff(blockerTurnOff) } just Runs
+        viewModel.setBlockerTurnOff(blockerTurnOff)
+        advanceUntilIdle()
+        coVerify { useCase.setBlockerTurnOff(blockerTurnOff) }
+        assertEquals(blockerTurnOff, viewModel.blockerTurnOffLiveData.value)
+    }
+
+    @Test
+    fun getBlockHiddenTest() = runTest {
+        val blockHidden = true
+        coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
+        viewModel.getBlockHidden()
+        advanceUntilIdle()
+        coVerify { useCase.getBlockHidden() }
+        assertEquals(blockHidden, viewModel.blockHiddenLiveData.value)
+    }
+
+    @Test
+    fun setBlockHiddenTest() = runTest {
+        val blockHidden = true
+        coEvery { useCase.setBlockHidden(blockHidden) } just Runs
+        viewModel.setBlockHidden(blockHidden)
+        advanceUntilIdle()
+        coVerify { useCase.setBlockHidden(blockHidden) }
+        assertEquals(blockHidden, viewModel.blockHiddenLiveData.value)
+    }
+    @Test
     fun changeBlockHiddenTest() {
         val blockHidden = true
+        val expectedResult = Result.Success<Unit>()
         every { application.isNetworkAvailable } returns true
-        coEvery { useCase.changeBlockHidden(eq(blockHidden), eq(true), any()) } answers {
-            resultMock.invoke(Result.Success())
+        every { useCase.changeBlockHidden(eq(blockHidden), eq(true), any()) } answers {
+            val callback = thirdArg<(Result<Unit>) -> Unit>()
+            callback.invoke(expectedResult)
         }
         viewModel.changeBlockHidden(blockHidden)
-        coVerify { useCase.changeBlockHidden(blockHidden, true, any()) }
-        verify { resultMock.invoke(Result.Success()) }
-        verify { viewModel.blockHiddenLiveData.postValue(blockHidden) }
+        verify { useCase.changeBlockHidden(blockHidden, true, any()) }
+        assertEquals(blockHidden, viewModel.successBlockHiddenLiveData.value)
+    }
+
+    @Test
+    fun getCurrentCountryCodeTest() = runTest{
+        val countryCode = CountryCode()
+        coEvery { useCase.getCurrentCountryCode() } returns flowOf(countryCode)
+        viewModel.getCurrentCountryCode()
+        advanceUntilIdle()
+        coVerify { useCase.getCurrentCountryCode() }
+        assertEquals(countryCode, viewModel.currentCountryCodeLiveData.value)
+    }
+
+    @Test
+    fun setCurrentCountryCodeTest() = runTest {
+        val countryCode = CountryCode()
+        coEvery { useCase.setCurrentCountryCode(countryCode) } just Runs
+        viewModel.setCurrentCountryCode(countryCode)
+        advanceUntilIdle()
+        coVerify { useCase.setCurrentCountryCode(countryCode) }
+        assertEquals(countryCode, viewModel.currentCountryCodeLiveData.value)
     }
 }

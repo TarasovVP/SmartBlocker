@@ -3,11 +3,14 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_TOKEN
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginViewModel
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import junit.framework.TestCase.assertTrue
+import io.mockk.verify
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 
@@ -17,35 +20,43 @@ class LoginViewModelTest: BaseViewModelTest<LoginViewModel>() {
     @MockK
     private lateinit var useCase: LoginUseCase
 
+    private val expectedResult = Result.Success<Unit>()
+
     override fun createViewModel() = LoginViewModel(application, useCase)
 
     @Test
     fun sendPasswordResetEmailTest() {
+        every { application.isNetworkAvailable } returns true
         coEvery { useCase.sendPasswordResetEmail(eq(TEST_EMAIL), any()) } answers {
-            val result = secondArg<() -> Unit>()
-            result.invoke()
+            val result = secondArg<(Result<Unit>) -> Unit>()
+            result.invoke(expectedResult)
         }
         viewModel.sendPasswordResetEmail(TEST_EMAIL)
-        assertTrue(viewModel.successPasswordResetLiveData.value == true)
+        verify { useCase.sendPasswordResetEmail(TEST_EMAIL, any()) }
+        assertEquals(true, viewModel.successPasswordResetLiveData.value)
     }
 
     @Test
     fun signInWithEmailAndPasswordTest() {
+        every { application.isNetworkAvailable } returns true
         coEvery { useCase.signInWithEmailAndPassword(eq(TEST_EMAIL), eq(TEST_PASSWORD), any()) } answers {
-            val result = thirdArg<() -> Unit>()
-            result.invoke()
+            val result = thirdArg<(Result<Unit>) -> Unit>()
+            result.invoke(expectedResult)
         }
         viewModel.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD)
-        assertTrue(viewModel.successSignInLiveData.value == true)
+        verify { useCase.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, any()) }
+        assertEquals(Unit, viewModel.successSignInLiveData.value)
     }
 
     @Test
     fun firebaseAuthWithGoogleTest() {
+        every { application.isNetworkAvailable } returns true
         coEvery { useCase.firebaseAuthWithGoogle(eq(TEST_TOKEN), any()) } answers {
-            val result = secondArg<() -> Unit>()
-            result.invoke()
+            val result = secondArg<(Result<Unit>) -> Unit>()
+            result.invoke(expectedResult)
         }
         viewModel.firebaseAuthWithGoogle(TEST_TOKEN)
-        assertTrue(viewModel.successSignInLiveData.value == true)
+        verify { useCase.firebaseAuthWithGoogle(eq(TEST_TOKEN), any()) }
+        assertEquals(Unit, viewModel.successSignInLiveData.value)
     }
 }

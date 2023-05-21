@@ -29,6 +29,7 @@ class SettingsListViewModel @Inject constructor(
             }
         }
     }
+
     fun insertReview(review: Review) {
         if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
             showProgress()

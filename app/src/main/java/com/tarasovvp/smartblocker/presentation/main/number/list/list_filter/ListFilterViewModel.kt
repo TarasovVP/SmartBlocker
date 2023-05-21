@@ -46,10 +46,8 @@ class ListFilterViewModel @Inject constructor(
 
     fun getHashMapFromFilterList(filterList: List<FilterWithFilteredNumberUIModel>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
-        launch {
-            filterHashMapLiveData.postValue(mapOf(String.EMPTY to filterList))
-            hideProgress()
-        }
+        filterHashMapLiveData.postValue(mapOf(String.EMPTY to filterList))
+        hideProgress()
     }
 
     fun deleteFilterList(filterList: List<FilterWithFilteredNumberUIModel>) {

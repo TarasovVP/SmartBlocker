@@ -30,8 +30,7 @@ class SettingsLanguageUseCaseTest {
     @Test
     fun getAppLanguageTest() = runBlocking{
         val appLang = TEST_APP_LANGUAGE
-        val flow = flowOf(appLang)
-        coEvery { dataStoreRepository.getAppLang() } returns flow
+        coEvery { dataStoreRepository.getAppLang() } returns flowOf(appLang)
         val result = settingsLanguageUseCase.getAppLanguage().single()
         assertEquals(appLang, result)
         coVerify { dataStoreRepository.getAppLang() }

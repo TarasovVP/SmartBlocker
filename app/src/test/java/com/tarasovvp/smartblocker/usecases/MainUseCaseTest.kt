@@ -60,8 +60,7 @@ class MainUseCaseTest {
     @Test
     fun getAppLanguageTest() = runBlocking {
         val appLang = TEST_APP_LANGUAGE
-        val flow = flowOf(appLang)
-        coEvery { dataStoreRepository.getAppLang() } returns flow
+        coEvery { dataStoreRepository.getAppLang() } returns flowOf(appLang)
         val result = mainUseCase.getAppLanguage().single()
         assertEquals(appLang, result)
         coVerify { dataStoreRepository.getAppLang() }
@@ -78,8 +77,7 @@ class MainUseCaseTest {
     @Test
     fun getAppThemeTest() = runBlocking {
         val appTheme = TEST_APP_THEME
-        val flow = flowOf(appTheme)
-        coEvery { dataStoreRepository.getAppTheme() } returns flow
+        coEvery { dataStoreRepository.getAppTheme() } returns flowOf(appTheme)
         val result = mainUseCase.getAppTheme().single()
         assertEquals(appTheme, result)
         coVerify { dataStoreRepository.getAppTheme() }
@@ -88,8 +86,7 @@ class MainUseCaseTest {
     @Test
     fun getOnBoardingSeenTest() = runBlocking {
         val onBoardingSeen = true
-        val flow = flowOf(onBoardingSeen)
-        coEvery { dataStoreRepository.onBoardingSeen() } returns flow
+        coEvery { dataStoreRepository.onBoardingSeen() } returns flowOf(onBoardingSeen)
         val result = mainUseCase.getOnBoardingSeen().single()
         assertEquals(onBoardingSeen, result)
         coVerify { dataStoreRepository.onBoardingSeen() }
@@ -98,8 +95,7 @@ class MainUseCaseTest {
     @Test
     fun getBlockerTurnOffTest() = runBlocking {
         val blockerTurnOff = true
-        val flow = flowOf(blockerTurnOff)
-        coEvery { dataStoreRepository.blockerTurnOff() } returns flow
+        coEvery { dataStoreRepository.blockerTurnOff() } returns flowOf(blockerTurnOff)
         val result = mainUseCase.getBlockerTurnOff().single()
         assertEquals(blockerTurnOff, result)
         coVerify { dataStoreRepository.blockerTurnOff() }
@@ -137,8 +133,7 @@ class MainUseCaseTest {
     @Test
     fun getCurrentCountryCodeTest() = runBlocking {
         val countryCode = CountryCode()
-        val flow = flowOf(countryCode)
-        coEvery { dataStoreRepository.getCountryCode() } returns flow
+        coEvery { dataStoreRepository.getCountryCode() } returns flowOf(countryCode)
         val result = mainUseCase.getCurrentCountryCode().single()
         assertEquals(countryCode, result)
         coVerify { dataStoreRepository.getCountryCode() }

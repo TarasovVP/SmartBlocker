@@ -1,18 +1,21 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_THEME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.main.MainViewModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
 import org.junit.Test
 
@@ -25,20 +28,60 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     override fun createViewModel() = MainViewModel(application, mainUseCase)
 
     @Test
-    fun getCurrentUser() = runTest {
-        val currentUser = CurrentUser()
-        every { mainUseCase.getCurrentUser(any()) } answers {
-            val result = firstArg<(CurrentUser) -> Unit>()
-            result.invoke(currentUser)
-        }
-        viewModel.getCurrentUser()
+    fun setAppLanguageTest() = runTest {
+        val appLang = TEST_APP_LANGUAGE
+        coEvery { mainUseCase.getAppLanguage() } returns flowOf(appLang)
+        coEvery { mainUseCase.setAppLanguage(appLang) } just Runs
+        viewModel.setAppLanguage()
         advanceUntilIdle()
-        val result = viewModel.currentUserLiveData.getOrAwaitValue()
-        assertEquals(result, currentUser)
+        coVerify { mainUseCase.getAppLanguage() }
+        coVerify { mainUseCase.setAppLanguage(appLang) }
     }
 
     @Test
-    fun insertUserFilters() = runTest {
+    fun setAppThemeTest() = runTest {
+        val appTheme = TEST_APP_THEME
+        coEvery { mainUseCase.getAppTheme() } returns flowOf(appTheme)
+        viewModel.setAppTheme()
+        advanceUntilIdle()
+        coVerify { mainUseCase.getAppTheme() }
+    }
+
+    @Test
+    fun getOnBoardingSeenTest() = runTest {
+        val onBoardingSeen = true
+        coEvery { mainUseCase.getOnBoardingSeen() } returns flowOf(onBoardingSeen)
+        viewModel.getOnBoardingSeen()
+        advanceUntilIdle()
+        coVerify { mainUseCase.getOnBoardingSeen() }
+        assertEquals(onBoardingSeen, viewModel.onBoardingSeenLiveData.value)
+    }
+
+    @Test
+    fun getBlockerTurnOffTest() = runTest {
+        val blockerTurnOff = true
+        coEvery { mainUseCase.getBlockerTurnOff() } returns flowOf(blockerTurnOff)
+        viewModel.getBlockerTurnOff()
+        advanceUntilIdle()
+        coVerify { mainUseCase.getBlockerTurnOff() }
+        assertEquals(blockerTurnOff, viewModel.blockerTurnOffLiveData.value)
+    }
+
+    @Test
+    fun getCurrentUserTest() = runTest {
+        val currentUser = CurrentUser()
+        val expectedResult = Result.Success(currentUser)
+        coEvery { mainUseCase.getCurrentUser(any()) } answers {
+            val result = firstArg<(Result<CurrentUser>) -> Unit>()
+            result.invoke(expectedResult)
+        }
+        viewModel.getCurrentUser()
+        advanceUntilIdle()
+        coVerify { mainUseCase.getCurrentUser(any()) }
+    }
+
+    @Test
+    fun insertUserFiltersTest() = runTest {
         val filterList = listOf(Filter(filter = TEST_FILTER), Filter(filter = "mockFilter2"))
         coEvery { mainUseCase.insertAllFilters(filterList) } just Runs
         viewModel.insertUserFilters(filterList)
@@ -46,7 +89,7 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     }
 
     @Test
-    fun insertUserFilteredCalls() = runTest {
+    fun insertUserFilteredCallsTest() = runTest {
         val filteredCallList = listOf(FilteredCall().apply { number = TEST_FILTER }, FilteredCall().apply { number = TEST_FILTER })
         coEvery { mainUseCase.insertAllFilteredCalls(filteredCallList) } just Runs
         viewModel.insertUserFilteredCalls(filteredCallList)
@@ -54,85 +97,49 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     }
 
     @Test
-    fun getSystemCountryCodeList() = runTest {
+    fun setCountryCodeDataTest() = runTest {
         val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY))
         coEvery { mainUseCase.getSystemCountryCodes(any()) } returns countryCodeList
-        val resultCountryCodeList = viewModel.getSystemCountryCodes()
-        assertEquals(countryCodeList, resultCountryCodeList)
-    }
-
-    @Test
-    fun insertAllCountryCodes() = runTest {
-        val countryCodeList = listOf(CountryCode(), CountryCode())
         coEvery { mainUseCase.insertAllCountryCodes(countryCodeList) } just Runs
-        viewModel.insertAllCountryCodes(countryCodeList)
+        coEvery { mainUseCase.getCurrentCountryCode() } returns flowOf(countryCodeList.first())
+        coEvery { mainUseCase.setCurrentCountryCode(countryCodeList.first()) } just Runs
+        viewModel.setCountryCodeData()
+        coVerify { mainUseCase.getSystemCountryCodes(any()) }
         coVerify { mainUseCase.insertAllCountryCodes(countryCodeList) }
     }
 
     @Test
-    fun getSystemContactList() = runTest {
+    fun getCurrentCountryCodeTest() = runTest{
+        val countryCode = CountryCode()
+        coEvery { mainUseCase.getCurrentCountryCode() } returns flowOf(countryCode)
+        coEvery { mainUseCase.setCurrentCountryCode(countryCode) } just Runs
+        viewModel.setCurrentCountryCode(listOf(countryCode))
+        advanceUntilIdle()
+        coVerify { mainUseCase.getCurrentCountryCode() }
+        coVerify { mainUseCase.setCurrentCountryCode(countryCode) }
+    }
+
+    @Test
+    fun setContactDataTest() = runTest {
         val contactList = listOf(Contact(name = TEST_NAME))
         coEvery { mainUseCase.getSystemContacts(eq(application), any()) } returns contactList
-        val resultContactList = viewModel.getSystemContactList()
-        assertEquals(contactList, resultContactList)
-    }
-
-    @Test
-    fun setFilterToContact() = runTest {
-        val filterList = listOf(Filter(filter = TEST_FILTER))
-        val contactList = listOf(Contact(name = TEST_NAME))
-        coEvery { mainUseCase.setFilterToContact(eq(filterList), eq(contactList), any()) } returns contactList
-        val resultContactList = viewModel.setFilterToContact(filterList, contactList)
-        assertEquals(contactList, resultContactList)
-    }
-
-    @Test
-    fun insertContacts() = runTest {
-        val contactList = listOf(Contact(), Contact())
         coEvery { mainUseCase.insertAllContacts(contactList) } just Runs
-        viewModel.insertContacts(contactList)
+        viewModel.setContactData()
+        coVerify { mainUseCase.getSystemContacts(eq(application), any()) }
         coVerify { mainUseCase.insertAllContacts(contactList) }
     }
 
     @Test
-    fun getSystemLogCallList() = runTest {
+    fun setLogCallDataTest() = runTest {
         val logCallList = listOf(LogCall().apply { number = TEST_NUMBER })
-        coEvery { mainUseCase.getSystemLogCalls(eq(application), any()) } returns logCallList
-        val resultLogCallList = viewModel.getSystemLogCallList()
-        assertEquals(logCallList, resultLogCallList)
-    }
-
-    @Test
-    fun setFilterToLogCall() = runTest {
-        val filterList = listOf(Filter(filter = TEST_FILTER))
-        val logCallList = listOf(LogCall().apply { number = TEST_NUMBER })
-        coEvery { mainUseCase.setFilterToLogCall(eq(filterList), eq(logCallList), any()) } returns logCallList
-        val resultLogCallList = viewModel.setFilterToLogCall(filterList, logCallList)
-        assertEquals(logCallList, resultLogCallList)
-    }
-
-    @Test
-    fun getAllFilteredCalls() = runTest {
-        val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER })
-        coEvery { mainUseCase.getAllFilteredCalls() } returns filteredCallList
-        val resultFilteredCallList = viewModel.getAllFilteredCalls()
-        assertEquals(filteredCallList, resultFilteredCallList)
-    }
-
-    @Test
-    fun setFilterToFilteredCall() = runTest {
-        val filterList = listOf(Filter(filter = TEST_FILTER))
-        val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER })
-        coEvery { mainUseCase.setFilterToFilteredCall(eq(filterList), eq(filteredCallList), any()) } returns filteredCallList
-        val resultFilteredCallList = viewModel.setFilterToFilteredCall(filterList, filteredCallList)
-        assertEquals(filteredCallList, resultFilteredCallList)
-    }
-
-    @Test
-    fun insertAllFilteredCalls() = runTest {
-        val filteredCallList = listOf(FilteredCall(), FilteredCall())
-        coEvery { mainUseCase.insertAllFilteredCalls(filteredCallList) } just Runs
-        viewModel.insertAllFilteredCalls(filteredCallList)
-        coVerify { mainUseCase.insertAllFilteredCalls(filteredCallList) }
+        coEvery { mainUseCase.getSystemLogCalls(any(), any()) } answers {
+            val progressCallback = secondArg<(Int, Int) -> Unit>()
+            progressCallback.invoke(logCallList.size, 0)
+            logCallList
+        }
+        coEvery { mainUseCase.insertAllLogCalls(logCallList) } just Runs
+        viewModel.setLogCallData()
+        coVerify { mainUseCase.getSystemLogCalls(any(), any()) }
+        coVerify { mainUseCase.insertAllLogCalls(logCallList) }
     }
 }

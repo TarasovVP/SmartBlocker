@@ -44,13 +44,11 @@ class ListCallViewModel @Inject constructor(
 
     fun getHashMapFromCallList(callList: List<CallWithFilterUIModel>, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
-        launch {
-            val hashMapList = callList.sortedByDescending {
+        val hashMapList = callList.sortedByDescending {
                 it.callDate
             }.groupBy { it.callDate }
-            callHashMapLiveData.postValue(hashMapList)
-            hideProgress()
-        }
+        callHashMapLiveData.postValue(hashMapList)
+        hideProgress()
     }
 
     fun deleteCallList(filteredCallIdList: List<Int>) {

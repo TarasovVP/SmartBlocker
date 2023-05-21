@@ -12,6 +12,10 @@ import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -26,7 +30,19 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @MockK
     private lateinit var useCase: CreateFilterUseCase
 
-    override fun createViewModel() = CreateFilterViewModel(application, useCase)
+    @MockK
+    private lateinit var countryCodeUIMapper: CountryCodeUIMapper
+
+    @MockK
+    private lateinit var filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper
+
+    @MockK
+    private lateinit var callWithFilterUIMapper: CallWithFilterUIMapper
+
+    @MockK
+    private lateinit var contactWithFilterUIMapper: ContactWithFilterUIMapper
+
+    override fun createViewModel() = CreateFilterViewModel(application, useCase, countryCodeUIMapper, filterWithFilteredNumberUIMapper, callWithFilterUIMapper, contactWithFilterUIMapper)
 
     @Test
     fun getCountryCodeWithCodeTest() = runTest {
@@ -57,19 +73,6 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
         advanceUntilIdle()
         val result = viewModel.existingFilterLiveData.getOrAwaitValue()
         assertEquals(TEST_FILTER, result.filter?.filter)
-    }
-
-    @Test
-    fun filterNumberDataListTest() = runTest {
-        //TODO
-        /*val filterWithCountryCode = FilterWithCountryCode(filter = Filter(filter = TEST_FILTER))
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
-        Mockito.`when`(useCase.filterNumberDataList(filterWithCountryCode, numberDataList, 0))
-            .thenReturn(numberDataList)
-        viewModel.filterNumberDataList(filterWithCountryCode, numberDataList, 0)
-        advanceUntilIdle()
-        val result = viewModel.filteredNumberDataListLiveData.getOrAwaitValue()
-        assertEquals(numberDataList, result)*/
     }
 
     @Test

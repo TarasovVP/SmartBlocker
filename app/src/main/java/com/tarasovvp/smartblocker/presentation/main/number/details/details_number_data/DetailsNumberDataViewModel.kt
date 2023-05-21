@@ -45,10 +45,7 @@ class DetailsNumberDataViewModel @Inject constructor(
         }
     }
 
-    fun getCountryCode(
-        code: Int?,
-        filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel
-    ) {
+    fun getCountryCode(code: Int?, filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel) {
         launch {
             val countryCode = code?.let { detailsNumberDataUseCase.getCountryCodeByCode(it) } ?: CountryCode()
             countryCodeLiveData.postValue(filterWithCountryCodeUIModel.apply { countryCodeUIModel = countryCodeUIMapper.mapToUIModel(countryCode)  })

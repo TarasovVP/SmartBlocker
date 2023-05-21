@@ -29,8 +29,7 @@ class SettingsThemeUseCaseTest {
     @Test
     fun getAppThemeTest() = runBlocking{
         val appTheme = TEST_APP_THEME
-        val flow = flowOf(appTheme)
-        coEvery { dataStoreRepository.getAppTheme() } returns flow
+        coEvery { dataStoreRepository.getAppTheme() } returns flowOf(appTheme)
         val result = settingsThemeUseCase.getAppTheme().single()
         assertEquals(appTheme, result)
         coVerify { dataStoreRepository.getAppTheme() }

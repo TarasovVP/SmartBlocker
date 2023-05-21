@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.presentation.main
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.presentation.ui_models.MainProgress
@@ -101,21 +100,22 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    @AddTrace(name = "setCountryCodeData")
-    private suspend fun setCountryCodeData() {
+    suspend fun setCountryCodeData() {
+
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_localizations
-    })
-    val countryCodeList = mainUseCase.getSystemCountryCodes { size, position ->
+        })
+        val countryCodeList = mainUseCase.getSystemCountryCodes { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressMax = size
                 progressPosition = position
-            }) }
-        getCurrentCountryCode(countryCodeList)
+            })
+        }
+        setCurrentCountryCode(countryCodeList)
         mainUseCase.insertAllCountryCodes(countryCodeList)
     }
 
-    private suspend fun getCurrentCountryCode(countryCodeList: List<CountryCode>) {
+    suspend fun setCurrentCountryCode(countryCodeList: List<CountryCode>) {
         mainUseCase.getCurrentCountryCode().collect { countryCode ->
             countryCode?.let {
                 mainUseCase.setCurrentCountryCode(countryCodeList.firstOrNull { it.country == getApplication<Application>().getUserCountry() } ?: CountryCode())
@@ -123,8 +123,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    @AddTrace(name = "setContactData")
-    private suspend fun setContactData() {
+    suspend fun setContactData() {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_contacts_receive
         })
@@ -137,8 +136,7 @@ class MainViewModel @Inject constructor(
         mainUseCase.insertAllContacts(contactList)
     }
 
-    @AddTrace(name = "setLogCallData")
-    private suspend fun setLogCallData() {
+    suspend fun setLogCallData() {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = R.string.progress_update_calls_receive
         })

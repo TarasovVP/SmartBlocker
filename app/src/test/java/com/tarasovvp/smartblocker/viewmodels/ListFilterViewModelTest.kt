@@ -1,15 +1,20 @@
 package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
@@ -20,51 +25,63 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
 
     @MockK
     private lateinit var useCase: ListFilterUseCase
-    override fun createViewModel() = ListFilterViewModel(application, useCase)
+
+    @MockK
+    private lateinit var filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper
+
+    override fun createViewModel() = ListFilterViewModel(application, useCase, filterWithFilteredNumberUIMapper)
 
     @Test
     fun getFilterListTest() = runTest {
         val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
         coEvery { useCase.allFilterWithFilteredNumbersByType(true) } returns filterList
+        every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
         viewModel.getFilterList(isBlackList = true, refreshing = false)
         advanceUntilIdle()
-        val result = viewModel.filterListLiveData.getOrAwaitValue()
-        assertEquals(TEST_FILTER, result?.get(0)?.filter?.filter)
+        coVerify { useCase.allFilterWithFilteredNumbersByType(true) }
+        verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
+        assertEquals(filterUIModelList, viewModel.filterListLiveData.value)
     }
 
     @Test
     fun getFilteredFilterListTest() = runTest {
+        val numberDataFilters = arrayListOf(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
         val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
-        coEvery { useCase.getFilteredFilterList(filterList, String.EMPTY, arrayListOf(
-            NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)) } returns filterList.filter { it.filter?.filter == TEST_FILTER }
-        viewModel.getFilteredFilterList(filterList, String.EMPTY, arrayListOf(
-            NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal))
+        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
+        coEvery { useCase.getFilteredFilterList(filterList, String.EMPTY, numberDataFilters) } returns filterList
+        every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
+        every { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) } returns filterList
+        viewModel.getFilteredFilterList(filterUIModelList, String.EMPTY, numberDataFilters)
         advanceUntilIdle()
-        val result = viewModel.filteredFilterListLiveData.getOrAwaitValue()
-        assertEquals(filterList.filter { it.filter?.filter == TEST_FILTER }, result)
+        coVerify { useCase.getFilteredFilterList(filterList, String.EMPTY, numberDataFilters) }
+        verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
+        verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
+        assertEquals(filterUIModelList, viewModel.filteredFilterListLiveData.value)
     }
 
     @Test
-    fun getHashMapFromFilterListTest() = runTest {
-        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
-        val filterMap = mapOf(String.EMPTY to filterList)
-        coEvery { useCase.getHashMapFromFilterList(filterList) } returns filterMap
-        viewModel.getHashMapFromFilterList(filterList, false)
-        advanceUntilIdle()
-        val result = viewModel.filterHashMapLiveData.getOrAwaitValue()
-        assertEquals(TEST_FILTER, result?.get(String.EMPTY)?.get(0)?.filter?.filter)
+    fun getHashMapFromFilterListTest() {
+        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
+        val filterMap = mapOf(String.EMPTY to filterUIModelList)
+        viewModel.getHashMapFromFilterList(filterUIModelList, true)
+        assertEquals(filterMap, viewModel.filterHashMapLiveData.value)
     }
 
     @Test
     fun deleteFilterListTest() = runTest {
-        val filterList = listOf(Filter())
-        coEvery { useCase.deleteFilterList(eq(filterList), any(), any()) } answers {
-            val result = thirdArg<() -> Unit>()
-            result.invoke()
+        val expectedResult = Result.Success<Unit>()
+        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
+        every { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) } returns filterList
+        coEvery { useCase.deleteFilterList(eq(filterList.mapNotNull { it.filter }), any(), any()) } answers {
+            val result = thirdArg<(Result<Unit>) -> Unit>()
+            result.invoke(expectedResult)
         }
-        viewModel.deleteFilterList(filterList)
+        viewModel.deleteFilterList(filterUIModelList)
         advanceUntilIdle()
-        val result = viewModel.successDeleteFilterLiveData.getOrAwaitValue()
-        assertEquals(result, viewModel.successDeleteFilterLiveData.value)
+        coVerify { useCase.deleteFilterList(eq(filterList.mapNotNull { it.filter }), any(), any()) }
+        verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
+        assertEquals(true, viewModel.successDeleteFilterLiveData.value)
     }
 }

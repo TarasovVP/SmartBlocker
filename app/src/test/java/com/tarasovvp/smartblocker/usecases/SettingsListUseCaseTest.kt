@@ -40,8 +40,7 @@ class SettingsListUseCaseTest {
     @Test
     fun getAppLanguageTest() = runBlocking{
         val appLanguage = UnitTestUtils.TEST_APP_LANGUAGE
-        val flow = flowOf(appLanguage)
-        coEvery { dataStoreRepository.getAppLang() } returns flow
+        coEvery { dataStoreRepository.getAppLang() } returns flowOf(appLanguage)
         val result = settingsListUseCase.getAppLanguage().single()
         TestCase.assertEquals(appLanguage, result)
         coVerify { dataStoreRepository.getAppLang() }
