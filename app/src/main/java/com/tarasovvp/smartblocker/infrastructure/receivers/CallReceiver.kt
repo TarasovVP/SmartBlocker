@@ -54,7 +54,7 @@ open class CallReceiver : BroadcastReceiver() {
         }
     }
 
-    private suspend fun matchedFilter(number: String, isBlockHidden: Boolean?): Filter? {
+    suspend fun matchedFilter(number: String, isBlockHidden: Boolean?): Filter? {
         return if (number.isEmpty() && isBlockHidden.isTrue()) {
             Filter(filterType = BLOCKER)
         } else {
@@ -62,7 +62,7 @@ open class CallReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun breakCall(context: Context) {
+    fun breakCall(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             context.breakCallPieAndHigher()
         } else {

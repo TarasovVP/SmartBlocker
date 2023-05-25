@@ -31,7 +31,7 @@ import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
-import com.tarasovvp.smartblocker.di.DataStoreEntryPoint
+
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
@@ -84,13 +84,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    override fun attachBaseContext(newBase: Context) {
-        val dataStoreRepository = EntryPointAccessors.fromApplication( newBase, DataStoreEntryPoint::class.java ).dataStoreRepository
-        val appLang = runBlocking {
-            dataStoreRepository.getAppLang().first()
-        } ?: Locale.getDefault().language
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(appLang)))
-    }
+
 
     override fun onStart() {
         super.onStart()
@@ -139,9 +133,9 @@ class MainActivity : AppCompatActivity() {
         setAnimatorListener()
         if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
             mainViewModel.getOnBoardingSeen()
-            setAppLanguage()
-            setCurrentTheme()
         }
+        setAppLanguage()
+        setCurrentTheme()
         observeLiveData()
     }
 

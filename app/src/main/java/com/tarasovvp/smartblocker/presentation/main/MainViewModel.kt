@@ -38,6 +38,8 @@ class MainViewModel @Inject constructor(
     fun setAppTheme() {
         launch {
             mainUseCase.getAppTheme().collect { appTheme ->
+                val currentAppTheme = appTheme ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                mainUseCase.setAppTheme(currentAppTheme)
                 AppCompatDelegate.setDefaultNightMode(appTheme ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }

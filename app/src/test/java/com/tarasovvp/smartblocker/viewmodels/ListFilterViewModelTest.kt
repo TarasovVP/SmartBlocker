@@ -73,14 +73,16 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
         val expectedResult = Result.Success<Unit>()
         val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
         val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
+        val filterIdList = filterList.mapNotNull { it.filter }
+        every { application.isNetworkAvailable } returns true
         every { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) } returns filterList
-        coEvery { useCase.deleteFilterList(eq(filterList.mapNotNull { it.filter }), any(), any()) } answers {
+        coEvery { useCase.deleteFilterList(eq(filterIdList), any(), any()) } answers {
             val result = thirdArg<(Result<Unit>) -> Unit>()
             result.invoke(expectedResult)
         }
         viewModel.deleteFilterList(filterUIModelList)
         advanceUntilIdle()
-        coVerify { useCase.deleteFilterList(eq(filterList.mapNotNull { it.filter }), any(), any()) }
+        coVerify { useCase.deleteFilterList(eq(filterIdList), any(), any()) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
         assertEquals(true, viewModel.successDeleteFilterLiveData.value)
     }

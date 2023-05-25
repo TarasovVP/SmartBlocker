@@ -42,9 +42,11 @@ class MainViewModelTest: BaseViewModelTest<MainViewModel>() {
     fun setAppThemeTest() = runTest {
         val appTheme = TEST_APP_THEME
         coEvery { mainUseCase.getAppTheme() } returns flowOf(appTheme)
+        coEvery { mainUseCase.setAppTheme(appTheme) } just Runs
         viewModel.setAppTheme()
         advanceUntilIdle()
         coVerify { mainUseCase.getAppTheme() }
+        coVerify { mainUseCase.setAppTheme(appTheme) }
     }
 
     @Test

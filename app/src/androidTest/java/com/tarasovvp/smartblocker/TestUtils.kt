@@ -13,13 +13,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
-import androidx.annotation.NonNull
-import androidx.annotation.StyleRes
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -30,7 +29,6 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
@@ -43,13 +41,15 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MISSED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.OUT_GOING_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 object TestUtils {
 
@@ -83,8 +83,6 @@ object TestUtils {
                 Preconditions.checkNotNull(T::class.java.classLoader) as ClassLoader,
                 T::class.java.name
             )
-            SharedPrefs.init(activity)
-            SharedPrefs.countryCode = CountryCode()
             fragment.arguments = fragmentArgs
             activity.supportFragmentManager
                 .beginTransaction()
@@ -260,17 +258,42 @@ object TestUtils {
         }
     }
 
-    fun filterWithFilterList() = arrayListOf(
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { filteredContacts = 3
-                created = 1681315250919}, countryCode = CountryCode("UA")),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply {
-                filteredContacts = 1
-                filteredCalls = 5
-                created = 1681314350919}, countryCode = CountryCode("UA")),
-            FilterWithFilteredNumbers(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal).apply { created = 1681314260919 }, countryCode = CountryCode("UA")),
-            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { created = 1681354250919 }, countryCode = CountryCode("UA")),
-            FilterWithFilteredNumbers(Filter(filter = "123456", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply { created = 1681314850919 }, countryCode = CountryCode("UA")),
-            FilterWithFilteredNumbers(Filter(filter = "1234567", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal).apply { created = 1681314251219 }, countryCode = CountryCode("UA"))
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    fun <T> LiveData<T>.getOrAwaitValue(
+        time: Long = 2,
+        timeUnit: TimeUnit = TimeUnit.SECONDS,
+        afterObserve: () -> Unit = {},
+    ): T {
+        var data: T? = null
+        val latch = CountDownLatch(1)
+        val observer = object : Observer<T> {
+            override fun onChanged(value: T) {
+                data = value
+                latch.countDown()
+                this@getOrAwaitValue.removeObserver(this)
+            }
+        }
+        this.observeForever(observer)
+
+        try {
+            afterObserve.invoke()
+            if (!latch.await(time, timeUnit)) {
+                throw TimeoutException("LiveData value was never set.")
+            }
+        } finally {
+            this.removeObserver(observer)
+        }
+        @Suppress("UNCHECKED_CAST")
+        return data as T
+    }
+
+    fun filterWithFilteredNumberList() = arrayListOf(
+            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { created = 1681315250919},  filteredContacts = 1, filteredCalls = 5),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply { created = 1681314350919},  filteredContacts = 1, filteredCalls = 5),
+            FilterWithFilteredNumbers(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal).apply { created = 1681314260919 }),
+            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { created = 1681354250919 },  filteredContacts = 0, filteredCalls = 5),
+            FilterWithFilteredNumbers(Filter(filter = "123456", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply { created = 1681314850919 },  filteredContacts = 11, filteredCalls = 52),
+            FilterWithFilteredNumbers(Filter(filter = "1234567", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal).apply { created = 1681314251219 })
     )
 
     fun callWithFilterList() = listOf(
@@ -278,7 +301,7 @@ object TestUtils {
             number = "+380502711344"
             type = IN_COMING_CALL
             callDate = "1678603872094"},
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
         CallWithFilter(FilteredCall(2).apply { callName = "a Name"
             number = "12345"
             type = BLOCKED_CALL
@@ -286,27 +309,27 @@ object TestUtils {
             isFilteredCall = true
             filteredNumber = "12345"
             filteredConditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
         CallWithFilter(FilteredCall(3).apply {  callName = "B Name"
             number = "12345"
             type = MISSED_CALL
             callDate = "1611995776162" },
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), filteredContacts = 11, filteredCalls = 52)),
         CallWithFilter(LogCall(4).apply {  callName = String.EMPTY
             number = "12345"
             type = REJECTED_CALL
             callDate = "1612258705769"},
-            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), filteredContacts = 11, filteredCalls = 52)),
         CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
             number = "12345"
             type = OUT_GOING_CALL
             callDate = "1612525268071"},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
         CallWithFilter(FilteredCall(6).apply { callName = "D Name"
             number = "12345"
             type = BLOCKED_CALL
             callDate = "1615110430251"},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
         CallWithFilter(LogCall(7).apply { callName = "Y Name"
             number = "12345"
             type = IN_COMING_CALL
@@ -314,18 +337,18 @@ object TestUtils {
     )
 
     fun contactWithFilterList() = listOf(
-        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filterValue = "+380502711344"),
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("2", name = "a Name", number = "12345", filterValue = "123"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("3", name = "B Name", number = "12345", filterValue = "123"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
+        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344"),
+            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
+        ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
+        ContactWithFilter(Contact("3", name = "B Name", number = "12345"),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
         ContactWithFilter(Contact("4", name = "B Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("5", name = "C Name", number = "12345", filterValue = "123"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
+        ContactWithFilter(Contact("5", name = "C Name", number = "12345"),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
         ContactWithFilter(Contact("6", name = " D Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
         ContactWithFilter(Contact("7", name = "Y Name", number = "12345"), null)
     )
 
@@ -334,23 +357,23 @@ object TestUtils {
         number = "+380502711344"
         type = IN_COMING_CALL
         callDate = "1678603872094"},
-        FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
-        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344", filterValue = "+380502711344"),
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), countryCode = CountryCode("UA"))),
+        FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
+        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344"),
+            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
         ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))))
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))))
 
-    fun filteredCallList() = arrayListOf<NumberDataUIModel>(
+    fun filteredCallList() = arrayListOf(
         CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
         number = "12345"
         type = OUT_GOING_CALL
         callDate = "1612525268071"},
-        FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA"))),
+        FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
         CallWithFilter(FilteredCall(6).apply { callName = "D Name"
             number = "12345"
             type = BLOCKED_CALL
             callDate = "1615110430251"},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), countryCode = CountryCode("UA"))),
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
         CallWithFilter(FilteredCall(2).apply { callName = "a Name"
             number = "12345"
             type = BLOCKED_CALL
@@ -358,22 +381,16 @@ object TestUtils {
             isFilteredCall = true
             filteredNumber = "12345"
             filteredConditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal), countryCode = CountryCode("UA")))
+            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)))
     )
 
-    fun filterList() = arrayListOf<NumberDataUIModel>(FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { filteredContacts = 3
-        created = 1681315250919}, countryCode = CountryCode("UA")),
-        FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply {
-            filteredContacts = 1
-            filteredCalls = 5
-            created = 1681314350919}, countryCode = CountryCode("UA")),
-        FilterWithFilteredNumbers(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal).apply { created = 1681314260919 }, countryCode = CountryCode("UA")))
+    fun filterList() = arrayListOf(FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681315250919), filteredContacts = 3),
+        FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply { created = 1681314350919}),
+        FilterWithFilteredNumbers(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, created = 1681314260919)))
 
-    fun filterWithCountryCode() = FilterWithFilteredNumbers(filter = Filter(filter = "123",
+    fun filterWithFilteredNumbers() = FilterWithFilteredNumbers(filter = Filter(filter = "123",
         conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
         filterType = BLOCKER ).apply {
-        filteredContacts = 12
-        filteredCalls = 3
         created = 1681314350919
-    }, countryCode = CountryCode(country = "UA"))
+    }, filteredContacts = 12, filteredCalls = 3)
 }

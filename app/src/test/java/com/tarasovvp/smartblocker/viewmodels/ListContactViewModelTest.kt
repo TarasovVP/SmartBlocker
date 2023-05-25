@@ -63,8 +63,8 @@ class ListContactViewModelTest: BaseViewModelTest<ListContactViewModel>() {
 
     @Test
     fun getHashMapFromContactListTest() {
-        val contactUIModelList = listOf(ContactWithFilterUIModel(contactName = TEST_NAME), ContactWithFilterUIModel(contactName = TEST_NUMBER))
-        val contactMap = mapOf("t" to contactUIModelList)
+        val contactUIModelList = listOf(ContactWithFilterUIModel(contactName = TEST_NAME), ContactWithFilterUIModel(contactName = "testName2"))
+        val contactMap = linkedMapOf("t" to contactUIModelList)
         viewModel.getHashMapFromContactList(contactUIModelList, false)
         assertEquals(contactMap, viewModel.contactHashMapLiveData.value)
     }

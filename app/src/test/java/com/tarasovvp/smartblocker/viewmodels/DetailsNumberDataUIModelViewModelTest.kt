@@ -84,7 +84,7 @@ class DetailsNumberDataUIModelViewModelTest: BaseViewModelTest<DetailsNumberData
         advanceUntilIdle()
         coVerify { useCase.getCountryCodeByCode(code) }
         verify { countryCodeUIMapper.mapToUIModel(countryCode) }
-        assertEquals(countryCodeUIModel, viewModel.countryCodeLiveData.value)
+        assertEquals(filterWithCountryCodeUIModel, viewModel.countryCodeLiveData.value)
     }
 
     @Test

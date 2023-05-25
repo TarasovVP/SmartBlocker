@@ -69,6 +69,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         val expectedResult = Result.Success<Unit>()
         val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
         val filterWithFilteredNumber = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        every { application.isNetworkAvailable } returns true
         coEvery { useCase.updateFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
             val result = thirdArg<(Result<Unit>) -> Unit>()
             result.invoke(expectedResult)
@@ -86,6 +87,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
         val expectedResult = Result.Success<Unit>()
         val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
         val filterWithFilteredNumber = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        every { application.isNetworkAvailable } returns true
         coEvery { useCase.deleteFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
             val result = thirdArg<(Result<Unit>) -> Unit>()
             result.invoke(expectedResult)

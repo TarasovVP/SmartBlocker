@@ -13,6 +13,8 @@ interface MainUseCase {
 
     suspend fun getAppTheme(): Flow<Int?>
 
+    suspend fun setAppTheme(appTheme: Int)
+
     suspend fun getOnBoardingSeen(): Flow<Boolean?>
 
     suspend fun getBlockerTurnOff(): Flow<Boolean?>

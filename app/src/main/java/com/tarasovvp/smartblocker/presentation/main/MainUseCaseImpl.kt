@@ -33,6 +33,10 @@ class MainUseCaseImpl @Inject constructor(
         return dataStoreRepository.getAppTheme()
     }
 
+    override suspend fun setAppTheme(appTheme: Int) {
+        return dataStoreRepository.setAppTheme(appTheme)
+    }
+
     override suspend fun getOnBoardingSeen(): Flow<Boolean?> {
         return dataStoreRepository.onBoardingSeen()
     }
