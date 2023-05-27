@@ -41,8 +41,8 @@ class MainUseCaseImpl @Inject constructor(
         return dataStoreRepository.onBoardingSeen()
     }
 
-    override suspend fun getBlockerTurnOff(): Flow<Boolean?> {
-        return dataStoreRepository.blockerTurnOff()
+    override suspend fun getBlockerTurnOn(): Flow<Boolean?> {
+        return dataStoreRepository.blockerTurnOn()
     }
 
     override suspend fun setBlockHidden(blockHidden: Boolean) {

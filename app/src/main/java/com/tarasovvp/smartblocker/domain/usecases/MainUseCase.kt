@@ -17,7 +17,7 @@ interface MainUseCase {
 
     suspend fun getOnBoardingSeen(): Flow<Boolean?>
 
-    suspend fun getBlockerTurnOff(): Flow<Boolean?>
+    suspend fun getBlockerTurnOn(): Flow<Boolean?>
 
     suspend fun setBlockHidden(blockHidden: Boolean)
 

@@ -17,11 +17,11 @@ interface DataStoreRepository {
 
     suspend fun getAppTheme(): Flow<Int?>
 
-    suspend fun setBlockerTurnOff(smartBlockerTurnOff: Boolean)
+    suspend fun setBlockerTurnOn(blockerTurnOn: Boolean)
 
-    suspend fun blockerTurnOff(): Flow<Boolean?>
+    suspend fun blockerTurnOn(): Flow<Boolean?>
 
-    suspend fun setBlockHidden(smartBlockerTurnOff: Boolean)
+    suspend fun setBlockHidden(blockHidden: Boolean)
 
     suspend fun blockHidden(): Flow<Boolean?>
 

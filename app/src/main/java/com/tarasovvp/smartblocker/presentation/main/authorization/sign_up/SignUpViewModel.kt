@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class SignUpViewModel @Inject constructor(
     val successSignInLiveData = MutableLiveData<Unit>()
 
     fun createUserWithEmailAndPassword(email: String, password: String) {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             signUpUseCase.createUserWithEmailAndPassword(email, password) { operationResult ->
                 when(operationResult) {

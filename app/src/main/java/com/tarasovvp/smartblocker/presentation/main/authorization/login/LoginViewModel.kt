@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class LoginViewModel @Inject constructor(
     val successSignInLiveData = MutableLiveData<Unit>()
 
     fun sendPasswordResetEmail(email: String) {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             loginUseCase.sendPasswordResetEmail(email) { authResult ->
                 when(authResult) {
@@ -36,7 +37,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signInWithEmailAndPassword(email: String, password: String) {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             loginUseCase.signInWithEmailAndPassword(email, password) { authResult ->
                 when(authResult) {
@@ -51,7 +52,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun firebaseAuthWithGoogle(idToken: String) {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             loginUseCase.firebaseAuthWithGoogle(idToken) { operationResult ->
                 when(operationResult) {

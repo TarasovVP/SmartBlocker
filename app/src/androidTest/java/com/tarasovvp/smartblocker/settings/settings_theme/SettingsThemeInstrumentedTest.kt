@@ -23,7 +23,6 @@ import org.junit.Test
 @HiltAndroidTest
 class SettingsThemeInstrumentedTest: BaseInstrumentedTest() {
 
-
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
@@ -31,7 +30,6 @@ class SettingsThemeInstrumentedTest: BaseInstrumentedTest() {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private var appThemeLiveData: MutableLiveData<Int>? = null
-    private var appTheme: Int? = 0
 
     @Before
     override fun setUp() {
@@ -42,8 +40,6 @@ class SettingsThemeInstrumentedTest: BaseInstrumentedTest() {
             Navigation.setViewNavController(requireView(), navController)
             appThemeLiveData = (this as? SettingsThemeFragment)?.viewModel?.appThemeLiveData
         }
-        hiltRule.inject()
-        appTheme = appThemeLiveData?.getOrAwaitValue()
     }
 
     @Test
@@ -63,10 +59,9 @@ class SettingsThemeInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.app_theme_day)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_theme_day)))
-            check(matches(if (appTheme ==  AppCompatDelegate.MODE_NIGHT_NO) isChecked() else not(isChecked())))
+            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_NO) isChecked() else not(isChecked())))
             perform(click())
-            appTheme = appThemeLiveData?.getOrAwaitValue()
-            check(matches(if (appTheme ==  AppCompatDelegate.MODE_NIGHT_NO) isChecked() else not(isChecked())))
+            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_NO) isChecked() else not(isChecked())))
         }
     }
 
@@ -75,10 +70,9 @@ class SettingsThemeInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.app_theme_night)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_theme_night)))
-            check(matches(if (appTheme ==  AppCompatDelegate.MODE_NIGHT_YES) isChecked() else not(isChecked())))
+            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_YES) isChecked() else not(isChecked())))
             perform(click())
-            appTheme = appThemeLiveData?.getOrAwaitValue()
-            check(matches(if (appTheme ==  AppCompatDelegate.MODE_NIGHT_YES) isChecked() else not(isChecked())))
+            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_YES) isChecked() else not(isChecked())))
         }
     }
 
@@ -87,10 +81,9 @@ class SettingsThemeInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.app_theme_auto)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_theme_auto)))
-            check(matches(if (appTheme ==  AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) isChecked() else not(isChecked())))
+            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) isChecked() else not(isChecked())))
             perform(click())
-            appTheme = appThemeLiveData?.getOrAwaitValue()
-            check(matches(if (appTheme ==  AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) isChecked() else not(isChecked())))
+            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) isChecked() else not(isChecked())))
         }
     }
 }

@@ -9,6 +9,7 @@ import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -54,7 +55,7 @@ class ListCallViewModel @Inject constructor(
     fun deleteCallList(filteredCallIdList: List<Int>) {
         showProgress()
         launch {
-            listCallUseCase.deleteCallList(filteredCallIdList, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+            listCallUseCase.deleteCallList(filteredCallIdList, application.isNetworkAvailable()) { operationResult ->
                 when(operationResult) {
                     is Result.Success -> successDeleteNumberLiveData.postValue(true)
                     is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))

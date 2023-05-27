@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingsBlockerUseCase {
 
-    suspend fun getBlockerTurnOff(): Flow<Boolean?>
+    suspend fun getBlockerTurnOn(): Flow<Boolean?>
 
-    suspend fun setBlockerTurnOff(blockerTurnOff: Boolean)
+    suspend fun setBlockerTurnOn(blockerTurnOff: Boolean)
 
     suspend fun getBlockHidden(): Flow<Boolean?>
 

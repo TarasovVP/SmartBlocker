@@ -29,9 +29,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.databinding.ActivityMainBinding
-
+import com.tarasovvp.smartblocker.di.DataStoreEntryPoint
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
@@ -84,7 +83,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+    override fun attachBaseContext(newBase: Context) {
+        val dataStoreRepository = EntryPointAccessors.fromApplication( newBase, DataStoreEntryPoint::class.java ).dataStoreRepository
+        val appLang = runBlocking {
+            dataStoreRepository.getAppLang().first()
+        } ?: Locale.getDefault().language
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(appLang)))
+    }
 
     override fun onStart() {
         super.onStart()
@@ -261,15 +266,15 @@ class MainActivity : AppCompatActivity() {
                 setNavigationComponents(isOnBoardingSeen)
                 if (isOnBoardingSeen && firebaseAuth.currentUser.isNotNull() && isSavedInstanceStateNull.isTrue()) {
                     startBlocker()
-                    if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+                    if (application.isNetworkAvailable()) {
                         getAllData()
                     } else {
                         navController?.navigate(R.id.startUnavailableNetworkDialog)
                     }
                 }
             }
-            blockerTurnOffLiveData.safeSingleObserve(this@MainActivity) { isSmartBlockerTurnOff ->
-                if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not() && isSmartBlockerTurnOff.not() && isBlockerLaunched().not()) {
+            blockerTurnOnLiveData.safeSingleObserve(this@MainActivity) { blockerTurnOn ->
+                if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not() && blockerTurnOn && isBlockerLaunched().not()) {
                     callIntent = Intent(this@MainActivity, ForegroundCallService::class.java)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(callIntent)
@@ -295,7 +300,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startBlocker() {
-        mainViewModel.getBlockerTurnOff()
+        mainViewModel.getBlockerTurnOn()
     }
 
     fun stopBlocker() {

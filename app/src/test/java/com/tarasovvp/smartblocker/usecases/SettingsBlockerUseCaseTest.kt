@@ -41,27 +41,27 @@ class SettingsBlockerUseCaseTest {
     @Test
     fun getBlockerTurnOffTest() = runBlocking{
         val blockerTurnOff = true
-        coEvery { dataStoreRepository.blockerTurnOff() } returns flowOf(blockerTurnOff)
-        val result = settingsBlockerUseCase.getBlockerTurnOff().single()
+        coEvery { dataStoreRepository.blockerTurnOn() } returns flowOf(blockerTurnOff)
+        val result = settingsBlockerUseCase.getBlockerTurnOn().single()
         assertEquals(blockerTurnOff, result)
-        coVerify { dataStoreRepository.blockerTurnOff() }
+        coVerify { dataStoreRepository.blockerTurnOn() }
     }
 
     @Test
     fun setBlockerTurnOffTest() = runBlocking{
         val blockerTurnOff = true
-        coEvery { dataStoreRepository.setBlockerTurnOff(blockerTurnOff) } just Runs
-        settingsBlockerUseCase.setBlockerTurnOff(blockerTurnOff)
-        coVerify { dataStoreRepository.setBlockerTurnOff(blockerTurnOff) }
+        coEvery { dataStoreRepository.setBlockerTurnOn(blockerTurnOff) } just Runs
+        settingsBlockerUseCase.setBlockerTurnOn(blockerTurnOff)
+        coVerify { dataStoreRepository.setBlockerTurnOn(blockerTurnOff) }
     }
 
     @Test
     fun getBlockHiddenTest() = runBlocking{
         val blockHidden = true
-        coEvery { dataStoreRepository.blockerTurnOff() } returns flowOf(blockHidden)
-        val result = settingsBlockerUseCase.getBlockerTurnOff().single()
+        coEvery { dataStoreRepository.blockerTurnOn() } returns flowOf(blockHidden)
+        val result = settingsBlockerUseCase.getBlockerTurnOn().single()
         assertEquals(blockHidden, result)
-        coVerify { dataStoreRepository.blockerTurnOff() }
+        coVerify { dataStoreRepository.blockerTurnOn() }
     }
 
     @Test

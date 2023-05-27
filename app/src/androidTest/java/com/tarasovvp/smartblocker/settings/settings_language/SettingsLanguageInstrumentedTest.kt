@@ -1,19 +1,20 @@
 package com.tarasovvp.smartblocker.settings.settings_language
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
-import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_EN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -21,13 +22,17 @@ import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import timber.log.Timber
 
 @HiltAndroidTest
 class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    private var appLanguageLiveData: MutableLiveData<String>? = null
 
     @Before
     override fun setUp() {
@@ -36,9 +41,7 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.settingsLanguageFragment)
             Navigation.setViewNavController(requireView(), navController)
-            if (BuildConfig.DEBUG) {
-                Timber.plant(Timber.DebugTree())
-            }
+            appLanguageLiveData = (this as? SettingsLanguageFragment)?.viewModel?.appLanguageLiveData
         }
     }
 
@@ -61,9 +64,9 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_language_russian)))
             check(matches(withDrawable(R.drawable.ic_flag_ru)))
-            check(matches(if (SharedPrefs.appLang == APP_LANG_RU) isChecked() else not(isChecked())))
+            check(matches(if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_RU) isChecked() else not(isChecked())))
             perform(click())
-            check(matches(if (SharedPrefs.appLang == APP_LANG_RU) isChecked() else not(isChecked())))
+            check(matches(isChecked()))
         }
     }
 
@@ -73,9 +76,9 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_language_ukrainian)))
             check(matches(withDrawable(R.drawable.ic_flag_ua)))
-            check(matches(if (SharedPrefs.appLang == APP_LANG_UK) isChecked() else not(isChecked())))
+            check(matches(if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_UK) isChecked() else not(isChecked())))
             perform(click())
-            check(matches(if (SharedPrefs.appLang == APP_LANG_UK) isChecked() else not(isChecked())))
+            check(matches(isChecked()))
         }
     }
 
@@ -85,9 +88,9 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_language_english)))
             check(matches(withDrawable(R.drawable.ic_flag_en)))
-            check(matches(if (SharedPrefs.appLang == APP_LANG_EN) isChecked() else not(isChecked())))
+            check(matches(if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_EN) isChecked() else not(isChecked())))
             perform(click())
-            check(matches(if (SharedPrefs.appLang == APP_LANG_EN) isChecked() else not(isChecked())))
+            check(matches(isChecked()))
         }
     }
 }

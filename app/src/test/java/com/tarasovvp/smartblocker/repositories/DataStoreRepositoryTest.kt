@@ -11,7 +11,7 @@ import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_OFF
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_ON
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_SEEN
 import io.mockk.*
@@ -104,21 +104,21 @@ class DataStoreRepositoryTest {
     @Test
     fun setBlockerTurnOffTest() = runBlocking {
         val blockerTurnOff = true
-        val key = booleanPreferencesKey(BLOCK_TURN_OFF)
+        val key = booleanPreferencesKey(BLOCK_TURN_ON)
         val preferences = preferencesOf(key to blockerTurnOff)
         coEvery { dataStore.updateData(any()) } returns flowOf(preferences).first()
         coEvery { dataStore.data } returns flowOf(preferences)
-        dataStoreRepository.setBlockerTurnOff(blockerTurnOff)
-        assertEquals(blockerTurnOff, dataStore.data.first()[booleanPreferencesKey(BLOCK_TURN_OFF)])
+        dataStoreRepository.setBlockerTurnOn(blockerTurnOff)
+        assertEquals(blockerTurnOff, dataStore.data.first()[booleanPreferencesKey(BLOCK_TURN_ON)])
     }
 
     @Test
     fun blockerTurnOffTest() = runBlocking {
         val blockerTurnOff = true
-        val key = booleanPreferencesKey(BLOCK_TURN_OFF)
+        val key = booleanPreferencesKey(BLOCK_TURN_ON)
         val preferences = preferencesOf(key to blockerTurnOff)
         coEvery { dataStore.data } returns flowOf(preferences)
-        val result = dataStoreRepository.blockerTurnOff().first()
+        val result = dataStoreRepository.blockerTurnOn().first()
         assertEquals(blockerTurnOff, result)
     }
 

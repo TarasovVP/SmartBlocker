@@ -95,10 +95,10 @@ class MainUseCaseTest {
     @Test
     fun getBlockerTurnOffTest() = runBlocking {
         val blockerTurnOff = true
-        coEvery { dataStoreRepository.blockerTurnOff() } returns flowOf(blockerTurnOff)
-        val result = mainUseCase.getBlockerTurnOff().single()
+        coEvery { dataStoreRepository.blockerTurnOn() } returns flowOf(blockerTurnOff)
+        val result = mainUseCase.getBlockerTurnOn().single()
         assertEquals(blockerTurnOff, result)
-        coVerify { dataStoreRepository.blockerTurnOff() }
+        coVerify { dataStoreRepository.blockerTurnOn() }
     }
 
     @Test

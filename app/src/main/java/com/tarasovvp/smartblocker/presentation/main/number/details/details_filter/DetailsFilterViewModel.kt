@@ -16,6 +16,7 @@ import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -73,7 +74,7 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                detailsFilterUseCase.deleteFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                detailsFilterUseCase.deleteFilter(filter, application.isNetworkAvailable()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
@@ -88,7 +89,7 @@ class DetailsFilterViewModel @Inject constructor(
         showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                detailsFilterUseCase.updateFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                detailsFilterUseCase.updateFilter(filter, application.isNetworkAvailable()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))

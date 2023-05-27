@@ -1,19 +1,27 @@
 package com.tarasovvp.smartblocker.settings.settings_list
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageFragment
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListFragment
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.flagDrawable
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.every
+import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
 import org.junit.Before
@@ -23,23 +31,31 @@ import org.junit.Test
 @HiltAndroidTest
 class SettingsListInstrumentedTest: BaseInstrumentedTest() {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    private val firebaseAuthMock: FirebaseAuth = mockk()
+
+    private var appLanguageLiveData: MutableLiveData<String>? = null
 
     @Before
     override fun setUp() {
         super.setUp()
+        every { firebaseAuthMock.currentUser } returns mockk()
         launchFragmentInHiltContainer<SettingsListFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.settingsListFragment)
             Navigation.setViewNavController(requireView(), navController)
+            appLanguageLiveData = (this as? SettingsLanguageFragment)?.viewModel?.appLanguageLiveData
         }
     }
 
     @Test
     fun checkContainer() {
         onView(withId(R.id.container)).check(matches(isDisplayed())).perform(click())
-
     }
 
     @Test
@@ -60,9 +76,16 @@ class SettingsListInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsLanguage() {
-        onView(withId(R.id.settings_language)).check(matches(isDisplayed()))
-            .check(matches(withText(R.string.settings_language)))
-            .check(matches(withDrawable(R.drawable.ic_settings_language))).perform(click())
+        val appLanguage = appLanguageLiveData?.getOrAwaitValue()
+        onView(withId(R.id.settings_language)).apply {
+            check(matches(isDisplayed()))
+            check(matches(withText(R.string.settings_language)))
+            check(matches(withDrawable(R.drawable.ic_settings_language)))
+            appLanguage?.let {
+                check(matches(withDrawable(it.flagDrawable(), 2)))
+            }
+            perform(click())
+        }
         assertEquals(R.id.settingsLanguageFragment, navController?.currentDestination?.id)
     }
 
@@ -77,7 +100,7 @@ class SettingsListInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsReview() {
         onView(withId(R.id.settings_review)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (firebaseAuthMock.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_review)))
                 check(matches(withDrawable(R.drawable.ic_settings_review)))

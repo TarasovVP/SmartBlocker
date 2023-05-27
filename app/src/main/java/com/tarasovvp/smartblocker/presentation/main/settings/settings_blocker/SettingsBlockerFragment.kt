@@ -33,22 +33,26 @@ class SettingsBlockerFragment :
         viewModel.getCurrentCountryCode()
     }
 
-    private fun setBlockerTurnOffSettings(blockerTurnOff: Boolean) {
+    private fun setBlockerTurnOnSettings(blockerTurnOn: Boolean) {
         binding?.apply {
-            settingsBlockerSwitch.isChecked = blockerTurnOff.not()
-            settingsBlockerDescribe.text =
-                getString(if (settingsBlockerSwitch.isChecked) R.string.settings_blocker_on else R.string.settings_blocker_off)
+            activity?.runOnUiThread {
+                settingsBlockerHiddenSwitch.isChecked = blockerTurnOn
+                settingsBlockerDescribe.text =
+                    getString(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off )
+            }
             settingsBlockerSwitch.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.setBlockerTurnOff(isChecked.not())
+                viewModel.setBlockerTurnOn(isChecked.not())
             }
         }
     }
 
     private fun setBlockHiddenSettings(blockHidden: Boolean) {
         binding?.apply {
-            settingsBlockerHiddenSwitch.isChecked = blockHidden
-            settingsBlockerHiddenDescribe.text =
-                getString(if (settingsBlockerHiddenSwitch.isChecked) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
+            activity?.runOnUiThread {
+                settingsBlockerHiddenSwitch.isChecked = blockHidden
+                settingsBlockerHiddenDescribe.text =
+                    getString(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
+            }
             settingsBlockerHiddenSwitch.setSafeOnClickListener {
                 viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked)
             }
@@ -72,10 +76,10 @@ class SettingsBlockerFragment :
 
     override fun observeLiveData() {
         with(viewModel) {
-            blockerTurnOffLiveData.safeSingleObserve(viewLifecycleOwner) { blockerTurnOff ->
-                setBlockerTurnOffSettings(blockerTurnOff)
+            blockerTurnOnLiveData.safeSingleObserve(viewLifecycleOwner) { blockerTurnOn ->
+                setBlockerTurnOnSettings(blockerTurnOn)
                 (activity as MainActivity).apply {
-                    if (blockerTurnOff) {
+                    if (blockerTurnOn) {
                         startBlocker()
                     } else {
                         stopBlocker()

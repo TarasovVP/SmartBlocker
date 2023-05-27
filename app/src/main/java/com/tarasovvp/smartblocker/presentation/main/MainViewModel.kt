@@ -22,7 +22,7 @@ class MainViewModel @Inject constructor(
     private val mainUseCase: MainUseCase
 ) : BaseViewModel(application) {
     val onBoardingSeenLiveData = MutableLiveData<Boolean>()
-    val blockerTurnOffLiveData = MutableLiveData<Boolean>()
+    val blockerTurnOnLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
     val currentUserLiveData = MutableLiveData<CurrentUser>()
     private val mainProgress = MainProgress()
@@ -53,10 +53,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getBlockerTurnOff() {
+    fun getBlockerTurnOn() {
         launch {
-            mainUseCase.getBlockerTurnOff().collect { isSmartBlockerTurnOff ->
-                blockerTurnOffLiveData.postValue(isSmartBlockerTurnOff.isTrue())
+            mainUseCase.getBlockerTurnOn().collect { blockerTurnOn ->
+                blockerTurnOnLiveData.postValue(blockerTurnOn.isTrue())
             }
         }
     }

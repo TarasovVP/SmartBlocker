@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -52,11 +53,11 @@ class SettingsAccountFragment :
         }
     }
 
-    private fun initViews() {
+    fun initViews() {
         binding?.apply {
             isLoggedInUser = firebaseAuth.currentUser.isNotNull()
             settingsAccountName.text = firebaseAuth.currentUser?.email
-            settingsAccountAvatar.setImageDrawable(context?.getInitialDrawable( firebaseAuth.currentUser?.email.nameInitial()))
+            settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable( firebaseAuth.currentUser?.email.nameInitial())?.toBitmap())
         }
     }
 

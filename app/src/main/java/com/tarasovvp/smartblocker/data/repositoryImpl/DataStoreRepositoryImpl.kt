@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_OFF
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_ON
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_SEEN
 import kotlinx.coroutines.flow.Flow
@@ -56,22 +56,22 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
             }.take(1)
     }
 
-    override suspend fun setBlockerTurnOff(smartBlockerTurnOff: Boolean) {
+    override suspend fun setBlockerTurnOn(blockerTurnOn: Boolean) {
         dataStore.edit { preferences ->
-            preferences[booleanPreferencesKey(BLOCK_TURN_OFF)] = smartBlockerTurnOff
+            preferences[booleanPreferencesKey(BLOCK_TURN_ON)] = blockerTurnOn
         }
     }
 
-    override suspend fun blockerTurnOff(): Flow<Boolean?> {
+    override suspend fun blockerTurnOn(): Flow<Boolean?> {
         return dataStore.data
             .map { preferences ->
-                preferences[booleanPreferencesKey(BLOCK_TURN_OFF)]
+                preferences[booleanPreferencesKey(BLOCK_TURN_ON)]
             }.take(1)
     }
 
-    override suspend fun setBlockHidden(smartBlockerTurnOff: Boolean) {
+    override suspend fun setBlockHidden(blockHidden: Boolean) {
         dataStore.edit { preferences ->
-            preferences[booleanPreferencesKey(BLOCK_HIDDEN)] = smartBlockerTurnOff
+            preferences[booleanPreferencesKey(BLOCK_HIDDEN)] = blockHidden
         }
     }
 

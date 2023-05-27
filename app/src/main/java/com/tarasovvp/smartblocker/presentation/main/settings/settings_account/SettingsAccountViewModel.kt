@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class SettingsAccountViewModel @Inject constructor(
     val successChangePasswordLiveData = MutableLiveData<Unit>()
 
     fun signOut() {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             settingsAccountUseCase.signOut { result ->
                 when (result) {
@@ -36,7 +37,7 @@ class SettingsAccountViewModel @Inject constructor(
     }
 
     fun changePassword(currentPassword: String, newPassword: String) {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             settingsAccountUseCase.changePassword(currentPassword, newPassword) { result ->
                 when (result) {
@@ -51,7 +52,7 @@ class SettingsAccountViewModel @Inject constructor(
     }
 
     fun deleteUser() {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             settingsAccountUseCase.deleteUser { result ->
                 when (result) {

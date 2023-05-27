@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.settings.settings_account
 
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -7,28 +8,42 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.TestUtils.IS_LOG_OUT
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Test
 import androidx.test.filters.Suppress
+import androidx.test.platform.app.InstrumentationRegistry
+import com.google.firebase.auth.FirebaseAuth
+import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.TestUtils.withBitmap
+import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.nameInitial
+import io.mockk.every
+import io.mockk.mockk
 
 @Suppress
 @HiltAndroidTest
 open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
 
+
+    private val mockFirebaseAuth: FirebaseAuth = mockk()
+
     @Before
     override fun setUp() {
         super.setUp()
+        every { mockFirebaseAuth.currentUser } returns if (this is SettingsAccountInstrumentedTest) mockk() else null
+        if (this is SettingsAccountInstrumentedTest) every { mockFirebaseAuth.currentUser?.email } returns TEST_EMAIL
         launchFragmentInHiltContainer<SettingsAccountFragment> {
+            (this as SettingsAccountFragment).firebaseAuth = mockFirebaseAuth
+            this.initViews()
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.settingsAccountFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -43,16 +58,15 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsAccountContainer() {
         onView(withId(R.id.settings_account_container))
-            .check(matches(if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) isDisplayed() else not(isDisplayed())))
+            .check(matches(if (mockFirebaseAuth.currentUser.isNotNull()) isDisplayed() else not(isDisplayed())))
     }
 
     @Test
     fun checkSettingsAccountAvatar() {
         onView(withId(R.id.settings_account_avatar)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
-                //TODO implement bitmap checking
-                //check(matches(withDrawable()))
+                check(matches(withBitmap(targetContext?.getInitialDrawable( mockFirebaseAuth.currentUser?.email.nameInitial())?.toBitmap())))
             } else {
                 check(matches(not(isDisplayed())))
             }
@@ -62,9 +76,9 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsAccountName() {
         onView(withId(R.id.settings_account_name)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
-                check(matches(withText(SmartBlockerApp.instance?.firebaseAuth?.currentUser?.email)))
+                check(matches(withText(TEST_EMAIL)))
             } else {
                 check(matches(not(isDisplayed())))
             }
@@ -74,7 +88,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsAccountLogOut() {
         onView(withId(R.id.settings_account_log_out)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_log_out_title)))
                 perform(click())
@@ -89,7 +103,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsAccountChangePassword() {
         onView(withId(R.id.settings_account_change_password)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_change_password_title)))
                 perform(click())
@@ -103,7 +117,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsAccountDelete() {
         onView(withId(R.id.settings_account_delete)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_delete_title)))
                 perform(click())
@@ -118,7 +132,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkIncludeEmptyState() {
         onView(withId(R.id.include_empty_state)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))
@@ -132,7 +146,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsAccountLogin() {
         onView(withId(R.id.settings_account_login)).apply {
-            if (SmartBlockerApp.instance?.isLoggedInUser().isTrue()) {
+            if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))

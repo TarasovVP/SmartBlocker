@@ -10,6 +10,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -54,7 +55,7 @@ class ListFilterViewModel @Inject constructor(
         showProgress()
         launch {
             val filterListToDelete = filterWithFilteredNumberUIMapper.mapFromUIModelList(filterList).mapNotNull { it.filter }
-            listFilterUseCase.deleteFilterList(filterListToDelete, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+            listFilterUseCase.deleteFilterList(filterListToDelete, application.isNetworkAvailable()) { operationResult ->
                 when(operationResult) {
                     is Result.Success -> successDeleteFilterLiveData.postValue(true)
                     is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))

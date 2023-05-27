@@ -349,3 +349,8 @@ object AppModule {
     }
 }
 
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface DataStoreEntryPoint {
+    val dataStoreRepository: DataStoreRepository
+}

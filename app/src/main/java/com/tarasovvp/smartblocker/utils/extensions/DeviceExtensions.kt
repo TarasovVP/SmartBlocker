@@ -21,10 +21,12 @@ import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.END_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import dagger.hilt.android.testing.HiltTestApplication
 import java.util.*
 
 fun Context.registerForNetworkUpdates(isNetworkAvailable: (Boolean) -> Unit) {
@@ -50,6 +52,14 @@ fun Context.registerForNetworkUpdates(isNetworkAvailable: (Boolean) -> Unit) {
         getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
     connectivityManager.requestNetwork(networkRequest, networkCallback)
+}
+
+fun Application.isNetworkAvailable(): Boolean {
+    return when(this) {
+        is SmartBlockerApp -> isNetworkAvailable.isTrue()
+        is HiltTestApplication -> true
+        else -> false
+    }
 }
 
 fun Context.createNotificationChannel() {

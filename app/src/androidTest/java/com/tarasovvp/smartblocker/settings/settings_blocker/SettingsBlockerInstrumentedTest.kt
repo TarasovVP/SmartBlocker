@@ -1,6 +1,8 @@
 package com.tarasovvp.smartblocker.settings.settings_blocker
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -8,9 +10,10 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.data.prefs.SharedPrefs
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -25,8 +28,15 @@ import org.junit.Test
 @HiltAndroidTest
 class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    private var blockerTurnOnLiveData: MutableLiveData<Boolean>? = null
+    private var blockHiddenLiveData: MutableLiveData<Boolean>? = null
+    private var currentCountryCodeLiveData: MutableLiveData<CountryCode>? = null
 
     @Before
     override fun setUp() {
@@ -35,6 +45,12 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.settingsBlockerFragment)
             Navigation.setViewNavController(requireView(), navController)
+            (this as? SettingsBlockerFragment)?.apply {
+                blockerTurnOnLiveData = viewModel.blockerTurnOnLiveData
+                blockHiddenLiveData = viewModel.blockHiddenLiveData
+                currentCountryCodeLiveData = viewModel.currentCountryCodeLiveData
+            }
+
         }
     }
 
@@ -49,30 +65,34 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
-    fun checkSettingsBlockerSwitch() {
+    fun checkSettingsBlockerTurnOnSwitch() {
+        val blockerTurnOn = blockerTurnOnLiveData?.getOrAwaitValue().isTrue()
         onView(withId(R.id.settings_blocker_switch)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_blocker_title)))
-            check(matches(if (SharedPrefs.smartBlockerTurnOff.isTrue()) not(isChecked()) else isChecked()))
+            check(matches(if (blockerTurnOn) isChecked() else not(isChecked())))
             perform(click())
-            check(matches(if (SharedPrefs.smartBlockerTurnOff.isTrue()) not(isChecked()) else isChecked()))
+            blockerTurnOnLiveData?.postValue(blockerTurnOn.not())
+            check(matches(if (blockerTurnOnLiveData?.getOrAwaitValue().isTrue()) isChecked() else not(isChecked())))
         }
     }
 
     @Test
-    fun checkSettingsBlockerDivider() {
+    fun checkSettingsBlockerTurnOnDivider() {
         onView(withId(R.id.settings_blocker_divider))
             .check(matches(isDisplayed()))
             .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
     }
 
     @Test
-    fun checkSettingsBlockerDescribe() {
+    fun checkSettingsBlockerTurnOnDescribe() {
+        val blockerTurnOn = blockerTurnOnLiveData?.getOrAwaitValue().isTrue()
         onView(withId(R.id.settings_blocker_describe)).apply {
             check(matches(isDisplayed()))
-            check(matches(withText( if (SharedPrefs.smartBlockerTurnOff.isTrue()) R.string.settings_blocker_off else R.string.settings_blocker_on)))
+            check(matches(withText( if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off)))
             onView(withId(R.id.settings_blocker_switch)).perform(click())
-            check(matches(withText( if (SharedPrefs.smartBlockerTurnOff.isTrue()) R.string.settings_blocker_off else R.string.settings_blocker_on)))
+            blockerTurnOnLiveData?.postValue(blockerTurnOn.not())
+            check(matches(withText( if (blockerTurnOnLiveData?.getOrAwaitValue().isTrue()) R.string.settings_blocker_on else R.string.settings_blocker_off)))
         }
     }
 
@@ -83,13 +103,14 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsBlockerHiddenSwitch() {
+        val blockHidden = blockHiddenLiveData?.getOrAwaitValue().isTrue()
         onView(withId(R.id.settings_blocker_hidden_switch)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_block_hidden_title)))
-            check(matches(if (SharedPrefs.blockHidden.isTrue()) isChecked() else not(isChecked())))
+            check(matches(if (blockHidden) isChecked() else not(isChecked())))
             perform(click())
-            //TODO error throwing
-            //check(matches(if (SharedPrefs.blockHidden.isTrue()) isChecked() else not(isChecked())))
+            blockHiddenLiveData?.postValue(blockHidden.not())
+            check(matches(if (blockHiddenLiveData?.getOrAwaitValue().isTrue()) isChecked() else not(isChecked())))
         }
     }
 
@@ -102,11 +123,13 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsBlockerHiddenDescribe() {
+        val blockHidden = blockHiddenLiveData?.getOrAwaitValue().isTrue()
         onView(withId(R.id.settings_blocker_hidden_describe)).apply {
             check(matches(isDisplayed()))
-            check(matches(withText(if (SharedPrefs.blockHidden.isTrue()) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
-            perform(click())
-            check(matches(withText(if (SharedPrefs.blockHidden.isTrue()) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
+            check(matches(withText(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
+            onView(withId(R.id.settings_blocker_hidden_switch)).perform(click())
+            blockerTurnOnLiveData?.postValue(blockHidden.not())
+            check(matches(withText(if (blockHiddenLiveData?.getOrAwaitValue().isTrue()) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
         }
     }
 
@@ -125,9 +148,10 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsBlockerCountry() {
+        val countryCode = currentCountryCodeLiveData?.getOrAwaitValue()
         onView(withId(R.id.settings_blocker_country))
             .check(matches(isDisplayed()))
-            .check(matches(withText(String.format("%s %s", SharedPrefs.countryCode?.country?.uppercase()?.flagEmoji(), SharedPrefs.countryCode?.country?.uppercase()))))
+            .check(matches(withText(String.format("%s %s", countryCode?.country?.uppercase()?.flagEmoji(), countryCode?.country?.uppercase()))))
             .perform(click())
         assertEquals(R.id.countryCodeSearchDialog, navController?.currentDestination?.id)
     }

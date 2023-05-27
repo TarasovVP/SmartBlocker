@@ -8,6 +8,7 @@ import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Locale
@@ -31,7 +32,7 @@ class SettingsListViewModel @Inject constructor(
     }
 
     fun insertReview(review: Review) {
-        if ((application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) {
+        if (application.isNetworkAvailable()) {
             showProgress()
             settingsListUseCase.insertReview(review) { result ->
                 when (result) {

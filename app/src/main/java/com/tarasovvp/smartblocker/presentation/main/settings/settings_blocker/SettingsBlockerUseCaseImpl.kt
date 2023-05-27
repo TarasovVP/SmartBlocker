@@ -16,12 +16,12 @@ class SettingsBlockerUseCaseImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): SettingsBlockerUseCase {
 
-    override suspend fun getBlockerTurnOff(): Flow<Boolean?> {
-        return dataStoreRepository.blockerTurnOff()
+    override suspend fun getBlockerTurnOn(): Flow<Boolean?> {
+        return dataStoreRepository.blockerTurnOn()
     }
 
-    override suspend fun setBlockerTurnOff(blockerTurnOff: Boolean) {
-        dataStoreRepository.setBlockerTurnOff(blockerTurnOff)
+    override suspend fun setBlockerTurnOn(blockerTurnOff: Boolean) {
+        dataStoreRepository.setBlockerTurnOn(blockerTurnOff)
     }
 
     override suspend fun getBlockHidden(): Flow<Boolean?> {

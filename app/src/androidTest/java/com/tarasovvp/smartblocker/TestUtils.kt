@@ -1,6 +1,9 @@
 package com.tarasovvp.smartblocker
 
+import android.app.Application
 import android.content.ComponentName
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
@@ -93,7 +96,7 @@ object TestUtils {
         }
     }
 
-    fun withDrawable(@DrawableRes id: Int?) = object : TypeSafeMatcher<View>() {
+    fun withDrawable(@DrawableRes id: Int?, position: Int? = null) = object : TypeSafeMatcher<View>() {
         override fun describeTo(description: Description) {
             description.appendText("View with drawable same as drawable with id $id")
         }
@@ -104,7 +107,7 @@ object TestUtils {
 
             return if (view is ImageView) view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
             else if (view is TextView && id.isNull()) view.compoundDrawables.none { it.isNotNull() }
-            else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
+            else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[position ?: view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
             else false
         }
     }

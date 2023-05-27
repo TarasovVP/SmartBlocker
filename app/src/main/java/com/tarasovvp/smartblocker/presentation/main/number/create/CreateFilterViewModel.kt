@@ -18,6 +18,7 @@ import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -89,7 +90,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel createFilter createFilter $filterWithCountryCode filter.country ${filterWithCountryCode.country}")
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                createFilterUseCase.createFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                createFilterUseCase.createFilter(filter, application.isNetworkAvailable()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
@@ -103,7 +104,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel updateFilter")
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                createFilterUseCase.updateFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                createFilterUseCase.updateFilter(filter, application.isNetworkAvailable()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
@@ -117,7 +118,7 @@ class CreateFilterViewModel @Inject constructor(
         Timber.e("CreateFilterViewModel deleteFilter")
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                createFilterUseCase.deleteFilter(filter, (application as? SmartBlockerApp)?.isNetworkAvailable.isTrue()) { operationResult ->
+                createFilterUseCase.deleteFilter(filter, application.isNetworkAvailable()) { operationResult ->
                     when(operationResult) {
                         is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
                         is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
