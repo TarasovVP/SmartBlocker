@@ -73,12 +73,12 @@ data class FilterWithFilteredNumberUIModel(
         }, filteredCalls.quantityString(), filteredCalls)
     }
 
-    fun conditionTypeName(): Int {
-        return FilterCondition.values()[conditionType].title()
+    fun conditionTypeName(): Int? {
+        return conditionType.takeIf { it >= 0 }?.let { FilterCondition.values()[conditionType].title() }
     }
 
-    fun conditionTypeIcon(): Int {
-        return FilterCondition.values()[conditionType].mainIcon()
+    fun conditionTypeIcon(): Int? {
+        return conditionType.takeIf { it >= 0 }?.let { FilterCondition.values()[conditionType].mainIcon() }
     }
 
     fun conditionTypeSmallIcon(): Int? {

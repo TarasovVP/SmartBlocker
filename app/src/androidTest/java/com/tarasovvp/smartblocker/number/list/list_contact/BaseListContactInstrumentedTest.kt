@@ -23,8 +23,8 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.junit.Test
 import androidx.test.filters.Suppress
-import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.atPosition
+import com.tarasovvp.smartblocker.TestUtils.contactWithFilterUIModelList
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withBitmap
@@ -33,6 +33,7 @@ import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import junit.framework.TestCase.assertEquals
@@ -45,14 +46,14 @@ import org.junit.Before
 @HiltAndroidTest
 open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
 
-    private var contactList: List<ContactWithFilter>? = null
+    private var contactList: List<ContactWithFilterUIModel>? = null
     private var filterIndexList: ArrayList<Int> = arrayListOf()
     private var fragment: Fragment? = null
 
     @Before
     override fun setUp() {
         super.setUp()
-        contactList = if (this is EmptyListContactInstrumentedTest) listOf() else TestUtils.contactWithFilterList()
+        contactList = if (this is EmptyListContactInstrumentedTest) listOf() else contactWithFilterUIModelList()
         launchFragmentInHiltContainer<ListContactFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listContactFragment)
@@ -63,7 +64,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
                 viewModel.contactListLiveData.postValue(contactList)
             }
         }
-        waitUntilViewIsDisplayed(if (this@BaseListContactInstrumentedTest is EmptyListContactInstrumentedTest) withId(R.id.list_contact_empty) else withText(contactList?.get(0)?.contact?.name))
+        waitUntilViewIsDisplayed(if (this@BaseListContactInstrumentedTest is EmptyListContactInstrumentedTest) withId(R.id.list_contact_empty) else withText(contactList?.get(0)?.contactName))
     }
 
     @Test
@@ -163,7 +164,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_contact_recycler_view))
                 .check(matches(isDisplayed()))
                 .check(matches(hasItemCount(contactList?.size.orZero() + contactList?.groupBy {
-                    if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
+                    if (it.contactName.isEmpty()) String.EMPTY else it.contactName.firstOrNull()
                 }?.size.orZero())))
         }
     }
@@ -174,7 +175,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
         } else {
             val firstHeader = contactList?.groupBy {
-                if (it.contact?.name.isNullOrEmpty()) String.EMPTY else it.contact?.name?.get(0).toString()
+                if (it.contactName.isEmpty()) String.EMPTY else it.contactName.firstOrNull().toString()
             }?.keys?.first()
             onView(withId(R.id.list_contact_recycler_view)).check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
         }
@@ -185,7 +186,7 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
         if (contactList.isNullOrEmpty()) {
             onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
         } else {
-            checkContactItem(1, contactList?.get(0))
+            checkContactItem(1, contactList?.firstOrNull())
         }
     }
 
@@ -210,35 +211,35 @@ open class BaseListContactInstrumentedTest: BaseInstrumentedTest() {
         }
     }
 
-    private fun checkContactItem(position: Int, contactWithFilter: ContactWithFilter?) {
+    private fun checkContactItem(position: Int, contactWithFilter: ContactWithFilterUIModel?) {
         onView(withId(R.id.list_contact_recycler_view)).apply {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_avatar),
                 isDisplayed(),
-                withBitmap(contactWithFilter?.contact?.placeHolder(targetContext)?.toBitmap()))))))
+                withBitmap(contactWithFilter?.placeHolder(targetContext)?.toBitmap()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter),
                 isDisplayed(),
-                withDrawable(contactWithFilter?.filterWithFilteredNumbers?.filter?.filterTypeIcon().orZero()))))))
+                withDrawable(contactWithFilter?.filterWithFilteredNumberUIModel?.filterTypeIcon().orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_number),
                 isDisplayed(),
                 withText(contactWithFilter?.highlightedSpanned.toString()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_validity),
-                if (contactWithFilter?.contact?.phoneNumberValidity().isNull()) not(isDisplayed()) else isDisplayed(),
-                withText(if (contactWithFilter?.contact?.phoneNumberValidity().isNull()) String.EMPTY else targetContext.getString(contactWithFilter?.contact?.phoneNumberValidity().orZero())))))))
+                if (contactWithFilter?.phoneNumberValidity().isNull()) not(isDisplayed()) else isDisplayed(),
+                withText(if (contactWithFilter?.phoneNumberValidity().isNull()) String.EMPTY else targetContext.getString(contactWithFilter?.phoneNumberValidity().orZero())))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_name),
                 isDisplayed(),
-                withText(if (contactWithFilter?.contact?.isNameEmpty().isTrue()) targetContext.getString(R.string.details_number_not_from_contacts) else contactWithFilter?.contact?.name))))))
+                withText(if (contactWithFilter?.contactName.isNullOrEmpty()) targetContext.getString(R.string.details_number_not_from_contacts) else contactWithFilter?.contactName))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_divider),
                 isDisplayed(),
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_title),
                 isDisplayed(),
-                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilter?.filterWithFilteredNumbers?.filter?.isBlocker().isTrue()) targetContext.getString(R.string.details_number_block_with_filter) else targetContext.getString(R.string.details_number_permit_with_filter)),
-                withTextColor(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) R.color.text_color_grey else if (contactWithFilter?.filterWithFilteredNumbers?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
+                withText(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) targetContext.getString(R.string.details_number_block_with_filter) else targetContext.getString(R.string.details_number_permit_with_filter)),
+                withTextColor(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) R.color.text_color_grey else if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_value),
                 isDisplayed(),
-                withText(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) String.EMPTY else contactWithFilter?.filterWithFilteredNumbers?.filter?.filter),
-                withTextColor(if (contactWithFilter?.filterWithFilteredNumbers?.filter?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
-                withDrawable(if (contactWithFilter?.contact?.isFilterNullOrEmpty().isTrue()) null else contactWithFilter?.filterWithFilteredNumbers?.filter?.conditionTypeSmallIcon()))))))
+                withText(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilter?.filterWithFilteredNumberUIModel?.filter),
+                withTextColor(if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
+                withDrawable(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) null else contactWithFilter?.filterWithFilteredNumberUIModel?.conditionTypeSmallIcon()))))))
             perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
             assertEquals(R.id.detailsNumberDataFragment, navController?.currentDestination?.id)
             assertEquals(contactWithFilter, navController?.backStack?.last()?.arguments?.parcelable<ContactWithFilter>("numberData"))

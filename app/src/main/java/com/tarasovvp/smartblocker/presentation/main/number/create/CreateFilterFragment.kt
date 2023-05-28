@@ -252,7 +252,7 @@ open class CreateFilterFragment :
         (activity as MainActivity).apply {
             showInfoMessage(String.format(filterWithFilteredNumberUIModel.filterAction?.successText()?.let { getString(it) }
                 .orEmpty(),
-                filterWithFilteredNumberUIModel, getString(filterWithFilteredNumberUIModel.conditionTypeName())), false)
+                filterWithFilteredNumberUIModel, filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) }), false)
             showInterstitial()
             getAllData()
             findNavController().navigate(if (binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker().isTrue())

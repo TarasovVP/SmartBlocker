@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.presentation.mapperImpl
 
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.*
@@ -13,13 +13,13 @@ class ContactWithFilterUIMapperImpl(private val filterWithFilteredNumberUIMapper
     override fun mapToUIModel(from: ContactWithFilter): ContactWithFilterUIModel {
         return ContactWithFilterUIModel(from.contact?.contactId.orEmpty(), from.contact?.name.orEmpty(), from.contact?.photoUrl.orEmpty(),
             from.contact?.number.orEmpty(), from.contact?.phoneNumberValue.orEmpty(), from.contact?.isPhoneNumberValid.isTrue(),
-            filterWithFilteredNumberUIModel = from.filterWithFilteredNumbers?.let { filterWithFilteredNumberUIMapper.mapToUIModel(it) } ?: FilterWithFilteredNumberUIModel())
+            filterWithFilteredNumberUIModel = from.filterWithFilteredNumber?.let { filterWithFilteredNumberUIMapper.mapToUIModel(it) } ?: FilterWithFilteredNumberUIModel())
     }
 
     override fun mapFromUIModel(to: ContactWithFilterUIModel): ContactWithFilter {
         return ContactWithFilter(contact = Contact(to.contactId, to.contactName, to.photoUrl,
             to.number, to.phoneNumberValue, to.isPhoneNumberValid),
-            filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = filterWithFilteredNumberUIMapper.mapFromUIModel(to.filterWithFilteredNumberUIModel).filter,
+            filterWithFilteredNumber = FilterWithFilteredNumber(filter = filterWithFilteredNumberUIMapper.mapFromUIModel(to.filterWithFilteredNumberUIModel).filter,
             filteredContacts = to.filterWithFilteredNumberUIModel.filteredContacts, filteredCalls = to.filterWithFilteredNumberUIModel.filteredCalls))
     }
 

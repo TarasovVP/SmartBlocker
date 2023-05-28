@@ -52,11 +52,12 @@
                     android:id="@+id/create_filter_country_code_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_0"
-                    android:drawablePadding="@dimen/padding_8"
                     android:gravity="center_vertical"
                     android:textColor="@color/text_color_grey"
+                    android:minWidth="@dimen/padding_48"
                     android:visibility="@{filterWithCountryCode.filterWithFilteredNumberUIModel.typeContain ? View.GONE : View.VISIBLE}"
                     app:drawableEndCompat="@drawable/ic_drop_down"
+                    android:contentDescription="@string/creating_country_code_hint"
                     app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/create_filter_input" />

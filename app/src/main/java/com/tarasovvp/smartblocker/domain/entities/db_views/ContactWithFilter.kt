@@ -14,5 +14,5 @@ data class ContactWithFilter(
     @Embedded
     var contact: Contact? = Contact(),
     @Embedded
-    var filterWithFilteredNumbers: FilterWithFilteredNumbers? = FilterWithFilteredNumbers()
+    var filterWithFilteredNumber: FilterWithFilteredNumber? = FilterWithFilteredNumber()
 ) : Parcelable

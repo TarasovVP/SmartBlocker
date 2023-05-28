@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
@@ -43,7 +43,7 @@ class ListFilterUseCaseTest {
 
     @Test
     fun allFilterWithFilteredNumbersByTypeTest() = runBlocking {
-        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
         coEvery { filterRepository.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterList
         val result = listFilterUseCase.allFilterWithFilteredNumbersByType(isBlockerList = true)
         assertEquals(TEST_FILTER, result?.get(0)?.filter?.filter)
@@ -52,10 +52,10 @@ class ListFilterUseCaseTest {
     @Test
     fun getFilteredFilterListTest() = runBlocking {
         val filterList = listOf(
-            FilterWithFilteredNumbers(Filter("filter1", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal)),
-            FilterWithFilteredNumbers(Filter("filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
-            FilterWithFilteredNumbers(Filter("filter3", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
-            FilterWithFilteredNumbers(Filter("filter4", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))
+            FilterWithFilteredNumber(Filter("filter1", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal)),
+            FilterWithFilteredNumber(Filter("filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
+            FilterWithFilteredNumber(Filter("filter3", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
+            FilterWithFilteredNumber(Filter("filter4", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))
         )
         val searchQuery = "filter"
         val filterIndexes = arrayListOf(
@@ -63,7 +63,7 @@ class ListFilterUseCaseTest {
             NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal
         )
         val expectedFilteredList = listOf(
-            FilterWithFilteredNumbers(Filter("filter1", FilterCondition.FILTER_CONDITION_FULL.ordinal)), FilterWithFilteredNumbers(Filter("filter2", FilterCondition.FILTER_CONDITION_START.ordinal)))
+            FilterWithFilteredNumber(Filter("filter1", FilterCondition.FILTER_CONDITION_FULL.ordinal)), FilterWithFilteredNumber(Filter("filter2", FilterCondition.FILTER_CONDITION_START.ordinal)))
         val result = listFilterUseCase.getFilteredFilterList(filterList, searchQuery, filterIndexes)
         assertEquals(expectedFilteredList, result)
     }

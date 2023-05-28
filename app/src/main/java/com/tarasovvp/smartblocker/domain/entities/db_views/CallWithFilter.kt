@@ -14,5 +14,5 @@ open class CallWithFilter(
     @Embedded
     var call: Call? = Call(),
     @Embedded
-    var filterWithFilteredNumbers: FilterWithFilteredNumbers? = FilterWithFilteredNumbers()
+    var filterWithFilteredNumber: FilterWithFilteredNumber? = FilterWithFilteredNumber()
 ) : Parcelable

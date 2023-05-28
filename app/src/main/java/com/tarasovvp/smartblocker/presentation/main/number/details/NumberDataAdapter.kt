@@ -33,11 +33,11 @@ class NumberDataAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ContactWithFilter::class.java.simpleName.hashCode() -> ContactViewHolder(
+            ContactWithFilterUIModel::class.java.simpleName.hashCode() -> ContactViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_contact, parent, false)
             )
-            CallWithFilter::class.java.simpleName.hashCode() -> CallViewHolder(
+            CallWithFilterUIModel::class.java.simpleName.hashCode() -> CallViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_call, parent, false)
             )

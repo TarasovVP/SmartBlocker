@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 
 @Dao
@@ -20,17 +20,17 @@ interface FilterDao {
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM FilterWithFilteredNumbers WHERE filterType = :filterType")
-    suspend fun allFilterWithFilteredNumbersByType(filterType: Int): List<FilterWithFilteredNumbers>
+    @Query("SELECT * FROM FilterWithFilteredNumber WHERE filterType = :filterType")
+    suspend fun allFilterWithFilteredNumbersByType(filterType: Int): List<FilterWithFilteredNumber>
 
     @Transaction
     @Query("SELECT * FROM filters WHERE filter = :filter")
-    suspend fun getFilter(filter: String): FilterWithFilteredNumbers?
+    suspend fun getFilter(filter: String): FilterWithFilteredNumber?
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM FilterWithFilteredNumbers WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2) ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)")
-    suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumbers>
+    @Query("SELECT * FROM FilterWithFilteredNumber WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2) ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)")
+    suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumber>
 
     @Delete
     fun deleteFilters(filterList: List<Filter>)

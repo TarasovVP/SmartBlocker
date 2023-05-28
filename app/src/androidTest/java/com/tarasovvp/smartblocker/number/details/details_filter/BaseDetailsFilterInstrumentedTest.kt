@@ -9,21 +9,21 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils
-import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
-import com.tarasovvp.smartblocker.TestUtils.filteredCallList
+import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_FILTERED_NUMBER
+import com.tarasovvp.smartblocker.TestUtils.filterWithFilteredNumberUIModelList
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.TestUtils.numberDataList
+import com.tarasovvp.smartblocker.TestUtils.numberDataUIModelList
+import com.tarasovvp.smartblocker.TestUtils.numberDataWithFilteredCallUIModelList
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
@@ -34,22 +34,22 @@ import org.junit.Test
 @HiltAndroidTest
 open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
 
-    private var filterWithFilteredNumbers: FilterWithFilteredNumbers? = null
+    private var filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel? = null
 
     @Before
     override fun setUp() {
         super.setUp()
-        filterWithFilteredNumbers = TestUtils.filterWithCountryCode().apply {
-            filter?.conditionType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) FilterCondition.FILTER_CONDITION_CONTAIN.ordinal else FilterCondition.FILTER_CONDITION_START.ordinal
-            filter?.filterType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) BLOCKER else PERMISSION
+        filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModelList().firstOrNull()?.apply {
+            conditionType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) FilterCondition.FILTER_CONDITION_CONTAIN.ordinal else FilterCondition.FILTER_CONDITION_START.ordinal
+            filterType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) BLOCKER else PERMISSION
         }
-        launchFragmentInHiltContainer<DetailsFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to filterWithFilteredNumbers)) {
+        launchFragmentInHiltContainer<DetailsFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_FILTERED_NUMBER to filterWithFilteredNumberUIModel)) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
             (this as? DetailsFilterFragment)?.apply {
-                viewModel.filteredNumberDataListLiveDataUIModel.postValue(numberDataList())
-                viewModel.filteredCallListLiveData.postValue(filteredCallList())
+                viewModel.numberDataListLiveDataUIModel.postValue(numberDataUIModelList())
+                viewModel.filteredCallListLiveData.postValue(numberDataWithFilteredCallUIModelList())
             }
         }
     }
@@ -63,27 +63,27 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkItemDetailsFilterAvatar() {
         onView(withId(R.id.item_details_filter_avatar))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(filterWithFilteredNumbers?.filter?.conditionTypeIcon())))
+            .check(matches(withDrawable(filterWithFilteredNumberUIModel?.conditionTypeIcon())))
     }
 
     @Test
     fun checkItemDetailsFilterFilter() {
         onView(withId(R.id.item_details_filter_filter))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(filterWithFilteredNumbers?.filter?.filterTypeIcon())))
+            .check(matches(withDrawable(filterWithFilteredNumberUIModel?.filterTypeIcon())))
     }
 
     @Test
     fun checkItemDetailsFilterValue() {
         onView(withId(R.id.item_details_filter_value))
             .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithFilteredNumbers?.createFilterValue(targetContext))))
+            .check(matches(withText(filterWithFilteredNumberUIModel?.filter)))
     }
 
     @Test
     fun checkItemDetailsFilterTypeTitle() {
         onView(withId(R.id.item_details_filter_type_title)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithFilteredNumbers?.filter.isNull()) filterWithFilteredNumbers?.filter?.filter else targetContext.getString(filterWithFilteredNumbers?.filter?.conditionTypeName().orZero()))))
+            .check(matches(withText(filterWithFilteredNumberUIModel?.filterName )))
     }
 
     @Test
@@ -95,25 +95,25 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkItemDetailsFilterContactsDetails() {
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.filterAction.isNull())
-                filterWithFilteredNumbers?.filter?.filteredContactsText(targetContext) else filterWithFilteredNumbers?.filterActionText(targetContext))))
-            .check(matches(withTextColor(if (filterWithFilteredNumbers?.filter?.filterAction.isNull()) filterWithFilteredNumbers?.filter?.filterTypeTint().orZero() else filterWithFilteredNumbers?.filter?.filterDetailTint().orZero())))
+            .check(matches(withText(if (filterWithFilteredNumberUIModel?.filterAction.isNull())
+                filterWithFilteredNumberUIModel?.filteredContactsText(targetContext) else filterWithFilteredNumberUIModel?.filter)))
+            .check(matches(withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero() )))
     }
 
     @Test
     fun checkItemDetailsFilterFilteredCallsDetails() {
         onView(withId(R.id.details_filter_view_pager)).perform(swipeLeft())
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.filterAction.isNull())
-                filterWithFilteredNumbers?.filter?.filteredCallsText(targetContext) else filterWithFilteredNumbers?.filterActionText(targetContext))))
-            .check(matches(withTextColor(if (filterWithFilteredNumbers?.filter?.filterAction.isNull()) filterWithFilteredNumbers?.filter?.filterTypeTint().orZero() else filterWithFilteredNumbers?.filter?.filterDetailTint().orZero())))
+            .check(matches(withText(if (filterWithFilteredNumberUIModel?.filterAction.isNull())
+                filterWithFilteredNumberUIModel?.filteredCallsText(targetContext) else filterWithFilteredNumberUIModel?.filter)))
+            .check(matches(withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero())))
     }
 
     @Test
     fun checkItemDetailsFilterCreated() {
         onView(withId(R.id.item_details_filter_created))
             .check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithFilteredNumbers?.filter?.created == 0L) String.EMPTY else String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumbers?.filter?.filterCreatedDate()))))
+            .check(matches(withText(if (filterWithFilteredNumberUIModel?.created == 0L) String.EMPTY else String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumberUIModel?.filterCreatedDate()))))
     }
 
     @Test
@@ -124,9 +124,9 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withTextColor(R.color.sunset)))
             .perform(click())
         assertEquals(R.id.filterActionDialog, navController?.currentDestination?.id)
-        assertEquals(filterWithFilteredNumbers.apply { this?.filter?.filterAction = if (filterWithFilteredNumbers?.filter?.isBlocker().isTrue())
+        assertEquals(filterWithFilteredNumberUIModel.apply { this?.filterAction = if (filterWithFilteredNumberUIModel?.isBlocker().isTrue())
             FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE },
-            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumbers>(FILTER_WITH_COUNTRY_CODE))
+            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(FILTER_WITH_FILTERED_NUMBER))
     }
 
     @Test
@@ -136,9 +136,9 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withText(R.string.filter_action_transfer)))
             .perform(click())
         assertEquals(R.id.filterActionDialog, navController?.currentDestination?.id)
-        assertEquals(filterWithFilteredNumbers.apply { this?.filter?.filterAction = if (filterWithFilteredNumbers?.filter?.isBlocker().isTrue())
+        assertEquals(filterWithFilteredNumberUIModel.apply { this?.filterAction = if (filterWithFilteredNumberUIModel?.isBlocker().isTrue())
             FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER },
-            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumbers>(FILTER_WITH_COUNTRY_CODE))
+            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(FILTER_WITH_FILTERED_NUMBER))
     }
 
     @Test

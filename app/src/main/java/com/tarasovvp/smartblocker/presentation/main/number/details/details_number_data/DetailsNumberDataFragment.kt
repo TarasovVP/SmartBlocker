@@ -94,7 +94,7 @@ class DetailsNumberDataFragment :
             }
         })
         filteredCallsScreen =
-            SingleDetailsFragment.newInstance(CallWithFilter::class.simpleName.orEmpty())
+            SingleDetailsFragment.newInstance(CallWithFilterUIModel::class.simpleName.orEmpty())
         val fragmentList = arrayListOf(filtersScreen, filteredCallsScreen)
 
         binding?.detailsNumberDataViewPager?.adapter =

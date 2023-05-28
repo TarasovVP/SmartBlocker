@@ -3,8 +3,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.create
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
@@ -19,7 +18,6 @@ import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberU
 import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -81,7 +79,7 @@ class CreateFilterViewModel @Inject constructor(
     fun checkFilterExist(filter: String) {
         Timber.e("CreateFilterViewModel checkFilterExist filter $filter")
         launch {
-            val existingFilter = createFilterUseCase.getFilter(filter) ?: FilterWithFilteredNumbers(Filter(filterType = DEFAULT_FILTER))
+            val existingFilter = createFilterUseCase.getFilter(filter) ?: FilterWithFilteredNumber(Filter(filterType = DEFAULT_FILTER))
             existingFilterLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModel(existingFilter))
         }
     }

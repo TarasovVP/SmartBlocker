@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
@@ -72,7 +72,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun checkFilterExistTest() = runTest {
         val filterValue = TEST_FILTER
-        val filter = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        val filter = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
         val filterUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
         coEvery { useCase.getFilter(filterValue) } returns filter
         every { filterWithFilteredNumberUIMapper.mapToUIModel(filter) } returns filterUIModel
@@ -86,7 +86,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun createFilterTest() = runTest {
         val expectedResult = Result.Success<Unit>()
-        val filterWithFilteredNumber = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
         val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
         every { application.isNetworkAvailable } returns true
         coEvery { useCase.createFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
@@ -104,7 +104,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun updateFilterTest() = runTest {
         val expectedResult = Result.Success<Unit>()
-        val filterWithFilteredNumber = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
         val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
         every { application.isNetworkAvailable } returns true
         coEvery { useCase.updateFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
@@ -122,7 +122,7 @@ class CreateFilterViewModelTest: BaseViewModelTest<CreateFilterViewModel>() {
     @Test
     fun deleteFilterTest() = runTest {
         val expectedResult = Result.Success<Unit>()
-        val filterWithFilteredNumber = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
         val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
         every { application.isNetworkAvailable } returns true
         coEvery { useCase.deleteFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {

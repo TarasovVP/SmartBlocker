@@ -20,6 +20,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,7 +92,7 @@ class DetailsFilterFragment :
     }
 
     override fun createAdapter() {
-        numberDataScreen = SingleDetailsFragment.newInstance(Filter::class.simpleName.orEmpty())
+        numberDataScreen = SingleDetailsFragment.newInstance(FilterWithFilteredNumberUIModel::class.simpleName.orEmpty())
         numberDataScreen?.setNumberDataClick(object : NumberDataClickListener {
             override fun onNumberDataClick(numberDataUIModel: NumberDataUIModel) {
                 findNavController().navigate(
@@ -101,7 +102,7 @@ class DetailsFilterFragment :
                 )
             }
         })
-        filteredCallsScreen = SingleDetailsFragment.newInstance(CallWithFilter::class.simpleName.orEmpty())
+        filteredCallsScreen = SingleDetailsFragment.newInstance(CallWithFilterUIModel::class.simpleName.orEmpty())
         filteredCallsScreen?.setNumberDataClick(object : NumberDataClickListener {
             override fun onNumberDataClick(numberDataUIModel: NumberDataUIModel) {
                 findNavController().navigate(

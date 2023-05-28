@@ -3,10 +3,10 @@ package com.tarasovvp.smartblocker.number.list.list_filter
 import androidx.navigation.Navigation
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils
+import com.tarasovvp.smartblocker.TestUtils.filterWithFilteredNumberUIModelList
+import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -21,10 +21,10 @@ class ListBlockerInstrumentedTest: BaseListFilterInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        filterList = TestUtils.filterWithFilterList().onEach {
-            it.filter?.filterType =  Constants.BLOCKER
+        filterList = filterWithFilteredNumberUIModelList().onEach {
+            it.filterType =  Constants.BLOCKER
         }
-        TestUtils.launchFragmentInHiltContainer<ListBlockerFragment> {
+        launchFragmentInHiltContainer<ListBlockerFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listPermissionFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -34,6 +34,6 @@ class ListBlockerInstrumentedTest: BaseListFilterInstrumentedTest() {
                 viewModel.filterListLiveData.postValue(filterList)
             }
         }
-        waitUntilViewIsDisplayed(withText(filterList?.get(0)?.filter?.filter))
+        waitUntilViewIsDisplayed(withText(filterList?.get(0)?.filter))
     }
 }

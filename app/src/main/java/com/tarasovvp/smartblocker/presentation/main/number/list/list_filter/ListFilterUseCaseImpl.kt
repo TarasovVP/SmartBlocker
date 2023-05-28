@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
@@ -27,7 +27,7 @@ class ListFilterUseCaseImpl @Inject constructor(
     override suspend fun allFilterWithFilteredNumbersByType(isBlockerList: Boolean) = filterRepository.allFilterWithFilteredNumbersByType(if (isBlockerList) BLOCKER else PERMISSION)
 
     override suspend fun getFilteredFilterList(
-        filterList: List<FilterWithFilteredNumbers>,
+        filterList: List<FilterWithFilteredNumber>,
         searchQuery: String,
         filterIndexes: ArrayList<Int>
     ) = withContext(Dispatchers.Default) {

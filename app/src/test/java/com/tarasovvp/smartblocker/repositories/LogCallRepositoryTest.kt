@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -106,10 +106,10 @@ class LogCallRepositoryTest {
     @Test
     fun allCallWithFiltersByFilterTest() = runBlocking {
         val logCallList = listOf(CallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" }
-            filterWithFilteredNumbers =  FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)) },
+            filterWithFilteredNumber =  FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)) },
             CallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } },
             CallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        val expectedResult = logCallList.filter { it.filterWithFilteredNumbers?.filter?.filter ==  TEST_FILTER}
+        val expectedResult = logCallList.filter { it.filterWithFilteredNumber?.filter?.filter ==  TEST_FILTER}
         coEvery { logCallDao.allCallWithFiltersByFilter(TEST_FILTER) } returns expectedResult
         val result = logCallRepository.allCallWithFiltersByFilter(TEST_FILTER)
         assertEquals(expectedResult, result)

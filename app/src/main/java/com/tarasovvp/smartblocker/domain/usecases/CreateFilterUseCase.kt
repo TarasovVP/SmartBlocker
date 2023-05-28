@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
@@ -15,7 +15,7 @@ interface CreateFilterUseCase {
 
     suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
 
-    suspend fun getFilter(filter: String): FilterWithFilteredNumbers?
+    suspend fun getFilter(filter: String): FilterWithFilteredNumber?
 
     suspend fun createFilter(filter: Filter, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 

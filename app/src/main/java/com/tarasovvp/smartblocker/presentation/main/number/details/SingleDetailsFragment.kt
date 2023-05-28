@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBinding
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 
 class SingleDetailsFragment :
     BaseBindingFragment<FragmentSingleNumberDataDetailsBinding>() {
@@ -26,11 +26,11 @@ class SingleDetailsFragment :
                 numberDataAdapter ?: NumberDataAdapter(numberDataUIModelList) { numberData ->
                     numberDataClickListener?.onNumberDataClick(numberData)
                 }.apply {
-                    this.isFilteredCallDetails = numberType == CallWithFilter::class.simpleName
+                    this.isFilteredCallDetails = numberType == CallWithFilterUIModel::class.simpleName
                     this.isFilteredCallItemDisable = isFilteredCallItemDisable
                 }
             singleDetailsListEmpty.setDescription( when (numberType) {
-                Filter::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description()
+                FilterWithFilteredNumberUIModel::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description()
                 NumberDataUIModel::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description()
                 else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description()
             })

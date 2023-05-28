@@ -1,9 +1,6 @@
 package com.tarasovvp.smartblocker
 
-import android.app.Application
 import android.content.ComponentName
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
@@ -32,10 +29,8 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IN_COMING_CALL
@@ -45,6 +40,10 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.OUT_GOING_C
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -56,11 +55,13 @@ import java.util.concurrent.TimeoutException
 
 object TestUtils {
 
+    const val TEST_FILTER = "testFilter"
     const val TEST_EMAIL = "testEmail"
     const val TEST_PASSWORD = "testPassword"
     const val IS_LOG_OUT = "isLogOut"
     const val FILTERING_LIST = "filteringList"
-    const val FILTER_WITH_COUNTRY_CODE = "filterWithCountryCode"
+    const val FILTER_WITH_COUNTRY_CODE = "filterWithCountryCodeUIModel"
+    const val FILTER_WITH_FILTERED_NUMBER = "filterWithFilteredNumberUIModel"
     const val LIST_EMPTY = "ListEmpty"
 
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
@@ -290,110 +291,60 @@ object TestUtils {
         return data as T
     }
 
-    fun filterWithFilteredNumberList() = arrayListOf(
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { created = 1681315250919},  filteredContacts = 1, filteredCalls = 5),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply { created = 1681314350919},  filteredContacts = 1, filteredCalls = 5),
-            FilterWithFilteredNumbers(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal).apply { created = 1681314260919 }),
-            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal).apply { created = 1681354250919 },  filteredContacts = 0, filteredCalls = 5),
-            FilterWithFilteredNumbers(Filter(filter = "123456", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply { created = 1681314850919 },  filteredContacts = 11, filteredCalls = 52),
-            FilterWithFilteredNumbers(Filter(filter = "1234567", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal).apply { created = 1681314251219 })
+    fun filterWithFilteredNumberUIModelList() = arrayListOf(
+        FilterWithFilteredNumberUIModel(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681315250919, filteredContacts = 1, filteredCalls = 5),
+        FilterWithFilteredNumberUIModel(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, created = 1681314350919, filteredContacts = 1, filteredCalls = 5),
+        FilterWithFilteredNumberUIModel(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, created = 1681314260919),
+        FilterWithFilteredNumberUIModel(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681354250919, filteredContacts = 0, filteredCalls = 5),
+        FilterWithFilteredNumberUIModel(filter = "123456", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, created = 1681314850919, filteredContacts = 0, filteredCalls = 5),
+        FilterWithFilteredNumberUIModel(filter = "1234567", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, created = 1681314251219))
+
+    fun callWithFilterUIModelList() = listOf(
+        CallWithFilterUIModel(callId = 1, callName = "A Name", number = "+380502711344", type = IN_COMING_CALL, callDate = "1678603872094",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal)),
+        CallWithFilterUIModel(callId = 2, callName = "a Name", number = "12345", type = BLOCKED_CALL, callDate = "1678603872094", isFilteredCall = true, filteredNumber = "12345", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
+        CallWithFilterUIModel(callId = 3,  callName = "B Name", number = "12345", type = MISSED_CALL, callDate = "1611995776162",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, filteredContacts = 11, filteredCalls = 52)),
+        CallWithFilterUIModel(callId = 4,  callName = String.EMPTY, number = "12345", type = REJECTED_CALL, callDate = "1612258705769",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, filteredContacts = 11, filteredCalls = 52)),
+        CallWithFilterUIModel(callId = 5,  callName = "C Name", number = "12345", type = OUT_GOING_CALL, callDate = "1612525268071",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
+        CallWithFilterUIModel(callId = 6, callName = "D Name", number = "12345", type = BLOCKED_CALL, callDate = "1615110430251",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
+        CallWithFilterUIModel(callId = 7, callName = "Y Name", number = "12345", type = IN_COMING_CALL, callDate = "1619427342586", filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel()))
+
+
+    fun contactWithFilterUIModelList() = listOf(
+        ContactWithFilterUIModel(contactId = "1", contactName = "A Name", number = "+380502711344",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal)),
+        ContactWithFilterUIModel(contactId ="2", contactName = "a Name", number = "12345",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
+        ContactWithFilterUIModel(contactId ="3", contactName = "B Name", number = "12345",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
+        ContactWithFilterUIModel(contactId ="4", contactName = "B Name", number = "12345",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal)),
+        ContactWithFilterUIModel(contactId ="5", contactName = "C Name", number = "12345",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
+        ContactWithFilterUIModel(contactId ="6", contactName = " D Name", number = "12345",
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
+        ContactWithFilterUIModel(contactId ="7", contactName = "Y Name", number = "12345", filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel())
     )
 
-    fun callWithFilterList() = listOf(
-        CallWithFilter(LogCall(1).apply { callName = "A Name"
-            number = "+380502711344"
-            type = IN_COMING_CALL
-            callDate = "1678603872094"},
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
-        CallWithFilter(FilteredCall(2).apply { callName = "a Name"
-            number = "12345"
-            type = BLOCKED_CALL
-            callDate = "1678603872094"
-            isFilteredCall = true
-            filteredNumber = "12345"
-            filteredConditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
-        CallWithFilter(FilteredCall(3).apply {  callName = "B Name"
-            number = "12345"
-            type = MISSED_CALL
-            callDate = "1611995776162" },
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal), filteredContacts = 11, filteredCalls = 52)),
-        CallWithFilter(LogCall(4).apply {  callName = String.EMPTY
-            number = "12345"
-            type = REJECTED_CALL
-            callDate = "1612258705769"},
-            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), filteredContacts = 11, filteredCalls = 52)),
-        CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
-            number = "12345"
-            type = OUT_GOING_CALL
-            callDate = "1612525268071"},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
-        CallWithFilter(FilteredCall(6).apply { callName = "D Name"
-            number = "12345"
-            type = BLOCKED_CALL
-            callDate = "1615110430251"},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
-        CallWithFilter(LogCall(7).apply { callName = "Y Name"
-            number = "12345"
-            type = IN_COMING_CALL
-            callDate = "1619427342586"}, null)
-    )
+    fun numberDataUIModelList() = arrayListOf<NumberDataUIModel>().apply {
+        addAll(contactWithFilterUIModelList())
+        addAll(callWithFilterUIModelList())
+    }
 
-    fun contactWithFilterList() = listOf(
-        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344"),
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
-        ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
-        ContactWithFilter(Contact("3", name = "B Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
-        ContactWithFilter(Contact("4", name = "B Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
-        ContactWithFilter(Contact("5", name = "C Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
-        ContactWithFilter(Contact("6", name = " D Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
-        ContactWithFilter(Contact("7", name = "Y Name", number = "12345"), null)
-    )
+    fun numberDataWithFilteredCallUIModelList() = arrayListOf<NumberDataUIModel>(
+        CallWithFilterUIModel(callId = 5,  callName = "C Name", number = "12345", type = OUT_GOING_CALL, callDate = "1612525268071", isFilteredCall = true,
+        filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
+        CallWithFilterUIModel(callId = 6, callName = "D Name", number = "12345", type = BLOCKED_CALL, callDate = "1615110430251", isFilteredCall = true,
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
+        CallWithFilterUIModel(callId = 2, callName = "a Name", number = "12345", type = BLOCKED_CALL, callDate = "1678603872094", isFilteredCall = true, filteredNumber = "12345", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)))
 
-    fun numberDataList() = arrayListOf(
-        CallWithFilter(LogCall(1).apply { callName = "A Name"
-        number = "+380502711344"
-        type = IN_COMING_CALL
-        callDate = "1678603872094"},
-        FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
-        ContactWithFilter(Contact("1", name = "A Name", number = "+380502711344"),
-            FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal))),
-        ContactWithFilter(Contact("2", name = "a Name", number = "12345"),
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))))
-
-    fun filteredCallList() = arrayListOf(
-        CallWithFilter(FilteredCall(5).apply {  callName = "C Name"
-        number = "12345"
-        type = OUT_GOING_CALL
-        callDate = "1612525268071"},
-        FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))),
-        CallWithFilter(FilteredCall(6).apply { callName = "D Name"
-            number = "12345"
-            type = BLOCKED_CALL
-            callDate = "1615110430251"},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))),
-        CallWithFilter(FilteredCall(2).apply { callName = "a Name"
-            number = "12345"
-            type = BLOCKED_CALL
-            callDate = "1678603872094"
-            isFilteredCall = true
-            filteredNumber = "12345"
-            filteredConditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal},
-            FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)))
-    )
-
-    fun filterList() = arrayListOf(FilterWithFilteredNumbers(Filter(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681315250919), filteredContacts = 3),
-        FilterWithFilteredNumbers(Filter(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal).apply { created = 1681314350919}),
-        FilterWithFilteredNumbers(Filter(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, created = 1681314260919)))
-
-    fun filterWithFilteredNumbers() = FilterWithFilteredNumbers(filter = Filter(filter = "123",
-        conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
-        filterType = BLOCKER ).apply {
-        created = 1681314350919
-    }, filteredContacts = 12, filteredCalls = 3)
+    fun numberDataWithFilterWithFilteredNumberUIModelList() = arrayListOf<NumberDataUIModel>(FilterWithFilteredNumberUIModel(filter = "+380502711344", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681315250919, filteredContacts = 3),
+        FilterWithFilteredNumberUIModel(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, created = 1681314350919),
+        FilterWithFilteredNumberUIModel(filter = "1234", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, created = 1681314260919))
 }

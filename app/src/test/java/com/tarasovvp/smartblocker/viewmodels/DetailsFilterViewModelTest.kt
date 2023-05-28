@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterViewModel
@@ -68,7 +68,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
     fun updateFilterTest() = runTest {
         val expectedResult = Result.Success<Unit>()
         val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
-        val filterWithFilteredNumber = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
         every { application.isNetworkAvailable } returns true
         coEvery { useCase.updateFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
             val result = thirdArg<(Result<Unit>) -> Unit>()
@@ -86,7 +86,7 @@ class DetailsFilterViewModelTest: BaseViewModelTest<DetailsFilterViewModel>() {
     fun deleteFilterTest() = runTest {
         val expectedResult = Result.Success<Unit>()
         val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
-        val filterWithFilteredNumber = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
+        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
         every { application.isNetworkAvailable } returns true
         coEvery { useCase.deleteFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
             val result = thirdArg<(Result<Unit>) -> Unit>()

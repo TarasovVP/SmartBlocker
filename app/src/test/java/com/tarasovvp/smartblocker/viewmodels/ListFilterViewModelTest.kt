@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
@@ -33,7 +33,7 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
 
     @Test
     fun getFilterListTest() = runTest {
-        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
         val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
         coEvery { useCase.allFilterWithFilteredNumbersByType(true) } returns filterList
         every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
@@ -47,7 +47,7 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
     @Test
     fun getFilteredFilterListTest() = runTest {
         val numberDataFilters = arrayListOf(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
-        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
         val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
         coEvery { useCase.getFilteredFilterList(filterList, String.EMPTY, numberDataFilters) } returns filterList
         every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
@@ -71,7 +71,7 @@ class ListFilterViewModelTest: BaseViewModelTest<ListFilterViewModel>() {
     @Test
     fun deleteFilterListTest() = runTest {
         val expectedResult = Result.Success<Unit>()
-        val filterList = listOf(FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumbers(filter = Filter(filter = "mockFilter2")))
+        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
         val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
         val filterIdList = filterList.mapNotNull { it.filter }
         every { application.isNetworkAvailable } returns true

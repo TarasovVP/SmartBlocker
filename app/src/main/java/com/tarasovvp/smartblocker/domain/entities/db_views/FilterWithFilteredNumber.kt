@@ -12,7 +12,7 @@ import java.util.*
         "(SELECT COUNT(*) FROM log_calls WHERE ((filters.filter = log_calls.phoneNumberValue AND filters.conditionType = 0) OR (log_calls.phoneNumberValue LIKE filters.filter || '%' AND filters.conditionType = 1) OR (log_calls.phoneNumberValue LIKE '%' || filters.filter || '%' AND filters.conditionType = 2))) + " +
         "(SELECT COUNT(*) FROM filtered_calls WHERE ((filters.filter = filtered_calls.phoneNumberValue AND filters.conditionType = 0) OR (filtered_calls.phoneNumberValue LIKE filters.filter || '%' AND filters.conditionType = 1) OR (filtered_calls.phoneNumberValue LIKE '%' || filters.filter || '%' AND filters.conditionType = 2))) filteredCalls FROM filters")
 @Parcelize
-data class FilterWithFilteredNumbers(
+data class FilterWithFilteredNumber(
     @Embedded
     var filter: Filter? = null,
     @ColumnInfo(name = "filteredContacts")

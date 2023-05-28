@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.*
@@ -80,8 +80,8 @@ class CreateFilterUseCaseTest {
     @Test
     fun getFilterTest() = runBlocking {
         val filter = TEST_FILTER
-        val filterWithFilteredNumbers = FilterWithFilteredNumbers(filter = Filter(filter = TEST_FILTER))
-        coEvery { filterRepository.getFilter(filter) } returns filterWithFilteredNumbers
+        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
+        coEvery { filterRepository.getFilter(filter) } returns filterWithFilteredNumber
         val result = createFilterUseCase.getFilter(filter)
         assertEquals(TEST_FILTER, result?.filter?.filter)
     }

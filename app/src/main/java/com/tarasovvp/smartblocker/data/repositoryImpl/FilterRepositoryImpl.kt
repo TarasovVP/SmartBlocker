@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.tarasovvp.smartblocker.data.database.dao.FilterDao
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import javax.inject.Inject
@@ -16,10 +16,10 @@ class FilterRepositoryImpl @Inject constructor(
     override suspend fun allFilters(): List<Filter> =
         filterDao.allFilters()
 
-    override suspend fun allFilterWithFilteredNumbersByType(filterType: Int): List<FilterWithFilteredNumbers> =
+    override suspend fun allFilterWithFilteredNumbersByType(filterType: Int): List<FilterWithFilteredNumber> =
         filterDao.allFilterWithFilteredNumbersByType(filterType)
 
-    override suspend fun getFilter(filter: String): FilterWithFilteredNumbers? =
+    override suspend fun getFilter(filter: String): FilterWithFilteredNumber? =
         filterDao.getFilter(filter)
 
     override suspend fun updateFilter(filter: Filter) =
@@ -31,6 +31,6 @@ class FilterRepositoryImpl @Inject constructor(
     override suspend fun deleteFilterList(filterList: List<Filter>) =
         filterDao.deleteFilters(filterList)
 
-    override suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumbers> =
+    override suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumber> =
         filterDao.allFilterWithFilteredNumbersByNumber(number)
 }

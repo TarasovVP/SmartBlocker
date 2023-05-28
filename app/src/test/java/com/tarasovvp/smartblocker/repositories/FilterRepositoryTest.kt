@@ -5,7 +5,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.FilterDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.FilterRepositoryImpl
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumbers
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
@@ -49,18 +49,18 @@ class FilterRepositoryTest {
 
     @Test
     fun allFilterWithFilteredNumbersByTypeTest() = runBlocking {
-        val filterWithFilteredNumbersLists = listOf(FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithFilteredNumbers().apply { filter = Filter()})
-        coEvery { filterDao.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterWithFilteredNumbersLists
+        val filterWithFilteredNumberLists = listOf(FilterWithFilteredNumber().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithFilteredNumber().apply { filter = Filter()})
+        coEvery { filterDao.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterWithFilteredNumberLists
         val result = filterRepository.allFilterWithFilteredNumbersByType(BLOCKER)
-        assertEquals(filterWithFilteredNumbersLists, result)
+        assertEquals(filterWithFilteredNumberLists, result)
     }
 
     @Test
     fun getFilterTest() = runBlocking {
-        val filterWithFilteredNumbers = FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)}
-        coEvery { filterDao.getFilter(TEST_FILTER) } returns filterWithFilteredNumbers
+        val filterWithFilteredNumber = FilterWithFilteredNumber().apply { filter = Filter(filter = TEST_FILTER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)}
+        coEvery { filterDao.getFilter(TEST_FILTER) } returns filterWithFilteredNumber
         val result = filterRepository.getFilter(TEST_FILTER)
-        assertEquals(filterWithFilteredNumbers, result)
+        assertEquals(filterWithFilteredNumber, result)
     }
 
     @Test
@@ -89,9 +89,9 @@ class FilterRepositoryTest {
 
     @Test
     fun allFilterWithFilteredNumbersByNumberTest() = runBlocking {
-        val filterWithFilteredNumbersLists = listOf(FilterWithFilteredNumbers().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithFilteredNumbers().apply { filter = Filter()})
-        coEvery { filterDao.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterWithFilteredNumbersLists
+        val filterWithFilteredNumberLists = listOf(FilterWithFilteredNumber().apply { filter = Filter(filter = TEST_FILTER)}, FilterWithFilteredNumber().apply { filter = Filter()})
+        coEvery { filterDao.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterWithFilteredNumberLists
         val result = filterRepository.allFilterWithFilteredNumbersByNumber(TEST_NUMBER)
-        assertEquals(filterWithFilteredNumbersLists, result)
+        assertEquals(filterWithFilteredNumberLists, result)
     }
 }
