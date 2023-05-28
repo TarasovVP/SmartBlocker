@@ -12,7 +12,7 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-open class CallWithFilterUIModel(
+data class CallWithFilterUIModel(
     var callId: Int = 0,
     var callName: String = String.EMPTY,
     var number: String = String.EMPTY,

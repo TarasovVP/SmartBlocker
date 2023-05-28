@@ -62,7 +62,6 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
             Navigation.setViewNavController(requireView(), navController)
             fragment = this as? CreateFilterFragment
         }
-        onView(isRoot()).perform(waitFor(2000))
         fragment?.viewModel?.filteredNumberDataListLiveDataUIModel?.postValue(numberDataUIModelList)
         filterWithCountryCodeUIModel = fragment?.binding?.filterWithCountryCode
     }
