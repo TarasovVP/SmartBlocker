@@ -47,6 +47,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    //Avoid duplicate data store exception in instrumented tests
     private var dataStore: DataStore<Preferences>? = null
 
     @Singleton

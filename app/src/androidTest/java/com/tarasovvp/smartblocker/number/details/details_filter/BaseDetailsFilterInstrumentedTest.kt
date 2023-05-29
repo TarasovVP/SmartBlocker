@@ -27,6 +27,7 @@ import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumbe
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -104,8 +105,7 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkItemDetailsFilterFilteredCallsDetails() {
         onView(withId(R.id.details_filter_view_pager)).perform(swipeLeft())
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithFilteredNumberUIModel?.filterAction.isNull())
-                filterWithFilteredNumberUIModel?.filteredCallsText(targetContext) else filterWithFilteredNumberUIModel?.filter)))
+            .check(matches(withText(filterWithFilteredNumberUIModel?.filteredCallsText(targetContext))))
             .check(matches(withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero())))
     }
 
@@ -158,5 +158,11 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.details_filter_view_pager))
             .check(matches(isDisplayed()))
             .check(matches(hasItemCount(2)))
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+        filterWithFilteredNumberUIModel = null
     }
 }

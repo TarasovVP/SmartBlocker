@@ -15,7 +15,6 @@ import com.tarasovvp.smartblocker.TestUtils.LIST_EMPTY
 import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
@@ -31,6 +30,7 @@ import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -176,5 +176,13 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
                 check(matches(not(isDisplayed())))
             }
         }
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+        fragment = null
+        filterWithCountryCodeUIModel = null
+        numberDataUIModelList.clear()
     }
 }

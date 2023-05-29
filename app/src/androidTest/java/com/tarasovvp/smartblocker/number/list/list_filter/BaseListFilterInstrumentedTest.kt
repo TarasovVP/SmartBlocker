@@ -18,6 +18,7 @@ import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
+import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_FILTERED_NUMBER
 import com.tarasovvp.smartblocker.TestUtils.atPosition
 import com.tarasovvp.smartblocker.TestUtils.waitFor
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
@@ -26,7 +27,6 @@ import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
@@ -140,7 +140,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             assertEquals(
                 FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
                 filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)),
-                navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
+                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
         }
     }
 
@@ -158,7 +158,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             assertEquals(
                 FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
                 filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)),
-                navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
+                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
         }
     }
 
@@ -176,7 +176,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             assertEquals(
                 FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
                 filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)),
-                navController?.backStack?.last()?.arguments?.get(FILTER_WITH_COUNTRY_CODE))
+                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
         }
     }
 
@@ -275,26 +275,26 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
 
     private fun checkFilterItem(position: Int, filterWithFilteredNumber: FilterWithFilteredNumberUIModel?) {
         onView(withId(R.id.list_filter_recycler_view)).apply {
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_create_filter_avatar),
+            //TODO drawable
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
                 isDisplayed(),
                 withDrawable(filterWithFilteredNumber?.conditionTypeIcon()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_create_filter_filter),
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_filter),
                 isDisplayed(),
                 withDrawable(filterWithFilteredNumber?.filterTypeIcon()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_create_filter_value),
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_value),
                 isDisplayed(),
-                withText(filterWithFilteredNumber?.highlightedSpanned.toString()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_create_filter_name),
+                withText(filterWithFilteredNumber?.filter))))))
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_name),
                 isDisplayed(),
-                withText(if (filterWithFilteredNumber?.filter.isNull()) filterWithFilteredNumber?.filter else targetContext.getString(filterWithFilteredNumber?.conditionTypeName().orZero())),
-                withTextColor(if (filterWithFilteredNumber?.filterAction.isNull()) R.color.text_color_grey else filterWithFilteredNumber?.filterAction?.color().orZero()))))))
+                withText(targetContext.getString(filterWithFilteredNumber?.conditionTypeName().orZero())))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_delete),
                 if (filterWithFilteredNumber?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
                 if (filterWithFilteredNumber?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_create_filter_divider),
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_divider),
                 isDisplayed(),
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_create_filter_contacts),
+            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_contacts),
                 isDisplayed(),
                 withText(filterWithFilteredNumber?.filteredContactsText(targetContext)),
                 withTextColor(if (filterWithFilteredNumber?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
@@ -303,7 +303,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
                 withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumber?.filterCreatedDate())))))))
             perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
             assertEquals(R.id.detailsFilterFragment, navController?.currentDestination?.id)
-            assertEquals(filterWithFilteredNumber, navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumber>(FILTER_WITH_COUNTRY_CODE))
+            assertEquals(filterWithFilteredNumber, navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(FILTER_WITH_FILTERED_NUMBER))
         }
     }
 }

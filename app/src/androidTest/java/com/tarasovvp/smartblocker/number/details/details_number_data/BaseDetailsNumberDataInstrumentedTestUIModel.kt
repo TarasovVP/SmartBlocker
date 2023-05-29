@@ -7,6 +7,7 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
@@ -34,6 +35,7 @@ import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -278,7 +280,7 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
             } else {
                 check(matches(isDisplayed()))
                 check(matches(withDrawable(R.drawable.ic_filter_details_tab_1)))
-                onView(withId(R.id.details_number_data_view_pager)).perform(ViewActions.swipeLeft())
+                onView(withId(R.id.details_number_data_view_pager)).perform(swipeLeft())
                 check(matches(withDrawable(R.drawable.ic_filter_details_tab_2)))
                 onView(withId(R.id.details_number_data_view_pager)).perform(ViewActions.swipeRight())
                 check(matches(withDrawable(R.drawable.ic_filter_details_tab_1)))
@@ -318,5 +320,11 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
             assertEquals(filterWithCountryCode,
                 navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
         }*/
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+        contactWithFilter = null
     }
 }

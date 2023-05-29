@@ -97,6 +97,12 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.getAllData()
         }
         registerReceiver(callHandleReceiver, IntentFilter(Constants.CALL_RECEIVE))
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
+            setMobileAds()
+        }
+    }
+
+    private fun setMobileAds() {
         try {
             MobileAds.initialize(this) {}
         } catch (e: Exception) {
@@ -324,6 +330,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getAllData() {
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
         if (checkPermissions().isTrue()) {
             setMainProgressVisibility(true)
             if (firebaseAuth.currentUser.isNotNull()) {
@@ -337,6 +344,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showInterstitial() {
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
         interstitialAd?.apply {
             fullScreenContentCallback =
                 object : FullScreenContentCallback() {

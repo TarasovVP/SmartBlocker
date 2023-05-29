@@ -34,9 +34,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            testCoverageEnabled = true
-        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -61,7 +59,7 @@ android {
     testOptions {
         animationsDisabled = true
     }
-    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugAndroidTestCoverageReport']) {
         reports {
             html.required.set(true)
             xml.required.set(true)

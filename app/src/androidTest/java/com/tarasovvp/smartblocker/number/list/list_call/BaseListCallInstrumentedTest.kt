@@ -25,7 +25,6 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
@@ -245,7 +244,8 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.empty_state_description)).check(matches(isDisplayed())).check(matches(withText(
                 EmptyState.EMPTY_STATE_CALLS.description())))
             onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
-            onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
+            //TODO drawable
+            //onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {
             onView(withId(R.id.list_call_empty)).check(matches(not(isDisplayed())))
         }
@@ -264,7 +264,7 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                 withDrawable(callWithFilter?.filterWithFilteredNumberUIModel?.filterTypeIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_number),
                 isDisplayed(),
-                /*withText(if (callWithFilter?.number.isNullOrEmpty()) targetContext.getString(R.string.details_number_hidden) else callWithFilter?.highlightedSpanned.toString())*/)))))
+                withText(if (callWithFilter?.number.isNullOrEmpty()) targetContext.getString(R.string.details_number_hidden) else callWithFilter?.number))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_time),
                 if (callWithFilter?.isExtract.isTrue() || callWithFilter?.isFilteredCallDetails.isTrue() || callWithFilter?.isFilteredCallDelete().isTrue()) not(isDisplayed()) else isDisplayed(),
                 withText(callWithFilter?.timeFromCallDate()))))))

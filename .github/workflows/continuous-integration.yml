@@ -2,9 +2,9 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ clean_architecture_refactor ]
+    branches: [ main ]
   pull_request:
-    branches: [ clean_architecture_refactor ]
+    branches: [ main ]
 
 jobs:
   assemble_ui_test_artifacts:

@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestName
@@ -84,5 +85,11 @@ abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
                 check(matches(not(isDisplayed())))
             }
         }
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+        dataList.clear()
     }
 }
