@@ -27,7 +27,7 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "com.tarasovvp.smartblocker.HiltTestRunner"
-
+        multiDexEnabled true
         buildConfigField('String', 'SERVER_CLIENT_ID', SERVER_CLIENT_ID)
         buildConfigField('String', 'REALTIME_DATABASE', REALTIME_DATABASE)
         buildConfigField('String', 'INTERSTITIAL_AD', INTERSTITIAL_AD)
