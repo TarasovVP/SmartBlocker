@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -41,7 +42,7 @@ class ListFilterViewModelUnitTest: BaseViewModelUnitTest<ListFilterViewModel>() 
         advanceUntilIdle()
         coVerify { useCase.allFilterWithFilteredNumbersByType(true) }
         verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
-        assertEquals(filterUIModelList, viewModel.filterListLiveData.value)
+        assertEquals(filterUIModelList, viewModel.filterListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -57,7 +58,7 @@ class ListFilterViewModelUnitTest: BaseViewModelUnitTest<ListFilterViewModel>() 
         coVerify { useCase.getFilteredFilterList(filterList, String.EMPTY, numberDataFilters) }
         verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
-        assertEquals(filterUIModelList, viewModel.filteredFilterListLiveData.value)
+        assertEquals(filterUIModelList, viewModel.filteredFilterListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -65,7 +66,7 @@ class ListFilterViewModelUnitTest: BaseViewModelUnitTest<ListFilterViewModel>() 
         val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
         val filterMap = mapOf(String.EMPTY to filterUIModelList)
         viewModel.getHashMapFromFilterList(filterUIModelList, true)
-        assertEquals(filterMap, viewModel.filterHashMapLiveData.value)
+        assertEquals(filterMap, viewModel.filterHashMapLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -84,6 +85,6 @@ class ListFilterViewModelUnitTest: BaseViewModelUnitTest<ListFilterViewModel>() 
         advanceUntilIdle()
         coVerify { useCase.deleteFilterList(eq(filterIdList), any(), any()) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
-        assertEquals(true, viewModel.successDeleteFilterLiveData.value)
+        assertEquals(true, viewModel.successDeleteFilterLiveData.getOrAwaitValue())
     }
 }

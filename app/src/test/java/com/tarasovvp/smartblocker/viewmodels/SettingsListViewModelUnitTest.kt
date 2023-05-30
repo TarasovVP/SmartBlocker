@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListViewModel
@@ -33,7 +34,7 @@ class SettingsListViewModelUnitTest: BaseViewModelUnitTest<SettingsListViewModel
         viewModel.getAppLanguage()
         advanceUntilIdle()
         coVerify { useCase.getAppLanguage() }
-        assertEquals(appLang, viewModel.appLanguageLiveData.value)
+        assertEquals(appLang, viewModel.appLanguageLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -47,6 +48,6 @@ class SettingsListViewModelUnitTest: BaseViewModelUnitTest<SettingsListViewModel
         }
         viewModel.insertReview(review)
         coVerify { useCase.insertReview(review, any()) }
-        assertEquals(review.message, viewModel.successReviewLiveData.value)
+        assertEquals(review.message, viewModel.successReviewLiveData.getOrAwaitValue())
     }
 }

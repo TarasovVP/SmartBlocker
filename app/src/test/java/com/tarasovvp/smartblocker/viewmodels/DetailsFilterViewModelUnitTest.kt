@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
@@ -61,7 +62,7 @@ class DetailsFilterViewModelUnitTest: BaseViewModelUnitTest<DetailsFilterViewMod
         advanceUntilIdle()
         coVerify { useCase.allFilteredCallsByFilter(TEST_FILTER) }
         verify { callWithFilterUIMapper.mapToUIModelList(filteredCallList) }
-        assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.value)
+        assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -79,7 +80,7 @@ class DetailsFilterViewModelUnitTest: BaseViewModelUnitTest<DetailsFilterViewMod
         advanceUntilIdle()
         coVerify { useCase.updateFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.value)
+        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -97,6 +98,6 @@ class DetailsFilterViewModelUnitTest: BaseViewModelUnitTest<DetailsFilterViewMod
         advanceUntilIdle()
         coVerify { useCase.deleteFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.value)
+        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
     }
 }

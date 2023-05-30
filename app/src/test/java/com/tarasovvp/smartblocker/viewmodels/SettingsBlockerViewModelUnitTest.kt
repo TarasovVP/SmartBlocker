@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel
@@ -33,7 +34,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.getBlockerTurnOn()
         advanceUntilIdle()
         coVerify { useCase.getBlockerTurnOn() }
-        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.value)
+        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -43,7 +44,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.setBlockerTurnOn(blockerTurnOn)
         advanceUntilIdle()
         coVerify { useCase.setBlockerTurnOn(blockerTurnOn) }
-        assertEquals(blockerTurnOn.not(), viewModel.blockerTurnOnLiveData.value)
+        assertEquals(blockerTurnOn.not(), viewModel.blockerTurnOnLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -53,7 +54,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.getBlockHidden()
         advanceUntilIdle()
         coVerify { useCase.getBlockHidden() }
-        assertEquals(blockHidden, viewModel.blockHiddenLiveData.value)
+        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -63,7 +64,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.setBlockHidden(blockHidden)
         advanceUntilIdle()
         coVerify { useCase.setBlockHidden(blockHidden) }
-        assertEquals(blockHidden, viewModel.blockHiddenLiveData.value)
+        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
     }
     @Test
     fun changeBlockHiddenTest() {
@@ -76,7 +77,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         }
         viewModel.changeBlockHidden(blockHidden)
         verify { useCase.changeBlockHidden(blockHidden, true, any()) }
-        assertEquals(blockHidden, viewModel.successBlockHiddenLiveData.value)
+        assertEquals(blockHidden, viewModel.successBlockHiddenLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -88,7 +89,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.getCurrentCountryCode()
         advanceUntilIdle()
         coVerify { useCase.getCurrentCountryCode() }
-        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.value)
+        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -100,6 +101,6 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.setCurrentCountryCode(countryCodeUIModel)
         advanceUntilIdle()
         coVerify { useCase.setCurrentCountryCode(countryCode) }
-        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.value)
+        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
     }
 }

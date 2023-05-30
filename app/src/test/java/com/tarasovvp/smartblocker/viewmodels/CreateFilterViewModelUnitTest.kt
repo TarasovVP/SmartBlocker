@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -56,7 +57,7 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
         advanceUntilIdle()
         coVerify { useCase.getCountryCodeWithCode(code) }
         verify { countryCodeUIMapper.mapToUIModel(countryCode) }
-        assertEquals(countryCodeUIModel, viewModel.countryCodeLiveData.value)
+        assertEquals(countryCodeUIModel, viewModel.countryCodeLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -80,7 +81,7 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
         advanceUntilIdle()
         coVerify { useCase.getFilter(filterValue) }
         verify { filterWithFilteredNumberUIMapper.mapToUIModel(filter) }
-        assertEquals(filterUIModel, viewModel.existingFilterLiveData.value)
+        assertEquals(filterUIModel, viewModel.existingFilterLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -98,7 +99,7 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
         advanceUntilIdle()
         coVerify { useCase.createFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.value)
+        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -116,7 +117,7 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
         advanceUntilIdle()
         coVerify { useCase.updateFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.value)
+        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -134,6 +135,6 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
         advanceUntilIdle()
         coVerify { useCase.deleteFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
         verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.value)
+        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
     }
 }

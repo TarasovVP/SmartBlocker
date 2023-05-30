@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_TOKEN
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginViewModel
@@ -33,7 +34,7 @@ class LoginViewModelUnitTest: BaseViewModelUnitTest<LoginViewModel>() {
         }
         viewModel.sendPasswordResetEmail(TEST_EMAIL)
         verify { useCase.sendPasswordResetEmail(TEST_EMAIL, any()) }
-        assertEquals(true, viewModel.successPasswordResetLiveData.value)
+        assertEquals(true, viewModel.successPasswordResetLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -45,7 +46,7 @@ class LoginViewModelUnitTest: BaseViewModelUnitTest<LoginViewModel>() {
         }
         viewModel.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD)
         verify { useCase.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, any()) }
-        assertEquals(Unit, viewModel.successSignInLiveData.value)
+        assertEquals(Unit, viewModel.successSignInLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -57,6 +58,6 @@ class LoginViewModelUnitTest: BaseViewModelUnitTest<LoginViewModel>() {
         }
         viewModel.firebaseAuthWithGoogle(TEST_TOKEN)
         verify { useCase.firebaseAuthWithGoogle(eq(TEST_TOKEN), any()) }
-        assertEquals(Unit, viewModel.successSignInLiveData.value)
+        assertEquals(Unit, viewModel.successSignInLiveData.getOrAwaitValue())
     }
 }

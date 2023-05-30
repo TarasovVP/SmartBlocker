@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
@@ -42,7 +43,7 @@ class ListContactViewModelUnitTest: BaseViewModelUnitTest<ListContactViewModel>(
         advanceUntilIdle()
         coVerify { useCase.allContactWithFilters() }
         verify { contactWithFilterUIMapper.mapToUIModelList(contactList) }
-        assertEquals(contactUIModelList, viewModel.contactListLiveData.value)
+        assertEquals(contactUIModelList, viewModel.contactListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -58,7 +59,7 @@ class ListContactViewModelUnitTest: BaseViewModelUnitTest<ListContactViewModel>(
         coVerify { useCase.getFilteredContactList(contactList, String.EMPTY, numberDataFilters) }
         verify { contactWithFilterUIMapper.mapToUIModelList(contactList) }
         verify { contactWithFilterUIMapper.mapFromUIModelList(contactUIModelList) }
-        assertEquals(contactUIModelList, viewModel.filteredContactListLiveData.value)
+        assertEquals(contactUIModelList, viewModel.filteredContactListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -66,6 +67,6 @@ class ListContactViewModelUnitTest: BaseViewModelUnitTest<ListContactViewModel>(
         val contactUIModelList = listOf(ContactWithFilterUIModel(contactName = TEST_NAME), ContactWithFilterUIModel(contactName = "testName2"))
         val contactMap = linkedMapOf("t" to contactUIModelList)
         viewModel.getHashMapFromContactList(contactUIModelList, false)
-        assertEquals(contactMap, viewModel.contactHashMapLiveData.value)
+        assertEquals(contactMap, viewModel.contactHashMapLiveData.getOrAwaitValue())
     }
 }

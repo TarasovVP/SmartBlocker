@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
@@ -40,7 +41,7 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
         advanceUntilIdle()
         coVerify { useCase.allCallWithFilters() }
         verify { callWithFilterUIMapper.mapToUIModelList(callList) }
-        assertEquals(callUIModelList, viewModel.callListLiveData.value)
+        assertEquals(callUIModelList, viewModel.callListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -56,7 +57,7 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
         coVerify { useCase.getFilteredCallList(callList, String.EMPTY, numberDataFilters) }
         verify { callWithFilterUIMapper.mapToUIModelList(callList) }
         verify { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) }
-        assertEquals(callUIModelList, viewModel.filteredCallListLiveData.value)
+        assertEquals(callUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -64,7 +65,7 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
         val callUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER, callDate = "123456789"), CallWithFilterUIModel(number = "1234", callDate = "123456789"))
         val callMap = mapOf(callUIModelList.firstOrNull()?.dateFromCallDate() to callUIModelList)
         viewModel.getHashMapFromCallList(callUIModelList, false)
-        assertEquals(callMap, viewModel.callHashMapLiveData.value)
+        assertEquals(callMap, viewModel.callHashMapLiveData.getOrAwaitValue())
     }
 
     @Test

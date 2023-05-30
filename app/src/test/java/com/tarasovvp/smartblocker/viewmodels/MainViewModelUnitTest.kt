@@ -6,6 +6,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -56,7 +57,7 @@ class MainViewModelUnitTest: BaseViewModelUnitTest<MainViewModel>() {
         viewModel.getOnBoardingSeen()
         advanceUntilIdle()
         coVerify { mainUseCase.getOnBoardingSeen() }
-        assertEquals(onBoardingSeen, viewModel.onBoardingSeenLiveData.value)
+        assertEquals(onBoardingSeen, viewModel.onBoardingSeenLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -66,7 +67,7 @@ class MainViewModelUnitTest: BaseViewModelUnitTest<MainViewModel>() {
         viewModel.getBlockerTurnOn()
         advanceUntilIdle()
         coVerify { mainUseCase.getBlockerTurnOn() }
-        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.value)
+        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountViewModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -30,7 +31,7 @@ class SettingsAccountViewModelUnitTest: BaseViewModelUnitTest<SettingsAccountVie
         }
         viewModel.signOut()
         verify { useCase.signOut(any()) }
-        assertEquals(Unit, viewModel.successLiveData.value)
+        assertEquals(Unit, viewModel.successLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -43,7 +44,7 @@ class SettingsAccountViewModelUnitTest: BaseViewModelUnitTest<SettingsAccountVie
         }
         viewModel.changePassword(TEST_PASSWORD, newPassword)
         verify { useCase.changePassword(eq(TEST_PASSWORD), eq(newPassword), any()) }
-        assertEquals(Unit, viewModel.successChangePasswordLiveData.value)
+        assertEquals(Unit, viewModel.successChangePasswordLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -55,6 +56,6 @@ class SettingsAccountViewModelUnitTest: BaseViewModelUnitTest<SettingsAccountVie
         }
         viewModel.deleteUser()
         verify { useCase.deleteUser(any()) }
-        assertEquals(Unit, viewModel.successLiveData.value)
+        assertEquals(Unit, viewModel.successLiveData.getOrAwaitValue())
     }
 }

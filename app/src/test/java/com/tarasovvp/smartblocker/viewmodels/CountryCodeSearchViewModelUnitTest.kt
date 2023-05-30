@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchViewModel
@@ -38,6 +39,6 @@ class CountryCodeSearchViewModelUnitTest: BaseViewModelUnitTest<CountryCodeSearc
         viewModel.getCountryCodeList()
         advanceUntilIdle()
         coVerify { useCase.getCountryCodeList() }
-        assertEquals(countryCodeUIModelList, viewModel.countryCodeListLiveData.value)
+        assertEquals(countryCodeUIModelList, viewModel.countryCodeListLiveData.getOrAwaitValue())
     }
 }

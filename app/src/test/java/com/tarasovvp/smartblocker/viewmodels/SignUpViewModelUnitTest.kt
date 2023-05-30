@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpViewModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -30,6 +31,6 @@ class SignUpViewModelUnitTest: BaseViewModelUnitTest<SignUpViewModel>() {
         }
         viewModel.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD)
         verify { useCase.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, any()) }
-        assertEquals(Unit, viewModel.successSignInLiveData.value)
+        assertEquals(Unit, viewModel.successSignInLiveData.getOrAwaitValue())
     }
 }

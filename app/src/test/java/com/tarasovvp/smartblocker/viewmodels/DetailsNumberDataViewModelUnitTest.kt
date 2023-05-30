@@ -4,6 +4,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -56,7 +57,7 @@ class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDat
         advanceUntilIdle()
         coVerify { useCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) }
         verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
-        assertEquals(filterUIModelList, viewModel.filterListLiveData.value)
+        assertEquals(filterUIModelList, viewModel.filterListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -69,7 +70,7 @@ class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDat
         advanceUntilIdle()
         coVerify { useCase.allFilteredCallsByNumber(TEST_FILTER) }
         verify { callWithFilterUIMapper.mapToUIModelList(filteredCallList) }
-        assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.value)
+        assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -84,7 +85,7 @@ class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDat
         advanceUntilIdle()
         coVerify { useCase.getCountryCodeByCode(code) }
         verify { countryCodeUIMapper.mapToUIModel(countryCode) }
-        assertEquals(filterWithCountryCodeUIModel, viewModel.countryCodeLiveData.value)
+        assertEquals(filterWithCountryCodeUIModel, viewModel.countryCodeLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -94,6 +95,6 @@ class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDat
         viewModel.getBlockHidden()
         advanceUntilIdle()
         coVerify { useCase.getBlockHidden() }
-        assertEquals(blockHidden, viewModel.blockHiddenLiveData.value)
+        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
     }
 }
