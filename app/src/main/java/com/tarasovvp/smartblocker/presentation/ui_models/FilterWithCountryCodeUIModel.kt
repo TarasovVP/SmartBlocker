@@ -56,7 +56,7 @@ data class FilterWithCountryCodeUIModel(
 
     fun extractFilterWithoutCountryCode(): String {
         return when (filterWithFilteredNumberUIModel.filter) {
-            createFilter() -> filterWithFilteredNumberUIModel.filter.replace(countryCodeUIModel.countryCode.orEmpty(), String.EMPTY)
+            createFilter() -> filterWithFilteredNumberUIModel.filter.replace(countryCodeUIModel.countryCode, String.EMPTY)
             else -> filterWithFilteredNumberUIModel.filter
         }
     }
@@ -66,9 +66,14 @@ data class FilterWithCountryCodeUIModel(
         val appPhoneNumberUtil = AppPhoneNumberUtil()
         return when (filterWithFilteredNumberUIModel.conditionType) {
             FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (appPhoneNumberUtil.getPhoneNumber(
-                    filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull()) appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel?.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCodeUIModel?.country.orEmpty()) else appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel?.filter, countryCodeUIModel?.country.orEmpty()))?.nationalNumber.toString()
-            FilterCondition.FILTER_CONDITION_START.ordinal -> filterWithFilteredNumberUIModel.filter?.replaceFirst(
-                countryCodeUIModel.countryCode, String.EMPTY).orEmpty()
+                    filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull()) appPhoneNumberUtil.getPhoneNumber(
+                filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY),
+                countryCodeUIModel.country
+            ) else appPhoneNumberUtil.getPhoneNumber(
+                filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country
+            ))?.nationalNumber.toString()
+            FilterCondition.FILTER_CONDITION_START.ordinal -> filterWithFilteredNumberUIModel.filter.replaceFirst(
+                countryCodeUIModel.countryCode, String.EMPTY)
             else -> filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
         }
     }

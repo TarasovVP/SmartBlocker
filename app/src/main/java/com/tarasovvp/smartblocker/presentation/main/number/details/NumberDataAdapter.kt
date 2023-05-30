@@ -73,7 +73,7 @@ class NumberDataAdapter(
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,
-                    if (adapterPosition == 0) FilterWithFilteredNumberUIModel?.filterTypeTint() ?: R.color.transparent
+                    if (absoluteAdapterPosition == 0) FilterWithFilteredNumberUIModel?.filterTypeTint() ?: R.color.transparent
                     else R.color.transparent)
                 root.setSafeOnClickListener {
                     FilterWithFilteredNumberUIModel?.let { it1 -> numberDataClick.invoke(it1) }

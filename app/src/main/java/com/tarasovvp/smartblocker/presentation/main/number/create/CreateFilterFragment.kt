@@ -161,7 +161,7 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
                 filterWithCountryCode = filterWithCountryCode?.apply {
-                    filterWithFilteredNumberUIModel?.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY).replace(Constants.SPACE, String.EMPTY)
+                    filterWithFilteredNumberUIModel.filter = createFilterInput.inputText().replace(Constants.MASK_CHAR.toString(), String.EMPTY).replace(Constants.SPACE, String.EMPTY)
                     viewModel.checkFilterExist(this.createFilter())
                 }
                 Timber.e( "CreateFilterFragment setFilterTextChangeListener filter?.filterAction ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
@@ -230,7 +230,7 @@ open class CreateFilterFragment :
                 binding?.filterWithCountryCode = binding?.filterWithCountryCode?.apply {
                     filterWithFilteredNumberUIModel.filterAction = when (existingFilter.filterType) {
                         DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(appPhoneNumberUtil).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
-                        filterWithFilteredNumberUIModel?.filterType -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                        filterWithFilteredNumberUIModel.filterType -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
                         else -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
                     }
                 }
