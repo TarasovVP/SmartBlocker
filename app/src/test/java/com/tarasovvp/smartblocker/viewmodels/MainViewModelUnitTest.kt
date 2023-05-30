@@ -112,7 +112,7 @@ class MainViewModelUnitTest: BaseViewModelUnitTest<MainViewModel>() {
     }
 
     @Test
-    fun getCurrentCountryCodeTest() = runTest{
+    fun setCurrentCountryCodeTest() = runTest{
         val countryCode = CountryCode()
         coEvery { mainUseCase.getCurrentCountryCode() } returns flowOf(countryCode)
         coEvery { mainUseCase.setCurrentCountryCode(countryCode) } just Runs
