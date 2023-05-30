@@ -28,7 +28,7 @@ class SettingsBlockerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeLiveData()
-        viewModel.getBlockerTurnOff()
+        viewModel.getBlockerTurnOn()
         viewModel.getBlockHidden()
         viewModel.getCurrentCountryCode()
     }

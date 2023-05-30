@@ -112,15 +112,15 @@ dependencies {
 
     //Testing
     implementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.5"
-    androidTestImplementation "org.hamcrest:hamcrest:2.2"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
-    androidTestImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
+    debugImplementation "androidx.test.ext:junit:1.1.5"
+    debugImplementation "org.hamcrest:hamcrest:2.2"
+    debugImplementation "androidx.test.espresso:espresso-core:$espresso"
+    debugImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
         exclude module: "protobuf-lite"
     }
-    androidTestImplementation "androidx.test.espresso:espresso-web:$espresso"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso"
-    androidTestImplementation ("androidx.test.espresso:espresso-accessibility:$espresso") {
+    debugImplementation "androidx.test.espresso:espresso-web:$espresso"
+    debugImplementation "androidx.test.espresso:espresso-intents:$espresso"
+    debugImplementation ("androidx.test.espresso:espresso-accessibility:$espresso") {
         exclude module: "protobuf-lite"
     }
     implementation "androidx.arch.core:core-testing:2.2.0"
@@ -128,8 +128,7 @@ dependencies {
     debugImplementation "androidx.fragment:fragment-testing:1.5.7"
     debugImplementation "androidx.navigation:navigation-testing:2.5.3"
     testImplementation 'org.robolectric:robolectric:4.8.1'
-    testImplementation "io.mockk:mockk:1.12.0"
-    androidTestImplementation "io.mockk:mockk-android:1.12.0"
+    debugImplementation "io.mockk:mockk:1.12.0"
 
     //GoogleServices
     implementation "com.google.android.gms:play-services-ads:22.0.0"
@@ -182,6 +181,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    testAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //Timber
     implementation "com.jakewharton.timber:timber:4.7.1"

@@ -23,10 +23,10 @@ class SettingsBlockerViewModel @Inject constructor(
     val currentCountryCodeLiveData = MutableLiveData<CountryCode>()
     val successBlockHiddenLiveData = MutableLiveData<Boolean>()
 
-    fun getBlockerTurnOff() {
+    fun getBlockerTurnOn() {
         launch {
-            settingsBlockerUseCase.getBlockerTurnOn().collect { blockerTurnOff ->
-                blockerTurnOnLiveData.postValue(blockerTurnOff.isTrue())
+            settingsBlockerUseCase.getBlockerTurnOn().collect { blockerTurnOn ->
+                blockerTurnOnLiveData.postValue(blockerTurnOn.isTrue())
             }
         }
     }
