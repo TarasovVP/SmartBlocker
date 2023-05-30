@@ -11,8 +11,6 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemContactBinding
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
@@ -56,7 +54,7 @@ class NumberDataAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val numberData = numberDataUIModelList?.get(position)
         when (holder) {
-            is FilterViewHolder -> holder.bindData(numberData as? FilterWithFilteredNumberUIModel)
+            is FilterViewHolder -> holder.bindData(numberData as? FilterWithFilteredNumberUIModel, position)
             is ContactViewHolder -> holder.bindData(numberData as? ContactWithFilterUIModel)
             is CallViewHolder -> holder.bindData(numberData as? CallWithFilterUIModel)
         }
@@ -65,18 +63,19 @@ class NumberDataAdapter(
     internal inner class FilterViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemFilterBinding? = DataBindingUtil.bind(itemView)
-        fun bindData(FilterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel?) {
+        fun bindData(
+            filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel?, position: Int) {
             binding?.apply {
-                this.filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel?.apply {
+                this.filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel?.apply {
                     highlightedSpanned =
-                        highlightedSpanned ?: FilterWithFilteredNumberUIModel.highlightedSpanned(FilterWithFilteredNumberUIModel, Color.GREEN)
+                        highlightedSpanned ?: filterWithFilteredNumberUIModel.highlightedSpanned(filterWithFilteredNumberUIModel, Color.GREEN)
                 }
                 itemFilterContainer.strokeColor = ContextCompat.getColor(
                     root.context,
-                    if (absoluteAdapterPosition == 0) FilterWithFilteredNumberUIModel?.filterTypeTint() ?: R.color.transparent
+                    if (position == 0) filterWithFilteredNumberUIModel?.filterTypeTint() ?: R.color.transparent
                     else R.color.transparent)
                 root.setSafeOnClickListener {
-                    FilterWithFilteredNumberUIModel?.let { it1 -> numberDataClick.invoke(it1) }
+                    filterWithFilteredNumberUIModel?.let { it1 -> numberDataClick.invoke(it1) }
                 }
                 executePendingBindings()
             }
