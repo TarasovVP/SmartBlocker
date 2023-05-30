@@ -28,8 +28,12 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getAppLanguage()
+        initViews()
+    }
+
+    fun initViews() {
         binding?.apply {
-            viewModel.getAppLanguage()
             settingsReview.isVisible = firebaseAuth.currentUser.isNotNull()
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener {

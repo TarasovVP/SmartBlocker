@@ -65,6 +65,7 @@
                     android:text="@string/settings_account_log_out_title"
                     android:paddingTop="@dimen/margin_8"
                     android:paddingBottom="@dimen/padding_16"
+                    android:minHeight="@dimen/padding_48"
                     app:layout_constraintStart_toStartOf="@+id/settings_account_name"
                     app:layout_constraintTop_toBottomOf="@+id/settings_account_name" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -78,6 +79,7 @@
                 android:paddingHorizontal="@dimen/padding_16"
                 android:paddingVertical="@dimen/padding_12"
                 android:text="@string/settings_account_change_password_title"
+                android:minHeight="@dimen/padding_48"
                 android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_container" />
 
@@ -89,6 +91,7 @@
                 android:background="@drawable/bg_rounded"
                 android:paddingHorizontal="@dimen/padding_16"
                 android:paddingVertical="@dimen/padding_12"
+                android:minHeight="@dimen/padding_48"
                 android:text="@string/settings_account_delete_title"
                 android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_change_password" />
