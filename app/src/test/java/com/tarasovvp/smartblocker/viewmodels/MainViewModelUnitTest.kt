@@ -60,13 +60,13 @@ class MainViewModelUnitTest: BaseViewModelUnitTest<MainViewModel>() {
     }
 
     @Test
-    fun getBlockerTurnOffTest() = runTest {
-        val blockerTurnOff = true
-        coEvery { mainUseCase.getBlockerTurnOn() } returns flowOf(blockerTurnOff)
+    fun getBlockerTurnOnTest() = runTest {
+        val blockerTurnOn = true
+        coEvery { mainUseCase.getBlockerTurnOn() } returns flowOf(blockerTurnOn)
         viewModel.getBlockerTurnOn()
         advanceUntilIdle()
         coVerify { mainUseCase.getBlockerTurnOn() }
-        assertEquals(blockerTurnOff, viewModel.blockerTurnOnLiveData.value)
+        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.value)
     }
 
     @Test
