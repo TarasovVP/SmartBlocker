@@ -30,7 +30,7 @@ import kotlinx.coroutines.test.*
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class DetailsNumberDataUIModelViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDataViewModel>() {
+class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDataViewModel>() {
 
     @MockK
     private lateinit var useCase: DetailsNumberDataUseCase

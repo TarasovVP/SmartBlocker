@@ -4,6 +4,8 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -19,7 +21,10 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     @MockK
     private lateinit var useCase: SettingsBlockerUseCase
 
-    override fun createViewModel() = SettingsBlockerViewModel(application, useCase)
+    @MockK
+    private lateinit var countryCodeUIMapper: CountryCodeUIMapper
+
+    override fun createViewModel() = SettingsBlockerViewModel(application, useCase, countryCodeUIMapper)
 
     @Test
     fun getBlockerTurnOnTest() = runTest {
@@ -32,13 +37,13 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     }
 
     @Test
-    fun setBlockerTurnOffTest() = runTest {
-        val blockerTurnOff = true
-        coEvery { useCase.setBlockerTurnOn(blockerTurnOff) } just Runs
-        viewModel.setBlockerTurnOn(blockerTurnOff)
+    fun setBlockerTurnOnTest() = runTest {
+        val blockerTurnOn = true
+        coEvery { useCase.setBlockerTurnOn(blockerTurnOn) } just Runs
+        viewModel.setBlockerTurnOn(blockerTurnOn)
         advanceUntilIdle()
-        coVerify { useCase.setBlockerTurnOn(blockerTurnOff) }
-        assertEquals(blockerTurnOff, viewModel.blockerTurnOnLiveData.value)
+        coVerify { useCase.setBlockerTurnOn(blockerTurnOn) }
+        assertEquals(blockerTurnOn.not(), viewModel.blockerTurnOnLiveData.value)
     }
 
     @Test
@@ -77,20 +82,24 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     @Test
     fun getCurrentCountryCodeTest() = runTest{
         val countryCode = CountryCode()
+        val countryCodeUIModel = CountryCodeUIModel()
         coEvery { useCase.getCurrentCountryCode() } returns flowOf(countryCode)
+        coEvery { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
         viewModel.getCurrentCountryCode()
         advanceUntilIdle()
         coVerify { useCase.getCurrentCountryCode() }
-        assertEquals(countryCode, viewModel.currentCountryCodeLiveData.value)
+        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.value)
     }
 
     @Test
     fun setCurrentCountryCodeTest() = runTest {
         val countryCode = CountryCode()
+        val countryCodeUIModel = CountryCodeUIModel()
         coEvery { useCase.setCurrentCountryCode(countryCode) } just Runs
-        viewModel.setCurrentCountryCode(countryCode)
+        coEvery { countryCodeUIMapper.mapFromUIModel(countryCodeUIModel) } returns countryCode
+        viewModel.setCurrentCountryCode(countryCodeUIModel)
         advanceUntilIdle()
         coVerify { useCase.setCurrentCountryCode(countryCode) }
-        assertEquals(countryCode, viewModel.currentCountryCodeLiveData.value)
+        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.value)
     }
 }

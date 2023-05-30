@@ -6,7 +6,6 @@ import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatDelegate
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsThemeBinding
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +39,9 @@ class SettingsThemeFragment :
                 AppCompatDelegate.MODE_NIGHT_NO -> R.id.app_theme_day
                 else -> R.id.app_theme_auto
             }
-            binding?.appThemeGroup?.check(radioButtonId)
+            activity?.runOnUiThread {
+                binding?.appThemeGroup?.check(radioButtonId)
+            }
         }
     }
 }

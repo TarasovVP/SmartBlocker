@@ -83,14 +83,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-  /*  override fun attachBaseContext(newBase: Context) {
+    override fun attachBaseContext(newBase: Context) {
         val dataStoreRepository = EntryPointAccessors.fromApplication( newBase, DataStoreEntryPoint::class.java ).dataStoreRepository
         val appLang = runBlocking {
             dataStoreRepository.getAppLang().first()
         } ?: Locale.getDefault().language
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(appLang)))
     }
-*/
+
     override fun onStart() {
         super.onStart()
         callHandleReceiver = CallHandleReceiver {
