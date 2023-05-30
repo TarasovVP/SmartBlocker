@@ -5,22 +5,17 @@ import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
-import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsBlockerFragment :
     BaseFragment<FragmentSettingsBlockerBinding, SettingsBlockerViewModel>() {
-
-    @Inject
-    lateinit var countryCodeUIMapper: CountryCodeUIMapper
 
     override var layoutId = R.layout.fragment_settings_blocker
     override val viewModelClass = SettingsBlockerViewModel::class.java
@@ -36,7 +31,7 @@ class SettingsBlockerFragment :
     private fun setBlockerTurnOnSettings(blockerTurnOn: Boolean) {
         binding?.apply {
             activity?.runOnUiThread {
-                settingsBlockerHiddenSwitch.isChecked = blockerTurnOn
+                settingsBlockerSwitch.isChecked = blockerTurnOn
                 settingsBlockerDescribe.text =
                     getString(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off )
             }
@@ -59,17 +54,19 @@ class SettingsBlockerFragment :
         }
     }
 
-    private fun setCountryCodeSettings(countryCode: CountryCode) {
+    private fun setCountryCodeSettings(countryCode: CountryCodeUIModel) {
         setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
-            bundle.parcelable<CountryCode>(COUNTRY_CODE)?.let { currentCountryCode ->
+            bundle.parcelable<CountryCodeUIModel>(COUNTRY_CODE)?.let { currentCountryCode ->
                 viewModel.setCurrentCountryCode(currentCountryCode)
                 (activity as? MainActivity)?.getAllData()
             }
         }
         binding?.apply {
-            settingsBlockerCountry.text = countryCodeUIMapper.mapToUIModel(countryCode).countryEmoji()
-            settingsBlockerCountry.setSafeOnClickListener {
-                findNavController().navigate(SettingsBlockerFragmentDirections.startCountryCodeSearchDialog())
+            activity?.runOnUiThread {
+                settingsBlockerCountry.text = countryCode.countryEmoji()
+                settingsBlockerCountry.setSafeOnClickListener {
+                    findNavController().navigate(SettingsBlockerFragmentDirections.startCountryCodeSearchDialog())
+                }
             }
         }
     }

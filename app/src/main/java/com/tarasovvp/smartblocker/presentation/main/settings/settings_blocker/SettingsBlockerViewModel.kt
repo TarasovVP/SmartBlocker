@@ -3,11 +3,13 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,12 +17,13 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsBlockerViewModel @Inject constructor(
     private val application: Application,
-    private val settingsBlockerUseCase: SettingsBlockerUseCase
+    private val settingsBlockerUseCase: SettingsBlockerUseCase,
+    private val countryCodeUIMapper: CountryCodeUIMapper
 ) : BaseViewModel(application) {
 
     val blockerTurnOnLiveData = MutableLiveData<Boolean>()
     val blockHiddenLiveData = MutableLiveData<Boolean>()
-    val currentCountryCodeLiveData = MutableLiveData<CountryCode>()
+    val currentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
     val successBlockHiddenLiveData = MutableLiveData<Boolean>()
 
     fun getBlockerTurnOn() {
@@ -34,7 +37,7 @@ class SettingsBlockerViewModel @Inject constructor(
     fun setBlockerTurnOn(blockerTurnOn: Boolean) {
         launch {
             settingsBlockerUseCase.setBlockerTurnOn(blockerTurnOn)
-            blockerTurnOnLiveData.postValue(blockerTurnOn)
+            blockerTurnOnLiveData.postValue(blockerTurnOn.not())
         }
     }
 
@@ -67,14 +70,14 @@ class SettingsBlockerViewModel @Inject constructor(
     fun getCurrentCountryCode() {
         launch {
             settingsBlockerUseCase.getCurrentCountryCode().collect { countryCode ->
-                currentCountryCodeLiveData.postValue(countryCode ?: CountryCode())
+                currentCountryCodeLiveData.postValue(countryCode.takeIf { it.isNotNull() }?.let { countryCodeUIMapper.mapToUIModel(it) } ?: CountryCodeUIModel())
             }
         }
     }
 
-    fun setCurrentCountryCode(countryCode: CountryCode) {
+    fun setCurrentCountryCode(countryCode: CountryCodeUIModel) {
         launch {
-            settingsBlockerUseCase.setCurrentCountryCode(countryCode)
+            settingsBlockerUseCase.setCurrentCountryCode(countryCodeUIMapper.mapFromUIModel(countryCode))
             currentCountryCodeLiveData.postValue(countryCode)
         }
     }

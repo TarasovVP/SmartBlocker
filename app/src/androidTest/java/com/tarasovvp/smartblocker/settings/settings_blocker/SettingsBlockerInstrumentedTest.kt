@@ -13,8 +13,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -36,7 +36,7 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
 
     private var blockerTurnOnLiveData: MutableLiveData<Boolean>? = null
     private var blockHiddenLiveData: MutableLiveData<Boolean>? = null
-    private var currentCountryCodeLiveData: MutableLiveData<CountryCode>? = null
+    private var currentCountryCodeLiveData: MutableLiveData<CountryCodeUIModel>? = null
 
     @Before
     override fun setUp() {
@@ -128,7 +128,7 @@ class SettingsBlockerInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
             onView(withId(R.id.settings_blocker_hidden_switch)).perform(click())
-            blockerTurnOnLiveData?.postValue(blockHidden.not())
+            blockHiddenLiveData?.postValue(blockHidden.not())
             check(matches(withText(if (blockHiddenLiveData?.getOrAwaitValue().isTrue()) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
         }
     }

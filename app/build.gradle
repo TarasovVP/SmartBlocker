@@ -129,7 +129,8 @@ dependencies {
     debugImplementation "androidx.fragment:fragment-testing:1.5.7"
     debugImplementation "androidx.navigation:navigation-testing:2.5.3"
     testImplementation 'org.robolectric:robolectric:4.10.3'
-    implementation 'io.mockk:mockk:1.13.5'
+    testImplementation "io.mockk:mockk:1.13.5"
+    androidTestImplementation "io.mockk:mockk-android:1.12.0"
 
     //GoogleServices
     implementation "com.google.android.gms:play-services-ads:22.1.0"
