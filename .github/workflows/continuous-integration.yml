@@ -17,7 +17,7 @@ jobs:
 
       - name: Build APK for UI test after Unit tests
         run: |
-          ./gradlew test
+          ./gradlew test --info
           ./gradlew assembleDebug
           ./gradlew assembleDebugAndroidTest
 
