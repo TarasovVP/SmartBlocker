@@ -2,15 +2,26 @@ package com.tarasovvp.smartblocker
 
 import android.content.ComponentName
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
+import androidx.test.espresso.matcher.BoundedMatcher
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -87,6 +98,59 @@ object UnitTestUtils {
         }
         @Suppress("UNCHECKED_CAST")
         return data as T
+    }
+
+    fun withBackgroundColor(color: Int): Matcher<View> {
+        return object : TypeSafeMatcher<View>() {
+
+            override fun matchesSafely(view: View): Boolean {
+                val background = view.background
+                return checkColor(background, color)
+            }
+
+            override fun describeTo(description: Description) {
+                description.appendText("View with background color: $color")
+            }
+
+            private fun checkColor(drawable: Drawable?, color: Int): Boolean {
+                return when (drawable) {
+                    is ColorDrawable -> drawable.color == color
+                    is GradientDrawable -> {
+                        val colors = drawable.colors
+                        colors != null && colors.size == 1 && colors[0] == color
+                    }
+                    else -> false
+                }
+            }
+        }
+    }
+
+    fun withBackgroundTint(@ColorInt color: Int): Matcher<View> {
+        return object : TypeSafeMatcher<View>() {
+
+            override fun matchesSafely(view: View): Boolean {
+                val backgroundTintList = view.backgroundTintList
+                return backgroundTintList != null && backgroundTintList.defaultColor == color
+            }
+
+            override fun describeTo(description: Description) {
+                description.appendText("View with background tint color: $color")
+            }
+        }
+    }
+
+    fun withTextColor(expectedId: Int): Matcher<View?> {
+        return object : BoundedMatcher<View?, TextView>(TextView::class.java) {
+            override fun matchesSafely(textView: TextView): Boolean {
+                val colorId = ContextCompat.getColor(textView.context, expectedId)
+                return textView.currentTextColor == colorId
+            }
+
+            override fun describeTo(description: Description) {
+                description.appendText("with text color: ")
+                description.appendValue(expectedId)
+            }
+        }
     }
 
 }

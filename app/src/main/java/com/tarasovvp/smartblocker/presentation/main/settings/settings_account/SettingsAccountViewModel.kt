@@ -3,12 +3,10 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -27,7 +25,7 @@ class SettingsAccountViewModel @Inject constructor(
             settingsAccountUseCase.signOut { result ->
                 when (result) {
                     is Result.Success -> successLiveData.postValue(Unit)
-                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage)
+                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
                 }
             }
             hideProgress()
@@ -42,7 +40,7 @@ class SettingsAccountViewModel @Inject constructor(
             settingsAccountUseCase.changePassword(currentPassword, newPassword) { result ->
                 when (result) {
                     is Result.Success -> successChangePasswordLiveData.postValue(Unit)
-                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage)
+                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
                 }
                 hideProgress()
             }
@@ -57,7 +55,7 @@ class SettingsAccountViewModel @Inject constructor(
             settingsAccountUseCase.deleteUser { result ->
                 when (result) {
                     is Result.Success -> successLiveData.postValue(Unit)
-                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage)
+                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
                 }
                 hideProgress()
             }

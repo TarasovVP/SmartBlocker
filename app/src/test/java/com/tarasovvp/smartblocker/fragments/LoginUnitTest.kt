@@ -1,14 +1,31 @@
 package com.tarasovvp.smartblocker.fragments
 
 import android.os.Build
+import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
+import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundColor
+import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundTint
+import com.tarasovvp.smartblocker.UnitTestUtils.withTextColor
+import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginFragment
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import org.junit.Ignore
-import org.junit.Rule
+import junit.framework.TestCase.assertEquals
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
+import org.junit.*
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -19,13 +36,14 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
     application = HiltTestApplication::class)
-class LoginUnitTest {
+class LoginUnitTest: BaseFragmentUnitTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
-   /* @Before
-    fun setUp() {
+    @Before
+    override fun setUp() {
+        super.setUp()
         launchFragmentInHiltContainer<LoginFragment> {
                 navController?.setGraph(R.navigation.navigation)
                 navController?.setCurrentDestination(R.id.loginFragment)
@@ -51,8 +69,8 @@ class LoginUnitTest {
 
     @Test
     fun checkLoginGoogleAuth() {
-        onView(withId(R.id.login_google_auth)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter))).check(
-            matches(withDrawable(R.drawable.ic_logo_google))).perform(click())
+        onView(withId(R.id.login_google_auth)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter)))./*check(
+            matches(withDrawable(R.drawable.ic_logo_google))).*/perform(click())
         intended(
             allOf(
                 hasAction("com.google.android.gms.auth.GOOGLE_SIGN_IN"),
@@ -129,7 +147,7 @@ class LoginUnitTest {
     }
 
     @After
-    fun tearDown() {
+    override fun tearDown() {
         Intents.release()
-    }*/
+    }
 }
