@@ -58,6 +58,9 @@ android {
 
     testOptions {
         animationsDisabled = true
+        unitTests {
+            includeAndroidResources = true
+        }
     }
     task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugAndroidTestCoverageReport']) {
         reports {

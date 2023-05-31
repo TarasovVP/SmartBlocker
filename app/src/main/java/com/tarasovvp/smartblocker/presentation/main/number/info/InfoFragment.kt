@@ -21,7 +21,7 @@ class InfoFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).toolbar?.title = args.info?.title
+        (activity as? MainActivity)?.toolbar?.title = args.info?.title
         binding?.infoWebView?.apply {
             text = args.info?.description?.let { context?.htmlWithImages(it) }
             movementMethod = object : TextViewLinkHandler() {
