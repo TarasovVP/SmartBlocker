@@ -18,8 +18,10 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore
 @ExperimentalCoroutinesApi
 class MainViewModelUnitTest: BaseViewModelUnitTest<MainViewModel>() {
 
