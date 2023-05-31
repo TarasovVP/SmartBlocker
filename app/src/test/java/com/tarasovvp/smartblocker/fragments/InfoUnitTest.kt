@@ -2,9 +2,15 @@ package com.tarasovvp.smartblocker.fragments
 
 import android.content.Context
 import android.os.Build
+import android.text.Spannable
+import android.view.MotionEvent
+import android.view.View
+import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.test.core.app.ApplicationProvider
+import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
@@ -13,9 +19,13 @@ import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages
+import com.tarasovvp.smartblocker.utils.extensions.parcelable
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
+import junit.framework.TestCase.assertEquals
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,27 +38,67 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
     application = HiltTestApplication::class)
-class InfoUnitTest {
+class InfoUnitTest: BaseFragmentUnitTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
-    private val targetContext = ApplicationProvider.getApplicationContext<Context>()
-
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         launchFragmentInHiltContainer<InfoFragment>(bundleOf("info" to
                 InfoData(targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.title()),
                     targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.description()))
-        ))
+        )) {
+            navController?.setGraph(R.navigation.navigation)
+            navController?.setCurrentDestination(R.id.infoFragment)
+            Navigation.setViewNavController(requireView(), navController)
+        }
     }
 
     @Test
     fun checkContainer() {
-        onView(withId(R.id.container)).check(matches(isDisplayed()))
+        targetContext.apply {
             onView(withId(R.id.info_web_view))
                 .check(matches(isDisplayed()))
-                .check(matches(withText(targetContext.htmlWithImages(targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.description())).toString())))
+                .check(matches(withText(htmlWithImages(getString(Info.INFO_DETAILS_NUMBER_DATA.description())).toString())))
+                .perform(clickLinkWithText("Номер"))
+        }
+        /*assertEquals(R.id.infoFragment, navController?.currentDestination?.id)
+        assertEquals(
+            InfoData(
+                title = targetContext.getString(Info.INFO_BLOCKER_LIST.title()),
+                description = targetContext.getString(Info.INFO_BLOCKER_LIST.description())
+            ),
+            navController?.backStack?.last()?.arguments?.parcelable<InfoData>("info")
+        )*/
     }
 
+    private fun clickLinkWithText(linkText: String): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return Matchers.allOf(isDisplayed(), isAssignableFrom(TextView::class.java))
+            }
+
+            override fun getDescription(): String {
+                return "click on link with text: $linkText"
+            }
+
+            override fun perform(uiController: UiController?, view: View?) {
+                if (view is TextView) {
+                    val text = view.text.toString()
+                    val start = text.indexOf(linkText)
+                    val end = start + linkText.length
+                    view.movementMethod.onTouchEvent(view, view.text as Spannable,
+                        MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN,
+                            view.layout.getPrimaryHorizontal(start),
+                            view.layout.getLineBaseline(view.layout.getLineForOffset(start)).toFloat(), 0))
+                    view.movementMethod.onTouchEvent(view, view.text as Spannable,
+                        MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP,
+                            view.layout.getPrimaryHorizontal(end),
+                            view.layout.getLineBaseline(view.layout.getLineForOffset(end)).toFloat(), 0))
+                }
+            }
+        }
+    }
 }

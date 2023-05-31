@@ -7,7 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.*
 
 @Suppress
-abstract class BaseInstrumentedTest {
+open class BaseInstrumentedTest {
 
     protected var navController: TestNavHostController? = null
     protected val targetContext by lazy { InstrumentationRegistry.getInstrumentation().targetContext }
