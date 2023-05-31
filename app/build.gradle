@@ -115,24 +115,37 @@ dependencies {
 
     //Testing
     implementation "junit:junit:4.13.2"
-    debugImplementation "androidx.test.ext:junit:1.1.5"
-    debugImplementation "org.hamcrest:hamcrest:2.2"
-    debugImplementation "androidx.test.espresso:espresso-core:$espresso"
-    debugImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
-        exclude module: "protobuf-lite"
-    }
-    debugImplementation "androidx.test.espresso:espresso-web:$espresso"
-    debugImplementation "androidx.test.espresso:espresso-intents:$espresso"
-    debugImplementation ("androidx.test.espresso:espresso-accessibility:$espresso") {
-        exclude module: "protobuf-lite"
-    }
     implementation "androidx.arch.core:core-testing:2.2.0"
     implementation "androidx.test:rules:1.5.0"
-    debugImplementation "androidx.fragment:fragment-testing:1.5.7"
-    debugImplementation "androidx.navigation:navigation-testing:2.5.3"
-    testImplementation 'org.robolectric:robolectric:4.10.3'
+    implementation "androidx.test.ext:junit:1.1.5"
+    implementation "org.hamcrest:hamcrest:2.2"
+
     testImplementation "io.mockk:mockk:1.13.5"
+    testImplementation 'org.robolectric:robolectric:4.10.3'
+    testImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
+        exclude module: "protobuf-lite"
+    }
+    testImplementation "androidx.test.espresso:espresso-web:$espresso"
+    testImplementation "androidx.test.espresso:espresso-intents:$espresso"
+    testImplementation ("androidx.test.espresso:espresso-accessibility:$espresso") {
+        exclude module: "protobuf-lite"
+    }
+    testImplementation "androidx.fragment:fragment-testing:1.5.7"
+    testImplementation "androidx.navigation:navigation-testing:2.5.3"
+
     androidTestImplementation "io.mockk:mockk-android:1.12.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    androidTestImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
+        exclude module: "protobuf-lite"
+    }
+    androidTestImplementation "androidx.test.espresso:espresso-web:$espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso"
+    androidTestImplementation ("androidx.test.espresso:espresso-accessibility:$espresso") {
+        exclude module: "protobuf-lite"
+    }
+    androidTestImplementation "androidx.fragment:fragment-testing:1.5.7"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
 
     //GoogleServices
     implementation "com.google.android.gms:play-services-ads:22.1.0"
