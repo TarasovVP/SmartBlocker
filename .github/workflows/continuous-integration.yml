@@ -64,10 +64,6 @@ jobs:
           gcloud firebase test android models list
           gcloud firebase test android run --type instrumentation --use-orchestrator --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=redfin,version=30,locale=en,orientation=portrait --timeout 30m
 
-      - name: Build and test
-        run: |
-          ./gradlew clean build connectedCheck
-
       - name: Generate JaCoCo Reports
         run: |
           ./gradlew jacocoTestReport
