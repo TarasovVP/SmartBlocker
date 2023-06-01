@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.fragments
 
-import android.content.Context
 import android.os.Build
 import android.text.Spannable
 import android.view.MotionEvent
@@ -13,17 +12,15 @@ import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
-import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages
-import com.tarasovvp.smartblocker.utils.extensions.parcelable
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.junit.Before

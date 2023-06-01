@@ -5,24 +5,25 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.databinding.FragmentDetailsFilterBinding
+import com.tarasovvp.smartblocker.domain.enums.FilterAction
+import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.databinding.FragmentDetailsFilterBinding
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.enums.FilterAction
-import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.serializable
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.databinding.FragmentDetailsNumberDataBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info

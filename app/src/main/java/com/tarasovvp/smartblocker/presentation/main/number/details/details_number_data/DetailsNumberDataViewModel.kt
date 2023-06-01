@@ -3,14 +3,13 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_numb
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

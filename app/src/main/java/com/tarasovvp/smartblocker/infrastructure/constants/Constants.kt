@@ -17,7 +17,6 @@ object Constants {
 
     //Call type
     const val IN_COMING_CALL = "1"
-    const val OUT_GOING_CALL = "2"
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
     const val BLOCKED_CALL = "6"

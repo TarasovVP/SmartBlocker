@@ -3,13 +3,11 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_list
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Locale
 import javax.inject.Inject
@@ -37,7 +35,7 @@ class SettingsListViewModel @Inject constructor(
             settingsListUseCase.insertReview(review) { result ->
                 when (result) {
                     is Result.Success -> successReviewLiveData.postValue(review.message)
-                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage)
+                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
                 }
             }
             hideProgress()

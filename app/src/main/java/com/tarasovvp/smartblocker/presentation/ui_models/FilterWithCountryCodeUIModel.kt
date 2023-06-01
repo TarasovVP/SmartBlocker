@@ -99,11 +99,11 @@ data class FilterWithCountryCodeUIModel(
         return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_INVALID
     }
 
-    fun isCreateFilterAction(): Boolean {
+    private fun isCreateFilterAction(): Boolean {
         return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE || filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
     }
 
-    fun isDeleteFilterAction(): Boolean {
+    private fun isDeleteFilterAction(): Boolean {
         return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE || filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
     }
 }

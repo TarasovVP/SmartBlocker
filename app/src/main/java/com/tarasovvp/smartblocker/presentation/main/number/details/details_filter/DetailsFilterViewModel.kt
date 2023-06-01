@@ -3,8 +3,6 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_filt
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
@@ -15,9 +13,9 @@ import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberU
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

@@ -74,11 +74,11 @@ data class CallWithFilterUIModel(
         return String.format("%s, %s", dateFromCallDate(), timeFromCallDate())
     }
 
-    fun isBlockedCall(): Boolean {
+    private fun isBlockedCall(): Boolean {
         return type == Constants.BLOCKED_CALL
     }
 
-    fun isPermittedCall(): Boolean {
+    private fun isPermittedCall(): Boolean {
         return isCallFiltered() && isBlockedCall().not()
     }
 
