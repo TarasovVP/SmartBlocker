@@ -28,15 +28,13 @@ import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
-import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IN_COMING_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MISSED_CALL
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.OUT_GOING_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REJECTED_CALL
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
@@ -308,7 +306,7 @@ object TestUtils {
             filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, filteredContacts = 11, filteredCalls = 52)),
         CallWithFilterUIModel(callId = 4,  callName = String.EMPTY, number = "12345", type = REJECTED_CALL, callDate = "1612258705769",
             filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "12345", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, filteredContacts = 11, filteredCalls = 52)),
-        CallWithFilterUIModel(callId = 5,  callName = "C Name", number = "12345", type = OUT_GOING_CALL, callDate = "1612525268071",
+        CallWithFilterUIModel(callId = 5,  callName = "C Name", number = "12345", type = "2", callDate = "1612525268071",
             filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
         CallWithFilterUIModel(callId = 6, callName = "D Name", number = "12345", type = BLOCKED_CALL, callDate = "1615110430251",
             filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
@@ -337,7 +335,7 @@ object TestUtils {
     }
 
     fun numberDataWithFilteredCallUIModelList() = arrayListOf<NumberDataUIModel>(
-        CallWithFilterUIModel(callId = 5,  callName = "C Name", number = "12345", type = OUT_GOING_CALL, callDate = "1612525268071", isFilteredCall = true,
+        CallWithFilterUIModel(callId = 5,  callName = "C Name", number = "12345", type = "2", callDate = "1612525268071", isFilteredCall = true,
         filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
         CallWithFilterUIModel(callId = 6, callName = "D Name", number = "12345", type = BLOCKED_CALL, callDate = "1615110430251", isFilteredCall = true,
             filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "123", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),

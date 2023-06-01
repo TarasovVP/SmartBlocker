@@ -19,7 +19,6 @@ import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Test
 import androidx.test.filters.Suppress
-import androidx.test.platform.app.InstrumentationRegistry
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.TestUtils.withBitmap
