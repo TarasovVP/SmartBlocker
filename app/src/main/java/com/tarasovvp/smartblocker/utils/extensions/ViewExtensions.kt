@@ -250,7 +250,7 @@ fun EditText.setupClearButtonWithAction() {
     })
 }
 
-fun MaterialButton.changeFilterTypeButtonState(isButtonEnabled: Boolean, isClose: Boolean, ) {
+fun MaterialButton.changeFilterTypeButtonState(isButtonEnabled: Boolean, isClose: Boolean) {
     backgroundTintList = ContextCompat.getColorStateList(
         context,
         if (isButtonEnabled) R.color.button_bg else R.color.transparent
@@ -276,7 +276,7 @@ fun MaterialButton.changeFilterTypeButtonState(isButtonEnabled: Boolean, isClose
     setText(if (isClose) R.string.number_details_close else R.string.filter_action_create)
 }
 
-fun ExtendedFloatingActionButton.changeFilterConditionButtonState(iconRes: Int?, isShown: Boolean, ) {
+fun ExtendedFloatingActionButton.changeFilterConditionButtonState(iconRes: Int?, isShown: Boolean) {
     iconRes?.let { setIconResource(it) }
     if (isShown) hide() else show()
 }
