@@ -11,8 +11,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -30,7 +30,7 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
     application = HiltTestApplication::class)
-class SettingsThemeInstrumentedTest: BaseFragmentUnitTest() {
+class SettingsThemeUnitTest: BaseFragmentUnitTest() {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)

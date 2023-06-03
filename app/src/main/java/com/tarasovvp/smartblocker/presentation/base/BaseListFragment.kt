@@ -72,8 +72,8 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     }
 
     protected fun setSearchViewMenu() {
-        with(activity as MainActivity) {
-            toolbar?.apply {
+        with(activity as? MainActivity) {
+            this?.toolbar?.apply {
                 inflateMenu(R.menu.toolbar_search)
                 SearchView(this@with).apply {
                     if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =

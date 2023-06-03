@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker
+package com.tarasovvp.smartblocker.fragments
 
 import android.view.View
 import android.view.ViewGroup

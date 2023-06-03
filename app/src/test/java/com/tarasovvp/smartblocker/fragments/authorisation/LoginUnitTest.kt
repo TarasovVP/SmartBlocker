@@ -14,15 +14,15 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.ScrollActions.nestedScrollTo
-import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundTint
-import com.tarasovvp.smartblocker.UnitTestUtils.withTextColor
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColor
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundTint
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
+import com.tarasovvp.smartblocker.fragments.ScrollActions.nestedScrollTo
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginFragment
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -91,7 +91,7 @@ class LoginUnitTest: BaseFragmentUnitTest() {
     fun checkLoginGoogleAuth() {
         onView(withId(R.id.login_google_auth)).apply {
             check(matches(isDisplayed())).check(matches(withText(R.string.authorization_enter)))
-            check(matches(UnitTestUtils.withDrawable(R.drawable.ic_logo_google)))
+            check(matches(withDrawable(R.drawable.ic_logo_google)))
             perform(click())
         }
         intended(

@@ -7,10 +7,9 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.UnitTestUtils.waitFor
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.OnBoardingAdapter
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.OnBoardingFragment
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -95,9 +94,7 @@ class OnboardingUnitTest: BaseFragmentUnitTest() {
             check(matches(isEnabled()))
             check(matches(withText(R.string.button_next)))
             perform(click())
-            onView(isRoot()).perform(waitFor(501))
             perform(click())
-            onView(isRoot()).perform(waitFor(501))
             perform(click())
             check(matches(isEnabled()))
             check(matches(withText(R.string.button_accept)))

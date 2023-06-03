@@ -6,10 +6,10 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.UnitTestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.SingleOnBoardingFragment
 import com.tarasovvp.smartblocker.utils.extensions.orZero
@@ -19,7 +19,6 @@ import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestName
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -29,15 +28,12 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
     application = HiltTestApplication::class)
-open class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
+class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     private var onBoardingPage: OnBoarding? = null
-
-    @get:Rule
-    var name: TestName = TestName()
 
     @Before
     override fun setUp() {

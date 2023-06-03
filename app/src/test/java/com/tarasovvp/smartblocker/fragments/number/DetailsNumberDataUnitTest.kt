@@ -1,5 +1,6 @@
-package com.tarasovvp.smartblocker.number.details.details_number_data
+package com.tarasovvp.smartblocker.fragments.number
 
+import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
@@ -10,20 +11,21 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.tarasovvp.smartblocker.BaseInstrumentedTest
+import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils.hasItemCount
-import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.TestUtils.numberDataWithFilterWithFilteredNumberUIModelList
-import com.tarasovvp.smartblocker.TestUtils.numberDataWithFilteredCallUIModelList
-import com.tarasovvp.smartblocker.TestUtils.waitFor
-import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.TestUtils.withBitmap
-import com.tarasovvp.smartblocker.TestUtils.withDrawable
-import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.hasItemCount
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.numberDataWithFilterWithFilteredNumberUIModelList
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.numberDataWithFilteredCallUIModelList
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.waitFor
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColor
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
+import com.tarasovvp.smartblocker.fragments.ScrollActions.nestedScrollTo
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
@@ -31,17 +33,30 @@ import com.tarasovvp.smartblocker.presentation.main.number.details.details_numbe
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
+import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
-@androidx.test.filters.Suppress
 @HiltAndroidTest
-open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() {
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE,
+    sdk = [Build.VERSION_CODES.O_MR1],
+    application = HiltTestApplication::class)
+class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     private var contactWithFilter: ContactWithFilterUIModel? = null
     private var isHiddenCall = false
@@ -49,7 +64,8 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
     @Before
     override fun setUp() {
         super.setUp()
-        isHiddenCall = this is DetailsNumberDataUIModelHiddenInstrumentedTest
+        FirebaseApp.initializeApp(targetContext)
+        isHiddenCall = name.methodName.contains("Hidden")
         val numberData = if (isHiddenCall) CallWithFilterUIModel(
             callId = 2, callName = "a Name", number = String.EMPTY, type = BLOCKED_CALL, callDate = "1678603872094", isFilteredCall = true, filteredNumber = "12345", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
             filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel())
@@ -183,7 +199,62 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
     }
 
     @Test
+    fun checkDetailsNumberDataHiddenCreateBlocker() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_create_blocker))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.settings)))
+                .check(matches(withTextColor(R.color.text_color_grey)))
+                .check(matches(withDrawable(R.drawable.ic_settings)))
+                .check(matches(isEnabled()))
+                .perform(click())
+            assertEquals(R.id.settingsBlockerFragment, navController?.currentDestination?.id)
+        } else {
+            onView(withId(R.id.number_data_detail_add_filter_start)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.details_number_data_create_blocker))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_action_create)))
+                .check(matches(withTextColor(R.color.white)))
+                .check(matches(withDrawable(R.drawable.ic_blocker_white)))
+                .check(matches(isEnabled()))
+                .check(matches(withAlpha(1f)))
+                .perform(click())
+            onView(withId(R.id.number_data_detail_add_filter_start)).check(matches(isDisplayed()))
+            onView(withId(R.id.details_number_data_create_blocker))
+                .check(matches(withText(R.string.number_details_close)))
+            onView(withId(R.id.details_number_data_create_permission))
+                .check(matches(withTextColor(R.color.comet)))
+                .check(matches(not(isEnabled())))
+                .check(matches(withAlpha(0.5f)))
+        }
+    }
+
+    @Test
     fun checkDetailsNumberDataCreatePermission() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_create_permission)).check(matches(not(isDisplayed())))
+        } else {
+            onView(withId(R.id.number_data_detail_add_filter_start)).check(matches(not(isDisplayed())))
+            onView(withId(R.id.details_number_data_create_permission))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_action_create)))
+                .check(matches(withTextColor(R.color.white)))
+                .check(matches(withDrawable(R.drawable.ic_permission_white)))
+                .check(matches(isEnabled()))
+                .check(matches(withAlpha(1f)))
+                .perform(click())
+            onView(withId(R.id.number_data_detail_add_filter_start)).check(matches(isDisplayed()))
+            onView(withId(R.id.details_number_data_create_permission))
+                .check(matches(withText(R.string.number_details_close)))
+            onView(withId(R.id.details_number_data_create_blocker))
+                .check(matches(withTextColor(R.color.comet)))
+                .check(matches(not(isEnabled())))
+                .check(matches(withAlpha(0.5f)))
+        }
+    }
+
+    @Test
+    fun checkDetailsNumberDataHiddenCreatePermission() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_create_permission)).check(matches(not(isDisplayed())))
         } else {
@@ -224,7 +295,41 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
     }
 
     @Test
+    fun checkNumberDataDetailHiddenAddFilterFull() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.details_number_data_create_blocker)).perform(click())
+            onView(isRoot()).perform(waitFor(3000))
+            onView(withId(R.id.number_data_detail_add_filter_full))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_condition_full)))
+                .check(matches(withDrawable(FilterCondition.FILTER_CONDITION_FULL.mainIcon())))
+                .perform(click())
+            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_FULL.ordinal, BLOCKER)
+        }
+    }
+
+    @Test
     fun checkNumberDataDetailAddFilterStart() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.details_number_data_create_blocker)).perform(click())
+            onView(isRoot()).perform(waitFor(3000))
+            onView(withId(R.id.number_data_detail_add_filter_start))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_condition_start)))
+                .check(matches(withDrawable(R.drawable.ic_condition_start)))
+                .perform(click())
+            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_START.ordinal, BLOCKER)
+        }
+    }
+
+    @Test
+    fun checkNumberDataDetailHiddenAddFilterStart() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
@@ -248,6 +353,24 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
             onView(withId(R.id.details_number_data_create_permission)).perform(click())
             onView(isRoot()).perform(waitFor(3000))
             onView(withId(R.id.number_data_detail_add_filter_contain))
+                .perform(nestedScrollTo())
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_condition_contain)))
+                .check(matches(withDrawable(R.drawable.ic_condition_contain)))
+                .perform(click())
+            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, PERMISSION)
+        }
+    }
+
+    @Test
+    fun checkNumberDataDetailHiddenAddFilterContain() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.details_number_data_create_permission)).perform(click())
+            onView(isRoot()).perform(waitFor(3000))
+            onView(withId(R.id.number_data_detail_add_filter_contain))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(R.string.filter_condition_contain)))
                 .check(matches(withDrawable(R.drawable.ic_condition_contain)))
@@ -264,8 +387,7 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
                 check(matches(isDisplayed()))
                 onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_HIDDEN.description())))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
-                //TODO drawable
-                //onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
+                onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
             } else {
                 check(matches(not(isDisplayed())))
             }
@@ -289,7 +411,23 @@ open class BaseDetailsNumberDataInstrumentedTestUIModel: BaseInstrumentedTest() 
     }
 
     @Test
-    fun checkDetailsNumberDataViewPager() {
+    fun checkDetailsNumberHiddenDataTabs() {
+        onView(withId(R.id.details_number_data_tabs)).apply {
+            if (isHiddenCall) {
+                check(matches(not(isDisplayed())))
+            } else {
+                check(matches(isDisplayed()))
+                check(matches(withDrawable(R.drawable.ic_filter_details_tab_1)))
+                onView(withId(R.id.details_number_data_view_pager)).perform(swipeLeft())
+                check(matches(withDrawable(R.drawable.ic_filter_details_tab_2)))
+                onView(withId(R.id.details_number_data_view_pager)).perform(ViewActions.swipeRight())
+                check(matches(withDrawable(R.drawable.ic_filter_details_tab_1)))
+            }
+        }
+    }
+
+    @Test
+    fun checkDetailsNumberDataHiddenViewPager() {
         onView(withId(R.id.details_number_data_view_pager)).apply {
             if (isHiddenCall) {
                 check(matches(not(isDisplayed())))

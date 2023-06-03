@@ -13,10 +13,10 @@ import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundTint
-import com.tarasovvp.smartblocker.UnitTestUtils.withTextColor
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundTint
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidRule

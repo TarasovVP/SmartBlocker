@@ -10,9 +10,9 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.UnitTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_EN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
@@ -33,7 +33,7 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
     application = HiltTestApplication::class)
-class SettingsLanguageInstrumentedTest: BaseFragmentUnitTest() {
+class SettingsLanguageUnitTest: BaseFragmentUnitTest() {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)

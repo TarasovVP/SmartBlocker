@@ -7,15 +7,16 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.IS_LOG_OUT
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.UnitTestUtils.withBitmap
-import com.tarasovvp.smartblocker.UnitTestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
 import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
@@ -30,7 +31,6 @@ import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestName
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -40,19 +40,17 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
     application = HiltTestApplication::class)
-open class SettingsAccountInstrumentedTest: BaseFragmentUnitTest() {
+class SettingsAccountUnitTest: BaseFragmentUnitTest() {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
-
-    @get:Rule
-    var name: TestName = TestName()
 
     private val mockFirebaseAuth: FirebaseAuth = mockk()
 
     @Before
     override fun setUp() {
         super.setUp()
+        FirebaseApp.initializeApp(targetContext)
         every { mockFirebaseAuth.currentUser } returns if (name.methodName.contains("Empty")) null else mockk()
         if (name.methodName.contains("Empty").not()) every { mockFirebaseAuth.currentUser?.email } returns TEST_EMAIL
         launchFragmentInHiltContainer<SettingsAccountFragment> {
@@ -80,7 +78,7 @@ open class SettingsAccountInstrumentedTest: BaseFragmentUnitTest() {
         onView(withId(R.id.settings_account_avatar)).apply {
             if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
-                check(matches(withBitmap(targetContext?.getInitialDrawable( mockFirebaseAuth.currentUser?.email.nameInitial())?.toBitmap())))
+                check(matches(withBitmap(targetContext.getInitialDrawable( mockFirebaseAuth.currentUser?.email.nameInitial()).toBitmap())))
             } else {
                 check(matches(not(isDisplayed())))
             }

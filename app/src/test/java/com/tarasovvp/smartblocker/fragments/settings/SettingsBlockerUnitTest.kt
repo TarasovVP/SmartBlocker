@@ -12,9 +12,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
@@ -36,7 +36,7 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
     application = HiltTestApplication::class)
-class SettingsBlockerInstrumentedTest: BaseFragmentUnitTest() {
+class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
