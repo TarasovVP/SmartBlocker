@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.fragments
+package com.tarasovvp.smartblocker.fragments.number
 
 import android.os.Build
 import android.text.Spannable
@@ -15,6 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.domain.enums.Info
+import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages

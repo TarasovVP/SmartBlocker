@@ -8,8 +8,8 @@ import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.SingleOnBoardingFragment
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -29,7 +29,7 @@ open class BaseSingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
             is SingleOnboardingIntroInstrumentedTest -> OnBoarding.ONBOARDING_INTRO
             is SingleOnboardingFilterConditionsInstrumentedTest -> OnBoarding.ONBOARDING_FILTER_CONDITIONS
             is SingleOnboardingInfoInstrumentedTest -> OnBoarding.ONBOARDING_INFO
-            else -> OnBoarding.ONBOARDING_INTRO
+            else -> OnBoarding.ONBOARDING_PERMISSIONS
         }
         launchFragmentInHiltContainer<SingleOnBoardingFragment>(fragmentArgs = bundleOf(ON_BOARDING_PAGE to onBoardingPage)) {}
     }

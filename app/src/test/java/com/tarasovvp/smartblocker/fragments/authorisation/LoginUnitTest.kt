@@ -1,4 +1,4 @@
-package com.tarasovvp.smartblocker.fragments
+package com.tarasovvp.smartblocker.fragments.authorisation
 
 import android.content.Intent
 import android.os.Build
@@ -22,6 +22,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.UnitTestUtils.withBackgroundTint
 import com.tarasovvp.smartblocker.UnitTestUtils.withTextColor
+import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginFragment
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidRule
