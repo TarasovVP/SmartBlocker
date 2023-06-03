@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker
 
 import android.content.ComponentName
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -49,6 +50,7 @@ object UnitTestUtils {
     const val TEST_PASSWORD = "Ua12345!"
     const val TEST_REVIEW = "review"
     const val TEST_USER_ID = "testUserId"
+    const val IS_LOG_OUT = "isLogOut"
 
     inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         fragmentArgs: Bundle? = null,
@@ -122,6 +124,16 @@ object UnitTestUtils {
             else if (view is TextView && id.isNull()) view.compoundDrawables.none { it.isNotNull() }
             else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[position ?: view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
             else false
+        }
+    }
+
+    fun withBitmap(bitmap: Bitmap?) = object : TypeSafeMatcher<View>() {
+        override fun describeTo(description: Description) {
+            description.appendText("ImageView with bitmap same as $bitmap")
+        }
+
+        override fun matchesSafely(view: View): Boolean {
+            return (view as ImageView).drawable?.toBitmap()?.sameAs(bitmap).isTrue()
         }
     }
 
