@@ -3,15 +3,15 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -106,7 +106,7 @@ class ListCallFragment :
                 adapter?.notifyDataSetChanged()
             }
         }
-        (activity as MainActivity).toolbar?.apply {
+        (activity as? MainActivity)?.toolbar?.apply {
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
@@ -118,7 +118,7 @@ class ListCallFragment :
     }
 
     private fun setDeleteMenuClickListener() {
-        (activity as MainActivity).toolbar?.setOnMenuItemClickListener { menuItem ->
+        (activity as? MainActivity)?.toolbar?.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.delete_menu_item) {
                 val deleteCallCount = callWithFilterList?.filter { it.isCheckedForDelete.isTrue() }.orEmpty().size
                 this@ListCallFragment.findNavController()
@@ -150,7 +150,7 @@ class ListCallFragment :
                 callHashMap?.let { setDataList(it) }
             }
             successDeleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as MainActivity).apply {
+                (activity as? MainActivity)?.apply {
                     showInterstitial()
                     getAllData()
                 }

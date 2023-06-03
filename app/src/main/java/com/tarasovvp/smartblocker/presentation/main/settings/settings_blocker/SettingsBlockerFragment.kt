@@ -5,12 +5,15 @@ import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsBlockerBinding
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.parcelable
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -75,7 +78,7 @@ class SettingsBlockerFragment :
         with(viewModel) {
             blockerTurnOnLiveData.safeSingleObserve(viewLifecycleOwner) { blockerTurnOn ->
                 setBlockerTurnOnSettings(blockerTurnOn)
-                (activity as MainActivity).apply {
+                (activity as? MainActivity)?.apply {
                     if (blockerTurnOn) {
                         startBlocker()
                     } else {

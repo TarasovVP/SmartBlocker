@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 import com.tarasovvp.smartblocker.utils.EmptyStateView
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -45,7 +45,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         setSearchViewMenu()
-        (activity as MainActivity).mainViewModel.successAllDataLiveData.safeSingleObserve(
+        (activity as? MainActivity)?.mainViewModel?.successAllDataLiveData?.safeSingleObserve(
             viewLifecycleOwner) {
             this@BaseListFragment.getData()
         }
@@ -117,7 +117,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     }
 
     protected open fun checkDataListEmptiness(isEmpty: Boolean) {
-        (activity as MainActivity).toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible =
+        (activity as? MainActivity)?.toolbar?.menu?.findItem(R.id.search_menu_item)?.isVisible =
             searchQuery.isNullOrEmpty().not() || isEmpty.not()
         emptyStateContainer?.isVisible = isEmpty
         recyclerView?.isVisible = isEmpty.not()

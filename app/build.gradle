@@ -36,6 +36,7 @@ android {
         resources.excludes.add("META-INF/*")
     }
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -62,7 +63,7 @@ android {
             includeAndroidResources = true
         }
     }
-    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugAndroidTestCoverageReport']) {
+    task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
         reports {
             html.required.set(true)
             xml.required.set(true)
@@ -74,7 +75,10 @@ android {
                 dir: './build/intermediates/javac/debug/classes',
                 excludes: [
                         '**/*$*$*',
-                        '**/*$lambda$*'
+                        '**/*$lambda$*',
+                        '**/Hilt_*.*',
+                        '**/Dagger*Component.*'
+
                 ]
         ))
         sourceDirectories.setFrom(coverageSourceDirs)
@@ -85,18 +89,6 @@ android {
                         'testDebugAndroidTest.exec'
                 ]
         ))
-        sourceSets {
-            main {
-                java {
-                    exclude '**/*$*$*'
-                    exclude '**/*$lambda$*'
-                    exclude '**/R.class'
-                    exclude '**/R$*.class'
-                    exclude '**/BuildConfig.*'
-                    exclude '**/Manifest*.*'
-                }
-            }
-        }
     }
 }
 

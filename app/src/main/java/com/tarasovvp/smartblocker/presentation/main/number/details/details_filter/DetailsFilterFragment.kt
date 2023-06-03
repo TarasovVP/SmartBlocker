@@ -40,7 +40,7 @@ class DetailsFilterFragment :
     override fun initViews() {
         binding?.apply {
             args.filterWithFilteredNumberUIModel?.let { filterWithFilteredNumberUIModel ->
-                (activity as MainActivity).toolbar?.title = getString(filterWithFilteredNumberUIModel.filterTypeTitle())
+                (activity as? MainActivity)?.toolbar?.title = getString(filterWithFilteredNumberUIModel.filterTypeTitle())
                 this.filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel
             }
             executePendingBindings()
@@ -161,7 +161,7 @@ class DetailsFilterFragment :
     }
 
     private fun handleSuccessFilterAction(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
-        (activity as MainActivity).apply {
+        (activity as? MainActivity)?.apply {
             showInfoMessage(String.format(filterWithFilteredNumberUIModel.filterAction?.successText()?.let { getString(it) }
                 .orEmpty(), binding?.filterWithFilteredNumberUIModel?.filter.orEmpty()), false)
             //TODO interstitial

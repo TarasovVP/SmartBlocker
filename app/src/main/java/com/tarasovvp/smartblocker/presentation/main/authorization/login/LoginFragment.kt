@@ -14,12 +14,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.UNAUTHORIZED_ENTER
-import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -68,7 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             }
         }
         setFragmentResultListener(UNAUTHORIZED_ENTER) { _, _ ->
-            (activity as MainActivity).apply {
+            (activity as? MainActivity)?.apply {
                 getAllData()
                 startBlocker()
             }
@@ -95,7 +95,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun observeLiveData() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as MainActivity).apply {
+                (activity as? MainActivity)?.apply {
                     getAllData()
                     startBlocker()
                 }

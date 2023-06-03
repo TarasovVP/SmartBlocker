@@ -4,19 +4,19 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
-import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -77,7 +77,7 @@ open class BaseListFilterFragment :
                 adapter?.notifyDataSetChanged()
             }
         }
-        (activity as MainActivity).toolbar?.apply {
+        (activity as? MainActivity)?.toolbar?.apply {
             menu?.clear()
             if (isDeleteMode) {
                 inflateMenu(R.menu.toolbar_delete)
@@ -162,7 +162,7 @@ open class BaseListFilterFragment :
     }
 
     private fun setDeleteMenuClickListener() {
-        (activity as MainActivity).toolbar?.apply {
+        (activity as? MainActivity)?.toolbar?.apply {
             setOnMenuItemClickListener {
                 val deleteFilterCount = filterWithFilteredNumberUIModels?.filter { it.isCheckedForDelete }.orEmpty().size
                 val firstFilterWithCountryCode = filterWithFilteredNumberUIModels?.firstOrNull { it.isCheckedForDelete } as FilterWithFilteredNumberUIModel
@@ -201,7 +201,7 @@ open class BaseListFilterFragment :
                 filterList?.let { setDataList(it) }
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as MainActivity).apply {
+                (activity as? MainActivity)?.apply {
                     showInterstitial()
                     getAllData()
                 }

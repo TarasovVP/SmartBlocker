@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsLanguageBinding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +31,7 @@ class SettingsLanguageFragment :
                 else -> Constants.APP_LANG_EN
             }
             viewModel.setAppLanguage(appLang)
-            (activity as MainActivity).apply {
+            (activity as? MainActivity)?.apply {
                 if (intent.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).not()) {
                     recreate()
                 }

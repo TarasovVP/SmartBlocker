@@ -7,11 +7,14 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -19,6 +22,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
@@ -98,6 +104,22 @@ object UnitTestUtils {
         }
         @Suppress("UNCHECKED_CAST")
         return data as T
+    }
+
+    fun withDrawable(@DrawableRes id: Int?, position: Int? = null) = object : TypeSafeMatcher<View>() {
+        override fun describeTo(description: Description) {
+            description.appendText("View with drawable same as drawable with id $id")
+        }
+
+        override fun matchesSafely(view: View): Boolean {
+            val context = view.context
+            val expectedBitmap = id?.let { context.getDrawable(it)?.toBitmap() }
+
+            return if (view is ImageView) view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
+            else if (view is TextView && id.isNull()) view.compoundDrawables.none { it.isNotNull() }
+            else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[position ?: view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
+            else false
+        }
     }
 
     fun withBackgroundColor(color: Int): Matcher<View> {

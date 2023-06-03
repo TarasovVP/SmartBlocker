@@ -7,17 +7,17 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
+import com.tarasovvp.smartblocker.domain.enums.FilterAction
+import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
-import com.tarasovvp.smartblocker.domain.enums.FilterAction
-import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import com.tarasovvp.smartblocker.presentation.ui_models.*
@@ -45,7 +45,7 @@ open class CreateFilterFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).setMainProgressVisibility(true)
+        (activity as? MainActivity)?.setMainProgressVisibility(true)
     }
 
     override fun createAdapter() {
@@ -88,7 +88,7 @@ open class CreateFilterFragment :
             }
             Timber.e( "CreateFilterFragment initViews filter?.filterAction ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
             setCountryCode(filterWithCountryCode?.countryCodeUIModel)
-            (activity as MainActivity).toolbar?.title = getString(if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
+            (activity as? MainActivity)?.toolbar?.title = getString(if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
             container.hideKeyboardWithLayoutTouch()
             createFilterNumberList.hideKeyboardWithLayoutTouch()
             createFilterInput.setupClearButtonWithAction()
@@ -223,7 +223,7 @@ open class CreateFilterFragment :
                 }
                 binding?.filterToInput = true
                 //binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel = binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel
-                (activity as MainActivity).setMainProgressVisibility(false)
+                (activity as? MainActivity)?.setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
                 Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter filterAction ${ binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
@@ -249,7 +249,7 @@ open class CreateFilterFragment :
 
     private fun handleSuccessFilterAction(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
         Timber.e("CreateFilterFragment handleSuccessFilterAction")
-        (activity as MainActivity).apply {
+        (activity as? MainActivity)?.apply {
             showInfoMessage(String.format(filterWithFilteredNumberUIModel.filterAction?.successText()?.let { getString(it) }
                 .orEmpty(),
                 filterWithFilteredNumberUIModel, filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) }), false)

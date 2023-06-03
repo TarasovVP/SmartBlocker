@@ -18,7 +18,7 @@ abstract class BaseDetailsFragment<B : ViewDataBinding, T : BaseViewModel> :
     }
 
     private fun setInfoMenu() {
-        (activity as MainActivity).apply {
+        (activity as? MainActivity)?.apply {
             toolbar?.inflateMenu(R.menu.toolbar_info)
             toolbar?.setOnMenuItemClickListener {
                 showInfoScreen()

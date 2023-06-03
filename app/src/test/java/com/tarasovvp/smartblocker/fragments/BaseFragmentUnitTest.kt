@@ -3,7 +3,9 @@ package com.tarasovvp.smartblocker.fragments
 import android.content.Context
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Ignore
 
 @Ignore
 open class BaseFragmentUnitTest {

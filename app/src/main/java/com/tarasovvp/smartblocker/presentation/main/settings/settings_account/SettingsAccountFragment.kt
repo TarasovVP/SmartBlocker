@@ -9,15 +9,15 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.data.database.AppDatabase
+import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
+import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CHANGE_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CURRENT_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DELETE_USER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NEW_PASSWORD
-import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
-import com.tarasovvp.smartblocker.domain.enums.EmptyState
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -64,7 +64,7 @@ class SettingsAccountFragment :
     private fun setOnclickListeners() {
         binding?.apply {
             settingsAccountLogOut.setSafeOnClickListener {
-                (activity as MainActivity).stopBlocker()
+                (activity as? MainActivity)?.stopBlocker()
                 findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog(isLogOut = true))
             }
             settingsAccountDelete.setSafeOnClickListener {
@@ -83,7 +83,7 @@ class SettingsAccountFragment :
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
                 context?.let { context -> AppDatabase.getDatabase(context).clearAllTables() }
-                (activity as MainActivity).apply {
+                (activity as? MainActivity)?.apply {
                     stopBlocker()
                     finish()
                     startActivity(Intent(this, MainActivity::class.java))

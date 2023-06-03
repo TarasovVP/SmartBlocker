@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsPrivacyBinding
-import com.tarasovvp.smartblocker.utils.extensions.initWebView
-import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
+import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import com.tarasovvp.smartblocker.utils.extensions.initWebView
 
 class SettingsPrivacyFragment :
     BaseBindingFragment<FragmentSettingsPrivacyBinding>() {
@@ -15,7 +15,7 @@ class SettingsPrivacyFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).apply {
+        (activity as? MainActivity)?.apply {
             setProgressVisibility(true)
             binding?.settingsPrivacyWebView?.initWebView(getString(R.string.privacy_policy)) {
                 setProgressVisibility(false)

@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.SystemClock
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
@@ -30,11 +29,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.tarasovvp.smartblocker.EmptyActivity
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.databinding.DialogInfoBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
-import com.tarasovvp.smartblocker.databinding.DialogInfoBinding
+import dagger.hilt.android.internal.managers.ViewComponentManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -42,11 +43,15 @@ private var lastClickTime = 0L
 
 fun View.setSafeOnClickListener(action: () -> Unit) {
     setOnClickListener {
-        SystemClock.elapsedRealtime().takeIf { it - lastClickTime > 500L }
-            ?.run {
-                action()
-                lastClickTime = this
-            }
+        if ((context as? ViewComponentManager.FragmentContextWrapper)?.baseContext is EmptyActivity) {
+            action.invoke()
+        } else {
+            System.currentTimeMillis().takeIf { it - lastClickTime > 500L }
+                ?.run {
+                    action()
+                    lastClickTime = this
+                }
+        }
     }
 }
 
