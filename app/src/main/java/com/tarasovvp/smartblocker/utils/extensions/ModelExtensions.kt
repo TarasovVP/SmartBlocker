@@ -15,22 +15,27 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.enums.*
-import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.models.Call
+import com.tarasovvp.smartblocker.domain.enums.*
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ASC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_ID
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.max
 
 fun Context.systemContactList(appPhoneNumberUtil: AppPhoneNumberUtil, country: String, result: (Int, Int) -> Unit): ArrayList<Contact> {
@@ -61,8 +66,9 @@ fun Context.systemContactList(appPhoneNumberUtil: AppPhoneNumberUtil, country: S
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
             ).apply {
-                phoneNumberValue = appPhoneNumberUtil.phoneNumberValue(number, country)
-                isPhoneNumberValid = appPhoneNumberUtil.isPhoneNumberValid(number, country) }
+                val phoneNumber = appPhoneNumberUtil.getPhoneNumber(number, country)
+                isPhoneNumberValid = appPhoneNumberUtil.isPhoneNumberValid(phoneNumber)
+                phoneNumberValue = appPhoneNumberUtil.phoneNumberValue(number, phoneNumber) }
             contactList.add(contact)
             result.invoke(cursor.count, contactList.size)
         }
@@ -110,8 +116,9 @@ fun Context.systemLogCallList(appPhoneNumberUtil: AppPhoneNumberUtil, country: S
         while (callLogCursor.moveToNext()) {
             val logCall = callLogCursor.createCallObject(false) as LogCall
             logCallList.add(logCall.apply {
-                phoneNumberValue = appPhoneNumberUtil.phoneNumberValue(number, country)
-                isPhoneNumberValid = appPhoneNumberUtil.isPhoneNumberValid(number, country) })
+                val phoneNumber = appPhoneNumberUtil.getPhoneNumber(number, country)
+                isPhoneNumberValid = appPhoneNumberUtil.isPhoneNumberValid(phoneNumber)
+                phoneNumberValue = appPhoneNumberUtil.phoneNumberValue(number, phoneNumber) })
             result.invoke(callLogCursor.count, logCallList.size)
         }
     }

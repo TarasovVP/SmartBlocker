@@ -3,11 +3,13 @@ package com.tarasovvp.smartblocker.presentation.ui_models
 import android.content.Context
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
+import com.tarasovvp.smartblocker.utils.extensions.isNull
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -47,20 +49,6 @@ data class FilterWithCountryCodeUIModel(
         }
     }
 
-    fun createFilterValue(context: Context): String {
-        return when {
-            filterWithFilteredNumberUIModel.isTypeContain().isTrue() -> filterWithFilteredNumberUIModel.filter.ifEmpty { context.getString(R.string.creating_filter_no_data) }
-            else -> String.format("%s%s", countryCodeUIModel.countryCode, filterToInput())
-        }
-    }
-
-    fun extractFilterWithoutCountryCode(): String {
-        return when (filterWithFilteredNumberUIModel.filter) {
-            createFilter() -> filterWithFilteredNumberUIModel.filter.replace(countryCodeUIModel.countryCode, String.EMPTY)
-            else -> filterWithFilteredNumberUIModel.filter
-        }
-    }
-
     fun filterToInput(): String {
         //TODO
         val appPhoneNumberUtil = AppPhoneNumberUtil()
@@ -79,7 +67,7 @@ data class FilterWithCountryCodeUIModel(
     }
 
     fun isInValidPhoneNumber(appPhoneNumberUtil: AppPhoneNumberUtil): Boolean {
-        return (filterWithFilteredNumberUIModel.isTypeFull() && appPhoneNumberUtil.isPhoneNumberValid(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country))
+        return (filterWithFilteredNumberUIModel.isTypeFull() /*&& appPhoneNumberUtil.isPhoneNumberValid(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country)*/)
                 || (filterWithFilteredNumberUIModel.isTypeStart().not() && filterWithFilteredNumberUIModel.filter.isEmpty())
     }
 

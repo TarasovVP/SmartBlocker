@@ -273,7 +273,8 @@ class MainActivity : AppCompatActivity() {
                 if (isOnBoardingSeen && firebaseAuth.currentUser.isNotNull() && isSavedInstanceStateNull.isTrue()) {
                     startBlocker()
                     if (application.isNetworkAvailable()) {
-                        getAllData()
+                        setMainProgressVisibility(true)
+                        getCurrentUser()
                     } else {
                         navController?.navigate(R.id.startUnavailableNetworkDialog)
                     }

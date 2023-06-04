@@ -4,16 +4,18 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
-import com.tarasovvp.smartblocker.presentation.ui_models.MainProgress
-import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.presentation.ui_models.MainProgress
 import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Locale
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +65,6 @@ class MainViewModel @Inject constructor(
 
     fun getCurrentUser() {
         launch {
-            showProgress()
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressDescription = R.string.progress_data_collect
             })

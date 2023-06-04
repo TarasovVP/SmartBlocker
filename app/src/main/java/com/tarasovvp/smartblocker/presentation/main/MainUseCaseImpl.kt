@@ -1,14 +1,14 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.app.Application
-import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
+import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import java.util.Locale
 import javax.inject.Inject
 
 class MainUseCaseImpl @Inject constructor(
@@ -74,7 +74,7 @@ class MainUseCaseImpl @Inject constructor(
     }
 
     override suspend fun getSystemContacts(application: Application, result: (Int, Int) -> Unit): ArrayList<Contact> {
-        val country = dataStoreRepository.getCountryCode().first()?.country ?: Locale.getDefault().country
+        val country = dataStoreRepository.getCountryCode().first()?.country.takeIf { it.isNullOrEmpty().not() } ?: application.getUserCountry().orEmpty().uppercase()
         return contactRepository.getSystemContactList(application, country) { size, position ->
             result.invoke(size, position)
         }
@@ -85,7 +85,7 @@ class MainUseCaseImpl @Inject constructor(
     }
 
     override suspend fun getSystemLogCalls(application: Application, result: (Int, Int) -> Unit): List<LogCall> {
-        val country = dataStoreRepository.getCountryCode().first()?.country ?: Locale.getDefault().country
+        val country = dataStoreRepository.getCountryCode().first()?.country.takeIf { it.isNullOrEmpty().not() } ?: application.getUserCountry().orEmpty().uppercase()
         return logCallRepository.getSystemLogCallList(application, country) { size, position ->
             result.invoke(size, position)
         }

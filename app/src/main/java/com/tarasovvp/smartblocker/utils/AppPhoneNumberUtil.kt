@@ -1,10 +1,13 @@
 package com.tarasovvp.smartblocker.utils
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
+import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 
 class AppPhoneNumberUtil {
 
@@ -31,22 +34,23 @@ class AppPhoneNumberUtil {
         return countryCodeMap
     }
 
-    fun getPhoneNumber(phoneNumber: String?, country: String): Phonenumber.PhoneNumber? = try {
-        if (phoneNumber.isNullOrEmpty()) null
-        else if (phoneNumber.startsWith(Constants.PLUS_CHAR)) phoneNumberUtil?.parse(phoneNumber.digitsTrimmed(), String.EMPTY)
-        else phoneNumberUtil?.parse(phoneNumber.digitsTrimmed(), country)
+    fun getPhoneNumber(phoneNumber: String?, country: String): PhoneNumber? = try {
+        when {
+            phoneNumber.isNullOrEmpty() -> null
+            phoneNumber.startsWith(Constants.PLUS_CHAR) -> phoneNumberUtil?.parse(phoneNumber.digitsTrimmed(), String.EMPTY)
+            country.isEmpty() -> null
+            else -> phoneNumberUtil?.parse(phoneNumber.digitsTrimmed(), country)
+        }
     } catch (e: Exception) {
         e.printStackTrace()
         null
     }
 
-    fun phoneNumberValue(number: String?, country: String): String {
-        val phoneNumber = getPhoneNumber(number, country)
+    fun phoneNumberValue(number: String?, phoneNumber: PhoneNumber?): String {
         return if (isValidPhoneNumber(phoneNumber)) String.format("+%s%s", phoneNumber?.countryCode, phoneNumber?.nationalNumber) else number.orEmpty()
     }
 
-    fun isPhoneNumberValid(number: String?, country: String): Boolean {
-        val phoneNumber = getPhoneNumber(number, country)
+    fun isPhoneNumberValid(phoneNumber: PhoneNumber?): Boolean {
         return try {
             if (phoneNumber.isNull()) false else phoneNumberUtil?.isValidNumber(phoneNumber).isTrue()
         } catch (e: Exception) {
@@ -54,7 +58,7 @@ class AppPhoneNumberUtil {
         }
     }
 
-    private fun isValidPhoneNumber(phoneNumber: Phonenumber.PhoneNumber?): Boolean {
+    private fun isValidPhoneNumber(phoneNumber: PhoneNumber?): Boolean {
         return try {
             if (this.isNull()) false else phoneNumberUtil?.isValidNumber(phoneNumber).isTrue()
         } catch (e: Exception) {
