@@ -46,7 +46,7 @@
                 android:id="@+id/item_contact_filter"
                 android:layout_width="@dimen/margin_20"
                 android:layout_height="@dimen/margin_20"
-                app:imageResource="@{contactWithFilter.filterWithFilteredNumberUIModel.filterTypeIcon}"
+                app:imageResource="@{contactWithFilter.filterTypeIcon}"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_avatar"
                 app:layout_constraintEnd_toEndOf="@+id/item_contact_avatar" />
 
@@ -101,8 +101,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_10"
                 android:layout_marginTop="@dimen/margin_5"
-                android:text="@{contactWithFilter.filterWithFilteredNumberUIModel == null ? @string/details_number_contact_without_filter : contactWithFilter.filterWithFilteredNumberUIModel.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
-                android:textColor="@{contactWithFilter.filterWithFilteredNumberUIModel == null ? @color/text_color_grey : contactWithFilter.filterWithFilteredNumberUIModel.blocker ? @color/sunset : @color/islamic_green}"
+                android:text="@{contactWithFilter.emptyFilter ? @string/details_number_contact_without_filter : contactWithFilter.filterWithFilteredNumberUIModel.blocker ? @string/details_number_block_with_filter : @string/details_number_permit_with_filter}"
+                android:textColor="@{contactWithFilter.emptyFilter ? @color/text_color_grey : contactWithFilter.filterWithFilteredNumberUIModel.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toBottomOf="@+id/item_contact_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/item_contact_filter_value"/>
@@ -112,7 +112,7 @@
                 android:layout_width="@dimen/size_0"
                 android:layout_height="@dimen/size_0"
                 android:textSize="@dimen/text_size_10"
-                android:text="@{contactWithFilter.filterWithFilteredNumberUIModel == null ? `` : contactWithFilter.filterWithFilteredNumberUIModel.filter}"
+                android:text="@{contactWithFilter.emptyFilter ? `` : contactWithFilter.filterWithFilteredNumberUIModel.filter}"
                 android:textColor="@{contactWithFilter.filterWithFilteredNumberUIModel.blocker ? @color/sunset : @color/islamic_green}"
                 app:layout_constraintTop_toTopOf="@+id/item_contact_filter_title"
                 app:layout_constraintBottom_toBottomOf="@+id/item_contact_filter_title"

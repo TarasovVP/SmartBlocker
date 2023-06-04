@@ -65,7 +65,7 @@ open class BaseListFilterFragment :
     private fun setFilterListData(filterWithCountryCodeList: List<FilterWithFilteredNumberUIModel>) {
         binding?.listFilterCheck?.isEnabled = filterWithCountryCodeList.isNotEmpty() || binding?.listFilterCheck?.isChecked.isTrue()
         checkDataListEmptiness(filterWithCountryCodeList.isEmpty())
-        viewModel.getHashMapFromFilterList(filterWithCountryCodeList, swipeRefresh?.isRefreshing.isTrue())
+        setDataList(mapOf(String.EMPTY to filterWithCountryCodeList))
     }
 
     private fun changeDeleteMode() {
@@ -196,9 +196,6 @@ open class BaseListFilterFragment :
             }
             filteredFilterListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredFilterList ->
                 setFilterListData(filteredFilterList)
-            }
-            filterHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                filterList?.let { setDataList(it) }
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {

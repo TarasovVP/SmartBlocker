@@ -8,7 +8,6 @@ import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -24,7 +23,6 @@ class ListFilterViewModel @Inject constructor(
     val filterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
     val filteredFilterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>>()
-    val filterHashMapLiveData = MutableLiveData<Map<String, List<FilterWithFilteredNumberUIModel>>?>()
 
     fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
@@ -41,12 +39,6 @@ class ListFilterViewModel @Inject constructor(
             val filteredFilterList = listFilterUseCase.getFilteredFilterList(filterWithFilteredNumberUIMapper.mapFromUIModelList(filterList), searchQuery, filterIndexes)
             filteredFilterListLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModelList(filteredFilterList))
         }
-    }
-
-    fun getHashMapFromFilterList(filterList: List<FilterWithFilteredNumberUIModel>, refreshing: Boolean) {
-        if (refreshing.not()) showProgress()
-        filterHashMapLiveData.postValue(mapOf(String.EMPTY to filterList))
-        hideProgress()
     }
 
     fun deleteFilterList(filterList: List<FilterWithFilteredNumberUIModel>) {

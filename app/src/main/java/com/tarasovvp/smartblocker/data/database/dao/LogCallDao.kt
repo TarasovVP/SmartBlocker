@@ -16,11 +16,6 @@ interface LogCallDao {
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT DISTINCT * FROM callWithFilter WHERE type != '2' GROUP BY number")
-    suspend fun allDistinctCallsWithFilter(): List<CallWithFilter>
-
-    @RewriteQueriesToDropUnusedColumns
-    @Transaction
-    @Query("SELECT DISTINCT * FROM callWithFilter WHERE filter = :filter GROUP BY number")
+    @Query("SELECT DISTINCT * FROM callWithFilter WHERE filter = :filter AND type != '2' GROUP BY number")
     suspend fun allCallWithFiltersByFilter(filter: String): List<CallWithFilter>
 }

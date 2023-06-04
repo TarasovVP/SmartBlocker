@@ -45,6 +45,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         setSearchViewMenu()
+        setFilterCheck()
         (activity as? MainActivity)?.mainViewModel?.successAllDataLiveData?.safeSingleObserve(
             viewLifecycleOwner) {
             this@BaseListFragment.getData()

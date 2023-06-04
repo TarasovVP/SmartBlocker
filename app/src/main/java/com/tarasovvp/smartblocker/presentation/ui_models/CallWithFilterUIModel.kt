@@ -44,6 +44,13 @@ data class CallWithFilterUIModel(
         return callName.isEmpty()
     }
 
+    fun filterTypeIcon(): Int? {
+        return if (isEmptyFilter()) null else filterWithFilteredNumberUIModel.filterTypeIcon()
+    }
+    fun isEmptyFilter(): Boolean {
+        return filterWithFilteredNumberUIModel.filter.isEmpty()
+    }
+
     fun callIcon(): Int {
         return when (type) {
             Constants.IN_COMING_CALL -> if (isCallFiltered()) R.drawable.ic_call_incoming_permitted else R.drawable.ic_call_incoming
@@ -124,7 +131,7 @@ data class CallWithFilterUIModel(
     fun callFilterIcon(): Int? {
         return when {
             isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
-            isCallFiltered() -> FilterCondition.values()[conditionType].smallIcon(type == Constants.BLOCKED_CALL)
+            isCallFiltered() -> conditionType.takeIf { it >=0 }?.let { FilterCondition.values()[it].smallIcon(type == Constants.BLOCKED_CALL) }
             else -> null
         }
     }

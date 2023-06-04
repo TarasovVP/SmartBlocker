@@ -95,15 +95,6 @@ class LogCallRepositoryUnitTest {
     }
 
     @Test
-    fun allDistinctCallsWithFilterTest() = runBlocking {
-        val logCallList = listOf(CallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" } }, CallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } }, CallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        val expectedResult = logCallList.distinctBy { it.call?.number }
-        coEvery { logCallDao.allDistinctCallsWithFilter() } returns expectedResult
-        val result = logCallRepository.allDistinctCallsWithFilter()
-        assertEquals(expectedResult, result)
-    }
-
-    @Test
     fun allCallWithFiltersByFilterTest() = runBlocking {
         val logCallList = listOf(CallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" }
             filterWithFilteredNumber =  FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)) },

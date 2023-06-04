@@ -23,6 +23,13 @@ data class ContactWithFilterUIModel(
     var filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel()
 ) : Parcelable, NumberDataUIModel() {
 
+    fun filterTypeIcon(): Int? {
+        return if (isEmptyFilter()) null else filterWithFilteredNumberUIModel.filterTypeIcon()
+    }
+    fun isEmptyFilter(): Boolean {
+        return filterWithFilteredNumberUIModel.filter.isEmpty()
+    }
+
     fun placeHolder(context: Context): Drawable? {
         return if (contactName.nameInitial().isEmpty()) ContextCompat.getDrawable(context, R.drawable.ic_contact)
         else context.getInitialDrawable(contactName.nameInitial())

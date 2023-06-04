@@ -56,15 +56,25 @@ class DetailsFilterViewModel @Inject constructor(
                         }
                     }
                 ))
+                distinctBy {
+                    when (it) {
+                        is ContactWithFilterUIModel -> Pair(it.number, it.contactName)
+                        is CallWithFilterUIModel -> Pair(it.number, it.callName)
+                        else -> String.EMPTY
+                    }
+                }
             }
             numberDataListLiveDataUIModel.postValue(numberDataUIModelList)
+            hideProgress()
         }
     }
 
     fun filteredCallsByFilter(filter: String) {
+        showProgress()
         launch {
             val filteredCallList = detailsFilterUseCase.allFilteredCallsByFilter(filter)
             filteredCallListLiveData.postValue(ArrayList(callWithFilterUIMapper.mapToUIModelList(filteredCallList)))
+            hideProgress()
         }
     }
 

@@ -4,9 +4,10 @@ import android.content.Context
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.quantityString
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
@@ -17,7 +18,6 @@ data class FilterWithFilteredNumberUIModel(
     var filter: String = String.EMPTY,
     var conditionType: Int = Constants.DEFAULT_FILTER,
     var filterType: Int = Constants.DEFAULT_FILTER,
-    var filterName: String = String.EMPTY,
     var countryCode: String = String.EMPTY,
     var country: String = String.EMPTY,
     var created: Long = 0,
