@@ -187,10 +187,6 @@ open class BaseListFilterFragment :
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                if (this@BaseListFilterFragment.filterWithFilteredNumberUIModels == filterList) {
-                    checkDataListEmptiness(filterList.isNullOrEmpty())
-                    return@safeSingleObserve
-                }
                 this@BaseListFilterFragment.filterWithFilteredNumberUIModels = filterList as? ArrayList<FilterWithFilteredNumberUIModel>
                 searchDataList()
             }

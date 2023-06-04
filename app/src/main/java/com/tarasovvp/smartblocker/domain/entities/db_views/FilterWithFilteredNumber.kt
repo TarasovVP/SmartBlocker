@@ -15,10 +15,8 @@ import java.util.*
 data class FilterWithFilteredNumber(
     @Embedded
     var filter: Filter? = null,
-    @Ignore
     @ColumnInfo(name = "filteredContacts")
     var filteredContacts: Int? = 0,
-    @Ignore
     @ColumnInfo(name = "filteredCalls")
     var filteredCalls: Int? = 0
 ) : Parcelable

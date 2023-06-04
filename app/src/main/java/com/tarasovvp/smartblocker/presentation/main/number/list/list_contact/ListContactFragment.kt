@@ -3,13 +3,13 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -76,10 +76,6 @@ open class ListContactFragment :
     override fun observeLiveData() {
         with(viewModel) {
             contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                if (contactList == this@ListContactFragment.contactWithFilterList) {
-                    checkDataListEmptiness(contactList.isEmpty())
-                    return@safeSingleObserve
-                }
                 this@ListContactFragment.contactWithFilterList = contactList
                 searchDataList()
             }

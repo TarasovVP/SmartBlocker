@@ -136,10 +136,6 @@ class ListCallFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callListLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
-                if (callListData == callWithFilterList) {
-                    checkDataListEmptiness(callListData.isEmpty())
-                    return@safeSingleObserve
-                }
                 callWithFilterList = callListData
                 searchDataList()
             }
