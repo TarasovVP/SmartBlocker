@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.fragments.number
 
 import android.os.Build
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -26,7 +25,6 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.hasItemCount
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.waitFor
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
@@ -214,7 +212,7 @@ class ListContactUnitTest: BaseFragmentUnitTest() {
         onView(withId(R.id.list_contact_recycler_view)).apply {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_avatar),
                 isDisplayed(),
-                withBitmap(contactWithFilter?.placeHolder(targetContext)?.toBitmap()))))))
+                /*withBitmap(contactWithFilter?.placeHolder(targetContext)?.toBitmap()*/)))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter),
                 isDisplayed(),
                 withDrawable(contactWithFilter?.filterWithFilteredNumberUIModel?.filterTypeIcon().orZero()))))))

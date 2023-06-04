@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import android.content.Context
-import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -194,17 +193,6 @@ open class CreateFilterFragment :
         }
     }
 
-    private fun filterNumberDataList(filteredList: ArrayList<NumberDataUIModel>) {
-        Timber.e("CreateFilterFragment filterNumberDataList filteredList ${filteredList.size}")
-        binding?.apply {
-            numberDataAdapter?.numberDataUIModelList = filteredList
-            numberDataAdapter?.notifyDataSetChanged()
-            createFilterNumberList.isVisible = filteredList.isEmpty().not()
-            createFilterEmptyList.isVisible = filteredList.isEmpty()
-            viewModel.hideProgress()
-        }
-    }
-
     override fun observeLiveData() {
         with(viewModel) {
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
@@ -235,10 +223,6 @@ open class CreateFilterFragment :
                     }
                 }
                 Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData filterAction ${ binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
-            }
-            filteredNumberDataListLiveDataUIModel.safeSingleObserve(viewLifecycleOwner) { filteredNumberDataList ->
-                Timber.e( "CreateFilterFragment observeLiveData filteredNumberDataListLiveData")
-                filterNumberDataList(filteredNumberDataList)
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 Timber.e("CreateFilterFragment observeLiveData filterActionLiveData")

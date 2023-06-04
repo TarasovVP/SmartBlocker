@@ -17,6 +17,7 @@ import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
+import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -55,11 +56,11 @@ class InfoUnitTest: BaseFragmentUnitTest() {
                 .check(matches(withText(htmlWithImages(getString(Info.INFO_DETAILS_NUMBER_DATA.description())).toString())))
                 .perform(clickLinkWithText("Номер"))
         }
-        /*assertEquals(R.id.infoFragment, navController?.currentDestination?.id)
-        assertEquals(
+        assertEquals(R.id.infoFragment, navController?.currentDestination?.id)
+        /*assertEquals(
             InfoData(
-                title = targetContext.getString(Info.INFO_BLOCKER_LIST.title()),
-                description = targetContext.getString(Info.INFO_BLOCKER_LIST.description())
+                title = targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.title()),
+                description = targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.description())
             ),
             navController?.backStack?.last()?.arguments?.parcelable<InfoData>("info")
         )*/

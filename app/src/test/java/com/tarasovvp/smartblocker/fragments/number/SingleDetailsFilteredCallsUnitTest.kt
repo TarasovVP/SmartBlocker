@@ -121,8 +121,8 @@ class SingleDetailsFilteredCallsUnitTest: BaseFragmentUnitTest() {
 
     private fun checkListItem(position: Int) {
         val callWithFilterUIModel = dataList[position] as? CallWithFilterUIModel
-
         onView(withId(R.id.single_details_list)).apply {
+            perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),
                 withAlpha(if (callWithFilterUIModel?.isDeleteMode.isTrue() && callWithFilterUIModel?.isFilteredCall.isNotTrue()) 0.5f else 1f))))))

@@ -117,6 +117,7 @@ class SingleDetailsFiltersUnitTest: BaseFragmentUnitTest() {
     private fun checkListItem(position: Int) {
         val filterWithFilteredNumberUIModel = dataList[position] as? FilterWithFilteredNumberUIModel
         onView(withId(R.id.single_details_list)).apply {
+            perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
                 isDisplayed(),
                 withDrawable(filterWithFilteredNumberUIModel?.conditionTypeIcon()))))))
@@ -137,8 +138,7 @@ class SingleDetailsFiltersUnitTest: BaseFragmentUnitTest() {
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_contacts),
                 isDisplayed(),
-                //TODO localisation
-                //withText(filterWithFilteredNumberUIModel?.filteredContactsText(targetContext)),
+                withText(filterWithFilteredNumberUIModel?.filteredContactsText(targetContext)),
                 withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_created),
                 isDisplayed(),

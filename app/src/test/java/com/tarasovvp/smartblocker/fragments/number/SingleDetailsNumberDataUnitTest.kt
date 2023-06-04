@@ -121,6 +121,7 @@ class SingleDetailsNumberDataUnitTest: BaseFragmentUnitTest() {
     private fun checkListItem(position: Int) {
         (dataList[position] as? ContactWithFilterUIModel)?.let { contactWithFilterUIModel ->
         onView(withId(R.id.single_details_list)).apply {
+            perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_avatar),
                 isDisplayed(),
                 withBitmap(contactWithFilterUIModel.placeHolder(targetContext)?.toBitmap()))))))

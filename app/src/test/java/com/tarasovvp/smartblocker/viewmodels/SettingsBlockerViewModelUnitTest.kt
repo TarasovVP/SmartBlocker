@@ -11,6 +11,7 @@ import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -26,8 +27,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
 
     override fun createViewModel() = SettingsBlockerViewModel(application, useCase, countryCodeUIMapper)
 
-    //TODO CI/CD test failed
-    /*@Test
+    @Test
     fun getBlockerTurnOnTest() = runTest {
         val blockerTurnOn = true
         coEvery { useCase.getBlockerTurnOn() } returns flowOf(blockerTurnOn)
@@ -35,7 +35,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         advanceUntilIdle()
         coVerify { useCase.getBlockerTurnOn() }
         assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
-    }*/
+    }
 
     @Test
     fun setBlockerTurnOnTest() = runTest {
@@ -47,8 +47,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         assertEquals(blockerTurnOn.not(), viewModel.blockerTurnOnLiveData.getOrAwaitValue())
     }
 
-    //TODO CI/CD test failed
-    /*@Test
+    @Test
     fun getBlockHiddenTest() = runTest {
         val blockHidden = true
         coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
@@ -56,7 +55,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         advanceUntilIdle()
         coVerify { useCase.getBlockHidden() }
         assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
-    }*/
+    }
 
     @Test
     fun setBlockHiddenTest() = runTest {
@@ -81,8 +80,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         assertEquals(blockHidden, viewModel.successBlockHiddenLiveData.getOrAwaitValue())
     }
 
-    //TODO CI/CD test failed
-    /*@Test
+    @Test
     fun getCurrentCountryCodeTest() = runTest{
         val countryCode = CountryCode()
         val countryCodeUIModel = CountryCodeUIModel()
@@ -92,7 +90,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         advanceUntilIdle()
         coVerify { useCase.getCurrentCountryCode() }
         assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
-    }*/
+    }
 
     @Test
     fun setCurrentCountryCodeTest() = runTest {
