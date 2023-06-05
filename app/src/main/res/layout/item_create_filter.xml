@@ -57,8 +57,7 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter}"
-                android:textColor="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction.color)}"
+                android:text="@{filterWithCountryCodeUIModel.createFilterValue(context)}"
                 app:layout_constraintBottom_toTopOf="@+id/item_create_filter_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_create_filter_avatar"
@@ -86,15 +85,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/item_create_filter_name" />
 
             <TextView
-                android:id="@+id/item_create_filter_contacts"
+                android:id="@+id/item_create_action_description"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_5"
                 android:textSize="@dimen/text_size_10"
-                android:textColor="@{ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterTypeTint())}"
-                android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filteredContactsText(context)}"
+                android:textColor="@{ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterCreateTint())}"
+                android:text="@{filterWithCountryCodeUIModel.filterActionText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_create_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />

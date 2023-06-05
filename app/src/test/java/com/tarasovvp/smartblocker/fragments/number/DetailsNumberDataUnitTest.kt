@@ -13,6 +13,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
@@ -30,10 +31,8 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CAL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -60,6 +59,7 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
 
     private var contactWithFilter: ContactWithFilterUIModel? = null
     private var isHiddenCall = false
+    private var fragment: DetailsNumberDataFragment? = null
 
     @Before
     override fun setUp() {
@@ -86,6 +86,7 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
                 viewModel.filterListLiveData.postValue(numberDataWithFilterWithFilteredNumberUIModelList())
                 viewModel.filteredCallListLiveData.postValue(numberDataWithFilteredCallUIModelList())
                 if (isHiddenCall) viewModel.blockHiddenLiveData.postValue(isHiddenCall)
+                fragment = this
             }
         }
     }
@@ -278,41 +279,87 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
     }
 
     @Test
-    fun checkNumberDataDetailAddFilterFull() {
+    fun checkNumberDataDetailCreateFilterFullBlocker() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.details_number_data_create_blocker)).perform(click())
-            onView(isRoot()).perform(waitFor(3000))
+            onView(isRoot()).perform(waitFor(501))
             onView(withId(R.id.number_data_detail_add_filter_full))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(R.string.filter_condition_full)))
                 .check(matches(withDrawable(FilterCondition.FILTER_CONDITION_FULL.mainIcon())))
                 .perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_FULL.ordinal, BLOCKER)
         }
     }
 
     @Test
-    fun checkNumberDataDetailHiddenAddFilterFull() {
+    fun checkNumberDataDetailCreateFilterFullPermission() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
-            onView(withId(R.id.details_number_data_create_blocker)).perform(click())
-            onView(isRoot()).perform(waitFor(3000))
+            onView(withId(R.id.details_number_data_create_permission)).perform(click())
+            onView(isRoot()).perform(waitFor(501))
             onView(withId(R.id.number_data_detail_add_filter_full))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(R.string.filter_condition_full)))
                 .check(matches(withDrawable(FilterCondition.FILTER_CONDITION_FULL.mainIcon())))
                 .perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_FULL.ordinal, PERMISSION)
+        }
+    }
+
+    @Test
+    fun checkNumberDataDetailCreateFilterFullHidden() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.details_number_data_create_blocker)).perform(click())
+            onView(isRoot()).perform(waitFor(501))
+            onView(withId(R.id.number_data_detail_add_filter_full))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_condition_full)))
+                .check(matches(withDrawable(FilterCondition.FILTER_CONDITION_FULL.mainIcon())))
+                .perform(click())
             checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_FULL.ordinal, BLOCKER)
         }
     }
 
     @Test
-    fun checkNumberDataDetailAddFilterStart() {
+    fun checkNumberDataDetailCreateFilterStartBlocker() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.details_number_data_create_blocker)).perform(click())
+            onView(isRoot()).perform(waitFor(501))
+            onView(withId(R.id.number_data_detail_add_filter_start))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_condition_start)))
+                .check(matches(withDrawable(R.drawable.ic_condition_start)))
+                .perform(click())
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_START.ordinal, BLOCKER)
+        }
+    }
+
+    @Test
+    fun checkNumberDataDetailCreateFilterStartPermission() {
+        if (isHiddenCall) {
+            onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
+        } else {
+            onView(withId(R.id.details_number_data_create_permission)).perform(click())
+            onView(isRoot()).perform(waitFor(501))
+            onView(withId(R.id.number_data_detail_add_filter_start))
+                .check(matches(isDisplayed()))
+                .check(matches(withText(R.string.filter_condition_start)))
+                .check(matches(withDrawable(R.drawable.ic_condition_start)))
+                .perform(click())
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_START.ordinal, PERMISSION)
+        }
+    }
+
+    @Test
+    fun checkNumberDataDetailCreateFilterStartHidden() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
@@ -329,24 +376,24 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
     }
 
     @Test
-    fun checkNumberDataDetailHiddenAddFilterStart() {
+    fun checkNumberDataDetailCreateFilterContainBlocker() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.details_number_data_create_blocker)).perform(click())
             onView(isRoot()).perform(waitFor(3000))
-            onView(withId(R.id.number_data_detail_add_filter_start))
+            onView(withId(R.id.number_data_detail_add_filter_contain))
+                .perform(nestedScrollTo())
                 .check(matches(isDisplayed()))
-                .check(matches(withText(R.string.filter_condition_start)))
-                .check(matches(withDrawable(R.drawable.ic_condition_start)))
+                .check(matches(withText(R.string.filter_condition_contain)))
+                .check(matches(withDrawable(R.drawable.ic_condition_contain)))
                 .perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
-            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_START.ordinal, BLOCKER)
+            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, BLOCKER)
         }
     }
 
     @Test
-    fun checkNumberDataDetailAddFilterContain() {
+    fun checkNumberDataDetailCreateFilterContainPermission() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
@@ -358,13 +405,12 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
                 .check(matches(withText(R.string.filter_condition_contain)))
                 .check(matches(withDrawable(R.drawable.ic_condition_contain)))
                 .perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, PERMISSION)
         }
     }
 
     @Test
-    fun checkNumberDataDetailHiddenAddFilterContain() {
+    fun checkNumberDataDetailAddFilterContainHidden() {
         if (isHiddenCall) {
             onView(withId(R.id.details_number_data_hidden)).check(matches(isDisplayed()))
         } else {
@@ -375,7 +421,6 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
                 .check(matches(withText(R.string.filter_condition_contain)))
                 .check(matches(withDrawable(R.drawable.ic_condition_contain)))
                 .perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, PERMISSION)
         }
     }
@@ -439,25 +484,22 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
     }
 
     private fun checkFilterWithCountryCodeArg(filterCondition: Int, filterType: Int) {
-        /*val phoneNumber = if (contactWithFilter?.contact?.number.orEmpty().getPhoneNumber(String.EMPTY).isNull())
-            contactWithFilter?.contact?.number.orEmpty().getPhoneNumber(targetContext.getUserCountry().orEmpty().uppercase())
-        else contactWithFilter?.contact?.number.orEmpty().getPhoneNumber(String.EMPTY)
-        val filterWithCountryCode = FilterWithCountryCode(filter = Filter(
-            filter = contactWithFilter?.contact?.number.orEmpty(),
+        val number = contactWithFilter?.number.orEmpty()
+        val filterWithCountryCode = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(
+            filter = number,
             conditionType = filterCondition,
-            filterType = filterType
-        ))
+            filterType = filterType)
+        )
+        val appPhoneNumberUtil = AppPhoneNumberUtil()
+        val phoneNumber = if (appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull()) appPhoneNumberUtil.getPhoneNumber(number, targetContext.getUserCountry().orEmpty().uppercase())
+        else appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
         if (phoneNumber.isNull() || filterCondition == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
-            assertEquals(filterWithCountryCode, navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
+            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
         } else {
-            filterWithCountryCode.apply {
-                filter?.country = "UA"
-                filter?.filter = phoneNumber?.nationalNumber.toString()
-                countryCode = CountryCode()
+            fragment?.viewModel?.countryCodeLiveData?.getOrAwaitValue()?.let {
+                assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
             }
-            assertEquals(filterWithCountryCode,
-                navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCode>(FILTER_WITH_COUNTRY_CODE))
-        }*/
+        }
     }
 
     @After

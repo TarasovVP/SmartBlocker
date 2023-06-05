@@ -97,7 +97,6 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
                 }
             }
         }
-
         onView(isRoot()).perform(waitFor(3000))
     }
 

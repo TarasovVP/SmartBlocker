@@ -1,18 +1,15 @@
 package com.tarasovvp.smartblocker.presentation.ui_models
 
 import android.os.Parcelable
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_DEFAULT
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_DEFAULT
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_FORMAT_DEFAULT
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CountryCodeUIModel(
-    var country: String = COUNTRY_DEFAULT,
-    var countryCode: String = COUNTRY_CODE_DEFAULT,
-    var numberFormat: String = NUMBER_FORMAT_DEFAULT,
+    var country: String = String.EMPTY,
+    var countryCode: String = String.EMPTY,
+    var numberFormat: String = String.EMPTY,
     var displayCountry: String = String.EMPTY
 ) : Parcelable {
 

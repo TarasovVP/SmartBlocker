@@ -93,6 +93,7 @@ open class CreateFilterFragment :
             createFilterInput.setupClearButtonWithAction()
             setFilterTextChangeListener()
             executePendingBindings()
+            Timber.e("CreateFilterFragment initViews filterWithFilteredNumberUIModel.filter ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter}")
         }
     }
 

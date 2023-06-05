@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.ui_models
 
 import android.content.Context
 import android.os.Parcelable
+import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
@@ -9,6 +10,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isNull
 import kotlinx.parcelize.Parcelize
 
@@ -49,21 +51,25 @@ data class FilterWithCountryCodeUIModel(
         }
     }
 
+    @Exclude
+    fun createFilterValue(context: Context): String {
+        return when {
+            filterWithFilteredNumberUIModel.isTypeContain() -> filterWithFilteredNumberUIModel.filter.ifEmpty { context.getString(R.string.creating_filter_no_data) }
+            else -> String.format("%s%s", countryCodeUIModel.countryCode, filterToInput())
+        }
+    }
+
     fun filterToInput(): String {
         //TODO
         val appPhoneNumberUtil = AppPhoneNumberUtil()
-        return when (filterWithFilteredNumberUIModel.conditionType) {
-            FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (appPhoneNumberUtil.getPhoneNumber(
-                    filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull()) appPhoneNumberUtil.getPhoneNumber(
-                filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY),
-                countryCodeUIModel.country
-            ) else appPhoneNumberUtil.getPhoneNumber(
-                filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country
-            ))?.nationalNumber.toString()
-            FilterCondition.FILTER_CONDITION_START.ordinal -> filterWithFilteredNumberUIModel.filter.replaceFirst(
-                countryCodeUIModel.countryCode, String.EMPTY)
+        val filterToInput = when (filterWithFilteredNumberUIModel.conditionType) {
+            FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull())
+                appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCodeUIModel.country)
+            else appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country))?.nationalNumber.takeIf { it.isNotNull() }?.let { it.toString() } ?: String.EMPTY
+            FilterCondition.FILTER_CONDITION_START.ordinal -> filterWithFilteredNumberUIModel.filter.replaceFirst(countryCodeUIModel.countryCode, String.EMPTY)
             else -> filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
         }
+        return filterToInput
     }
 
     fun isInValidPhoneNumber(appPhoneNumberUtil: AppPhoneNumberUtil): Boolean {
@@ -71,7 +77,7 @@ data class FilterWithCountryCodeUIModel(
                 || (filterWithFilteredNumberUIModel.isTypeStart().not() && filterWithFilteredNumberUIModel.filter.isEmpty())
     }
 
-    fun filterDetailTint(): Int {
+    fun filterCreateTint(): Int {
         return if (isDeleteFilterAction()) R.color.sunset else R.color.text_color_grey
     }
 

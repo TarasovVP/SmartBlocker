@@ -107,7 +107,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkItemDetailsFilterContactsDetails() {
-        onView(withId(R.id.item_create_filter_contacts)).check(matches(isDisplayed()))
+        onView(withId(R.id.item_create_action_description)).check(matches(isDisplayed()))
             .check(matches(withText(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filteredContactsText(targetContext))))
             .check(matches(withTextColor(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filterTypeTint().orZero())))
     }

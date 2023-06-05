@@ -14,6 +14,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
@@ -140,7 +141,8 @@ open class BaseListFilterFragment :
             }
             fabContain.setSafeOnClickListener {
                 filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
-                viewModel.getCurrentCountryCode()
+                filterWithCountryCodeUIModel.countryCodeUIModel = CountryCodeUIModel()
+                startCreateFilterScreen()
             }
         }
     }
