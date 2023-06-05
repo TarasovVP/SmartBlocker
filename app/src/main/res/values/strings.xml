@@ -92,9 +92,12 @@
     <string name="empty_state_account">Вы вошли незарегистрированным пользователем</string>
     <!--Progress-->
     <string name="progress_data_collect">Сбор информации</string>
-    <string name="progress_update_localizations">Получение данных локализации</string>
-    <string name="progress_update_contacts_receive">Получение списка контактов</string>
-    <string name="progress_update_calls_receive">Получение списка звонков</string>
+    <string name="progress_collect_localizations">Получение данных локализации</string>
+    <string name="progress_collect_contacts">Получение списка контактов</string>
+    <string name="progress_collect_calls">Получение списка звонков</string>
+    <string name="progress_update_localizations">Обновление данных локализации</string>
+    <string name="progress_update_contacts">Обновление списка контактов</string>
+    <string name="progress_update_calls">Обновление списка звонков</string>
     <!--List screens-->
     <string name="list_blocker">Блокировщики</string>
     <string name="list_permission">Разрешения</string>
@@ -215,6 +218,7 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
     <string name="unauthorized_enter">У неавторизованного пользователя ограниченный функционал, в том числе нет доступа к хранению данных в удаленном доступе. Все равно войти?</string>
+    <string name="error_message">Произошла ошибка</string>
 
 
 </resources>

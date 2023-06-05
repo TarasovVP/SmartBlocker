@@ -61,7 +61,6 @@ class SettingsBlockerFragment :
         setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
             bundle.parcelable<CountryCodeUIModel>(COUNTRY_CODE)?.let { currentCountryCode ->
                 viewModel.setCurrentCountryCode(currentCountryCode)
-                (activity as? MainActivity)?.getAllData()
             }
         }
         binding?.apply {
@@ -89,11 +88,15 @@ class SettingsBlockerFragment :
             blockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
                 setBlockHiddenSettings(blockHidden)
             }
+            successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
+                setBlockHidden(blockHidden)
+            }
             currentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { currentCountryCode ->
                 setCountryCodeSettings(currentCountryCode)
             }
-            successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
-                setBlockHidden(blockHidden)
+            successCurrentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { currentCountryCode ->
+                setCountryCodeSettings(currentCountryCode)
+                (activity as? MainActivity)?.getAllData()
             }
             exceptionLiveData.safeSingleObserve(viewLifecycleOwner) { error ->
                 binding?.settingsBlockerHiddenSwitch?.isChecked =

@@ -290,9 +290,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            currentUserLiveData.safeSingleObserve(this@MainActivity) { currentUser ->
-                setCurrentUserData(currentUser)
-            }
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 setMainProgressVisibility(false)
             }
@@ -330,14 +327,14 @@ class MainActivity : AppCompatActivity() {
         binding?.progressBar?.isVisible = isVisible
     }
 
-    fun getAllData() {
+    fun getAllData(isInit: Boolean = false) {
         if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
         if (checkPermissions().isTrue()) {
             setMainProgressVisibility(true)
             if (firebaseAuth.currentUser.isNotNull()) {
-                mainViewModel.getCurrentUser()
+                mainViewModel.getCurrentUser(isInit)
             } else {
-                mainViewModel.getAllData()
+                mainViewModel.getAllData(isInit)
             }
         } else {
             requestPermissionLauncher.launch(PermissionUtil.permissionsArray())

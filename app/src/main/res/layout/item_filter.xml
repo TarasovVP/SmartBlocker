@@ -70,6 +70,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
+                android:textColor="@color/text_color_grey"
                 android:text="@{filterWithFilteredNumberUIModel.conditionTypeName}"
                 app:layout_constraintEnd_toEndOf="@+id/item_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_filter_value"

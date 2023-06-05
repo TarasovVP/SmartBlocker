@@ -23,8 +23,9 @@ class SettingsBlockerViewModel @Inject constructor(
 
     val blockerTurnOnLiveData = MutableLiveData<Boolean>()
     val blockHiddenLiveData = MutableLiveData<Boolean>()
-    val currentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
     val successBlockHiddenLiveData = MutableLiveData<Boolean>()
+    val currentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
+    val successCurrentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
 
     fun getBlockerTurnOn() {
         launch {
@@ -78,7 +79,7 @@ class SettingsBlockerViewModel @Inject constructor(
     fun setCurrentCountryCode(countryCode: CountryCodeUIModel) {
         launch {
             settingsBlockerUseCase.setCurrentCountryCode(countryCodeUIMapper.mapFromUIModel(countryCode))
-            currentCountryCodeLiveData.postValue(countryCode)
+            successCurrentCountryCodeLiveData.postValue(countryCode)
         }
     }
 }

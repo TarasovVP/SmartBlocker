@@ -13,6 +13,8 @@ import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.ui_models.MainProgress
 import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*
@@ -20,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val mainUseCase: MainUseCase
 ) : BaseViewModel(application) {
     val onBoardingSeenLiveData = MutableLiveData<Boolean>()
@@ -63,26 +65,26 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getCurrentUser() {
+    fun getCurrentUser(isInit: Boolean = false) {
         launch {
             progressStatusLiveData.postValue(mainProgress.apply {
                 progressDescription = R.string.progress_data_collect
             })
             mainUseCase.getCurrentUser { operationResult ->
                 when(operationResult) {
-                    is Result.Success -> operationResult.data?.let { currentUserLiveData.postValue(it) }
+                    is Result.Success -> operationResult.data.takeIf { it.isNotNull() }?.let { setCurrentUserData(it, isInit) } ?: exceptionLiveData.postValue(application.getString(R.string.error_message))
                     is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
             }
         }
     }
 
-    fun setCurrentUserData(currentUser: CurrentUser) {
+    private fun setCurrentUserData(currentUser: CurrentUser, isInit: Boolean = false) {
         launch {
             insertUserFilters(currentUser.filterList)
             insertUserFilteredCalls(currentUser.filteredCallList)
             mainUseCase.setBlockHidden(currentUser.isBlockHidden)
-            getAllData()
+            getAllData(isInit)
         }
     }
 
@@ -94,19 +96,18 @@ class MainViewModel @Inject constructor(
         mainUseCase.insertAllFilteredCalls(filteredCallList)
     }
 
-    fun getAllData() {
+    fun getAllData(isInit: Boolean = false) {
         launch {
-            setCountryCodeData()
-            setContactData()
-            setLogCallData()
+            setCountryCodeData(isInit)
+            setContactData(isInit)
+            setLogCallData(isInit)
             successAllDataLiveData.postValue(true)
         }
     }
 
-    suspend fun setCountryCodeData() {
-
+    suspend fun setCountryCodeData(isInit: Boolean) {
         progressStatusLiveData.postValue(mainProgress.apply {
-            progressDescription = R.string.progress_update_localizations
+            progressDescription = if (isInit) R.string.progress_collect_localizations else R.string.progress_update_localizations
         })
         val countryCodeList = mainUseCase.getSystemCountryCodes { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
@@ -120,15 +121,13 @@ class MainViewModel @Inject constructor(
 
     suspend fun setCurrentCountryCode(countryCodeList: List<CountryCode>) {
         mainUseCase.getCurrentCountryCode().collect { countryCode ->
-            countryCode?.let {
-                mainUseCase.setCurrentCountryCode(countryCodeList.firstOrNull { it.country == getApplication<Application>().getUserCountry() } ?: CountryCode())
-            }
+            if (countryCode.isNull()) mainUseCase.setCurrentCountryCode(countryCodeList.firstOrNull { it.country == getApplication<Application>().getUserCountry() } ?: CountryCode())
         }
     }
 
-    suspend fun setContactData() {
+    suspend fun setContactData(isInit: Boolean) {
         progressStatusLiveData.postValue(mainProgress.apply {
-            progressDescription = R.string.progress_update_contacts_receive
+            progressDescription = if (isInit) R.string.progress_collect_contacts else R.string.progress_update_contacts
         })
         val contactList = mainUseCase.getSystemContacts(getApplication()) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {
@@ -139,9 +138,9 @@ class MainViewModel @Inject constructor(
         mainUseCase.insertAllContacts(contactList)
     }
 
-    suspend fun setLogCallData() {
+    suspend fun setLogCallData(isInit: Boolean) {
         progressStatusLiveData.postValue(mainProgress.apply {
-            progressDescription = R.string.progress_update_calls_receive
+            progressDescription = if (isInit) R.string.progress_collect_calls else R.string.progress_update_calls
         })
         val logCallList = mainUseCase.getSystemLogCalls(getApplication()) { size, position ->
             progressStatusLiveData.postValue(mainProgress.apply {

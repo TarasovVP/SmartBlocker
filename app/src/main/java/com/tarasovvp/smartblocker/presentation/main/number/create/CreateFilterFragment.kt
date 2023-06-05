@@ -80,7 +80,7 @@ open class CreateFilterFragment :
     }
 
     override fun initViews() {
-        Timber.e("CreateFilterFragment initViews")
+        Timber.e("CreateFilterFragment initViews args.filterWithCountryCodeUIModel ${args.filterWithCountryCodeUIModel}")
         binding?.apply {
             filterWithCountryCode = args.filterWithCountryCodeUIModel?.apply {
                 filterWithFilteredNumberUIModel.filterAction = this.filterWithFilteredNumberUIModel.filterAction ?: FilterAction.FILTER_ACTION_INVALID
@@ -181,8 +181,7 @@ open class CreateFilterFragment :
                     createFilterInput.setHint(R.string.creating_filter_enter_hint)
                 } else {
                     countryCode?.let { filterWithCountryCode?.countryCodeUIModel = countryCode }
-                    //TODO
-                    //createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
+                    createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
                     when {
                         filterWithFilteredNumberUIModel.isTypeFull() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeFullHint().orEmpty())
                         filterWithFilteredNumberUIModel.isTypeStart() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeStartHint().orEmpty())

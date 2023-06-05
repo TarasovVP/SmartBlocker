@@ -17,8 +17,8 @@
         android:layout_marginHorizontal="@dimen/margin_2"
         android:layout_marginTop="@dimen/margin_8"
         android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
+        android:clickable="false"
+        android:focusable="false"
         app:strokeColor="@color/item_color"
         app:strokeWidth="@dimen/padding_1">
 
@@ -58,6 +58,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter}"
+                android:textColor="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction.color)}"
                 app:layout_constraintBottom_toTopOf="@+id/item_create_filter_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_create_filter_avatar"
@@ -70,8 +71,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/margin_8"
-                android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel == null ? filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter : filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionTypeName == null ? `` : context.getString(filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionTypeName)}"
-                android:textColor="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction == null ? @color/text_color_grey : ContextCompat.getColor(context, filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction.color)}"
+                android:textColor="@color/text_color_grey"
+                android:text="@{filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionTypeName}"
                 app:layout_constraintEnd_toEndOf="@+id/item_create_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_create_filter_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_create_filter_value" />

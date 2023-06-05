@@ -6,9 +6,12 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -17,12 +20,14 @@ import javax.inject.Inject
 class ListFilterViewModel @Inject constructor(
     private val application: Application,
     private val listFilterUseCase: ListFilterUseCase,
-    private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper
+    private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
+    private val countryCodeUIMapper: CountryCodeUIMapper
 ) : BaseViewModel(application) {
 
     val filterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
     val filteredFilterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>>()
+    val currentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
 
     fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {
         if (refreshing.not()) showProgress()
@@ -52,6 +57,14 @@ class ListFilterViewModel @Inject constructor(
                 }
             }
             hideProgress()
+        }
+    }
+
+    fun getCurrentCountryCode() {
+        launch {
+            listFilterUseCase.getCurrentCountryCode().collect { countryCode ->
+                currentCountryCodeLiveData.postValue(countryCode.takeIf { it.isNotNull() }?.let { countryCodeUIMapper.mapToUIModel(it) } ?: CountryCodeUIModel())
+            }
         }
     }
 }

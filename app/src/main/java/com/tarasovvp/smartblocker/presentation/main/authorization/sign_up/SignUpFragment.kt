@@ -49,7 +49,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         with(viewModel) {
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {
-                    getAllData()
+                    getAllData(true)
                     startBlocker()
                 }
                 findNavController().navigate(R.id.listBlockerFragment)

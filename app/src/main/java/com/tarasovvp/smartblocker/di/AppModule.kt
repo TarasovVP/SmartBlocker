@@ -16,11 +16,11 @@ import com.tarasovvp.smartblocker.data.database.dao.*
 import com.tarasovvp.smartblocker.data.repositoryImpl.*
 import com.tarasovvp.smartblocker.domain.repository.*
 import com.tarasovvp.smartblocker.domain.usecases.*
-import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
-import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.OnBoardingUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataUseCaseImpl
@@ -202,9 +202,10 @@ object AppModule {
     fun provideListFilterUseCase(
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        firebaseAuth: FirebaseAuth
+        firebaseAuth: FirebaseAuth,
+        dataStoreRepository: DataStoreRepository
     ): ListFilterUseCase {
-        return ListFilterUseCaseImpl(filterRepository, realDataBaseRepository, firebaseAuth)
+        return ListFilterUseCaseImpl(filterRepository, realDataBaseRepository, firebaseAuth, dataStoreRepository)
     }
 
     @Singleton

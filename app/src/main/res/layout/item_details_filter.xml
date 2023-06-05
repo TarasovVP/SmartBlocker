@@ -41,7 +41,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/item_details_filter_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/item_details_filter_value"
-                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_type_title"
+                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_name"
                 app:shapeAppearanceOverlay="@style/RoundedImageViewStyle" />
 
             <ImageView
@@ -60,13 +60,13 @@
                 android:maxLines="1"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:text="@{filterWithFilteredNumberUIModel.filter}"
-                app:layout_constraintBottom_toTopOf="@+id/item_details_filter_type_title"
+                app:layout_constraintBottom_toTopOf="@+id/item_details_filter_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_details_filter_avatar"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/item_details_filter_type_title"
+                android:id="@+id/item_details_filter_name"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -85,7 +85,7 @@
                 android:layout_height="@dimen/padding_1"
                 android:background="@color/light_steel_blue"
                 android:layout_marginTop="@dimen/margin_8"
-                app:layout_constraintTop_toBottomOf="@+id/item_details_filter_type_title" />
+                app:layout_constraintTop_toBottomOf="@+id/item_details_filter_name" />
 
             <TextView
                 android:id="@+id/item_details_filter_details"

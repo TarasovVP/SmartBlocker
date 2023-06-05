@@ -14,6 +14,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
+import timber.log.Timber
 
 class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : DataStoreRepository {
 
@@ -95,6 +96,7 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
                 try {
                     Gson().fromJson(preferences[stringPreferencesKey(COUNTRY_CODE)],  CountryCode::class.java)
                 } catch (e: java.lang.Exception) {
+                    Timber.e("DatastoreRepositoryImpl getCountryCode Exception ")
                     CountryCode()
                 }
             }.take(1)

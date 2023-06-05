@@ -29,12 +29,13 @@ open class BaseListFilterFragment :
 
     private var filterWithFilteredNumberUIModels: ArrayList<FilterWithFilteredNumberUIModel>? = null
     private var isDeleteMode = false
+    private val filterWithCountryCodeUIModel by lazy { FilterWithCountryCodeUIModel() }
 
     override fun createAdapter(): BaseAdapter<FilterWithFilteredNumberUIModel>? {
         return context?.let {
             FilterAdapter(object : FilterClickListener {
                 override fun onFilterClick(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
-                    startNextScreen(filterWithFilteredNumberUIModel)
+                    startDetailsFilterScreen(filterWithFilteredNumberUIModel)
                 }
 
                 override fun onFilterLongClick() {
@@ -50,6 +51,15 @@ open class BaseListFilterFragment :
                 }
             })
         }
+    }
+
+    private fun startDetailsFilterScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
+        val direction = if (this is ListBlockerFragment) {
+            ListBlockerFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
+        } else {
+            ListPermissionFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
+        }
+        findNavController().navigate(direction)
     }
 
     override fun initViews() {
@@ -121,13 +131,16 @@ open class BaseListFilterFragment :
                 if (fabContain.isVisible) fabContain.hide() else fabContain.show()
             }
             fabFull.setSafeOnClickListener {
-                startNextScreen(FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION))
+                filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal
+                viewModel.getCurrentCountryCode()
             }
             fabStart.setSafeOnClickListener {
-                startNextScreen(FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION))
+                filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = FilterCondition.FILTER_CONDITION_START.ordinal
+                viewModel.getCurrentCountryCode()
             }
             fabContain.setSafeOnClickListener {
-                startNextScreen(FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, filterType = if (this@BaseListFilterFragment is ListBlockerFragment) BLOCKER else PERMISSION))
+                filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
+                viewModel.getCurrentCountryCode()
             }
         }
     }
@@ -144,19 +157,12 @@ open class BaseListFilterFragment :
         }
     }
 
-    private fun startNextScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
+    private fun startCreateFilterScreen() {
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = if (this is ListBlockerFragment) BLOCKER else PERMISSION
         val direction = if (this is ListBlockerFragment) {
-            if (filterWithFilteredNumberUIModel.filter.isEmpty()) {
-                ListBlockerFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel =  filterWithFilteredNumberUIModel))
-            } else {
-                ListBlockerFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
-            }
+            ListBlockerFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel)
         } else {
-            if (filterWithFilteredNumberUIModel.filter.isEmpty()) {
-                ListPermissionFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel =  filterWithFilteredNumberUIModel))
-            } else {
-                ListPermissionFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel)
-            }
+            ListPermissionFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel)
         }
         findNavController().navigate(direction)
     }
@@ -199,6 +205,10 @@ open class BaseListFilterFragment :
                     getAllData()
                 }
                 changeDeleteMode()
+            }
+            currentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeUIModel ->
+                filterWithCountryCodeUIModel.countryCodeUIModel = countryCodeUIModel
+                startCreateFilterScreen()
             }
         }
     }
