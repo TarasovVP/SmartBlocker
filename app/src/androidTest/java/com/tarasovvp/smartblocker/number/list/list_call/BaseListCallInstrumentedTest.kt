@@ -177,7 +177,8 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             val firstHeader = callList?.groupBy {
                 it.dateFromCallDate()
             }?.keys?.first()
-            onView(withId(R.id.list_call_recycler_view)).check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
+            onView(withId(R.id.list_call_recycler_view))
+                .check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
         }
     }
 
@@ -286,8 +287,8 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                 withTextColor(callWithFilter?.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilter?.callFilterValue().orEmpty()),
-                withTextColor(callWithFilter?.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel).orZero()),
+                withText(callWithFilter?.filterWithFilteredNumberUIModel?.filter),
+                withTextColor(if (callWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
                 withDrawable(callWithFilter?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

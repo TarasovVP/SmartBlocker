@@ -27,10 +27,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
-import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
-import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
-import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -156,8 +153,8 @@ class SingleDetailsFilteredCallsUnitTest: BaseFragmentUnitTest() {
                 withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilterUIModel?.callFilterValue().orEmpty()),
-                withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()),
+                withText(callWithFilterUIModel?.filterWithFilteredNumberUIModel?.filter),
+                withTextColor(if (callWithFilterUIModel?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
                 withDrawable(callWithFilterUIModel?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

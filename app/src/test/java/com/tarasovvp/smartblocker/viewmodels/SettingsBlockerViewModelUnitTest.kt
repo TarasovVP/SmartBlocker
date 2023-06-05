@@ -101,6 +101,6 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.setCurrentCountryCode(countryCodeUIModel)
         advanceUntilIdle()
         coVerify { useCase.setCurrentCountryCode(countryCode) }
-        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
+        assertEquals(countryCodeUIModel, viewModel.successCurrentCountryCodeLiveData.getOrAwaitValue())
     }
 }

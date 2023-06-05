@@ -28,7 +28,6 @@ class MainViewModel @Inject constructor(
     val onBoardingSeenLiveData = MutableLiveData<Boolean>()
     val blockerTurnOnLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
-    val currentUserLiveData = MutableLiveData<CurrentUser>()
     private val mainProgress = MainProgress()
 
     fun setAppLanguage() {
@@ -105,7 +104,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun setCountryCodeData(isInit: Boolean) {
+    suspend fun setCountryCodeData(isInit: Boolean = false) {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = if (isInit) R.string.progress_collect_localizations else R.string.progress_update_localizations
         })
@@ -125,7 +124,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun setContactData(isInit: Boolean) {
+    suspend fun setContactData(isInit: Boolean = false) {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = if (isInit) R.string.progress_collect_contacts else R.string.progress_update_contacts
         })
@@ -138,7 +137,7 @@ class MainViewModel @Inject constructor(
         mainUseCase.insertAllContacts(contactList)
     }
 
-    suspend fun setLogCallData(isInit: Boolean) {
+    suspend fun setLogCallData(isInit: Boolean = false) {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = if (isInit) R.string.progress_collect_calls else R.string.progress_update_calls
         })

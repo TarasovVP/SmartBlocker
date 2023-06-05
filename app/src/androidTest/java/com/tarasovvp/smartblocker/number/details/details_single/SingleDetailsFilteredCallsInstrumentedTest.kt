@@ -12,8 +12,8 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.LIST_EMPTY
 import com.tarasovvp.smartblocker.TestUtils.atPosition
-import com.tarasovvp.smartblocker.TestUtils.numberDataWithFilteredCallUIModelList
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.numberDataWithFilteredCallUIModelList
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
@@ -83,8 +83,8 @@ class SingleDetailsFilteredCallsInstrumentedTest: BaseSingleDetailsInstrumentedT
                 withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilterUIModel?.callFilterValue().orEmpty()),
-                withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()),
+                withText(callWithFilterUIModel?.filterWithFilteredNumberUIModel?.filter),
+                withTextColor(if (callWithFilterUIModel?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
                 withDrawable(callWithFilterUIModel?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

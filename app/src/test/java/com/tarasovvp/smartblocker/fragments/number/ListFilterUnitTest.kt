@@ -17,6 +17,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.EMPTY
+import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
@@ -33,7 +34,9 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -69,18 +72,32 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
         super.setUp()
         FirebaseApp.initializeApp(targetContext)
         filterList = if (name.methodName.contains(EMPTY)) arrayListOf() else filterWithFilteredNumberUIModelList().onEach {
-            it.filterType =  BLOCKER
+            it.filterType =  if (name.methodName.contains("Permission")) PERMISSION else BLOCKER
         }
-        launchFragmentInHiltContainer<ListBlockerFragment> {
-            navController?.setGraph(R.navigation.navigation)
-            navController?.setCurrentDestination(R.id.listPermissionFragment)
-            Navigation.setViewNavController(requireView(), navController)
-            fragment = this
-            (this as? ListBlockerFragment)?.apply {
-                filterIndexList = filterIndexes ?: arrayListOf()
-                viewModel.filterListLiveData.postValue(filterList)
+        if (name.methodName.contains("Permission")) {
+            launchFragmentInHiltContainer<ListPermissionFragment> {
+                navController?.setGraph(R.navigation.navigation)
+                navController?.setCurrentDestination(R.id.listPermissionFragment)
+                Navigation.setViewNavController(requireView(), navController)
+                fragment = this
+                (this as? ListPermissionFragment)?.apply {
+                    filterIndexList = filterIndexes ?: arrayListOf()
+                    viewModel.filterListLiveData.postValue(filterList)
+                }
+            }
+        } else {
+            launchFragmentInHiltContainer<ListBlockerFragment> {
+                navController?.setGraph(R.navigation.navigation)
+                navController?.setCurrentDestination(R.id.listBlockerFragment)
+                Navigation.setViewNavController(requireView(), navController)
+                fragment = this
+                (this as? ListBlockerFragment)?.apply {
+                    filterIndexList = filterIndexes ?: arrayListOf()
+                    viewModel.filterListLiveData.postValue(filterList)
+                }
             }
         }
+
         onView(isRoot()).perform(waitFor(3000))
     }
 
@@ -164,12 +181,33 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_full)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
-            //TODO if (this@ListFilterUnitTest is ListPermissionInstrumentedTest) PERMISSION else
-            assertEquals(
-                FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
-                filterType = BLOCKER)),
-                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            val result = (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            result?.let { countryCodeUIModel ->
+                assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+                assertEquals(
+                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+                        filterType = BLOCKER), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            }
+        }
+    }
+
+    @Test
+    fun checkFabPermissionFull() {
+        onView(withId(R.id.fab_full)).apply {
+            check(matches(not(isDisplayed())))
+            onView(withId(R.id.fab_new)).perform(click())
+            check(matches(isDisplayed()))
+            check(matches(withText(R.string.filter_condition_full)))
+            check(matches(withDrawable(R.drawable.ic_condition_full)))
+            onView(isRoot()).perform(waitFor(501))
+            perform(click())
+            val result = (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            result?.let { countryCodeUIModel ->
+                assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+                assertEquals(
+                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+                        filterType = PERMISSION), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            }
         }
     }
 
@@ -183,12 +221,33 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_start)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
-            //TODO if (this@ListFilterUnitTest is ListPermissionInstrumentedTest) PERMISSION else
-            assertEquals(
-                FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
-                filterType = BLOCKER)),
-                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            val result = (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            result?.let { countryCodeUIModel ->
+                assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+                assertEquals(
+                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
+                    filterType = BLOCKER), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            }
+        }
+    }
+
+    @Test
+    fun checkFabPermissionStart() {
+        onView(withId(R.id.fab_start)).apply {
+            check(matches(not(isDisplayed())))
+            onView(withId(R.id.fab_new)).perform(click())
+            check(matches(isDisplayed()))
+            check(matches(withText(R.string.filter_condition_start)))
+            check(matches(withDrawable(R.drawable.ic_condition_start)))
+            onView(isRoot()).perform(waitFor(501))
+            perform(click())
+            val result = (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            result?.let { countryCodeUIModel ->
+                assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+                assertEquals(
+                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
+                        filterType = PERMISSION), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            }
         }
     }
 
@@ -202,12 +261,33 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_contain)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
-            //TODO if (this@ListFilterUnitTest is ListPermissionInstrumentedTest) PERMISSION else
-            assertEquals(
-                FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
-                filterType = BLOCKER)),
-                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            val result = (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            result?.let { countryCodeUIModel ->
+                assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+                assertEquals(
+                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                        filterType = BLOCKER), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            }
+        }
+    }
+
+    @Test
+    fun checkFabPermissionContain() {
+        onView(withId(R.id.fab_contain)).apply {
+            check(matches(not(isDisplayed())))
+            onView(withId(R.id.fab_new)).perform(click())
+            check(matches(isDisplayed()))
+            check(matches(withText(R.string.filter_condition_contain)))
+            check(matches(withDrawable(R.drawable.ic_condition_contain)))
+            onView(isRoot()).perform(waitFor(501))
+            perform(click())
+            val result = (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            result?.let { countryCodeUIModel ->
+                assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+                assertEquals(
+                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                        filterType = PERMISSION), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+            }
         }
     }
 
@@ -261,7 +341,25 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
     }
 
     @Test
+    fun checkFilterPermissionItemOne() {
+        if (filterList.isNullOrEmpty()) {
+            onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
+        } else {
+            checkFilterItem(0, filterList?.get(0))
+        }
+    }
+
+    @Test
     fun checkFilterItemTwo() {
+        if (filterList.isNullOrEmpty()) {
+            onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
+        } else {
+            checkFilterItem(1, filterList?.get(1))
+        }
+    }
+
+    @Test
+    fun checkFilterPermissionItemTwo() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
         } else {

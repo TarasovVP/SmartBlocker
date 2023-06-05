@@ -123,6 +123,12 @@ class MainViewModelUnitTest: BaseViewModelUnitTest<MainViewModel>() {
         viewModel.setCurrentCountryCode(listOf(countryCode))
         advanceUntilIdle()
         coVerify { mainUseCase.getCurrentCountryCode() }
+
+        coEvery { mainUseCase.getCurrentCountryCode() } returns flowOf(null)
+        coEvery { mainUseCase.setCurrentCountryCode(countryCode) } just Runs
+        viewModel.setCurrentCountryCode(listOf(countryCode))
+        advanceUntilIdle()
+        coVerify { mainUseCase.getCurrentCountryCode() }
         coVerify { mainUseCase.setCurrentCountryCode(countryCode) }
     }
 

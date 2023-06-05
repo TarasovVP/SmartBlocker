@@ -19,11 +19,11 @@ import com.tarasovvp.smartblocker.UnitTestUtils.EMPTY
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
-import com.tarasovvp.smartblocker.fragments.FragmentTestUtils
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.atPosition
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.callWithFilterUIModelList
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.hasItemCount
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.waitFor
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
@@ -75,7 +75,7 @@ class ListCallUnitTest: BaseFragmentUnitTest() {
                 viewModel.callListLiveData.postValue(callList)
             }
         }
-        onView(isRoot()).perform(FragmentTestUtils.waitFor(3000))
+        onView(isRoot()).perform(waitFor(3000))
     }
 
     @Test
@@ -181,7 +181,8 @@ class ListCallUnitTest: BaseFragmentUnitTest() {
             val firstHeader = callList?.groupBy {
                 it.dateFromCallDate()
             }?.keys?.first()
-            onView(withId(R.id.list_call_recycler_view)).check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
+            onView(withId(R.id.list_call_recycler_view)).check(matches(isDisplayed()))
+                .check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_header_text), withText(firstHeader))))))
         }
     }
 
@@ -288,8 +289,8 @@ class ListCallUnitTest: BaseFragmentUnitTest() {
                 withTextColor(callWithFilter?.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilter?.callFilterValue().orEmpty()),
-                withTextColor(callWithFilter?.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel).orZero()),
+                withText(callWithFilter?.filterWithFilteredNumberUIModel?.filter),
+                withTextColor(if (callWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
                 withDrawable(callWithFilter?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

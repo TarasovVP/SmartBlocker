@@ -84,7 +84,7 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkItemDetailsFilterTypeTitle() {
         onView(withId(R.id.item_details_filter_name)).check(matches(isDisplayed()))
-            .check(matches(withText(filterWithFilteredNumberUIModel?.filterName )))
+            .check(matches(withText(filterWithFilteredNumberUIModel?.conditionTypeName().orZero() )))
     }
 
     @Test

@@ -210,6 +210,7 @@ class ListContactUnitTest: BaseFragmentUnitTest() {
 
     private fun checkContactItem(position: Int, contactWithFilter: ContactWithFilterUIModel?) {
         onView(withId(R.id.list_contact_recycler_view)).apply {
+            perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_avatar),
                 isDisplayed(),
                 /*withBitmap(contactWithFilter?.placeHolder(targetContext)?.toBitmap()*/)))))

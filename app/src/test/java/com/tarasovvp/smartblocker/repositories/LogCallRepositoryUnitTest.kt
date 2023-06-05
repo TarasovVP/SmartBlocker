@@ -10,8 +10,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
@@ -67,8 +67,9 @@ class LogCallRepositoryUnitTest {
             every { cursor.getString(7) } returns logCall.photoUrl
         }
         every { cursor.close() } just Runs
-        every { appPhoneNumberUtil.phoneNumberValue(logCall.number, country) } returns logCall.phoneNumberValue.orEmpty()
-        every { appPhoneNumberUtil.isPhoneNumberValid(logCall.number, country) } returns logCall.isPhoneNumberValid.isTrue()
+        every { appPhoneNumberUtil.getPhoneNumber(any(), any()) } returns mockk()
+        every { appPhoneNumberUtil.phoneNumberValue(logCall.number, any()) } returns logCall.phoneNumberValue.orEmpty()
+        every { appPhoneNumberUtil.isPhoneNumberValid(any()) } returns logCall.isPhoneNumberValid.isTrue()
 
         val logCallList = logCallRepository.getSystemLogCallList(context, country, resultMock)
 

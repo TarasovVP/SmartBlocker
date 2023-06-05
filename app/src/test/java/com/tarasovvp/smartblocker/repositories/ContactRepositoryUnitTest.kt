@@ -8,8 +8,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.ContactDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.ContactRepositoryImpl
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -60,8 +60,9 @@ class ContactRepositoryUnitTest {
         every { cursor.getString(2) } returns contact.photoUrl
         every { cursor.getString(3) } returns contact.number
         every { cursor.close() } just Runs
-        every { appPhoneNumberUtil.phoneNumberValue(contact.number, country) } returns contact.phoneNumberValue.orEmpty()
-        every { appPhoneNumberUtil.isPhoneNumberValid(contact.number, country) } returns contact.isPhoneNumberValid.isTrue()
+        every { appPhoneNumberUtil.getPhoneNumber(any(), any()) } returns mockk()
+        every { appPhoneNumberUtil.phoneNumberValue(eq(contact.number.orEmpty()), any()) } returns contact.phoneNumberValue.orEmpty()
+        every { appPhoneNumberUtil.isPhoneNumberValid(any()) } returns contact.isPhoneNumberValid.isTrue()
 
         val contactList = contactRepository.getSystemContactList(context, country, resultMock)
 
