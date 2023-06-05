@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.presentation.ui_models
 
 import android.content.Context
 import android.os.Parcelable
-import com.google.firebase.database.Exclude
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
@@ -47,25 +46,15 @@ data class FilterWithCountryCodeUIModel(
     fun createFilter(): String {
         return when {
             filterWithFilteredNumberUIModel.isTypeContain() -> filterWithFilteredNumberUIModel.filter
-            else -> String.format("%s%s", countryCodeUIModel.countryCode, filterToInput())
+            else -> String.format("%s%s", countryCodeUIModel.countryCode, filterWithFilteredNumberUIModel.filter)
         }
     }
 
-    @Exclude
-    fun createFilterValue(context: Context): String {
-        return when {
-            filterWithFilteredNumberUIModel.isTypeContain() -> filterWithFilteredNumberUIModel.filter.ifEmpty { context.getString(R.string.creating_filter_no_data) }
-            else -> String.format("%s%s", countryCodeUIModel.countryCode, filterToInput())
-        }
-    }
-
-    fun filterToInput(): String {
-        //TODO
-        val appPhoneNumberUtil = AppPhoneNumberUtil()
+    fun filterToInput(appPhoneNumberUtil: AppPhoneNumberUtil): String {
         val filterToInput = when (filterWithFilteredNumberUIModel.conditionType) {
             FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull())
-                appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCodeUIModel.country)
-            else appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country))?.nationalNumber.takeIf { it.isNotNull() }?.let { it.toString() } ?: String.EMPTY
+                        appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCodeUIModel.country)
+                    else appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country))?.nationalNumber.takeIf { it.isNotNull() }?.toString() ?: String.EMPTY
             FilterCondition.FILTER_CONDITION_START.ordinal -> filterWithFilteredNumberUIModel.filter.replaceFirst(countryCodeUIModel.countryCode, String.EMPTY)
             else -> filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
         }

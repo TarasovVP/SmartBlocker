@@ -94,7 +94,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/create_filter_country_code_value"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:text="@{filterWithCountryCode.filterToInput()}" />
+                    app:text="@{filterWithCountryCode.filterWithFilteredNumberUIModel.filter}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 

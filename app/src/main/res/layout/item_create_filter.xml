@@ -57,7 +57,7 @@
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{filterWithCountryCodeUIModel.createFilterValue(context)}"
+                android:text="@{filterWithCountryCodeUIModel.createFilter().empty ? @string/creating_filter_no_data : filterWithCountryCodeUIModel.createFilter()}"
                 app:layout_constraintBottom_toTopOf="@+id/item_create_filter_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_create_filter_avatar"

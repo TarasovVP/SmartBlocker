@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +25,7 @@ class DetailsNumberDataViewModel @Inject constructor(
 
     val filterListLiveData = MutableLiveData<List<NumberDataUIModel>>()
     val filteredCallListLiveData = MutableLiveData<List<NumberDataUIModel>>()
-    val countryCodeLiveData = MutableLiveData<FilterWithCountryCodeUIModel>()
+    val countryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
     val blockHiddenLiveData = MutableLiveData<Boolean>()
 
     fun filterListWithNumber(number: String) {
@@ -44,10 +44,10 @@ class DetailsNumberDataViewModel @Inject constructor(
         }
     }
 
-    fun getCountryCode(code: Int?, filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel) {
+    fun getCountryCode(code: Int?) {
         launch {
             val countryCode = code?.let { detailsNumberDataUseCase.getCountryCodeByCode(it) } ?: CountryCode()
-            countryCodeLiveData.postValue(filterWithCountryCodeUIModel.apply { countryCodeUIModel = countryCodeUIMapper.mapToUIModel(countryCode)  })
+            countryCodeLiveData.postValue(countryCodeUIMapper.mapToUIModel(countryCode))
         }
     }
 

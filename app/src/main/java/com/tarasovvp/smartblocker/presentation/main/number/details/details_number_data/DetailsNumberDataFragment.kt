@@ -37,6 +37,7 @@ class DetailsNumberDataFragment :
     private var filtersScreen: SingleDetailsFragment? = null
     private var filteredCallsScreen: SingleDetailsFragment? = null
     private var isHiddenCall = false
+    private val filterWithCountryCodeUIModel by lazy { FilterWithCountryCodeUIModel() }
 
     override fun initViews() {
         binding?.apply {
@@ -142,27 +143,23 @@ class DetailsNumberDataFragment :
     }
 
     private fun createFilter(conditionIndex: Int) {
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = conditionIndex
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION
         val number = binding?.contactWithFilter?.number.orEmpty()
-        val filterWithCountryCode = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(
-            filter = number,
-            conditionType = conditionIndex,
-            filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION)
-        )
         val phoneNumber = if (appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull()) appPhoneNumberUtil.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
         else appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = number
         if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
-            startCreateFilterScreen(filterWithCountryCode)
+            filterWithCountryCodeUIModel.countryCodeUIModel = CountryCodeUIModel()
+            startCreateFilterScreen()
         } else {
-            viewModel.getCountryCode(phoneNumber?.countryCode, filterWithCountryCode)
+            viewModel.getCountryCode(phoneNumber?.countryCode)
         }
     }
 
-    private fun startCreateFilterScreen(filterWithCountryCode: FilterWithCountryCodeUIModel?) {
-        findNavController().navigate(
-            DetailsNumberDataFragmentDirections.startCreateFilterFragment(
-                filterWithCountryCodeUIModel = filterWithCountryCode
-            )
-        )
+    private fun startCreateFilterScreen() {
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = filterWithCountryCodeUIModel.filterToInput(appPhoneNumberUtil)
+        findNavController().navigate(DetailsNumberDataFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel))
     }
 
     private fun setAddFilterConditions(isBlocker: Boolean, isShown: Boolean) {
@@ -195,11 +192,9 @@ class DetailsNumberDataFragment :
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
                 filteredCallsScreen?.updateNumberDataList(ArrayList(filteredCallList), true)
             }
-            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { filterWithCountryCode ->
-                filterWithCountryCode.filterWithFilteredNumberUIModel.country = filterWithCountryCode.countryCodeUIModel.country
-                filterWithCountryCode.countryCodeUIModel = filterWithCountryCode.countryCodeUIModel
-                filterWithCountryCode.filterWithFilteredNumberUIModel.filter = filterWithCountryCode.filterToInput()
-                startCreateFilterScreen(filterWithCountryCode)
+            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeUIModel ->
+                filterWithCountryCodeUIModel.countryCodeUIModel = countryCodeUIModel
+                startCreateFilterScreen()
             }
             blockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
                 binding?.detailsNumberDataItemContact?.itemContactFilterTitle?.setText(if (blockHidden) R.string.details_number_hidden_on else R.string.details_number_hidden_off)
