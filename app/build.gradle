@@ -12,10 +12,6 @@ plugins {
     id 'jacoco'
 }
 
-jacoco {
-    toolVersion = "0.8.8"
-}
-
 android {
     compileSdk 33
 
@@ -36,7 +32,9 @@ android {
         resources.excludes.add("META-INF/*")
     }
     buildTypes {
-
+        debug {
+            testCoverageEnabled = true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -69,24 +67,18 @@ android {
             xml.required.set(true)
         }
         def coverageSourceDirs = [
-                'src/main/java'
+                "src/main/java",
+                "src/debug/java"
         ]
-        classDirectories.setFrom(fileTree(
-                dir: './build/intermediates/javac/debug/classes',
-                excludes: [
-                        '**/*$*$*',
-                        '**/*$lambda$*',
-                        '**/Hilt_*.*',
-                        '**/Dagger*Component.*'
-
-                ]
-        ))
-        sourceDirectories.setFrom(coverageSourceDirs)
+        additionalSourceDirs.setFrom(files(coverageSourceDirs))
+        sourceDirectories.setFrom(files(coverageSourceDirs))
+        def javaTree = fileTree(dir: "./build/intermediates/javac/debug")
+        def kotlinTree = fileTree(dir: "./build/tmp/kotlin-classes/debug")
+        classDirectories.from = files([javaTree], [kotlinTree])
         executionData.setFrom(fileTree(
-                dir: "${buildDir}/jacoco",
+                dir: "./build/jacoco",
                 includes: [
-                        'testDebugUnitTest.exec',
-                        'testDebugAndroidTest.exec'
+                        'testDebugUnitTest.exec'
                 ]
         ))
     }
@@ -127,7 +119,7 @@ dependencies {
     testImplementation "androidx.navigation:navigation-testing:2.5.3"
 
     androidTestImplementation "org.hamcrest:hamcrest:2.2"
-    androidTestImplementation "io.mockk:mockk-android:1.12.0"
+    androidTestImplementation "io.mockk:mockk-android:1.13.5"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
     androidTestImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
         exclude module: "protobuf-lite"

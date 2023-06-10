@@ -13,6 +13,7 @@ import android.telephony.TelephonyManager
 import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
@@ -262,6 +263,14 @@ fun NumberDataUIModel.highlightedSpanned(filterWithFilteredNumberUIModel: Filter
             return filterWithFilteredNumberUIModel?.filter.highlightedSpanned(String.EMPTY, null, color)
         }
         else -> return null
+    }
+}
+
+fun FirebaseUser.currentUserEmail(): String {
+    return try {
+       email ?: String.EMPTY
+    } catch (e: AbstractMethodError) {
+        String.EMPTY
     }
 }
 

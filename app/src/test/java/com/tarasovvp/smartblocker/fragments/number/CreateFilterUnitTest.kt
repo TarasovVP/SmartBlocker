@@ -11,9 +11,12 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.EMPTY
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.FILTER_WITH_COUNTRY_CODE
+import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.callWithFilterUIModelList
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.contactWithFilterUIModelList
@@ -68,7 +71,8 @@ class CreateFilterUnitTest: BaseFragmentUnitTest() {
             name.methodName.contains("Start") -> FilterCondition.FILTER_CONDITION_START.ordinal
             else -> FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
         }
-        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER, filterType = BLOCKER, conditionType = filterCondition), countryCodeUIModel = CountryCodeUIModel()))) {
+        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER, filterType = BLOCKER, conditionType = filterCondition),
+            countryCodeUIModel = CountryCodeUIModel(country = TEST_COUNTRY, countryCode = TEST_COUNTRY_CODE, numberFormat = TEST_NUMBER)))) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.createFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -132,8 +136,8 @@ class CreateFilterUnitTest: BaseFragmentUnitTest() {
     @Test
     fun checkItemDetailsFilterContactsDetails() {
         onView(withId(R.id.item_create_action_description)).check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filteredContactsText(targetContext))))
-            .check(matches(withTextColor(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filterTypeTint().orZero())))
+            .check(matches(withText(filterWithCountryCodeUIModel?.filterActionText(targetContext))))
+            .check(matches(withTextColor(filterWithCountryCodeUIModel?.filterCreateTint().orZero())))
     }
 
     @Test
@@ -183,23 +187,38 @@ class CreateFilterUnitTest: BaseFragmentUnitTest() {
 
     @Test
     fun checkCreateFilterFullCountryCodeValue() {
-        onView(withId(R.id.create_filter_country_code_value))
-            .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+        onView(withId(R.id.create_filter_country_code_value)).apply {
+            if (filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
+                check(matches(not(isDisplayed())))
+            } else {
+                check(matches(isDisplayed()))
+                check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+            }
+        }
     }
 
     @Test
     fun checkCreateFilterStartCountryCodeValue() {
-        onView(withId(R.id.create_filter_country_code_value))
-            .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+        onView(withId(R.id.create_filter_country_code_value)).apply {
+            if (filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
+                check(matches(not(isDisplayed())))
+            } else {
+                check(matches(isDisplayed()))
+                check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+            }
+        }
     }
 
     @Test
     fun checkCreateFilterContainCountryCodeValue() {
-        onView(withId(R.id.create_filter_country_code_value))
-            .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+        onView(withId(R.id.create_filter_country_code_value)).apply {
+            if (filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
+                check(matches(not(isDisplayed())))
+            } else {
+                check(matches(isDisplayed()))
+                check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+            }
+        }
     }
 
     @Test

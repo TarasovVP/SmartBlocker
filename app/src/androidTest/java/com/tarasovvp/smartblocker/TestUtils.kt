@@ -55,6 +55,9 @@ object TestUtils {
 
     const val TEST_FILTER = "testFilter"
     const val TEST_EMAIL = "testEmail"
+    const val TEST_NUMBER = "12345678"
+    const val TEST_COUNTRY = "UA"
+    const val TEST_COUNTRY_CODE = "+380"
     const val TEST_PASSWORD = "testPassword"
     const val IS_LOG_OUT = "isLogOut"
     const val FILTERING_LIST = "filteringList"
@@ -102,12 +105,15 @@ object TestUtils {
 
         override fun matchesSafely(view: View): Boolean {
             val context = view.context
-            val expectedBitmap = id?.let { context.getDrawable(it)?.toBitmap() }
+            val expectedBitmap = id?.takeIf { it.isNotNull() && it > 0 }?.let { context.getDrawable(it)?.toBitmap() }
 
-            return if (view is ImageView) view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
-            else if (view is TextView && id.isNull()) view.compoundDrawables.none { it.isNotNull() }
-            else if (view is TextView && view.compoundDrawables.any { it.isNotNull() }) view.compoundDrawables[position ?: view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
-            else false
+            return when {
+                view is ImageView && id.isNull() -> view.drawable.isNull()
+                view is ImageView -> view.drawable?.toBitmap()?.sameAs(expectedBitmap).isTrue()
+                view is TextView && id.isNull() -> view.compoundDrawables.none { it.isNotNull() }
+                view is TextView && view.compoundDrawables.any { it.isNotNull() } -> view.compoundDrawables[position ?: view.compoundDrawables.indexOfFirst { it.isNotNull() }].toBitmap().sameAs(expectedBitmap)
+                else -> false
+            }
         }
     }
 

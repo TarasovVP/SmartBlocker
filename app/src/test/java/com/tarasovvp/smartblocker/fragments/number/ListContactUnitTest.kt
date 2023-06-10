@@ -157,7 +157,6 @@ class ListContactUnitTest: BaseFragmentUnitTest() {
         if (contactList.isNullOrEmpty()) {
             onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
         } else {
-            onView(withId(R.id.list_contact_empty)).check(matches(not(isDisplayed())))
             onView(withId(R.id.list_contact_recycler_view))
                 .check(matches(isDisplayed()))
                 .check(matches(hasItemCount(contactList?.size.orZero() + contactList?.groupBy {

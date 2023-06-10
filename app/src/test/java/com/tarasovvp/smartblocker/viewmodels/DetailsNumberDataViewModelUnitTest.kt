@@ -5,11 +5,11 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
@@ -17,7 +17,6 @@ import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -27,7 +26,8 @@ import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -76,16 +76,15 @@ class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDat
     @Test
     fun getCountryCodeTest() = runTest {
         val code = 123
-        val filterWithCountryCodeUIModel = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER))
         val countryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         val countryCodeUIModel = CountryCodeUIModel(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
         coEvery { useCase.getCountryCodeByCode(code) } returns countryCode
         every { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
-        viewModel.getCountryCode(code, filterWithCountryCodeUIModel)
+        viewModel.getCountryCode(code)
         advanceUntilIdle()
         coVerify { useCase.getCountryCodeByCode(code) }
         verify { countryCodeUIMapper.mapToUIModel(countryCode) }
-        assertEquals(filterWithCountryCodeUIModel, viewModel.countryCodeLiveData.getOrAwaitValue())
+        assertEquals(countryCodeUIModel, viewModel.countryCodeLiveData.getOrAwaitValue())
     }
 
     @Test

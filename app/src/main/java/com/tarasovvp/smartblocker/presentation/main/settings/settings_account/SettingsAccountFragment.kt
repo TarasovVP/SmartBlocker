@@ -56,8 +56,8 @@ class SettingsAccountFragment :
     fun initViews() {
         binding?.apply {
             isLoggedInUser = firebaseAuth.currentUser.isNotNull()
-            settingsAccountName.text = firebaseAuth.currentUser?.email
-            settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable( firebaseAuth.currentUser?.email.nameInitial())?.toBitmap())
+            settingsAccountName.text = firebaseAuth.currentUser?.currentUserEmail()
+            settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable( firebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())
         }
     }
 

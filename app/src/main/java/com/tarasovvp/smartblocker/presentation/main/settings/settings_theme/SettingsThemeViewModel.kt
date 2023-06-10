@@ -16,7 +16,6 @@ class SettingsThemeViewModel @Inject constructor(
 
     val appThemeLiveData = MutableLiveData<Int>()
 
-
     fun getAppTheme() {
         launch {
             settingsThemeUseCase.getAppTheme().collect { appTheme ->

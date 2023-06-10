@@ -12,7 +12,10 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.LIST_EMPTY
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
+import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
@@ -57,7 +60,8 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
             is CreateFilterConditionStartInstrumentedTest -> FilterCondition.FILTER_CONDITION_START.ordinal
             else -> FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
         }
-        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER, filterType = BLOCKER, conditionType = filterCondition), countryCodeUIModel = CountryCodeUIModel()))) {
+        launchFragmentInHiltContainer<CreateFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_COUNTRY_CODE to FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER, filterType = BLOCKER, conditionType = filterCondition),
+            countryCodeUIModel = CountryCodeUIModel(country = TEST_COUNTRY, countryCode = TEST_COUNTRY_CODE, numberFormat = TEST_NUMBER)))) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.createFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -73,43 +77,43 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
-    fun checkItemDetailsFilterAvatar() {
+    fun checkItemCreateFilterAvatar() {
         onView(withId(R.id.item_create_filter_avatar))
             .check(matches(isDisplayed()))
             .check(matches(withDrawable(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.conditionTypeIcon())))
     }
 
     @Test
-    fun checkItemDetailsFilterFilter() {
+    fun checkItemCreateFilterFilter() {
         onView(withId(R.id.item_create_filter_filter))
             .check(matches(isDisplayed()))
             .check(matches(withDrawable(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filterTypeIcon())))
     }
 
     @Test
-    fun checkItemDetailsFilterValue() {
+    fun checkItemCreateFilterValue() {
         onView(withId(R.id.item_create_filter_value))
             .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter)))
+            .check(matches(withText(if (filterWithCountryCodeUIModel?.createFilter().isNullOrEmpty()) targetContext.getString(R.string.creating_filter_no_data) else filterWithCountryCodeUIModel?.createFilter())))
     }
 
     @Test
-    fun checkItemDetailsFilterTypeTitle() {
+    fun checkItemCreateFilterTypeTitle() {
         onView(withId(R.id.item_create_filter_name)).check(matches(isDisplayed()))
             .check(matches(withText(if (filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter.isNull()) filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter else targetContext.getString(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.conditionTypeName().orZero()))))
     }
 
     @Test
-    fun checkItemDetailsFilterDivider() {
+    fun checkItemCreateFilterDivider() {
         onView(withId(R.id.item_create_filter_divider)).check(matches(isDisplayed()))
             .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
     }
 
     @Test
-    fun checkItemDetailsFilterContactsDetails() {
+    fun checkItemCreateFilterContactsDetails() {
         onView(withId(R.id.item_create_action_description)).check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filteredContactsText(targetContext))))
-            .check(matches(withTextColor(filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filterTypeTint().orZero())))
+            .check(matches(withText(filterWithCountryCodeUIModel?.filterActionText(targetContext))))
+            .check(matches(withTextColor(filterWithCountryCodeUIModel?.filterCreateTint().orZero())))
     }
 
     @Test
@@ -133,9 +137,14 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkCreateFilterCountryCodeValue() {
-        onView(withId(R.id.create_filter_country_code_value))
-            .check(matches(isDisplayed()))
-            .check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+        onView(withId(R.id.create_filter_country_code_value)).apply {
+            if (filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
+                check(matches(not(isDisplayed())))
+            } else {
+                check(matches(isDisplayed()))
+                check(matches(withText(filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode)))
+            }
+        }
     }
 
     @Test

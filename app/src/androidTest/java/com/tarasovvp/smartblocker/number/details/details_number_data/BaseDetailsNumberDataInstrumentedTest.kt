@@ -92,7 +92,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
     fun checkDetailsNumberDataFilter() {
         onView(withId(R.id.item_contact_filter))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(contactWithFilter?.filterWithFilteredNumberUIModel?.filterTypeIcon().orZero())))
+            .check(matches(withDrawable(contactWithFilter?.filterTypeIcon())))
     }
 
     @Test
@@ -139,7 +139,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.item_contact_filter_title))
             .check(matches(isDisplayed()))
             .check(matches(withText(filterTitleText)))
-            .check(matches(withTextColor(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) R.color.text_color_grey else if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green)))
+            .check(matches(withTextColor(if (contactWithFilter?.isEmptyFilter().isTrue()) R.color.text_color_grey else if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green)))
     }
 
     @Test

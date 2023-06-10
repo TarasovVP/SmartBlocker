@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import android.content.Context
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -122,7 +123,7 @@ open class CreateFilterFragment :
         binding?.filterWithCountryCode?.let { filterWithCountryCode ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
                 bundle.parcelable<CountryCodeUIModel>(COUNTRY_CODE)?.let { setCountryCode(it) }
-                filterNumberDataList()
+                getNumberDataUIModelList()
             }
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction = bundle.serializable<FilterAction>(FILTER_ACTION)) {
@@ -165,12 +166,12 @@ open class CreateFilterFragment :
                     viewModel.checkFilterExist(this.createFilter())
                 }
                 Timber.e( "CreateFilterFragment setFilterTextChangeListener filter?.filterAction ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
-                filterNumberDataList()
+                getNumberDataUIModelList()
             }
         }
     }
 
-    private fun filterNumberDataList() {
+    private fun getNumberDataUIModelList() {
        viewModel.getNumberDataList(binding?.filterWithCountryCode?.createFilter().orEmpty())
     }
 
@@ -198,19 +199,12 @@ open class CreateFilterFragment :
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
                 Timber.e("CreateFilterFragment observeLiveData countryCodeLiveData")
                 setCountryCode(countryCode)
-                filterNumberDataList()
+                getNumberDataUIModelList()
             }
             numberDataListLiveDataUIModel.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
-                Timber.e("CreateFilterFragment observeLiveData numberDataListLiveData")
+                Timber.e("CreateFilterFragment observeLiveData numberDataList.size ${numberDataList.size}")
                 this@CreateFilterFragment.numberDataUIModelList = ArrayList(numberDataList)
-                if (binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isNotTrue()) {
-                    viewModel.getNumberDataList(binding?.filterWithCountryCode?.createFilter().orEmpty())
-                } else {
-                    numberDataAdapter?.numberDataUIModelList = this@CreateFilterFragment.numberDataUIModelList
-                    numberDataAdapter?.notifyDataSetChanged()
-                }
-                binding?.filterToInput = true
-                //binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel = binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel
+                setNumberDataUIModelList()
                 (activity as? MainActivity)?.setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
@@ -228,6 +222,17 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment observeLiveData filterActionLiveData")
                 handleSuccessFilterAction(filter)
             }
+        }
+    }
+
+    private fun setNumberDataUIModelList() {
+        Timber.e("CreateFilterFragment filterNumberDataList filteredList ${numberDataUIModelList.size}")
+        binding?.apply {
+            numberDataAdapter?.numberDataUIModelList = numberDataUIModelList
+            numberDataAdapter?.notifyDataSetChanged()
+            createFilterNumberList.isVisible = numberDataUIModelList.isEmpty().not()
+            createFilterEmptyList.isVisible = numberDataUIModelList.isEmpty()
+            viewModel.hideProgress()
         }
     }
 

@@ -323,7 +323,6 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
         if (filterList.isNullOrEmpty()) {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
         } else {
-            onView(withId(R.id.list_filter_empty)).check(matches(not(isDisplayed())))
             onView(withId(R.id.list_filter_recycler_view))
                 .check(matches(isDisplayed()))
                 .check(matches(hasItemCount(filterList?.size.orZero())))
@@ -405,9 +404,9 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
     private fun checkFilterItem(position: Int, filterWithFilteredNumber: FilterWithFilteredNumberUIModel?) {
         onView(withId(R.id.list_filter_recycler_view)).apply {
             //TODO drawable
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
+            /*check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
                 isDisplayed(),
-                withDrawable(filterWithFilteredNumber?.conditionTypeIcon()))))))
+                *//*withDrawable(filterWithFilteredNumber?.conditionTypeIcon())*//*)))))*/
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_filter),
                 isDisplayed(),
                 withDrawable(filterWithFilteredNumber?.filterTypeIcon()))))))

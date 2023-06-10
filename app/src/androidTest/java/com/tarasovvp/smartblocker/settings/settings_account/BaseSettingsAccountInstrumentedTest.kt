@@ -6,27 +6,27 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.filters.Suppress
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.IS_LOG_OUT
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
+import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
+import com.tarasovvp.smartblocker.utils.extensions.currentUserEmail
+import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.nameInitial
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.every
+import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Test
-import androidx.test.filters.Suppress
-import com.google.firebase.auth.FirebaseAuth
-import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
-import com.tarasovvp.smartblocker.TestUtils.withBitmap
-import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
-import com.tarasovvp.smartblocker.utils.extensions.nameInitial
-import io.mockk.every
-import io.mockk.mockk
 
 @Suppress
 @HiltAndroidTest
@@ -38,8 +38,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        every { mockFirebaseAuth.currentUser } returns if (this is SettingsAccountInstrumentedTest) mockk() else null
-        if (this is SettingsAccountInstrumentedTest) every { mockFirebaseAuth.currentUser?.email } returns TEST_EMAIL
+        every { mockFirebaseAuth.currentUser } returns mockk()
         launchFragmentInHiltContainer<SettingsAccountFragment> {
             (this as SettingsAccountFragment).firebaseAuth = mockFirebaseAuth
             this.initViews()
@@ -65,7 +64,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.settings_account_avatar)).apply {
             if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
-                check(matches(withBitmap(targetContext?.getInitialDrawable( mockFirebaseAuth.currentUser?.email.nameInitial())?.toBitmap())))
+                check(matches(withBitmap(targetContext?.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())))
             } else {
                 check(matches(not(isDisplayed())))
             }
@@ -77,7 +76,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.settings_account_name)).apply {
             if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
-                check(matches(withText(TEST_EMAIL)))
+                check(matches(withText(mockFirebaseAuth.currentUser?.currentUserEmail())))
             } else {
                 check(matches(not(isDisplayed())))
             }
