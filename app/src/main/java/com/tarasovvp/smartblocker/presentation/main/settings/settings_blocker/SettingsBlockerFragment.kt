@@ -38,8 +38,8 @@ class SettingsBlockerFragment :
                 settingsBlockerDescribe.text =
                     getString(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off )
             }
-            settingsBlockerSwitch.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.setBlockerTurnOn(isChecked.not())
+            settingsBlockerSwitch.setSafeOnClickListener {
+                viewModel.setBlockerTurnOn(settingsBlockerSwitch.isChecked)
             }
         }
     }

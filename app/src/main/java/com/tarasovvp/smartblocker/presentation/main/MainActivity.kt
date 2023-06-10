@@ -311,7 +311,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun stopBlocker() {
-        if (callIntent.isNotNull()) stopService(callIntent)
+        if (callIntent.isNotNull()) {
+            stopService(callIntent)
+            callIntent = null
+        }
     }
 
     private fun isBlockerLaunched(): Boolean {

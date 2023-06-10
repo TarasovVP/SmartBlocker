@@ -140,7 +140,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{callWithFilter.emptyFilter ? `` : callWithFilter.filteredNumber}"
-                android:textColor="@{callWithFilter.filterWithFilteredNumberUIModel.blocker ? @color/sunset : @color/islamic_green}"
+                android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel))}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"
                 app:layout_constraintEnd_toEndOf="parent"

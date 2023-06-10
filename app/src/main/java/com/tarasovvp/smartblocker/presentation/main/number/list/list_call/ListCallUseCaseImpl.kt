@@ -1,15 +1,14 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
 import com.google.firebase.auth.FirebaseAuth
-import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -34,10 +33,8 @@ class ListCallUseCaseImpl @Inject constructor(
     ) = withContext(Dispatchers.Default) {
         if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
             (callWithFilter.call?.callName isContaining searchQuery || callWithFilter.call?.number isContaining searchQuery)
-                    && (callWithFilter.call?.filteredConditionType == BLOCKER && filterIndexes.contains(
-                NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue()
-                    || callWithFilter.call?.filteredConditionType == PERMISSION && filterIndexes.contains(
-                NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue()
+                    && ((callWithFilter.call?.isFilteredCall.isTrue() && callWithFilter.call?.type == BLOCKED_CALL && filterIndexes.contains(NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue())
+                    || (callWithFilter.call?.isFilteredCall.isTrue() && callWithFilter.call?.type != BLOCKED_CALL && filterIndexes.contains(NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue())
                     || filterIndexes.isEmpty())
         }
     }

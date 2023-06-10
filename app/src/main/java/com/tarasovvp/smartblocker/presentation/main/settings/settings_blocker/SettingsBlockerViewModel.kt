@@ -30,7 +30,7 @@ class SettingsBlockerViewModel @Inject constructor(
     fun getBlockerTurnOn() {
         launch {
             settingsBlockerUseCase.getBlockerTurnOn().collect { blockerTurnOn ->
-                blockerTurnOnLiveData.postValue(blockerTurnOn.isTrue())
+                blockerTurnOnLiveData.postValue(blockerTurnOn ?: true)
             }
         }
     }
@@ -38,7 +38,7 @@ class SettingsBlockerViewModel @Inject constructor(
     fun setBlockerTurnOn(blockerTurnOn: Boolean) {
         launch {
             settingsBlockerUseCase.setBlockerTurnOn(blockerTurnOn)
-            blockerTurnOnLiveData.postValue(blockerTurnOn.not())
+            blockerTurnOnLiveData.postValue(blockerTurnOn)
         }
     }
 

@@ -59,7 +59,7 @@ class MainViewModel @Inject constructor(
     fun getBlockerTurnOn() {
         launch {
             mainUseCase.getBlockerTurnOn().collect { blockerTurnOn ->
-                blockerTurnOnLiveData.postValue(blockerTurnOn.isTrue())
+                blockerTurnOnLiveData.postValue(blockerTurnOn ?: true)
             }
         }
     }
