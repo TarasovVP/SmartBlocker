@@ -65,6 +65,7 @@ android {
         reports {
             html.required.set(true)
             xml.required.set(true)
+            html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
         }
         def coverageSourceDirs = [
                 "src/main/java",
@@ -72,13 +73,17 @@ android {
         ]
         additionalSourceDirs.setFrom(files(coverageSourceDirs))
         sourceDirectories.setFrom(files(coverageSourceDirs))
-        def javaTree = fileTree(dir: "./build/intermediates/javac/debug")
-        def kotlinTree = fileTree(dir: "./build/tmp/kotlin-classes/debug")
+
+        def javaTree = fileTree(dir: "${project.buildDir}/build/intermediates/javac/debug")
+        def kotlinTree = fileTree(dir: "${project.buildDir}/build/tmp/kotlin-classes/debug")
         classDirectories.from = files([javaTree], [kotlinTree])
+
         executionData.setFrom(fileTree(
-                dir: "./build/jacoco",
+                dir: "${project.buildDir}",
                 includes: [
-                        'testDebugUnitTest.exec'
+                        "jacoco/testDebugUnitTest.exec",
+                        "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                        "outputs/code-coverage/connected/*.ec"
                 ]
         ))
     }

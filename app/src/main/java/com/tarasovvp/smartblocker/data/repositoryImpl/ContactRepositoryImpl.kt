@@ -34,4 +34,7 @@ class ContactRepositoryImpl @Inject constructor(
 
     override suspend fun allContactsWithFiltersByFilter(filter: String) =
         contactDao.allContactsWithFiltersByFilter(filter)
+
+    override suspend fun allContactsWithFiltersByCreateFilter(filter: String) =
+        contactDao.allContactsWithFiltersByCreateFilter(filter)
 }

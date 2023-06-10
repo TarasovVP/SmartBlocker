@@ -95,4 +95,12 @@ class ContactRepositoryUnitTest {
         val result = contactRepository.allContactsWithFiltersByFilter(TEST_FILTER)
         assertEquals(contactWithFilterList, result)
     }
+
+    @Test
+    fun allContactsWithFiltersByCreateFilterTest() = runBlocking {
+        val contactWithFilterList = listOf(ContactWithFilter().apply { Contact().apply { number = TEST_NUMBER }}, ContactWithFilter().apply {Contact()})
+        coEvery { contactDao.allContactsWithFiltersByCreateFilter(TEST_FILTER) } returns contactWithFilterList
+        val result = contactRepository.allContactsWithFiltersByCreateFilter(TEST_FILTER)
+        assertEquals(contactWithFilterList, result)
+    }
 }

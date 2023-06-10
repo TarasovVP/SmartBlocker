@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 
 @Dao
 interface ContactDao {
@@ -18,4 +18,8 @@ interface ContactDao {
     @Transaction
     @Query("SELECT * FROM ContactWithFilter WHERE filter = :filter")
     suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
+
+    @Transaction
+    @Query("SELECT * FROM ContactWithFilter WHERE phoneNumberValue LIKE '%' || :filter || '%'")
+    suspend fun allContactsWithFiltersByCreateFilter(filter: String): List<ContactWithFilter>
 }

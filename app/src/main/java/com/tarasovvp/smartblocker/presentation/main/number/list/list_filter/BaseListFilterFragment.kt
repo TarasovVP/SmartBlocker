@@ -160,6 +160,7 @@ open class BaseListFilterFragment :
     }
 
     private fun startCreateFilterScreen() {
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = String.EMPTY
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = if (this is ListBlockerFragment) BLOCKER else PERMISSION
         val direction = if (this is ListBlockerFragment) {
             ListBlockerFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel)

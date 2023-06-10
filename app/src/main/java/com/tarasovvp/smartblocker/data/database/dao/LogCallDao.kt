@@ -18,4 +18,8 @@ interface LogCallDao {
     @Transaction
     @Query("SELECT DISTINCT * FROM callWithFilter WHERE filter = :filter AND type != '2' GROUP BY number")
     suspend fun allCallWithFiltersByFilter(filter: String): List<CallWithFilter>
+
+    @Transaction
+    @Query("SELECT DISTINCT * FROM callWithFilter WHERE phoneNumberValue LIKE '%' || :filter || '%' AND phoneNumberValue != ''")
+    suspend fun allCallsWithFiltersByCreateFilter(filter: String): List<CallWithFilter>
 }

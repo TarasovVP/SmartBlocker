@@ -5,14 +5,17 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
-import com.tarasovvp.smartblocker.domain.entities.db_entities.*
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -61,19 +64,19 @@ class CreateFilterUseCaseUnitTest {
     }
 
     @Test
-    fun allContactsWithFiltersByFilterTest() = runBlocking {
+    fun allContactsWithFiltersByCreateFilterTest() = runBlocking {
         val filter = TEST_FILTER
         val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
-        coEvery { contactRepository.allContactsWithFiltersByFilter(filter) } returns contactList
-        val result = createFilterUseCase.allContactsWithFiltersByFilter(filter)
+        coEvery { contactRepository.allContactsWithFiltersByCreateFilter(filter) } returns contactList
+        val result = createFilterUseCase.allContactsWithFiltersByCreateFilter(filter)
         assertEquals(contactList, result)
     }
 
     @Test
-    fun allCallWithFiltersByFilterTest() = runBlocking {
+    fun allCallsWithFiltersByCreateFilterTest() = runBlocking {
         val filteredCallList = listOf(CallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
-        coEvery { logCallRepository.allCallWithFiltersByFilter(TEST_FILTER) } returns filteredCallList
-        val result = createFilterUseCase.allCallWithFiltersByFilter(TEST_FILTER)
+        coEvery { logCallRepository.allCallsWithFiltersByCreateFilter(TEST_FILTER) } returns filteredCallList
+        val result = createFilterUseCase.allCallsWithFiltersByCreateFilter(TEST_FILTER)
         assertEquals(filteredCallList, result)
     }
 

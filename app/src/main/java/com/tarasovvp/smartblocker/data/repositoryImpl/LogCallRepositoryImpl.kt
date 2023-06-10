@@ -30,4 +30,7 @@ class LogCallRepositoryImpl @Inject constructor(
 
     override suspend fun allCallWithFiltersByFilter(filter: String) =
         logCallDao.allCallWithFiltersByFilter(filter)
+
+    override suspend fun allCallsWithFiltersByCreateFilter(filter: String) =
+        logCallDao.allCallsWithFiltersByCreateFilter(filter)
 }

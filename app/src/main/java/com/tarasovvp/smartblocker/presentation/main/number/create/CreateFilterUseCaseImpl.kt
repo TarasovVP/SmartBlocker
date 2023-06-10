@@ -20,9 +20,9 @@ class CreateFilterUseCaseImpl @Inject constructor(
 
     override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeByCode(code)
 
-    override suspend fun allCallWithFiltersByFilter(filter: String) = logCallRepository.allCallWithFiltersByFilter(filter)
+    override suspend fun allCallsWithFiltersByCreateFilter(filter: String) = logCallRepository.allCallsWithFiltersByCreateFilter(filter)
 
-    override suspend fun allContactsWithFiltersByFilter(filter: String) = contactRepository.allContactsWithFiltersByFilter(filter)
+    override suspend fun allContactsWithFiltersByCreateFilter(filter: String) = contactRepository.allContactsWithFiltersByCreateFilter(filter)
 
     override suspend fun getFilter(filter: String) = filterRepository.getFilter(filter)
 
