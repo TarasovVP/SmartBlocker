@@ -5,6 +5,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
+import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
@@ -174,18 +175,17 @@ open class BaseListFilterFragment :
         (activity as? MainActivity)?.toolbar?.apply {
             setOnMenuItemClickListener {
                 val deleteFilterCount = filterWithFilteredNumberUIModels?.filter { it.isCheckedForDelete }.orEmpty().size
-                val firstFilterWithCountryCode = filterWithFilteredNumberUIModels?.firstOrNull { it.isCheckedForDelete } as FilterWithFilteredNumberUIModel
-                val filterWithCountryCode = firstFilterWithCountryCode.apply {
-                    filter =
-                        if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_filter_delete_amount,
-                            deleteFilterCount.quantityString(),
-                            deleteFilterCount) else filterWithFilteredNumberUIModels?.firstOrNull { it.isCheckedForDelete }?.filter.orEmpty()
-                }
+                val firstFilterWithCountryCode = filterWithFilteredNumberUIModels?.firstOrNull { it.isCheckedForDelete }
+                val filterWithCountryCode = FilterWithFilteredNumberUIModel(filter =
+                    if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_filter_delete_amount,
+                        deleteFilterCount.quantityString(),
+                        deleteFilterCount) else firstFilterWithCountryCode?.filter.orEmpty(),
+                filterType = firstFilterWithCountryCode?.filterType.orZero(), conditionType = firstFilterWithCountryCode?.conditionType.orZero())
                 val direction =
                     if (this@BaseListFilterFragment is ListBlockerFragment) {
-                        ListBlockerFragmentDirections.startFilterActionDialog(filterWithCountryCode)
+                        ListBlockerFragmentDirections.startFilterActionDialog(filterWithCountryCode.apply { filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE })
                     } else {
-                        ListPermissionFragmentDirections.startFilterActionDialog(filterWithCountryCode)
+                        ListPermissionFragmentDirections.startFilterActionDialog(filterWithCountryCode.apply { filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE })
                     }
                 this@BaseListFilterFragment.findNavController().navigate(direction)
                 true

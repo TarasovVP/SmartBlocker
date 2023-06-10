@@ -20,7 +20,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -342,7 +345,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showInterstitial() {
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
+        //TODO
+        /*if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
         interstitialAd?.apply {
             fullScreenContentCallback =
                 object : FullScreenContentCallback() {
@@ -359,7 +363,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             show(this@MainActivity)
-        }
+        }*/
     }
 
     private fun loadAd() {

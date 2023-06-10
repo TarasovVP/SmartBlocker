@@ -22,6 +22,7 @@ data class CallWithFilterUIModel(
     var isFilteredCall: Boolean = false,
     var filteredNumber: String = String.EMPTY,
     var conditionType: Int = Constants.DEFAULT_FILTER,
+    var phoneNumberValue: String = String.EMPTY,
     var filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel()
 ) : Parcelable, NumberDataUIModel() {
 

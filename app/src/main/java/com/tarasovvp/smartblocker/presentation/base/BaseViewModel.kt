@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.tarasovvp.smartblocker.utils.extensions.launchIO
 import com.tarasovvp.smartblocker.presentation.ui_models.MainProgress
+import com.tarasovvp.smartblocker.utils.extensions.launchIO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 
@@ -31,6 +31,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
 
     protected open fun onError(throwable: Throwable, block: suspend CoroutineScope.() -> Unit) {
         hideProgress()
+        throwable.printStackTrace()
         exceptionLiveData.postValue(throwable.localizedMessage)
     }
 }

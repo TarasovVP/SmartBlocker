@@ -130,13 +130,11 @@ open class CreateFilterFragment :
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
                     -> viewModel.deleteFilter(filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
-                        this.filter = filterWithCountryCode.createFilter()
                         this.filterAction = filterAction
                     })
                     FilterAction.FILTER_ACTION_BLOCKER_CREATE,
                     FilterAction.FILTER_ACTION_PERMISSION_CREATE,
                     -> viewModel.createFilter(filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
-                        this.filter = filterWithCountryCode.createFilter()
                         this.filterAction = filterAction
                         this.created = Date().time
                         this.country = filterWithCountryCode.countryCodeUIModel.country
@@ -235,7 +233,7 @@ open class CreateFilterFragment :
         (activity as? MainActivity)?.apply {
             showInfoMessage(String.format(filterWithFilteredNumberUIModel.filterAction?.successText()?.let { getString(it) }
                 .orEmpty(),
-                filterWithFilteredNumberUIModel, filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) }), false)
+                filterWithFilteredNumberUIModel.filter, filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) }), false)
             showInterstitial()
             getAllData()
             findNavController().navigate(if (binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker().isTrue())
