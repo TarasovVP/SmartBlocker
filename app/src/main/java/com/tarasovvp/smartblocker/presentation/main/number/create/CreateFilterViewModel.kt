@@ -17,6 +17,7 @@ import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -47,6 +48,7 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun getNumberDataList(filter: String) {
+        showProgress()
         launch {
             val calls =  createFilterUseCase.allCallsWithFiltersByCreateFilter(filter)
             val contacts =  createFilterUseCase.allContactsWithFiltersByCreateFilter(filter)
@@ -57,7 +59,7 @@ class CreateFilterViewModel @Inject constructor(
                 sortWith(compareBy(
                         {
                             when (it) {
-                                is ContactWithFilterUIModel -> it.number.startsWith(Constants.PLUS_CHAR)
+                                is ContactWithFilterUIModel -> it.number.digitsTrimmed().startsWith(Constants.PLUS_CHAR)
                                 is CallWithFilterUIModel -> it.number.startsWith(Constants.PLUS_CHAR)
                                 else -> false
                             }
@@ -70,21 +72,32 @@ class CreateFilterViewModel @Inject constructor(
                             }
                         }
                     ))
+                distinctBy {
+                    when (it) {
+                        is ContactWithFilterUIModel -> Pair(it.number.digitsTrimmed(), it.contactName)
+                        is CallWithFilterUIModel -> Pair(it.number, it.callName)
+                        else -> String.EMPTY
+                    }
+                }
             }
             numberDataListLiveDataUIModel.postValue(numberDataUIModelList)
+            hideProgress()
         }
     }
 
     fun checkFilterExist(filter: String) {
         Timber.e("CreateFilterViewModel checkFilterExist filter $filter")
+        showProgress()
         launch {
             val existingFilter = createFilterUseCase.getFilter(filter) ?: FilterWithFilteredNumber(Filter(filterType = DEFAULT_FILTER))
             existingFilterLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModel(existingFilter))
+            hideProgress()
         }
     }
 
     fun createFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
         Timber.e("CreateFilterViewModel createFilter createFilter $filterWithCountryCode filter.country ${filterWithCountryCode.country}")
+        showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 createFilterUseCase.createFilter(filter, application.isNetworkAvailable()) { operationResult ->
@@ -94,11 +107,13 @@ class CreateFilterViewModel @Inject constructor(
                     }
                 }
             }
+            hideProgress()
         }
     }
 
     fun updateFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
         Timber.e("CreateFilterViewModel updateFilter")
+        showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 createFilterUseCase.updateFilter(filter, application.isNetworkAvailable()) { operationResult ->
@@ -108,11 +123,13 @@ class CreateFilterViewModel @Inject constructor(
                     }
                 }
             }
+            hideProgress()
         }
     }
 
     fun deleteFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
         Timber.e("CreateFilterViewModel deleteFilter")
+        showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
                 createFilterUseCase.deleteFilter(filter, application.isNetworkAvailable()) { operationResult ->
@@ -122,6 +139,7 @@ class CreateFilterViewModel @Inject constructor(
                     }
                 }
             }
+            hideProgress()
         }
     }
 }

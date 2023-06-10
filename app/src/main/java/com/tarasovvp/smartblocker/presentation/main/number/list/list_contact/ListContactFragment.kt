@@ -46,7 +46,9 @@ open class ListContactFragment :
     private fun setContactListData(contactWithFilterList: List<ContactWithFilterUIModel>) {
         binding?.listContactCheck?.isEnabled = contactWithFilterList.isNotEmpty() || binding?.listContactCheck?.isChecked.isTrue()
         checkDataListEmptiness(contactWithFilterList.isEmpty())
-        viewModel.getHashMapFromContactList(contactWithFilterList, swipeRefresh?.isRefreshing.isTrue())
+        setDataList(contactWithFilterList.groupBy {
+            if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
+        })
     }
 
     override fun setClickListeners() {
@@ -81,9 +83,6 @@ open class ListContactFragment :
             }
             filteredContactListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredContactList ->
                 setContactListData(filteredContactList)
-            }
-            contactHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { contactHashMap ->
-                setDataList(contactHashMap)
             }
         }
     }

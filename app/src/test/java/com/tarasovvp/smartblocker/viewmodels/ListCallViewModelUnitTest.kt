@@ -62,14 +62,6 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
     }
 
     @Test
-    fun getHashMapFromCallListTest() {
-        val callUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER, callDate = "123456789"), CallWithFilterUIModel(number = "1234", callDate = "123456789"))
-        val callMap = mapOf(callUIModelList.firstOrNull()?.dateFromCallDate() to callUIModelList)
-        viewModel.getHashMapFromCallList(callUIModelList, false)
-        assertEquals(callMap, viewModel.callHashMapLiveData.getOrAwaitValue())
-    }
-
-    @Test
     fun deleteCallListTest() = runTest {
         /*val expectedResult = Result.Success<Unit>()
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "1234")))

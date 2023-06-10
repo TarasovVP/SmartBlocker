@@ -6,10 +6,7 @@ import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
-import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
-import com.tarasovvp.smartblocker.utils.extensions.nameInitial
+import com.tarasovvp.smartblocker.utils.extensions.*
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -38,7 +35,7 @@ data class ContactWithFilterUIModel(
     fun phoneNumberValidity(): Int? {
         return when {
             isPhoneNumberValid.not() -> R.string.details_number_invalid
-            number.startsWith(Constants.PLUS_CHAR).isNotTrue() -> R.string.details_number_incomplete
+            number.digitsTrimmed().startsWith(Constants.PLUS_CHAR).isNotTrue() -> R.string.details_number_incomplete
             else -> null
         }
     }

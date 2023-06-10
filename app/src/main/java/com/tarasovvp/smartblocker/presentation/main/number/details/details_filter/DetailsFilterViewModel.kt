@@ -15,6 +15,7 @@ import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIMode
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -43,7 +44,7 @@ class DetailsFilterViewModel @Inject constructor(
                 sortWith(compareBy(
                     {
                         when (it) {
-                            is ContactWithFilterUIModel -> it.number.startsWith(PLUS_CHAR)
+                            is ContactWithFilterUIModel -> it.number.digitsTrimmed().startsWith(PLUS_CHAR)
                             is CallWithFilterUIModel -> it.number.startsWith(PLUS_CHAR)
                             else -> false
                         }
@@ -58,7 +59,7 @@ class DetailsFilterViewModel @Inject constructor(
                 ))
                 distinctBy {
                     when (it) {
-                        is ContactWithFilterUIModel -> Pair(it.number, it.contactName)
+                        is ContactWithFilterUIModel -> Pair(it.number.digitsTrimmed(), it.contactName)
                         is CallWithFilterUIModel -> Pair(it.number, it.callName)
                         else -> String.EMPTY
                     }

@@ -67,7 +67,9 @@ class ListCallFragment :
     private fun setCallListData(callWithFilterList: List<CallWithFilterUIModel>) {
         binding?.listCallCheck?.isEnabled = callWithFilterList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
         checkDataListEmptiness(callWithFilterList.isEmpty())
-        viewModel.getHashMapFromCallList(callWithFilterList, swipeRefresh?.isRefreshing.isTrue())
+        setDataList(callWithFilterList.sortedByDescending {
+            it.callDate
+        }.groupBy { it.dateFromCallDate() })
     }
 
     override fun setClickListeners() {
@@ -141,9 +143,6 @@ class ListCallFragment :
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
                 setCallListData(filteredCallList)
-            }
-            callHashMapLiveData.safeSingleObserve(viewLifecycleOwner) { callHashMap ->
-                callHashMap?.let { setDataList(it) }
             }
             successDeleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {

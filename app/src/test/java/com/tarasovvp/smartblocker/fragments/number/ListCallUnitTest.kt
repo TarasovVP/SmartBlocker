@@ -285,7 +285,7 @@ class ListCallUnitTest: BaseFragmentUnitTest() {
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_title),
                 isDisplayed(),
-                withText(callWithFilter?.callFilterTitle(callWithFilter.filterWithFilteredNumberUIModel).orZero()),
+                withText(callWithFilter?.callFilterTitle().orZero()),
                 withTextColor(callWithFilter?.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),

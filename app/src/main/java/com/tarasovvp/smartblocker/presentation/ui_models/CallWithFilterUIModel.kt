@@ -106,11 +106,11 @@ data class CallWithFilterUIModel(
         }
     }
 
-    fun callFilterTitle(filter: FilterWithFilteredNumberUIModel?): Int {
+    fun callFilterTitle(): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
-                filter?.isPermission().isTrue() -> R.string.details_number_permit_with_filter
-                filter?.isBlocker().isTrue() -> R.string.details_number_block_with_filter
+                filterWithFilteredNumberUIModel.isPermission().isTrue() -> R.string.details_number_permit_with_filter
+                filterWithFilteredNumberUIModel.isBlocker().isTrue() -> R.string.details_number_block_with_filter
                 number.isEmpty() && isSystemBlockHidden -> R.string.details_number_hidden_on
                 number.isEmpty() && isSystemBlockHidden.isNotTrue() -> R.string.details_number_hidden_off
                 else -> R.string.details_number_contact_without_filter
@@ -130,7 +130,8 @@ data class CallWithFilterUIModel(
 
     fun callFilterIcon(): Int? {
         return when {
-            isCallFiltered() && filteredNumber.isEmpty() -> R.drawable.ic_settings_small
+            isExtract && !isFilteredCallDetails -> filterWithFilteredNumberUIModel.conditionTypeSmallIcon()
+            isCallFiltered() && number.isEmpty() ->  R.drawable.ic_settings_small
             isCallFiltered() -> conditionType.takeIf { it >=0 }?.let { FilterCondition.values()[it].smallIcon(type == Constants.BLOCKED_CALL) }
             else -> null
         }

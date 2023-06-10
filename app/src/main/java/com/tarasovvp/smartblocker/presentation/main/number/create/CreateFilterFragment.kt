@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
-import android.content.Context
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -43,11 +42,6 @@ open class CreateFilterFragment :
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataUIModelList: ArrayList<NumberDataUIModel> = ArrayList()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity as? MainActivity)?.setMainProgressVisibility(true)
-    }
-
     override fun createAdapter() {
         numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataUIModelList) { numberData ->
             val number = when (numberData) {
@@ -85,6 +79,7 @@ open class CreateFilterFragment :
         binding?.apply {
             filterWithCountryCode = args.filterWithCountryCodeUIModel?.apply {
                 filterWithFilteredNumberUIModel.filterAction = this.filterWithFilteredNumberUIModel.filterAction ?: FilterAction.FILTER_ACTION_INVALID
+                viewModel.checkFilterExist(this.createFilter())
             }
             Timber.e( "CreateFilterFragment initViews filter?.filterAction ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
             setCountryCode(filterWithCountryCode?.countryCodeUIModel)
@@ -205,7 +200,6 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment observeLiveData numberDataList.size ${numberDataList.size}")
                 this@CreateFilterFragment.numberDataUIModelList = ArrayList(numberDataList)
                 setNumberDataUIModelList()
-                (activity as? MainActivity)?.setMainProgressVisibility(false)
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
                 Timber.e("CreateFilterFragment observeLiveData existingFilterLiveData existingFilter $existingFilter filterAction ${ binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
@@ -226,7 +220,7 @@ open class CreateFilterFragment :
     }
 
     private fun setNumberDataUIModelList() {
-        Timber.e("CreateFilterFragment filterNumberDataList filteredList ${numberDataUIModelList.size}")
+        Timber.e("CreateFilterFragment setNumberDataUIModelList numberDataUIModelList ${numberDataUIModelList.size}")
         binding?.apply {
             numberDataAdapter?.numberDataUIModelList = numberDataUIModelList
             numberDataAdapter?.notifyDataSetChanged()

@@ -88,7 +88,7 @@ class NumberDataAdapter(
         fun bindData(contactWithFilter: ContactWithFilterUIModel?) {
             binding?.apply {
                 this.contactWithFilter = contactWithFilter
-                this.contactWithFilter?.highlightedSpanned = this.contactWithFilter?.highlightedSpanned
+                this.contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned
                     ?: this.contactWithFilter?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {
                     contactWithFilter?.let { it1 -> numberDataClick.invoke(it1.apply {
@@ -110,7 +110,7 @@ class NumberDataAdapter(
                 this.callWithFilter = callWithFilter
                 this.callWithFilter?.isExtract = isFilteredCallDetails.not()
                 this.callWithFilter?.isFilteredCallDetails = isFilteredCallDetails
-                this.callWithFilter?.highlightedSpanned = this.callWithFilter?.highlightedSpanned
+                this.callWithFilter?.highlightedSpanned = callWithFilter?.highlightedSpanned
                     ?: this.callWithFilter?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {
                     this.callWithFilter?.apply {

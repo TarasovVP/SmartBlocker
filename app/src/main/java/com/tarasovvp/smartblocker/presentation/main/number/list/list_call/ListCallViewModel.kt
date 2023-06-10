@@ -21,7 +21,6 @@ class ListCallViewModel @Inject constructor(
 
     val callListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
     val filteredCallListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
-    val callHashMapLiveData = MutableLiveData<Map<String, List<CallWithFilterUIModel>>?>()
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
 
     fun getCallList(refreshing: Boolean) {
@@ -39,15 +38,6 @@ class ListCallViewModel @Inject constructor(
             filteredCallListLiveData.postValue(callWithFilterUIMapper.mapToUIModelList(filteredCallList))
             hideProgress()
         }
-    }
-
-    fun getHashMapFromCallList(callList: List<CallWithFilterUIModel>, refreshing: Boolean) {
-        if (refreshing.not()) showProgress()
-        val hashMapList = callList.sortedByDescending {
-                it.callDate
-            }.groupBy { it.dateFromCallDate() }
-        callHashMapLiveData.postValue(hashMapList)
-        hideProgress()
     }
 
     fun deleteCallList(filteredCallIdList: List<Int>) {

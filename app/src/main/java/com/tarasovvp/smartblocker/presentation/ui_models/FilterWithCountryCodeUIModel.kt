@@ -62,7 +62,7 @@ data class FilterWithCountryCodeUIModel(
     }
 
     fun isInValidPhoneNumber(appPhoneNumberUtil: AppPhoneNumberUtil): Boolean {
-        return (filterWithFilteredNumberUIModel.isTypeFull() /*&& appPhoneNumberUtil.isPhoneNumberValid(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country)*/)
+        return (filterWithFilteredNumberUIModel.isTypeFull() && appPhoneNumberUtil.isPhoneNumberValid(appPhoneNumberUtil.getPhoneNumber(createFilter(), countryCodeUIModel.country)).not())
                 || (filterWithFilteredNumberUIModel.isTypeStart().not() && filterWithFilteredNumberUIModel.filter.isEmpty())
     }
 
