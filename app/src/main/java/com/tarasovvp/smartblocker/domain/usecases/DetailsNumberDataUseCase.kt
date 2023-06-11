@@ -9,7 +9,7 @@ interface DetailsNumberDataUseCase {
 
     suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumber>
 
-    suspend fun allFilteredCallsByNumber(number: String): List<CallWithFilter>
+    suspend fun allFilteredCallsByNumber(number: String, name: String): List<CallWithFilter>
 
     suspend fun getCountryCodeByCode(code: Int): CountryCode?
 

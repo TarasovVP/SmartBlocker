@@ -13,10 +13,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
-import com.tarasovvp.smartblocker.utils.extensions.breakCallNougatAndLower
-import com.tarasovvp.smartblocker.utils.extensions.breakCallPieAndHigher
-import com.tarasovvp.smartblocker.utils.extensions.createFilteredCall
-import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,10 +39,11 @@ open class CallReceiver : BroadcastReceiver() {
         val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
             dataStoreRepository.blockHidden().collect { isBlockHidden ->
-                matchedFilter(number, isBlockHidden)?.let { filter ->
-                    if (filter.filterType == BLOCKER && telephony.callState == TelephonyManager.CALL_STATE_RINGING) {
+                val matchedFilter = matchedFilter(number, isBlockHidden)
+                matchedFilter?.let { filter ->
+                    if (filter.filterType == BLOCKER && telephony.isCallStateRinging()) {
                         breakCall(context)
-                    } else if (telephony.callState == TelephonyManager.CALL_STATE_IDLE) {
+                    } else if (telephony.isCallStateIdle()) {
                         delay(SECOND)
                         val test = context.createFilteredCall(number, filter)
                         test?.
@@ -53,6 +51,7 @@ open class CallReceiver : BroadcastReceiver() {
                         context.sendBroadcast(Intent(CALL_RECEIVE))
                     }
                 }
+                if (telephony.isCallStateIdle() && matchedFilter.isNull()) context.sendBroadcast(Intent(CALL_RECEIVE))
             }
         }
     }

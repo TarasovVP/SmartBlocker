@@ -70,6 +70,10 @@ data class CallWithFilterUIModel(
         return callDate.toDateFromMilliseconds(Constants.DATE_FORMAT)
     }
 
+    fun fullCallDate(): String {
+        return String.format("%s, %s", dateFromCallDate(), timeFromCallDate())
+    }
+
     fun placeHolder(context: Context): Drawable? {
         return if (callName.isEmpty()) ContextCompat.getDrawable(context,
             R.drawable.ic_call) else if (callName.nameInitial()

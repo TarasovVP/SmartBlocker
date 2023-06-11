@@ -13,7 +13,7 @@ interface FilteredCallRepository {
 
     suspend fun allFilteredCallsByFilter(filter: String): List<CallWithFilter>
 
-    suspend fun allFilteredCallsByNumber(number: String): List<CallWithFilter>
+    suspend fun allFilteredCallsByNumber(number: String, name: String): List<CallWithFilter>
 
     suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>)
 }

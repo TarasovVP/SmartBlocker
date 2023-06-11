@@ -16,7 +16,7 @@ class DetailsNumberDataUseCaseImpl @Inject constructor(
 
     override suspend fun allFilterWithFilteredNumbersByNumber(number: String) = filterRepository.allFilterWithFilteredNumbersByNumber(number)
 
-    override suspend fun allFilteredCallsByNumber(number: String) = filteredCallRepository.allFilteredCallsByNumber(number)
+    override suspend fun allFilteredCallsByNumber(number: String, name: String) = filteredCallRepository.allFilteredCallsByNumber(number, name)
 
     override suspend fun getCountryCodeByCode(code: Int) = countryCodeRepository.getCountryCodeByCode(code)
 

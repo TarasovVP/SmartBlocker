@@ -22,8 +22,8 @@ class FilteredCallRepositoryImpl @Inject constructor(
     override suspend fun allFilteredCallsByFilter(filter: String): List<CallWithFilter> =
         filteredCallDao.allFilteredCallsByFilter(filter)
 
-    override suspend fun allFilteredCallsByNumber(number: String): List<CallWithFilter> =
-        filteredCallDao.allFilteredCallsByNumber(number)
+    override suspend fun allFilteredCallsByNumber(number: String, name: String): List<CallWithFilter> =
+        filteredCallDao.allFilteredCallsByNumber(number, name)
 
     override suspend fun deleteFilteredCalls(filteredCallIdList: List<Int>) =
         filteredCallDao.deleteFilteredCalls(filteredCallIdList)

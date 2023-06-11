@@ -36,9 +36,9 @@ class DetailsNumberDataViewModel @Inject constructor(
         }
     }
 
-    fun filteredCallsByNumber(number: String) {
+    fun filteredCallsByNumber(number: String, name: String) {
         launch {
-            val filteredCallList = detailsNumberDataUseCase.allFilteredCallsByNumber(number)
+            val filteredCallList = detailsNumberDataUseCase.allFilteredCallsByNumber(number, name)
             filteredCallListLiveData.postValue(callWithFilterUIMapper.mapToUIModelList(filteredCallList))
             hideProgress()
         }

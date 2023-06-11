@@ -98,6 +98,14 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
     return builder
 }
 
+fun TelephonyManager.isCallStateRinging(): Boolean {
+    return callState == TelephonyManager.CALL_STATE_RINGING
+}
+
+fun TelephonyManager.isCallStateIdle(): Boolean {
+    return callState == TelephonyManager.CALL_STATE_IDLE
+}
+
 fun Context.breakCallNougatAndLower() {
     val telephony = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
     try {
