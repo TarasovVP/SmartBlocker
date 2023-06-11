@@ -22,7 +22,7 @@ class CallWithFilterUIMapperImpl(private val filterWithFilteredNumberUIMapper: F
         return CallWithFilter(call = Call(to.callId, to.callName, to.number, to.type, to.callDate,
             to.photoUrl, to.isFilteredCall, to.filteredNumber, to.conditionType, to.phoneNumberValue),
             filterWithFilteredNumber = FilterWithFilteredNumber(filter = filterWithFilteredNumberUIMapper.mapFromUIModel(to.filterWithFilteredNumberUIModel).filter,
-                filteredContacts = to.filterWithFilteredNumberUIModel.filteredContacts, filteredCalls = to.filterWithFilteredNumberUIModel.filteredCalls))
+                filteredContacts = to.filterWithFilteredNumberUIModel.filteredContacts))
     }
 
     override fun mapToUIModelList(fromList: List<CallWithFilter>): List<CallWithFilterUIModel> {

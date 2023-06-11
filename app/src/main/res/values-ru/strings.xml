@@ -134,16 +134,16 @@
     <string name="details_number_from_call_log">Номер из журнала вызовов</string>
     <string name="details_filter">Фильтр</string>
     <plurals name="details_number_block_contacts">
-        <item quantity="one">Заблокирует %s номер</item>
-        <item quantity="few">Заблокирует %s номера</item>
-        <item quantity="other">Заблокирует %s номеров</item>
-        <item quantity="many">Заблокирует %s номеров</item>
+        <item quantity="one">Заблокирует %s контакт</item>
+        <item quantity="few">Заблокирует %s контакта</item>
+        <item quantity="other">Заблокирует %s контактов</item>
+        <item quantity="many">Заблокирует %s контактов</item>
     </plurals>
     <plurals name="details_number_permit_contacts">
-        <item quantity="one">Разрешит %s номер</item>
-        <item quantity="few">Разрешит %s номера</item>
-        <item quantity="other">Разрешит %s номеров</item>
-        <item quantity="many">Разрешит %s номеров</item>
+        <item quantity="one">Разрешит %s контакт</item>
+        <item quantity="few">Разрешит %s контакта</item>
+        <item quantity="other">Разрешит %s контактов</item>
+        <item quantity="many">Разрешит %s контактов</item>
     </plurals>
     <plurals name="details_number_blocked_calls">
         <item quantity="one">Заблокирован %s вызов</item>

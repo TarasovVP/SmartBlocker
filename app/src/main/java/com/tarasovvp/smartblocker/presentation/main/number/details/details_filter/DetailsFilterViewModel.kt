@@ -5,17 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -36,34 +31,10 @@ class DetailsFilterViewModel @Inject constructor(
     fun getQueryContactCallList(filter: String) {
         showProgress()
         launch {
-            val calls =  detailsFilterUseCase.allCallWithFiltersByFilter(filter)
+
             val contacts =  detailsFilterUseCase.allContactsWithFiltersByFilter(filter)
             val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
-                addAll(callWithFilterUIMapper.mapToUIModelList(calls))
                 addAll(contactWithFilterUIMapper.mapToUIModelList(contacts))
-                sortWith(compareBy(
-                    {
-                        when (it) {
-                            is ContactWithFilterUIModel -> it.number.digitsTrimmed().startsWith(PLUS_CHAR)
-                            is CallWithFilterUIModel -> it.number.startsWith(PLUS_CHAR)
-                            else -> false
-                        }
-                    },
-                    {
-                        when (it) {
-                            is ContactWithFilterUIModel -> it.number
-                            is CallWithFilterUIModel -> it.number
-                            else -> String.EMPTY
-                        }
-                    }
-                ))
-                distinctBy {
-                    when (it) {
-                        is ContactWithFilterUIModel -> Pair(it.number.digitsTrimmed(), it.contactName)
-                        is CallWithFilterUIModel -> Pair(it.number, it.callName)
-                        else -> String.EMPTY
-                    }
-                }
             }
             numberDataListLiveDataUIModel.postValue(numberDataUIModelList)
             hideProgress()

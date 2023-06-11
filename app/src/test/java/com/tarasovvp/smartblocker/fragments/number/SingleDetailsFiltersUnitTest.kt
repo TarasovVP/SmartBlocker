@@ -138,7 +138,7 @@ class SingleDetailsFiltersUnitTest: BaseFragmentUnitTest() {
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_contacts),
                 isDisplayed(),
-                withText(filterWithFilteredNumberUIModel?.filteredContactsText(targetContext)),
+                withText(filterWithFilteredNumberUIModel?.filteredNumbersText(targetContext)),
                 withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_created),
                 isDisplayed(),

@@ -59,11 +59,11 @@ data class FilterWithFilteredNumberUIModel(
         }
     }
 
-    fun filteredContactsText(context: Context): String {
+    fun filteredNumbersText(context: Context): String {
         return context.resources.getQuantityString(when (filterType) {
             Constants.PERMISSION -> R.plurals.details_number_permit_contacts
             else -> R.plurals.details_number_block_contacts
-        }, filteredContacts.quantityString(), filteredContacts)
+        }, filteredContacts.quantityString(), filteredContacts )
     }
 
     fun filteredCallsText(context: Context): String {

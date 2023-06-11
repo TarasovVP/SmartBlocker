@@ -424,7 +424,7 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_contacts),
                 isDisplayed(),
-                withText(filterWithFilteredNumber?.filteredContactsText(targetContext)),
+                withText(filterWithFilteredNumber?.filteredNumbersText(targetContext)),
                 withTextColor(if (filterWithFilteredNumber?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_created),
                 isDisplayed(),

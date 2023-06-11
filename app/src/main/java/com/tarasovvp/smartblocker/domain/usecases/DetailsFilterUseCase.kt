@@ -7,8 +7,6 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface DetailsFilterUseCase {
 
-    suspend fun allCallWithFiltersByFilter(filter: String): List<CallWithFilter>
-
     suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
 
     suspend fun allFilteredCallsByFilter(filter: String): List<CallWithFilter>

@@ -97,7 +97,7 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     fun checkItemDetailsFilterContactsDetails() {
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
             .check(matches(withText(if (filterWithFilteredNumberUIModel?.filterAction.isNull())
-                filterWithFilteredNumberUIModel?.filteredContactsText(targetContext) else filterWithFilteredNumberUIModel?.filter)))
+                filterWithFilteredNumberUIModel?.filteredNumbersText(targetContext) else filterWithFilteredNumberUIModel?.filter)))
             .check(matches(withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero() )))
     }
 

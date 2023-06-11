@@ -234,7 +234,6 @@ object AppModule {
         contactRepository: ContactRepository,
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        logCallRepository: LogCallRepository,
         filteredCallRepository: FilteredCallRepository,
         firebaseAuth: FirebaseAuth
     ): DetailsFilterUseCase {
@@ -242,7 +241,6 @@ object AppModule {
             contactRepository,
             filterRepository,
             realDataBaseRepository,
-            logCallRepository,
             filteredCallRepository,
             firebaseAuth
         )

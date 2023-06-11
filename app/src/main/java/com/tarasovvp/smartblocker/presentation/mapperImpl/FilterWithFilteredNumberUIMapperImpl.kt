@@ -11,13 +11,13 @@ class FilterWithFilteredNumberUIMapperImpl : FilterWithFilteredNumberUIMapper {
     override fun mapToUIModel(from: FilterWithFilteredNumber): FilterWithFilteredNumberUIModel {
         return FilterWithFilteredNumberUIModel(from.filter?.filter.orEmpty(), from.filter?.conditionType.orZero(), from.filter?.filterType.orZero(),
             from.filter?.countryCode.orEmpty(), from.filter?.country.orEmpty(), from.filter?.created ?: 0,
-            from.filteredContacts ?: 0, from.filteredCalls ?: 0)
+            from.filteredContacts ?: 0)
     }
 
     override fun mapFromUIModel(to: FilterWithFilteredNumberUIModel): FilterWithFilteredNumber {
         return FilterWithFilteredNumber(filter = Filter(to.filter, to.conditionType, to.filterType,
            to.countryCode, to.country, to.created),
-            filteredContacts = to.filteredContacts, filteredCalls = to.filteredCalls)
+            filteredContacts = to.filteredContacts)
     }
 
     override fun mapToUIModelList(fromList: List<FilterWithFilteredNumber>): List<FilterWithFilteredNumberUIModel> {

@@ -5,7 +5,8 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 
 class ContactWithFilterUIMapperImpl(private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper) : ContactWithFilterUIMapper {
@@ -20,7 +21,7 @@ class ContactWithFilterUIMapperImpl(private val filterWithFilteredNumberUIMapper
         return ContactWithFilter(contact = Contact(to.contactId, to.contactName, to.photoUrl,
             to.number, to.phoneNumberValue, to.isPhoneNumberValid),
             filterWithFilteredNumber = FilterWithFilteredNumber(filter = filterWithFilteredNumberUIMapper.mapFromUIModel(to.filterWithFilteredNumberUIModel).filter,
-            filteredContacts = to.filterWithFilteredNumberUIModel.filteredContacts, filteredCalls = to.filterWithFilteredNumberUIModel.filteredCalls))
+            filteredContacts = to.filterWithFilteredNumberUIModel.filteredContacts))
     }
 
     override fun mapToUIModelList(fromList: List<ContactWithFilter>): List<ContactWithFilterUIModel> {
