@@ -153,8 +153,8 @@ class SingleDetailsFilteredCallsUnitTest: BaseFragmentUnitTest() {
                 withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilterUIModel?.filterWithFilteredNumberUIModel?.filter),
-                withTextColor(if (callWithFilterUIModel?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
+                withText(if (callWithFilterUIModel?.isEmptyFilter().isTrue()) String.EMPTY else callWithFilterUIModel?.filteredNumber),
+                withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel?.filterWithFilteredNumberUIModel).orZero()),
                 withDrawable(callWithFilterUIModel?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

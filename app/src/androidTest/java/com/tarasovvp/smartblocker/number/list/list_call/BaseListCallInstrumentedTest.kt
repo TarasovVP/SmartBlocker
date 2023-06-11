@@ -283,12 +283,12 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_title),
                 isDisplayed(),
-                withText(callWithFilter?.callFilterTitle(callWithFilter.filterWithFilteredNumberUIModel).orZero()),
+                withText(callWithFilter?.callFilterTitle().orZero()),
                 withTextColor(callWithFilter?.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilter?.filterWithFilteredNumberUIModel?.filter),
-                withTextColor(if (callWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
+                withText(if (callWithFilter?.isEmptyFilter().isTrue()) String.EMPTY else callWithFilter?.filteredNumber),
+                withTextColor(callWithFilter?.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel).orZero()),
                 withDrawable(callWithFilter?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

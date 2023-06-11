@@ -21,6 +21,7 @@ import com.tarasovvp.smartblocker.TestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
@@ -79,12 +80,12 @@ class SingleDetailsFilteredCallsInstrumentedTest: BaseSingleDetailsInstrumentedT
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_title),
                 isDisplayed(),
-                withText(callWithFilterUIModel?.callFilterTitle(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()),
+                withText(callWithFilterUIModel?.callFilterTitle().orZero()),
                 withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
-                withText(callWithFilterUIModel?.filterWithFilteredNumberUIModel?.filter),
-                withTextColor(if (callWithFilterUIModel?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
+                withText(if (callWithFilterUIModel?.isEmptyFilter().isTrue()) String.EMPTY else callWithFilterUIModel?.filteredNumber),
+                withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()),
                 withDrawable(callWithFilterUIModel?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

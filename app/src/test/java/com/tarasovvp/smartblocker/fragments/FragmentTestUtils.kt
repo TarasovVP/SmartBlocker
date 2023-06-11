@@ -237,11 +237,11 @@ object FragmentTestUtils {
     }
 
     fun filterWithFilteredNumberUIModelList() = arrayListOf(
-        FilterWithFilteredNumberUIModel(filter = "+380502711344", filterType = Constants.BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681315250919, filteredContacts = 1, filteredCalls = 5),
-        FilterWithFilteredNumberUIModel(filter = "123", filterType = Constants.BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, created = 1681314350919, filteredContacts = 1, filteredCalls = 5),
+        FilterWithFilteredNumberUIModel(filter = "+380502711344", filterType = Constants.BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681315250919, filteredContacts = 1),
+        FilterWithFilteredNumberUIModel(filter = "123", filterType = Constants.BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, created = 1681314350919, filteredContacts = 1),
         FilterWithFilteredNumberUIModel(filter = "1234", filterType = Constants.BLOCKER, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, created = 1681314260919),
-        FilterWithFilteredNumberUIModel(filter = "12345", filterType = Constants.PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681354250919, filteredContacts = 0, filteredCalls = 5),
-        FilterWithFilteredNumberUIModel(filter = "123456", filterType = Constants.PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, created = 1681314850919, filteredContacts = 0, filteredCalls = 5),
+        FilterWithFilteredNumberUIModel(filter = "12345", filterType = Constants.PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal, created = 1681354250919, filteredContacts = 0),
+        FilterWithFilteredNumberUIModel(filter = "123456", filterType = Constants.PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal, created = 1681314850919, filteredContacts = 0),
         FilterWithFilteredNumberUIModel(filter = "1234567", filterType = Constants.PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, created = 1681314251219)
     )
 

@@ -3,13 +3,18 @@ package com.tarasovvp.smartblocker.usecases
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.repository.ContactRepository
+import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterUseCaseImpl
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -29,9 +34,6 @@ class DetailsFilterUseCaseUnitTest {
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @MockK
-    private lateinit var logCallRepository: LogCallRepository
-
-    @MockK
     private lateinit var filteredCallRepository: FilteredCallRepository
 
     @MockK
@@ -45,16 +47,7 @@ class DetailsFilterUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        detailsFilterUseCase = DetailsFilterUseCaseImpl(contactRepository, filterRepository, realDataBaseRepository, logCallRepository, filteredCallRepository, firebaseAuth)
-    }
-
-    @Test
-    fun allCallWithFiltersByFilterTest() = runBlocking {
-        val filter = TEST_FILTER
-        val callList = listOf(CallWithFilter().apply { call = LogCall().apply { number = "1" } }, CallWithFilter().apply { call = LogCall().apply { number = "2"} })
-        coEvery { logCallRepository.allCallWithFiltersByFilter(filter) } returns callList
-        val result = detailsFilterUseCase.allCallWithFiltersByFilter(filter)
-        assertEquals(callList, result)
+        detailsFilterUseCase = DetailsFilterUseCaseImpl(contactRepository, filterRepository, realDataBaseRepository, filteredCallRepository, firebaseAuth)
     }
 
     @Test

@@ -44,7 +44,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         viewModel.setBlockerTurnOn(blockerTurnOn)
         advanceUntilIdle()
         coVerify { useCase.setBlockerTurnOn(blockerTurnOn) }
-        assertEquals(blockerTurnOn.not(), viewModel.blockerTurnOnLiveData.getOrAwaitValue())
+        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
     }
 
     @Test
