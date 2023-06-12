@@ -77,22 +77,31 @@ open class CreateFilterFragment :
     override fun initViews() {
         Timber.e("CreateFilterFragment initViews args.filterWithCountryCodeUIModel ${args.filterWithCountryCodeUIModel}")
         binding?.apply {
+            filterToInput = true
             filterWithCountryCode = args.filterWithCountryCodeUIModel?.apply {
                 filterWithFilteredNumberUIModel.filterAction = this.filterWithFilteredNumberUIModel.filterAction ?: FilterAction.FILTER_ACTION_INVALID
-                viewModel.checkFilterExist(this.createFilter())
             }
             Timber.e( "CreateFilterFragment initViews filter?.filterAction ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
-            setCountryCode(filterWithCountryCode?.countryCodeUIModel)
+            if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
+                createFilterInput.setHint(R.string.creating_filter_enter_hint)
+            } else {
+                setCountryCode(filterWithCountryCode?.countryCodeUIModel)
+            }
             (activity as? MainActivity)?.toolbar?.title = getString(if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
-            container.hideKeyboardWithLayoutTouch()
-            createFilterNumberList.hideKeyboardWithLayoutTouch()
-            createFilterInput.setupClearButtonWithAction()
+            setKeyboardHidden()
             setFilterTextChangeListener()
             executePendingBindings()
             Timber.e("CreateFilterFragment initViews filterWithFilteredNumberUIModel.filter ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter}")
         }
     }
 
+    private fun setKeyboardHidden() {
+        binding?.apply {
+            container.hideKeyboardWithLayoutTouch()
+            createFilterNumberList.hideKeyboardWithLayoutTouch()
+            createFilterInput.setupClearButtonWithAction()
+        }
+    }
     override fun setClickListeners() {
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
@@ -109,16 +118,10 @@ open class CreateFilterFragment :
         }
     }
 
-    override fun getData() {
-        Timber.e( "CreateFilterFragment getData")
-        viewModel.getNumberDataList(binding?.filterWithCountryCode?.createFilter().orEmpty())
-    }
-
     override fun setFragmentResultListeners() {
         binding?.filterWithCountryCode?.let { filterWithCountryCode ->
             setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
                 bundle.parcelable<CountryCodeUIModel>(COUNTRY_CODE)?.let { setCountryCode(it) }
-                getNumberDataUIModelList()
             }
             setFragmentResultListener(FILTER_ACTION) { _, bundle ->
                 when (val filterAction = bundle.serializable<FilterAction>(FILTER_ACTION)) {
@@ -146,12 +149,16 @@ open class CreateFilterFragment :
         }
     }
 
+    override fun getData() {
+        Timber.e( "CreateFilterFragment getData")
+        viewModel.getNumberDataList(binding?.filterWithCountryCode?.createFilter().orEmpty())
+    }
+
     private fun setFilterTextChangeListener() {
         binding?.apply {
             createFilterInput.doAfterTextChanged {
                 Timber.e( "CreateFilterFragment setFilterTextChangeListener doAfterTextChanged it $it")
-                if ((filterWithCountryCode?.conditionTypeFullHint() == it.toString() && filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeFull().isTrue())
-                    || (filterWithCountryCode?.conditionTypeStartHint() == it.toString() && filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeStart().isTrue())) return@doAfterTextChanged
+                if (isHintInput(filterWithCountryCode, it.toString())) return@doAfterTextChanged
                 Timber.e("CreateFilterFragment setFilterTextChangeListener true condition")
                 filterToInput = false
                 filterWithCountryCode = filterWithCountryCode?.apply {
@@ -159,28 +166,25 @@ open class CreateFilterFragment :
                     viewModel.checkFilterExist(this.createFilter())
                 }
                 Timber.e( "CreateFilterFragment setFilterTextChangeListener filter?.filterAction ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
-                getNumberDataUIModelList()
+                getData()
             }
         }
     }
 
-    private fun getNumberDataUIModelList() {
-       viewModel.getNumberDataList(binding?.filterWithCountryCode?.createFilter().orEmpty())
+    private fun isHintInput(filterWithCountryCode: FilterWithCountryCodeUIModel?, inputText: String): Boolean {
+        return (filterWithCountryCode?.conditionTypeFullHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeFull())
+                || (filterWithCountryCode?.conditionTypeStartHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeStart())
     }
 
     private fun setCountryCode(countryCode: CountryCodeUIModel?) {
         Timber.e("CreateFilterFragment setCountryCode countryCode.country ${countryCode?.country} filter?.filterAction ${binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
         binding?.apply {
             filterWithCountryCode = filterWithCountryCode?.apply {
-                if (filterWithFilteredNumberUIModel.isTypeContain()) {
-                    createFilterInput.setHint(R.string.creating_filter_enter_hint)
-                } else {
-                    countryCode?.let { filterWithCountryCode?.countryCodeUIModel = countryCode }
-                    createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
-                    when {
-                        filterWithFilteredNumberUIModel.isTypeFull() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeFullHint().orEmpty())
-                        filterWithFilteredNumberUIModel.isTypeStart() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeStartHint().orEmpty())
-                    }
+                countryCode?.let { filterWithCountryCode?.countryCodeUIModel = countryCode }
+                createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
+                when {
+                    filterWithFilteredNumberUIModel.isTypeFull() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeFullHint().orEmpty())
+                    filterWithFilteredNumberUIModel.isTypeStart() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeStartHint().orEmpty())
                 }
             }
             Timber.e( "CreateFilterFragment setCountryCode filter?.filterAction ${filterWithCountryCode?.filterWithFilteredNumberUIModel?.filterAction}")
@@ -192,7 +196,6 @@ open class CreateFilterFragment :
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
                 Timber.e("CreateFilterFragment observeLiveData countryCodeLiveData")
                 setCountryCode(countryCode)
-                getNumberDataUIModelList()
             }
             numberDataListLiveDataUIModel.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 Timber.e("CreateFilterFragment observeLiveData numberDataList.size ${numberDataList.size}")

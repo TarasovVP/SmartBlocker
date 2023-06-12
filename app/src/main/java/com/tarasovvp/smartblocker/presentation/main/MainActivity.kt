@@ -47,6 +47,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -272,6 +273,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeLiveData() {
         with(mainViewModel) {
             onBoardingSeenLiveData.safeSingleObserve(this@MainActivity) { isOnBoardingSeen ->
+                Timber.e( "MainActivity onBoardingSeenLiveData isOnBoardingSeen $isOnBoardingSeen")
                 setNavigationComponents(isOnBoardingSeen)
                 if (isOnBoardingSeen && firebaseAuth.currentUser.isNotNull() && isSavedInstanceStateNull.isTrue()) {
                     startBlocker()

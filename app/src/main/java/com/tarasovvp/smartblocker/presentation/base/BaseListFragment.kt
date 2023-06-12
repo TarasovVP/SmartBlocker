@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
@@ -46,8 +47,8 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         setRecyclerView()
         setSearchViewMenu()
         setFilterCheck()
-        (activity as? MainActivity)?.mainViewModel?.successAllDataLiveData?.safeSingleObserve(
-            viewLifecycleOwner) {
+        if (activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isNotTrue()) getData()
+        (activity as? MainActivity)?.mainViewModel?.successAllDataLiveData?.safeSingleObserve(viewLifecycleOwner) {
             this@BaseListFragment.getData()
         }
     }

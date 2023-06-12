@@ -60,7 +60,11 @@ class DetailsNumberDataFragment :
             detailsNumberDataItemContact.root.isEnabled = false
             contactWithFilter?.highlightedSpanned = SpannableString( contactWithFilter?.number )
             executePendingBindings()
-            if (isHiddenCall) setHiddenCallScreen()
+            if (isHiddenCall) {
+                setHiddenCallScreen()
+            } else {
+                getData()
+            }
         }
     }
 

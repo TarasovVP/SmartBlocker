@@ -44,6 +44,7 @@ class DetailsFilterFragment :
                 this.filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel
             }
             executePendingBindings()
+            getData()
         }
     }
 
