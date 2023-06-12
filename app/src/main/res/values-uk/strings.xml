@@ -51,7 +51,7 @@
     <string name="filter_action_create_blocker_success">Фильтр %1$s с типом Блокировщик и признаком %2$s создан!</string>
     <string name="filter_action_create_permission_description">Создать разрешение?</string>
     <string name="filter_action_create_permission_request">Создать фильтр %1$s с типом Разрешение и признаком %2$s?</string>
-    <string name="filter_action_create_permission_success">Фильтр %1$s с типом Блокировщик и признаком %2$s создан!</string>
+    <string name="filter_action_create_permission_success">Фильтр %1$s с типом Разрешение и признаком %2$s создан!</string>
     <string name="filter_action_created">Создан: %s</string>
     <string name="filter_action_delete">Удалить</string>
     <string name="filter_action_delete_blocker_description">Блокировщик уже существует.</string>

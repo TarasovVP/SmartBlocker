@@ -154,7 +154,7 @@ class SingleDetailsFilteredCallsUnitTest: BaseFragmentUnitTest() {
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_filter_value),
                 isDisplayed(),
                 withText(if (callWithFilterUIModel?.isEmptyFilter().isTrue()) String.EMPTY else callWithFilterUIModel?.filteredNumber),
-                withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel?.filterWithFilteredNumberUIModel).orZero()),
+                withTextColor(callWithFilterUIModel?.callFilterTint(callWithFilterUIModel.filterWithFilteredNumberUIModel).orZero()),
                 withDrawable(callWithFilterUIModel?.callFilterIcon()))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_call_container),
                 isDisplayed(),

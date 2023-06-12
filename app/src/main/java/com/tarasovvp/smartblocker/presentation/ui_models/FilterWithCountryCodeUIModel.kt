@@ -4,13 +4,10 @@ import android.content.Context
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
-import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
-import com.tarasovvp.smartblocker.utils.extensions.isNull
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -48,17 +45,6 @@ data class FilterWithCountryCodeUIModel(
             filterWithFilteredNumberUIModel.isTypeContain() -> filterWithFilteredNumberUIModel.filter
             else -> String.format("%s%s", countryCodeUIModel.countryCode, filterWithFilteredNumberUIModel.filter)
         }
-    }
-
-    fun filterToInput(appPhoneNumberUtil: AppPhoneNumberUtil): String {
-        val filterToInput = when (filterWithFilteredNumberUIModel.conditionType) {
-            FilterCondition.FILTER_CONDITION_FULL.ordinal -> (if (appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country).isNull())
-                        appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY), countryCodeUIModel.country)
-                    else appPhoneNumberUtil.getPhoneNumber(filterWithFilteredNumberUIModel.filter, countryCodeUIModel.country))?.nationalNumber.takeIf { it.isNotNull() }?.toString() ?: String.EMPTY
-            FilterCondition.FILTER_CONDITION_START.ordinal -> filterWithFilteredNumberUIModel.filter.replaceFirst(countryCodeUIModel.countryCode, String.EMPTY)
-            else -> filterWithFilteredNumberUIModel.filter.digitsTrimmed().replace(Constants.PLUS_CHAR.toString(), String.EMPTY)
-        }
-        return filterToInput
     }
 
     fun isInValidPhoneNumber(appPhoneNumberUtil: AppPhoneNumberUtil): Boolean {

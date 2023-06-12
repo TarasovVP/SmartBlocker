@@ -102,19 +102,20 @@ class DetailsNumberDataFragment :
         filteredCallsScreen =
             SingleDetailsFragment.newInstance(CallWithFilterUIModel::class.simpleName.orEmpty())
         val fragmentList = arrayListOf(filtersScreen, filteredCallsScreen)
-
-        binding?.detailsNumberDataViewPager?.adapter =
-            activity?.supportFragmentManager?.let { fragmentManager ->
-                DetailsPagerAdapter(fragmentList, fragmentManager, lifecycle)
-            }
-        binding?.detailsNumberDataViewPager?.offscreenPageLimit = 2
-        binding?.detailsNumberDataViewPager?.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                binding?.detailsNumberDataTabs?.setImageResource(if (position == 0) R.drawable.ic_filter_details_tab_1 else R.drawable.ic_filter_details_tab_2)
-            }
-        })
+        binding?.detailsNumberDataViewPager?.apply {
+            adapter =
+                activity?.supportFragmentManager?.let { fragmentManager ->
+                    DetailsPagerAdapter(fragmentList, fragmentManager, lifecycle)
+                }
+            offscreenPageLimit = 2
+            registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding?.detailsNumberDataTabs?.setImageResource(if (position == 0) R.drawable.ic_filter_details_tab_1 else R.drawable.ic_filter_details_tab_2)
+                }
+            })
+        }
     }
 
 
@@ -153,20 +154,16 @@ class DetailsNumberDataFragment :
     private fun createFilter(conditionIndex: Int) {
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = conditionIndex
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION
-        val number = binding?.contactWithFilter?.number.orEmpty()
-        val phoneNumber = if (appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull()) appPhoneNumberUtil.getPhoneNumber(number, context?.getUserCountry().orEmpty().uppercase())
-        else appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = number
-        if (phoneNumber.isNull() || conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
-            filterWithCountryCodeUIModel.countryCodeUIModel = CountryCodeUIModel()
+        filterWithCountryCodeUIModel.countryCodeUIModel = CountryCodeUIModel()
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = binding?.contactWithFilter?.number.orEmpty()
+        if (conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             startCreateFilterScreen()
         } else {
-            viewModel.getCountryCode(phoneNumber?.countryCode)
+            viewModel.getCurrentCountryCode()
         }
     }
 
     private fun startCreateFilterScreen() {
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = filterWithCountryCodeUIModel.filterToInput(appPhoneNumberUtil)
         findNavController().navigate(DetailsNumberDataFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel))
     }
 
@@ -199,6 +196,20 @@ class DetailsNumberDataFragment :
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
                 filteredCallsScreen?.updateNumberDataList(ArrayList(filteredCallList), true)
+            }
+            currentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
+                val number = binding?.contactWithFilter?.number.orEmpty()
+                val phoneNumber = when {
+                    appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull() -> appPhoneNumberUtil.getPhoneNumber(number, countryCode.country)
+                    else -> appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
+                }
+                if (phoneNumber.isNull()) {
+                    filterWithCountryCodeUIModel.countryCodeUIModel = countryCode
+                    startCreateFilterScreen()
+                } else {
+                    filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = phoneNumber?.nationalNumber.toString()
+                    viewModel.getCountryCode(phoneNumber?.countryCode)
+                }
             }
             countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeUIModel ->
                 filterWithCountryCodeUIModel.countryCodeUIModel = countryCodeUIModel

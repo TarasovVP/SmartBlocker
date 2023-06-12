@@ -18,12 +18,14 @@ import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.orZero
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.allOf
@@ -64,7 +66,7 @@ class SingleDetailsNumberDataInstrumentedTestUIModel: BaseSingleDetailsInstrumen
                 withText(if (contactWithFilterUIModel.phoneNumberValidity().isNull()) String.EMPTY else targetContext.getString(contactWithFilterUIModel.phoneNumberValidity().orZero())))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_name),
                 isDisplayed(),
-                withText(if (contactWithFilterUIModel.contactName.isEmpty()) targetContext.getString(R.string.details_number_not_from_contacts) else contactWithFilterUIModel.contactName))))))
+                withText(contactWithFilterUIModel.contactName.ifEmpty { targetContext.getString(R.string.details_number_not_from_contacts) }))))))
             check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_divider),
                 isDisplayed(),
                 withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))

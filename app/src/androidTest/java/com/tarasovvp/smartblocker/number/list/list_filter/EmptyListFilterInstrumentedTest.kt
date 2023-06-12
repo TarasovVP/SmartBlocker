@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.number.list.list_filter
 import androidx.navigation.Navigation
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
 import com.tarasovvp.smartblocker.waitUntilViewIsDisplayed

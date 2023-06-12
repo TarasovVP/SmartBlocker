@@ -11,6 +11,8 @@ interface DetailsNumberDataUseCase {
 
     suspend fun allFilteredCallsByNumber(number: String, name: String): List<CallWithFilter>
 
+    suspend fun getCurrentCountryCode(): Flow<CountryCode?>
+
     suspend fun getCountryCodeByCode(code: Int): CountryCode?
 
     suspend fun getBlockHidden(): Flow<Boolean?>
