@@ -17,7 +17,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTI
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
-import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
 import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
@@ -39,11 +38,11 @@ open class CreateFilterFragment :
 
     private val args: CreateFilterFragmentArgs by navArgs()
 
-    private var numberDataAdapter: NumberDataAdapter? = null
+    private var createFilterAdapter: CreateFilterAdapter? = null
     private var numberDataUIModelList: ArrayList<NumberDataUIModel> = ArrayList()
 
     override fun createAdapter() {
-        numberDataAdapter = numberDataAdapter ?: NumberDataAdapter(numberDataUIModelList) { numberData ->
+        createFilterAdapter = createFilterAdapter ?: CreateFilterAdapter(numberDataUIModelList) { numberData ->
             val number = when (numberData) {
                 is ContactWithFilterUIModel -> numberData.number
                 is CallWithFilterUIModel -> numberData.number
@@ -71,7 +70,7 @@ open class CreateFilterFragment :
                 }
             }
         }
-        binding?.createFilterNumberList?.adapter = numberDataAdapter
+        binding?.createFilterNumberList?.adapter = createFilterAdapter
     }
 
     override fun initViews() {
@@ -223,8 +222,11 @@ open class CreateFilterFragment :
     private fun setNumberDataUIModelList() {
         Timber.e("CreateFilterFragment setNumberDataUIModelList numberDataUIModelList ${numberDataUIModelList.size}")
         binding?.apply {
-            numberDataAdapter?.numberDataUIModelList = numberDataUIModelList
-            numberDataAdapter?.notifyDataSetChanged()
+            createFilterAdapter?.filterWithFilteredNumberUIModel = binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
+                countryCode = binding?.createFilterCountryCodeValue?.text.toString()
+            }
+            createFilterAdapter?.numberDataUIModelList = numberDataUIModelList
+            createFilterAdapter?.notifyDataSetChanged()
             createFilterNumberList.isVisible = numberDataUIModelList.isEmpty().not()
             createFilterEmptyList.isVisible = numberDataUIModelList.isEmpty()
             viewModel.hideProgress()

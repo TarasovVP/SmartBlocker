@@ -146,8 +146,8 @@ fun String?.highlightedSpanned(searchNumberText: String?, countryCode: String?, 
         }
     }
     return if (searchNumberText.isNullOrEmpty().not() && this.isNullOrEmpty().not() && this.digitsTrimmed().lowercase().contains(searchNumberText.orEmpty().lowercase())) {
-        val firstIndex = getFirstIndex(searchNumberText)
-        val lastIndex = this?.substring(firstIndex).orEmpty().getLastIndex(searchNumberText) + firstIndex + 1
+        val firstIndex = mainText.getFirstIndex(searchNumberText)
+        val lastIndex = mainText?.substring(firstIndex).orEmpty().getLastIndex(searchNumberText) + firstIndex + 1
         if (firstIndex in 0 until lastIndex) {
             spannableString.apply {
                 val highlightSpan = TextAppearanceSpan(null, Typeface.BOLD, -1, ColorStateList(arrayOf(intArrayOf()), intArrayOf(color)), null)

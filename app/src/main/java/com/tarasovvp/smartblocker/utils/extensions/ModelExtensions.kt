@@ -228,41 +228,17 @@ fun Context.numberDataFilteringText(filterIndexes: ArrayList<Int>): String {
 }
 
 fun NumberDataUIModel.highlightedSpanned(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel?, color: Int): SpannableString? {
-    when (this) {
-        is CallWithFilterUIModel -> {
-            return when {
-                filterWithFilteredNumberUIModel?.filter.isNullOrEmpty() -> number.highlightedSpanned(
-                    String.EMPTY,
-                    null,
-                    color
-                )
-                else -> number.highlightedSpanned(filterWithFilteredNumberUIModel?.filter, null, Color.RED)
-            }
-        }
+    return when (this) {
+        is CallWithFilterUIModel -> number.highlightedSpanned(filterWithFilteredNumberUIModel?.filter, null, color)
+        is FilterWithFilteredNumberUIModel -> filterWithFilteredNumberUIModel?.filter.highlightedSpanned(String.EMPTY, null, color)
         is ContactWithFilterUIModel -> {
-            return when {
-                filterWithFilteredNumberUIModel?.filter.isNullOrEmpty() -> number.highlightedSpanned(
-                    String.EMPTY,
-                    null,
-                    color
-                )
-                filterWithFilteredNumberUIModel?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && isPhoneNumberValid.isTrue()
-                        && number.startsWith(PLUS_CHAR)
-                    .isNotTrue() -> number.highlightedSpanned(
-                    filterWithFilteredNumberUIModel?.filter,
-                    filterWithFilteredNumberUIModel?.countryCode,
-                    color
-                )
-                filterWithFilteredNumberUIModel?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && isPhoneNumberValid.isTrue()
-                        && number.startsWith(PLUS_CHAR)
-                    .isTrue() -> number.highlightedSpanned(filterWithFilteredNumberUIModel.filter, null, color)
-                else -> number.highlightedSpanned(filterWithFilteredNumberUIModel?.filter, null, Color.RED)
+            when {
+                filterWithFilteredNumberUIModel?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && isPhoneNumberValid.isTrue() && number.startsWith(PLUS_CHAR).isNotTrue() ->
+                    number.highlightedSpanned(filterWithFilteredNumberUIModel?.countryCode?.takeIf { filterWithFilteredNumberUIModel.filter.length > filterWithFilteredNumberUIModel.countryCode.length }?.let { filterWithFilteredNumberUIModel.filter.substring(it.length) }, filterWithFilteredNumberUIModel?.countryCode, color)
+                else -> number.highlightedSpanned(filterWithFilteredNumberUIModel?.filter, null, color)
             }
         }
-        is FilterWithFilteredNumberUIModel -> {
-            return filterWithFilteredNumberUIModel?.filter.highlightedSpanned(String.EMPTY, null, color)
-        }
-        else -> return null
+        else ->  null
     }
 }
 

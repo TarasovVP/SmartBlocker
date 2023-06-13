@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data
 
 import android.annotation.SuppressLint
-import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -58,7 +57,7 @@ class DetailsNumberDataFragment :
                 args.numberData as ContactWithFilterUIModel
             }
             detailsNumberDataItemContact.root.isEnabled = false
-            contactWithFilter?.highlightedSpanned = SpannableString( contactWithFilter?.number )
+            context?.let { contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned(contactWithFilter?.filterWithFilteredNumberUIModel, ContextCompat.getColor(it, R.color.text_color_black)) }
             executePendingBindings()
             if (isHiddenCall) {
                 setHiddenCallScreen()
