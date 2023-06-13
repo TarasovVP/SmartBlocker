@@ -155,7 +155,7 @@ class DetailsNumberDataFragment :
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = conditionIndex
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION
         filterWithCountryCodeUIModel.countryCodeUIModel = CountryCodeUIModel()
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = binding?.contactWithFilter?.number.orEmpty()
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = binding?.contactWithFilter?.number.digitsTrimmed()
         if (conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             startCreateFilterScreen()
         } else {
