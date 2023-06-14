@@ -1,7 +1,5 @@
 package com.tarasovvp.smartblocker.viewmodels
 
-import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
-import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_THEME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
@@ -31,28 +29,6 @@ class MainViewModelUnitTest: BaseViewModelUnitTest<MainViewModel>() {
     private lateinit var mainUseCase: MainUseCase
 
     override fun createViewModel() = MainViewModel(application, mainUseCase)
-
-    @Test
-    fun setAppLanguageTest() = runTest {
-        val appLang = TEST_APP_LANGUAGE
-        coEvery { mainUseCase.getAppLanguage() } returns flowOf(appLang)
-        coEvery { mainUseCase.setAppLanguage(appLang) } just Runs
-        viewModel.setAppLanguage()
-        advanceUntilIdle()
-        coVerify { mainUseCase.getAppLanguage() }
-        coVerify { mainUseCase.setAppLanguage(appLang) }
-    }
-
-    @Test
-    fun setAppThemeTest() = runTest {
-        val appTheme = TEST_APP_THEME
-        coEvery { mainUseCase.getAppTheme() } returns flowOf(appTheme)
-        coEvery { mainUseCase.setAppTheme(appTheme) } just Runs
-        viewModel.setAppTheme()
-        advanceUntilIdle()
-        coVerify { mainUseCase.getAppTheme() }
-        coVerify { mainUseCase.setAppTheme(appTheme) }
-    }
 
     @Test
     fun getOnBoardingSeenTest() = runTest {

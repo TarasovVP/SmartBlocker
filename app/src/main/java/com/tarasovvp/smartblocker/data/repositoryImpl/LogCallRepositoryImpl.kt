@@ -4,9 +4,9 @@ import android.content.Context
 import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.utils.extensions.systemLogCallList
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
+import com.tarasovvp.smartblocker.utils.extensions.systemLogCallList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -30,7 +30,4 @@ class LogCallRepositoryImpl @Inject constructor(
 
     override suspend fun allCallWithFiltersByFilter(filter: String) =
         logCallDao.allCallWithFiltersByFilter(filter)
-
-    override suspend fun allCallsWithFiltersByCreateFilter(filter: String) =
-        logCallDao.allCallsWithFiltersByCreateFilter(filter)
 }

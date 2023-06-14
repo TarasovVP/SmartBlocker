@@ -8,16 +8,15 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
-import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.*
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -29,12 +28,11 @@ class CreateFilterViewModel @Inject constructor(
     private val createFilterUseCase: CreateFilterUseCase,
     private val countryCodeUIMapper: CountryCodeUIMapper,
     private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    private val callWithFilterUIMapper: CallWithFilterUIMapper,
     private val contactWithFilterUIMapper: ContactWithFilterUIMapper
 ) : BaseViewModel(application) {
 
     val countryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
-    val numberDataListLiveDataUIModel = MutableLiveData<List<NumberDataUIModel>>()
+    val contactWithFilterLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
     val existingFilterLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
     val filterActionLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
 
@@ -47,40 +45,15 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun getNumberDataList(filter: String) {
+    fun getMatchedContactWithFilterList(withCountryCodeUIModel: FilterWithCountryCodeUIModel?) {
         showProgress()
         launch {
-            val calls =  createFilterUseCase.allCallsWithFiltersByCreateFilter(filter)
-            val contacts =  createFilterUseCase.allContactsWithFiltersByCreateFilter(filter)
-            Timber.e("CreateFilterViewModel getNumberDataList filter $filter calls ${calls.size} contacts ${contacts.size}")
-            val numberDataUIModelList = ArrayList<NumberDataUIModel>().apply {
-                addAll(callWithFilterUIMapper.mapToUIModelList(calls))
+            val contacts =  createFilterUseCase.allContactsWithFiltersByCreateFilter(withCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter.orEmpty())
+            Timber.e("CreateFilterViewModel getNumberDataList filter $withCountryCodeUIModel contacts ${contacts.size}")
+            val contactWithFilters = arrayListOf<ContactWithFilterUIModel>().apply {
                 addAll(contactWithFilterUIMapper.mapToUIModelList(contacts))
-                sortWith(compareBy(
-                        {
-                            when (it) {
-                                is ContactWithFilterUIModel -> it.number.digitsTrimmed().startsWith(Constants.PLUS_CHAR)
-                                is CallWithFilterUIModel -> it.number.startsWith(Constants.PLUS_CHAR)
-                                else -> false
-                            }
-                        },
-                        {
-                            when (it) {
-                                is ContactWithFilterUIModel -> it.number
-                                is CallWithFilterUIModel -> it.number
-                                else -> String.EMPTY
-                            }
-                        }
-                    ))
-                distinctBy {
-                    when (it) {
-                        is ContactWithFilterUIModel -> Pair(it.number.digitsTrimmed(), it.contactName)
-                        is CallWithFilterUIModel -> Pair(it.number, it.callName)
-                        else -> String.EMPTY
-                    }
-                }
             }
-            numberDataListLiveDataUIModel.postValue(numberDataUIModelList)
+            contactWithFilterLiveData.postValue(contactWithFilters)
             hideProgress()
         }
     }

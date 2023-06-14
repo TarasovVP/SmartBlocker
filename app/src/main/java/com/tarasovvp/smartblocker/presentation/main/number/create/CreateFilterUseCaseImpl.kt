@@ -2,7 +2,10 @@ package com.tarasovvp.smartblocker.presentation.main.number.create
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.repository.ContactRepository
+import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
+import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
@@ -14,15 +17,12 @@ class CreateFilterUseCaseImpl @Inject constructor(
     private val countryCodeRepository: CountryCodeRepository,
     private val filterRepository: FilterRepository,
     private val realDataBaseRepository: RealDataBaseRepository,
-    private val logCallRepository: LogCallRepository,
     private val firebaseAuth: FirebaseAuth
 ) : CreateFilterUseCase {
 
     override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeByCode(code)
 
-    override suspend fun allCallsWithFiltersByCreateFilter(filter: String) = logCallRepository.allCallsWithFiltersByCreateFilter(filter)
-
-    override suspend fun allContactsWithFiltersByCreateFilter(filter: String) = contactRepository.allContactsWithFiltersByCreateFilter(filter)
+    override suspend fun allContactsWithFiltersByCreateFilter(filter: String) = contactRepository.allContactWithFilters()
 
     override suspend fun getFilter(filter: String) = filterRepository.getFilter(filter)
 

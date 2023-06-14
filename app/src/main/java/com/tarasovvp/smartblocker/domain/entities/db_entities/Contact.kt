@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CONTACTS
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = CONTACTS)
@@ -14,6 +14,7 @@ data class Contact(
     var name: String? = String.EMPTY,
     var photoUrl: String? = String.EMPTY,
     var number: String? = String.EMPTY,
+    var digitsTrimmedNumber: String? = String.EMPTY,
     var phoneNumberValue: String? = String.EMPTY,
     var isPhoneNumberValid: Boolean? = false
 ) : Parcelable

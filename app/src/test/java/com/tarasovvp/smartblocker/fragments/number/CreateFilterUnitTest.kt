@@ -78,7 +78,7 @@ class CreateFilterUnitTest: BaseFragmentUnitTest() {
             Navigation.setViewNavController(requireView(), navController)
             fragment = this as? CreateFilterFragment
         }
-        fragment?.viewModel?.numberDataListLiveDataUIModel?.postValue(numberDataUIModelList)
+        fragment?.viewModel?.contactWithFilterLiveData?.postValue(numberDataUIModelList)
         filterWithCountryCodeUIModel = fragment?.binding?.filterWithCountryCode
 
     }

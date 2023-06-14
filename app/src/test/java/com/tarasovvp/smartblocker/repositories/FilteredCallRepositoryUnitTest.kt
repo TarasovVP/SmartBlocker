@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.repositories
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.FilteredCallRepositoryImpl
@@ -64,8 +65,8 @@ class FilteredCallRepositoryUnitTest {
     @Test
     fun allFilteredCallsByNumberTest() = runBlocking {
         val filteredCallList = listOf(CallWithFilter().apply { call=  FilteredCall(callId = 1)}, CallWithFilter().apply { call=  FilteredCall(callId = 3)})
-        coEvery { filteredCallDao.allFilteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
-        val result = filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER)
+        coEvery { filteredCallDao.allFilteredCallsByNumber(TEST_NUMBER, TEST_NAME) } returns filteredCallList
+        val result = filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER, TEST_NAME)
         assertEquals(filteredCallList, result)
     }
 

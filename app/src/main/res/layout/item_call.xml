@@ -139,7 +139,7 @@
                 android:drawableStart="@{callWithFilter.callFilterIcon() == null ? null : ContextCompat.getDrawable(context, callWithFilter.callFilterIcon())}"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{callWithFilter.emptyFilter ? `` : callWithFilter.filteredNumber}"
+                android:text="@{callWithFilter.callFilterValue}"
                 android:textColor="@{ContextCompat.getColor(context, callWithFilter.callFilterTint(callWithFilter.filterWithFilteredNumberUIModel))}"
                 android:textSize="@dimen/text_size_10"
                 app:layout_constraintBottom_toBottomOf="@+id/item_call_filter_title"

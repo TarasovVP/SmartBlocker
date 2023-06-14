@@ -39,27 +39,22 @@ open class CreateFilterFragment :
     private val args: CreateFilterFragmentArgs by navArgs()
 
     private var createFilterAdapter: CreateFilterAdapter? = null
-    private var numberDataUIModelList: ArrayList<NumberDataUIModel> = ArrayList()
+    private var numberDataUIModelList: ArrayList<ContactWithFilterUIModel> = ArrayList()
 
     override fun createAdapter() {
-        createFilterAdapter = createFilterAdapter ?: CreateFilterAdapter(numberDataUIModelList) { numberData ->
-            val number = when (numberData) {
-                is ContactWithFilterUIModel -> numberData.number
-                is CallWithFilterUIModel -> numberData.number
-                else -> String.EMPTY
-            }
+        createFilterAdapter = createFilterAdapter ?: CreateFilterAdapter(numberDataUIModelList) { contactWithFilter ->
             binding?.apply {
                 binding?.filterToInput = true
                 filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
                     if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
                         filterWithCountryCode?.filterWithFilteredNumberUIModel = this.apply {
-                            this.filter = number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
+                            this.filter = contactWithFilter.number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
                         }
                     } else {
-                        val phoneNumber = appPhoneNumberUtil.getPhoneNumber(number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
+                        val phoneNumber = appPhoneNumberUtil.getPhoneNumber(contactWithFilter.number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
                         if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
                             filterWithCountryCode?.filterWithFilteredNumberUIModel = this.apply {
-                                this.filter = phoneNumber?.nationalNumber?.toString() ?: number.digitsTrimmed()
+                                this.filter = phoneNumber?.nationalNumber?.toString() ?: contactWithFilter.number.digitsTrimmed()
                             }
                             if (phoneNumber?.countryCode.orZero() > 0) {
                                 viewModel.getCountryCodeWithCode(phoneNumber?.countryCode)
@@ -150,7 +145,7 @@ open class CreateFilterFragment :
 
     override fun getData() {
         Timber.e( "CreateFilterFragment getData")
-        viewModel.getNumberDataList(binding?.filterWithCountryCode?.createFilter().orEmpty())
+        viewModel.getMatchedContactWithFilterList(binding?.filterWithCountryCode)
     }
 
     private fun setFilterTextChangeListener() {
@@ -196,7 +191,7 @@ open class CreateFilterFragment :
                 Timber.e("CreateFilterFragment observeLiveData countryCodeLiveData")
                 setCountryCode(countryCode)
             }
-            numberDataListLiveDataUIModel.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
+            contactWithFilterLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 Timber.e("CreateFilterFragment observeLiveData numberDataList.size ${numberDataList.size}")
                 this@CreateFilterFragment.numberDataUIModelList = ArrayList(numberDataList)
                 setNumberDataUIModelList()
@@ -222,11 +217,10 @@ open class CreateFilterFragment :
     private fun setNumberDataUIModelList() {
         Timber.e("CreateFilterFragment setNumberDataUIModelList numberDataUIModelList ${numberDataUIModelList.size}")
         binding?.apply {
-            createFilterAdapter?.filterWithFilteredNumberUIModel = binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
-                countryCode = binding?.createFilterCountryCodeValue?.text.toString()
-                filter = binding?.filterWithCountryCode?.createFilter().toString()
-            }
-            createFilterAdapter?.numberDataUIModelList = numberDataUIModelList
+            createFilterAdapter?.filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(
+                filter = binding?.filterWithCountryCode?.createFilter().toString(),
+                countryCode = binding?.createFilterCountryCodeValue?.text.toString())
+            createFilterAdapter?.contactWithFilterUIModels = numberDataUIModelList
             createFilterAdapter?.notifyDataSetChanged()
             createFilterNumberList.isVisible = numberDataUIModelList.isEmpty().not()
             createFilterEmptyList.isVisible = numberDataUIModelList.isEmpty()

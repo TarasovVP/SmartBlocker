@@ -67,6 +67,7 @@ fun Context.systemContactList(appPhoneNumberUtil: AppPhoneNumberUtil, country: S
                 photoUrl = contactCursor.getString(2),
                 number = contactCursor.getString(3),
             ).apply {
+                digitsTrimmedNumber = number.digitsTrimmed()
                 val phoneNumber = appPhoneNumberUtil.getPhoneNumber(number, country)
                 isPhoneNumberValid = appPhoneNumberUtil.isPhoneNumberValid(phoneNumber)
                 phoneNumberValue = appPhoneNumberUtil.phoneNumberValue(number, phoneNumber) }

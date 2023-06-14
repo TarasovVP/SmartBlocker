@@ -14,6 +14,4 @@ interface LogCallRepository {
 
     suspend fun allCallWithFiltersByFilter(filter: String): List<CallWithFilter>
 
-    suspend fun allCallsWithFiltersByCreateFilter(filter: String): List<CallWithFilter>
-
 }

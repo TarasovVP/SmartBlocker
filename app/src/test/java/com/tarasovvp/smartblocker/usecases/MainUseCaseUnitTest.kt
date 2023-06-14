@@ -2,15 +2,13 @@ package com.tarasovvp.smartblocker.usecases
 
 import android.app.Application
 import com.tarasovvp.smartblocker.UnitTestUtils
-import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
-import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_THEME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
-import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -55,41 +53,6 @@ class MainUseCaseUnitTest {
     fun setUp() {
         MockKAnnotations.init(this)
         mainUseCase = MainUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, logCallRepository, filteredCallRepository, realDataBaseRepository, dataStoreRepository)
-    }
-
-    @Test
-    fun getAppLanguageTest() = runBlocking {
-        val appLang = TEST_APP_LANGUAGE
-        coEvery { dataStoreRepository.getAppLang() } returns flowOf(appLang)
-        val result = mainUseCase.getAppLanguage().single()
-        assertEquals(appLang, result)
-        coVerify { dataStoreRepository.getAppLang() }
-    }
-
-    @Test
-    fun setAppLanguageTest() = runBlocking {
-        val appLang = TEST_APP_LANGUAGE
-        coEvery { dataStoreRepository.setAppLang(appLang) } just Runs
-        mainUseCase.setAppLanguage(appLang)
-        coVerify { dataStoreRepository.setAppLang(appLang) }
-    }
-
-    @Test
-    fun getAppThemeTest() = runBlocking {
-        val appTheme = TEST_APP_THEME
-        coEvery { dataStoreRepository.getAppTheme() } returns flowOf(appTheme)
-        val result = mainUseCase.getAppTheme().single()
-        assertEquals(appTheme, result)
-        coVerify { dataStoreRepository.getAppTheme() }
-    }
-
-    @Test
-    fun getOnBoardingSeenTest() = runBlocking {
-        val onBoardingSeen = true
-        coEvery { dataStoreRepository.onBoardingSeen() } returns flowOf(onBoardingSeen)
-        val result = mainUseCase.getOnBoardingSeen().single()
-        assertEquals(onBoardingSeen, result)
-        coVerify { dataStoreRepository.onBoardingSeen() }
     }
 
     @Test

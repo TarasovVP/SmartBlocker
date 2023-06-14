@@ -20,6 +20,6 @@ interface ContactDao {
     suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>
 
     @Transaction
-    @Query("SELECT * FROM ContactWithFilter WHERE phoneNumberValue LIKE '%' || :filter || '%'")
+    @Query("SELECT * FROM ContactWithFilter WHERE digitsTrimmedNumber LIKE '%' || :filter || '%' ORDER BY digitsTrimmedNumber")
     suspend fun allContactsWithFiltersByCreateFilter(filter: String): List<ContactWithFilter>
 }

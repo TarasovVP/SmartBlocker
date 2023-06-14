@@ -3,12 +3,13 @@ package com.tarasovvp.smartblocker.usecases
 import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
@@ -61,8 +62,8 @@ class DetailsNumberDataUseCaseUnitTest {
         val filteredCallList = listOf(CallWithFilter().apply { call = FilteredCall().apply { this.number =
             TEST_NUMBER
         } })
-        coEvery { filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER) } returns filteredCallList
-        val result = detailsNumberDataUseCase.allFilteredCallsByNumber(TEST_NUMBER)
+        coEvery { filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER, TEST_NAME) } returns filteredCallList
+        val result = detailsNumberDataUseCase.allFilteredCallsByNumber(TEST_NUMBER, TEST_NAME)
         assertEquals(filteredCallList, result)
     }
 

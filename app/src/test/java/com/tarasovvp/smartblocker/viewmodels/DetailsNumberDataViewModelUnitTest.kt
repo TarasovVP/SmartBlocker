@@ -3,6 +3,7 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
@@ -64,11 +65,11 @@ class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDat
     fun filteredCallsByNumberTest() = runTest {
         val filteredCallList = listOf(CallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
         val filteredCallUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER))
-        coEvery { useCase.allFilteredCallsByNumber(TEST_FILTER) } returns filteredCallList
+        coEvery { useCase.allFilteredCallsByNumber(TEST_FILTER, TEST_NAME) } returns filteredCallList
         every { callWithFilterUIMapper.mapToUIModelList(filteredCallList) } returns filteredCallUIModelList
-        viewModel.filteredCallsByNumber(TEST_FILTER)
+        viewModel.filteredCallsByNumber(TEST_FILTER, TEST_NAME)
         advanceUntilIdle()
-        coVerify { useCase.allFilteredCallsByNumber(TEST_FILTER) }
+        coVerify { useCase.allFilteredCallsByNumber(TEST_FILTER, TEST_NAME) }
         verify { callWithFilterUIMapper.mapToUIModelList(filteredCallList) }
         assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
     }

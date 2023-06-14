@@ -215,7 +215,6 @@ object AppModule {
         countryCodeRepository: CountryCodeRepository,
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        logCallRepository: LogCallRepository,
         firebaseAuth: FirebaseAuth
     ): CreateFilterUseCase {
         return CreateFilterUseCaseImpl(
@@ -223,7 +222,6 @@ object AppModule {
             countryCodeRepository,
             filterRepository,
             realDataBaseRepository,
-            logCallRepository,
             firebaseAuth
         )
     }

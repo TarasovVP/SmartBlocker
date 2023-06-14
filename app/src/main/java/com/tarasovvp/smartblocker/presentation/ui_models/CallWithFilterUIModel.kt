@@ -102,6 +102,15 @@ data class CallWithFilterUIModel(
         return (isCallFiltered() || number.isEmpty()) && isDeleteMode
     }
 
+    fun callFilterValue(): String {
+        return when {
+            isFilteredCallDetails -> filteredNumber
+            isExtract.not() && isCallFiltered() -> filteredNumber
+            isExtract -> filterWithFilteredNumberUIModel.filter
+            else -> String.EMPTY
+        }
+    }
+
     fun callFilterTitle(): Int {
         return if (isExtract && !isFilteredCallDetails) {
             when {
