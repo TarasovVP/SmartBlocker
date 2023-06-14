@@ -13,11 +13,13 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.AdRequest
@@ -66,18 +68,19 @@ class MainActivity : AppCompatActivity() {
     private var interstitialAd: InterstitialAd? = null
     private var adIsLoading: Boolean = false
     private var isSavedInstanceStateNull: Boolean? = null
-    var bottomNavigationView: BottomNavigationView? = null
-    var bottomNavigationDivider: View? = null
+    private var bottomNavigationView: BottomNavigationView? = null
+    private var bottomNavigationDivider: View? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
 
     val mainViewModel: MainViewModel by viewModels()
 
-    var navigationScreens = arrayListOf(
+    private var navigationScreens = arrayListOf(
         R.id.listCallFragment,
         R.id.listContactFragment,
         R.id.listBlockerFragment,
         R.id.listPermissionFragment
     )
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false).isTrue()) {
@@ -89,6 +92,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         val dataStoreRepository = EntryPointAccessors.fromApplication( newBase, DataStoreEntryPoint::class.java ).dataStoreRepository
+        val appTheme = runBlocking {
+            dataStoreRepository.getAppTheme().first()
+        } ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        AppCompatDelegate.setDefaultNightMode(appTheme)
         val appLang = runBlocking {
             dataStoreRepository.getAppLang().first()
         } ?: Locale.getDefault().language
@@ -143,14 +150,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_SmartBlocker)
         super.onCreate(savedInstanceState)
+        Timber.e( "MainActivity onCreate")
         isSavedInstanceStateNull = savedInstanceState.isNull()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setAnimatorListener()
         if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
             mainViewModel.getOnBoardingSeen()
         }
-        setAppLanguage()
-        setCurrentTheme()
         observeLiveData()
     }
 
@@ -167,14 +173,6 @@ class MainActivity : AppCompatActivity() {
             override fun onAnimationRepeat(p0: Animator) {
             }
         })
-    }
-
-    private fun setAppLanguage() {
-        mainViewModel.setAppLanguage()
-    }
-
-    private fun setCurrentTheme() {
-        mainViewModel.setAppTheme()
     }
 
     private fun setNavigationComponents(isOnBoardingSeen: Boolean) {
@@ -203,11 +201,13 @@ class MainActivity : AppCompatActivity() {
             )
             this.setGraph(navGraph, intent.extras)
         }
+        Timber.e("MainActivity setStartDestination isOnBoardingSeen $isOnBoardingSeen currentDestination ${navController?.currentDestination}")
     }
 
     private fun setToolBar() {
         toolbar = binding?.toolbar
         navController?.let { toolbar?.setupWithNavController(it) }
+        Timber.e("MainActivity setToolBar toolbar?.title ${toolbar?.title} toolbar?.isVisible ${toolbar?.isVisible} currentDestination ${navController?.currentDestination}")
     }
 
     private fun setBottomNavigationView() {
@@ -216,15 +216,6 @@ class MainActivity : AppCompatActivity() {
         navController?.let { bottomNavigationView?.setupWithNavController(it) }
         bottomNavigationView?.setOnItemReselectedListener {
         }
-        bottomNavigationView?.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.listBlockerFragment -> navController?.navigate(R.id.listBlockerFragment)
-                R.id.listPermissionFragment -> navController?.navigate(R.id.listPermissionFragment)
-                R.id.listContactFragment -> navController?.navigate(R.id.listContactFragment)
-                R.id.listCallFragment -> navController?.navigate(R.id.listCallFragment)
-            }
-            return@setOnItemSelectedListener true
-        }
         (bottomNavigationView?.getChildAt(0) as? BottomNavigationMenuView)?.children?.forEach {
             it.findViewById<TextView>(com.google.android.material.R.id.navigation_bar_item_large_label_view)
                 .apply {
@@ -232,10 +223,12 @@ class MainActivity : AppCompatActivity() {
                     setSingleLine()
                 }
         }
+        Timber.e("MainActivity setBottomNavigationView bottomNavigationView isVisible ${bottomNavigationView?.isVisible} currentDestination ${navController?.currentDestination}")
     }
 
     private fun setOnDestinationChangedListener() {
         navController?.addOnDestinationChangedListener { _, destination, _ ->
+            Timber.e("MainActivity setOnDestinationChangedListener destination $destination currentDestination ${navController?.currentDestination}")
             if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
                 toolbar?.navigationIcon = null
             } else {
@@ -248,13 +241,31 @@ class MainActivity : AppCompatActivity() {
                 isDialog = isDialog.not()
                 return@addOnDestinationChangedListener
             }
-            toolbar?.menu?.clear()
-            toolbar?.isVisible =
-                destination.id notEquals R.id.onBoardingFragment && destination.id notEquals R.id.loginFragment && destination.id notEquals R.id.signUpFragment
-            binding?.toolbarDivider?.isVisible = toolbar?.isVisible.isTrue()
+            setToolbarVisibility(destination)
+            checkBottomBarVisibility(destination)
+            setToolbarMenu(destination)
             loadAdBanner(toolbar?.isVisible.isTrue() && navigationScreens.contains(destination.id).not())
-
         }
+    }
+
+    private fun setToolbarVisibility(destination: NavDestination) {
+        toolbar?.isVisible =
+            destination.id notEquals R.id.onBoardingFragment && destination.id notEquals R.id.loginFragment && destination.id notEquals R.id.signUpFragment
+        binding?.toolbarDivider?.isVisible = toolbar?.isVisible.isTrue()
+    }
+
+    private fun checkBottomBarVisibility(destination: NavDestination) {
+        bottomNavigationView?.isVisible = try {
+            navigationScreens.contains(destination.id)
+        } catch (e: Exception) {
+            false
+        }
+        bottomNavigationDivider?.isVisible = bottomNavigationView?.isVisible.isTrue()
+    }
+
+    private fun setToolbarMenu(destination: NavDestination) {
+        toolbar?.menu?.clear()
+        if (navigationScreens.contains(destination.id)) toolbar?.inflateMenu(R.menu.toolbar_search)
     }
 
     private fun loadAdBanner(isLoading: Boolean) {

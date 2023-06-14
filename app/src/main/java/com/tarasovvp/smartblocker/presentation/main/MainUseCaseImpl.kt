@@ -21,22 +21,6 @@ class MainUseCaseImpl @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ): MainUseCase {
 
-    override suspend fun getAppLanguage(): Flow<String?> {
-        return dataStoreRepository.getAppLang()
-    }
-
-    override suspend fun setAppLanguage(appLang: String) {
-        return dataStoreRepository.setAppLang(appLang)
-    }
-
-    override suspend fun getAppTheme(): Flow<Int?> {
-        return dataStoreRepository.getAppTheme()
-    }
-
-    override suspend fun setAppTheme(appTheme: Int) {
-        return dataStoreRepository.setAppTheme(appTheme)
-    }
-
     override suspend fun getOnBoardingSeen(): Flow<Boolean?> {
         return dataStoreRepository.onBoardingSeen()
     }

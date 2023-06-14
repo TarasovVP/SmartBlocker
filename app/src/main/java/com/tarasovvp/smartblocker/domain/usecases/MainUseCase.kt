@@ -1,19 +1,12 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
 import android.app.Application
-import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import kotlinx.coroutines.flow.Flow
 
 interface MainUseCase {
-    suspend fun getAppLanguage(): Flow<String?>
-
-    suspend fun setAppLanguage(appLang: String)
-
-    suspend fun getAppTheme(): Flow<Int?>
-
-    suspend fun setAppTheme(appTheme: Int)
 
     suspend fun getOnBoardingSeen(): Flow<Boolean?>
 

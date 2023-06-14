@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
@@ -17,7 +16,6 @@ import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.utils.extensions.isNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,24 +27,6 @@ class MainViewModel @Inject constructor(
     val blockerTurnOnLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
     private val mainProgress = MainProgress()
-
-    fun setAppLanguage() {
-        launch {
-            mainUseCase.getAppLanguage().collect { appLang ->
-                mainUseCase.setAppLanguage(appLang ?: Locale.getDefault().language)
-            }
-        }
-    }
-
-    fun setAppTheme() {
-        launch {
-            mainUseCase.getAppTheme().collect { appTheme ->
-                val currentAppTheme = appTheme ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                mainUseCase.setAppTheme(currentAppTheme)
-                AppCompatDelegate.setDefaultNightMode(appTheme ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            }
-        }
-    }
 
     fun getOnBoardingSeen() {
         launch {

@@ -224,6 +224,7 @@ open class CreateFilterFragment :
         binding?.apply {
             createFilterAdapter?.filterWithFilteredNumberUIModel = binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
                 countryCode = binding?.createFilterCountryCodeValue?.text.toString()
+                filter = binding?.filterWithCountryCode?.createFilter().toString()
             }
             createFilterAdapter?.numberDataUIModelList = numberDataUIModelList
             createFilterAdapter?.notifyDataSetChanged()
