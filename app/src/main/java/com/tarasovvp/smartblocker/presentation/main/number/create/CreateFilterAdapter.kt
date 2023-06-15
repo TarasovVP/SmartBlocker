@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
-import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,9 +43,8 @@ class CreateFilterAdapter(
         fun bindData(contactWithFilter: ContactWithFilterUIModel?) {
             binding?.apply {
                 this.contactWithFilter = contactWithFilter
-                this.contactWithFilter?.highlightedSpanned = SpannableString( contactWithFilter?.number)
-                //this.contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned
-                    //?: this.contactWithFilter?.highlightedSpanned(filterWithFilteredNumberUIModel, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                this.contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned
+                    ?: this.contactWithFilter?.highlightedSpanned(filterWithFilteredNumberUIModel, ContextCompat.getColor(itemView.context, R.color.text_color_black))
                 root.setSafeOnClickListener {
                     contactWithFilter?.let { it1 -> contactWithFilterClick.invoke(it1.apply {
                         highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))

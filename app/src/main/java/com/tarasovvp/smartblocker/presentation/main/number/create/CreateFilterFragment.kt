@@ -224,7 +224,6 @@ open class CreateFilterFragment :
             createFilterAdapter?.notifyDataSetChanged()
             createFilterNumberList.isVisible = numberDataUIModelList.isEmpty().not()
             createFilterEmptyList.isVisible = numberDataUIModelList.isEmpty()
-            viewModel.hideProgress()
         }
     }
 

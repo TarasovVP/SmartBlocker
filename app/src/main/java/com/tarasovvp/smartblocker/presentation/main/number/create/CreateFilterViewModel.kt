@@ -18,6 +18,7 @@ import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -45,26 +46,24 @@ class CreateFilterViewModel @Inject constructor(
         }
     }
 
-    fun getMatchedContactWithFilterList(withCountryCodeUIModel: FilterWithCountryCodeUIModel?) {
+    fun getMatchedContactWithFilterList(filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel?) {
         showProgress()
         launch {
-            val contacts =  createFilterUseCase.allContactsWithFiltersByCreateFilter(withCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter.orEmpty())
-            Timber.e("CreateFilterViewModel getNumberDataList filter $withCountryCodeUIModel contacts ${contacts.size}")
-            val contactWithFilters = arrayListOf<ContactWithFilterUIModel>().apply {
-                addAll(contactWithFilterUIMapper.mapToUIModelList(contacts))
-            }
-            contactWithFilterLiveData.postValue(contactWithFilters)
+            val contactWithFilters =  createFilterUseCase.allContactsWithFiltersByCreateFilter(
+                filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter.orEmpty(),
+                filterWithCountryCodeUIModel?.countryCodeUIModel?.country.orEmpty(),
+                filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode.orEmpty(),
+                filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue())
+            contactWithFilterLiveData.postValue(contactWithFilterUIMapper.mapToUIModelList(contactWithFilters))
             hideProgress()
         }
     }
 
     fun checkFilterExist(filter: String) {
         Timber.e("CreateFilterViewModel checkFilterExist filter $filter")
-        showProgress()
         launch {
             val existingFilter = createFilterUseCase.getFilter(filter) ?: FilterWithFilteredNumber(Filter(filterType = DEFAULT_FILTER))
             existingFilterLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModel(existingFilter))
-            hideProgress()
         }
     }
 

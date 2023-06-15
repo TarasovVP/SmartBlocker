@@ -10,7 +10,7 @@ interface CreateFilterUseCase {
 
     suspend fun getCountryCodeWithCode(code: Int):  CountryCode?
 
-    suspend fun allContactsWithFiltersByCreateFilter(filter: String): List<ContactWithFilter>
+    suspend fun allContactsWithFiltersByCreateFilter(filter: String, country: String, countryCode: String, isContain: Boolean): List<ContactWithFilter>
 
     suspend fun getFilter(filter: String): FilterWithFilteredNumber?
 
