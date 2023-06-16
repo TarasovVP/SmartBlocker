@@ -50,7 +50,8 @@ class DetailsNumberDataFragment :
                         contactName = callWithFilter.callName.takeIf { it.isNotEmpty() } ?: getString(R.string.details_number_from_call_log),
                         photoUrl = callWithFilter.photoUrl,
                         number = callWithFilter.number,
-                        phoneNumberValue = callWithFilter.phoneNumberValue
+                        phoneNumberValue = callWithFilter.phoneNumberValue,
+                        isPhoneNumberValid = callWithFilter.isPhoneNumberValid
                     )
                 }
             } else {
