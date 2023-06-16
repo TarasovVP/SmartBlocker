@@ -25,7 +25,6 @@ import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 import com.tarasovvp.smartblocker.utils.EmptyStateView
 import com.tarasovvp.smartblocker.utils.extensions.*
-import timber.log.Timber
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberDataUIModel> :
     BaseNumberDataFragment<B, T>() {
@@ -76,7 +75,6 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
 
     protected fun setSearchViewMenu() {
         with(activity as? MainActivity) {
-            Timber.e("BaseListFragment setSearchViewMenu ")
             this?.toolbar?.apply {
                 SearchView(this@with).apply {
                     if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =

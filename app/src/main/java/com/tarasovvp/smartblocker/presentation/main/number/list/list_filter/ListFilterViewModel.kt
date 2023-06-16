@@ -13,7 +13,6 @@ import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumbe
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +33,6 @@ class ListFilterViewModel @Inject constructor(
         launch {
             val allFiltersByType = listFilterUseCase.allFilterWithFilteredNumbersByType(isBlackList).orEmpty()
             filterListLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModelList(allFiltersByType))
-            Timber.e("ListFilterViewModel getFilterList $allFiltersByType")
             hideProgress()
         }
     }

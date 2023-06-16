@@ -49,7 +49,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -150,7 +149,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_SmartBlocker)
         super.onCreate(savedInstanceState)
-        Timber.e( "MainActivity onCreate")
         isSavedInstanceStateNull = savedInstanceState.isNull()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setAnimatorListener()
@@ -201,13 +199,11 @@ class MainActivity : AppCompatActivity() {
             )
             this.setGraph(navGraph, intent.extras)
         }
-        Timber.e("MainActivity setStartDestination isOnBoardingSeen $isOnBoardingSeen currentDestination ${navController?.currentDestination}")
     }
 
     private fun setToolBar() {
         toolbar = binding?.toolbar
         navController?.let { toolbar?.setupWithNavController(it) }
-        Timber.e("MainActivity setToolBar toolbar?.title ${toolbar?.title} toolbar?.isVisible ${toolbar?.isVisible} currentDestination ${navController?.currentDestination}")
     }
 
     private fun setBottomNavigationView() {
@@ -223,12 +219,10 @@ class MainActivity : AppCompatActivity() {
                     setSingleLine()
                 }
         }
-        Timber.e("MainActivity setBottomNavigationView bottomNavigationView isVisible ${bottomNavigationView?.isVisible} currentDestination ${navController?.currentDestination}")
     }
 
     private fun setOnDestinationChangedListener() {
         navController?.addOnDestinationChangedListener { _, destination, _ ->
-            Timber.e("MainActivity setOnDestinationChangedListener destination $destination currentDestination ${navController?.currentDestination}")
             if (navigationScreens.contains(destination.id) || R.id.loginFragment == destination.id) {
                 toolbar?.navigationIcon = null
             } else {
@@ -284,7 +278,6 @@ class MainActivity : AppCompatActivity() {
     private fun observeLiveData() {
         with(mainViewModel) {
             onBoardingSeenLiveData.safeSingleObserve(this@MainActivity) { isOnBoardingSeen ->
-                Timber.e( "MainActivity onBoardingSeenLiveData isOnBoardingSeen $isOnBoardingSeen")
                 setNavigationComponents(isOnBoardingSeen)
                 if (isOnBoardingSeen && firebaseAuth.currentUser.isNotNull() && isSavedInstanceStateNull.isTrue()) {
                     startBlocker()

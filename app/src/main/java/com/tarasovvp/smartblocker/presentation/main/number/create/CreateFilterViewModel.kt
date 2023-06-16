@@ -20,7 +20,6 @@ import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumbe
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +37,6 @@ class CreateFilterViewModel @Inject constructor(
     val filterActionLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
 
     fun getCountryCodeWithCode(code: Int?) {
-        Timber.e("CreateFilterViewModel getCountryCodeWithCode code $code")
         launch {
             val countryCode =
                 code?.let { createFilterUseCase.getCountryCodeWithCode(it) } ?: CountryCode()
@@ -60,7 +58,6 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun checkFilterExist(filter: String) {
-        Timber.e("CreateFilterViewModel checkFilterExist filter $filter")
         launch {
             val existingFilter = createFilterUseCase.getFilter(filter) ?: FilterWithFilteredNumber(Filter(filterType = DEFAULT_FILTER))
             existingFilterLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModel(existingFilter))
@@ -68,7 +65,6 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun createFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
-        Timber.e("CreateFilterViewModel createFilter createFilter $filterWithCountryCode filter.country ${filterWithCountryCode.country}")
         showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
@@ -84,7 +80,6 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun updateFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
-        Timber.e("CreateFilterViewModel updateFilter")
         showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
@@ -100,7 +95,6 @@ class CreateFilterViewModel @Inject constructor(
     }
 
     fun deleteFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
-        Timber.e("CreateFilterViewModel deleteFilter")
         showProgress()
         launch {
             filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
