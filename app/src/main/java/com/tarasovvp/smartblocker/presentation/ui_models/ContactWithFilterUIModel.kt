@@ -29,8 +29,11 @@ data class ContactWithFilterUIModel(
     }
 
     fun placeHolder(context: Context): Drawable? {
-        return if (contactName.nameInitial().isEmpty()) ContextCompat.getDrawable(context, R.drawable.ic_contact)
-        else context.getInitialDrawable(contactName.nameInitial())
+        return when {
+            contactName == context.getString(R.string.details_number_from_call_log) -> ContextCompat.getDrawable(context, R.drawable.ic_call)
+            contactName.nameInitial().isEmpty() -> ContextCompat.getDrawable(context, R.drawable.ic_contact)
+            else -> context.getInitialDrawable(contactName.nameInitial())
+        }
     }
 
     fun phoneNumberValidity(): Int? {
