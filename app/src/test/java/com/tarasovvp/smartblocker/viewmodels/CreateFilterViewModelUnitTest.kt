@@ -3,17 +3,23 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
-import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterViewModel
-import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,7 +28,8 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
@@ -39,12 +46,9 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
     private lateinit var filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper
 
     @MockK
-    private lateinit var callWithFilterUIMapper: CallWithFilterUIMapper
-
-    @MockK
     private lateinit var contactWithFilterUIMapper: ContactWithFilterUIMapper
 
-    override fun createViewModel() = CreateFilterViewModel(application, useCase, countryCodeUIMapper, filterWithFilteredNumberUIMapper, callWithFilterUIMapper, contactWithFilterUIMapper)
+    override fun createViewModel() = CreateFilterViewModel(application, useCase, countryCodeUIMapper, filterWithFilteredNumberUIMapper, contactWithFilterUIMapper)
 
     @Test
     fun getCountryCodeByCodeTest() = runTest {
@@ -61,13 +65,23 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
     }
 
     @Test
-    fun getNumberDataListTest() = runTest {
-        /*val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_NUMBER) })
-        coEvery { useCase.getNumberDataList() } returns numberDataList
-        viewModel.getNumberDataList()
+    fun getMatchedContactWithFilterListTest() = runTest {
+        val filterWithCountryCodeUIModel = FilterWithCountryCodeUIModel().apply {
+            filterWithFilteredNumberUIModel.filter = TEST_FILTER
+            filterWithFilteredNumberUIModel.conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
+            countryCodeUIModel.country = TEST_COUNTRY
+            countryCodeUIModel.countryCode = TEST_COUNTRY_CODE
+        }
+        val contactWithFilters = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), ContactWithFilter(contact = Contact(number = TEST_NUMBER)))
+        val contactWithFilterUIModels = arrayListOf(ContactWithFilterUIModel(number = TEST_NUMBER))
+        coEvery { useCase.allContactsWithFiltersByCreateFilter(TEST_FILTER, TEST_COUNTRY, TEST_COUNTRY_CODE, true) } returns contactWithFilters
+        coEvery { contactWithFilterUIMapper.mapToUIModelList(contactWithFilters) } returns contactWithFilterUIModels
+        viewModel.getMatchedContactWithFilterList(filterWithCountryCodeUIModel)
         advanceUntilIdle()
-        val result = viewModel.numberDataListLiveDataUIModel.getOrAwaitValue()
-        assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)*/
+        val result = viewModel.contactWithFilterLiveData.getOrAwaitValue()
+        assertEquals(contactWithFilterUIModels, result)
+        coVerify { useCase.allContactsWithFiltersByCreateFilter(TEST_FILTER, TEST_COUNTRY, TEST_COUNTRY_CODE, true) }
+        coVerify { contactWithFilterUIMapper.mapToUIModelList(contactWithFilters) }
     }
 
     @Test

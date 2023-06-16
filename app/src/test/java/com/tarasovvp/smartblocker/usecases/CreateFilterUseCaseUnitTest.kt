@@ -4,18 +4,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
-import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.repository.ContactRepository
+import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
+import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterUseCaseImpl
+import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -29,6 +30,9 @@ class CreateFilterUseCaseUnitTest {
     private lateinit var contactRepository: ContactRepository
 
     @MockK
+    private lateinit var appPhoneNumberUtil: AppPhoneNumberUtil
+
+    @MockK
     private lateinit var countryCodeRepository: CountryCodeRepository
 
     @MockK
@@ -36,9 +40,6 @@ class CreateFilterUseCaseUnitTest {
 
     @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
-
-    @MockK
-    private lateinit var logCallRepository: LogCallRepository
     
     @MockK
     private lateinit var firebaseAuth: FirebaseAuth
@@ -51,7 +52,7 @@ class CreateFilterUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, countryCodeRepository, filterRepository, realDataBaseRepository, logCallRepository, firebaseAuth)
+        createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, appPhoneNumberUtil, countryCodeRepository, filterRepository, realDataBaseRepository, firebaseAuth)
     }
 
     @Test
@@ -68,16 +69,8 @@ class CreateFilterUseCaseUnitTest {
         val filter = TEST_FILTER
         val contactList = listOf(ContactWithFilter(contact =  Contact(number = "1")), ContactWithFilter(contact =  Contact(number = "1")))
         coEvery { contactRepository.allContactsWithFiltersByCreateFilter(filter) } returns contactList
-        val result = createFilterUseCase.allContactsWithFiltersByCreateFilter(filter)
+        val result = createFilterUseCase.allContactsWithFiltersByCreateFilter(filter, TEST_COUNTRY, TEST_COUNTRY_CODE, true)
         assertEquals(contactList, result)
-    }
-
-    @Test
-    fun allCallsWithFiltersByCreateFilterTest() = runBlocking {
-        val filteredCallList = listOf(CallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
-        coEvery { logCallRepository.allCallsWithFiltersByCreateFilter(TEST_FILTER) } returns filteredCallList
-        val result = createFilterUseCase.allCallsWithFiltersByCreateFilter(TEST_FILTER)
-        assertEquals(filteredCallList, result)
     }
 
     @Test

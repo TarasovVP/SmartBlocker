@@ -10,7 +10,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.UnitTestUtils.EMPTY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
@@ -18,7 +17,6 @@ import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.TEST_FILTER
-import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.callWithFilterUIModelList
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.contactWithFilterUIModelList
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColor
@@ -26,10 +24,7 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.*
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -56,16 +51,13 @@ class CreateFilterUnitTest: BaseFragmentUnitTest() {
 
     private var fragment: CreateFilterFragment? = null
     private var filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel? = null
-    private var numberDataUIModelList = arrayListOf<NumberDataUIModel>()
+    private var contactWithFilterUIModels = listOf<ContactWithFilterUIModel>()
 
     @Before
     override fun setUp() {
         super.setUp()
         FirebaseApp.initializeApp(targetContext)
-        numberDataUIModelList = if (name.methodName.contains(EMPTY)) arrayListOf() else arrayListOf<NumberDataUIModel>().apply {
-            addAll(contactWithFilterUIModelList())
-            addAll(callWithFilterUIModelList())
-        }
+        contactWithFilterUIModels = contactWithFilterUIModelList()
         val filterCondition = when {
             name.methodName.contains("Full") -> FilterCondition.FILTER_CONDITION_FULL.ordinal
             name.methodName.contains("Start") -> FilterCondition.FILTER_CONDITION_START.ordinal
@@ -78,7 +70,7 @@ class CreateFilterUnitTest: BaseFragmentUnitTest() {
             Navigation.setViewNavController(requireView(), navController)
             fragment = this as? CreateFilterFragment
         }
-        fragment?.viewModel?.contactWithFilterLiveData?.postValue(numberDataUIModelList)
+        fragment?.viewModel?.contactWithFilterLiveData?.postValue(contactWithFilterUIModelList())
         filterWithCountryCodeUIModel = fragment?.binding?.filterWithCountryCode
 
     }
@@ -281,6 +273,5 @@ class CreateFilterUnitTest: BaseFragmentUnitTest() {
         super.tearDown()
         fragment = null
         filterWithCountryCodeUIModel = null
-        numberDataUIModelList.clear()
     }
 }

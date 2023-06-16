@@ -51,7 +51,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
         super.setUp()
         isHiddenCall = this is DetailsNumberDataHiddenInstrumentedTest
         val numberData = if (isHiddenCall) CallWithFilterUIModel(
-            callId = 2, callName = "a Name", number = String.EMPTY, type = BLOCKED_CALL, callDate = "1678603872094", isFilteredCall = true, filteredNumber = "12345", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+            callId = 2, callName = String.EMPTY, number = String.EMPTY, type = BLOCKED_CALL, callDate = "1678603872094", isFilteredCall = true, filteredNumber = "12345", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
             filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel())
         else ContactWithFilterUIModel(
             contactId = "5", contactName = "C Name", number = "+380502711344",
@@ -118,7 +118,7 @@ open class BaseDetailsNumberDataInstrumentedTest: BaseInstrumentedTest() {
     fun checkDetailsNumberDataName() {
         onView(withId(R.id.item_contact_name))
             .check(matches(isDisplayed()))
-            .check(matches(withText(if (contactWithFilter?.contactName.isNull()) targetContext.getString(R.string.details_number_not_from_contacts) else contactWithFilter?.contactName)))
+            .check(matches(withText(if (contactWithFilter?.contactName.isNullOrEmpty()) targetContext.getString(R.string.details_number_not_from_contacts) else contactWithFilter?.contactName)))
     }
 
     @Test

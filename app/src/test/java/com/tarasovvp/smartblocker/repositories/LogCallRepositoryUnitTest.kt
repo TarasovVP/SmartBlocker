@@ -106,16 +106,4 @@ class LogCallRepositoryUnitTest {
         val result = logCallRepository.allCallWithFiltersByFilter(TEST_FILTER)
         assertEquals(expectedResult, result)
     }
-
-    @Test
-    fun allCallsWithFiltersByCreateFilterTest() = runBlocking {
-        val logCallList = listOf(CallWithFilter().apply { call = LogCall(callId = 1).apply { number = "1" }
-            filterWithFilteredNumber =  FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)) },
-            CallWithFilter().apply { call = LogCall(callId = 2).apply { number = "1" } },
-            CallWithFilter().apply { call = LogCall(callId = 3).apply { number = "2" }})
-        val expectedResult = logCallList.filter { it.filterWithFilteredNumber?.filter?.filter ==  TEST_FILTER}
-        coEvery { logCallDao.allCallsWithFiltersByCreateFilter(TEST_FILTER) } returns expectedResult
-        val result = logCallRepository.allCallsWithFiltersByCreateFilter(TEST_FILTER)
-        assertEquals(expectedResult, result)
-    }
 }

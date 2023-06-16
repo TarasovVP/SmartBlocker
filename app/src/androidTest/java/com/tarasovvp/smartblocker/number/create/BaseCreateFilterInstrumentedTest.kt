@@ -9,13 +9,13 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.LIST_EMPTY
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.TestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.TestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.TestUtils.TEST_NUMBER
+import com.tarasovvp.smartblocker.TestUtils.contactWithFilterUIModelList
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundColor
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
@@ -24,10 +24,10 @@ import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
@@ -49,12 +49,12 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
 
     private var fragment: CreateFilterFragment? = null
     private var filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel? = null
-    private var numberDataUIModelList = arrayListOf<NumberDataUIModel>()
+    private var contactWithFilterUIModels = listOf<ContactWithFilterUIModel>()
 
     @Before
     override fun setUp() {
         super.setUp()
-        numberDataUIModelList = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else TestUtils.numberDataUIModelList()
+        contactWithFilterUIModels = if (name.methodName.contains(LIST_EMPTY)) arrayListOf() else contactWithFilterUIModelList()
         val filterCondition = when(this) {
             is CreateFilterConditionFullInstrumentedTest -> FilterCondition.FILTER_CONDITION_FULL.ordinal
             is CreateFilterConditionStartInstrumentedTest -> FilterCondition.FILTER_CONDITION_START.ordinal
@@ -67,7 +67,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
             Navigation.setViewNavController(requireView(), navController)
             fragment = this as? CreateFilterFragment
         }
-        fragment?.viewModel?.contactWithFilterLiveData?.postValue(numberDataUIModelList)
+        fragment?.viewModel?.contactWithFilterLiveData?.postValue(contactWithFilterUIModels)
         filterWithCountryCodeUIModel = fragment?.binding?.filterWithCountryCode
     }
 
@@ -177,7 +177,7 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkCreateFilterListEmpty() {
         onView(withId(R.id.create_filter_empty_list)).apply {
-            if (numberDataUIModelList.isEmpty()) {
+            if (contactWithFilterUIModels.isEmpty()) {
                 check(matches(isDisplayed()))
                 onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_CREATE_FILTER.description())))
                 onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
@@ -194,6 +194,5 @@ open class BaseCreateFilterInstrumentedTest: BaseInstrumentedTest() {
         super.tearDown()
         fragment = null
         filterWithCountryCodeUIModel = null
-        numberDataUIModelList.clear()
     }
 }

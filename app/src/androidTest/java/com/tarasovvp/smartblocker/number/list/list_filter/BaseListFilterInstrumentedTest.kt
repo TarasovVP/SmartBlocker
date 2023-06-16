@@ -28,11 +28,18 @@ import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_DEFAULT
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_FORMAT_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
+import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.parcelable
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
@@ -137,10 +144,11 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             onView(isRoot()).perform(waitFor(501))
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+            val bundleResult = navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCodeUIModel>(FILTER_WITH_COUNTRY_CODE)
             assertEquals(
                 FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
-                filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)),
-                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                    filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER),
+                    countryCodeUIModel = CountryCodeUIModel(COUNTRY_DEFAULT, COUNTRY_CODE_DEFAULT, NUMBER_FORMAT_DEFAULT, bundleResult?.countryCodeUIModel?.displayCountry.orEmpty())), bundleResult)
         }
     }
 
@@ -155,10 +163,11 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             onView(isRoot()).perform(waitFor(501))
             perform(click())
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
+            val bundleResult = navController?.backStack?.last()?.arguments?.parcelable<FilterWithCountryCodeUIModel>(FILTER_WITH_COUNTRY_CODE)
             assertEquals(
                 FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
-                filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER)),
-                navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER),
+                    countryCodeUIModel = CountryCodeUIModel(COUNTRY_DEFAULT, COUNTRY_CODE_DEFAULT, NUMBER_FORMAT_DEFAULT, bundleResult?.countryCodeUIModel?.displayCountry.orEmpty())), bundleResult)
         }
     }
 

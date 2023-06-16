@@ -14,7 +14,6 @@ import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -163,7 +162,6 @@ fun Context.createFilteredCall(
     return null
 }
 
-@AddTrace(name = "getInitialDrawable")
 fun Context.getInitialDrawable(text: String): Drawable {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.TRANSPARENT
