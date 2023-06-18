@@ -207,9 +207,7 @@
         android:name="com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment" >
         <argument
             android:name="info"
-            android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.InfoData"
-            app:nullable="true" />
+            app:argType="com.tarasovvp.smartblocker.domain.enums.Info" />
         <action
             android:id="@+id/startInfoFragment"
             app:destination="@id/infoFragment" />

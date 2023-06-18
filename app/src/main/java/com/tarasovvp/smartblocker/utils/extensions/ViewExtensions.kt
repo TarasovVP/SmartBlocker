@@ -7,10 +7,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.text.Editable
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextWatcher
+import android.text.*
 import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.MotionEvent

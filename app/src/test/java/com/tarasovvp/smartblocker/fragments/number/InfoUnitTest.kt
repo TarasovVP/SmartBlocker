@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.clickLinkWithText
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.htmlWithImages
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -38,10 +37,7 @@ class InfoUnitTest: BaseFragmentUnitTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        launchFragmentInHiltContainer<InfoFragment>(bundleOf("info" to
-                InfoData(targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.title()),
-                    targetContext.getString(Info.INFO_DETAILS_NUMBER_DATA.description()))
-        )) {
+        launchFragmentInHiltContainer<InfoFragment>(bundleOf("info" to Info.INFO_DETAILS_NUMBER_DATA)) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.infoFragment)
             Navigation.setViewNavController(requireView(), navController)

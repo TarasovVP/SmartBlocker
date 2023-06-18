@@ -18,7 +18,6 @@ import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataCli
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
@@ -182,13 +181,7 @@ class DetailsFilterFragment :
     }
 
     override fun showInfoScreen() {
-        findNavController().navigate(
-            DetailsFilterFragmentDirections.startInfoFragment(
-                info = InfoData(
-                    title = getString(Info.INFO_DETAILS_FILTER.title()),
-                    description = getString(Info.INFO_DETAILS_FILTER.description())
-                )
-            )
-        )
+        val info = if (binding?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) Info.INFO_DETAILS_BLOCKER else Info.INFO_DETAILS_PERMISSION
+        findNavController().navigate(DetailsFilterFragmentDirections.startInfoFragment(info = info))
     }
 }

@@ -9,7 +9,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -102,12 +101,6 @@ open class ListContactFragment :
 
     override fun showInfoScreen() {
         findNavController().navigate(
-            ListContactFragmentDirections.startInfoFragment(
-                info = InfoData(
-                    title = getString(Info.INFO_CONTACT_LIST.title()),
-                    description = getString(Info.INFO_CONTACT_LIST.description())
-                )
-            )
-        )
+            ListContactFragmentDirections.startInfoFragment(info = Info.INFO_LIST_CONTACT))
     }
 }

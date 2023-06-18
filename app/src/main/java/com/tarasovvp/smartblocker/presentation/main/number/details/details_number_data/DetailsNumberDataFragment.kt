@@ -223,12 +223,6 @@ class DetailsNumberDataFragment :
 
     override fun showInfoScreen() {
         findNavController().navigate(
-            DetailsNumberDataFragmentDirections.startInfoFragment(
-                info = InfoData(
-                    title = getString(Info.INFO_DETAILS_NUMBER_DATA.title()),
-                    description = getString(Info.INFO_DETAILS_NUMBER_DATA.description())
-                )
-            )
-        )
+            DetailsNumberDataFragmentDirections.startInfoFragment(info = Info.INFO_DETAILS_NUMBER_DATA))
     }
 }

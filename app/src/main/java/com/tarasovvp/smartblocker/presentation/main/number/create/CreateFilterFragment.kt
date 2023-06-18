@@ -17,7 +17,10 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
-import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -237,15 +240,14 @@ open class CreateFilterFragment :
     }
 
     override fun showInfoScreen() {
-        val info = when {
-            binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeStart().isTrue() -> Info.INFO_CREATE_FILTER_START
-            binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue() -> Info.INFO_CREATE_FILTER_CONTAIN
-            else -> Info.INFO_CREATE_FILTER_FULL
+         binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
+             val info = when {
+                isTypeStart() -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_START else Info.INFO_CREATE_PERMISSION_START
+                isTypeContain() -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_CONTAIN else Info.INFO_CREATE_PERMISSION_CONTAIN
+                else -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_FULL else Info.INFO_CREATE_PERMISSION_FULL
+            }
+            findNavController().navigate(
+                DetailsNumberDataFragmentDirections.startInfoFragment(info = info))
         }
-        findNavController().navigate(
-            DetailsNumberDataFragmentDirections.startInfoFragment(info = InfoData(
-            title = getString(info.title()),
-            description = getString(info.description()))
-        ))
     }
 }

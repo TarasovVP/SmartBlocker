@@ -19,7 +19,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DRAWABLE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DRAWABLE_RES
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ENCODING
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MIME_TYPE
@@ -114,10 +113,10 @@ fun Context.spToPx(sp: Float): Float {
 @SuppressLint("DiscouragedApi")
 fun Context.htmlWithImages(htmlText: String): Spanned {
     return htmlText.parseAsHtml(imageGetter = {
-        val resourceId = resources.getIdentifier(it, DRAWABLE, packageName)
+        val resourceId = resources.getIdentifier(it, Constants.DRAWABLE, packageName)
         if (resourceId > 0) {
             val drawable = ContextCompat.getDrawable(this, resourceId)
-            drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+            drawable?.setBounds(0, -dpToPx(6f).toInt(), dpToPx(24f).toInt(), dpToPx(20f).toInt())
             drawable
         } else {
             ColorDrawable(Color.TRANSPARENT)

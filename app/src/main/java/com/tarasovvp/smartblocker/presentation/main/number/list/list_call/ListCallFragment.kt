@@ -11,7 +11,6 @@ import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -169,12 +168,6 @@ class ListCallFragment :
 
     override fun showInfoScreen() {
         findNavController().navigate(
-            ListCallFragmentDirections.startInfoFragment(
-                info = InfoData(
-                    title = getString(Info.INFO_CALL_LIST.title()),
-                    description = getString(Info.INFO_CALL_LIST.description())
-                )
-            )
-        )
+            ListCallFragmentDirections.startInfoFragment(info = Info.INFO_LIST_CALL))
     }
 }

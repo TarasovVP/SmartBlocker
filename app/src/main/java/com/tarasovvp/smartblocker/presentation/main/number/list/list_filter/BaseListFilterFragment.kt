@@ -18,7 +18,6 @@ import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.InfoData
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -232,23 +231,9 @@ open class BaseListFilterFragment :
 
     override fun showInfoScreen() {
         if (this@BaseListFilterFragment is ListBlockerFragment) {
-            findNavController().navigate(
-                ListBlockerFragmentDirections.startInfoFragment(
-                    InfoData(
-                        title = getString(Info.INFO_BLOCKER_LIST.title()),
-                        description = getString(Info.INFO_BLOCKER_LIST.description())
-                    )
-                )
-            )
+            findNavController().navigate(ListPermissionFragmentDirections.startInfoFragment(info = Info.INFO_LIST_BLOCKER))
         } else {
-            findNavController().navigate(
-                ListPermissionFragmentDirections.startInfoFragment(
-                    InfoData(
-                        title = getString(Info.INFO_PERMISSION_LIST.title()),
-                        description = getString(Info.INFO_PERMISSION_LIST.description())
-                    )
-                )
-            )
+            findNavController().navigate(ListPermissionFragmentDirections.startInfoFragment(info = Info.INFO_LIST_PERMISSION))
         }
     }
 }
