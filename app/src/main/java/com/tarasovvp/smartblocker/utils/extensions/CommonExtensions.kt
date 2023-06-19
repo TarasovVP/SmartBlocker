@@ -116,7 +116,7 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
         val resourceId = resources.getIdentifier(it, Constants.DRAWABLE, packageName)
         if (resourceId > 0) {
             val drawable = ContextCompat.getDrawable(this, resourceId)
-            drawable?.setBounds(0, -dpToPx(6f).toInt(), dpToPx(24f).toInt(), dpToPx(20f).toInt())
+            drawable?.setBounds(0, -dpToPx(10f).toInt(), dpToPx(26f).toInt(), dpToPx(16f).toInt())
             drawable
         } else {
             ColorDrawable(Color.TRANSPARENT)
