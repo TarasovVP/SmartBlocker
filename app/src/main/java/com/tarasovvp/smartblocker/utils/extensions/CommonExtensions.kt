@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.utils.extensions
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -112,11 +113,17 @@ fun Context.spToPx(sp: Float): Float {
 
 @SuppressLint("DiscouragedApi")
 fun Context.htmlWithImages(htmlText: String): Spanned {
-    return htmlText.parseAsHtml(imageGetter = {
-        val resourceId = resources.getIdentifier(it, Constants.DRAWABLE, packageName)
+    return htmlText.parseAsHtml(imageGetter = { iconName ->
+        val resourceId = resources.getIdentifier(iconName, Constants.DRAWABLE, packageName)
         if (resourceId > 0) {
             val drawable = ContextCompat.getDrawable(this, resourceId)
-            drawable?.setBounds(0, -dpToPx(10f).toInt(), dpToPx(26f).toInt(), dpToPx(16f).toInt())
+            if (iconName.contains("item")) {
+                val width = Resources.getSystem().displayMetrics.widthPixels
+                val height = (width / drawable?.intrinsicHeight.orZero().toFloat() / drawable?.intrinsicWidth?.takeIf { it > 0 }.orZero()).toInt()
+                drawable?.setBounds(0, 0, width, height)
+            } else {
+                drawable?.setBounds(0, -dpToPx(10f).toInt(), dpToPx(26f).toInt(), dpToPx(16f).toInt())
+            }
             drawable
         } else {
             ColorDrawable(Color.TRANSPARENT)
