@@ -117,9 +117,11 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
         val resourceId = resources.getIdentifier(iconName, Constants.DRAWABLE, packageName)
         if (resourceId > 0) {
             val drawable = ContextCompat.getDrawable(this, resourceId)
-            if (iconName.contains("item")) {
-                val width = Resources.getSystem().displayMetrics.widthPixels
-                val height = (width / drawable?.intrinsicHeight.orZero().toFloat() / drawable?.intrinsicWidth?.takeIf { it > 0 }.orZero()).toInt()
+            if (iconName.contains("tab")) {
+                drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+            } else if (iconName.contains("item")) {
+                val width = Resources.getSystem().displayMetrics.widthPixels - dpToPx(32f).toInt()
+                val height = (width * (drawable?.intrinsicHeight.orZero().toFloat() / drawable?.intrinsicWidth?.takeIf { it > 0 }.orZero())).toInt()
                 drawable?.setBounds(0, 0, width, height)
             } else {
                 drawable?.setBounds(0, -dpToPx(10f).toInt(), dpToPx(26f).toInt(), dpToPx(16f).toInt())
