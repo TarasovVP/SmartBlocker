@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.presentation.main.number.create
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -11,10 +10,8 @@ import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
-import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
@@ -26,23 +23,13 @@ import javax.inject.Inject
 class CreateFilterViewModel @Inject constructor(
     private val application: Application,
     private val createFilterUseCase: CreateFilterUseCase,
-    private val countryCodeUIMapper: CountryCodeUIMapper,
     private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
     private val contactWithFilterUIMapper: ContactWithFilterUIMapper
 ) : BaseViewModel(application) {
 
-    val countryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
     val contactWithFilterLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
     val existingFilterLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
     val filterActionLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
-
-    fun getCountryCodeWithCode(code: Int?) {
-        launch {
-            val countryCode =
-                code?.let { createFilterUseCase.getCountryCodeWithCode(it) } ?: CountryCode()
-            countryCodeLiveData.postValue(countryCodeUIMapper.mapToUIModel(countryCode))
-        }
-    }
 
     fun getMatchedContactWithFilterList(filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel?) {
         showProgress()

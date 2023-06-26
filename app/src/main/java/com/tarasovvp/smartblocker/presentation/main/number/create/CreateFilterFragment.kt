@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -13,7 +14,9 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_COD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_START
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MASK_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SPACE
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
@@ -56,9 +59,6 @@ open class CreateFilterFragment :
                         if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
                             filterWithCountryCode?.filterWithFilteredNumberUIModel = this.apply {
                                 this.filter = phoneNumber?.nationalNumber?.toString() ?: contactWithFilter.number.digitsTrimmed()
-                            }
-                            if (phoneNumber?.countryCode.orZero() > 0) {
-                                viewModel.getCountryCodeWithCode(phoneNumber?.countryCode)
                             }
                         }
                         binding?.executePendingBindings()
@@ -149,13 +149,17 @@ open class CreateFilterFragment :
         binding?.apply {
             createFilterInput.doAfterTextChanged {
                 val inputText = if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) createFilterInput.inputText() else createFilterInput.getRawText()
-                if (isNonUniqueInput(filterWithCountryCode, inputText, it.toString())) return@doAfterTextChanged
+                Log.e("createFilterTAG", "CreateFilterFragment doAfterTextChanged before inputText $inputText getNumberMask ${createFilterInput.getNumberMask()} createFilterInput.inputText ${createFilterInput.inputText()} filter ${binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter} getRawText ${createFilterInput.getRawText()}")
+                if (isNonUniqueInput(filterWithCountryCode, inputText, it.toString()) || inputText.contains(MASK_CHAR) || inputText.contains(SPACE)) return@doAfterTextChanged
                     filterToInput = false
                     filterWithCountryCode = filterWithCountryCode?.apply {
                         filterWithFilteredNumberUIModel.filter = inputText
-                        viewModel.checkFilterExist(createFilter())
+                        if ((filterWithFilteredNumberUIModel.isTypeFull() && createFilterInput.inputText().contains(MASK_CHAR)).not()) {
+                            viewModel.checkFilterExist(createFilter())
+                        }
                     }
                     getData()
+                Log.e("createFilterTAG", "CreateFilterFragment doAfterTextChanged after inputText $inputText getNumberMask ${createFilterInput.getNumberMask()} createFilterInput.inputText ${createFilterInput.inputText()} filter ${binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter} getRawText ${createFilterInput.getRawText()}")
             }
         }
     }
@@ -176,8 +180,8 @@ open class CreateFilterFragment :
     }
 
     private fun setCountryCode(countryCode: CountryCodeUIModel?) {
-        binding?.filterToInput = true
         binding?.apply {
+            filterToInput = true
             filterWithCountryCode = filterWithCountryCode?.apply {
                 countryCode?.let { filterWithCountryCode?.countryCodeUIModel = countryCode }
                 createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
@@ -186,14 +190,12 @@ open class CreateFilterFragment :
                     filterWithFilteredNumberUIModel.isTypeStart() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeStartHint().orEmpty())
                 }
             }
+            Log.e("createFilterTAG", "CreateFilterFragment setCountryCode after getNumberMask ${createFilterInput.getNumberMask()} inputText ${createFilterInput.inputText()} filter ${binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter}")
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            countryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCode ->
-                setCountryCode(countryCode)
-            }
             contactWithFilterLiveData.safeSingleObserve(viewLifecycleOwner) { numberDataList ->
                 this@CreateFilterFragment.numberDataUIModelList = ArrayList(numberDataList)
                 setNumberDataUIModelList()
