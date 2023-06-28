@@ -1,14 +1,11 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface CreateFilterUseCase {
-
-    suspend fun getCountryCodeWithCode(code: Int):  CountryCode?
 
     suspend fun allContactsWithFiltersByCreateFilter(filter: String, country: String, countryCode: String, isContain: Boolean): List<ContactWithFilter>
 

@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -17,13 +16,10 @@ import javax.inject.Inject
 class CreateFilterUseCaseImpl @Inject constructor(
     private val contactRepository: ContactRepository,
     private val phoneNumberUtil: AppPhoneNumberUtil,
-    private val countryCodeRepository: CountryCodeRepository,
     private val filterRepository: FilterRepository,
     private val realDataBaseRepository: RealDataBaseRepository,
     private val firebaseAuth: FirebaseAuth
 ) : CreateFilterUseCase {
-
-    override suspend fun getCountryCodeWithCode(code: Int) = countryCodeRepository.getCountryCodeByCode(code)
 
     override suspend fun allContactsWithFiltersByCreateFilter(filter: String, country: String, countryCode: String, isContain: Boolean): List<ContactWithFilter> {
         val contactWithFilters = contactRepository.allContactsWithFiltersByCreateFilter(filter)

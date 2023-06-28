@@ -1,6 +1,10 @@
 package com.tarasovvp.smartblocker.presentation.main.number.create
 
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -69,6 +73,14 @@ open class CreateFilterFragment :
         binding?.createFilterNumberList?.adapter = createFilterAdapter
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.e("createFilterTAG", "CreateFilterFragment onCreateView filter ${binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter} getRawText ${binding?.createFilterInput?.getRawText()} getNumberMask ${binding?.createFilterInput?.getNumberMask()}")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
     override fun initViews() {
         binding?.apply {
             filterToInput = true
@@ -150,7 +162,9 @@ open class CreateFilterFragment :
             createFilterInput.doAfterTextChanged {
                 val inputText = if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) createFilterInput.inputText() else createFilterInput.getRawText()
                 Log.e("createFilterTAG", "CreateFilterFragment doAfterTextChanged before inputText $inputText getNumberMask ${createFilterInput.getNumberMask()} createFilterInput.inputText ${createFilterInput.inputText()} filter ${binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter} getRawText ${createFilterInput.getRawText()}")
-                if (isNonUniqueInput(filterWithCountryCode, inputText, it.toString()) || inputText.contains(MASK_CHAR) || inputText.contains(SPACE)) return@doAfterTextChanged
+                if (isNonUniqueInput(filterWithCountryCode, inputText, it.toString()) || inputText.contains(MASK_CHAR) || inputText.contains(SPACE)) {
+                    return@doAfterTextChanged
+                }
                     filterToInput = false
                     filterWithCountryCode = filterWithCountryCode?.apply {
                         filterWithFilteredNumberUIModel.filter = inputText
@@ -181,6 +195,7 @@ open class CreateFilterFragment :
 
     private fun setCountryCode(countryCode: CountryCodeUIModel?) {
         binding?.apply {
+            Log.e("createFilterTAG", "CreateFilterFragment setCountryCode before getNumberMask ${createFilterInput.getNumberMask()} inputText ${createFilterInput.inputText()} filter ${binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter}")
             filterToInput = true
             filterWithCountryCode = filterWithCountryCode?.apply {
                 countryCode?.let { filterWithCountryCode?.countryCodeUIModel = countryCode }

@@ -213,7 +213,6 @@ object AppModule {
     fun provideCreateFilterUseCase(
         contactRepository: ContactRepository,
         phoneNumberUtil: AppPhoneNumberUtil,
-        countryCodeRepository: CountryCodeRepository,
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
         firebaseAuth: FirebaseAuth
@@ -221,7 +220,6 @@ object AppModule {
         return CreateFilterUseCaseImpl(
             contactRepository,
             phoneNumberUtil,
-            countryCodeRepository,
             filterRepository,
             realDataBaseRepository,
             firebaseAuth

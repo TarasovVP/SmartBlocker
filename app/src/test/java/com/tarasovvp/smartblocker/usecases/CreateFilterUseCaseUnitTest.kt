@@ -5,12 +5,10 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
-import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -32,8 +30,6 @@ class CreateFilterUseCaseUnitTest {
     @MockK
     private lateinit var appPhoneNumberUtil: AppPhoneNumberUtil
 
-    @MockK
-    private lateinit var countryCodeRepository: CountryCodeRepository
 
     @MockK
     private lateinit var filterRepository: FilterRepository
@@ -52,16 +48,7 @@ class CreateFilterUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, appPhoneNumberUtil, countryCodeRepository, filterRepository, realDataBaseRepository, firebaseAuth)
-    }
-
-    @Test
-    fun getCountryCodeWithCodeTest() = runBlocking {
-        val countryCode = 123
-        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        coEvery { countryCodeRepository.getCountryCodeByCode(countryCode) } returns expectedCountryCode
-        val result =  createFilterUseCase.getCountryCodeWithCode(countryCode)
-        assertEquals(result?.country, TEST_COUNTRY)
+        createFilterUseCase = CreateFilterUseCaseImpl(contactRepository, appPhoneNumberUtil, filterRepository, realDataBaseRepository, firebaseAuth)
     }
 
     @Test

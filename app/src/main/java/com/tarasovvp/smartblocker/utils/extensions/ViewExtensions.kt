@@ -100,7 +100,7 @@ fun EditText?.inputText(): String {
 
 @BindingAdapter(value = ["text", "filterToInput"], requireAll = false)
 fun EditText.setTextToInput(inputText: String?, filterToInput: Boolean) {
-    if (filterToInput) setText(inputText)
+    if (filterToInput) inputText?.let { setText(it) }
 }
 
 @BindingAdapter(value = ["imageUrl", "placeHolder"], requireAll = false)
