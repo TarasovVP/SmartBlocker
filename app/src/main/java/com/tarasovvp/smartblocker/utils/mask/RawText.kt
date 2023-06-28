@@ -1,22 +1,18 @@
 package com.tarasovvp.smartblocker.utils.mask
 
-import android.util.Log
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 
 class RawText {
     var text = String.EMPTY
 
     fun subtractFromString(range: Range) {
-        Log.e("createFilterTAG", "RawText subtractFromString before text $text range $range")
         text = String.format("%s%s",
             if (range.start > 0 && range.start <= text.length)
                 text.substring(0, range.start) else String.EMPTY,
             if (range.end >= 0 && range.end < text.length) text.substring(range.end) else String.EMPTY)
-        Log.e("createFilterTAG", "RawText subtractFromString after text $text range $range")
     }
 
     fun addToString(newString1: String?, start: Int, maxLength: Int): Int {
-        Log.e("createFilterTAG", "RawText addToString before text $text newString1 $newString1 start $start maxLength $maxLength")
         if (newString1 == null || newString1 == "") {
             return 0
         } else require(start >= 0) { "Start position must be non-negative" }
@@ -29,7 +25,6 @@ class RawText {
             newString1.substring(0, count)
         } else newString1
         text = firstPart + newString + lastPart
-        Log.e("createFilterTAG", "RawText addToString after text $text newString1 $newString1 start $start maxLength $maxLength")
         return count
     }
 

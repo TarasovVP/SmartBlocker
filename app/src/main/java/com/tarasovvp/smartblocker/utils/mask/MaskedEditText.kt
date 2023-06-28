@@ -6,7 +6,6 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -61,7 +60,6 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     fun setNumberMask(mask: String) {
-        Log.e("createFilterTAG", "MaskedEditText setNumberMask rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask this.mask ${this.mask}")
         this.mask = mask
         if (mask.isNotBlank()) hint = mask
         cleanUp()
@@ -76,7 +74,6 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     private fun cleanUp() {
-        Log.e("createFilterTAG", "MaskedEditText cleanUp rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask")
         initialized = false
         if (mask.isNullOrEmpty()) {
             return
@@ -161,8 +158,6 @@ class MaskedEditText @JvmOverloads constructor(
         s: CharSequence, start: Int, count: Int,
         after: Int,
     ) {
-        Log.e("createFilterTAG", "MaskedEditText beforeTextChanged before s $s start $start count $count after $after rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask hint $hint")
-        Log.e("createFilterTAG", "MaskedEditText beforeTextChanged editingBefore $editingBefore lastValidMaskPosition $lastValidMaskPosition ignore $ignore ")
         if (mask.isNullOrEmpty().not()) {
             if (editingBefore.not()) {
                 editingBefore = true
@@ -174,7 +169,6 @@ class MaskedEditText @JvmOverloads constructor(
                     rangeStart = erasingStart(start)
                 }
                 val range = calculateRange(rangeStart, start + count)
-                Log.e("createFilterTAG", "MaskedEditText beforeTextChanged calculateRange range $range")
                 if (range.start notEquals -1) {
                     rawText?.subtractFromString(range)
                 }
@@ -183,11 +177,9 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
-        Log.e("createFilterTAG", "MaskedEditText beforeTextChanged after s $s rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask hint $hint")
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count1: Int) {
-        Log.e("createFilterTAG", "MaskedEditText onTextChanged before s $s rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask hint $hint")
         if (mask.isNullOrEmpty().not()) {
             var count = count1
             if (editingOnChanged.not() && editingBefore) {
@@ -198,9 +190,7 @@ class MaskedEditText @JvmOverloads constructor(
                 if (count > 0) {
                     val startingPosition = maskToRaw?.get(nextValidPosition(start)).orZero()
                     val addedString = s.subSequence(start, start + count).toString()
-                    Log.e("createFilterTAG", "MaskedEditText onTextChanged startingPosition $startingPosition before rawText ${rawText?.text}")
                     count = rawText?.addToString(clear(addedString), startingPosition, maxRawLength).orZero()
-                    Log.e("createFilterTAG", "MaskedEditText onTextChanged startingPosition $startingPosition addedString $addedString count $count initialized $initialized rawText ${rawText?.text}")
                     if (initialized) {
                         val currentPosition: Int =
                             if (startingPosition + count < rawToMask?.size.orZero()) rawToMask?.get(
@@ -210,11 +200,9 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
-        Log.e("createFilterTAG", "MaskedEditText onTextChanged after s $s rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask hint $hint")
     }
 
     override fun afterTextChanged(s: Editable) {
-        Log.e("createFilterTAG", "MaskedEditText afterTextChanged before s $s rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask hint $hint")
         if (mask.isNullOrEmpty().not()) {
             if (editingAfter.not() && editingBefore && editingOnChanged) {
                 editingAfter = true
@@ -231,7 +219,6 @@ class MaskedEditText @JvmOverloads constructor(
                 ignore = false
             }
         }
-        Log.e("createFilterTAG", "MaskedEditText afterTextChanged after s $s rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask hint $hint")
     }
 
     override fun onSelectionChanged(selStart1: Int, selEnd1: Int) {
@@ -310,13 +297,11 @@ class MaskedEditText @JvmOverloads constructor(
                 }
             }
         }
-        Log.e("createFilterTAG", "MaskedEditText makeMaskedText maskedText $maskedText rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask")
         return String(maskedText)
     }
 
     private fun makeMaskedTextWithHint(): CharSequence {
         val ssb = SpannableStringBuilder()
-        Log.e("createFilterTAG", "MaskedEditText makeMaskedTextWithHint before ssb $ssb rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask")
         var position: Int
         mask?.forEachIndexed { index, char ->
             position = maskToRaw?.get(index).orZero()
@@ -336,7 +321,6 @@ class MaskedEditText @JvmOverloads constructor(
                 ssb.setSpan(ForegroundColorSpan(currentHintTextColor), index, index + 1, 0)
             }
         }
-        Log.e("createFilterTAG", "MaskedEditText makeMaskedTextWithHint after ssb $ssb rawText ${rawText?.text} maskToRaw ${maskToRaw.contentToString()} mask $mask")
         return ssb
     }
 
@@ -365,7 +349,6 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     private fun clear(string1: String): String {
-        Log.e("createFilterTAG", "MaskedEditText clear string1 $string1 allowedChars $allowedChars")
         var string = string1
         if (allowedChars.isNotNull()) {
             val builder = StringBuilder(string.length)

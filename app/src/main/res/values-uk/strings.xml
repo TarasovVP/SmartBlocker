@@ -4,250 +4,250 @@
     <string name="test_app_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <!--App-->
-    <string name="app_is_active">Smart Blocker активирован</string>
-    <string name="app_need_permissions">Для продолжения необходимо предоставить все разрешения</string>
-    <string name="app_exit">Вы хотите выйти из приложения?</string>
-    <string name="app_network_unavailable_repeat">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и повторите действие.</string>
+    <string name="app_is_active">Smart Blocker активовано</string>
+    <string name="app_need_permissions">Для продовження необхідно надати всі дозволи</string>
+    <string name="app_exit">Ви хочете вийти з програми?</string>
+    <string name="app_network_unavailable_repeat">Інтернет з\'єднання відсутнє.\nДля продовження, підключіть інтернет і повторіть дію.</string>
     <!--Buttons-->
-    <string name="button_next">Дальше</string>
-    <string name="button_accept">Разрешить</string>
-    <string name="button_cancel">Отмена</string>
+    <string name="button_next">Далі</string>
+    <string name="button_accept">Дозволити</string>
+    <string name="button_cancel">Скасування</string>
     <string name="button_ok">OK</string>
     <!--Onboarding-->
-    <string name="onboarding_intro">Привет! Я - Smart Blocker. Я буду Вашим помощником в блокировании нежелательных звонков и в этом мне помогут мои умные фильтры.</string>
-    <string name="onboarding_filter_conditions">Умные фильтры будут анализировать входящие вызовы по заданным Вами признакам и блокировать или разрешать их.</string>
-    <string name="onboarding_info">Я всегда готов помочь разобраться в том, как я работаю. Для этого найдите иконку <small><font color='blue'>&#9432;</font></small> и по ней перейдите на экран с инструкцией.</string>
-    <string name="onboarding_permissions">Для корректной работы телефон запросит необходимые разрешения. Для этого выберите “Разрешить” в системных окнах.</string>
+    <string name="onboarding_intro">Привіт! Я – Smart Blocker. Я буду вашим помічником у блокуванні небажаних дзвінків і в цьому мені допоможуть мої розумні фільтри.</string>
+    <string name="onboarding_filter_conditions">Розумні фільтри будуть аналізувати вхідні дзвінки за заданими Вами ознаками та блокувати або дозволяти їх.</string>
+    <string name="onboarding_info">Я завжди готовий допомогти розібратися в тому, як я працюю. Для цього знайдіть іконку <small><font color='blue'>&#9432;</font></small> і по ній перейдіть на екран з інструкцією.</string>
+    <string name="onboarding_permissions">Для коректної роботи телефон запросить необхідні дозволи. Для цього виберіть "Дозволити" у системних вікнах.</string>
     <!--Authorization-->
-    <string name="authorization_entrance">Вход</string>
-    <string name="authorization_with_google_account">С помощью Google</string>
-    <string name="authorization_enter">Войти</string>
-    <string name="authorization_or">Или</string>
+    <string name="authorization_entrance">Вхід</string>
+    <string name="authorization_with_google_account">За допомогою Google</string>
+    <string name="authorization_enter">Увійти</string>
+    <string name="authorization_or">Або</string>
     <string name="authorization_email">Email</string>
     <string name="authorization_password">Пароль</string>
-    <string name="authorization_sign_up">Регистрация</string>
-    <string name="authorization_forgot_password">Забыли пароль?</string>
-    <string name="authorization_continue_without_account">Без регистрации</string>
-    <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Ваш пароль</string>
-    <string name="authorization_enter_email">Введите ваш Email</string>
-    <string name="authorization_password_reset_success">Подтверждающее письмо отправлено на ваш Email. Проверьте во входящих.</string>
-    <string name="authorization_entrance_title">Есть аккаунт?&#160;</string>
-    <string name="authorization_signing_up">Зарегистрироваться</string>
-    <string name="authorization_network_unavailable">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и совершите повторный вход.</string>
+    <string name="authorization_sign_up">Реєстрація</string>
+    <string name="authorization_forgot_password">Забули пароль?</string>
+    <string name="authorization_continue_without_account">Без реєстрації</string>
+    <string name="authorization_forgot_password_title">Введіть ваш Email і ми відправимо Ваш пароль</string>
+    <string name="authorization_enter_email">Введіть ваш Email</string>
+    <string name="authorization_password_reset_success">Підтверджуючий лист надіслано на ваш Email. Перевірте у вхідних.</string>
+    <string name="authorization_entrance_title">Є обліковий запис?&#160;</string>
+    <string name="authorization_signing_up">Зареєструватися</string>
+    <string name="authorization_network_unavailable">Інтернет з\'єднання відсутнє.\nДля продовження, підключіть інтернет і здійсніть повторний вхід.</string>
     <!--Filter type-->
-    <string name="filter_type_blocker">Блокировщик</string>
-    <string name="filter_type_permission">Разрешение</string>
+    <string name="filter_type_blocker">Блокувальник</string>
+    <string name="filter_type_permission">Дозвол</string>
     <!--Filter condition-->
-    <string name="filter_condition_full">Полный номер</string>
-    <string name="filter_condition_start">Начинается</string>
-    <string name="filter_condition_contain">Содержит</string>
+    <string name="filter_condition_full">Повний номер</string>
+    <string name="filter_condition_start">Починається</string>
+    <string name="filter_condition_contain">Зміст</string>
     <!--Filter action-->
-    <string name="filter_action_create">Создать</string>
-    <string name="filter_action_create_number_incomplete">Номер неполный</string>
-    <string name="filter_action_create_number_invalid">Номер невалидный</string>
-    <string name="filter_action_create_number_empty">Номер пустой</string>
-    <string name="filter_action_create_blocker_description">Создать блокировщик?</string>
-    <string name="filter_action_create_blocker_request">Создать фильтр %1$s с типом Блокировщик и признаком %2$s?</string>
-    <string name="filter_action_create_blocker_success">Фильтр %1$s с типом Блокировщик и признаком %2$s создан!</string>
-    <string name="filter_action_create_permission_description">Создать разрешение?</string>
-    <string name="filter_action_create_permission_request">Создать фильтр %1$s с типом Разрешение и признаком %2$s?</string>
-    <string name="filter_action_create_permission_success">Фильтр %1$s с типом Разрешение и признаком %2$s создан!</string>
-    <string name="filter_action_created">Создан: %s</string>
-    <string name="filter_action_delete">Удалить</string>
-    <string name="filter_action_delete_blocker_description">Блокировщик уже существует.</string>
-    <string name="filter_action_delete_blocker_request">Удалить %s из блокировщиков?</string>
-    <string name="filter_action_delete_blocker_success">%s удален из блокировщиков!</string>
-    <string name="filter_action_delete_permission_description">Разрешение уже существует.</string>
-    <string name="filter_action_delete_permission_request">Удалить %s из разрешений?</string>
-    <string name="filter_action_delete_permission_success">%s удален из разрешений!</string>
-    <string name="filter_action_transfer">Сменить</string>
-    <string name="filter_action_transfer_blocker_description">Фильтр уже существует как Разрешение.</string>
-    <string name="filter_action_transfer_blocker_request">Сменить тип фильтра %s на Блокировщик?</string>
-    <string name="filter_action_transfer_blocker_success">Фильтр %s сменен на Блокировщик!</string>
-    <string name="filter_action_transfer_permission_description">Фильтр уже существует как Блокировщик.</string>
-    <string name="filter_action_transfer_permission_request">Сменить тип фильтра %s на Разрешение?</string>
-    <string name="filter_action_transfer_permission_success">Фильтр %s сменен на Разрешение!</string>
+    <string name="filter_action_create">Створити</string>
+    <string name="filter_action_create_number_incomplete">Номер неповний</string>
+    <string name="filter_action_create_number_invalid">Номер невалідний</string>
+    <string name="filter_action_create_number_empty">Номер порожній</string>
+    <string name="filter_action_create_blocker_description">Створити блокувальник?</string>
+    <string name="filter_action_create_blocker_request">Створити фільтр %1$s з типом Блокувальник та ознакою %2$s?</string>
+    <string name="filter_action_create_blocker_success">Фільтр %1$s з типом Блокувальник та ознакою %2$s створений!</string>
+    <string name="filter_action_create_permission_description">Створити дозвіл?</string>
+    <string name="filter_action_create_permission_request">Створити фільтр %1$s з типом Дозвіл та ознакою %2$s?</string>
+    <string name="filter_action_create_permission_success">Фільтр %1$s з типом Дозвіл та ознакою %2$s створений!</string>
+    <string name="filter_action_created">Створено: %s</string>
+    <string name="filter_action_delete">Видалити</string>
+    <string name="filter_action_delete_blocker_description">Блокувальник вже існує.</string>
+    <string name="filter_action_delete_blocker_request">Видалити %s із блокувальників?</string>
+    <string name="filter_action_delete_blocker_success">%s видалено з блокувальників!</string>
+    <string name="filter_action_delete_permission_description">Дозвіл вже існує.</string>
+    <string name="filter_action_delete_permission_request">Видалити %s із дозволів?</string>
+    <string name="filter_action_delete_permission_success">%s видалено з дозволів!</string>
+    <string name="filter_action_transfer">Змінити</string>
+    <string name="filter_action_transfer_blocker_description">Фільтр вже існує як Дозвіл.</string>
+    <string name="filter_action_transfer_blocker_request">Змінити тип фільтра %s на Блокувальник?</string>
+    <string name="filter_action_transfer_blocker_success">Фільтр %s змінений на Блокувальник!</string>
+    <string name="filter_action_transfer_permission_description">Фільтр вже існує як Блокувальник.</string>
+    <string name="filter_action_transfer_permission_request">Змінити тип фільтра %s на Дозвіл?</string>
+    <string name="filter_action_transfer_permission_success">Фільтр %s змінено на Дозвіл!</string>
     <!--Info title-->
-    <string name="info_blocker_title">Блокировщик</string>
-    <string name="info_permission_title">Разрешение</string>
-    <string name="info_filter_title">Фильтр</string>
-    <string name="info_call_title">Вызов</string>
+    <string name="info_blocker_title">Блокувальник</string>
+    <string name="info_permission_title">Дозвіл</string>
+    <string name="info_filter_title">Фільтр</string>
+    <string name="info_call_title">Виклик</string>
     <string name="info_contact_title">Контакт</string>
-    <string name="info_list_blocker_title">Блокировщики</string>
-    <string name="info_details_blocker_title">Блокировщик</string>
-    <string name="info_create_blocker_title">Создание Блокировщика</string>
-    <string name="info_list_permission_title">Разрешения</string>
-    <string name="info_details_permission_title">Разрешение</string>
-    <string name="info_create_permission_title">Создание Разрешения</string>
+    <string name="info_list_blocker_title">Блокувальники</string>
+    <string name="info_details_blocker_title">Блокувальник</string>
+    <string name="info_create_blocker_title">Створення Блокувальника</string>
+    <string name="info_list_permission_title">Дозволи</string>
+    <string name="info_details_permission_title">Дозвіл</string>
+    <string name="info_create_permission_title">Створення Дозволу</string>
     <string name="info_list_call_title">Журнал</string>
-    <string name="info_list_contact_title">Контакты</string>
+    <string name="info_list_contact_title">Контакти</string>
     <string name="info_details_number_data_title">Номер</string>
-    <string name="info_priority_rules_title">Правила приоритетности</string>
-    <string name="info_incomplete_numbers_title">Неполные номера</string>
+    <string name="info_priority_rules_title">Правила пріоритетності</string>
+    <string name="info_incomplete_numbers_title">Неповні номери</string>
     <!--Info-->
-    <string name="info_filter"><![CDATA[<b>Фильтр</b> - номер, созданный пользователем в приложении Smart Blocker, который анализирует входящий <img src =\'ic_call\'><a href="INFO_CALL">Вызов</a> и в случае совпадения в заданной области управляет им.<br/><br/>По характеру управления вызовами фильтры делятся на два типа:<br/><br><img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a> - блокируют входящий вызов;<br/><br/><img src =\'ic_permission\'><a href="INFO_PERMISSION" target="_blank">Разрешение</a> - разрешает входящий вызов;<br/><br/>По области совпадения с входящим вызовом делятся по трем признакам:<br/><br/><img src =\'ic_full_condition\'><b>Полный номер</b> - полное совпадение с входящим вызовом;<br/>Пример: Входящий вызов <img src =\'ic_call_incoming\'><b>+380502711344</b> имеет совпадение с фильтром <img src =\'ic_full_condition\'>+380502711344;<br/><br/><img src =\'ic_start_condition\'><b>Начинается</b> - совпадение по началу входящего вызова;<br/>Пример: Входящий вызов <img src =\'ic_call_incoming\'><b>+380502</b>711344 имеет совпадение с фильтром <img src =\'ic_start_condition\'>+380502;<br/><br/><img src =\'ic_contain_condition\'><b>Содержит</b> - совпадение в любом месте входящего вызова.<br/>Пример: Входящий вызов <img src =\'ic_call_incoming\'>+38050<b>2711344</b> имеет совпадение с фильтром <img src =\'ic_contain_condition\'>2711344;<br/><br/>В случае совпадения номера с другими фильтрами вступает в силу <a href="INFO_PRIORITY_RULES">Правило приоритетности.</a>]]></string>
-    <string name="info_blocker"><![CDATA[<img src =\'ic_blocker\'><b>Блокировщик</b> - фильтр, созданный пользователем в приложении Smart Blocker, для блокирования входящих <img src =\'ic_call\'> <a href="INFO_CALL" >Вызовов</a> телефона.<br/><br/>Для каждого Блокировщика доступна информация: номер фильтра, тип управления, область совпадения, время создания, совпадения с контактами.<br/><br/>Пример:<br/><img src =\'ic_item_permission\'>]]></string>
-    <string name="info_permission"><![CDATA[<img src =\'ic_permission\'><b>Разрешение</b> - фильтр, созданный пользователем в приложении Smart Blocker, для разрешения входящих <img src =\'ic_call\'><a href="INFO_CALL">Вызовов</a> телефона, даже если у номера есть совпадения с блокировщиком.<br/><br/>Для каждого Разрешения доступна информация: номер фильтра, тип управления, область совпадения, время создания, совпадения с контактами.<br/><br/>Пример:<br/><img src =\'ic_item_blocker\'>]]></string>
-    <string name="info_call"><![CDATA[<img src =\'ic_call\'><b>Вызов</b> - соединение между телефонными абонентами посредством телефонных номеров.<br/><br/>Для каждого Вызова доступна информация: аватар, номер, имя, время, тип вызова, признак фильтрации.<br/><br/>Пример:<br/><img src =\'ic_item_call\'> <br/><br/>В приложении Smart Blocker вызовы делятся на:<br/><br/>Стандартные:<br/><img src =\'ic_call_outcoming\'> Исходящий;<br/><img src =\'ic_call_incoming\'> Входящий;<br/><img src =\'ic_call_missed\'> Пропущенный;<br/><img src =\'ic_call_rejected\'> Отклоненный;<br/><br/>Отфильтрованные:<br/><img src =\'ic_call_incoming_permitted\'> Входящий(разрешен фильтром);<br/><img src =\'ic_call_missed_permitted\'> Пропущенный(разрешен фильтром);<br/><img src =\'ic_call_rejected_permitted\'> Отклоненный(разрешен фильтром);<br/><img src =\'ic_call_blocked\'> Заблокированный фильтром или настройками приложения Smart Blocker;]]></string>
-    <string name="info_contact"><![CDATA[<img src =\'ic_contact\'><b>Контакт</b> - запись, содержащая информацию о человеке или организации, которая хранится в адресной книге вашего телефона или аккаунта.<br/><br/>Для каждого Контакта доступна информация: аватар, номер, имя, валидность номера(по умолчанию скрыт), признак совпадения с фильтром.<br/><br/>Пример:<br/><img src =\'ic_item_contact\'>]]></string>
-    <string name="info_list_blocker"><![CDATA[Экран со списком созданных <a href="INFO_FILTER">Фильтров</a> с типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a>, отсортированных по дате создания.<br/><br/>При нажатии на любой фильтр списка происходит переход на экран <a href="INFO_DETAILS_BLOCKER">Блокировщик</a> с деталями фильтра.<br/><br/>При нажатии на кнопку <img src =\'ic_create_button\'> открывается подменю с признаками по области совпадения. При выборе происходит переход на соответствующий экран <a href="INFO_CREATE_BLOCKER_FULL">Создание блокировщика(Полный номер)</a>, <a href="INFO_CREATE_BLOCKER_START">Создание блокировщика(Начинается)</a> или <a href="INFO_CREATE_BLOCKER_CONTAIN">Создание блокировщика(Содержит)</a>.<br/><br/>Если список не пустой становятся доступными:<br/><br/><img src =\'ic_filter_list\'> <b>Фильтрация списка по признаку</b> <br/>Происходит фильтрация по области совпадения: Полный номер, Начинается, Содержит.<br/><br/><img src =\'ic_search\'> <b>Поиск по номеру</b><br/>Происходит поиск по номеру.<br/><br/><img src =\'ic_delete\'> <b>Удаление фильтра</b><br/>Активируется долгим нажатием на любой фильтр списка. Доступно одиночное и списочное удаление.]]></string>
-    <string name="info_details_blocker"><![CDATA[Экран с подробной информацией созданного <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщика</a>.<br/><br/>Кроме общей информации о фильтре имеет дополнительную о количестве связанных контактов и вызовов с полным списком к каждому:<br/><br/><img src =\'ic_list_tab_1\'> Список контактов у которых есть полное или частичное(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>) совпадение с фильтром;<br/><br/><img src =\'ic_list_tab_2\'> Список вызовов из журнала, которые были заблокированы данным фильтром.<br/><br/>Доступны две операции с блокировщиком:<br/><br/>Кнопка <b>Удаление</b> - полностью удаляет фильтр.<br/><br/>Кнопка <b>Смена</b> - меняет тип фильтра на <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение.</a>]]></string>
-    <string name="info_create_blocker_full"><![CDATA[Экран создания <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщика</a> с областью совпадения <img src =\'ic_full_condition\'><b>Полный номер</b>. <br/><br/>На экране доступны:<br/><br/><b>Подробности</b> создаваемого фильтра. Отображена информация: номер, тип фильтра, признак области применения, информация о доступных действиях с создаваемым фильтром.<br/><br/><b>Код страны</b>. Информация о стране телефонного номера с отображением телефонного кода. По нажатию вызывается окно смены кода со списком предлагаемых стран.<br/><br/><b>Поле ввода номера</b>. Содержит маску согласно формата номера выбранной страны. Содержит знаки # для замены на цифры(количество символов # соответствует количеству знаков национального номера выбранной страны) и другие символы согласно маски.<br/><br/><b>Кнопка действия</b>. Меняется в зависимости от сформированного фильтра. Может принимать 4 состояния:<br/><em>Создать(неактивная)</em> - если номер неполный или невалидный для данной страны.<br/><em> Создать(активная)</em> - если номер валидный, по нажатию создается новый фильтр.<br/><em>Удалить</em> - если фильтр с таким типом уже существует. По нажатию данный фильтр удаляется.<br/><em>Сменить</em> - если фильтр существует, но с типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение</a>. По нажатию данный фильтр меняет тип на <img src =\'ic_blocker\'><a href="INFO_BLCOKER">Блокировщик</a>, при этом кнопка сменяется на Удалить.<br/><br/><b>Список совпадений</b>. Список контактов у которых есть полное или частичное совпадение с фильтром(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>)]]></string>
-    <string name="info_create_blocker_start"><![CDATA[Экран создания <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщика</a> с областью совпадения <img src =\'ic_start_condition\'><b>Начинается</b>. <br/><br/>На экране доступны:<br/><br/><b>Подробности</b> создаваемого фильтра. Отображена информация: номер, тип фильтра, признак области применения, информация о доступных действиях с создаваемым фильтром.<br/><br/><b>Код страны</b>. Информация о стране телефонного номера с отображением телефонного кода. По нажатию вызывается окно смены кода со списком предлагаемых стран.<br/><br/><b>Поле ввода номера</b>. Содержит маску в формате количество знаков национального номера выбранной страны минус один символами # для замены на цифры.<br/><br/><b>Кнопка действия</b>. Меняется в зависимости от сформированного фильтра. Может принимать 3 состояния:<br/><em> Создать(активная)</em> - если номер валидный, по нажатию создается новый фильтр.<br/><em>Удалить</em> - если фильтр с таким типом уже существует. По нажатию данный фильтр удаляется.<br/><em>Сменить</em> - если фильтр существует, но с типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение</a>. По нажатию данный фильтр меняет тип на <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a>, при этом кнопка сменяется на Удалить.<br/><br/><b>Список совпадений</b>. Список контактов у которых есть полное или частичное совпадение с фильтром(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>)]]></string>
-    <string name="info_create_blocker_contain"><![CDATA[Экран создания <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщика</a> с областью совпадения <img src =\'ic_contain_condition\'><b>Содержит</b>. <br/><br/>На экране доступны:<br/><br/><b>Подробности</b> создаваемого фильтра. Отображена информация: номер, тип фильтра, признак области применения, информация о доступных действиях с создаваемым фильтром.<br/><br/><b>Поле ввода номера</b>. Не содержит маски и не имеет ограничений в количестве введенных знаков.<br/><br/><b>Кнопка действия</b>. Меняется в зависимости от сформированного фильтра. Может принимать 4 состояния:<br/><em>Создать(неактивная)</em> - если номер пустой.<br/><em> Создать(активная)</em> - если номер валидный, по нажатию создается новый фильтр.<br/><em>Удалить</em> - если фильтр с таким типом уже существует. По нажатию данный фильтр удаляется.<br/><em>Сменить</em> - если фильтр существует, но с типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение</a>. По нажатию данный фильтр меняет тип на <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a>, при этом кнопка сменяется на Удалить.<br/><br/><b>Список совпадений</b>. Список контактов у которых есть полное или частичное совпадение с фильтром(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>)]]></string>
-    <string name="info_list_permission"><![CDATA[Экран со списком созданных <a href="INFO_FILTER">Фильтров</a> с типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение</a>, отсортированных по дате создания.<br/><br/>При нажатии на любой фильтр списка происходит переход на экран <a href="INFO_DETAILS_PERMISSION">Разрешение</a> с деталями фильтра.<br/><br/>При нажатии на кнопку <img src =\'ic_create_button\'> открывается подменю с признаками по области совпадения. При выборе происходит переход на соответствующий экран <a href="INFO_CREATE_PERMISSION_FULL">Создание разрешения(Полный номер)</a>, <a href="INFO_CREATE_PERMISSION_START">Создание разрешения(Начинается)</a> или <a href="INFO_CREATE_PERMISSION_CONTAIN">Создание разрешения(Содержит)</a>.<br/><br/>Если список не пустой становятся доступными:<br/><br/><img src =\'ic_filter_list\'> <b>Фильтрация списка по признаку</b> <br/>Происходит фильтрация по области совпадения: Полный номер, Начинается, Содержит.<br/><br/><img src =\'ic_search\'> <b>Поиск по номеру</b><br/>Происходит поиск по номеру.<br/><br/><img src =\'ic_delete\'> <b>Удаление фильтра</b><br/>Активируется долгим нажатием на любой фильтр списка. Доступно одиночное и списочное удаление.]]></string>
-    <string name="info_details_permission"><![CDATA[Экран с подробной информацией созданного <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешения</a>.<br/><br/>Кроме общей информации о фильтре имеет дополнительную о количестве связанных контактов и вызовов с полным списком к каждому:<br/><br/><img src =\'ic_list_tab_1\'> Список контактов у которых есть полное или частичное(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>) совпадение с фильтром;<br/><br/><img src =\'ic_list_tab_2\'> Список вызовов из журнала, которые были разрешены данным фильтром.<br/><br/>Доступны две операции с разрешением:<br/><br/>Кнопка <b>Удаление</b> - полностью удаляет фильтр.<br/><br/>Кнопка <b>Смена</b> - меняет тип фильтра на <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a>]]></string>
-    <string name="info_create_permission_full"><![CDATA[Экран создания <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешения</a> с областью совпадения <img src =\'ic_full_condition\'><b>Полный номер</b>. <br/><br/>На экране доступны:<br/><br/><b>Подробности</b> создаваемого фильтра. Отображена информация: номер, тип фильтра, признак области применения, информация о доступных действиях с создаваемым фильтром.<br/><br/><b>Код страны</b>. Информация о стране телефонного номера с отображением телефонного кода. По нажатию вызывается окно смены кода со списком предлагаемых стран.<br/><br/><b>Поле ввода номера</b>. Содержит маску согласно формата номера выбранной страны. Содержит знаки # для замены на цифры(количество символов # соответствует количеству знаков национального номера выбранной страны) и другие символы согласно маски.<br/><br/><b>Кнопка действия</b>. Меняется в зависимости от сформированного фильтра. Может принимать 4 состояния:<br/><em>Создать(неактивная)</em> - если номер неполный или невалидный для данной страны.<br/><em> Создать(активная)</em> - если номер валидный, по нажатию создается новый фильтр.<br/><em>Удалить</em> - если фильтр с таким типом уже существует. По нажатию данный фильтр удаляется.<br/><em>Сменить</em> - если фильтр существует, но с типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a>. По нажатию данный фильтр меняет тип на <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение</a>, при этом кнопка сменяется на Удалить.<br/><br/><b>Список совпадений</b>. Список контактов у которых есть полное или частичное совпадение с фильтром(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>)]]></string>
-    <string name="info_create_permission_start"><![CDATA[Экран создания <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешения</a> с областью совпадения <img src =\'ic_start_condition\'><b>Начинается</b>. <br/><br/>На экране доступны:<br/><br/><b>Подробности</b> создаваемого фильтра. Отображена информация: номер, тип фильтра, признак области применения, информация о доступных действиях с создаваемым фильтром.<br/><br/><b>Код страны</b>. Информация о стране телефонного номера с отображением телефонного кода. По нажатию вызывается окно смены кода со списком предлагаемых стран.<br/><br/><b>Поле ввода номера</b>. Содержит маску в формате количество знаков национального номера выбранной страны минус один символами # для замены на цифры.<br/><br/><b>Кнопка действия</b>. Меняется в зависимости от сформированного фильтра. Может принимать 3 состояния:<br/><em> Создать(активная)</em> - если номер валидный, по нажатию создается новый фильтр.<br/><em>Удалить</em> - если фильтр с таким типом уже существует. По нажатию данный фильтр удаляется.<br/><em>Сменить</em> - если фильтр существует, но с типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a>. По нажатию данный фильтр меняет тип на <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение</a>, при этом кнопка сменяется на Удалить.<br/><br/><b>Список совпадений</b>. Список контактов у которых есть полное или частичное совпадение с фильтром(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>)]]></string>
-    <string name="info_create_permission_contain"><![CDATA[Экран создания <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешения</a> с областью совпадения <img src =\'ic_contain_condition\'><b>Содержит</b>. <br/><br/>На экране доступны:<br/><br/><b>Подробности</b> создаваемого фильтра. Отображена информация: номер, тип фильтра, признак области применения, информация о доступных действиях с создаваемым фильтром.<br/><br/><b>Поле ввода номера</b>. Не содержит маски и не имеет ограничений в количестве введенных знаков.<br/><br/><b>Кнопка действия</b>. Меняется в зависимости от сформированного фильтра. Может принимать 4 состояния:<br/><em>Создать(неактивная)</em> - если номер пустой.<br/><em> Создать(активная)</em> - если номер валидный, по нажатию создается новый фильтр.<br/><em>Удалить</em> - если фильтр с таким типом уже существует. По нажатию данный фильтр удаляется.<br/><em>Сменить</em> - если фильтр существует, но с типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокировщик</a>. По нажатию данный фильтр меняет тип на <img src =\'ic_permission\'><a href="INFO_PERMISSION">Разрешение</a>, при этом кнопка сменяется на Удалить.<br/><br/><b>Список совпадений</b>. Список контактов у которых есть полное или частичное совпадение с фильтром(подробнее <a href="INFO_INCOMPLETE_NUMBERS">Неполные номера</a>)]]></string>
-    <string name="info_list_call"><![CDATA[Экран со списком <img src =\'ic_call\'><a href="INFO_CALL">Вызовов</a> телефона, отсортированных и сгруппированных по дате. <br/><br/>При нажатии на любой вызов списка происходит переход на экран <a href="INFO_DETAILS_NUMBER_DATA">Номер</a> с деталями номера вызова.<br/><br/>Если список не пустой становятся доступными:<br/><br/><img src =\'ic_filter_list\'> <b>Фильтрация списка по признаку</b> <br/>Происходит фильтрация по истории совпадения с фильтром: Заблокирован фильтром, Разрешен фильтром.<br/><br/><img src =\'ic_search\'> <b>Поиск по номеру</b><br/>Происходит поиск по номеру телефона и по имени.<br/><br/><img src =\'ic_delete\'> <b>Удаление вызова</b><br/>Удаление доступно только для отфильтрованных вызовов. Заблокированный вызов полностью удаляется из списка и истории. Разрешенный вызов остается в списке, но без признака фильтрации. Активируется долгим нажатием на отфильтрованный вызов. Доступно одиночное и списочное удаление.]]></string>
-    <string name="info_list_contact"><![CDATA[Экран со списком <img src =\'ic_contact\'><a href="INFO_CONTACT">Контактов</a> телефона, отсортированный и сгруппированный по имени контакта.<br/><br/>При нажатии на любой контакт списка происходит переход на экран <a href="INFO_DETAILS_NUMBER_DATA">Номер</a> с деталями номера контакта.<br/><br/>Если список не пустой становятся доступными:<br/><br/><img src =\'ic_filter_list\'> <b>Фильтрация списка по признаку</b><br/>Происходит фильтрация по признаку совпадения с фильтром: С признаком блокировщика, С признаком разрешения.<br/><br/><img src =\'ic_search\'> <b>Поиск по номеру</b><br/>Происходит поиск по номеру и имени контакта.]]></string>
-    <string name="info_details_number_data"><![CDATA[Экран с подробной информацией о номере. Номер может быть взят из списка <img src =\'ic_contact\'><a href="INFO_CONTACT">Контактов</a> или из списка <img src =\'ic_call\'><a href="INFO_CALL">Вызовов</a>. <br/><br/>Отображена общая информация: аватар, номер, имя, валидность(по умолчанию скрыт).<br/><br/>По номеру есть дополнительная информация:<br/><br/><img src =\'ic_list_tab_1\'> Список фильтров, у которых имеются совпадения с данным фильтром, выстроенных согласно <a href="INFO_PRIORITY_RULES">Правила приоритетности</a>.<br/><br/><img src =\'ic_list_tab_2\'> Список вызовов по этому номеру, которые были отфильтрованы.<br/><br/>Доступны две операции с номером:<br/><br/>Кнопка <img src =\'ic_blocker_list\'><b>Создание</b> - переносит номер на экран Создание блокировщика. Перед переходом необходимо выбрать признак по области применения: Полный номер, Начинается, Содержит.<br/><br/>Кнопка <img src =\'ic_permission_list\'><b>Создание</b> - переносит номер на экран Создание разрешения. Перед переходом необходимо выбрать признак по области применения: Полный номер, Начинается, Содержит.<br/><br/>Если номер скрыт то доступна только:<br/>Кнопка <img src =\'ic_settings\'><b>Настройки</b> - переносит на экран с настройками, где можно включить или отключить опция блокирования скрытых номеров.]]></string>
-    <string name="info_priority_rules"><![CDATA[К номеру у которого нашлись совпадения с более чем одним фильтром будет применен фильтр, который будет соответствовать критерию: <br/>* у которого больше знаков в номере<br/>В случае совпадения количества знаков второму критерию:<br/>* у которого меньше индекс начала совпадения в номере<br/><br/>Пример для номера +380502711344.<br/>Список фильтров(в порядке приоритетности от высокого к низкому):<br/>1. <img src =\'ic_full_condition\'>Полный номер <b>+380502711344</b> совпадение: <b>+380502711344</b> (13 символов, индекс - 0)<br/>2. <img src =\'ic_start_condition\'>Начинается <b>+38050</b> совпадение: <b>+38050</b>2711344 (6 символов, индекс - 0)<br/>3. <img src =\'ic_contain_condition\'>Содержит <b>711344</b> совпадение: +380502<b>711344</b> (6 символов, индекс - 6)<br/>4. <img src =\'ic_start_condition\'>Начинается <b>+3805</b> совпадение: <b>+3805</b>02711344 (5 символов, индекс - 0)<br/>5. <img src =\'ic_contain_condition\'>Содержит <b>7113</b> совпадение: +380502<b>7113</b>44 (4 символа, индекс - 6)<br/>6. <img src =\'ic_contain_condition\'>Содержит <b>1344</b> совпадение: +38050271<b>1344</b> (4 символа, индекс - 9)]]></string>
-    <string name="info_incomplete_numbers"><![CDATA[<b>Неполный номер</b> – номер из списка контактов или вызовов, который имеет отклонение от стандартного для входящего вызова формата: “+код страны” “национальный номер”.<br/>Пример полного номера: <img src =\'ic_contact\'>Контакт +380502711344.<br/><br/>Отклонения включают в себя одно из или оба сразу признака:<br/>1. <b>Наличие нецифровых символов</b>Пример: <img src =\'ic_contact\'>Контакт +38 (050) 271–13–44.<br/>Для корректного сравнения номера с фильтром Smart Blocker уберет все нецифровые символы.</b>Номер <img src =\'ic_contact\'>Контакт +38 (050) 271–13–44 будет преобразован в +380502711344.<br/><br/>2. <b>Отсутствие кода страны.</b><br/>Пример <img src =\'ic_contact\'>Контакт 0502711344.<br/>Для корректного сравнения номера с фильтром типа <img src =\'ic_full_condition\'><b>Полный номер</b> или <img src =\'ic_start_condition\'><b>Начинается</b> Smart Blocker возьмет код страны фильтра, добавит к номеру и в случае валидности такого номера проведет сравнение.<br/>Блокер <img src =\'ic_start_condition\'>Начинается +38050 будет иметь совпадение с <img src =\'ic_contact\'>Контакт 0502711344: +38 и 0502711344 – валидный номер: <b>+38050</b>2711344.<br/><br/>При создании фильтра такие номера будут попадать в отфильтрованный список и иметь формат: “код страны?” “неполный номер”.<br/>Пример <img src =\'ic_contact\'>Контакт  +380? (050) 271–13–44.]]></string>
+    <string name="info_filter"><![CDATA[<b>Фільтр</b> - номер, створений користувачем у додатку Smart Blocker, який аналізує вхідний </a><img src =\'ic_call\'><a href="INFO_CALL">Виклик та у разі збігу в заданій області керує ним.<br/><br/>За характером управління викликами фільтри поділяються на два типи: <br/><br/><img src = ic_blocker <a href=" INFO_BLOCKER">Блокувальник</a> - блокують вхідний виклик;<br/><br/><img src =\'ic_permission\'><a href="INFO_PERMISSION" target="_blank">Дозвіл</a> - дозволяє вхідний виклик;<br/><br/>По області збігу з вхідним викликом діляться за трьома ознаками:<br/><br/><img src =\'ic_full_condition\'><b>Повний номер</b> - повний збіг з вхідним викликом;<br/>Приклад: Вхідний виклик <img src =\'ic_call_incoming\'><b>+380502711344</b> має збіг з фільтром <img src =\'ic_full_condition\'>+3805 ;<br/><br/><img src =\'ic_start_condition\'><b>Починається</b> - збіг по початку вхідного виклику;<br/>Приклад: Вхідний виклик <img src =\'ic_call_incoming\'><b>+380502</b>711344 має збіг з фільтром <img src =\'ic_start_condition\'>+380502;<br/><br/><img src =\'ic_contain_condition\'><b> Містить</b> - збіг у будь-якому місці вхідного виклику.<br/>Приклад: Вхідний виклик <img src =\'ic_call_incoming\'>+38050<b>2711344</b> має збіг з фільтром <img src =\'ic_contain_condition\'>2711344;<br/><br/>У разі збігу номера з іншими фільтрами набирає чинності <a href="INFO_PRIORITY_RULES">Правило пріоритетності.</a>]]></string>
+    <string name="info_blocker"><![CDATA[<img src =\'ic_blocker\'><b>Блокувальник</b> - фільтр, створений користувачем у додатку Smart Blocker, для блокування вхідних <img src =\'ic_call\'> <a href= "INFO_CALL" >Виклики</a> телефону.<br/><br/>Для кожного Блокувальника доступна інформація: номер фільтра, тип управління, область збігу, час створення, збіги з контактами.<br/><br/>Приклад :<br/><img src =\'ic_item_blocker\'>]]></string>
+    <string name="info_permission"><![CDATA[<img src =\'ic_permission\'><b>Дозвіл</b> - фільтр, створений користувачем у додатку Smart Blocker, для дозволу вхідних <img src =\'ic_call\'><a href= "INFO_CALL">Виклики</a> телефону, навіть якщо номер має збіги з блокувальником.<br/><br/>Для кожного Дозвіл доступна інформація: номер фільтра, тип управління, область збігу, час створення, збіги з контактами. <br/><br/>Приклад:<br/><img src =\'ic_item_permission\'>]]></string>
+    <string name="info_call"><![CDATA[<img src =\'ic_call\'><b>Виклик</b> - з\'єднання між телефонними абонентами за допомогою телефонних номерів.<br/><br/>Для кожного Виклику доступна інформація: аватар, номер, ім\'я, валідність номера (за замовчуванням прихований), час, тип виклику, ознака фільтрації.<br/><br/>Приклад:<br/><img src =\'ic_item_call\'> <br/><br/> У додатку Smart Blocker виклики поділяються на:<br/><br/>Стандартні:<br/><img src =\'ic_call_outcoming\'> Вихідний;<br/><img src =\'ic_call_incoming\'> Вхідний; <br/><img src =\'ic_call_missed\'> Пропущений;<br/><img src =\'ic_call_rejected\'> Відхилений;<br/><br/>Відфільтровані:<br/><img src = \'ic_call_incoming_permitted\'> Вхідний (дозволений фільтром);<br/><img src =\'ic_call_missed_permitted\'> Пропущений(дозволений фільтром);<br/><img src =\'ic_call_rejected_permitted\'> Відхилений(дозволений фільтром);<br/><img src =\'ic_call_blocked\'> Заблокований фільтром або налаштуваннями програми Smart Blocker;]]></string>
+    <string name="info_contact"><![CDATA[<img src =\'ic_contact\'><b>Контакт</b> - запис, що містить інформацію про людину або організацію, яка зберігається в адресній книзі вашого телефону або облікового запису.<br/><br/ >Для кожного Контакту доступна інформація: аватар, номер, ім\'я, ознака збігу з фільтром.<br/><br/>Приклад:<br/><img src =\'ic_item_contact\'>]]></string>
+    <string name="info_list_blocker"><![CDATA[Екран зі списком створених <a href="INFO_FILTER">Фільтрів</a> з типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>, відсортованих за дату створення.<br/><br/>При натисканні на будь-який фільтр списку відбувається перехід на екран <a href="INFO_DETAILS_BLOCKER">Блокувальник</a> з деталями фільтра.<br/><br/>При натисканні на кнопку <img src =\'ic_create_button\'> відкривається підменю з ознаками в області збігу. При виборі відбувається перехід на відповідний екран <a href="INFO_CREATE_BLOCKER_FULL">Створення блокувальника(Повний номер)</a>, <a href="INFO_CREATE_BLOCKER_START">Створення блокувальника(починається)</a> або <a href="INFO_C ">Створення блокувальника(Вміст)</a>.<br/><br/>Якщо список не порожній стають доступними:<br/><br/><img src =\'ic_filter_list\'> <b>Фільтрація списку за ознакою</b> <br/>Відбувається фільтрація по області збігу: Повний номер, Починається, Містить.<br/><br/><img src =\'ic_search\'> <b>Пошук за номером</b> ><br/>Відбувається пошук за номером.<br/><br/><img src =\'ic_delete\'> <b>Видалення фільтра</b><br/>Активується довгим натисканням на будь-який фільтр списку. Доступно одиночне та спискове видалення.]]></string>
+    <string name="info_details_blocker"><![CDATA[Екран з детальною інформацією створеного <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальника</a>.<br/><br/>Крім загальної інформації про фільтр має додаткову інформацію кількості пов\'язаних контактів та викликів з повним списком до кожного:<br/><img src =\'ic_list_tab_one\'> Список контактів, у яких є повне або часткове (докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>) збіг з фільтром;<br/><img src =\'ic_list_tab_2\'> Список викликів з журналу, які були заблоковані даним фільтром.<br/><br/>Доступні дві операції з блокувальником:<br/>Кнопка <b >Видалення</b> - повністю видаляє фільтр.<br/>Кнопка <b>Зміна</b> - змінює тип фільтра на <img src =\'ic_permission\'><a href="INFO_PERMISSION">Роздільна здатність.</a>]]></string>
+    <string name="info_create_blocker_full"><![CDATA[Екран створення <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальника</a> з областю збігу <img src =\'ic_full_condition\'><b>Повний номер</b >. <br/><br/>На екрані доступні:<br/><br/><b>Подробиці</b> створюваного фільтра. Відображена інформація: номер, тип фільтра, ознака області збігу, інформація про доступні дії з створюваним фільтром.<br/><br/><b>Код країни</b>. Інформація про країну номера з відображенням телефонного коду. Натискання викликає вікно зміни коду зі списком пропонованих країн.<br/><br/><b>Поле введення номера</b>. Містить маску відповідно до формату вибраної країни. Містить символи # для заміни на цифри (кількість символів # відповідає кількості символів національного номера обраної країни) та інші символи відповідно до маски.<br/><br/><b>Кнопка дії</b>. Змінюється залежно від сформованого фільтра. Може приймати 4 стани:<br/><em>Створити(неактивна)</em> - якщо номер неповний або невалідний для цієї країни.<br/><em>Створити(активна)</em> - якщо номер валідний, після натискання створюється новий фільтр.<br/><em>Видалити</em> - якщо фільтр з таким типом вже існує. За натисканням цей фільтр видаляється.<br/><em>Змінити</em> - якщо фільтр існує, але з типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозвіл</a>. Після натискання цей фільтр змінює тип <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>.<br/><br/><b>Список збігів</b>. Список контактів, які мають повний або частковий збіг з фільтром(докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>)]]></string>
+    <string name="info_create_blocker_start"><![CDATA[Екран створення <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальника</a> з областю збігу <img src =\'ic_start_condition\'><b>Починається</b >. <br/><br/>На екрані доступні:<br/><br/><b>Подробиці</b> створюваного фільтра. Відображена інформація: номер, тип фільтра, ознака області збігу,, інформація про доступні дії з створюваним фільтром.<br/><br/><b>Код країни</b>. Інформація про країну номера з відображенням телефонного коду. Натискання викликає вікно зміни коду зі списком пропонованих країн.<br/><br/><b>Поле введення номера</b>. Містить маску у форматі кількість символів національного номера обраної країни мінус один символами # для заміни цифр.<br/><br/><b>Кнопка дії</b>. Змінюється залежно від сформованого фільтра. Може приймати 3 стани:<br/><em> Створити(активна)</em> - за натисканням створюється новий фільтр.<br/><em>Видалити</em> - якщо фільтр з таким типом вже існує. За натисканням цей фільтр видаляється.<br/><em>Змінити</em> - якщо фільтр існує, але з типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозвіл</a>. Після натискання цей фільтр змінює тип <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>.<br/><br/><b>Список збігів</b>. Список контактів, які мають повний або частковий збіг з фільтром(докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>)]]></string>
+    <string name="info_create_blocker_contain"><![CDATA[Екран створення <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальника</a> з областю збігу <img src =\'ic_contain_condition\'><b>Утримує</b >. <br/><br/>На екрані доступні:<br/><br/><b>Подробиці</b> створюваного фільтра. Відображена інформація: номер, тип фільтра, ознака області збігу, інформація про доступні дії з створюваним фільтром.<br/><br/><b>Поле введення номера</b>. Не містить маски та не має обмежень у кількості введених знаків.<br/><br/><b>Кнопка дії</b>. Змінюється залежно від сформованого фільтра. Може приймати 4 стани:<br/><em>Створити(неактивна)</em> - якщо номер порожній.<br/><em> Створити(активна)</em> - якщо номер має якнайменш одну цифру, за натисканням створюється новий фільтр .<br/><em>Видалити</em> - якщо фільтр з таким типом вже існує. За натисканням цей фільтр видаляється.<br/><em>Змінити</em> - якщо фільтр існує, але з типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозвіл</a>. Після натискання цей фільтр змінює тип <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>.<br/><br/><b>Список збігів</b>. Список контактів, які мають повний або частковий збіг з фільтром(докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>)]]></string>
+    <string name="info_list_permission"><![CDATA[Екран зі списком створених <a href="INFO_FILTER">Фільтрів</a> з типом <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозвіл</a>, відсортовані за датою створення.<br/><br/>При натисканні на будь-який фільтр списку відбувається перехід на екран <a href="INFO_DETAILS_PERMISSION">Дозвіл</a> з деталями фільтра.<br/><br/>При натисканні на кнопку <img src =\'ic_create_button\'> відкривається підменю з ознаками в області збігу. При виборі відбувається перехід на відповідний екран <a href="INFO_CREATE_PERMISSION_FULL">Створення дозволу(Повний номер)</a>, <a href="INFO_CREATE_PERMISSION_START">Створення дозволу(Починається)</a> або <a href="INFO_CREATE ">Створення дозволу(Утримує)</a>.<br/><br/>Якщо список не порожній стають доступними:<br/><br/><img src =\'ic_filter_list\'> <b>Фільтрація списку за ознакою</b> <br/>Відбувається фільтрація по області збігу: Повний номер, Починається, Містить.<br/><br/><img src =\'ic_search\'> <b>Пошук за номером</b> ><br/>Відбувається пошук за номером.<br/><br/><img src =\'ic_delete\'> <b>Видалення фільтра</b><br/>Активується довгим натисканням на будь-який фільтр списку. Доступно одиночне та спискове видалення.]]></string>
+    <string name="info_details_permission"><![CDATA[Екран з детальною інформацією створеного <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозволу</a>.<br/><br/>Крім загальної інформації про фільтр має додаткову інформацію кількості пов\'язаних контактів та викликів з повним списком до кожного:<br/><img src =\'ic_list_tab_one\'> Список контактів, у яких є повне або часткове (докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>) збіг з фільтром;<br/><img src =\'ic_list_tab_2\'> Список викликів з журналу, які були дозволені даним фільтром.<br/><br/>Доступні дві операції з роздільною здатністю:<br/>Кнопка <b >Видалення</b> - повністю видаляє фільтр.<br/>Кнопка <b>Зміна</b> - змінює тип фільтра на <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>]]></string>
+    <string name="info_create_permission_full"><![CDATA[Екран створення <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозволи</a> з областю збігу <img src =\'ic_full_condition\'><b>Повний номер</ b>. <br/><br/>На екрані доступні:<br/><br/><b>Подробиці</b> створюваного фільтра. Відображена інформація: номер, тип фільтра, ознака області збігу, інформація про доступні дії з створюваним фільтром.<br/><br/><b>Код країни</b>. Інформація про країну номера з відображенням телефонного коду. Натискання викликає вікно зміни коду зі списком пропонованих країн.<br/><br/><b>Поле введення номера</b>. Містить маску відповідно до формату вибраної країни. Містить символи # для заміни на цифри (кількість символів # відповідає кількості символів національного номера обраної країни) та інші символи відповідно до маски.<br/><br/><b>Кнопка дії</b>. Змінюється залежно від сформованого фільтра. Може приймати 4 стани:<br/><em>Створити(неактивна)</em> - якщо номер неповний або невалідний для цієї країни.<br/><em>Створити(активна)</em> - якщо номер валідний, після натискання створюється новий фільтр.<br/><em>Видалити</em> - якщо фільтр з таким типом вже існує. За натисканням фільтр видаляється.<br/><em>Змінити</em> - якщо фільтр існує, але з типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>. Після натискання цей фільтр змінює тип <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозвол</a>.<br/><br/><b>Список збігів</b>. Список контактів, які мають повний або частковий збіг з фільтром(докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>)]]></string>
+    <string name="info_create_permission_start"><![CDATA[Екран створення <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозволи</a> з областю збігу <img src =\'ic_start_condition\'><b>Починається</b >. <br/><br/>На екрані доступні:<br/><br/><b>Подробиці</b> створюваного фільтра. Відображена інформація: номер, тип фільтра, ознака області збігу, інформація про доступні дії з створюваним фільтром.<br/><br/><b>Код країни</b>. Інформація про країну номера з відображенням телефонного коду. Натискання викликає вікно зміни коду зі списком пропонованих країн.<br/><br/><b>Поле введення номера</b>. Містить маску у форматі кількість символів національного номера обраної країни мінус один символами # для заміни цифр.<br/><br/><b>Кнопка дії</b>. Змінюється залежно від сформованого фільтра. Може приймати 3 стани:<br/><em> Створити(активна)</em> - за натисканням створюється новий фільтр.<br/><em>Видалити</em> - якщо фільтр з таким типом вже існує. За натисканням фільтр видаляється.<br/><em>Змінити</em> - якщо фільтр існує, але з типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>. Після натискання цей фільтр змінює тип <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозвол</a>.<br/><br/><b>Список збігів</b>. Список контактів, які мають повний або частковий збіг з фільтром(докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>)]]></string>
+    <string name="info_create_permission_contain"><![CDATA[Екран створення <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозволи</a> з областю збігу <img src =\'ic_contain_condition\'><b>Утримує</b >. <br/><br/>На екрані доступні:<br/><br/><b>Подробиці</b> створюваного фільтра. Відображена інформація: номер, тип фільтра, ознака області збігу, інформація про доступні дії з створюваним фільтром.<br/><br/><b>Поле введення номера</b>. Не містить маски та не має обмежень у кількості введених знаків.<br/><br/><b>Кнопка дії</b>. Змінюється залежно від сформованого фільтра. Може приймати 4 стани:<br/><em>Створити(неактивна)</em> - якщо номер порожній.<br/><em> Створити(активна)</em> - якщо номер має якнайменш одну цифру, за натисканням створюється новий фільтр .<br/><em>Видалити</em> - якщо фільтр з таким типом вже існує. За натисканням фільтр видаляється.<br/><em>Змінити</em> - якщо фільтр існує, але з типом <img src =\'ic_blocker\'><a href="INFO_BLOCKER">Блокувальник</a>. Після натискання цей фільтр змінює тип <img src =\'ic_permission\'><a href="INFO_PERMISSION">Дозвол</a>.<br/><br/><b>Список збігів</b>. Список контактів, які мають повний або частковий збіг з фільтром(докладніше <a href="INFO_INCOMPLETE_NUMBERS">Неповні номери</a>)]]></string>
+    <string name="info_list_call"><![CDATA[Екран зі списком <img src =\'ic_call\'><a href="INFO_CALL">Викликів</a> телефону, відсортованих та згрупованих за датою. <br/><br/>При натисканні на будь-який виклик списку відбувається перехід на екран <a href="INFO_DETAILS_NUMBER_DATA">Номер</a> з деталями номера виклику.<br/><br/>Якщо список не порожній стають доступними :<br/><br/><img src =\'ic_filter_list\'> <b>Фільтрування списку за ознакою</b> <br/>Відбувається фільтрація з історії збігу з фільтром: Заблокований фільтром, Дозволений фільтром.<br/><br/><img src =\'ic_search\'> <b>Пошук за номером</b><br/>Відбувається пошук за номером телефону та на ім\'я.<br/><br/><img src =\'ic_delete\'> <b>Видалення дзвінка</b><br/>Видалення доступне лише для відфільтрованих дзвінків. Заблокований виклик повністю видаляється зі списку та історії. Дозволений дзвінок залишається у списку, але без ознаки фільтрації. Активується довгим натисканням на відфільтрований дзвінок. Доступно одиночне та спискове видалення.]]></string>
+    <string name="info_list_contact"><![CDATA[Екран зі списком <img src =\'ic_contact\'><a href="INFO_CONTACT">Контактів</a> телефону, відсортований та згрупований за ім\'ям контакту.<br/><br/>При натисканні на будь-який контакт списку відбувається перехід на екран <a href="INFO_DETAILS_NUMBER_DATA">Номер</a> з деталями номера контакту.<br/><br/>Якщо список не порожній стають доступними:<br/><br/>< img src =\'ic_filter_list\'> <b>Фільтрування списку за ознакою</b><br/>Відбувається фільтрація за ознакою збігу з фільтром: З ознакою блокувальника, З ознакою дозволу.<br/><br/><img src =\'ic_search\'> <b>Пошук за номером</b><br/>Відбувається пошук за номером та ім\'ям контакту.]]></string>
+    <string name="info_details_number_data"><![CDATA[Екран з детальною інформацією про номер. Номер може бути взятий зі списку <img src =\'ic_contact\'><a href="INFO_CONTACT">Контактів</a> або зі списку <img src =\'ic_call\'><a href="INFO_CALL"> Дзвінків</a>. <br/><br/>Відображена загальна інформація: аватар, номер, ім\'я, валідність(за замовчуванням прихований).<br/><br/>За номером є додаткова інформація:<br/><img src =\'ic_list_tab_one \'> Список фільтрів, які мають збіги з цим фільтром, побудованих згідно <a href="INFO_PRIORITY_RULES">Правила пріоритетності</a>.<br/><img src =\'ic_list_tab_2\'> Список викликів за цим номером , які були відфільтровані.<br/><br/>Доступні дві операції з номером:<br/>Кнопка <img src =\'ic_blocker_list\'><b>Створення</b> - переносить номер на екран Створення блокувальника. Перед переходом необхідно вибрати ознаку зони збігу: Повний номер, Починається, Містить.<br/>Кнопка <img src =\'ic_permission_list\'><b>Створення</b> - переносить номер на екран Створення дозволу. Перед переходом необхідно вибрати ознаку по області збігу: Повний номер, Починається, Містить. </b> - переносить на екран з налаштуваннями, де можна увімкнути або вимкнути опцію блокування прихованих номерів.]]></string>
+    <string name="info_priority_rules"><![CDATA[До номера у якого знайшлися збіги з більш ніж одним фільтром буде застосований фільтр, який відповідатиме критерію: <br/>* у якого більше знаків у номері<br/>У разі збігу кількості знаків другому критерію:<br> />* у якого менший індекс початку збігу в номері<br/><br/>Приклад для номера +380502711344.<br/><br/>Список фільтрів(в порядку пріоритетності від високого до низького):<br/>1 . <img src =\'ic_full_condition\'>Повний номер <b>+380502711344</b> збіг: <b>+380502711344</b> (13 символів, індекс - 0)<br/>2. <img src =\'ic_start_condition\'>Починається <b>+38050</b> збіг: <b>+38050</b>2711344 (6 символів, індекс - 0)<br/>3. <img src =\'ic_contain_condition\'>містить <b>711344</b> збіг: +380502<b>711344</b> (6 символів, індекс - 6)<br/>4. <img src =\'ic_start_condition\'>Починається <b>+3805</b> збіг: <b>+3805</b>02711344 (5 символів, індекс - 0)<br/>5. <img src =\'ic_contain_condition\'>містить <b>7113</b> збіг: +380502<b>7113</b>44 (4 символи, індекс - 6)<br/>6. <img src =\'ic_contain_condition\'>містить <b>1344</b> збіг: +38050271<b>1344</b> (4 символи, індекс - 9)]]></string>
+    <string name="info_incomplete_numbers"><![CDATA[<b>Неповний номер</b> – номер зі списку <img src =\'ic_contact\'><a href="INFO_CONTACT">Контактів</a> або зі списку <img src =\'ic_call\'><a href="INFO_CALL"> Дзвінків</a>, який має відхилення від стандартного для вхідного виклику формату: “+код країни” “національний номер”.<br/>Приклад повного номера: <img src =\'ic_contact\'>Контакт +380502711344.<br/><br/>Відхилення включають одне з або обидві відразу ознаки:<br/>1. <b>Наявність нецифрових символів</b>(крім знака “+” спочатку): пробіл, дужки, дефіс та ін.<br/>Приклад: <img src =\'ic_contact\'>Контакт +38 (050) 271–13–44.<br/>Для коректного порівняння номера з фільтром Smart Blocker прибере всі нецифрові символи.</b>Номер <img src =\'ic_contact\'>Контакт +38 (050) 271–13–44 буде перетворено у +380502711344.<br/><br/>2. <b>Відсутність коду країни.</b><br/>Приклад <img src =\'ic_contact\'>Контакт 0502711344.<br/>Для коректного порівняння номера з фільтром типу <img src =\'ic_full_condition\'> <b>Повний номер</b> або <img src =\'ic_start_condition\'><b>Починається</b> Smart Blocker візьме код країни фільтра, додасть до номера і у разі валідності такого номера проведе порівняння.<br/ >Блокер <img src =\'ic_start_condition\'>Починається +38050 матиме збіг з <img src =\'ic_contact\'>Контакт 0502711344: +38 та 0502711344 – валідний номер: <b>+38051</b> .<br/><br/>При створенні фільтра такі номери потраплятимуть у відфільтрований список і будуть мати формат: “код країни?” “неповний номер”.<br/>Приклад <img src =\'ic_contact\'>Контакт +380? (050) 271–13–44.]]></string>
     <!--Empty state-->
-    <string name="empty_state_blockers">Список блокировщиков пуст</string>
-    <string name="empty_state_permissions">Список разрешений пуст</string>
-    <string name="empty_state_contacts">Список контактов пуст</string>
-    <string name="empty_state_calls">Журнал звонков пуст</string>
-    <string name="empty_state_query">С такими параметрами ничего не найдено</string>
-    <string name="empty_state_add_filter">С такими параметрами номеров не найдено</string>
-    <string name="empty_state_filters">По этому номеру совпадений с фильтрами не найдено</string>
-    <string name="empty_state_numbers">По этому фильтру совпадений с номерами не найдено</string>
-    <string name="empty_state_filtered_calls">С такими параметрами отфильтрованных вызовов не найдено</string>
-    <string name="empty_state_hidden">Управление скрытыми номерами осуществляется системными настройками. Для изменения перейдите в "Настройки"</string>
-    <string name="empty_state_account">Вы вошли незарегистрированным пользователем</string>
+    <string name="empty_state_blockers">Список блокувальників порожній</string>
+    <string name="empty_state_permissions">Список дозволів порожній</string>
+    <string name="empty_state_contacts">Список контактів порожній</string>
+    <string name="empty_state_calls">Журнал дзвінків порожній</string>
+    <string name="empty_state_query">З такими параметрами нічого не знайдено</string>
+    <string name="empty_state_add_filter">З такими параметрами номерів не знайдено</string>
+    <string name="empty_state_filters">За цим номером збігів з фільтрами не знайдено</string>
+    <string name="empty_state_numbers">За цим фільтром збігів з номерами не знайдено</string>
+    <string name="empty_state_filtered_calls">З такими параметрами відфільтрованих дзвінків не знайдено</string>
+    <string name="empty_state_hidden">Керування прихованими номерами здійснюється системними налаштуваннями. Щоб змінити, перейдіть до "Налаштування"</string>
+    <string name="empty_state_account">Ви увійшли незареєстрованим користувачем</string>
     <!--Progress-->
-    <string name="progress_data_collect">Сбор информации</string>
-    <string name="progress_collect_localizations">Получение данных локализации</string>
-    <string name="progress_collect_contacts">Получение списка контактов</string>
-    <string name="progress_collect_calls">Получение списка звонков</string>
-    <string name="progress_update_localizations">Обновление данных локализации</string>
-    <string name="progress_update_contacts">Обновление списка контактов</string>
-    <string name="progress_update_calls">Обновление списка звонков</string>
+    <string name="progress_data_collect">Збір інформації</string>
+    <string name="progress_collect_localizations">Отримання даних локалізації</string>
+    <string name="progress_collect_contacts">Отримання списку контактів</string>
+    <string name="progress_collect_calls">Отримання списку дзвінків</string>
+    <string name="progress_update_localizations">Оновлення даних локалізації</string>
+    <string name="progress_update_contacts">Оновлення списку контактів</string>
+    <string name="progress_update_calls">Оновлення списку дзвінків</string>
     <!--List screens-->
-    <string name="list_blocker">Блокировщики</string>
-    <string name="list_permission">Разрешения</string>
+    <string name="list_blocker">Блокувальники</string>
+    <string name="list_permission">Дозволи</string>
     <plurals name="list_filter_delete_amount">
-        <item quantity="one">%s фильтр</item>
-        <item quantity="few">%s фильтра</item>
-        <item quantity="other">%s фильтров</item>
-        <item quantity="many">%s фильтров</item>
+        <item quantity="one">%s фільтр</item>
+        <item quantity="few">%s фільтра</item>
+        <item quantity="other">%s фільтрів</item>
+        <item quantity="many">%s фільтрів</item>
     </plurals>
-    <string name="list_filter_search_hint">Введите номер</string>
+    <string name="list_filter_search_hint">Введіть номер</string>
     <string name="list_call">Журнал</string>
-    <string name="list_call_delete_info">Можно удалить только отфильтрованные вызовы</string>
+    <string name="list_call_delete_info">Можна видалити лише відфільтровані дзвінки</string>
     <plurals name="list_call_delete_amount">
-        <item quantity="one">Удалить отфильтрованный вызов %s из журнала?</item>
-        <item quantity="other">Удалить %s отфильтрованныx вызовов из журнала?</item>
-        <item quantity="few">Удалить %s отфильтрованныx вызовов из журнала?</item>
-        <item quantity="many">Удалить %s отфильтрованныx вызовов из журнала?</item>
+        <item quantity="one">Видалити відфільтрований виклик %s із журналу?</item>
+        <item quantity="other">Видалити %s відфільтрованих викликів із журналу?</item>
+        <item quantity="few">Видалити %s відфільтрованих викликів із журналу?</item>
+        <item quantity="many">Видалити %s відфільтрованих викликів із журналу?</item>
     </plurals>
-    <string name="list_contact">Контакты</string>
-    <string name="list_number_search_hint">Введите номер или имя</string>
+    <string name="list_contact">Контакти</string>
+    <string name="list_number_search_hint">Введіть номер або ім\'я</string>
     <!--Creating filter-->
-    <string name="creating_filter">Создание фильтра</string>
-    <string name="creating_blocker">Создание Блокировщика</string>
-    <string name="creating_permission">Создание Разрешения</string>
-    <string name="creating_filter_enter_hint">Введите номер</string>
-    <string name="creating_country_code_hint">Название или код</string>
-    <string name="creating_filter_no_data">Нет данных</string>
+    <string name="creating_filter">Створення фільтра</string>
+    <string name="creating_blocker">Створення Блокувальника</string>
+    <string name="creating_permission">Створення Дозволу</string>
+    <string name="creating_filter_enter_hint">Введіть номер</string>
+    <string name="creating_country_code_hint">Назва або код</string>
+    <string name="creating_filter_no_data">Немає даних</string>
     <!--Details number-->
     <string name="details_number">Номер</string>
-    <string name="details_number_incomplete">Неполный</string>
-    <string name="details_number_invalid">Невалидный</string>
-    <string name="details_number_hidden">Скрытый</string>
-    <string name="details_number_not_from_contacts">Номера нет в контактах</string>
-    <string name="details_number_from_call_log">Номер из журнала вызовов</string>
-    <string name="details_filter">Фильтр</string>
+    <string name="details_number_incomplete">Неповний</string>
+    <string name="details_number_invalid">Невалідний</string>
+    <string name="details_number_hidden">Прихований</string>
+    <string name="details_number_not_from_contacts">Номера немає в контактах</string>
+    <string name="details_number_from_call_log">Номер із журналу викликів</string>
+    <string name="details_filter">Фільтр</string>
     <plurals name="details_number_block_contacts">
-        <item quantity="one">Заблокирует %s контакт</item>
-        <item quantity="few">Заблокирует %s контакта</item>
-        <item quantity="other">Заблокирует %s контактов</item>
-        <item quantity="many">Заблокирует %s контактов</item>
+        <item quantity="one">Заблокує %s контакт</item>
+        <item quantity="few">Заблокує %s контакта</item>
+        <item quantity="other">Заблокує %s контактів</item>
+        <item quantity="many">Заблокує %s контактів</item>
     </plurals>
     <plurals name="details_number_permit_contacts">
-        <item quantity="one">Разрешит %s контакт</item>
-        <item quantity="few">Разрешит %s контакта</item>
-        <item quantity="other">Разрешит %s контактов</item>
-        <item quantity="many">Разрешит %s контактов</item>
+        <item quantity="one">Дозволить %s контакт</item>
+        <item quantity="few">Дозволить %s контакта</item>
+        <item quantity="other">Дозволить %s контактів</item>
+        <item quantity="many">Дозволить %s контактів</item>
     </plurals>
     <plurals name="details_number_blocked_calls">
-        <item quantity="one">Заблокирован %s вызов</item>
-        <item quantity="few">Заблокировано %s вызовов</item>
-        <item quantity="other">Заблокировано %s вызовов</item>
-        <item quantity="many">Заблокировано %s вызовов</item>
+        <item quantity="one">Заблоковано %s виклик</item>
+        <item quantity="few">Заблоковано %s дзвінка</item>
+        <item quantity="other">Заблоковано %s дзвінків</item>
+        <item quantity="many">Заблоковано %s дзвінків</item>
     </plurals>
     <plurals name="details_number_permitted_calls">
-        <item quantity="one">Разрешен %s вызов</item>
-        <item quantity="few">Разрешено %s вызовов</item>
-        <item quantity="other">Разрешено %s вызовов</item>
-        <item quantity="many">Разрешено %s вызовов</item>
+        <item quantity="one">Дозволено %s виклик</item>
+        <item quantity="few">Дозволено %s виклика</item>
+        <item quantity="other">Дозволено %s викликів</item>
+        <item quantity="many">Дозволено %s викликів</item>
     </plurals>
-    <string name="details_number_contact_without_filter">Без признаков фильтра</string>
-    <string name="details_number_hidden_on">Блокировка скрытых номеров включена</string>
-    <string name="details_number_hidden_off">Блокировка скрытых номеров отключена</string>
-    <string name="details_number_block_with_filter">Будет заблокирован фильтром:&#160;</string>
-    <string name="details_number_permit_with_filter">Будет разрешен фильтром:&#160;</string>
-    <string name="details_number_call_without_filter">Без совпадения с фильтром</string>
-    <string name="details_number_blocked_by_filter">Заблокирован фильтром:&#160;</string>
-    <string name="details_number_permitted_by_filter">Разрешен фильтром:&#160;</string>
-    <string name="details_number_blocked_by_settings">Заблокирован настройками Smart Blocker&#160;</string>
-    <string name="number_details_close">Закрыть</string>
+    <string name="details_number_contact_without_filter">Без ознак фільтру</string>
+    <string name="details_number_hidden_on">Блокування прихованих номерів увімкнено</string>
+    <string name="details_number_hidden_off">Блокування прихованих номерів вимкнено</string>
+    <string name="details_number_block_with_filter">Буде заблокований фільтром:&#160;</string>
+    <string name="details_number_permit_with_filter">Буде дозволений фільтром:&#160;</string>
+    <string name="details_number_call_without_filter">Без збігу з фільтром</string>
+    <string name="details_number_blocked_by_filter">Заблокований фільтром:&#160;</string>
+    <string name="details_number_permitted_by_filter">Дозволений фільтром:&#160;</string>
+    <string name="details_number_blocked_by_settings">Заблокований налаштуваннями Smart Blocker&#160;</string>
+    <string name="number_details_close">Закрити</string>
     <!--Settings screens-->
-    <string name="settings">Настройки</string>
-    <string name="settings_blocker">Настройки блокировщика</string>
-    <string name="settings_account">Ваш аккаунт</string>
-    <string name="settings_language">Язык</string>
-    <string name="settings_theme">Выбор темы</string>
-    <string name="settings_review">Написать разработчику</string>
-    <string name="settings_privacy">Политика конфиденциальности</string>
+    <string name="settings">Налаштування</string>
+    <string name="settings_blocker">Налаштування блокувальника</string>
+    <string name="settings_account">Ваш обліковий запис</string>
+    <string name="settings_language">Мова</string>
+    <string name="settings_theme">Вибір теми</string>
+    <string name="settings_review">Написати розробнику</string>
+    <string name="settings_privacy">Політика конфіденційності</string>
     <!--Settings blocker-->
-    <string name="settings_blocker_title">Активировать Smart Blocker</string>
-    <string name="settings_blocker_on">Smart Blocker будет управлять входящими вызовами согласно ваших фильтров</string>
-    <string name="settings_blocker_off">Smart Blocker не будет управлять входящими вызовами согласно ваших фильтров</string>
-    <string name="settings_block_hidden_title">Блокировать скрытые номера</string>
-    <string name="settings_block_hidden_on">Smart Blocker будет блокировать скрытые номера</string>
-    <string name="settings_block_hidden_off">Smart Blocker не будет блокировать скрытые номера</string>
-    <string name="settings_block_country_title">Страна по умолчанию</string>
-    <string name="settings_block_country_description">Эта информация нужна что бы Smart Blocker подставил код страны в неполных номерах. Чтоб изменить нажмите на флаг страны.</string>
-    <string name="creating_country_code_title">Выберите страну</string>
+    <string name="settings_blocker_title">Активувати Smart Blocker</string>
+    <string name="settings_blocker_on">Smart Blocker керуватиме вхідними викликами відповідно до ваших фільтрів</string>
+    <string name="settings_blocker_off">Smart Blocker не керуватиме вхідними викликами відповідно до ваших фільтрів</string>
+    <string name="settings_block_hidden_title">Блокувати приховані номери</string>
+    <string name="settings_block_hidden_on">Smart Blocker блокуватиме приховані номери</string>
+    <string name="settings_block_hidden_off">Smart Blocker не блокуватиме приховані номери</string>
+    <string name="settings_block_country_title">Стандартна країна</string>
+    <string name="settings_block_country_description">Ця інформація потрібна щоб Smart Blocker підставив код країни в неповних номерах. Щоб змінити, натисніть на прапор країни.</string>
+    <string name="creating_country_code_title">Виберіть країну</string>
     <!--Settings account-->
-    <string name="settings_account_log_out_title">Выйти</string>
-    <string name="settings_account_change_password_title">Сменить пароль</string>
-    <string name="settings_account_delete_title">Удалить аккаунт</string>
-    <string name="settings_account_enter_current_password">Текущий пароль</string>
-    <string name="settings_account_enter_new_password">Новый пароль</string>
-    <string name="settings_account_change_password_succeed">Пароль успешно изменен</string>
-    <string name="settings_account_log_out">Вы действительно хотите разлогиниться?</string>
-    <string name="settings_account_delete">Вы действительно хотите удалить аккаунт?</string>
+    <string name="settings_account_log_out_title">Вийти</string>
+    <string name="settings_account_change_password_title">Змінити пароль</string>
+    <string name="settings_account_delete_title">Видалити обліковий запис</string>
+    <string name="settings_account_enter_current_password">Поточний пароль</string>
+    <string name="settings_account_enter_new_password">Новий пароль</string>
+    <string name="settings_account_change_password_succeed">Пароль успішно змінено</string>
+    <string name="settings_account_log_out">Ви дійсно хочете розлогинитися?</string>
+    <string name="settings_account_delete">Ви дійсно хочете видалити обліковий запис?</string>
     <!--Settings language-->
-    <string name="settings_language_russian">Русский</string>
-    <string name="settings_language_ukrainian">Украинский</string>
-    <string name="settings_language_english">Английский</string>
+    <string name="settings_language_russian">Українська</string>
+    <string name="settings_language_ukrainian">Український</string>
+    <string name="settings_language_english">Англійська</string>
     <!--Settings theme-->
-    <string name="settings_theme_day">Светлая</string>
-    <string name="settings_theme_night">Темная</string>
-    <string name="settings_theme_auto">Согласно настроек телефона</string>
+    <string name="settings_theme_day">Світла</string>
+    <string name="settings_theme_night">Темна</string>
+    <string name="settings_theme_auto">Згідно з налаштуваннями телефону</string>
     <!--Settings review-->
-    <string name="settings_review_title">Усли у вас есть предложения или замечания вы можете их описать ниже</string>
-    <string name="settings_review_hint">Сообщение</string>
-    <string name="settings_review_send_button">Отправить</string>
-    <string name="settings_review_send_success">Сообщение %s успешно отправлено!</string>
+    <string name="settings_review_title">Якщо у вас є пропозиції або зауваження, ви можете їх описати нижче</string>
+    <string name="settings_review_hint">Повідомлення</string>
+    <string name="settings_review_send_button">Надіслати</string>
+    <string name="settings_review_send_success">Повідомлення %s успішно надіслано!</string>
     <!--Settings privacy-->
-    <string name="privacy_policy" formatted="false"><![CDATA[<html><head><meta charset=\'utf–8\'><meta name=\'viewport\' content=\'width=device–width\'><title>Privacy Policy</title><style>body {font–family: \'Helvetica Neue\', Helvetica, Arial, sans–serif;padding: 1em;}</style></head><body><strong>Privacy Policy</strong><p> Tarasov Volodymyr built the SmartBlocker app as a Commercial app. This SERVICE is provided by Tarasov Volodymyr and is intended for use as is. </p><p> This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service. </p><p> If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy. </p><p> The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at SmartBlocker unless otherwise defined in this Privacy Policy. </p><p><strong>Information Collection and Use</strong></p><p> For a better experience, while using our Service, I may require you to provide us with certain personally identifiable information. The information that I request will be retained on your device and is not collected by me in any way. </p><div><p> The app does use third–party services that may collect information used to identify you. </p><p> Link to the privacy policy of third–party service providers used by the app </p><ul><li><a href="https://www.google.com/policies/privacy/" target="_blank" rel="noopener noreferrer">Google Play Services</a></li><li><a href="AdMob policies and restrictions - Google AdMob Help target=" _blank" rel="noopener noreferrer">AdMob</a></li><li><a href="https://firebase.google.com/policies/analytics" target="_blank" rel="noopener noreferrer">Google Analytics for Firebase</a> </li><li><a href="Firebase Support target=" _blank" rel="noopener noreferrer">Firebase Crashlytics</a></li></ul></div><p><strong>Log Data</strong></p><p> I want to inform you that whenever you use my Service, in a case of an error in the app I collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my Service, the time and date of your use of the Service, and other statistics. </p><p><strong>Cookies</strong></p><p> Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device\'s internal memory. </p><p> This Service does not use these “cookies” explicitly. However, the app may use third\-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service. </p><p><strong>Service Providers</strong></p><p> I may employ third\-party companies and individuals due to the following reasons: </p><ul><li>To facilitate our Service;</li><li>To provide the Service on our behalf;</li><li>To perform Service-related services; or</li><li>To assist us in analyzing how our Service is used.</li></ul><p> I want to inform users of this Service that these third parties have access to their Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose. </p><p><strong>Security</strong></p><p> I value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee its absolute security. </p><p><strong>Links to Other Sites</strong></p><p> This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by me. Therefore, I strongly advise you to review the Privacy Policy of these websites. I have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services. </p><p><strong>Children\’s Privacy</strong></p><div><p> These Services do not address anyone under the age of 13. I do not knowingly collect personally identifiable information from children under 13 years of age. In the case I discover that a child under 13 has provided me with personal information, I immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact me so that I will be able to do the necessary actions. </p></div><p><strong>Changes to This Privacy Policy</strong></p><p> I may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Privacy Policy on this page. </p><p>This policy is effective as of 2023-01-04</p><p><strong>Contact Us</strong></p><p> If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at blockersmart2022@gmail.com. </p></body></html>]]></string>
+    <string name="privacy_policy" formatted="false"><![CDATA[<html><head><meta charset=\'utf–8\'><meta name=\'viewport\' content=\'width=device–width\'><title>Privacy Policy</title><style>body {font–family: \'Helvetica Neue\', Helvetica, Arial, sans–serif;padding: 1em;}</style></head><body><strong>Privacy Policy</strong><p> Tarasov Volodymyr built the SmartBlocker app as a Commercial app. This SERVICE is provided by Tarasov Volodymyr and is intended for use as is. </p><p> This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service. </p><p> If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy. </p><p> The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at SmartBlocker unless otherwise defined in this Privacy Policy. </p><p><strong>Information Collection and Use</strong></p><p> For a better experience, while using our Service, I may require you to provide us with certain personally identifiable information. The information that I request will be retained on your device and is not collected by me in any way. </p><div><p> The app does use third–party services that may collect information used to identify you. </p><p> Link to the privacy policy of third–party service providers used by the app </p><ul><li><a href="https://www.google.com/policies/privacy/" target="_blank" rel="noopener noreferrer">Google Play Services</a></li><li><a href="AdMob policies and restrictions – Google AdMob Help target=" _blank" rel="noopener noreferrer">AdMob</a></li><li><a href="https://firebase.google.com/policies/analytics" target="_blank" rel="noopener noreferrer">Google Analytics for Firebase</a> </li><li><a href="Firebase Support target=" _blank" rel="noopener noreferrer">Firebase Crashlytics</a></li></ul></div><p><strong>Log Data</strong></p><p> I want to inform you that whenever you use my Service, in a case of an error in the app I collect data and information (through third–party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my Service, the time and date of your use of the Service, and other statistics. </p><p><strong>Cookies</strong></p><p> Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device\'s internal memory. </p><p> This Service does not use these “cookies” explicitly. However, the app may use third\–party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service. </p><p><strong>Service Providers</strong></p><p> I may employ third\–party companies and individuals due to the following reasons: </p><ul><li>To facilitate our Service;</li><li>To provide the Service on our behalf;</li><li>To perform Service–related services; or</li><li>To assist us in analyzing how our Service is used.</li></ul><p> I want to inform users of this Service that these third parties have access to their Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose. </p><p><strong>Security</strong></p><p> I value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee its absolute security. </p><p><strong>Links to Other Sites</strong></p><p> This Service may contain links to other sites. If you click on a third–party link, you will be directed to that site. Note that these external sites are not operated by me. Therefore, I strongly advise you to review the Privacy Policy of these websites. I have no control over and assume no responsibility for the content, privacy policies, or practices of any third–party sites or services. </p><p><strong>Children\’s Privacy</strong></p><div><p> These Services do not address anyone under the age of 13. I do not knowingly collect personally identifiable information from children under 13 years of age. In the case I discover that a child under 13 has provided me with personal information, I immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact me so that I will be able to do the necessary actions. </p></div><p><strong>Changes to This Privacy Policy</strong></p><p> I may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Privacy Policy on this page. </p><p>This policy is effective as of 2023–01–04</p><p><strong>Contact Us</strong></p><p> If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at blockersmart2022@gmail.com. </p></body></html>]]></string>
     <!--Filter-->
-    <string name="filter_no_filter">Без фильтрации</string>
-    <string name="filter_condition_title">Фильтровать по:</string>
-    <string name="filter_call_blocked">Заблокирован фильтром</string>
-    <string name="filter_call_permitted">Разрешен фильтром</string>
-    <string name="filter_contact_blocker">C признаком блокировщика</string>
-    <string name="filter_contact_permission">C признаком разрешения</string>
+    <string name="filter_no_filter">Без фільтрації</string>
+    <string name="filter_condition_title">Фільтрувати за:</string>
+    <string name="filter_call_blocked">Заблокований фільтром</string>
+    <string name="filter_call_permitted">Дозволений фільтром</string>
+    <string name="filter_contact_blocker">З ознакою блокувальника</string>
+    <string name="filter_contact_permission">З ознакою дозволу</string>
     <!--Menu item-->
-    <string name="menu_info">Info</string>
-    <string name="menu_delete">Delete</string>
-    <string name="menu_search">Search</string>
-    <string name="unauthorized_enter">У авторизованного пользователя ограниченный функционал, в том числе нет доступа к хранению данных в удаленном доступе. Все равно войти?</string>
-    <string name="error_message">Произошла ошибка</string>
+    <string name="menu_info">Інфо</string>
+    <string name="menu_delete">Видалити</string>
+    <string name="menu_search">Пошук</string>
+    <string name="unauthorized_enter">У авторизованого користувача обмежений функціонал, у тому числі немає доступу до зберігання даних у віддаленому доступі. Все одно увійти?</string>
+    <string name="error_message">Сталася помилка</string>
 
 </resources>
