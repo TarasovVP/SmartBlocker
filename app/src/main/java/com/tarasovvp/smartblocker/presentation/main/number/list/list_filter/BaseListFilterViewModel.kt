@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
@@ -12,15 +13,13 @@ import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class ListFilterViewModel @Inject constructor(
+open class BaseListFilterViewModel(
     private val application: Application,
     private val listFilterUseCase: ListFilterUseCase,
     private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    private val countryCodeUIMapper: CountryCodeUIMapper
+    private val countryCodeUIMapper: CountryCodeUIMapper,
+    val savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application) {
 
     val filterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>?>()

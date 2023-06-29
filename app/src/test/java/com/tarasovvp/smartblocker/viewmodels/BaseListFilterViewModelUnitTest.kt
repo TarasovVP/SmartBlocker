@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNum
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterViewModel
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.BaseListFilterViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
@@ -27,7 +27,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class ListFilterViewModelUnitTest: BaseViewModelUnitTest<ListFilterViewModel>() {
+class BaseListFilterViewModelUnitTest: BaseViewModelUnitTest<BaseListFilterViewModel>() {
 
     @MockK
     private lateinit var useCase: ListFilterUseCase
@@ -38,7 +38,7 @@ class ListFilterViewModelUnitTest: BaseViewModelUnitTest<ListFilterViewModel>() 
     @MockK
     private lateinit var countryCodeUIMapper: CountryCodeUIMapper
 
-    override fun createViewModel() = ListFilterViewModel(application, useCase, filterWithFilteredNumberUIMapper, countryCodeUIMapper)
+    override fun createViewModel() = BaseListFilterViewModel(application, useCase, filterWithFilteredNumberUIMapper, countryCodeUIMapper)
 
     @Test
     fun getFilterListTest() = runTest {

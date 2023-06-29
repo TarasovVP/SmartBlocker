@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
@@ -13,7 +14,8 @@ import javax.inject.Inject
 class ListContactViewModel @Inject constructor(
     application: Application,
     private val listContactUseCase: ListContactUseCase,
-    private val contactWithFilterUIMapper: ContactWithFilterUIMapper
+    private val contactWithFilterUIMapper: ContactWithFilterUIMapper,
+    val savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application) {
 
     val contactListLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
