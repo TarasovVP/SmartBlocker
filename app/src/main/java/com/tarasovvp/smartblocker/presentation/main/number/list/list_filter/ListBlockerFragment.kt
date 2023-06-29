@@ -8,6 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_INDEXES
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SEARCH_QUERY
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
@@ -22,11 +24,13 @@ class ListBlockerFragment : BaseListFilterFragment<ListBlockerFilterViewModel>()
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        viewModel.savedStateHandle[Constants.FILTER_INDEXES] = filterIndexes
+        viewModel.savedStateHandle[FILTER_INDEXES] = filterIndexes
+        viewModel.savedStateHandle[SEARCH_QUERY] = searchQuery
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        filterIndexes = viewModel.savedStateHandle.get<ArrayList<Int>>(Constants.FILTER_INDEXES)
+        filterIndexes = viewModel.savedStateHandle.get<ArrayList<Int>>(FILTER_INDEXES)
+        searchQuery = viewModel.savedStateHandle.get<String>(SEARCH_QUERY)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

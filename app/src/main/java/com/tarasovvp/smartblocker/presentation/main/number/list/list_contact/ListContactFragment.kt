@@ -11,6 +11,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_INDEXES
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SEARCH_QUERY
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
@@ -40,10 +41,12 @@ open class ListContactFragment :
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.savedStateHandle[FILTER_INDEXES] = filterIndexes
+        viewModel.savedStateHandle[SEARCH_QUERY] = searchQuery
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         filterIndexes = viewModel.savedStateHandle.get<ArrayList<Int>>(FILTER_INDEXES)
+        searchQuery = viewModel.savedStateHandle.get<String>(SEARCH_QUERY)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

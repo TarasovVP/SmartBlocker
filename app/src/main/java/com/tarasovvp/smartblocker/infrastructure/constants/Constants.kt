@@ -7,6 +7,7 @@ object Constants {
     const val DIALOG = "dialog"
     const val IS_INSTRUMENTAL_TEST = "isInstrumentalTest"
     const val FILTER_INDEXES = "filterIndexes"
+    const val SEARCH_QUERY = "searchQuery"
 
     //Telephony
     const val LOG_CALL_CALL = "content://call_log/calls"
