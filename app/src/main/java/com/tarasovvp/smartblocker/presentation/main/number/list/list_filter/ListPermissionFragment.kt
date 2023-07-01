@@ -1,9 +1,16 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
+import android.content.Context
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LIST_STATE
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
@@ -37,6 +44,35 @@ class ListPermissionFragment : BaseListFilterFragment<ListPermissionFilterViewMo
                 startCreateFilterScreen()
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.savedStateHandle[LIST_STATE] = recyclerView?.layoutManager?.onSaveInstanceState()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.e("saveStateTAG", "ListPermissionFragment onAttach binding?.listFilterRecyclerView?.adapter?.itemCount ${binding?.listFilterRecyclerView?.adapter?.itemCount}")
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.e("saveStateTAG", "ListPermissionFragment onCreateView viewModel.filterListLiveData ${viewModel.filterListLiveData.value.orEmpty().size} binding?.listFilterRecyclerView?.adapter?.itemCount ${binding?.listFilterRecyclerView?.adapter?.itemCount}")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.e("saveStateTAG", "ListPermissionFragment onViewCreated before viewModel.filterListLiveData ${viewModel.filterListLiveData.value.orEmpty().size} binding?.listFilterRecyclerView?.adapter?.itemCount ${binding?.listFilterRecyclerView?.adapter?.itemCount}")
+        super.onViewCreated(view, savedInstanceState)
+        Log.e("saveStateTAG", "ListPermissionFragment onViewCreated after viewModel.filterListLiveData ${viewModel.filterListLiveData.value.orEmpty().size} binding?.listFilterRecyclerView?.adapter?.itemCount ${binding?.listFilterRecyclerView?.adapter?.itemCount}")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("saveStateTAG", "ListPermissionFragment onPause viewModel.filterListLiveData ${viewModel.filterListLiveData.value.orEmpty().size} binding?.listFilterRecyclerView?.adapter?.itemCount ${binding?.listFilterRecyclerView?.adapter?.itemCount}")
     }
 
     override fun getCurrentCountryCode() {

@@ -6,6 +6,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LIST_STATE
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
@@ -32,6 +33,11 @@ open class ListContactFragment :
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.savedStateHandle[LIST_STATE] = recyclerView?.layoutManager?.onSaveInstanceState()
+    }
+
     override fun initViews() {
         binding?.apply {
             swipeRefresh = listContactRefresh
@@ -48,6 +54,7 @@ open class ListContactFragment :
         setDataList(contactWithFilterList.groupBy {
             if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
         })
+        recyclerView?.layoutManager?.onRestoreInstanceState(viewModel.savedStateHandle[LIST_STATE])
     }
 
     override fun setClickListeners() {

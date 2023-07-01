@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.presentation.base
 
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +46,6 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.e("saveStateTAG", "BaseListFragment onSaveInstanceState filterIndexes $filterIndexes")
         outState.putIntegerArrayList(Constants.FILTER_INDEXES, filterIndexes)
         outState.putString(Constants.SEARCH_QUERY, searchQuery)
     }
@@ -59,13 +57,11 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     ): View? {
         filterIndexes = filterIndexes ?: savedInstanceState?.getIntegerArrayList(Constants.FILTER_INDEXES)
         searchQuery = searchQuery ?: savedInstanceState?.getString(Constants.SEARCH_QUERY)
-        Log.e("saveStateTAG", "BaseListFragment onCreateView filterIndexes $filterIndexes")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("saveStateTAG", "BaseListFragment onViewCreated filterIndexes $filterIndexes")
         setRecyclerView()
         setSearchViewMenu()
         setFilterCheck()

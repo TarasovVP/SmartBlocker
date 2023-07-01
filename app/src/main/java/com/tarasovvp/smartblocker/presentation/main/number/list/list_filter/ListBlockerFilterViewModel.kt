@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
@@ -12,5 +13,6 @@ class ListBlockerFilterViewModel @Inject constructor(
     application: Application,
     listFilterUseCase: ListFilterUseCase,
     filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    countryCodeUIMapper: CountryCodeUIMapper
+    countryCodeUIMapper: CountryCodeUIMapper,
+    val savedStateHandle: SavedStateHandle
 ) : BaseListFilterViewModel(application, listFilterUseCase, filterWithFilteredNumberUIMapper, countryCodeUIMapper)

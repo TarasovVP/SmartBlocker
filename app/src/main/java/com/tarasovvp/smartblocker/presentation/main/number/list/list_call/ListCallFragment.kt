@@ -1,5 +1,11 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
+import android.content.Context
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
@@ -7,6 +13,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LIST_STATE
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
@@ -25,12 +32,13 @@ class ListCallFragment :
     private var isDeleteMode = false
 
     override fun createAdapter(): BaseAdapter<CallWithFilterUIModel>? {
+        Log.e("saveStateTAG", "ListCallFragment createAdapter")
         return context?.let {
-            CallAdapter(object : CallClickListener {
+             CallAdapter(object : CallClickListener {
                 override fun onCallClick(callWithFilter: CallWithFilterUIModel) {
                     findNavController().navigate(
                         ListCallFragmentDirections.startDetailsNumberDataFragment(
-                        callWithFilter)
+                            callWithFilter)
                     )
                 }
 
@@ -53,7 +61,32 @@ class ListCallFragment :
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putIntegerArrayList(Constants.FILTER_INDEXES, filterIndexes)
+        outState.putString(Constants.SEARCH_QUERY, searchQuery)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.e("saveStateTAG", "ListPermissionFragment onAttach binding?.listFilterRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.e("saveStateTAG", "ListCallFragment onCreateView viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.e("saveStateTAG", "ListCallFragment onViewCreated before viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
+        super.onViewCreated(view, savedInstanceState)
+    }
     override fun initViews() {
+        Log.e("saveStateTAG", "ListCallFragment initViews viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
         binding?.apply {
             swipeRefresh = listCallRefresh
             recyclerView = listCallRecyclerView
@@ -63,12 +96,23 @@ class ListCallFragment :
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.e("saveStateTAG", "ListCallFragment onPause viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.savedStateHandle[LIST_STATE] = recyclerView?.layoutManager?.onSaveInstanceState()
+    }
+
     private fun setCallListData(callWithFilterList: List<CallWithFilterUIModel>) {
         binding?.listCallCheck?.isEnabled = callWithFilterList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
         checkDataListEmptiness(callWithFilterList.isEmpty())
         setDataList(callWithFilterList.sortedByDescending {
             it.callDate
         }.groupBy { it.dateFromCallDate() })
+        recyclerView?.layoutManager?.onRestoreInstanceState(viewModel.savedStateHandle[LIST_STATE])
     }
 
     override fun setClickListeners() {
@@ -137,6 +181,7 @@ class ListCallFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callListLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
+                Log.e("saveStateTAG", "ListCallFragment observeLiveData callListData ${callListData.size}")
                 callWithFilterList = callListData
                 searchDataList()
             }
@@ -163,6 +208,7 @@ class ListCallFragment :
     }
 
     override fun getData() {
+        Log.e("saveStateTAG", "ListCallFragment getData viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size}")
         viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())
     }
 

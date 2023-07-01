@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class ListCallViewModel @Inject constructor(
     private val application: Application,
     private val listCallUseCase: ListCallUseCase,
-    private val callWithFilterUIMapper: CallWithFilterUIMapper
+    private val callWithFilterUIMapper: CallWithFilterUIMapper,
+    val savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application) {
 
     val callListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
