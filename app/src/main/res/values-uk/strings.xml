@@ -40,7 +40,7 @@
     <!--Filter condition-->
     <string name="filter_condition_full">Повний номер</string>
     <string name="filter_condition_start">Починається</string>
-    <string name="filter_condition_contain">Зміст</string>
+    <string name="filter_condition_contain">Містить</string>
     <!--Filter action-->
     <string name="filter_action_create">Створити</string>
     <string name="filter_action_create_number_incomplete">Номер неповний</string>

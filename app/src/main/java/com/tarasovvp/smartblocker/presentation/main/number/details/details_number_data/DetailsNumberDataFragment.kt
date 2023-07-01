@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.number.details.DetailsPagerAdapter
 import com.tarasovvp.smartblocker.presentation.main.number.details.NumberDataClickListener
@@ -155,7 +156,7 @@ class DetailsNumberDataFragment :
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.conditionType = conditionIndex
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = if (binding?.detailsNumberDataCreateBlocker?.isEnabled.isTrue()) BLOCKER else PERMISSION
         filterWithCountryCodeUIModel.countryCodeUIModel = CountryCodeUIModel()
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = binding?.contactWithFilter?.number.digitsTrimmed()
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = binding?.contactWithFilter?.number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
         if (conditionIndex == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             startCreateFilterScreen()
         } else {

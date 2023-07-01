@@ -232,10 +232,11 @@ open class CreateFilterFragment :
                 filterWithFilteredNumberUIModel.filter, filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) }), false)
             showInterstitial()
             getAllData()
-            findNavController().navigate(if (binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker().isTrue())
-                CreateFilterFragmentDirections.startListBlockerFragment()
-            else CreateFilterFragmentDirections.startListPermissionFragment()
-            )
+            if (findNavController().previousBackStackEntry?.destination?.id == R.id.detailsNumberDataFragment) {
+                findNavController().popBackStack(navController?.graph?.startDestinationId.orZero(), false)
+            } else {
+                findNavController().navigateUp()
+            }
         }
     }
 

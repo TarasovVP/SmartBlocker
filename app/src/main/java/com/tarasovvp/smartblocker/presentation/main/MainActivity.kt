@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var firebaseAuth: FirebaseAuth
 
     private var binding: ActivityMainBinding? = null
-    private var navController: NavController? = null
+    var navController: NavController? = null
     private var callHandleReceiver: CallHandleReceiver? = null
     private var callIntent: Intent? = null
     private var isDialog: Boolean = false
@@ -210,8 +210,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView = binding?.bottomNav
         bottomNavigationDivider = binding?.bottomNavDivider
         navController?.let { bottomNavigationView?.setupWithNavController(it) }
-        bottomNavigationView?.setOnItemReselectedListener {
-        }
         (bottomNavigationView?.getChildAt(0) as? BottomNavigationMenuView)?.children?.forEach {
             it.findViewById<TextView>(com.google.android.material.R.id.navigation_bar_item_large_label_view)
                 .apply {
@@ -238,6 +236,7 @@ class MainActivity : AppCompatActivity() {
             setToolbarVisibility(destination)
             checkBottomBarVisibility(destination)
             setToolbarMenu(destination)
+            binding?.progressBar?.isVisible = false
             loadAdBanner(toolbar?.isVisible.isTrue() && navigationScreens.contains(destination.id).not())
         }
     }

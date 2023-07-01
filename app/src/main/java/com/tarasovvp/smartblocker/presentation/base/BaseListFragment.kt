@@ -2,7 +2,10 @@ package com.tarasovvp.smartblocker.presentation.base
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.CheckBox
 import androidx.appcompat.widget.SearchView
@@ -35,15 +38,34 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     protected var recyclerView: RecyclerView? = null
     protected var filterCheck: CheckBox? = null
     protected var emptyStateContainer: EmptyStateView? = null
-    protected var searchQuery: String? = String.EMPTY
+    protected var searchQuery: String? = null
     var filterIndexes: ArrayList<Int>? = null
 
     abstract fun createAdapter(): BaseAdapter<D>?
     abstract fun searchDataList()
     abstract fun isFiltered(): Boolean
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.e("saveStateTAG", "BaseListFragment onSaveInstanceState filterIndexes $filterIndexes")
+        outState.putIntegerArrayList(Constants.FILTER_INDEXES, filterIndexes)
+        outState.putString(Constants.SEARCH_QUERY, searchQuery)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        filterIndexes = filterIndexes ?: savedInstanceState?.getIntegerArrayList(Constants.FILTER_INDEXES)
+        searchQuery = searchQuery ?: savedInstanceState?.getString(Constants.SEARCH_QUERY)
+        Log.e("saveStateTAG", "BaseListFragment onCreateView filterIndexes $filterIndexes")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("saveStateTAG", "BaseListFragment onViewCreated filterIndexes $filterIndexes")
         setRecyclerView()
         setSearchViewMenu()
         setFilterCheck()
@@ -83,7 +105,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                         textSize = 16f
                     }
                     menu?.findItem(R.id.search_menu_item)?.let { menuItem ->
-                        setQuery(searchQuery, false)
+                        setQuery(searchQuery.orEmpty(), false)
                         menuItem.actionView = this
                         menuItem.isVisible = adapter?.itemCount.orZero() > 0
                         isIconified = searchQuery.isNullOrEmpty()

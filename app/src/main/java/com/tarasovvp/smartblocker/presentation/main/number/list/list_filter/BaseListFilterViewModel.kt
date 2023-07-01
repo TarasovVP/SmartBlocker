@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
@@ -18,8 +17,7 @@ open class BaseListFilterViewModel(
     private val application: Application,
     private val listFilterUseCase: ListFilterUseCase,
     private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    private val countryCodeUIMapper: CountryCodeUIMapper,
-    val savedStateHandle: SavedStateHandle
+    private val countryCodeUIMapper: CountryCodeUIMapper
 ) : BaseViewModel(application) {
 
     val filterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>?>()

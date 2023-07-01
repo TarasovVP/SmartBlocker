@@ -1,15 +1,9 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_INDEXES
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SEARCH_QUERY
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
@@ -21,18 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ListPermissionFragment : BaseListFilterFragment<ListPermissionFilterViewModel>() {
 
     override val viewModelClass = ListPermissionFilterViewModel::class.java
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        viewModel.savedStateHandle[FILTER_INDEXES] = filterIndexes
-        viewModel.savedStateHandle[SEARCH_QUERY] = searchQuery
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        filterIndexes = viewModel.savedStateHandle.get<ArrayList<Int>>(FILTER_INDEXES)
-        searchQuery = viewModel.savedStateHandle.get<String>(SEARCH_QUERY)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     override fun observeLiveData() {
         with(viewModel) {
@@ -71,7 +53,7 @@ class ListPermissionFragment : BaseListFilterFragment<ListPermissionFilterViewMo
 
     override fun startCreateFilterScreen() {
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = String.EMPTY
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = Constants.BLOCKER
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = Constants.PERMISSION
         findNavController().navigate(ListPermissionFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel))
     }
 

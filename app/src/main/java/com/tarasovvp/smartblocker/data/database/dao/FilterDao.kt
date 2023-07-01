@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
 import androidx.room.*
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 
 @Dao
 interface FilterDao {
@@ -20,7 +20,7 @@ interface FilterDao {
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM FilterWithFilteredNumber WHERE filterType = :filterType")
+    @Query("SELECT * FROM FilterWithFilteredNumber WHERE filterType = :filterType ORDER BY created DESC")
     suspend fun allFilterWithFilteredNumbersByType(filterType: Int): List<FilterWithFilteredNumber>
 
     @Transaction

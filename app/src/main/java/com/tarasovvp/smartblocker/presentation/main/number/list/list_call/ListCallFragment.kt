@@ -1,9 +1,5 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
@@ -11,8 +7,6 @@ import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_INDEXES
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SEARCH_QUERY
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
@@ -57,18 +51,6 @@ class ListCallFragment :
                 }
             })
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        viewModel.savedStateHandle[FILTER_INDEXES] = filterIndexes
-        viewModel.savedStateHandle[SEARCH_QUERY] = searchQuery
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        filterIndexes = viewModel.savedStateHandle.get<ArrayList<Int>>(FILTER_INDEXES)
-        searchQuery = viewModel.savedStateHandle.get<String>(SEARCH_QUERY)
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun initViews() {

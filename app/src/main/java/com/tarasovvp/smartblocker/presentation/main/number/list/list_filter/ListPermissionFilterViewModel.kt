@@ -13,6 +13,5 @@ class ListPermissionFilterViewModel @Inject constructor(
     application: Application,
     listFilterUseCase: ListFilterUseCase,
     filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    countryCodeUIMapper: CountryCodeUIMapper,
-    savedStateHandle: SavedStateHandle
-) : BaseListFilterViewModel(application, listFilterUseCase, filterWithFilteredNumberUIMapper, countryCodeUIMapper, savedStateHandle)
+    countryCodeUIMapper: CountryCodeUIMapper
+) : BaseListFilterViewModel(application, listFilterUseCase, filterWithFilteredNumberUIMapper, countryCodeUIMapper)
