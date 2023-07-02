@@ -2,19 +2,15 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.models.Call
-import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallUseCaseImpl
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -54,21 +50,6 @@ class ListCallUseCaseUnitTest {
         coEvery { logCallRepository.allCallWithFilters() } returns callWithFilterList
         val result = listCallUseCase.allCallWithFilters()
         assertEquals(callWithFilterList, result)
-    }
-
-    @Test
-    fun getFilteredCallListTest() = runBlocking {
-        val callList = listOf(CallWithFilter(call = FilteredCall().apply {
-            number = TEST_NUMBER
-            type = BLOCKED_CALL
-            isFilteredCall = true
-        }), CallWithFilter(call = LogCall().apply { number = "567" }))
-        val searchQuery = String.EMPTY
-        val filterIndexes = arrayListOf(
-            NumberDataFiltering.CALL_BLOCKED.ordinal)
-        val expectedCallList = listOf(callList[0])
-        val result = listCallUseCase.getFilteredCallList(callList, searchQuery, filterIndexes)
-        assertEquals(expectedCallList, result)
     }
 
     @Test

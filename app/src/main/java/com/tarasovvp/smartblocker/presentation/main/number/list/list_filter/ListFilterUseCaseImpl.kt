@@ -30,20 +30,6 @@ class ListFilterUseCaseImpl @Inject constructor(
 
     override suspend fun allFilterWithFilteredNumbersByType(isBlockerList: Boolean) = filterRepository.allFilterWithFilteredNumbersByType(if (isBlockerList) BLOCKER else PERMISSION)
 
-    override suspend fun getFilteredFilterList(
-        filterList: List<FilterWithFilteredNumber>,
-        searchQuery: String,
-        filterIndexes: ArrayList<Int>
-    ) = withContext(Dispatchers.Default) {
-        if (searchQuery.isBlank() && filterIndexes.isEmpty()) filterList else filterList.filter { filterWithCountryCode ->
-            (filterWithCountryCode.filter?.filter isContaining  searchQuery)
-                    && (filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) && filterWithCountryCode.filter?.conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal
-                    || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) && filterWithCountryCode.filter?.conditionType == FilterCondition.FILTER_CONDITION_START.ordinal
-                    || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) && filterWithCountryCode.filter?.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
-                    || filterIndexes.isEmpty())
-        }
-    }
-
     override suspend fun deleteFilterList(filterList: List<Filter>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
         if (firebaseAuth.currentUser.isNotNull()) {
             if (isNetworkAvailable) {

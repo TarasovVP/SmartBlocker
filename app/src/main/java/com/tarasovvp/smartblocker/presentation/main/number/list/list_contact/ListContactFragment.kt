@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.databinding.FragmentListContactBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LIST_STATE
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SAVED_LIST
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
@@ -36,6 +37,7 @@ open class ListContactFragment :
     override fun onStop() {
         super.onStop()
         viewModel.savedStateHandle[LIST_STATE] = recyclerView?.layoutManager?.onSaveInstanceState()
+        viewModel.savedStateHandle[SAVED_LIST] = viewModel.contactListLiveData.value
     }
 
     override fun initViews() {
@@ -54,7 +56,7 @@ open class ListContactFragment :
         setDataList(contactWithFilterList.groupBy {
             if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
         })
-        recyclerView?.layoutManager?.onRestoreInstanceState(viewModel.savedStateHandle[LIST_STATE])
+        viewModel.savedStateHandle.restoreListInstantState(LIST_STATE, recyclerView?.layoutManager)
     }
 
     override fun setClickListeners() {
@@ -103,7 +105,10 @@ open class ListContactFragment :
     }
 
     override fun getData() {
-        viewModel.getContactsWithFilters(swipeRefresh?.isRefreshing.isTrue())
+        viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull() }?.let {
+            viewModel.contactListLiveData.postValue(it)
+            viewModel.savedStateHandle[SAVED_LIST] = null
+        } ?: viewModel.getContactsWithFilters(swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {

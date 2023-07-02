@@ -3,6 +3,8 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_filter
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
@@ -10,6 +12,7 @@ import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 
@@ -36,8 +39,14 @@ open class BaseListFilterViewModel(
 
     fun getFilteredFilterList(filterList: List<FilterWithFilteredNumberUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
-            val filteredFilterList = listFilterUseCase.getFilteredFilterList(filterWithFilteredNumberUIMapper.mapFromUIModelList(filterList), searchQuery, filterIndexes)
-            filteredFilterListLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModelList(filteredFilterList))
+            val filteredFilterList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) filterList else filterList.filter { filterWithCountryCode ->
+                (filterWithCountryCode.filter isContaining  searchQuery)
+                        && (filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal
+                        || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_START.ordinal
+                        || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
+                        || filterIndexes.isEmpty())
+            }
+            filteredFilterListLiveData.postValue(filteredFilterList)
         }
     }
 

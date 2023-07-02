@@ -7,7 +7,5 @@ interface ListCallUseCase {
 
     suspend fun allCallWithFilters(): List<CallWithFilter>
 
-    suspend fun getFilteredCallList(callList: List<CallWithFilter>, searchQuery: String, filterIndexes: ArrayList<Int>): List<CallWithFilter>
-
     suspend fun deleteCallList(filteredCallIdList: List<Int>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 }

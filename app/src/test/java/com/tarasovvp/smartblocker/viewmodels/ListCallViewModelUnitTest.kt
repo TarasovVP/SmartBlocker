@@ -1,11 +1,13 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
@@ -30,7 +32,10 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
     @MockK
     private lateinit var callWithFilterUIMapper: CallWithFilterUIMapper
 
-    override fun createViewModel() = ListCallViewModel(application, useCase, callWithFilterUIMapper)
+    @MockK
+    private lateinit var savedStateHandle: SavedStateHandle
+
+    override fun createViewModel() = ListCallViewModel(application, useCase, callWithFilterUIMapper, savedStateHandle)
 
     @Test
     fun getCallListTest() = runTest {
@@ -47,18 +52,17 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
 
     @Test
     fun getFilteredCallListTest() = runTest {
-        val numberDataFilters = arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal)
-        val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "1234")))
-        val callUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER), CallWithFilterUIModel(number = "1234"))
-        coEvery { useCase.getFilteredCallList(callList, String.EMPTY, arrayListOf(NumberDataFiltering.CALL_BLOCKED.ordinal)) } returns callList
-        every { callWithFilterUIMapper.mapToUIModelList(callList) } returns callUIModelList
-        every { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) } returns callList
-        viewModel.getFilteredCallList(callUIModelList, String.EMPTY, numberDataFilters)
+        val callList = listOf(
+            CallWithFilterUIModel(number = TEST_NUMBER, type = Constants.BLOCKED_CALL, isFilteredCall = true),
+            CallWithFilterUIModel( number = "567" )
+        )
+        val searchQuery = String.EMPTY
+        val filterIndexes = arrayListOf(
+            NumberDataFiltering.CALL_BLOCKED.ordinal)
+        val expectedCallList = listOf(callList[0])
+        viewModel.getFilteredCallList(callList, searchQuery, filterIndexes)
         advanceUntilIdle()
-        coVerify { useCase.getFilteredCallList(callList, String.EMPTY, numberDataFilters) }
-        verify { callWithFilterUIMapper.mapToUIModelList(callList) }
-        verify { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) }
-        assertEquals(callUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
+        assertEquals(expectedCallList, viewModel.filteredCallListLiveData.getOrAwaitValue())
     }
 
     @Test

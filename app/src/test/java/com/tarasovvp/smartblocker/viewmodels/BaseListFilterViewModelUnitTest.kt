@@ -5,6 +5,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
+import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
@@ -13,7 +14,6 @@ import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -55,18 +55,22 @@ class BaseListFilterViewModelUnitTest: BaseViewModelUnitTest<BaseListFilterViewM
 
     @Test
     fun getFilteredFilterListTest() = runTest {
-        val numberDataFilters = arrayListOf(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
-        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
-        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
-        coEvery { useCase.getFilteredFilterList(filterList, String.EMPTY, numberDataFilters) } returns filterList
-        every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
-        every { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) } returns filterList
-        viewModel.getFilteredFilterList(filterUIModelList, String.EMPTY, numberDataFilters)
+        val filterList = listOf(
+            FilterWithFilteredNumberUIModel(filter = "filter1", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal),
+            FilterWithFilteredNumberUIModel(filter = "filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal),
+            FilterWithFilteredNumberUIModel(filter = "filter3", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal),
+            FilterWithFilteredNumberUIModel(filter = "filter4", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)
+        )
+        val searchQuery = "filter"
+        val filterIndexes = arrayListOf(
+            NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal,
+            NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal
+        )
+        val expectedFilteredList = listOf(
+            FilterWithFilteredNumberUIModel(filter = "filter1",  conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), FilterWithFilteredNumberUIModel(filter = "filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))
+        viewModel.getFilteredFilterList(filterList, searchQuery, filterIndexes)
         advanceUntilIdle()
-        coVerify { useCase.getFilteredFilterList(filterList, String.EMPTY, numberDataFilters) }
-        verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
-        verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
-        assertEquals(filterUIModelList, viewModel.filteredFilterListLiveData.getOrAwaitValue())
+        assertEquals(expectedFilteredList, viewModel.filteredFilterListLiveData.getOrAwaitValue())
     }
 
     @Test

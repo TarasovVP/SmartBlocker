@@ -19,6 +19,8 @@ import androidx.core.text.parseAsHtml
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DRAWABLE_RES
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ENCODING
@@ -50,6 +52,12 @@ fun <T> LiveData<T>.safeObserve(owner: LifecycleOwner, observer: (t: T) -> Unit)
 fun <T> MutableLiveData<T>.safeSingleObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
     safeObserve(owner, observer)
     value = null
+}
+
+fun SavedStateHandle.restoreListInstantState(key: String, layoutManager: RecyclerView.LayoutManager?) {
+    val restoreState = get<Parcelable>(key)
+    layoutManager?.onRestoreInstanceState(restoreState)
+    this[key] = null
 }
 
 fun String.toDateFromMilliseconds(dateFormat: String): String {

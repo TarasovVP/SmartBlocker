@@ -1,11 +1,5 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_call
 
-import android.content.Context
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
@@ -13,7 +7,9 @@ import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_DELETE_MODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LIST_STATE
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SAVED_LIST
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
@@ -29,10 +25,9 @@ class ListCallFragment :
     override val viewModelClass = ListCallViewModel::class.java
 
     private var callWithFilterList: List<CallWithFilterUIModel>? = null
-    private var isDeleteMode = false
+    private var isDeleteMode: Boolean? = null
 
     override fun createAdapter(): BaseAdapter<CallWithFilterUIModel>? {
-        Log.e("saveStateTAG", "ListCallFragment createAdapter")
         return context?.let {
              CallAdapter(object : CallClickListener {
                 override fun onCallClick(callWithFilter: CallWithFilterUIModel) {
@@ -49,7 +44,7 @@ class ListCallFragment :
                 override fun onCallDeleteCheckChange(callWithFilter: CallWithFilterUIModel) {
                     callWithFilterList?.find { it.callDate == callWithFilter.callDate }?.isCheckedForDelete =
                         callWithFilter.isCheckedForDelete
-                    if (callWithFilterList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode) {
+                    if (callWithFilterList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode.isTrue()) {
                         changeDeleteMode()
                     }
                 }
@@ -61,32 +56,7 @@ class ListCallFragment :
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putIntegerArrayList(Constants.FILTER_INDEXES, filterIndexes)
-        outState.putString(Constants.SEARCH_QUERY, searchQuery)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.e("saveStateTAG", "ListPermissionFragment onAttach binding?.listFilterRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.e("saveStateTAG", "ListCallFragment onCreateView viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("saveStateTAG", "ListCallFragment onViewCreated before viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
-        super.onViewCreated(view, savedInstanceState)
-    }
     override fun initViews() {
-        Log.e("saveStateTAG", "ListCallFragment initViews viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
         binding?.apply {
             swipeRefresh = listCallRefresh
             recyclerView = listCallRecyclerView
@@ -96,14 +66,11 @@ class ListCallFragment :
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.e("saveStateTAG", "ListCallFragment onPause viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size} binding?.listCallRecyclerView?.adapter?.itemCount ${binding?.listCallRecyclerView?.adapter?.itemCount}")
-    }
-
     override fun onStop() {
         super.onStop()
         viewModel.savedStateHandle[LIST_STATE] = recyclerView?.layoutManager?.onSaveInstanceState()
+        viewModel.savedStateHandle[SAVED_LIST] = viewModel.callListLiveData.value
+        viewModel.savedStateHandle[IS_DELETE_MODE] = isDeleteMode
     }
 
     private fun setCallListData(callWithFilterList: List<CallWithFilterUIModel>) {
@@ -112,7 +79,12 @@ class ListCallFragment :
         setDataList(callWithFilterList.sortedByDescending {
             it.callDate
         }.groupBy { it.dateFromCallDate() })
-        recyclerView?.layoutManager?.onRestoreInstanceState(viewModel.savedStateHandle[LIST_STATE])
+        viewModel.savedStateHandle.restoreListInstantState(LIST_STATE, recyclerView?.layoutManager)
+        viewModel.savedStateHandle.get<Boolean>(IS_DELETE_MODE)?.apply {
+            isDeleteMode = this.not()
+            viewModel.savedStateHandle[IS_DELETE_MODE] = null
+            changeDeleteMode()
+        }
     }
 
     override fun setClickListeners() {
@@ -143,17 +115,17 @@ class ListCallFragment :
     }
 
     private fun changeDeleteMode() {
-        isDeleteMode = isDeleteMode.not()
-        binding?.listCallCheck?.isEnabled = isDeleteMode.not()
+        isDeleteMode = isDeleteMode.isNotTrue()
+        binding?.listCallCheck?.isEnabled = isDeleteMode.isNotTrue()
         (adapter as CallAdapter).apply {
-            isDeleteMode = this@ListCallFragment.isDeleteMode
+            isDeleteMode = this@ListCallFragment.isDeleteMode.isTrue()
             recyclerView?.post {
                 adapter?.notifyDataSetChanged()
             }
         }
         (activity as? MainActivity)?.toolbar?.apply {
             menu?.clear()
-            if (isDeleteMode) {
+            if (isDeleteMode.isTrue()) {
                 inflateMenu(R.menu.toolbar_delete)
                 setDeleteMenuClickListener()
             } else {
@@ -181,7 +153,6 @@ class ListCallFragment :
     override fun observeLiveData() {
         with(viewModel) {
             callListLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
-                Log.e("saveStateTAG", "ListCallFragment observeLiveData callListData ${callListData.size}")
                 callWithFilterList = callListData
                 searchDataList()
             }
@@ -208,8 +179,10 @@ class ListCallFragment :
     }
 
     override fun getData() {
-        Log.e("saveStateTAG", "ListCallFragment getData viewModel.callListLiveData ${viewModel.callListLiveData.value.orEmpty().size}")
-        viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())
+        viewModel.savedStateHandle.get<List<CallWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull() }?.let {
+            viewModel.callListLiveData.postValue(it)
+            viewModel.savedStateHandle[SAVED_LIST] = null
+        } ?: viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {

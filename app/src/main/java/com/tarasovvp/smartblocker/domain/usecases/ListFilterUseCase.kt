@@ -10,8 +10,6 @@ interface ListFilterUseCase {
 
     suspend fun allFilterWithFilteredNumbersByType(isBlockerList: Boolean): List<FilterWithFilteredNumber>?
 
-    suspend fun getFilteredFilterList(filterList: List<FilterWithFilteredNumber>, searchQuery: String, filterIndexes: ArrayList<Int>): List<FilterWithFilteredNumber>
-
     suspend fun deleteFilterList(filterList: List<Filter>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 
     suspend fun getCurrentCountryCode(): Flow<CountryCode?>

@@ -4,12 +4,16 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -36,8 +40,15 @@ class ListCallViewModel @Inject constructor(
 
     fun getFilteredCallList(callList: List<CallWithFilterUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
-            val filteredCallList = listCallUseCase.getFilteredCallList(callWithFilterUIMapper.mapFromUIModelList(callList), searchQuery, filterIndexes)
-            filteredCallListLiveData.postValue(callWithFilterUIMapper.mapToUIModelList(filteredCallList))
+            val filteredCallList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
+                (callWithFilter.callName isContaining searchQuery || callWithFilter.number isContaining searchQuery)
+                        && ((callWithFilter.isFilteredCall.isTrue() && callWithFilter.type == Constants.BLOCKED_CALL && filterIndexes.contains(
+                    NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue())
+                        || (callWithFilter.isFilteredCall.isTrue() && callWithFilter.type != Constants.BLOCKED_CALL && filterIndexes.contains(
+                    NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue())
+                        || filterIndexes.isEmpty())
+            }
+            filteredCallListLiveData.postValue(filteredCallList)
             hideProgress()
         }
     }

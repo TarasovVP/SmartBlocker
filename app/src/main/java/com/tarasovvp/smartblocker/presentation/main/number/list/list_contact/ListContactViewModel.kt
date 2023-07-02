@@ -3,10 +3,14 @@ package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
+import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -32,8 +36,15 @@ class ListContactViewModel @Inject constructor(
 
     fun getFilteredContactList(contactList: List<ContactWithFilterUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
         launch {
-            val filteredContactList = listContactUseCase.getFilteredContactList(contactWithFilterUIMapper.mapFromUIModelList(contactList), searchQuery, filterIndexes)
-            filteredContactListLiveData.postValue(contactWithFilterUIMapper.mapToUIModelList(filteredContactList))
+            val filteredContactList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) contactList else contactList.filter { contactWithFilter ->
+                ((contactWithFilter.contactName isContaining searchQuery || contactWithFilter.number.digitsTrimmed() isContaining searchQuery))
+                        && (contactWithFilter.filterWithFilteredNumberUIModel.filterType == Constants.BLOCKER && filterIndexes.contains(
+                    NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
+                        || contactWithFilter.filterWithFilteredNumberUIModel.filterType == Constants.PERMISSION && filterIndexes.contains(
+                    NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal)
+                        || filterIndexes.isEmpty())
+            }
+            filteredContactListLiveData.postValue(filteredContactList)
             hideProgress()
         }
     }

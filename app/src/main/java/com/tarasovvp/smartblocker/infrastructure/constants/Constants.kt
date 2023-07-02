@@ -9,6 +9,8 @@ object Constants {
     const val FILTER_INDEXES = "filterIndexes"
     const val SEARCH_QUERY = "searchQuery"
     const val LIST_STATE = "listState"
+    const val SAVED_LIST = "savedList"
+    const val IS_DELETE_MODE = "isDeleteMode"
 
     //Telephony
     const val LOG_CALL_CALL = "content://call_log/calls"

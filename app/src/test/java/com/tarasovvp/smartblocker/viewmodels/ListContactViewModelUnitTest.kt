@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
@@ -7,9 +8,11 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -32,8 +35,11 @@ class ListContactViewModelUnitTest: BaseViewModelUnitTest<ListContactViewModel>(
     @MockK
     private lateinit var contactWithFilterUIMapper: ContactWithFilterUIMapper
 
+    @MockK
+    private lateinit var savedStateHandle: SavedStateHandle
+
     override fun createViewModel() =
-        ListContactViewModel(application, useCase, contactWithFilterUIMapper)
+        ListContactViewModel(application, useCase, contactWithFilterUIMapper, savedStateHandle)
 
     @Test
     fun getContactsWithFiltersTest() = runTest {
@@ -56,29 +62,12 @@ class ListContactViewModelUnitTest: BaseViewModelUnitTest<ListContactViewModel>(
 
     @Test
     fun getFilteredContactListTest() = runTest {
-        val numberDataFilters = arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
-        val contactList = listOf(
-            ContactWithFilter(contact = Contact(name = TEST_NAME)),
-            ContactWithFilter(contact = Contact(name = TEST_NUMBER))
-        )
-        val contactUIModelList = listOf(
-            ContactWithFilterUIModel(contactName = TEST_NAME),
-            ContactWithFilterUIModel(contactName = TEST_NUMBER)
-        )
-        coEvery {
-            useCase.getFilteredContactList(
-                contactList,
-                String.EMPTY,
-                arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
-            )
-        } returns contactList
-        every { contactWithFilterUIMapper.mapToUIModelList(contactList) } returns contactUIModelList
-        every { contactWithFilterUIMapper.mapFromUIModelList(contactUIModelList) } returns contactList
-        viewModel.getFilteredContactList(contactUIModelList, String.EMPTY, numberDataFilters)
+        val contactList = listOf(ContactWithFilterUIModel(contactName = TEST_NAME, filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filterType = Constants.BLOCKER)), ContactWithFilterUIModel(contactName = "zxy"))
+        val searchQuery = String.EMPTY
+        val filterIndexes = arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
+        val expectedContactList = contactList.filter { it.filterWithFilteredNumberUIModel.filterType == Constants.BLOCKER }
+        viewModel.getFilteredContactList(contactList, searchQuery, filterIndexes)
         advanceUntilIdle()
-        coVerify { useCase.getFilteredContactList(contactList, String.EMPTY, numberDataFilters) }
-        verify { contactWithFilterUIMapper.mapToUIModelList(contactList) }
-        verify { contactWithFilterUIMapper.mapFromUIModelList(contactUIModelList) }
-        assertEquals(contactUIModelList, viewModel.filteredContactListLiveData.getOrAwaitValue())
+        assertEquals(expectedContactList, viewModel.filteredContactListLiveData.getOrAwaitValue())
     }
 }

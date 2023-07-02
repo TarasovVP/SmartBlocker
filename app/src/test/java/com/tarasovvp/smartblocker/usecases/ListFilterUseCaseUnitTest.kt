@@ -5,8 +5,6 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
-import com.tarasovvp.smartblocker.domain.enums.FilterCondition
-import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
@@ -54,25 +52,6 @@ class ListFilterUseCaseUnitTest {
         coEvery { filterRepository.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterList
         val result = listFilterUseCase.allFilterWithFilteredNumbersByType(isBlockerList = true)
         assertEquals(TEST_FILTER, result?.get(0)?.filter?.filter)
-    }
-
-    @Test
-    fun getFilteredFilterListTest() = runBlocking {
-        val filterList = listOf(
-            FilterWithFilteredNumber(Filter("filter1", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal)),
-            FilterWithFilteredNumber(Filter("filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)),
-            FilterWithFilteredNumber(Filter("filter3", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)),
-            FilterWithFilteredNumber(Filter("filter4", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal))
-        )
-        val searchQuery = "filter"
-        val filterIndexes = arrayListOf(
-            NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal,
-            NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal
-        )
-        val expectedFilteredList = listOf(
-            FilterWithFilteredNumber(Filter("filter1", FilterCondition.FILTER_CONDITION_FULL.ordinal)), FilterWithFilteredNumber(Filter("filter2", FilterCondition.FILTER_CONDITION_START.ordinal)))
-        val result = listFilterUseCase.getFilteredFilterList(filterList, searchQuery, filterIndexes)
-        assertEquals(expectedFilteredList, result)
     }
 
     @Test

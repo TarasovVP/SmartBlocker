@@ -8,6 +8,8 @@ import com.tarasovvp.smartblocker.databinding.FragmentListFilterBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_DELETE_MODE
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LIST_STATE
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
@@ -28,7 +30,7 @@ abstract class BaseListFilterFragment<T : BaseViewModel> :
     abstract fun startCreateFilterScreen()
     abstract fun startFilterActionScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel)
 
-    private var isDeleteMode = false
+    protected var isDeleteMode = false
 
     protected var filterWithFilteredNumberUIModels: ArrayList<FilterWithFilteredNumberUIModel>? = null
     protected val filterWithCountryCodeUIModel by lazy { FilterWithCountryCodeUIModel() }
@@ -69,6 +71,17 @@ abstract class BaseListFilterFragment<T : BaseViewModel> :
         binding?.listFilterCheck?.isEnabled = filterWithCountryCodeList.isNotEmpty() || binding?.listFilterCheck?.isChecked.isTrue()
         checkDataListEmptiness(filterWithCountryCodeList.isEmpty())
         setDataList(mapOf(String.EMPTY to filterWithCountryCodeList))
+        val savedStateHandle = when(this) {
+            is ListBlockerFragment -> viewModel.savedStateHandle
+            is ListPermissionFragment -> viewModel.savedStateHandle
+            else -> null
+        }
+        savedStateHandle?.restoreListInstantState(LIST_STATE, recyclerView?.layoutManager)
+        savedStateHandle?.get<Boolean>(IS_DELETE_MODE)?.apply {
+            isDeleteMode = this.not()
+            savedStateHandle[IS_DELETE_MODE] = null
+            changeDeleteMode()
+        }
     }
 
     private fun setDeleteMenuClickListener() {
