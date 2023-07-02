@@ -31,10 +31,7 @@ class ListCallFragment :
         return context?.let {
              CallAdapter(object : CallClickListener {
                 override fun onCallClick(callWithFilter: CallWithFilterUIModel) {
-                    findNavController().navigate(
-                        ListCallFragmentDirections.startDetailsNumberDataFragment(
-                            callWithFilter)
-                    )
+                    findNavController().navigate(ListCallFragmentDirections.startDetailsNumberDataFragment(callWithFilter))
                 }
 
                 override fun onCallLongClick() {
@@ -129,6 +126,7 @@ class ListCallFragment :
                 inflateMenu(R.menu.toolbar_delete)
                 setDeleteMenuClickListener()
             } else {
+                inflateMenu(R.menu.toolbar_search)
                 setSearchViewMenu()
             }
         }

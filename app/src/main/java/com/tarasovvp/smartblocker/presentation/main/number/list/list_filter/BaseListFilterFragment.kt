@@ -115,6 +115,7 @@ abstract class BaseListFilterFragment<T : BaseViewModel> :
                 inflateMenu(R.menu.toolbar_delete)
                 setDeleteMenuClickListener()
             } else {
+                inflateMenu(R.menu.toolbar_search)
                 setSearchViewMenu()
             }
         }
