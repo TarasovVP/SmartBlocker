@@ -138,7 +138,7 @@ class DetailsFilterFragment :
         })
     }
 
-    override fun getData() {
+    override fun getData(allDataChange: Boolean) {
         binding?.filterWithFilteredNumberUIModel?.let {
             viewModel.getQueryContactCallList(it.filter)
             viewModel.filteredCallsByFilter(it.filter)
@@ -167,16 +167,8 @@ class DetailsFilterFragment :
             //TODO interstitial
             //showInterstitial()
             getAllData()
-            if (filterWithFilteredNumberUIModel.isChangeFilterAction()) {
-                mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                    initViews()
-                    viewModel.getQueryContactCallList(filterWithFilteredNumberUIModel.filter)
-                }
-            } else {
-                findNavController().navigate(if (binding?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
-                else DetailsFilterFragmentDirections.startListPermissionFragment()
-                )
-            }
+            findNavController().navigate(if (binding?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
+            else DetailsFilterFragmentDirections.startListPermissionFragment())
         }
     }
 

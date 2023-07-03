@@ -41,6 +41,10 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
 import com.tarasovvp.smartblocker.infrastructure.receivers.CallHandleReceiver
 import com.tarasovvp.smartblocker.infrastructure.services.ForegroundCallService
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
@@ -70,6 +74,7 @@ class MainActivity : AppCompatActivity() {
     private var bottomNavigationView: BottomNavigationView? = null
     private var bottomNavigationDivider: View? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
+    var allDataChangeLiveData: ArrayList<String>? = null
 
     val mainViewModel: MainViewModel by viewModels()
 
@@ -300,6 +305,7 @@ class MainActivity : AppCompatActivity() {
             }
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 setMainProgressVisibility(false)
+                allDataChangeLiveData = arrayListOf(ListBlockerFragment::class.java.simpleName, ListPermissionFragment::class.java.simpleName, ListCallFragment::class.java.simpleName, ListContactFragment::class.java.simpleName)
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showInfoMessage(errorMessage, true)

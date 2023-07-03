@@ -104,8 +104,8 @@ open class ListContactFragment :
         viewModel.getFilteredContactList(contactWithFilterList.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
     }
 
-    override fun getData() {
-        viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull() }?.let {
+    override fun getData(allDataChange: Boolean) {
+        viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull()  && allDataChange.not()}?.let {
             viewModel.contactListLiveData.postValue(it)
             viewModel.savedStateHandle[SAVED_LIST] = null
         } ?: viewModel.getContactsWithFilters(swipeRefresh?.isRefreshing.isTrue())

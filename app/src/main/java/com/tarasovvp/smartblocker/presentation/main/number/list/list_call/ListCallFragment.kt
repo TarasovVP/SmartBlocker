@@ -176,8 +176,8 @@ class ListCallFragment :
         viewModel.getFilteredCallList(callWithFilterList.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
     }
 
-    override fun getData() {
-        viewModel.savedStateHandle.get<List<CallWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull() }?.let {
+    override fun getData(allDataChange: Boolean) {
+        viewModel.savedStateHandle.get<List<CallWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull() && allDataChange.not()}?.let {
             viewModel.callListLiveData.postValue(it)
             viewModel.savedStateHandle[SAVED_LIST] = null
         } ?: viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())

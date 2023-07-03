@@ -140,7 +140,7 @@ open class CreateFilterFragment :
         }
     }
 
-    override fun getData() {
+    override fun getData(allDataChange: Boolean) {
         viewModel.getMatchedContactWithFilterList(binding?.filterWithCountryCode)
     }
 

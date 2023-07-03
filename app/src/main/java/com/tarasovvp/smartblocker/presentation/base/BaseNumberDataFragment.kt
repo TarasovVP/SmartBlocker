@@ -11,7 +11,7 @@ abstract class BaseNumberDataFragment<B : ViewDataBinding, T : BaseViewModel> :
     abstract fun initViews()
     abstract fun setClickListeners()
     abstract fun setFragmentResultListeners()
-    abstract fun getData()
+    abstract fun getData(allDataChange: Boolean = false)
     abstract fun showInfoScreen()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

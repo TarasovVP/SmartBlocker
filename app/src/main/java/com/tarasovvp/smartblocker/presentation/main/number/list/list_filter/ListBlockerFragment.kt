@@ -77,8 +77,8 @@ class ListBlockerFragment : BaseListFilterFragment<ListBlockerFilterViewModel>()
         viewModel.getFilteredFilterList(filterWithFilteredNumberUIModels.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
     }
 
-    override fun getData() {
-        viewModel.savedStateHandle.get<List<FilterWithFilteredNumberUIModel>>(SAVED_LIST).takeIf { it.isNotNull() }?.let {
+    override fun getData(allDataChange: Boolean) {
+        viewModel.savedStateHandle.get<List<FilterWithFilteredNumberUIModel>>(SAVED_LIST).takeIf { it.isNotNull()  && allDataChange.not()}?.let {
             viewModel.filterListLiveData.postValue(it)
             viewModel.savedStateHandle[SAVED_LIST] = null
         } ?: viewModel.getFilterList(true, swipeRefresh?.isRefreshing.isTrue())

@@ -65,10 +65,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         setRecyclerView()
         setSearchViewMenu()
         setFilterCheck()
-        if (activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isNotTrue()) getData()
-        (activity as? MainActivity)?.mainViewModel?.successAllDataLiveData?.safeSingleObserve(viewLifecycleOwner) {
-            this@BaseListFragment.getData()
-        }
+        setGetDataRequest()
     }
 
     private fun setRecyclerView() {
@@ -78,7 +75,16 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             this.adapter = this@BaseListFragment.adapter
         }
         swipeRefresh?.setOnRefreshListener {
-            getData()
+            getData(false)
+        }
+    }
+
+    private fun setGetDataRequest() {
+        (activity as? MainActivity)?.apply {
+            if (intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isNotTrue()) getData(allDataChangeLiveData?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
+            mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
+                this@BaseListFragment.getData(allDataChangeLiveData?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
+            }
         }
     }
 

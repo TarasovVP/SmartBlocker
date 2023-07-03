@@ -145,7 +145,7 @@ class DetailsNumberDataFragment :
         }
     }
 
-    override fun getData() {
+    override fun getData(allDataChange: Boolean) {
         binding?.contactWithFilter?.apply {
             viewModel.filterListWithNumber(phoneNumberValue)
             viewModel.filteredCallsByNumber(phoneNumberValue, contactName)
