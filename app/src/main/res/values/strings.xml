@@ -28,9 +28,9 @@
     <string name="authorization_sign_up">Sign up</string>
     <string name="authorization_forgot_password">Forgot your password?</string>
     <string name="authorization_continue_without_account">Without registration</string>
-    <string name="authorization_forgot_password_title">Enter your Email and we will send your password</string>
+    <string name="authorization_forgot_password_title">Enter your email, and we will send you instructions.</string>
     <string name="authorization_enter_email">Enter your Email</string>
-    <string name="authorization_password_reset_success">A confirmation email has been sent to your Email. Check in your inbox.</string>
+    <string name="authorization_password_reset_success">An email has been sent to your Email. Check in your inbox.</string>
     <string name="authorization_entrance_title">Got an account?&#160;</string>
     <string name="authorization_signing_up">Sign Up</string>
     <string name="authorization_network_unavailable">No internet connection.\nTo continue, connect to the internet and log in again.</string>

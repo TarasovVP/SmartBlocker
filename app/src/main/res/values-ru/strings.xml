@@ -28,9 +28,9 @@
     <string name="authorization_sign_up">Регистрация</string>
     <string name="authorization_forgot_password">Забыли пароль?</string>
     <string name="authorization_continue_without_account">Без регистрации</string>
-    <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Ваш пароль</string>
+    <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Вам инструкции.</string>
     <string name="authorization_enter_email">Введите ваш Email</string>
-    <string name="authorization_password_reset_success">Подтверждающее письмо отправлено на ваш Email. Проверьте во входящих.</string>
+    <string name="authorization_password_reset_success">Письмо отправлено на ваш Email. Проверьте во входящих.</string>
     <string name="authorization_entrance_title">Есть аккаунт?&#160;</string>
     <string name="authorization_signing_up">Зарегистрироваться</string>
     <string name="authorization_network_unavailable">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и совершите повторный вход.</string>
@@ -46,10 +46,10 @@
     <string name="filter_action_create_number_incomplete">Номер неполный</string>
     <string name="filter_action_create_number_invalid">Номер невалидный</string>
     <string name="filter_action_create_number_empty">Номер пустой</string>
-    <string name="filter_action_create_blocker_description">Создать блокировщик?</string>
+    <string name="filter_action_create_blocker_description">Создать Блокировщик?</string>
     <string name="filter_action_create_blocker_request">Создать фильтр %1$s с типом Блокировщик и признаком %2$s?</string>
     <string name="filter_action_create_blocker_success">Фильтр %1$s с типом Блокировщик и признаком %2$s создан!</string>
-    <string name="filter_action_create_permission_description">Создать разрешение?</string>
+    <string name="filter_action_create_permission_description">Создать Разрешение?</string>
     <string name="filter_action_create_permission_request">Создать фильтр %1$s с типом Разрешение и признаком %2$s?</string>
     <string name="filter_action_create_permission_success">Фильтр %1$s с типом Разрешение и признаком %2$s создан!</string>
     <string name="filter_action_created">Создан: %s</string>
