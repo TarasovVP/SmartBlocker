@@ -24,7 +24,7 @@ interface FilterDao {
     suspend fun allFilterWithFilteredNumbersByType(filterType: Int): List<FilterWithFilteredNumber>
 
     @Transaction
-    @Query("SELECT * FROM filters WHERE filter = :filter")
+    @Query("SELECT * FROM FilterWithFilteredNumber WHERE filter = :filter")
     suspend fun getFilter(filter: String): FilterWithFilteredNumber?
 
     @RewriteQueriesToDropUnusedColumns
