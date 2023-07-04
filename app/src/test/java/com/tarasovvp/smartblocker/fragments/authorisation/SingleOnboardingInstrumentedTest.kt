@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHi
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.SingleOnBoardingFragment
-import com.tarasovvp.smartblocker.utils.extensions.orZero
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -51,7 +50,7 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingIntroTitle() {
         onView(withId(R.id.single_on_boarding_title))
             .check(matches(isDisplayed()))
-            .check(matches(withText(onBoardingPage?.description().orZero())))
+            .check(matches(withText(onBoardingPage?.description(targetContext).toString())))
     }
 
     @Test
@@ -79,7 +78,7 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingFilterConditionTitle() {
         onView(withId(R.id.single_on_boarding_title))
             .check(matches(isDisplayed()))
-            .check(matches(withText(onBoardingPage?.description().orZero())))
+            .check(matches(withText(onBoardingPage?.description(targetContext).toString())))
     }
 
     @Test
@@ -107,7 +106,7 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingInfoTitle() {
         onView(withId(R.id.single_on_boarding_title))
             .check(matches(isDisplayed()))
-            .check(matches(withText(onBoardingPage?.description().orZero())))
+            .check(matches(withText(onBoardingPage?.description(targetContext).toString())))
     }
 
     @Test
@@ -135,7 +134,7 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingPermissionTitle() {
         onView(withId(R.id.single_on_boarding_title))
             .check(matches(isDisplayed()))
-            .check(matches(withText(onBoardingPage?.description().orZero())))
+            .check(matches(withText(onBoardingPage?.description(targetContext).toString())))
     }
 
     @Test

@@ -1,5 +1,7 @@
 package com.tarasovvp.smartblocker.utils.extensions
 
+import android.content.Context
+import android.text.Spanned
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.*
 
@@ -69,13 +71,13 @@ fun Info.descriptionRes(): Int {
     }
 }
 
-fun OnBoarding.descriptionRes(): Int {
-    return when(this) {
+fun OnBoarding.descriptionText(context: Context): Spanned {
+    return context.htmlWithImages(context.getString(when(this) {
         OnBoarding.ONBOARDING_INTRO -> R.string.onboarding_intro
         OnBoarding.ONBOARDING_FILTER_CONDITIONS -> R.string.onboarding_filter_conditions
         OnBoarding.ONBOARDING_INFO -> R.string.onboarding_info
         OnBoarding.ONBOARDING_PERMISSIONS -> R.string.onboarding_permissions
-    }
+    }))
 }
 
 fun OnBoarding.mainImageRes(): Int {

@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
@@ -37,9 +38,21 @@ class SettingsBlockerFragment :
                 settingsBlockerSwitch.isChecked = blockerTurnOn
                 settingsBlockerDescribe.text =
                     getString(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off )
+                setBlockHiddenDisabling(blockerTurnOn)
             }
             settingsBlockerSwitch.setSafeOnClickListener {
                 viewModel.setBlockerTurnOn(settingsBlockerSwitch.isChecked)
+            }
+        }
+    }
+
+    private fun setBlockHiddenDisabling(isEnabled: Boolean) {
+        binding?.apply {
+            settingsBlockerHiddenSwitch.isEnabled = isEnabled
+            settingsBlockerHiddenContainer.alpha = if (isEnabled) 1f else 0.6f
+            context?.let {
+                settingsBlockerHiddenContainer.backgroundTintList = ContextCompat.getColorStateList(it, if (isEnabled) R.color.item_color else R.color.disabled_bg)
+                settingsBlockerHiddenDivider.backgroundTintList = ContextCompat.getColorStateList(it, if (isEnabled) R.color.light_steel_blue else R.color.disabled_bg)
             }
         }
     }

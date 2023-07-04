@@ -18,7 +18,7 @@
             android:id="@+id/single_on_boarding_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{onBoarding.description}"
+            android:text="@{onBoarding.description(context)}"
             android:textSize="@dimen/text_size_16"
             android:minLines="6"
             android:maxLines="6"

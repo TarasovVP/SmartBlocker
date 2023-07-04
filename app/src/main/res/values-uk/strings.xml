@@ -14,10 +14,10 @@
     <string name="button_cancel">Скасувати</string>
     <string name="button_ok">OK</string>
     <!--Onboarding-->
-    <string name="onboarding_intro">Привіт! Я – Smart Blocker. Я буду вашим помічником у блокуванні небажаних дзвінків і в цьому мені допоможуть мої розумні фільтри.</string>
-    <string name="onboarding_filter_conditions">Розумні фільтри будуть аналізувати вхідні дзвінки за заданими Вами ознаками та блокувати або дозволяти їх.</string>
-    <string name="onboarding_info">Я завжди готовий допомогти розібратися в тому, як я працюю. Для цього знайдіть іконку <small><font color='blue'>&#9432;</font></small> і по ній перейдіть на екран з інструкцією.</string>
-    <string name="onboarding_permissions">Для коректної роботи телефон запросить необхідні дозволи. Для цього виберіть "Дозволити" у системних вікнах.</string>
+    <string name="onboarding_intro"><![CDATA[Привіт! Я – Smart Blocker. Я буду вашим помічником у блокуванні небажаних дзвінків і в цьому мені допоможуть мої розумні фільтри.]]></string>
+    <string name="onboarding_filter_conditions"><![CDATA[Розумні фільтри будуть аналізувати вхідні дзвінки за заданими Вами ознаками та блокувати або дозволяти їх.]]></string>
+    <string name="onboarding_info"><![CDATA[Я завжди готовий допомогти розібратися в тому, як я працюю. Для цього знайдіть іконку <img src =\'ic_info\'> і по ній перейдіть на екран з інструкцією.]]></string>
+    <string name="onboarding_permissions"><![CDATA[Для коректної роботи телефон запросить необхідні дозволи. Для цього виберіть "Дозволити" у системних вікнах.]]></string>
     <!--Authorization-->
     <string name="authorization_entrance">Вхід</string>
     <string name="authorization_with_google_account">За допомогою Google</string>

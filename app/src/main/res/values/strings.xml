@@ -14,10 +14,10 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_ok">OK</string>
     <!--Onboarding-->
-    <string name="onboarding_intro">Hello! I am Smart Blocker. I will be your assistant in blocking unwanted calls and my smart filters will help me with this.</string>
-    <string name="onboarding_filter_conditions">Smart filters will analyze incoming calls based on criteria you specify and block or permit them.</string>
-    <string name="onboarding_info">I\'m always available to help you understand how I work. To do this, find the icon <small><font color='blue'>&#9432;</font></small> and follow it to the screen with the instruction.</string>
-    <string name="onboarding_permissions">The phone will ask for the necessary permissions to work properly. To do this, select “Allow” in the system windows.</string>
+    <string name="onboarding_intro"><![CDATA[Hello! I am Smart Blocker. I will be your assistant in blocking unwanted calls and my smart filters will help me with this.]]></string>
+    <string name="onboarding_filter_conditions"><![CDATA[Smart filters will analyze incoming calls based on criteria you specify and block or permit them.]]></string>
+    <string name="onboarding_info"><![CDATA[I\'m always available to help you understand how I work. To do this, find the icon <img src =\'ic_info\'> and follow it to the screen with the instruction.]]></string>
+    <string name="onboarding_permissions"><![CDATA[The phone will ask for the necessary permissions to work properly. To do this, select “Allow” in the system windows.]]></string>
     <!--Authorization-->
     <string name="authorization_entrance">Entrance</string>
     <string name="authorization_with_google_account">With Google</string>

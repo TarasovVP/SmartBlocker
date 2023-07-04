@@ -19,6 +19,7 @@
     <color name="light_steel_blue">#B4C5E3</color>
     <color name="valhalla">#211F2E</color>
     <color name="islamic_green">#06AA0E</color>
+    <color name="disabled_bg">#19636076</color>
 
     //custom project colors
     <color name="main_bg_start">@color/hawkes_blue</color>

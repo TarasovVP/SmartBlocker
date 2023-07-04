@@ -11,7 +11,6 @@ import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_PAGE
 import com.tarasovvp.smartblocker.presentation.main.authorization.onboarding.SingleOnBoardingFragment
-import com.tarasovvp.smartblocker.utils.extensions.orZero
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
@@ -38,7 +37,7 @@ open class BaseSingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
     fun checkOnBoardingTitle() {
         onView(withId(R.id.single_on_boarding_title))
             .check(matches(isDisplayed()))
-            .check(matches(withText(onBoardingPage?.description().orZero())))
+            .check(matches(withText(onBoardingPage?.description(targetContext).toString())))
     }
 
     @Test

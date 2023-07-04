@@ -1,6 +1,8 @@
 package com.tarasovvp.smartblocker.domain.enums
 
-import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
+import android.content.Context
+import android.text.Spanned
+import com.tarasovvp.smartblocker.utils.extensions.descriptionText
 import com.tarasovvp.smartblocker.utils.extensions.mainImageRes
 import com.tarasovvp.smartblocker.utils.extensions.tabImageRes
 
@@ -10,8 +12,8 @@ enum class OnBoarding {
     ONBOARDING_INFO,
     ONBOARDING_PERMISSIONS;
 
-    fun description(): Int {
-        return descriptionRes()
+    fun description(context: Context): Spanned {
+        return descriptionText(context)
     }
 
     fun mainImage(): Int {
