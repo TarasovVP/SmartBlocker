@@ -34,9 +34,6 @@ data class FilterWithFilteredNumberUIModel(
     @IgnoredOnParcel
     var filterAction: FilterAction? = null
 
-    fun isChangeFilterAction(): Boolean {
-        return filterAction == FilterAction.FILTER_ACTION_BLOCKER_TRANSFER || filterAction == FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
-    }
 
     fun filterTypeTitle(): Int {
         return when (filterType) {

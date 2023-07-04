@@ -20,7 +20,7 @@ import com.tarasovvp.smartblocker.utils.extensions.orZero
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class NumberDataAdapter(
-    var numberDataUIModelList: ArrayList<NumberDataUIModel>? = null,
+    private var numberDataUIModelList: ArrayList<NumberDataUIModel>? = null,
     private val numberDataClick: (NumberDataUIModel) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

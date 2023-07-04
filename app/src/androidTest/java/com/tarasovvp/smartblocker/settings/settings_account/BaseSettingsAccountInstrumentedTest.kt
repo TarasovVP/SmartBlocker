@@ -64,7 +64,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.settings_account_avatar)).apply {
             if (mockFirebaseAuth.currentUser.isNotNull()) {
                 check(matches(isDisplayed()))
-                check(matches(withBitmap(targetContext?.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())))
+                check(matches(withBitmap(targetContext.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())))
             } else {
                 check(matches(not(isDisplayed())))
             }

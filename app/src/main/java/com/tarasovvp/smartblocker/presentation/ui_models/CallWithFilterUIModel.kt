@@ -83,10 +83,6 @@ data class CallWithFilterUIModel(
             R.drawable.ic_contact) else context.getInitialDrawable(callName.nameInitial())
     }
 
-    private fun dateTimeFromCallDate(): String {
-        return String.format("%s, %s", dateFromCallDate(), timeFromCallDate())
-    }
-
     private fun isBlockedCall(): Boolean {
         return type == Constants.BLOCKED_CALL
     }

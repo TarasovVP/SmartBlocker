@@ -65,10 +65,6 @@ class MaskedEditText @JvmOverloads constructor(
         cleanUp()
     }
 
-    fun getNumberMask(): String? {
-        return mask
-    }
-
     fun getRawText(): String {
         return rawText?.text.orEmpty()
     }

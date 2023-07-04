@@ -15,9 +15,6 @@ interface FilteredCallDao {
     @Query("SELECT * FROM filtered_calls")
     suspend fun allFilteredCalls(): List<FilteredCall>
 
-    @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1")
-    suspend fun allFilteredCallsWithFilter(): List<CallWithFilter>
-
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1 AND filter = :filter ORDER BY callDate DESC")
