@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.setFragmentResultListener
@@ -82,6 +83,7 @@ class SettingsAccountFragment :
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
+                Log.e("deleteUserTAG", "SettingsAccountFragment successLiveData")
                 context?.let { context -> AppDatabase.getDatabase(context).clearAllTables() }
                 (activity as? MainActivity)?.apply {
                     stopBlocker()

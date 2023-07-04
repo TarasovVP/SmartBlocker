@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
+import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -63,8 +64,9 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
     override fun deleteUser(result: (Result<Unit>) -> Unit) {
         firebaseAuth.currentUser?.delete()
             ?.addOnCompleteListener {
-                result.invoke(Result.Success())
+                signOut(result)
             }?.addOnFailureListener { exception ->
+                Log.e("deleteUserTAG", "AuthRepositoryImpl deleteUser localizedMessage ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
     }
@@ -74,6 +76,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             firebaseAuth.signOut()
             result.invoke(Result.Success())
         }.addOnFailureListener { exception ->
+            Log.e("deleteUserTAG", "AuthRepositoryImpl signOut localizedMessage ${exception.localizedMessage}")
             result.invoke(Result.Failure(exception.localizedMessage))
         }
     }

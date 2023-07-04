@@ -125,8 +125,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSettingsAccountUseCase(authRepository: AuthRepository): SettingsAccountUseCase {
-        return SettingsAccountUseCaseImpl(authRepository)
+    fun provideSettingsAccountUseCase(authRepository: AuthRepository, realDataBaseRepository: RealDataBaseRepository): SettingsAccountUseCase {
+        return SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository)
     }
 
     @Singleton
