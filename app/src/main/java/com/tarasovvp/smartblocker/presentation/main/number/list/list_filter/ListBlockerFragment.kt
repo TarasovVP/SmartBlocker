@@ -65,6 +65,7 @@ class ListBlockerFragment : BaseListFilterFragment<ListBlockerFilterViewModel>()
     override fun startCreateFilterScreen() {
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = String.EMPTY
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = Constants.BLOCKER
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction = FilterAction.FILTER_ACTION_INVALID
         findNavController().navigate(ListBlockerFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel))
     }
 

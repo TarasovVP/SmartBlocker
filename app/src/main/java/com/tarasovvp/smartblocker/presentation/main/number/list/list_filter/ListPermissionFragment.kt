@@ -64,6 +64,7 @@ class ListPermissionFragment : BaseListFilterFragment<ListPermissionFilterViewMo
     override fun startCreateFilterScreen() {
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = String.EMPTY
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = Constants.PERMISSION
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction = FilterAction.FILTER_ACTION_INVALID
         findNavController().navigate(ListPermissionFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel))
     }
 
