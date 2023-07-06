@@ -26,6 +26,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DRAWABLE_RE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ENCODING
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MIME_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.QUESTION_CHAR
 import kotlinx.coroutines.*
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -98,7 +99,7 @@ val String.Companion.EMPTY: String
     get() = ""
 
 fun String?.nameInitial(): String =
-    this?.split(Regex(" "))?.take(2)?.filter { it.firstOrNull()?.isLetter().isTrue() }
+    this?.takeIf { it.isEmpty() }?.let { QUESTION_CHAR.toString() } ?: this?.split(Regex(" "))?.take(2)?.filter { it.firstOrNull()?.isLetter().isTrue() }
         ?.mapNotNull { it.firstOrNull() }
         ?.joinToString(String.EMPTY)?.uppercase(Locale.getDefault()).orEmpty()
 

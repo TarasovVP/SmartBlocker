@@ -10,6 +10,8 @@ interface AuthRepository {
 
     fun signInWithGoogle(idToken: String, result: (Result<Unit>) -> Unit)
 
+    fun signInAnonymously(result: (Result<Unit>) -> Unit)
+
     fun createUserWithEmailAndPassword(email: String, password: String, result: (Result<Unit>) -> Unit)
 
     fun changePassword(currentPassword: String, newPassword: String, result: (Result<Unit>) -> Unit)

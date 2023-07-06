@@ -60,4 +60,16 @@ class LoginViewModelUnitTest: BaseViewModelUnitTest<LoginViewModel>() {
         verify { useCase.firebaseAuthWithGoogle(eq(TEST_TOKEN), any()) }
         assertEquals(Unit, viewModel.successSignInLiveData.getOrAwaitValue())
     }
+
+    @Test
+    fun signInAnonymouslyTest() {
+        every { application.isNetworkAvailable } returns true
+        coEvery { useCase.signInAnonymously(any()) } answers {
+            val result = firstArg<(Result<Unit>) -> Unit>()
+            result.invoke(expectedResult)
+        }
+        viewModel.signInAnonymously()
+        verify { useCase.signInAnonymously(any()) }
+        assertEquals(Unit, viewModel.successSignInLiveData.getOrAwaitValue())
+    }
 }

@@ -27,13 +27,13 @@
     <string name="authorization_password">Password</string>
     <string name="authorization_sign_up">Sign up</string>
     <string name="authorization_forgot_password">Forgot your password?</string>
-    <string name="authorization_continue_without_account">Without registration</string>
+    <string name="authorization_continue_without_account">Without authorisation</string>
     <string name="authorization_forgot_password_title">Enter your email, and we will send you instructions.</string>
     <string name="authorization_enter_email">Enter your Email</string>
     <string name="authorization_password_reset_success">An email has been sent to your Email. Check in your inbox.</string>
     <string name="authorization_entrance_title">Got an account?&#160;</string>
     <string name="authorization_signing_up">Sign Up</string>
-    <string name="unauthorized_enter">An unauthorized user has limited functionality, including no access to remote data storage. Enter anyway?</string>
+    <string name="unauthorized_enter">An unauthorized user has data stored locally within a single session. Enter anyway?</string>
     <string name="unauthorized_enter_button">Enter</string>
     <string name="authorization_network_unavailable">No internet connection.\nTo continue, connect to the internet and log in again.</string>
     <!--Filter type-->
@@ -87,7 +87,7 @@
     <string name="info_priority_rules_title">Priority rules</string>
     <string name="info_incomplete_numbers_title">Incomplete numbers</string>
     <!--Info-->
-    <string name="info_filter"><![CDATA[<b>Filter</b> - a number created by the user in the Smart Blocker application that analyzes the incoming </a><img src =\'ic_call\'><a href="INFO_CALL">Call and controls it if it matches in the specified area.<br/><br/>According to the nature of call control, filters are divided into two types: <br/><br/><img src =\'ic_blocker\'><a href=" INFO_BLOCKER">Blocker</a> - block an incoming call;<br/><br/><img src =\'ic_permission\'><a href="INFO_PERMISSION" target="_blank">Permission</a> - permits an incoming call;<br/><br/>According to the area of match with an incoming call, they are divided to three criteria:<br/><br/><img src =\'ic_full_condition\'><b>Full number</b> - full match with incoming call;<br/>Example: Incoming call <img src =\'ic_call_incoming\'><b>+380502711344</b> matches filter <img src =\'ic_full_condition\'>+380502711344 ;<br/><br/><img src =\'ic_start_condition\'><b>Starting</b> - match on the start of an incoming call;<br/>Example: Incoming call <img src =\'ic_call_incoming\'><b>+380502</b>711344 matches the filter <img src =\'ic_start_condition\'>+380502;<br/><br/><img src =\'ic_contain_condition\'><b> Contains</b> - matches anywhere in the incoming call.<br/>Example: The incoming call <img src =\'ic_call_incoming\'>+38050<b>2711344</b> matches the filter <img src =\'ic_contain_condition\'>2711344;<br/><br/>If the number matches other filters, the <a href="INFO_PRIORITY_RULES">Priority rule takes effect</a>.<br/>]]></string>
+    <string name="info_filter"><![CDATA[<b>Filter</b> - a number created by the user in the Smart Blocker application that analyzes the incoming </a><img src =\'ic_call\'><a href="INFO_CALL">Call and controls it if it matches in the specified area.<br/><br/>According to the nature of call control, filters are divided into two types: <br/><br/><img src =\'ic_blocker\'><a href="INFO_BLOCKER">Blocker</a> - block an incoming call;<br/><br/><img src =\'ic_permission\'><a href="INFO_PERMISSION" target="_blank">Permission</a> - permits an incoming call;<br/><br/>According to the area of match with an incoming call, they are divided to three criteria:<br/><br/><img src =\'ic_full_condition\'><b>Full number</b> - full match with incoming call;<br/>Example: Incoming call <img src =\'ic_call_incoming\'><b>+380502711344</b> matches filter <img src =\'ic_full_condition\'>+380502711344 ;<br/><br/><img src =\'ic_start_condition\'><b>Starting</b> - match on the start of an incoming call;<br/>Example: Incoming call <img src =\'ic_call_incoming\'><b>+380502</b>711344 matches the filter <img src =\'ic_start_condition\'>+380502;<br/><br/><img src =\'ic_contain_condition\'><b> Contains</b> - matches anywhere in the incoming call.<br/>Example: The incoming call <img src =\'ic_call_incoming\'>+38050<b>2711344</b> matches the filter <img src =\'ic_contain_condition\'>2711344;<br/><br/>If the number matches other filters, the <a href="INFO_PRIORITY_RULES">Priority rule takes effect</a>.<br/>]]></string>
     <string name="info_blocker"><![CDATA[<img src =\'ic_blocker\'><b>Blocker</b> - a filter created by the user in the Smart Blocker app to block incoming <img src =\'ic_call\'> <a href= "INFO_CALL" >Calls</a> of the phone.<br/><br/>For each Blocker, information is available: filter number, control type, match area, creation time, contact matches.<br/><br/>Example :<br/><img src=\'ic_item_blocker\'>]]></string>
     <string name="info_permission"><![CDATA[<img src =\'ic_permission\'><b>Permission</b> - a filter created by the user in the Smart Blocker application to permit incoming <img src =\'ic_call\'><a href= "INFO_CALL">Calls</a> of the phone, even if the number has matches with the blocker.<br/><br/>For each Permission, information is available: filter number, control type, match area, creation time, contacts matches. <br/><br/>Example:<br/><img src =\'ic_item_permission\'>]]></string>
     <string name="info_call"><![CDATA[<img src =\'ic_call\'><b>Call</b> - connection between telephone subscribers using telephone numbers.<br/><br/>For each Call, information is available: avatar, number, name, number validity (hidden by default), time, call type, filter attribute.<br/><br/>Example:<br/><img src =\'ic_item_call\'> <br/><br/> In the Smart Blocker application, calls are divided into:<br/><br/>Standard:<br/><img src =\'ic_call_outcoming\'> Outgoing;<br/><img src =\'ic_call_incoming\'> Incoming; <br/><img src =\'ic_call_missed\'> Missed;<br/><img src =\'ic_call_rejected\'> Rejected;<br/><br/>Filtered:<br/><img src = \'ic_call_incoming_permitted\'> Incoming(permitted by filter);<br/><img src =\'ic_call_missed_permitted\'> Passed(permitted by filter);<br/><img src =\'ic_call_rejected_permitted\'> Rejected(permitted by filter );<br/><img src =\'ic_call_blocked\'> Blocked by filter or Smart Blocker app settings;]]></string>
@@ -118,7 +118,7 @@
     <string name="empty_state_numbers">No number matches found for this filter</string>
     <string name="empty_state_filtered_calls">No filtered calls found with these parameters</string>
     <string name="empty_state_hidden">Hidden numbers are managed by system settings. To change go to "Settings"</string>
-    <string name="empty_state_account">You are logged in as an unregistered user. Information about the created filters and the history of filtered calls will be stored locally and will be lost when you reinstall the application or clear the cache. To get the full functionality of the application, including when running on other devices, register.</string>
+    <string name="empty_state_account">Your data is stored locally within a single session and will be lost if you log out of this account, clear the cache, or reinstall the application. To connect remote data storage and access it from any device, register.</string>
     <!--Progress-->
     <string name="progress_data_collect">Information collecting</string>
     <string name="progress_collect_localizations">Localization data collecting</string>
@@ -212,6 +212,7 @@
     <string name="creating_country_code_title">Select country</string>
     <!--Settings account-->
     <string name="settings_account_log_out_title">Logout</string>
+    <string name="settings_account_unauthorised">Unauthorised</string>
     <string name="settings_account_change_password_title">Change password</string>
     <string name="settings_account_delete_title">Delete account</string>
     <string name="settings_account_enter_current_password">Current password</string>

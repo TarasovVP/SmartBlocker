@@ -348,7 +348,7 @@ class MainActivity : AppCompatActivity() {
         if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
         if (checkPermissions().isTrue()) {
             setMainProgressVisibility(true)
-            if (firebaseAuth.currentUser.isNotNull()) {
+            if (firebaseAuth.isAuthorisedUser()) {
                 mainViewModel.getCurrentUser(isInit)
             } else {
                 mainViewModel.getAllData(isInit)

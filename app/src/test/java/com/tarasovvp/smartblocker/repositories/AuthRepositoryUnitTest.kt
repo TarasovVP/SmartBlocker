@@ -11,11 +11,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.data.repositoryImpl.AuthRepositoryImpl
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
-import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
@@ -81,6 +78,20 @@ class AuthRepositoryUnitTest {
     }
 
     @Test
+    fun signInAnonymously() {
+        val task = mockk<Task<AuthResult>>(relaxed = true)
+        every { firebaseAuth.signInAnonymously() } returns task
+        every { task.addOnCompleteListener(any()) } answers {
+            val listener = firstArg<OnCompleteListener<AuthResult>>()
+            listener.onComplete(task)
+            task
+        }
+        authRepository.signInAnonymously(resultMock)
+        verify { task.addOnCompleteListener(any()) }
+        verify { resultMock.invoke(Result.Success()) }
+    }
+
+    @Test
     fun createUserWithEmailAndPasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
         every { firebaseAuth.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
@@ -113,11 +124,20 @@ class AuthRepositoryUnitTest {
         val currentUser = mockk<FirebaseUser>(relaxed = true)
         val deleteTask = mockk<Task<Void>>(relaxed = true)
         every { firebaseAuth.currentUser } returns currentUser
+        every { authRepository.signOut(resultMock) } just Runs
         every { currentUser.delete() } returns deleteTask
         every { deleteTask.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<Void>>()
             listener.onComplete(deleteTask)
             deleteTask
+        }
+        val task = mockk<Task<Void>>(relaxed = true)
+        every { googleSignInClient.signOut() } returns task
+        every { firebaseAuth.signOut() } returns Unit
+        every { task.addOnCompleteListener(any()) } answers {
+            val listener = firstArg<OnCompleteListener<Void>>()
+            listener.onComplete(task)
+            task
         }
         authRepository.deleteUser(resultMock)
         verify { deleteTask.addOnCompleteListener(any()) }

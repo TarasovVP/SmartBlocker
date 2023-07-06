@@ -28,7 +28,6 @@
                 android:paddingHorizontal="@dimen/padding_16"
                 android:paddingTop="@dimen/padding_16"
                 android:background="@drawable/bg_rounded"
-                android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
                 android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -63,38 +62,44 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/button_bg"
                     android:text="@string/settings_account_log_out_title"
-                    android:paddingTop="@dimen/margin_8"
-                    android:paddingBottom="@dimen/padding_16"
+                    android:paddingTop="@dimen/padding_5"
                     android:minHeight="@dimen/padding_48"
                     app:layout_constraintStart_toStartOf="@+id/settings_account_name"
                     app:layout_constraintTop_toBottomOf="@+id/settings_account_name" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/settings_account_change_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
-                android:background="@drawable/bg_rounded"
-                android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_12"
-                android:text="@string/settings_account_change_password_title"
                 android:minHeight="@dimen/padding_48"
                 android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
+                android:text="@string/settings_account_change_password_title"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_container" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/settings_account_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/StrokeButtonStyle"
                 android:layout_marginTop="@dimen/margin_8"
-                android:background="@drawable/bg_rounded"
-                android:paddingHorizontal="@dimen/padding_16"
-                android:paddingVertical="@dimen/padding_12"
                 android:minHeight="@dimen/padding_48"
-                android:text="@string/settings_account_delete_title"
                 android:visibility="@{isLoggedInUser ? View.VISIBLE : View.GONE}"
+                android:text="@string/settings_account_delete_title"
+                app:strokeColor="@color/sunset"
+                android:textColor="@color/sunset"
                 app:layout_constraintTop_toBottomOf="@+id/settings_account_change_password" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_account_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:minHeight="@dimen/padding_48"
+                android:visibility="@{isLoggedInUser ? View.GONE : View.VISIBLE}"
+                android:text="@string/authorization_sign_up"
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_delete" />
 
             <com.tarasovvp.smartblocker.utils.EmptyStateView
                 android:id="@+id/include_empty_state"
@@ -102,19 +107,8 @@
                 android:layout_height="@dimen/size_0"
                 android:visibility="@{isLoggedInUser ? View.GONE : View.VISIBLE}"
                 app:description="@{EmptyState.EMPTY_STATE_ACCOUNT.description}"
-                app:layout_constraintBottom_toTopOf="@+id/settings_account_login"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/settings_account_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_24"
-                android:text="@string/authorization_enter"
-                android:visibility="@{isLoggedInUser ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/settings_account_sign_up"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

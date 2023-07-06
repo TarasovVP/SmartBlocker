@@ -4,9 +4,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -35,6 +36,8 @@ class SettingsBlockerUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+        mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
+        every { firebaseAuth.isAuthorisedUser() } returns true
         settingsBlockerUseCase = SettingsBlockerUseCaseImpl(realDataBaseRepository, dataStoreRepository, firebaseAuth)
     }
 

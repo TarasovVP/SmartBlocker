@@ -2,11 +2,14 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountUseCaseImpl
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
@@ -14,6 +17,9 @@ class SettingsAccountUseCaseUnitTest {
 
     @MockK
     private lateinit var authRepository: AuthRepository
+
+    @MockK
+    private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @MockK(relaxed = true)
     private lateinit var resultMock: (Result<Unit>) -> Unit
@@ -23,7 +29,7 @@ class SettingsAccountUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        settingsAccountUseCase = SettingsAccountUseCaseImpl(authRepository)
+        settingsAccountUseCase = SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository)
     }
 
     @Test
@@ -47,6 +53,9 @@ class SettingsAccountUseCaseUnitTest {
 
     @Test
     fun deleteUserTest() {
+        every { realDataBaseRepository.deleteCurrentUser(any()) } answers {
+            resultMock.invoke(Result.Success())
+        }
         every { authRepository.deleteUser(any()) } answers {
             resultMock.invoke(Result.Success())
         }

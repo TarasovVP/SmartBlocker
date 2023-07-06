@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class ListCallUseCaseImpl @Inject constructor(
     override suspend fun allCallWithFilters() = logCallRepository.allCallWithFilters()
 
     override suspend fun deleteCallList(filteredCallIdList: List<Int>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.currentUser.isNotNull()) {
+        if (firebaseAuth.isAuthorisedUser()) {
             if (isNetworkAvailable) {
                 realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map(Int::toString)) {
                     runBlocking {

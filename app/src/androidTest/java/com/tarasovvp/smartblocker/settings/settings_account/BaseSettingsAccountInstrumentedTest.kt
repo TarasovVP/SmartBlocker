@@ -18,11 +18,12 @@ import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
 import com.tarasovvp.smartblocker.utils.extensions.currentUserEmail
 import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import com.tarasovvp.smartblocker.utils.extensions.nameInitial
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
 import org.junit.Before
@@ -32,13 +33,14 @@ import org.junit.Test
 @HiltAndroidTest
 open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
 
-
     private val mockFirebaseAuth: FirebaseAuth = mockk()
 
     @Before
     override fun setUp() {
         super.setUp()
         every { mockFirebaseAuth.currentUser } returns mockk()
+        mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
+        every { mockFirebaseAuth.isAuthorisedUser() } returns (this@BaseSettingsAccountInstrumentedTest is SettingsAccountInstrumentedTest)
         launchFragmentInHiltContainer<SettingsAccountFragment> {
             (this as SettingsAccountFragment).firebaseAuth = mockFirebaseAuth
             this.initViews()
@@ -55,53 +57,40 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsAccountContainer() {
-        onView(withId(R.id.settings_account_container))
-            .check(matches(if (mockFirebaseAuth.currentUser.isNotNull()) isDisplayed() else not(isDisplayed())))
+        onView(withId(R.id.settings_account_container)).check(matches(isDisplayed()))
     }
 
     @Test
     fun checkSettingsAccountAvatar() {
         onView(withId(R.id.settings_account_avatar)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
-                check(matches(isDisplayed()))
-                check(matches(withBitmap(targetContext.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())))
-            } else {
-                check(matches(not(isDisplayed())))
-            }
+            check(matches(isDisplayed()))
+            check(matches(withBitmap(targetContext.getInitialDrawable(mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial()).toBitmap())))
         }
     }
 
     @Test
     fun checkSettingsAccountName() {
         onView(withId(R.id.settings_account_name)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
-                check(matches(isDisplayed()))
-                check(matches(withText(mockFirebaseAuth.currentUser?.currentUserEmail())))
-            } else {
-                check(matches(not(isDisplayed())))
-            }
+            check(matches(isDisplayed()))
+            check(matches(withText(if (mockFirebaseAuth.isAuthorisedUser()) mockFirebaseAuth.currentUser?.currentUserEmail() else targetContext.getString(R.string.settings_account_unauthorised))))
         }
     }
 
     @Test
     fun checkSettingsAccountLogOut() {
         onView(withId(R.id.settings_account_log_out)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
-                check(matches(isDisplayed()))
-                check(matches(withText(R.string.settings_account_log_out_title)))
-                perform(click())
-                assertEquals(R.id.accountActionDialog, navController?.currentDestination?.id)
-                assertEquals(true, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
-            } else {
-                check(matches(not(isDisplayed())))
-            }
+            check(matches(isDisplayed()))
+            check(matches(withText(R.string.settings_account_log_out_title)))
+            perform(click())
+            assertEquals(R.id.accountActionDialog, navController?.currentDestination?.id)
+            assertEquals(true, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
         }
     }
 
     @Test
     fun checkSettingsAccountChangePassword() {
         onView(withId(R.id.settings_account_change_password)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
+            if (mockFirebaseAuth.isAuthorisedUser()) {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_change_password_title)))
                 perform(click())
@@ -115,7 +104,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsAccountDelete() {
         onView(withId(R.id.settings_account_delete)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
+            if (mockFirebaseAuth.isAuthorisedUser()) {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_delete_title)))
                 perform(click())
@@ -130,7 +119,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkIncludeEmptyState() {
         onView(withId(R.id.include_empty_state)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
+            if (mockFirebaseAuth.isAuthorisedUser()) {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))
@@ -142,15 +131,15 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
-    fun checkSettingsAccountLogin() {
-        onView(withId(R.id.settings_account_login)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
+    fun checkSettingsAccountSignUp() {
+        onView(withId(R.id.settings_account_sign_up)).apply {
+            if (mockFirebaseAuth.isAuthorisedUser()) {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))
-                check(matches(withText(R.string.authorization_enter)))
+                check(matches(withText(R.string.authorization_sign_up)))
                 perform(click())
-                assertEquals(R.id.loginFragment, navController?.currentDestination?.id)
+                assertEquals(R.id.settingsSignUpFragment, navController?.currentDestination?.id)
             }
         }
     }

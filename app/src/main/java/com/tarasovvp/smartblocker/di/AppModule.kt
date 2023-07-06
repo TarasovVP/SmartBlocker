@@ -31,6 +31,7 @@ import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.Se
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.mapperImpl.*
 import com.tarasovvp.smartblocker.presentation.mappers.*
@@ -326,6 +327,12 @@ object AppModule {
     @Provides
     fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository, dataStoreRepository: DataStoreRepository, firebaseAuth: FirebaseAuth): SettingsBlockerUseCase {
         return SettingsBlockerUseCaseImpl(realDataBaseRepository, dataStoreRepository, firebaseAuth)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSettingsSignUpUseCase(authRepository: AuthRepository): SettingsSignUpUseCaseImpl {
+        return SettingsSignUpUseCaseImpl(authRepository)
     }
 
     @Singleton

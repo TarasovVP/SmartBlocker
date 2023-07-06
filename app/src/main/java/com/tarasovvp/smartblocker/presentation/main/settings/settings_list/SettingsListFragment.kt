@@ -8,9 +8,9 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
 import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_REVIEW
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +34,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
 
     fun initViews() {
         binding?.apply {
-            settingsReview.isVisible = firebaseAuth.currentUser.isNotNull()
+            settingsReview.isVisible = firebaseAuth.isAuthorisedUser()
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener {
                     val direction = when (it.id) {

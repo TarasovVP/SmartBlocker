@@ -2,10 +2,13 @@ package com.tarasovvp.smartblocker.presentation.main.number.details.details_filt
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.repository.*
+import com.tarasovvp.smartblocker.domain.repository.ContactRepository
+import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -22,7 +25,7 @@ class DetailsFilterUseCaseImpl @Inject constructor(
     override suspend fun allFilteredCallsByFilter(filter: String) = filteredCallRepository.allFilteredCallsByFilter(filter)
 
     override suspend fun deleteFilter(filter: Filter, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.currentUser.isNotNull()) {
+        if (firebaseAuth.isAuthorisedUser()) {
             if (isNetworkAvailable) {
                 realDataBaseRepository.deleteFilterList(listOf(filter)) {
                     runBlocking {
@@ -40,7 +43,7 @@ class DetailsFilterUseCaseImpl @Inject constructor(
     }
 
     override suspend fun updateFilter(filter: Filter, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.currentUser.isNotNull()) {
+        if (firebaseAuth.isAuthorisedUser()) {
             if (isNetworkAvailable) {
                 realDataBaseRepository.insertFilter(filter) {
                     runBlocking {

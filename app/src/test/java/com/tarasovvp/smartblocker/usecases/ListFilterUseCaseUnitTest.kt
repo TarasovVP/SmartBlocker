@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterUseCaseImpl
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
@@ -43,6 +44,8 @@ class ListFilterUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+        mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
+        every { firebaseAuth.isAuthorisedUser() } returns true
         listFilterUseCase = ListFilterUseCaseImpl(filterRepository, realDataBaseRepository, firebaseAuth, dataStoreRepository)
     }
 

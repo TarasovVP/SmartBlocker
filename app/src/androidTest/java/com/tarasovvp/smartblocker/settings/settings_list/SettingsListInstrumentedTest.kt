@@ -15,11 +15,12 @@ import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListFragment
 import com.tarasovvp.smartblocker.utils.extensions.flagDrawable
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.not
 import org.junit.Before
@@ -43,6 +44,8 @@ class SettingsListInstrumentedTest: BaseInstrumentedTest() {
     override fun setUp() {
         super.setUp()
         every { mockFirebaseAuth.currentUser } returns mockk()
+        mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
+        every { mockFirebaseAuth.isAuthorisedUser() } returns true
         launchFragmentInHiltContainer<SettingsListFragment> {
             (this as SettingsListFragment).firebaseAuth = mockFirebaseAuth
             this.initViews()
@@ -100,7 +103,7 @@ class SettingsListInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkSettingsReview() {
         onView(withId(R.id.settings_review)).apply {
-            if (mockFirebaseAuth.currentUser.isNotNull()) {
+            if (mockFirebaseAuth.isAuthorisedUser()) {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_review)))
                 check(matches(withDrawable(R.drawable.ic_settings_review)))

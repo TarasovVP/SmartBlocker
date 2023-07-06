@@ -11,6 +11,7 @@ import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallUseCaseImpl
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -41,6 +42,8 @@ class ListCallUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+        mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
+        every { firebaseAuth.isAuthorisedUser() } returns true
         listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth)
     }
 

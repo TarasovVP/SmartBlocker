@@ -27,13 +27,13 @@
     <string name="authorization_password">Пароль</string>
     <string name="authorization_sign_up">Реєстрація</string>
     <string name="authorization_forgot_password">Забули пароль?</string>
-    <string name="authorization_continue_without_account">Без реєстрації</string>
+    <string name="authorization_continue_without_account">Без авторизації</string>
     <string name="authorization_forgot_password_title">Введіть ваш Email і ми відправимо Вам інструкції.</string>
     <string name="authorization_enter_email">Введіть ваш Email</string>
     <string name="authorization_password_reset_success">Лист надіслано на ваш Email. Перевірте у вхідних.</string>
     <string name="authorization_entrance_title">Є обліковий запис?&#160;</string>
     <string name="authorization_signing_up">Зареєструватися</string>
-    <string name="unauthorized_enter">У авторизованого користувача обмежений функціонал, у тому числі немає доступу до зберігання даних у віддаленому доступі. Все одно увійти?</string>
+    <string name="unauthorized_enter">У неавторизованого користувача дані зберігаються локально у межах однієї сесії. Все одно увійти?</string>
     <string name="unauthorized_enter_button">Увійти</string>
     <string name="authorization_network_unavailable">Інтернет з\'єднання відсутнє.\nДля продовження, підключіть інтернет і здійсніть повторний вхід.</string>
     <!--Filter type-->
@@ -118,7 +118,7 @@
     <string name="empty_state_numbers">За цим фільтром збігів з номерами не знайдено</string>
     <string name="empty_state_filtered_calls">З такими параметрами відфільтрованих дзвінків не знайдено</string>
     <string name="empty_state_hidden">Керування прихованими номерами здійснюється системними налаштуваннями. Щоб змінити, перейдіть до "Налаштування"</string>
-    <string name="empty_state_account">Ви увійшли незареєстрованим користувачем. Інформація про створені фільтри та історія відфільтрованих дзвінків буде зберігатися локально і буде втрачена під час переустановки програми або очищення кешу. Для отримання повного функціоналу програми, у тому числі під час запуску на інших пристроях, зареєструйтесь.</string>
+    <string name="empty_state_account">Ваші дані зберігаються локально в рамках однієї сесії і будуть втрачені при виході з цього облікового запису, очищення кеша або перевстановленні програми. Щоб підключити віддалене зберігання даних та отримати доступ до нього з будь-якого пристрою, зареєструйтесь.</string>
     <!--Progress-->
     <string name="progress_data_collect">Збір інформації</string>
     <string name="progress_collect_localizations">Отримання даних локалізації</string>
@@ -215,6 +215,7 @@
     <string name="creating_country_code_title">Виберіть країну</string>
     <!--Settings account-->
     <string name="settings_account_log_out_title">Вийти</string>
+    <string name="settings_account_unauthorised">Неавторизований</string>
     <string name="settings_account_change_password_title">Змінити пароль</string>
     <string name="settings_account_delete_title">Видалити обліковий запис</string>
     <string name="settings_account_enter_current_password">Поточний пароль</string>

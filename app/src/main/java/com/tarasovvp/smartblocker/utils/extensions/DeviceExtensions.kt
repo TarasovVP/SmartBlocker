@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
@@ -172,4 +173,8 @@ fun Activity.launchReviewFlow() {
             }
         }
     }
+}
+
+fun FirebaseAuth.isAuthorisedUser(): Boolean {
+    return currentUser.isNotNull() && currentUser?.isAnonymous.isNotTrue()
 }

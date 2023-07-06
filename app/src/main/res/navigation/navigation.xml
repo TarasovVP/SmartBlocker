@@ -261,11 +261,14 @@
             android:id="@+id/startChangePasswordDialog"
             app:destination="@id/changePasswordDialog" />
         <action
-            android:id="@+id/startLoginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@+id/mainNavigation"
-            app:popUpToInclusive="true" />
+            android:id="@+id/startSettingsSignUpFragment"
+            app:destination="@id/settingsSignUpFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsSignUpFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpFragment"
+        android:label="@string/authorization_sign_up"/>
 
     <fragment
         android:id="@+id/settingsLanguageFragment"

@@ -20,4 +20,8 @@ class LoginUseCaseImpl @Inject constructor(private val authRepository: AuthRepos
     override fun firebaseAuthWithGoogle(idToken: String, result: (Result<Unit>) -> Unit) = authRepository.signInWithGoogle(idToken) { authResult ->
         result.invoke(authResult)
     }
+
+    override fun signInAnonymously(result: (Result<Unit>) -> Unit) = authRepository.signInAnonymously { authResult ->
+        result.invoke(authResult)
+    }
 }

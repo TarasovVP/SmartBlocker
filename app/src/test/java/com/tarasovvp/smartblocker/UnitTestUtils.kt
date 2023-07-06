@@ -23,6 +23,7 @@ object UnitTestUtils {
     const val TEST_USER_ID = "testUserId"
     const val IS_LOG_OUT = "isLogOut"
     const val EMPTY = "Empty"
+    const val TEST_ERROR_MESSAGE = "testErrorMessage"
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun <T> LiveData<T>.getOrAwaitValue(

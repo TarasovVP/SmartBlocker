@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -57,7 +56,6 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
                 if (task.isSuccessful.not()) result.invoke(Result.Failure(task.exception?.localizedMessage))
                 result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
-                Log.e("deleteUserTAG", "RealDataBaseRepositoryImpl deleteCurrentUser localizedMessage ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
     }

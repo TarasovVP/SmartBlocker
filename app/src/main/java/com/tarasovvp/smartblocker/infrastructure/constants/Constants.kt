@@ -78,6 +78,7 @@ object Constants {
     //Number
     const val PLUS_CHAR = '+'
     const val MASK_CHAR = '#'
+    const val QUESTION_CHAR = '?'
     const val SPACE = " "
     const val NUMBER_DATA_TYPE = 0
     const val HEADER_TYPE = 1

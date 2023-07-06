@@ -63,4 +63,19 @@ class LoginViewModel @Inject constructor(
             exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
         }
     }
+
+    fun signInAnonymously() {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            loginUseCase.signInAnonymously { authResult ->
+                when(authResult) {
+                    is Result.Success -> successSignInLiveData.postValue(Unit)
+                    is Result.Failure -> authResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
 }

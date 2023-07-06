@@ -29,7 +29,7 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        launchFragmentInHiltContainer<InfoFragment> (fragmentArgs = bundleOf("info" to Info.INFO_DETAILS_NUMBER_DATA)) {
+        launchFragmentInHiltContainer<InfoFragment> (fragmentArgs = bundleOf("info" to Info.INFO_FILTER)) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.infoFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -46,10 +46,10 @@ class InfoInstrumentedTest: BaseInstrumentedTest() {
         targetContext.apply {
             onView(withId(R.id.info_web_view))
                 .check(matches(isDisplayed()))
-                .check(matches(withText(htmlWithImages(getString(Info.INFO_DETAILS_NUMBER_DATA.description())).toString())))
-                .perform(clickLinkWithText("Номер"))
+                .check(matches(withText(htmlWithImages(getString(Info.INFO_FILTER.description())).toString())))
+                .perform(clickLinkWithText("Permission"))
         }
         assertEquals(R.id.infoFragment, navController?.currentDestination?.id)
-        assertEquals(Info.INFO_LIST_BLOCKER, navController?.backStack?.last()?.arguments?.get("info"))
+        assertEquals(Info.INFO_PERMISSION, navController?.backStack?.last()?.arguments?.get("info"))
     }
 }

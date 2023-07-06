@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class ListFilterUseCaseImpl @Inject constructor(
     override suspend fun allFilterWithFilteredNumbersByType(isBlockerList: Boolean) = filterRepository.allFilterWithFilteredNumbersByType(if (isBlockerList) BLOCKER else PERMISSION)
 
     override suspend fun deleteFilterList(filterList: List<Filter>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.currentUser.isNotNull()) {
+        if (firebaseAuth.isAuthorisedUser()) {
             if (isNetworkAvailable) {
                 realDataBaseRepository.deleteFilterList(filterList) {
                     runBlocking {

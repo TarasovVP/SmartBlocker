@@ -6,7 +6,7 @@ import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class SettingsBlockerUseCaseImpl @Inject constructor(
     }
 
     override fun changeBlockHidden(blockHidden: Boolean, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.currentUser.isNotNull()) {
+        if (firebaseAuth.isAuthorisedUser()) {
             if (isNetworkAvailable) {
                 realDataBaseRepository.changeBlockHidden(blockHidden) {
                     result.invoke(Result.Success())

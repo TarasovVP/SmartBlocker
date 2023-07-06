@@ -68,11 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             }
         }
         setFragmentResultListener(UNAUTHORIZED_ENTER) { _, _ ->
-            (activity as? MainActivity)?.apply {
-                getAllData(true)
-                startBlocker()
-            }
-            findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
+            viewModel.signInAnonymously()
         }
     }
 

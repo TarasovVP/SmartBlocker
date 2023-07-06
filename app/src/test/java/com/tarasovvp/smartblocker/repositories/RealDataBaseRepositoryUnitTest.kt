@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.repositories
 
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -8,14 +9,15 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
+import com.tarasovvp.smartblocker.UnitTestUtils.TEST_ERROR_MESSAGE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_FILTER
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_USER_ID
 import com.tarasovvp.smartblocker.data.repositoryImpl.RealDataBaseRepositoryImpl
-import com.tarasovvp.smartblocker.domain.entities.models.Review
-import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
@@ -23,8 +25,11 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CA
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
@@ -82,6 +87,33 @@ class RealDataBaseRepositoryUnitTest {
         realDataBaseRepository.getCurrentUser(resultCurrentUserMock)
         verify { task.addOnCompleteListener(any()) }
         verify { resultCurrentUserMock.invoke(Result.Success(CurrentUser())) }
+    }
+
+    @Test
+    fun deleteCurrentUser() {
+        val task = mockk<Task<Void>>()
+        every { firebaseDatabase.reference.child(any()).child(any()).removeValue() } returns task
+        val currentUser = mockk<FirebaseUser>()
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.uid } returns TEST_USER_ID
+        every { task.isSuccessful } returns true
+        every { task.addOnCompleteListener(any()) } answers {
+            val listener = arg<OnCompleteListener<Void>>(0)
+            listener.onComplete(task)
+            task
+        }
+        val exception = mockk<Exception>()
+        every { task.addOnFailureListener(any()) } answers {
+            val listener = arg<OnFailureListener>(0)
+            listener.onFailure(exception)
+            task
+        }
+        every { task.isSuccessful } returns false
+        every { task.exception } returns exception
+        every { exception.localizedMessage } returns TEST_ERROR_MESSAGE
+        realDataBaseRepository.deleteCurrentUser(resultMock)
+        verify { task.addOnCompleteListener(any()) }
+        verify { resultMock.invoke(Result.Success()) }
     }
 
     @Test

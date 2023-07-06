@@ -2,7 +2,6 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.setFragmentResultListener
@@ -56,9 +55,9 @@ class SettingsAccountFragment :
 
     fun initViews() {
         binding?.apply {
-            isLoggedInUser = firebaseAuth.currentUser.isNotNull()
-            settingsAccountName.text = firebaseAuth.currentUser?.currentUserEmail()
-            settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable( firebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())
+            isLoggedInUser = firebaseAuth.isAuthorisedUser()
+            settingsAccountName.text = if (isLoggedInUser.isTrue()) firebaseAuth.currentUser?.currentUserEmail() else getString(R.string.settings_account_unauthorised)
+            settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable(firebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())
         }
     }
 
@@ -74,8 +73,8 @@ class SettingsAccountFragment :
             settingsAccountChangePassword.setSafeOnClickListener {
                 findNavController().navigate(SettingsAccountFragmentDirections.startChangePasswordDialog())
             }
-            settingsAccountLogin.setSafeOnClickListener {
-                findNavController().navigate(SettingsAccountFragmentDirections.startLoginFragment())
+            settingsAccountSignUp.setSafeOnClickListener {
+                findNavController().navigate(SettingsAccountFragmentDirections.startSettingsSignUpFragment())
             }
         }
     }
@@ -83,7 +82,6 @@ class SettingsAccountFragment :
     override fun observeLiveData() {
         with(viewModel) {
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
-                Log.e("deleteUserTAG", "SettingsAccountFragment successLiveData")
                 context?.let { context -> AppDatabase.getDatabase(context).clearAllTables() }
                 (activity as? MainActivity)?.apply {
                     stopBlocker()

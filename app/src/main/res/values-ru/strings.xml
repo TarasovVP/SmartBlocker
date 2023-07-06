@@ -27,13 +27,13 @@
     <string name="authorization_password">Пароль</string>
     <string name="authorization_sign_up">Регистрация</string>
     <string name="authorization_forgot_password">Забыли пароль?</string>
-    <string name="authorization_continue_without_account">Без регистрации</string>
+    <string name="authorization_continue_without_account">Без авторизации</string>
     <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Вам инструкции.</string>
     <string name="authorization_enter_email">Введите ваш Email</string>
     <string name="authorization_password_reset_success">Письмо отправлено на ваш Email. Проверьте во входящих.</string>
     <string name="authorization_entrance_title">Есть аккаунт?&#160;</string>
     <string name="authorization_signing_up">Зарегистрироваться</string>
-    <string name="unauthorized_enter">У авторизованного пользователя ограниченный функционал, в том числе нет доступа к хранению данных в удаленном доступе. Все равно войти?</string>
+    <string name="unauthorized_enter">У неавторизованного пользователя данные хранятся локально в рамках одной сессии. Все равно войти?</string>
     <string name="unauthorized_enter_button">Войти</string>
     <string name="authorization_network_unavailable">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и совершите повторный вход.</string>
     <!--Filter type-->
@@ -118,7 +118,7 @@
     <string name="empty_state_numbers">По этому фильтру совпадений с номерами не найдено</string>
     <string name="empty_state_filtered_calls">С такими параметрами отфильтрованных вызовов не найдено</string>
     <string name="empty_state_hidden">Управление скрытыми номерами осуществляется системными настройками. Для изменения перейдите в "Настройки"</string>
-    <string name="empty_state_account">Вы вошли незарегистрированным пользователем. Информация о созданных фильтрах и история отфильтрованных вызовов будет храниться локально и будет потеряна при переустановке приложения или очистке кеша. Для получения полного функционала приложения, в том числе при запуке на других устройствах, зарегистрируйтесь.</string>
+    <string name="empty_state_account">Ваши данные хранятся локально в рамках одной сессии и будут потеряны при выходе из этого аккаунта, очистке кеша или переустановке приложения. Для подключения удаленного хранения данных и доступа к нему с любого устройства, зарегистрируйтесь.</string>
     <!--Progress-->
     <string name="progress_data_collect">Сбор информации</string>
     <string name="progress_collect_localizations">Получение данных локализации</string>
@@ -215,6 +215,7 @@
     <string name="creating_country_code_title">Выберите страну</string>
     <!--Settings account-->
     <string name="settings_account_log_out_title">Выйти</string>
+    <string name="settings_account_unauthorised">Неавторизованный</string>
     <string name="settings_account_change_password_title">Сменить пароль</string>
     <string name="settings_account_delete_title">Удалить аккаунт</string>
     <string name="settings_account_enter_current_password">Текущий пароль</string>

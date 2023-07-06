@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
-import android.util.Log
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -21,7 +20,6 @@ class SettingsAccountUseCaseImpl @Inject constructor(
     }
 
     override fun deleteUser(result: (Result<Unit>) -> Unit) = realDataBaseRepository.deleteCurrentUser {
-        Log.e("deleteUserTAG", "SettingsAccountUseCaseImpl deleteUser")
         authRepository.deleteUser(result)
     }
 }
