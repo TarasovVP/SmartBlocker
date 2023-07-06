@@ -25,26 +25,27 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
             firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
         currentUserDatabase.get()
             .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) result.invoke(Result.Failure(task.exception?.localizedMessage))
-                val currentUser = CurrentUser()
-                task.result.children.forEach { snapshot ->
-                    when (snapshot.key) {
-                        FILTER_LIST -> {
-                            snapshot.children.forEach { child ->
-                                child.getValue(Filter::class.java)?.let { currentUser.filterList.add(it) }
+                if (task.isSuccessful) {
+                    val currentUser = CurrentUser()
+                    task.result.children.forEach { snapshot ->
+                        when (snapshot.key) {
+                            FILTER_LIST -> {
+                                snapshot.children.forEach { child ->
+                                    child.getValue(Filter::class.java)?.let { currentUser.filterList.add(it) }
+                                }
                             }
-                        }
-                        FILTERED_CALL_LIST -> {
-                            snapshot.children.forEach { child ->
-                                child.getValue(FilteredCall::class.java)?.let { currentUser.filteredCallList.add(it) }
+                            FILTERED_CALL_LIST -> {
+                                snapshot.children.forEach { child ->
+                                    child.getValue(FilteredCall::class.java)?.let { currentUser.filteredCallList.add(it) }
+                                }
                             }
-                        }
-                        BLOCK_HIDDEN -> {
-                            currentUser.isBlockHidden = snapshot.getValue(Boolean::class.java).isNotNull()
+                            BLOCK_HIDDEN -> {
+                                currentUser.isBlockHidden = snapshot.getValue(Boolean::class.java).isNotNull()
+                            }
                         }
                     }
+                    result.invoke(Result.Success(currentUser))
                 }
-                result.invoke(Result.Success(currentUser))
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -53,8 +54,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
     override fun deleteCurrentUser(result: (Result<Unit>) -> Unit) {
         firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).removeValue()
             .addOnCompleteListener { task ->
-                if (task.isSuccessful.not()) result.invoke(Result.Failure(task.exception?.localizedMessage))
-                result.invoke(Result.Success())
+                if (task.isSuccessful) result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -79,8 +79,6 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
                         }
                     }
                     result.invoke(Result.Success())
-                } else {
-                    result.invoke(Result.Failure(task.exception?.localizedMessage))
                 }
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
@@ -104,8 +102,6 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
                         if (filteredCallIdList.contains(snapshot.key)) snapshot.ref.removeValue()
                     }
                     result.invoke(Result.Success())
-                } else {
-                    result.invoke(Result.Failure(task.exception?.localizedMessage))
                 }
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
