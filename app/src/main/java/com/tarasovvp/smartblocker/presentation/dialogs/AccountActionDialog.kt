@@ -5,11 +5,11 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
+import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DELETE_USER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
-import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
-import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class AccountActionDialog : BaseDialog<DialogConfirmBinding>() {
 
@@ -20,7 +20,11 @@ class AccountActionDialog : BaseDialog<DialogConfirmBinding>() {
     override fun initUI() {
         binding?.apply {
             dialogConfirmTitle.text =
-                if (args.isLogOut) getString(R.string.settings_account_log_out) else getString(R.string.settings_account_delete)
+                when {
+                    args.isLogOut && args.isAuthorised -> getString(R.string.settings_account_log_out)
+                    args.isLogOut -> getString(R.string.settings_account_unauthorised_log_out)
+                    else -> getString(R.string.settings_account_delete)
+                }
             dialogConfirmCancel.setSafeOnClickListener {
                 dismiss()
             }

@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -18,6 +19,15 @@ import javax.inject.Inject
 
 class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase, private val firebaseAuth: FirebaseAuth) :
     RealDataBaseRepository {
+
+    override fun createCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).setValue(currentUser)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) result.invoke(Result.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
 
     override fun getCurrentUser(result: (Result<CurrentUser>) -> Unit) {
         var currentUserDatabase = firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
@@ -56,6 +66,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
+                Log.e("deleteAccTAG","RealDataBaseRepositoryImpl deleteCurrentUser exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
     }

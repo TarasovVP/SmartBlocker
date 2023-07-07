@@ -8,6 +8,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSignUpBinding
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -47,7 +48,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
     override fun observeLiveData() {
         with(viewModel) {
-            successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
+            successSignUpLiveData.safeSingleObserve(viewLifecycleOwner) {
+                viewModel.createCurrentUser(CurrentUser())
+            }
+            createCurrentUserLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {
                     getAllData(true)
                     startBlocker()

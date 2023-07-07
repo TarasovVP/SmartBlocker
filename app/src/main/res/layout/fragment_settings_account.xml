@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/button_bg"
-                    android:text="@string/settings_account_log_out_title"
+                    android:text="@{isLoggedInUser ? @string/settings_account_log_out_title : @string/settings_account_unauthorised_log_out_title}"
                     android:paddingTop="@dimen/padding_5"
                     android:minHeight="@dimen/padding_48"
                     app:layout_constraintStart_toStartOf="@+id/settings_account_name"

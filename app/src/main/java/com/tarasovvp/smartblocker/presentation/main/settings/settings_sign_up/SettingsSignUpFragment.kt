@@ -8,6 +8,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsSignUpBinding
+import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -24,8 +25,8 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
         activity?.actionBar?.hide()
         (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
         setContinueButton(binding?.container?.getViewsFromLayout(EditText::class.java))
-        binding?.signUpEntrance?.setSafeOnClickListener {
-            findNavController().navigateUp()
+        binding?.settingsTransferDataSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            binding?.settingsTransferDataDescribe?.text = getString( if (isChecked) R.string.settings_account_transfer_data_turn_on else R.string.settings_account_transfer_data_turn_off)
         }
     }
 
@@ -37,17 +38,20 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
                     isInactive = editTextList.any { it.text.isNullOrEmpty() }.isTrue()
                 }
             }
-            binding?.signUpContinue?.setSafeOnClickListener {
+            binding?.settingsSignUpContinue?.setSafeOnClickListener {
                 binding?.root?.hideKeyboard()
-                viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(),
-                    binding?.signUpPassword.inputText())
+                viewModel.createUserWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(),
+                    binding?.settingsSignUpPassword.inputText())
             }
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
-            successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
+            successSignUpLiveData.safeSingleObserve(viewLifecycleOwner) {
+                viewModel.createCurrentUser(CurrentUser())
+            }
+            createCurrentUserLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {
                     getAllData(true)
                     startBlocker()

@@ -15,11 +15,11 @@ class UnauthorizedEnterDialog : BaseDialog<DialogConfirmBinding>() {
 
     override fun initUI() {
         binding?.apply {
-            dialogConfirmTitle.text = getString(R.string.unauthorized_enter)
+            dialogConfirmTitle.text = getString(R.string.authorization_unauthorized_enter)
             dialogConfirmCancel.setSafeOnClickListener {
                 dismiss()
             }
-            dialogConfirmSubmit.text = getString(R.string.unauthorized_enter_button)
+            dialogConfirmSubmit.text = getString(R.string.authorization_unauthorized_enter_button)
             dialogConfirmSubmit.setSafeOnClickListener {
                 findNavController().navigateUp()
                 setFragmentResult(UNAUTHORIZED_ENTER, bundleOf())

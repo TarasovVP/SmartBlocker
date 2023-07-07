@@ -31,6 +31,6 @@ class SignUpViewModelUnitTest: BaseViewModelUnitTest<SignUpViewModel>() {
         }
         viewModel.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD)
         verify { useCase.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, any()) }
-        assertEquals(Unit, viewModel.successSignInLiveData.getOrAwaitValue())
+        assertEquals(Unit, viewModel.successSignUpLiveData.getOrAwaitValue())
     }
 }

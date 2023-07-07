@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.domain.usecases
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
-interface SignUpUseCase {
+interface SettingsSignUpUseCase {
 
     fun createUserWithEmailAndPassword(email: String, password: String, result: (Result<String>) -> Unit)
 

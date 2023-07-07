@@ -65,7 +65,7 @@ class SettingsAccountFragment :
         binding?.apply {
             settingsAccountLogOut.setSafeOnClickListener {
                 (activity as? MainActivity)?.stopBlocker()
-                findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog(isLogOut = true))
+                findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog(isLogOut = true, isAuthorised = firebaseAuth.isAuthorisedUser()))
             }
             settingsAccountDelete.setSafeOnClickListener {
                 findNavController().navigate(SettingsAccountFragmentDirections.startAccountActionDialog())

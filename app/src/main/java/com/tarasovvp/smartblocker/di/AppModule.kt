@@ -120,8 +120,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase {
-        return SignUpUseCaseImpl(authRepository)
+    fun provideSignUpUseCase(authRepository: AuthRepository, realDataBaseRepository: RealDataBaseRepository): SignUpUseCase {
+        return SignUpUseCaseImpl(authRepository, realDataBaseRepository)
     }
 
     @Singleton
@@ -331,8 +331,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSettingsSignUpUseCase(authRepository: AuthRepository): SettingsSignUpUseCaseImpl {
-        return SettingsSignUpUseCaseImpl(authRepository)
+    fun provideSettingsSignUpUseCase(authRepository: AuthRepository, realDataBaseRepository: RealDataBaseRepository): SettingsSignUpUseCase {
+        return SettingsSignUpUseCaseImpl(authRepository, realDataBaseRepository)
     }
 
     @Singleton

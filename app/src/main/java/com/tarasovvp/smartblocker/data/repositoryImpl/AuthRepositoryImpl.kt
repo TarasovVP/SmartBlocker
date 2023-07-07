@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
+import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -12,8 +13,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override fun sendPasswordResetEmail(email: String, result: (Result<Unit>) -> Unit) {
         firebaseAuth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success())
+            .addOnCompleteListener { it ->
+                if (it.isSuccessful) result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -47,10 +48,10 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             }
     }
 
-    override fun createUserWithEmailAndPassword(email: String, password: String, result: (Result<Unit>) -> Unit) {
+    override fun createUserWithEmailAndPassword(email: String, password: String, result: (Result<String>) -> Unit) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success())
+                if (task.isSuccessful) result.invoke(Result.Success(task.result.user?.uid.orEmpty()))
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -80,6 +81,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             ?.addOnCompleteListener {
                 signOut(result)
             }?.addOnFailureListener { exception ->
+                Log.e("deleteAccTAG","AuthRepository deleteUser exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
     }
@@ -91,6 +93,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
                 result.invoke(Result.Success())
             }
         }.addOnFailureListener { exception ->
+            Log.e("deleteAccTAG","AuthRepository signOut exception ${exception.localizedMessage}")
             result.invoke(Result.Failure(exception.localizedMessage))
         }
     }

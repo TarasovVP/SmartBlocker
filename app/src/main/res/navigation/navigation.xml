@@ -296,6 +296,10 @@
             android:name="isLogOut"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="isAuthorised"
+            android:defaultValue="true"
+            app:argType="boolean" />
     </dialog>
 
     <dialog
