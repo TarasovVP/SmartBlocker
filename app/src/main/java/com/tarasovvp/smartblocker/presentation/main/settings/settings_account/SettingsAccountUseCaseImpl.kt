@@ -19,6 +19,10 @@ class SettingsAccountUseCaseImpl @Inject constructor(
         result.invoke(authResult)
     }
 
+    override fun reAuthenticate(password: String, result: (Result<Unit>) -> Unit) = authRepository.reAuthenticate(password,) { authResult ->
+        result.invoke(authResult)
+    }
+
     override fun deleteUser(result: (Result<Unit>) -> Unit) = realDataBaseRepository.deleteCurrentUser {
         authRepository.deleteUser(result)
     }

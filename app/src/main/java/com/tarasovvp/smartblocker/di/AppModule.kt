@@ -55,14 +55,16 @@ object AppModule {
     @Provides
     fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
         if (dataStore == null) {
-            dataStore = PreferenceDataStoreFactory.create(produceFile = { context.preferencesDataStoreFile(context.packageName) })
+            dataStore = PreferenceDataStoreFactory.create(produceFile = {
+                context.preferencesDataStoreFile(context.packageName)
+            })
         }
         return dataStore!!
     }
 
     @Singleton
     @Provides
-    fun provideDataStoreRepository(dataStore: DataStore<Preferences>):  DataStoreRepository {
+    fun provideDataStoreRepository(dataStore: DataStore<Preferences>): DataStoreRepository {
         return DataStoreRepositoryImpl(dataStore)
     }
 
@@ -108,7 +110,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAuthRepository(firebaseAuth: FirebaseAuth, googleSignInClient: GoogleSignInClient): AuthRepository {
+    fun provideAuthRepository(
+        firebaseAuth: FirebaseAuth,
+        googleSignInClient: GoogleSignInClient,
+    ): AuthRepository {
         return AuthRepositoryImpl(firebaseAuth, googleSignInClient)
     }
 
@@ -120,19 +125,28 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSignUpUseCase(authRepository: AuthRepository, realDataBaseRepository: RealDataBaseRepository): SignUpUseCase {
+    fun provideSignUpUseCase(
+        authRepository: AuthRepository,
+        realDataBaseRepository: RealDataBaseRepository,
+    ): SignUpUseCase {
         return SignUpUseCaseImpl(authRepository, realDataBaseRepository)
     }
 
     @Singleton
     @Provides
-    fun provideSettingsAccountUseCase(authRepository: AuthRepository, realDataBaseRepository: RealDataBaseRepository): SettingsAccountUseCase {
+    fun provideSettingsAccountUseCase(
+        authRepository: AuthRepository,
+        realDataBaseRepository: RealDataBaseRepository,
+    ): SettingsAccountUseCase {
         return SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository)
     }
 
     @Singleton
     @Provides
-    fun provideRealDataBaseRepository(firebaseDatabase: FirebaseDatabase, firebaseAuth: FirebaseAuth): RealDataBaseRepository {
+    fun provideRealDataBaseRepository(
+        firebaseDatabase: FirebaseDatabase,
+        firebaseAuth: FirebaseAuth,
+    ): RealDataBaseRepository {
         return RealDataBaseRepositoryImpl(firebaseDatabase, firebaseAuth)
     }
 
@@ -145,7 +159,7 @@ object AppModule {
         logCallRepository: LogCallRepository,
         filteredCallRepository: FilteredCallRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        dataStoreRepository: DataStoreRepository
+        dataStoreRepository: DataStoreRepository,
     ): MainUseCase {
         return MainUseCaseImpl(
             contactRepository,
@@ -164,7 +178,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeRepository(appPhoneNumberUtil: AppPhoneNumberUtil, countryCodeDao: CountryCodeDao): CountryCodeRepository {
+    fun provideCountryCodeRepository(
+        appPhoneNumberUtil: AppPhoneNumberUtil,
+        countryCodeDao: CountryCodeDao,
+    ): CountryCodeRepository {
         return CountryCodeRepositoryImpl(appPhoneNumberUtil, countryCodeDao)
     }
 
@@ -176,7 +193,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCountryCodeSearchUseCase(countryCodeRepository: CountryCodeRepository, dataStoreRepository: DataStoreRepository): CountryCodeSearchUseCase {
+    fun provideCountryCodeSearchUseCase(
+        countryCodeRepository: CountryCodeRepository,
+        dataStoreRepository: DataStoreRepository,
+    ): CountryCodeSearchUseCase {
         return CountryCodeSearchUseCaseImpl(countryCodeRepository, dataStoreRepository)
     }
 
@@ -187,7 +207,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFilterRepository(
-        filterDao: FilterDao
+        filterDao: FilterDao,
     ): FilterRepository {
         return FilterRepositoryImpl(filterDao)
     }
@@ -204,9 +224,14 @@ object AppModule {
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
         firebaseAuth: FirebaseAuth,
-        dataStoreRepository: DataStoreRepository
+        dataStoreRepository: DataStoreRepository,
     ): ListFilterUseCase {
-        return ListFilterUseCaseImpl(filterRepository, realDataBaseRepository, firebaseAuth, dataStoreRepository)
+        return ListFilterUseCaseImpl(
+            filterRepository,
+            realDataBaseRepository,
+            firebaseAuth,
+            dataStoreRepository
+        )
     }
 
     @Singleton
@@ -216,7 +241,7 @@ object AppModule {
         phoneNumberUtil: AppPhoneNumberUtil,
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        firebaseAuth: FirebaseAuth
+        firebaseAuth: FirebaseAuth,
     ): CreateFilterUseCase {
         return CreateFilterUseCaseImpl(
             contactRepository,
@@ -234,7 +259,7 @@ object AppModule {
         filterRepository: FilterRepository,
         realDataBaseRepository: RealDataBaseRepository,
         filteredCallRepository: FilteredCallRepository,
-        firebaseAuth: FirebaseAuth
+        firebaseAuth: FirebaseAuth,
     ): DetailsFilterUseCase {
         return DetailsFilterUseCaseImpl(
             contactRepository,
@@ -251,7 +276,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLogCallRepository(appPhoneNumberUtil: AppPhoneNumberUtil, logCallDao: LogCallDao): LogCallRepository {
+    fun provideLogCallRepository(
+        appPhoneNumberUtil: AppPhoneNumberUtil,
+        logCallDao: LogCallDao,
+    ): LogCallRepository {
         return LogCallRepositoryImpl(appPhoneNumberUtil, logCallDao)
     }
 
@@ -262,7 +290,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFilteredCallRepository(
-        filteredCallDao: FilteredCallDao
+        filteredCallDao: FilteredCallDao,
     ): FilteredCallRepository {
         return FilteredCallRepositoryImpl(filteredCallDao)
     }
@@ -279,9 +307,14 @@ object AppModule {
         logCallRepository: LogCallRepository,
         filteredCallRepository: FilteredCallRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        firebaseAuth: FirebaseAuth
+        firebaseAuth: FirebaseAuth,
     ): ListCallUseCase {
-        return ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth)
+        return ListCallUseCaseImpl(
+            logCallRepository,
+            filteredCallRepository,
+            realDataBaseRepository,
+            firebaseAuth
+        )
     }
 
 
@@ -291,7 +324,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideContactRepository(appPhoneNumberUtil: AppPhoneNumberUtil, contactDao: ContactDao): ContactRepository {
+    fun provideContactRepository(
+        appPhoneNumberUtil: AppPhoneNumberUtil,
+        contactDao: ContactDao,
+    ): ContactRepository {
         return ContactRepositoryImpl(appPhoneNumberUtil, contactDao)
     }
 
@@ -313,7 +349,7 @@ object AppModule {
         countryCodeRepository: CountryCodeRepository,
         filterRepository: FilterRepository,
         filteredCallRepository: FilteredCallRepository,
-        dataStoreRepository: DataStoreRepository
+        dataStoreRepository: DataStoreRepository,
     ): DetailsNumberDataUseCase {
         return DetailsNumberDataUseCaseImpl(
             countryCodeRepository,
@@ -325,19 +361,38 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSettingsBlockerUseCase(realDataBaseRepository: RealDataBaseRepository, dataStoreRepository: DataStoreRepository, firebaseAuth: FirebaseAuth): SettingsBlockerUseCase {
+    fun provideSettingsBlockerUseCase(
+        realDataBaseRepository: RealDataBaseRepository,
+        dataStoreRepository: DataStoreRepository,
+        firebaseAuth: FirebaseAuth,
+    ): SettingsBlockerUseCase {
         return SettingsBlockerUseCaseImpl(realDataBaseRepository, dataStoreRepository, firebaseAuth)
     }
 
     @Singleton
     @Provides
-    fun provideSettingsSignUpUseCase(authRepository: AuthRepository, realDataBaseRepository: RealDataBaseRepository): SettingsSignUpUseCase {
-        return SettingsSignUpUseCaseImpl(authRepository, realDataBaseRepository)
+    fun provideSettingsSignUpUseCase(
+        filterRepository: FilterRepository,
+        filteredCallRepository: FilteredCallRepository,
+        dataStoreRepository: DataStoreRepository,
+        authRepository: AuthRepository,
+        realDataBaseRepository: RealDataBaseRepository,
+    ): SettingsSignUpUseCase {
+        return SettingsSignUpUseCaseImpl(
+            filterRepository,
+            filteredCallRepository,
+            dataStoreRepository,
+            authRepository,
+            realDataBaseRepository
+        )
     }
 
     @Singleton
     @Provides
-    fun provideSettingsListUseCase(dataStoreRepository: DataStoreRepository, realDataBaseRepository: RealDataBaseRepository): SettingsListUseCase {
+    fun provideSettingsListUseCase(
+        dataStoreRepository: DataStoreRepository,
+        realDataBaseRepository: RealDataBaseRepository,
+    ): SettingsListUseCase {
         return SettingsListUseCaseImpl(dataStoreRepository, realDataBaseRepository)
     }
 

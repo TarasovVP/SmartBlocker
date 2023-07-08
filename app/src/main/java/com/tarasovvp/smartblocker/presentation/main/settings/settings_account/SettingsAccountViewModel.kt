@@ -16,6 +16,7 @@ class SettingsAccountViewModel @Inject constructor(
     private val settingsAccountUseCase: SettingsAccountUseCase
 ) : BaseViewModel(application) {
 
+    val reAuthenticateLiveData = MutableLiveData<Unit>()
     val successLiveData = MutableLiveData<Unit>()
     val successChangePasswordLiveData = MutableLiveData<Unit>()
 
@@ -40,6 +41,21 @@ class SettingsAccountViewModel @Inject constructor(
             settingsAccountUseCase.changePassword(currentPassword, newPassword) { result ->
                 when (result) {
                     is Result.Success -> successChangePasswordLiveData.postValue(Unit)
+                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+
+    fun reAuthenticate(password: String) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            settingsAccountUseCase.reAuthenticate(password) { result ->
+                when (result) {
+                    is Result.Success -> reAuthenticateLiveData.postValue(Unit)
                     is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
                 }
                 hideProgress()

@@ -224,7 +224,7 @@
     <string name="settings_account_change_password_succeed">Пароль успішно змінено</string>
     <string name="settings_account_log_out">Ви дійсно хочете розлогинитися?</string>
     <string name="settings_account_unauthorised_log_out">При виході з неавторизованого облікового запису ви втратите всі створені дані. Для збереження зареєструйтеся. Все одно вийти?</string>
-    <string name="settings_account_delete">Ви дійсно хочете видалити обліковий запис?</string>
+    <string name="settings_account_delete">Обліковий запис і всі створені дані будуть видалені безповоротно. Щоб продовжити, введіть поточний пароль.</string>
     <string name="settings_account_transfer_data_title">Перенести дані?</string>
     <string name="settings_account_transfer_data_turn_on">Створені дані будуть перенесені до вашого облікового запису.</string>
     <string name="settings_account_transfer_data_turn_off">Створені дані будуть видалені.</string>

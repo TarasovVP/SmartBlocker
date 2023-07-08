@@ -76,10 +76,24 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             }
     }
 
+    override fun reAuthenticate(password: String, result: (Result<Unit>) -> Unit) {
+        firebaseAuth.currentUser?.reauthenticate(EmailAuthProvider.getCredential(firebaseAuth.currentUser?.email.orEmpty(), password))
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    result.invoke(Result.Success())
+                }
+            }?.addOnFailureListener { exception ->
+                Log.e("deleteAccTAG","AuthRepository reAuthenticate exception ${exception.localizedMessage}")
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
+
     override fun deleteUser(result: (Result<Unit>) -> Unit) {
         firebaseAuth.currentUser?.delete()
-            ?.addOnCompleteListener {
-                signOut(result)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    signOut(result)
+                }
             }?.addOnFailureListener { exception ->
                 Log.e("deleteAccTAG","AuthRepository deleteUser exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))

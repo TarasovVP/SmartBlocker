@@ -98,7 +98,7 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_account_log_out_title)))
             perform(click())
-            assertEquals(R.id.accountActionDialog, navController?.currentDestination?.id)
+            assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
             assertEquals(true, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
         }
     }
@@ -124,7 +124,7 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_delete_title)))
                 perform(click())
-                assertEquals(R.id.accountActionDialog, navController?.currentDestination?.id)
+                assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
                 assertEquals(false, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
             } else {
                 check(matches(not(isDisplayed())))

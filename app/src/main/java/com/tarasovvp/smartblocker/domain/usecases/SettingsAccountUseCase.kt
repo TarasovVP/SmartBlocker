@@ -8,5 +8,7 @@ interface SettingsAccountUseCase {
 
     fun changePassword(currentPassword: String, newPassword: String, result: (Result<Unit>) -> Unit)
 
+    fun reAuthenticate(password: String, result: (Result<Unit>) -> Unit)
+
     fun deleteUser(result: (Result<Unit>) -> Unit)
 }

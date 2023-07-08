@@ -255,8 +255,11 @@
         android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment"
         android:label="@string/settings_account">
         <action
-            android:id="@+id/startAccountActionDialog"
-            app:destination="@id/accountActionDialog" />
+            android:id="@+id/startLogOutDialog"
+            app:destination="@id/logOutDialog" />
+        <action
+            android:id="@+id/startDeleteAccountDialog"
+            app:destination="@id/deleteAccountDialog" />
         <action
             android:id="@+id/startChangePasswordDialog"
             app:destination="@id/changePasswordDialog" />
@@ -290,17 +293,17 @@
         android:label="@string/settings_privacy" />
 
     <dialog
-        android:id="@+id/accountActionDialog"
-        android:name="com.tarasovvp.smartblocker.presentation.dialogs.AccountActionDialog">
-        <argument
-            android:name="isLogOut"
-            android:defaultValue="false"
-            app:argType="boolean" />
+        android:id="@+id/logOutDialog"
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.LogOutDialog">
         <argument
             android:name="isAuthorised"
             android:defaultValue="true"
             app:argType="boolean" />
     </dialog>
+
+    <dialog
+        android:id="@+id/deleteAccountDialog"
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.DeleteAccountDialog"/>
 
     <dialog
         android:id="@+id/appExitDialog"

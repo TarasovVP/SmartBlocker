@@ -221,7 +221,7 @@
     <string name="settings_account_change_password_succeed">Password changed successfully</string>
     <string name="settings_account_log_out">Are you sure you want to log out?</string>
     <string name="settings_account_unauthorised_log_out">If you log out of an unauthorized account, you will lose all created data. Sign up to save. Still leave?</string>
-    <string name="settings_account_delete">Are you sure you want to delete your account?</string>
+    <string name="settings_account_delete">The account and all created data will be permanently deleted. Enter your current password to continue.</string>
     <string name="settings_account_transfer_data_title">Transfer data?</string>
     <string name="settings_account_transfer_data_turn_on">The created data will be transferred to your account.</string>
     <string name="settings_account_transfer_data_turn_off">The created data will be deleted.</string>

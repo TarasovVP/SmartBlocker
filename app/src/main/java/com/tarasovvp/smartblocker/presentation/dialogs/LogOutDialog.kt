@@ -6,14 +6,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DELETE_USER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
-class AccountActionDialog : BaseDialog<DialogConfirmBinding>() {
+class LogOutDialog : BaseDialog<DialogConfirmBinding>() {
 
-    private val args: AccountActionDialogArgs by navArgs()
+    private val args: LogOutDialogArgs by navArgs()
 
     override var layoutId = R.layout.dialog_confirm
 
@@ -21,16 +20,15 @@ class AccountActionDialog : BaseDialog<DialogConfirmBinding>() {
         binding?.apply {
             dialogConfirmTitle.text =
                 when {
-                    args.isLogOut && args.isAuthorised -> getString(R.string.settings_account_log_out)
-                    args.isLogOut -> getString(R.string.settings_account_unauthorised_log_out)
-                    else -> getString(R.string.settings_account_delete)
+                    args.isAuthorised -> getString(R.string.settings_account_log_out)
+                    else -> getString(R.string.settings_account_unauthorised_log_out)
                 }
             dialogConfirmCancel.setSafeOnClickListener {
                 dismiss()
             }
             dialogConfirmSubmit.setSafeOnClickListener {
                 findNavController().navigateUp()
-                setFragmentResult(if (args.isLogOut) LOG_OUT else DELETE_USER, bundleOf())
+                setFragmentResult(LOG_OUT, bundleOf())
             }
         }
     }

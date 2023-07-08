@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="isInactive"
+            type="Boolean" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/padding_8">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_16">
+
+            <TextView
+                android:id="@+id/delete_account_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/settings_account_delete"
+                android:textSize="@dimen/text_size_16"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/delete_account_current_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintTop_toBottomOf="@+id/delete_account_title"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/delete_account_current_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/settings_account_enter_current_password"
+                    android:inputType="textPassword"
+                    android:autofillHints="password"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/delete_account_cancel"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                style="@style/StrokeButtonSmallStyle"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="@string/button_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/delete_account_confirm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/delete_account_current_container" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_account_confirm"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_0"
+                style="@style/StrokeButtonSmallStyle"
+                android:layout_marginStart="@dimen/margin_10"
+                android:text="@string/button_ok"
+                android:alpha="@{isInactive ? 0.5f : 1f}"
+                android:enabled="@{!isInactive}"
+                app:strokeColor="@color/selector_button_enable_bg"
+                android:textColor="@{isInactive ? @color/inactive_bg : @color/white}"
+                android:backgroundTint="@{isInactive ? @color/transparent : @color/button_bg}"
+                app:layout_constraintBottom_toBottomOf="@+id/delete_account_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/delete_account_cancel"
+                app:layout_constraintTop_toTopOf="@+id/delete_account_cancel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
+
+
+

@@ -35,8 +35,9 @@ object Constants {
     const val ON_BOARDING_PAGE = "onBoardingPage"
     const val UNAUTHORIZED_ENTER = "unauthorizedEnter"
     const val EMAIL = "email"
-    const val DELETE_USER = "deleteUser"
+    const val DELETE_ACCOUNT = "deleteAccount"
     const val LOG_OUT = "logOut"
+    const val ERROR_REQUIRES_RECENT_LOGIN = "ERROR_REQUIRES_RECENT_LOGIN"
 
     //Passwords
     const val FORGOT_PASSWORD = "forgotPassword"
