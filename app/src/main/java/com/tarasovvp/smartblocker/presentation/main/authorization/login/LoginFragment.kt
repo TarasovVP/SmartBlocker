@@ -43,6 +43,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     private fun setOnClickListeners() {
         binding?.apply {
+            loginGoogleAuth.setSafeOnClickListener {
+                googleSignInLauncher.launch(googleSignInClient.signInIntent)
+            }
             loginContinueWithoutAcc.setSafeOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.startUnauthorizedEnterDialog())
             }
@@ -51,9 +54,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             }
             loginForgotPassword.setSafeOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.startForgotPasswordDialog(email = loginEmailInput.inputText()))
-            }
-            loginGoogleAuth.setSafeOnClickListener {
-                googleSignInLauncher.launch(googleSignInClient.signInIntent)
             }
         }
     }

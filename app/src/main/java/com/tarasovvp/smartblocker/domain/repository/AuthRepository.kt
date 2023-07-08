@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.domain.repository
 
+import com.google.firebase.auth.AuthCredential
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface AuthRepository {
@@ -16,7 +17,7 @@ interface AuthRepository {
 
     fun changePassword(currentPassword: String, newPassword: String, result: (Result<Unit>) -> Unit)
 
-    fun reAuthenticate(password: String, result: (Result<Unit>) -> Unit)
+    fun reAuthenticate(authCredential: AuthCredential, result: (Result<Unit>) -> Unit)
 
     fun deleteUser(result: (Result<Unit>) -> Unit)
 

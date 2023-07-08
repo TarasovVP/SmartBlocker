@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -76,8 +77,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             }
     }
 
-    override fun reAuthenticate(password: String, result: (Result<Unit>) -> Unit) {
-        firebaseAuth.currentUser?.reauthenticate(EmailAuthProvider.getCredential(firebaseAuth.currentUser?.email.orEmpty(), password))
+    override fun reAuthenticate(authCredential: AuthCredential, result: (Result<Unit>) -> Unit) {
+        firebaseAuth.currentUser?.reauthenticate(authCredential)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     result.invoke(Result.Success())

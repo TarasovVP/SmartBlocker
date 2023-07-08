@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
+import com.google.firebase.auth.AuthCredential
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -19,7 +20,7 @@ class SettingsAccountUseCaseImpl @Inject constructor(
         result.invoke(authResult)
     }
 
-    override fun reAuthenticate(password: String, result: (Result<Unit>) -> Unit) = authRepository.reAuthenticate(password,) { authResult ->
+    override fun reAuthenticate(authCredential: AuthCredential, result: (Result<Unit>) -> Unit) = authRepository.reAuthenticate(authCredential,) { authResult ->
         result.invoke(authResult)
     }
 

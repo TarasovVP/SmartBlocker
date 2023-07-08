@@ -303,7 +303,12 @@
 
     <dialog
         android:id="@+id/deleteAccountDialog"
-        android:name="com.tarasovvp.smartblocker.presentation.dialogs.DeleteAccountDialog"/>
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.DeleteAccountDialog">
+        <argument
+            android:name="isGoogleAuth"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </dialog>
 
     <dialog
         android:id="@+id/appExitDialog"

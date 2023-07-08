@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.AuthCredential
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
@@ -50,10 +51,10 @@ class SettingsAccountViewModel @Inject constructor(
         }
     }
 
-    fun reAuthenticate(password: String) {
+    fun reAuthenticate(authCredential: AuthCredential) {
         if (application.isNetworkAvailable()) {
             showProgress()
-            settingsAccountUseCase.reAuthenticate(password) { result ->
+            settingsAccountUseCase.reAuthenticate(authCredential) { result ->
                 when (result) {
                     is Result.Success -> reAuthenticateLiveData.postValue(Unit)
                     is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())

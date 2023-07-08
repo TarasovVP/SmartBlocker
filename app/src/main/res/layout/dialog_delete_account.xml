@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/settings_account_delete"
+                android:text="@string/settings_account_email_delete"
                 android:textSize="@dimen/text_size_16"
                 app:layout_constraintTop_toTopOf="parent" />
 
