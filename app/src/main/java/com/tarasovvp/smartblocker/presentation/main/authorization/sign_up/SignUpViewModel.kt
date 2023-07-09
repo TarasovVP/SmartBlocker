@@ -7,6 +7,7 @@ import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,8 +18,49 @@ class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase
 ) : BaseViewModel(application) {
 
+    val createEmailAccountLiveData = MutableLiveData<Unit>()
+    val createGoogleAccountLiveData = MutableLiveData<String>()
     val successSignUpLiveData = MutableLiveData<Unit>()
     val createCurrentUserLiveData = MutableLiveData<Unit>()
+
+    fun fetchSignInMethodsForEmail(email: String, idToken: String? = null) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            signUpUseCase.fetchSignInMethodsForEmail(email) { authResult ->
+                when(authResult) {
+                    is Result.Success -> when {
+                        authResult.data.isNullOrEmpty().not() -> {
+                            idToken?.let {
+                                createGoogleAccountLiveData.postValue(String.EMPTY)
+                            }
+                            exceptionLiveData.postValue(application.getString(R.string.authorization_account_exist))
+                        }
+                        idToken.isNullOrEmpty() -> createEmailAccountLiveData.postValue(Unit)
+                        else -> idToken.let { createGoogleAccountLiveData.postValue(it) }
+                    }
+                    is Result.Failure -> authResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+
+    fun createUserWithGoogle(idToken: String) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            signUpUseCase.createUserWithGoogle(idToken) { operationResult ->
+                when(operationResult) {
+                    is Result.Success -> successSignUpLiveData.postValue(Unit)
+                    is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
 
     fun createUserWithEmailAndPassword(email: String, password: String) {
         if (application.isNetworkAvailable()) {

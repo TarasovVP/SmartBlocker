@@ -73,7 +73,7 @@
                 android:id="@+id/login_divider_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_40"
+                android:layout_marginTop="@dimen/margin_16"
                 android:text="@string/authorization_or"
                 android:paddingHorizontal="@dimen/padding_10"
                 app:layout_constraintStart_toEndOf="@+id/login_left_divider"
@@ -124,17 +124,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/login_sign_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/padding_48"
-                android:text="@string/authorization_sign_up"
-                android:gravity="center"
-                android:textColor="@color/button_bg"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_password_input_container" />
-
-            <TextView
                 android:id="@+id/login_forgot_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,14 +139,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/StrokeButtonStyle"
-                android:layout_marginTop="@dimen/margin_16"
                 android:text="@string/authorization_enter"
                 android:alpha="@{isInactive ? 0.5f : 1f}"
                 android:enabled="@{!isInactive}"
                 app:strokeColor="@color/selector_button_enable_bg"
                 android:textColor="@{isInactive ? @color/inactive_bg : @color/white}"
                 android:backgroundTint="@{isInactive ? @color/transparent : @color/button_bg}"
-                app:layout_constraintTop_toBottomOf="@+id/login_sign_up" />
+                app:layout_constraintTop_toBottomOf="@+id/login_forgot_password" />
+
+            <TextView
+                android:id="@+id/login_sign_up_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/padding_48"
+                android:gravity="center"
+                android:text="@string/authorization_sign_up_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_enter" />
+
+            <TextView
+                android:id="@+id/login_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/padding_48"
+                android:text="@string/authorization_sign_up"
+                android:gravity="center"
+                android:textColor="@color/button_bg"
+                app:layout_constraintStart_toEndOf="@+id/login_sign_up_title"
+                app:layout_constraintTop_toTopOf="@+id/login_sign_up_title"
+                app:layout_constraintBottom_toBottomOf="@id/login_sign_up_title" />
 
             <View
                 android:id="@+id/login_left_divider_unauthorized"
@@ -173,12 +183,12 @@
                 android:id="@+id/login_divider_title_unauthorized"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_40"
+                android:layout_marginTop="@dimen/margin_8"
                 android:text="@string/authorization_or"
                 android:paddingHorizontal="@dimen/padding_10"
                 app:layout_constraintStart_toEndOf="@+id/login_left_divider_unauthorized"
                 app:layout_constraintEnd_toStartOf="@+id/login_right_divider_unauthorized"
-                app:layout_constraintTop_toBottomOf="@id/login_enter" />
+                app:layout_constraintTop_toBottomOf="@id/login_sign_up_title" />
 
             <View
                 android:id="@+id/login_right_divider_unauthorized"

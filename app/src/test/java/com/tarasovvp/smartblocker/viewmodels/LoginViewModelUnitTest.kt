@@ -52,12 +52,12 @@ class LoginViewModelUnitTest: BaseViewModelUnitTest<LoginViewModel>() {
     @Test
     fun firebaseAuthWithGoogleTest() {
         every { application.isNetworkAvailable } returns true
-        coEvery { useCase.firebaseAuthWithGoogle(eq(TEST_TOKEN), any()) } answers {
+        coEvery { useCase.signInAuthWithGoogle(eq(TEST_TOKEN), any()) } answers {
             val result = secondArg<(Result<Unit>) -> Unit>()
             result.invoke(expectedResult)
         }
-        viewModel.firebaseAuthWithGoogle(TEST_TOKEN)
-        verify { useCase.firebaseAuthWithGoogle(eq(TEST_TOKEN), any()) }
+        viewModel.signInAuthWithGoogle(TEST_TOKEN)
+        verify { useCase.signInAuthWithGoogle(eq(TEST_TOKEN), any()) }
         assertEquals(Unit, viewModel.successSignInLiveData.getOrAwaitValue())
     }
 

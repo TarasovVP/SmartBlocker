@@ -14,8 +14,7 @@ class SettingsSignUpUseCaseImpl @Inject constructor(
     private val filteredCallRepository: FilteredCallRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val authRepository: AuthRepository,
-    private val realDataBaseRepository: RealDataBaseRepository
-    ): SettingsSignUpUseCase {
+    private val realDataBaseRepository: RealDataBaseRepository): SettingsSignUpUseCase {
 
     override suspend fun getAllFilters(): List<Filter> {
         return filterRepository.allFilters()
@@ -26,6 +25,14 @@ class SettingsSignUpUseCaseImpl @Inject constructor(
     }
     override suspend fun getBlockHidden(): Flow<Boolean?> {
         return dataStoreRepository.blockHidden()
+    }
+
+    override fun fetchSignInMethodsForEmail(email: String, result: (Result<List<String>>) -> Unit) = authRepository.fetchSignInMethodsForEmail(email) { authResult ->
+        result.invoke(authResult)
+    }
+
+    override fun createUserWithGoogle(idToken: String, result: (Result<Unit>) -> Unit) = authRepository.signInWithGoogle(idToken) { authResult ->
+        result.invoke(authResult)
     }
 
     override fun createUserWithEmailAndPassword(email: String, password: String, result: (Result<String>) -> Unit) = authRepository.createUserWithEmailAndPassword(email, password) { authResult ->

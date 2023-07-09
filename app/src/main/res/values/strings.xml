@@ -31,8 +31,11 @@
     <string name="authorization_forgot_password_title">Enter your email, and we will send you instructions.</string>
     <string name="authorization_enter_email">Enter your Email</string>
     <string name="authorization_password_reset_success">An email has been sent to your Email. Check in your inbox.</string>
+    <string name="authorization_sign_up_title">Haven`t got an account?&#160;</string>
     <string name="authorization_entrance_title">Got an account?&#160;</string>
     <string name="authorization_signing_up">Sign Up</string>
+    <string name="authorization_account_not_exist">There is no user with this email address. Go to the sign up screen and create an account.</string>
+    <string name="authorization_account_exist">A user with this email already exists. Go to the login screen and log in.</string>
     <string name="authorization_unauthorized_enter">An unauthorized user has data stored locally within a single session. Enter anyway?</string>
     <string name="authorization_unauthorized_enter_button">Enter</string>
     <string name="authorization_network_unavailable">No internet connection.\nTo continue, connect to the internet and log in again.</string>

@@ -33,12 +33,68 @@
                 android:text="@string/authorization_sign_up"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/sign_up_google_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:gravity="center"
+                android:text="@string/authorization_with_google_account"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_title" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sign_up_google_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextButton"
+                app:icon="@drawable/ic_logo_google"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/padding_20"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:elevation="@dimen/padding_1"
+                android:text="@string/authorization_sign_up"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_up_google_title"  />
+
+            <View
+                android:id="@+id/sign_up_left_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_1"
+                android:background="@color/cornflower_blue"
+                app:layout_constraintTop_toTopOf="@+id/sign_up_divider_title"
+                app:layout_constraintBottom_toBottomOf="@+id/sign_up_divider_title"
+                app:layout_constraintEnd_toStartOf="@+id/sign_up_divider_title"
+                app:layout_constraintStart_toStartOf="parent"  />
+
+            <TextView
+                android:id="@+id/sign_up_divider_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/authorization_or"
+                android:paddingHorizontal="@dimen/padding_10"
+                app:layout_constraintStart_toEndOf="@+id/sign_up_left_divider"
+                app:layout_constraintEnd_toStartOf="@+id/sign_up_right_divider"
+                app:layout_constraintTop_toBottomOf="@id/sign_up_google_auth" />
+
+            <View
+                android:id="@+id/sign_up_right_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/cornflower_blue"
+                app:layout_constraintTop_toTopOf="@+id/sign_up_divider_title"
+                app:layout_constraintBottom_toBottomOf="@+id/sign_up_divider_title"
+                app:layout_constraintStart_toEndOf="@+id/sign_up_divider_title"
+                app:layout_constraintEnd_toEndOf="parent"  />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_up_email_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintTop_toBottomOf="@+id/sign_up_title" >
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_divider_title" >
 
                 <EditText
                     android:id="@+id/sign_up_email"
@@ -66,6 +122,20 @@
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sign_up_continue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/StrokeButtonStyle"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/authorization_signing_up"
+                android:alpha="@{isInactive ? 0.5f : 1f}"
+                android:enabled="@{!isInactive}"
+                app:strokeColor="@color/selector_button_enable_bg"
+                android:textColor="@{isInactive ? @color/inactive_bg : @color/white}"
+                android:backgroundTint="@{isInactive ? @color/transparent : @color/button_bg}"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_password_container" />
+
             <TextView
                 android:id="@+id/sign_up_entrance_title"
                 android:layout_width="wrap_content"
@@ -73,8 +143,9 @@
                 android:minHeight="@dimen/padding_48"
                 android:gravity="center"
                 android:text="@string/authorization_entrance_title"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sign_up_password_container" />
+                app:layout_constraintTop_toBottomOf="@id/sign_up_continue" />
 
             <TextView
                 android:id="@+id/sign_up_entrance"
@@ -88,20 +159,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/sign_up_entrance_title"
                 app:layout_constraintStart_toEndOf="@+id/sign_up_entrance_title"
                 app:layout_constraintTop_toBottomOf="@id/sign_up_password_container" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sign_up_continue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/StrokeButtonStyle"
-                android:layout_marginTop="@dimen/margin_16"
-                android:text="@string/authorization_signing_up"
-                android:alpha="@{isInactive ? 0.5f : 1f}"
-                android:enabled="@{!isInactive}"
-                app:strokeColor="@color/selector_button_enable_bg"
-                android:textColor="@{isInactive ? @color/inactive_bg : @color/white}"
-                android:backgroundTint="@{isInactive ? @color/transparent : @color/button_bg}"
-                app:layout_constraintTop_toBottomOf="@+id/sign_up_entrance_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

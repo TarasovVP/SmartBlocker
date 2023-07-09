@@ -22,13 +22,69 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/settings_sign_up_google_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:gravity="center"
+                android:text="@string/authorization_with_google_account"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_sign_up_google_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextButton"
+                app:icon="@drawable/ic_logo_google"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/padding_20"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:elevation="@dimen/padding_1"
+                android:text="@string/authorization_sign_up"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_sign_up_google_title" />
+
+            <View
+                android:id="@+id/settings_sign_up_left_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_1"
+                android:background="@color/cornflower_blue"
+                app:layout_constraintTop_toTopOf="@+id/settings_sign_up_divider_title"
+                app:layout_constraintBottom_toBottomOf="@+id/settings_sign_up_divider_title"
+                app:layout_constraintEnd_toStartOf="@+id/settings_sign_up_divider_title"
+                app:layout_constraintStart_toStartOf="parent"  />
+
+            <TextView
+                android:id="@+id/settings_sign_up_divider_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/authorization_or"
+                android:paddingHorizontal="@dimen/padding_10"
+                app:layout_constraintStart_toEndOf="@+id/settings_sign_up_left_divider"
+                app:layout_constraintEnd_toStartOf="@+id/settings_sign_up_right_divider"
+                app:layout_constraintTop_toBottomOf="@id/settings_sign_up_google_auth" />
+
+            <View
+                android:id="@+id/settings_sign_up_right_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/cornflower_blue"
+                app:layout_constraintTop_toTopOf="@+id/settings_sign_up_divider_title"
+                app:layout_constraintBottom_toBottomOf="@+id/settings_sign_up_divider_title"
+                app:layout_constraintStart_toEndOf="@+id/settings_sign_up_divider_title"
+                app:layout_constraintEnd_toEndOf="parent"  />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/settings_sign_up_email_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintTop_toTopOf="parent" >
+                app:layout_constraintTop_toBottomOf="@+id/settings_sign_up_divider_title" >
 
                 <EditText
                     android:id="@+id/settings_sign_up_email"
@@ -74,7 +130,7 @@
                 android:id="@+id/settings_transfer_data_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_16"
                 android:background="@drawable/bg_rounded"
                 android:paddingHorizontal="@dimen/padding_16"
                 android:paddingBottom="@dimen/padding_16"

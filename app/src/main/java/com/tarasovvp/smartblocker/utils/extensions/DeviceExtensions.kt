@@ -181,9 +181,8 @@ fun FirebaseAuth.isAuthorisedUser(): Boolean {
 }
 
 fun FirebaseAuth.isGoogleAuthUser(): Boolean {
-    var isGoogleAuthUser = false
     currentUser?.providerData?.forEach {
-        isGoogleAuthUser = it.providerId == GoogleAuthProvider.PROVIDER_ID
+        if (it.providerId == GoogleAuthProvider.PROVIDER_ID) return true
     }
-    return isGoogleAuthUser
+    return false
 }

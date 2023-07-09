@@ -7,6 +7,8 @@ interface AuthRepository {
 
     fun sendPasswordResetEmail(email: String, result: (Result<Unit>) -> Unit)
 
+    fun fetchSignInMethodsForEmail(email: String, result: (Result<List<String>>) -> Unit)
+
     fun signInWithEmailAndPassword(email: String, password: String, result: (Result<Unit>) -> Unit)
 
     fun signInWithGoogle(idToken: String, result: (Result<Unit>) -> Unit)

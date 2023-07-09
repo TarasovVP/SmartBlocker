@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -10,6 +9,7 @@ import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsSignUpUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +24,8 @@ class SettingSignUpViewModel @Inject constructor(
     val filtersLiveData = MutableLiveData<List<Filter>>()
     val filteredCallsLiveData = MutableLiveData<List<FilteredCall>>()
     val blockHiddenLiveData = MutableLiveData<Boolean>()
+    val createEmailAccountLiveData = MutableLiveData<Unit>()
+    val createGoogleAccountLiveData = MutableLiveData<String>()
     val successSignUpLiveData = MutableLiveData<Unit>()
     val createCurrentUserLiveData = MutableLiveData<Unit>()
 
@@ -47,6 +49,45 @@ class SettingSignUpViewModel @Inject constructor(
         }
     }
 
+    fun fetchSignInMethodsForEmail(email: String, idToken: String? = null) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            settingsSignUpUseCase.fetchSignInMethodsForEmail(email) { authResult ->
+                when(authResult) {
+                    is Result.Success -> when {
+                        authResult.data.isNullOrEmpty().not() -> {
+                            idToken?.let {
+                                createGoogleAccountLiveData.postValue(String.EMPTY)
+                            }
+                            exceptionLiveData.postValue(application.getString(R.string.authorization_account_exist))
+                        }
+                        idToken.isNullOrEmpty() -> createEmailAccountLiveData.postValue(Unit)
+                        else -> idToken.let { createGoogleAccountLiveData.postValue(it) }
+                    }
+                    is Result.Failure -> authResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+
+    fun createUserWithGoogle(idToken: String) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            settingsSignUpUseCase.createUserWithGoogle(idToken) { operationResult ->
+                when(operationResult) {
+                    is Result.Success -> successSignUpLiveData.postValue(Unit)
+                    is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+
     fun createUserWithEmailAndPassword(email: String, password: String) {
         if (application.isNetworkAvailable()) {
             showProgress()
@@ -63,7 +104,6 @@ class SettingSignUpViewModel @Inject constructor(
     }
 
     fun createCurrentUser(currentUser: CurrentUser) {
-        Log.e("blockHiddenTAG", "SettingSignUpViewModel createCurrentUser currentUser $currentUser")
         if (application.isNetworkAvailable()) {
             showProgress()
             settingsSignUpUseCase.createCurrentUser(currentUser) { operationResult ->

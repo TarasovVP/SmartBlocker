@@ -74,9 +74,13 @@ class SettingsAccountFragment :
         binding?.apply {
             isLoggedInUser = firebaseAuth.isAuthorisedUser()
             settingsAccountName.text = if (isLoggedInUser.isTrue()) firebaseAuth.currentUser?.currentUserEmail() else getString(R.string.settings_account_unauthorised)
-            settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable(firebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())
+            when {
+                firebaseAuth.isGoogleAuthUser() -> settingsAccountAvatar.setImageResource(R.drawable.ic_logo_google)
+                firebaseAuth.isAuthorisedUser() -> settingsAccountAvatar.setImageResource(R.drawable.ic_email)
+                else -> settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable(firebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())
+            }
             executePendingBindings()
-            settingsAccountChangePassword.isVisible = firebaseAuth.isGoogleAuthUser().not()
+            settingsAccountChangePassword.isVisible = firebaseAuth.isAuthorisedUser() && firebaseAuth.isGoogleAuthUser().not()
         }
     }
 

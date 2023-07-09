@@ -82,14 +82,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             }
             loginEnter.setSafeOnClickListener {
                 root.hideKeyboard()
-                viewModel.signInWithEmailAndPassword(loginEmailInput.inputText(),
-                    loginPasswordInput.inputText())
+                viewModel.fetchSignInMethodsForEmail(loginEmailInput.inputText())
             }
         }
     }
 
     override fun observeLiveData() {
         with(viewModel) {
+            isEmailAccountExistLiveData.safeSingleObserve(viewLifecycleOwner) {
+                viewModel.signInWithEmailAndPassword(binding?.loginEmailInput.inputText(),
+                    binding?.loginPasswordInput.inputText())
+            }
+            isGoogleAccountExistLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
+                if (idToken.isEmpty()) {
+                    googleSignInClient.signOut()
+                } else {
+                    viewModel.signInAuthWithGoogle(idToken)
+                }
+            }
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {
                     getAllData(true)
@@ -108,7 +118,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                account.idToken?.let { viewModel.firebaseAuthWithGoogle(it) }
+                account.email?.let { viewModel.fetchSignInMethodsForEmail(it, account.idToken) }
             } catch (e: ApiException) {
                 showMessage(CommonStatusCodes.getStatusCodeString(e.statusCode), true)
             }

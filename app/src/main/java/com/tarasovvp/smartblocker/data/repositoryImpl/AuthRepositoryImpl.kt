@@ -14,8 +14,19 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override fun sendPasswordResetEmail(email: String, result: (Result<Unit>) -> Unit) {
         firebaseAuth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { it ->
-                if (it.isSuccessful) result.invoke(Result.Success())
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) result.invoke(Result.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
+
+    override fun fetchSignInMethodsForEmail(email: String, result: (Result<List<String>>) -> Unit) {
+        firebaseAuth.fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    result.invoke(Result.Success(task.result?.signInMethods))
+                }
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }

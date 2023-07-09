@@ -51,7 +51,7 @@ class LoginUseCaseUnitTest {
         every { authRepository.signInWithGoogle(eq(UnitTestUtils.TEST_TOKEN), any()) } answers {
             resultMock.invoke(Result.Success())
         }
-        loginUseCase.firebaseAuthWithGoogle(UnitTestUtils.TEST_TOKEN, resultMock)
+        loginUseCase.signInAuthWithGoogle(UnitTestUtils.TEST_TOKEN, resultMock)
         verify { resultMock.invoke(Result.Success()) }
     }
 
