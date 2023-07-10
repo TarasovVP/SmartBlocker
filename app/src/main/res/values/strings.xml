@@ -34,8 +34,8 @@
     <string name="authorization_sign_up_title">Haven`t got an account?&#160;</string>
     <string name="authorization_entrance_title">Got an account?&#160;</string>
     <string name="authorization_signing_up">Sign Up</string>
-    <string name="authorization_account_not_exist">There is no user with this email address. Go to the sign up screen and create an account.</string>
-    <string name="authorization_account_exist">A user with this email already exists. Go to the login screen and log in.</string>
+    <string name="authorization_account_not_exist">There is no user with this email address. First you need to create an account. Go to the registration screen?</string>
+    <string name="authorization_account_exist">A user with this email already exists. You need to log in. Go to the login screen?</string>
     <string name="authorization_unauthorized_enter">An unauthorized user has data stored locally within a single session. Enter anyway?</string>
     <string name="authorization_unauthorized_enter_button">Enter</string>
     <string name="authorization_network_unavailable">No internet connection.\nTo continue, connect to the internet and log in again.</string>

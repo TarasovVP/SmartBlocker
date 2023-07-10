@@ -6,7 +6,6 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,6 +16,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : BaseViewModel(application) {
 
+    val accountExistLiveData = MutableLiveData<Unit>()
     val isEmailAccountExistLiveData = MutableLiveData<Unit>()
     val isGoogleAccountExistLiveData = MutableLiveData<String>()
     val successPasswordResetLiveData = MutableLiveData<Boolean>()
@@ -43,12 +43,7 @@ class LoginViewModel @Inject constructor(
             loginUseCase.fetchSignInMethodsForEmail(email) { authResult ->
                 when(authResult) {
                     is Result.Success -> when {
-                        authResult.data.isNullOrEmpty() -> {
-                            idToken?.let {
-                                isGoogleAccountExistLiveData.postValue(String.EMPTY)
-                            }
-                            exceptionLiveData.postValue(application.getString(R.string.authorization_account_not_exist))
-                        }
+                        authResult.data.isNullOrEmpty() -> accountExistLiveData.postValue(Unit)
                         idToken.isNullOrEmpty() -> isEmailAccountExistLiveData.postValue(Unit)
                         else -> idToken.let { isGoogleAccountExistLiveData.postValue(it) }
                     }

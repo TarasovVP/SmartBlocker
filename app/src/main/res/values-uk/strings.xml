@@ -34,8 +34,8 @@
     <string name="authorization_sign_up_title">Ще немає облікового запису?&#160;</string>
     <string name="authorization_entrance_title">Є обліковий запис?&#160;</string>
     <string name="authorization_signing_up">Зареєструватися</string>
-    <string name="authorization_account_not_exist">Користувача з електронною поштою не існує.  Перейдіть на екран реєстрації та створіть обліковий запис.</string>
-    <string name="authorization_account_exist">Користувач із таким Email вже існує. Перейдіть на екран логіна та авторизуйтесь.</string>
+    <string name="authorization_account_not_exist">Користувача з електронною поштою не існує. Спочатку необхідно створити обліковий запис. Перейти на екран реєстрації?</string>
+    <string name="authorization_account_exist">Користувач із таким Email вже існує. Потрібно авторизуватися. Перейти на екран логіну?</string>
     <string name="authorization_unauthorized_enter">У неавторизованого користувача дані зберігаються локально у межах однієї сесії. Все одно увійти?</string>
     <string name="authorization_unauthorized_enter_button">Увійти</string>
     <string name="authorization_network_unavailable">Інтернет з\'єднання відсутнє.\nДля продовження, підключіть інтернет і здійсніть повторний вхід.</string>

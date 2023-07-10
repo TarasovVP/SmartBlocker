@@ -15,11 +15,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EMAIL
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOUNT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.UNAUTHORIZED_ENTER
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpFragmentDirections
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -67,6 +70,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 showMessage(getString(R.string.authorization_enter_email), true)
             }
         }
+        setFragmentResultListener(EXIST_ACCOUNT) { _, _ ->
+            googleSignInClient.signOut()
+            findNavController().navigate(LoginFragmentDirections.startSignUpFragment())
+        }
         setFragmentResultListener(UNAUTHORIZED_ENTER) { _, _ ->
             viewModel.signInAnonymously()
         }
@@ -94,11 +101,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     binding?.loginPasswordInput.inputText())
             }
             isGoogleAccountExistLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
-                if (idToken.isEmpty()) {
-                    googleSignInClient.signOut()
-                } else {
-                    viewModel.signInAuthWithGoogle(idToken)
-                }
+                viewModel.signInAuthWithGoogle(idToken)
+            }
+            accountExistLiveData.safeSingleObserve(viewLifecycleOwner) {
+                findNavController().navigate(LoginFragmentDirections.startExistAccountDialog(description = getString(R.string.authorization_account_not_exist)))
             }
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {

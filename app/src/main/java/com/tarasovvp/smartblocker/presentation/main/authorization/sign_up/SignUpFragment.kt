@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -15,6 +16,7 @@ import com.google.android.gms.common.api.CommonStatusCodes
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSignUpBinding
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOUNT
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -36,6 +38,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
         setContinueButton(binding?.container?.getViewsFromLayout(EditText::class.java))
         setOnClickListeners()
+        setFragmentResultListeners()
     }
 
     private fun setOnClickListeners() {
@@ -50,6 +53,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             signUpEntrance.setSafeOnClickListener {
                 findNavController().navigateUp()
             }
+        }
+    }
+
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(EXIST_ACCOUNT) { _, _ ->
+            googleSignInClient.signOut()
+            findNavController().navigateUp()
         }
     }
 
@@ -70,11 +80,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                 viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(), binding?.signUpPassword.inputText())
             }
             createGoogleAccountLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
-                if (idToken.isEmpty()) {
-                    googleSignInClient.signOut()
-                } else {
-                    viewModel.createUserWithGoogle(idToken)
-                }
+                viewModel.createUserWithGoogle(idToken)
+            }
+            accountExistLiveData.safeSingleObserve(viewLifecycleOwner) {
+                findNavController().navigate(SignUpFragmentDirections.startExistAccountDialog(description = getString(R.string.authorization_account_exist)))
             }
             successSignUpLiveData.safeSingleObserve(viewLifecycleOwner) {
                 viewModel.createCurrentUser(CurrentUser())

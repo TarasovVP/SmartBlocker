@@ -31,11 +31,18 @@
         <action
             android:id="@+id/startUnauthorizedEnterDialog"
             app:destination="@id/unauthorizedEnterDialog" />
+        <action
+            android:id="@+id/startExistAccountDialog"
+            app:destination="@id/existAccountDialog" />
     </fragment>
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment" />
+        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment" >
+        <action
+            android:id="@+id/startExistAccountDialog"
+            app:destination="@id/existAccountDialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/listBlockerFragment"
@@ -348,10 +355,15 @@
         android:id="@+id/existAccountDialog"
         android:name="com.tarasovvp.smartblocker.presentation.dialogs.ExistAccountDialog" >
         <argument
-            android:name="idToken"
+            android:name="description"
             android:defaultValue=""
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="idToken"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="false" />
     </dialog>
 
     <dialog

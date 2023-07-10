@@ -34,8 +34,8 @@
     <string name="authorization_sign_up_title">Еще нет аккаунта?&#160;</string>
     <string name="authorization_entrance_title">Есть аккаунт?&#160;</string>
     <string name="authorization_signing_up">Зарегистрироваться</string>
-    <string name="authorization_account_not_exist">Пользователя с таким Email не существует. Перейдите на экран регистрации и создайте аккаунт.</string>
-    <string name="authorization_account_exist">Пользователь с таким Email уже существует. Перейдите на экран логина и авторизуйтесь.</string>
+    <string name="authorization_account_not_exist">Пользователя с таким Email не существует. Сначала необходимо создать аккаунт. Перейти на экран регистрации?</string>
+    <string name="authorization_account_exist">Пользователь с таким Email уже существует. Необходимо авторизоваться. Перейти на экран логина?</string>
     <string name="authorization_unauthorized_enter">У неавторизованного пользователя данные хранятся локально в рамках одной сессии. Все равно войти?</string>
     <string name="authorization_unauthorized_enter_button">Войти</string>
     <string name="authorization_network_unavailable">Интернет соединение отсутствует.\nДля продолжения, подключите интернет и совершите повторный вход.</string>

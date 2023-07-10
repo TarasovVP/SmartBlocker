@@ -18,6 +18,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsSignUpBinding
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CANCEL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOUNT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ID_TOKEN
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
@@ -85,11 +86,10 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
 
     private fun setFragmentResultListeners() {
         setFragmentResultListener(EXIST_ACCOUNT) { _, bundle ->
-            val idToken = bundle.getString(ID_TOKEN, String.EMPTY)
-            if (idToken.isNullOrEmpty()) {
-                viewModel.signInWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())
-            } else {
-                viewModel.createUserWithGoogle(idToken)
+            when(val idToken = bundle.getString(ID_TOKEN, String.EMPTY)) {
+                CANCEL -> googleSignInClient.signOut()
+                String.EMPTY -> viewModel.signInWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())
+                else -> viewModel.createUserWithGoogle(idToken, true)
             }
         }
     }
@@ -112,14 +112,10 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
                 viewModel.createUserWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())
             }
             createGoogleAccountLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
-                if (idToken.isEmpty()) {
-                    googleSignInClient.signOut()
-                } else {
-                    viewModel.createUserWithGoogle(idToken)
-                }
+                viewModel.createUserWithGoogle(idToken, false)
             }
             accountExistLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
-                findNavController().navigate(SettingsSignUpFragmentDirections.startExistAccountDialog(idToken = idToken))
+                findNavController().navigate(SettingsSignUpFragmentDirections.startExistAccountDialog(idToken = idToken, description = getString(R.string.settings_account_exist)))
             }
             successAuthorisationLiveData.safeSingleObserve(viewLifecycleOwner) { isExistUser ->
                 if (isExistUser) {
@@ -129,6 +125,7 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
                 }
             }
             createCurrentUserLiveData.safeSingleObserve(viewLifecycleOwner) {
+                googleSignInClient.signOut()
                 (activity as? MainActivity)?.apply {
                     AppDatabase.getDatabase(this).clearAllTables()
                     getAllData(true)

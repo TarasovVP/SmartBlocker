@@ -7,7 +7,6 @@ import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,6 +17,7 @@ class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase
 ) : BaseViewModel(application) {
 
+    val accountExistLiveData = MutableLiveData<Unit>()
     val createEmailAccountLiveData = MutableLiveData<Unit>()
     val createGoogleAccountLiveData = MutableLiveData<String>()
     val successSignUpLiveData = MutableLiveData<Unit>()
@@ -29,12 +29,7 @@ class SignUpViewModel @Inject constructor(
             signUpUseCase.fetchSignInMethodsForEmail(email) { authResult ->
                 when(authResult) {
                     is Result.Success -> when {
-                        authResult.data.isNullOrEmpty().not() -> {
-                            idToken?.let {
-                                createGoogleAccountLiveData.postValue(String.EMPTY)
-                            }
-                            exceptionLiveData.postValue(application.getString(R.string.authorization_account_exist))
-                        }
+                        authResult.data.isNullOrEmpty().not() -> accountExistLiveData.postValue(Unit)
                         idToken.isNullOrEmpty() -> createEmailAccountLiveData.postValue(Unit)
                         else -> idToken.let { createGoogleAccountLiveData.postValue(it) }
                     }

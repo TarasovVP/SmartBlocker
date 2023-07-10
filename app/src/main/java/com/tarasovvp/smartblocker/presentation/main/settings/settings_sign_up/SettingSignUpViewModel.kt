@@ -70,12 +70,12 @@ class SettingSignUpViewModel @Inject constructor(
         }
     }
 
-    fun createUserWithGoogle(idToken: String) {
+    fun createUserWithGoogle(idToken: String, isExistUser: Boolean) {
         if (application.isNetworkAvailable()) {
             showProgress()
             settingsSignUpUseCase.createUserWithGoogle(idToken) { operationResult ->
                 when(operationResult) {
-                    is Result.Success -> successAuthorisationLiveData.postValue(false)
+                    is Result.Success -> successAuthorisationLiveData.postValue(isExistUser)
                     is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
                 hideProgress()

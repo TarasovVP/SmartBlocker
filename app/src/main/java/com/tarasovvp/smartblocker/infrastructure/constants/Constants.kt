@@ -39,6 +39,7 @@ object Constants {
     const val LOG_OUT = "logOut"
     const val EXIST_ACCOUNT = "existAccount"
     const val ID_TOKEN = "idToken"
+    const val CANCEL = "cancel"
 
     //Passwords
     const val FORGOT_PASSWORD = "forgotPassword"

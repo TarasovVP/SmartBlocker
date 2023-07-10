@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.DialogConfirmBinding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CANCEL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOUNT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ID_TOKEN
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog
@@ -19,9 +20,10 @@ class ExistAccountDialog : BaseDialog<DialogConfirmBinding>() {
 
     override fun initUI() {
         binding?.apply {
-            dialogConfirmTitle.text = getString(R.string.settings_account_exist)
+            dialogConfirmTitle.text = args.description
             dialogConfirmCancel.setSafeOnClickListener {
-                dismiss()
+                findNavController().navigateUp()
+                setFragmentResult(EXIST_ACCOUNT, bundleOf(ID_TOKEN to CANCEL))
             }
             dialogConfirmSubmit.text = getString(R.string.button_ok)
             dialogConfirmSubmit.setSafeOnClickListener {
