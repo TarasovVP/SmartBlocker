@@ -21,7 +21,32 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
     RealDataBaseRepository {
 
     override fun createCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit) {
+        val currentUserMap = hashMapOf<String, Any>()
+        currentUser.filterList.forEach { filter ->
+            currentUserMap["$FILTER_LIST/${filter.filter}"] = filter
+        }
+        currentUser.filteredCallList.forEach { filteredCall ->
+            currentUserMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
+        }
+        currentUserMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
         firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).setValue(currentUser)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) result.invoke(Result.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
+
+    override fun updateCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit) {
+        val updatesMap = hashMapOf<String, Any>()
+        currentUser.filterList.forEach { filter ->
+            updatesMap["$FILTER_LIST/${filter.filter}"] = filter
+        }
+        currentUser.filteredCallList.forEach { filteredCall ->
+            updatesMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
+        }
+        updatesMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).updateChildren(updatesMap)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) result.invoke(Result.Success())
             }.addOnFailureListener { exception ->

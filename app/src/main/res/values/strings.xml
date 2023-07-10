@@ -225,10 +225,11 @@
     <string name="settings_account_log_out">Are you sure you want to log out?</string>
     <string name="settings_account_unauthorised_log_out">If you log out of an unauthorized account, you will lose all created data. Sign up to save. Still leave?</string>
     <string name="settings_account_email_delete">The account and all created data will be permanently deleted. Enter your current password to continue.</string>
-    <string name="settings_account_google_delete">The account and all created data will be permanently deleted. Google may ask you to confirm your authorization to continue..</string>
+    <string name="settings_account_google_delete">The account and all created data will be permanently deleted. Google may ask you to confirm your authorization to continue.</string>
     <string name="settings_account_transfer_data_title">Transfer data?</string>
     <string name="settings_account_transfer_data_turn_on">The created data will be transferred to your account.</string>
     <string name="settings_account_transfer_data_turn_off">The created data will be deleted.</string>
+    <string name="settings_account_exist">A user with this email already exists. You can go to this account. If the choice of data transfer is enabled, they will be transferred to the account, if it is disabled, they will be permanently deleted. Go?</string>
     <!--Settings language-->
     <string name="settings_language_russian">Russian</string>
     <string name="settings_language_ukrainian">Ukrainian</string>

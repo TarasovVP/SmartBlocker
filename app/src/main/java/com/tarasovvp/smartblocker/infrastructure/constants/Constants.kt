@@ -37,7 +37,8 @@ object Constants {
     const val EMAIL = "email"
     const val DELETE_ACCOUNT = "deleteAccount"
     const val LOG_OUT = "logOut"
-    const val ERROR_REQUIRES_RECENT_LOGIN = "ERROR_REQUIRES_RECENT_LOGIN"
+    const val EXIST_ACCOUNT = "existAccount"
+    const val ID_TOKEN = "idToken"
 
     //Passwords
     const val FORGOT_PASSWORD = "forgotPassword"

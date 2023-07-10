@@ -9,7 +9,6 @@ import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsSignUpUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
-import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,9 +23,10 @@ class SettingSignUpViewModel @Inject constructor(
     val filtersLiveData = MutableLiveData<List<Filter>>()
     val filteredCallsLiveData = MutableLiveData<List<FilteredCall>>()
     val blockHiddenLiveData = MutableLiveData<Boolean>()
+    val accountExistLiveData = MutableLiveData<String>()
     val createEmailAccountLiveData = MutableLiveData<Unit>()
     val createGoogleAccountLiveData = MutableLiveData<String>()
-    val successSignUpLiveData = MutableLiveData<Unit>()
+    val successAuthorisationLiveData = MutableLiveData<Boolean>()
     val createCurrentUserLiveData = MutableLiveData<Unit>()
 
     fun getAllFilters() {
@@ -56,10 +56,7 @@ class SettingSignUpViewModel @Inject constructor(
                 when(authResult) {
                     is Result.Success -> when {
                         authResult.data.isNullOrEmpty().not() -> {
-                            idToken?.let {
-                                createGoogleAccountLiveData.postValue(String.EMPTY)
-                            }
-                            exceptionLiveData.postValue(application.getString(R.string.authorization_account_exist))
+                            accountExistLiveData.postValue(idToken.orEmpty())
                         }
                         idToken.isNullOrEmpty() -> createEmailAccountLiveData.postValue(Unit)
                         else -> idToken.let { createGoogleAccountLiveData.postValue(it) }
@@ -78,7 +75,7 @@ class SettingSignUpViewModel @Inject constructor(
             showProgress()
             settingsSignUpUseCase.createUserWithGoogle(idToken) { operationResult ->
                 when(operationResult) {
-                    is Result.Success -> successSignUpLiveData.postValue(Unit)
+                    is Result.Success -> successAuthorisationLiveData.postValue(false)
                     is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
                 hideProgress()
@@ -93,8 +90,23 @@ class SettingSignUpViewModel @Inject constructor(
             showProgress()
             settingsSignUpUseCase.createUserWithEmailAndPassword(email, password) { operationResult ->
                 when(operationResult) {
-                    is Result.Success -> successSignUpLiveData.postValue(Unit)
+                    is Result.Success -> successAuthorisationLiveData.postValue(false)
                     is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+
+    fun signInWithEmailAndPassword(email: String, password: String) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            settingsSignUpUseCase.signInWithEmailAndPassword(email, password) { authResult ->
+                when(authResult) {
+                    is Result.Success -> successAuthorisationLiveData.postValue(true)
+                    is Result.Failure -> authResult.errorMessage?.let { exceptionLiveData.postValue(it) }
                 }
                 hideProgress()
             }
@@ -107,6 +119,21 @@ class SettingSignUpViewModel @Inject constructor(
         if (application.isNetworkAvailable()) {
             showProgress()
             settingsSignUpUseCase.createCurrentUser(currentUser) { operationResult ->
+                when(operationResult) {
+                    is Result.Success -> createCurrentUserLiveData.postValue(Unit)
+                    is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
+                }
+                hideProgress()
+            }
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+
+    fun updateCurrentUser(currentUser: CurrentUser) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            settingsSignUpUseCase.updateCurrentUser(currentUser) { operationResult ->
                 when(operationResult) {
                     is Result.Success -> createCurrentUserLiveData.postValue(Unit)
                     is Result.Failure -> operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }

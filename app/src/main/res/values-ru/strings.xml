@@ -232,6 +232,7 @@
     <string name="settings_account_transfer_data_title">Перенести данные?</string>
     <string name="settings_account_transfer_data_turn_on">Cозданные данные будут перенесены в ваш аккаунт.</string>
     <string name="settings_account_transfer_data_turn_off">Cозданные данные будут удалены.</string>
+    <string name="settings_account_exist">Пользователь с таким Email уже существует. Вы можете перейти в этот аккаунт. При включенном выборе переноса данных - они будут перенесены в аккаунт, при выключенном - удалены безвозвартно. Перейти?</string>
     <!--Settings language-->
     <string name="settings_language_russian">Русский</string>
     <string name="settings_language_ukrainian">Украинский</string>

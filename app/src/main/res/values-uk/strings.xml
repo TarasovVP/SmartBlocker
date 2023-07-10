@@ -232,6 +232,7 @@
     <string name="settings_account_transfer_data_title">Перенести дані?</string>
     <string name="settings_account_transfer_data_turn_on">Створені дані будуть перенесені до вашого облікового запису.</string>
     <string name="settings_account_transfer_data_turn_off">Створені дані будуть видалені.</string>
+    <string name="settings_account_exist">Користувач із таким Email вже існує. Ви можете перейти до цього облікового запису. При включеному виборі перенесення даних - вони будуть перенесені в обліковий запис, при вимкненому - видалені безоплатно. Перейти?</string>
     <!--Settings language-->
     <string name="settings_language_russian">Російська</string>
     <string name="settings_language_ukrainian">Українська</string>

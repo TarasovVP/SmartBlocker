@@ -39,7 +39,15 @@ class SettingsSignUpUseCaseImpl @Inject constructor(
         result.invoke(authResult)
     }
 
+    override fun signInWithEmailAndPassword(email: String, password: String, result: (Result<Unit>) -> Unit) = authRepository.signInWithEmailAndPassword(email, password) { authResult ->
+        result.invoke(authResult)
+    }
+
     override fun createCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit) = realDataBaseRepository.createCurrentUser(currentUser) { authResult ->
+        result.invoke(authResult)
+    }
+
+    override fun updateCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit) = realDataBaseRepository.updateCurrentUser(currentUser) { authResult ->
         result.invoke(authResult)
     }
 }

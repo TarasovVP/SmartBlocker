@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -17,6 +18,8 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsSignUpBinding
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOUNT
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ID_TOKEN
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -42,6 +45,7 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
         setContinueButton(binding?.container?.getViewsFromLayout(EditText::class.java))
         setOnClickListeners()
         setTransferDataSwitch()
+        setFragmentResultListeners()
     }
 
     private fun getCurrentUserData() {
@@ -79,6 +83,17 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
         }
     }
 
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(EXIST_ACCOUNT) { _, bundle ->
+            val idToken = bundle.getString(ID_TOKEN, String.EMPTY)
+            if (idToken.isNullOrEmpty()) {
+                viewModel.signInWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())
+            } else {
+                viewModel.createUserWithGoogle(idToken)
+            }
+        }
+    }
+
     override fun observeLiveData() {
         with(viewModel) {
             filtersLiveData.safeSingleObserve(viewLifecycleOwner) { filters ->
@@ -93,9 +108,6 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
                 currentUser.isBlockHidden = isBlockHidden
                 Log.e("blockHiddenTAG", "SettingsSignUpFragment observeLiveData blockHiddenLiveData currentUser $currentUser")
             }
-            successSignUpLiveData.safeSingleObserve(viewLifecycleOwner) {
-                viewModel.createCurrentUser( if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
-            }
             createEmailAccountLiveData.safeSingleObserve(viewLifecycleOwner) {
                 viewModel.createUserWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())
             }
@@ -106,8 +118,15 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
                     viewModel.createUserWithGoogle(idToken)
                 }
             }
-            successSignUpLiveData.safeSingleObserve(viewLifecycleOwner) {
-                viewModel.createCurrentUser(if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
+            accountExistLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
+                findNavController().navigate(SettingsSignUpFragmentDirections.startExistAccountDialog(idToken = idToken))
+            }
+            successAuthorisationLiveData.safeSingleObserve(viewLifecycleOwner) { isExistUser ->
+                if (isExistUser) {
+                    viewModel.updateCurrentUser( if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
+                } else {
+                    viewModel.createCurrentUser( if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
+                }
             }
             createCurrentUserLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.apply {

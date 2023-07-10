@@ -10,6 +10,8 @@ interface RealDataBaseRepository {
 
     fun createCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit)
 
+    fun updateCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit)
+
     fun getCurrentUser(result: (Result<CurrentUser>) -> Unit)
 
     fun deleteCurrentUser(result: (Result<Unit>) -> Unit)

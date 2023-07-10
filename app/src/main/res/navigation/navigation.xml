@@ -271,7 +271,11 @@
     <fragment
         android:id="@+id/settingsSignUpFragment"
         android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpFragment"
-        android:label="@string/authorization_sign_up"/>
+        android:label="@string/authorization_sign_up">
+        <action
+            android:id="@+id/startExistAccountDialog"
+            app:destination="@id/existAccountDialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsLanguageFragment"
@@ -339,6 +343,16 @@
     <dialog
         android:id="@+id/unauthorizedEnterDialog"
         android:name="com.tarasovvp.smartblocker.presentation.dialogs.UnauthorizedEnterDialog" />
+
+    <dialog
+        android:id="@+id/existAccountDialog"
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.ExistAccountDialog" >
+        <argument
+            android:name="idToken"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
 
     <dialog
         android:id="@+id/changePasswordDialog"
