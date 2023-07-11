@@ -57,6 +57,7 @@ object Constants {
     //Real data base
     const val USERS = "users"
     const val REVIEWS = "reviews"
+    const val PRIVACY_POLICY = "privacyPolicy"
     const val BLOCK_HIDDEN = "blockHidden"
     const val FILTER_LIST = "filterList"
     const val FILTERED_CALL_LIST = "filteredCallList"

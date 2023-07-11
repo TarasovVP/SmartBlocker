@@ -27,4 +27,6 @@ interface RealDataBaseRepository {
     fun changeBlockHidden(blockUnanimous: Boolean, result: (Result<Unit>) -> Unit)
 
     fun insertReview(review: Review, result: (Result<Unit>) -> Unit)
+
+    fun getPrivacyPolicy(appLang: String, result: (Result<String>) -> Unit)
 }

@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PRIVACY_POLICY
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
 import com.tarasovvp.smartblocker.utils.extensions.isNotNull
@@ -148,6 +149,15 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
         firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(BLOCK_HIDDEN).setValue(blockUnanimous)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) result.invoke(Result.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
+
+    override fun getPrivacyPolicy(appLang: String, result: (Result<String>) -> Unit) {
+        firebaseDatabase.reference.child(PRIVACY_POLICY).child(appLang).get()
+            .addOnCompleteListener { task ->
+                result.invoke(Result.Success(task.result.value.toString()))
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }

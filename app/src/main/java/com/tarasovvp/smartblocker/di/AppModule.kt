@@ -31,6 +31,7 @@ import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.Se
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.settings.settings_privacy.SettingsPrivacyPolicyUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.mapperImpl.*
@@ -406,6 +407,15 @@ object AppModule {
     @Provides
     fun provideSettingsThemeUseCase(dataStoreRepository: DataStoreRepository): SettingsThemeUseCase {
         return SettingsThemeUseCaseImpl(dataStoreRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSettingsPrivacyPolicyUseCase(
+        dataStoreRepository: DataStoreRepository,
+        realDataBaseRepository: RealDataBaseRepository,
+    ): SettingsPrivacyPolicyUseCase {
+        return SettingsPrivacyPolicyUseCaseImpl(dataStoreRepository, realDataBaseRepository)
     }
 }
 
