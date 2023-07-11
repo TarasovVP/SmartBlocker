@@ -149,6 +149,7 @@ abstract class BaseListFilterFragment<T : BaseViewModel> :
             }
             fabNew.setSafeOnClickListener {
                 fabNew.setImageResource(if (fabFull.isVisible) R.drawable.ic_create else R.drawable.ic_close)
+                changeBackgroundWithFABShow(fabFull.isVisible)
                 if (fabFull.isVisible) fabFull.hide() else fabFull.show()
                 if (fabStart.isVisible) fabStart.hide() else fabStart.show()
                 if (fabContain.isVisible) fabContain.hide() else fabContain.show()
@@ -166,6 +167,15 @@ abstract class BaseListFilterFragment<T : BaseViewModel> :
                 filterWithCountryCodeUIModel.countryCodeUIModel = CountryCodeUIModel()
                 startCreateFilterScreen()
             }
+        }
+    }
+
+    private fun changeBackgroundWithFABShow(isShown: Boolean) {
+        binding?.apply {
+            listFilterCheck.alpha = if (isShown) 1.0f else 0.5f
+            listFilterInfo.alpha = if (isShown) 1.0f else 0.5f
+            listFilterEmpty.alpha = if (isShown) 1.0f else 0.5f
+            listFilterRefresh.alpha = if (isShown) 1.0f else 0.5f
         }
     }
 

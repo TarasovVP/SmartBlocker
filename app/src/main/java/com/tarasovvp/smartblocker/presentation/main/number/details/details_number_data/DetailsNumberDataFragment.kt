@@ -187,6 +187,16 @@ class DetailsNumberDataFragment :
             numberDataDetailAddFilterContain.changeFilterConditionButtonState(
                 FilterCondition.FILTER_CONDITION_CONTAIN.mainIcon(), isShown
             )
+            changeBackgroundWithFABShow(isShown)
+        }
+    }
+
+    private fun changeBackgroundWithFABShow(isShown: Boolean) {
+        binding?.apply {
+            detailsNumberDataItemContact.root.alpha = if (isShown) 1.0f else 0.5f
+            detailsNumberDataHidden.alpha = if (isShown) 1.0f else 0.5f
+            detailsNumberDataTabs.alpha = if (isShown) 1.0f else 0.5f
+            detailsNumberDataViewPager.alpha = if (isShown) 1.0f else 0.5f
         }
     }
 

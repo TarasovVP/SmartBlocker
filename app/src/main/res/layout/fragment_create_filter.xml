@@ -40,6 +40,8 @@
             android:layout_marginTop="@dimen/margin_8"
             app:cardCornerRadius="@dimen/padding_12"
             app:cardElevation="@dimen/padding_2"
+            app:strokeWidth="@dimen/padding_1"
+            app:strokeColor="@color/cornflower_blue"
             app:layout_constraintTop_toBottomOf="@id/create_filter_item_filter" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
