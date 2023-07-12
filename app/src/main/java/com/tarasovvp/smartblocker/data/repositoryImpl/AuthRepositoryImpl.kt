@@ -14,8 +14,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override fun sendPasswordResetEmail(email: String, result: (Result<Unit>) -> Unit) {
         firebaseAuth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success())
+            .addOnSuccessListener {
+                result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -34,8 +34,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override fun signInWithEmailAndPassword(email: String, password: String, result: (Result<Unit>) -> Unit) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success())
+            .addOnSuccessListener {
+                result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -44,8 +44,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
     override fun signInWithGoogle(idToken: String, result: (Result<Unit>) -> Unit) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success())
+            .addOnSuccessListener {
+                result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -53,8 +53,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override fun signInAnonymously(result: (Result<Unit>) -> Unit) {
         firebaseAuth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success())
+            .addOnSuccessListener {
+                result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
@@ -73,15 +73,11 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
         val user = firebaseAuth.currentUser
         val credential = EmailAuthProvider.getCredential(user?.email.orEmpty(), currentPassword)
         user?.reauthenticateAndRetrieveData(credential)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    user.updatePassword(newPassword).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            result.invoke(Result.Success())
-                        } else {
-                            result.invoke(Result.Failure(it.exception?.localizedMessage))
-                        }
-                    }
+            ?.addOnSuccessListener {
+                user.updatePassword(newPassword).addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
                 }
             }?.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
@@ -90,10 +86,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override fun reAuthenticate(authCredential: AuthCredential, result: (Result<Unit>) -> Unit) {
         firebaseAuth.currentUser?.reauthenticate(authCredential)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result.invoke(Result.Success())
-                }
+            ?.addOnSuccessListener {
+                result.invoke(Result.Success())
             }?.addOnFailureListener { exception ->
                 Log.e("deleteAccTAG","AuthRepository reAuthenticate exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
@@ -102,10 +96,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override fun deleteUser(result: (Result<Unit>) -> Unit) {
         firebaseAuth.currentUser?.delete()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    signOut(result)
-                }
+            ?.addOnSuccessListener {
+                signOut(result)
             }?.addOnFailureListener { exception ->
                 Log.e("deleteAccTAG","AuthRepository deleteUser exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
@@ -113,11 +105,9 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
     }
 
     override fun signOut(result: (Result<Unit>) -> Unit) {
-        googleSignInClient.signOut().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                firebaseAuth.signOut()
-                result.invoke(Result.Success())
-            }
+        googleSignInClient.signOut().addOnSuccessListener {
+            firebaseAuth.signOut()
+            result.invoke(Result.Success())
         }.addOnFailureListener { exception ->
             Log.e("deleteAccTAG","AuthRepository signOut exception ${exception.localizedMessage}")
             result.invoke(Result.Failure(exception.localizedMessage))
