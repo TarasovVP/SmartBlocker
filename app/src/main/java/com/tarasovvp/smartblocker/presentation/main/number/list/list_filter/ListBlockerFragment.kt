@@ -4,6 +4,7 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_DELETE_MODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LIST_STATE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SAVED_LIST
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
@@ -47,7 +48,7 @@ class ListBlockerFragment : BaseListFilterFragment<ListBlockerFilterViewModel>()
         super.onStop()
         viewModel.savedStateHandle[LIST_STATE] = recyclerView?.layoutManager?.onSaveInstanceState()
         viewModel.savedStateHandle[SAVED_LIST] = viewModel.filterListLiveData.value
-        viewModel.savedStateHandle[Constants.IS_DELETE_MODE] = isDeleteMode
+        viewModel.savedStateHandle[IS_DELETE_MODE] = isDeleteMode
     }
 
     override fun getCurrentCountryCode() {

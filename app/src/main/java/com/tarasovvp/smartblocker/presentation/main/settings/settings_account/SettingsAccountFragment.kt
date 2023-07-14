@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResult
@@ -87,7 +86,6 @@ class SettingsAccountFragment :
     private fun setOnclickListeners() {
         binding?.apply {
             settingsAccountLogOut.setSafeOnClickListener {
-                (activity as? MainActivity)?.stopBlocker()
                 findNavController().navigate(SettingsAccountFragmentDirections.startLogOutDialog(isAuthorised = firebaseAuth.isAuthorisedUser()))
             }
             settingsAccountDelete.setSafeOnClickListener {
@@ -111,8 +109,7 @@ class SettingsAccountFragment :
                 (activity as? MainActivity)?.apply {
                     AppDatabase.getDatabase(this).clearAllTables()
                     stopBlocker()
-                    finish()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    findNavController().navigate(SettingsAccountFragmentDirections.startLoginScreen())
                 }
             }
             successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) {

@@ -102,7 +102,7 @@ abstract class BaseListFilterFragment<T : BaseViewModel> :
 
     protected fun changeDeleteMode() {
         isDeleteMode = isDeleteMode.not()
-        binding?.listFilterCheck?.isEnabled = isDeleteMode.not()
+        binding?.listFilterCheck?.isEnabled = isDeleteMode.not() && filterWithFilteredNumberUIModels.isNullOrEmpty().not()
         (adapter as FilterAdapter).apply {
             isDeleteMode = this@BaseListFilterFragment.isDeleteMode
             recyclerView?.post {

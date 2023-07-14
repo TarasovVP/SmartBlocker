@@ -273,6 +273,11 @@
         <action
             android:id="@+id/startSettingsSignUpFragment"
             app:destination="@id/settingsSignUpFragment" />
+        <action
+            android:id="@+id/startLoginScreen"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@+id/mainNavigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

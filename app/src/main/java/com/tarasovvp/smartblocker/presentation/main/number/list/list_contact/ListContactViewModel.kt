@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
@@ -26,6 +27,7 @@ class ListContactViewModel @Inject constructor(
     val filteredContactListLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
 
     fun getContactsWithFilters(refreshing: Boolean) {
+        Log.e("liveDataTAG","ListContactViewModel getContactsWithFilters ${contactListLiveData.value?.size} filteredContactListLiveData ${filteredContactListLiveData.value?.size}")
         if (refreshing.not()) showProgress()
         launch {
             val contactList = listContactUseCase.allContactWithFilters()
@@ -35,6 +37,7 @@ class ListContactViewModel @Inject constructor(
     }
 
     fun getFilteredContactList(contactList: List<ContactWithFilterUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
+        Log.e("liveDataTAG","ListContactViewModel getFilteredContactList ${contactListLiveData.value?.size} filteredContactListLiveData ${filteredContactListLiveData.value?.size}")
         launch {
             val filteredContactList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) contactList else contactList.filter { contactWithFilter ->
                 ((contactWithFilter.contactName isContaining searchQuery || contactWithFilter.number.digitsTrimmed() isContaining searchQuery))
