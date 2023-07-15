@@ -164,8 +164,6 @@ class DetailsFilterFragment :
         (activity as? MainActivity)?.apply {
             showInfoMessage(String.format(filterWithFilteredNumberUIModel.filterAction?.successText()?.let { getString(it) }
                 .orEmpty(), binding?.filterWithFilteredNumberUIModel?.filter.orEmpty()), false)
-            //TODO interstitial
-            //showInterstitial()
             getAllData()
             findNavController().navigate(if (binding?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) DetailsFilterFragmentDirections.startListBlockerFragment()
             else DetailsFilterFragmentDirections.startListPermissionFragment())

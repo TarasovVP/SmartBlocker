@@ -7,7 +7,6 @@ import com.tarasovvp.smartblocker.domain.enums.FilterAction
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
-import com.tarasovvp.smartblocker.utils.extensions.quantityString
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
@@ -60,14 +59,14 @@ data class FilterWithFilteredNumberUIModel(
         return context.resources.getQuantityString(when (filterType) {
             Constants.PERMISSION -> R.plurals.details_number_permit_contacts
             else -> R.plurals.details_number_block_contacts
-        }, filteredContacts.quantityString(), filteredContacts )
+        }, filteredContacts, filteredContacts )
     }
 
     fun filteredCallsText(context: Context): String {
         return context.resources.getQuantityString(when (filterType) {
             Constants.PERMISSION -> R.plurals.details_number_permitted_calls
             else -> R.plurals.details_number_blocked_calls
-        }, filteredCalls.quantityString(), filteredCalls)
+        }, filteredCalls, filteredCalls)
     }
 
     fun conditionTypeName(): Int? {

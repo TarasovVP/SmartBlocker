@@ -30,10 +30,7 @@ class ListPermissionFragment : BaseListFilterFragment<ListPermissionFilterViewMo
                 setFilterListData(filteredFilterList)
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as? MainActivity)?.apply {
-                    showInterstitial()
-                    getAllData()
-                }
+                (activity as? MainActivity)?. showInterstitial()
                 changeDeleteMode()
             }
             currentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeUIModel ->

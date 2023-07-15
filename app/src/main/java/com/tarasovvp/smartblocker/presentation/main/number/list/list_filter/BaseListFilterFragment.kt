@@ -91,7 +91,7 @@ abstract class BaseListFilterFragment<T : BaseViewModel> :
                 val firstFilterWithCountryCode = filterWithFilteredNumberUIModels?.firstOrNull { it.isCheckedForDelete }
                 val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter =
                 if (deleteFilterCount > 1) resources.getQuantityString(R.plurals.list_filter_delete_amount,
-                    deleteFilterCount.quantityString(),
+                    deleteFilterCount,
                     deleteFilterCount) else firstFilterWithCountryCode?.filter.orEmpty(),
                     filterType = firstFilterWithCountryCode?.filterType.orZero(), conditionType = firstFilterWithCountryCode?.conditionType.orZero())
                 startFilterActionScreen(filterWithFilteredNumberUIModel)

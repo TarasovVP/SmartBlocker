@@ -23,10 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -133,10 +130,11 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        //TODO
-        val configuration = RequestConfiguration.Builder()
-            .setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
-        MobileAds.setRequestConfiguration(configuration)
+        if (BuildConfig.DEBUG) {
+            val configuration = RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
+            MobileAds.setRequestConfiguration(configuration)
+        }
         adRequest = AdRequest.Builder().build()
         loadAd()
     }
@@ -370,8 +368,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showInterstitial() {
-        //TODO
-        /*if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
         interstitialAd?.apply {
             fullScreenContentCallback =
                 object : FullScreenContentCallback() {
@@ -388,13 +385,11 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             show(this@MainActivity)
-        }*/
+        }
     }
 
     private fun loadAd() {
-
         adRequest?.let {
-            //TODO interstitial
             InterstitialAd.load(
                 this,
                 BuildConfig.INTERSTITIAL_AD,

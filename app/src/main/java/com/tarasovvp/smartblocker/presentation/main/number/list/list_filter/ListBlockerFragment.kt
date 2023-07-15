@@ -31,10 +31,7 @@ class ListBlockerFragment : BaseListFilterFragment<ListBlockerFilterViewModel>()
                 setFilterListData(filteredFilterList)
             }
             successDeleteFilterLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as? MainActivity)?.apply {
-                    showInterstitial()
-                    getAllData()
-                }
+                (activity as? MainActivity)?.getAllData()
                 changeDeleteMode()
             }
             currentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { countryCodeUIModel ->

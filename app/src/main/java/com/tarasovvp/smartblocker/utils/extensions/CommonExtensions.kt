@@ -86,15 +86,6 @@ fun Boolean?.isNotTrue() = this notEquals true
 
 fun Int?.orZero() = this ?: 0
 
-//TODO remove
-fun Int.quantityString(): Int {
-    return when (if (this > 20) this % 10 else this) {
-        1 -> 1
-        2, 3, 4 -> 2
-        else -> 5
-    }
-}
-
 val String.Companion.EMPTY: String
     get() = ""
 

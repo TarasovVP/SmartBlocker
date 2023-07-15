@@ -33,7 +33,7 @@ class SettingsPrivacyPolicyViewModel @Inject constructor(
             settingsPrivacyPolicyUseCase.getPrivacyPolicy(appLang) { operationResult ->
                 when(operationResult) {
                     is Result.Success -> privacyPolicyLiveData.postValue(operationResult.data  ?: application.getString(R.string.privacy_policy))
-                    is Result.Failure -> exceptionLiveData.postValue(operationResult.errorMessage)
+                    is Result.Failure -> exceptionLiveData.postValue(operationResult.errorMessage.orEmpty())
                 }
             }
             hideProgress()

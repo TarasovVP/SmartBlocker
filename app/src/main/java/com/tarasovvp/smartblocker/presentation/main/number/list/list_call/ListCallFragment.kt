@@ -139,7 +139,7 @@ class ListCallFragment :
                 this@ListCallFragment.findNavController()
                     .navigate(ListCallFragmentDirections.startFilteredCallDeleteDialog(callDelete =
                     resources.getQuantityString(R.plurals.list_call_delete_amount,
-                        deleteCallCount.quantityString(),
+                        deleteCallCount,
                         if (deleteCallCount > 1) deleteCallCount else if (callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number.isNullOrEmpty()) getString(
                             R.string.details_number_hidden
                         ) else callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number)))
@@ -158,10 +158,7 @@ class ListCallFragment :
                 setCallListData(filteredCallList)
             }
             successDeleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
-                (activity as? MainActivity)?.apply {
-                    showInterstitial()
-                    getAllData()
-                }
+                (activity as? MainActivity)?.getAllData()
                 changeDeleteMode()
             }
         }
