@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main.settings.settings_privacy
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsPrivacyPolicyUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsPrivacyPolicyViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val settingsPrivacyPolicyUseCase: SettingsPrivacyPolicyUseCase
 ) : BaseViewModel(application) {
 
@@ -31,7 +32,7 @@ class SettingsPrivacyPolicyViewModel @Inject constructor(
         launch {
             settingsPrivacyPolicyUseCase.getPrivacyPolicy(appLang) { operationResult ->
                 when(operationResult) {
-                    is Result.Success -> privacyPolicyLiveData.postValue(operationResult.data.orEmpty())
+                    is Result.Success -> privacyPolicyLiveData.postValue(operationResult.data  ?: application.getString(R.string.privacy_policy))
                     is Result.Failure -> exceptionLiveData.postValue(operationResult.errorMessage)
                 }
             }

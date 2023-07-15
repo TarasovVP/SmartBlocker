@@ -176,7 +176,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
     override fun getPrivacyPolicy(appLang: String, result: (Result<String>) -> Unit) {
         firebaseDatabase.reference.child(PRIVACY_POLICY).child(appLang).get()
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success(task.result.value.toString()))
+                if (task.isSuccessful) result.invoke(Result.Success(task.result.value as? String))
             }.addOnFailureListener { exception ->
                 result.invoke(Result.Failure(exception.localizedMessage))
             }

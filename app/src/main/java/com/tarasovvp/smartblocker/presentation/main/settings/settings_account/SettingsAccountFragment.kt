@@ -110,17 +110,22 @@ class SettingsAccountFragment :
                 viewModel.deleteUser()
             }
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
-                viewModel.clearDataByKeys(listOf(stringPreferencesKey(COUNTRY_CODE), booleanPreferencesKey(BLOCK_HIDDEN)))
-                (activity as? MainActivity)?.apply {
-                    AppDatabase.getDatabase(this).clearAllTables()
-                    stopBlocker()
-                    findNavController().navigate(SettingsAccountFragmentDirections.startLoginScreen())
-                }
+                logOut()
             }
             successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(String.format(getString(R.string.settings_account_change_password_succeed)),
                     false)
             }
+        }
+    }
+
+    private fun logOut() {
+        (activity as? MainActivity)?.apply {
+            binding?.root?.isVisible = false
+            viewModel.clearDataByKeys(listOf(stringPreferencesKey(COUNTRY_CODE), booleanPreferencesKey(BLOCK_HIDDEN)))
+            AppDatabase.getDatabase(this).clearAllTables()
+            stopBlocker()
+            findNavController().navigate(SettingsAccountFragmentDirections.startLoginScreen())
         }
     }
 

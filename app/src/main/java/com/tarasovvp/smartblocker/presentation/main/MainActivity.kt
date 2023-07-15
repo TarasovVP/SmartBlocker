@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -85,6 +86,15 @@ class MainActivity : AppCompatActivity() {
         R.id.listPermissionFragment
     )
 
+    private var settingsScreens = arrayListOf(
+        R.id.settingsListFragment,
+        R.id.settingsAccountFragment,
+        R.id.settingsBlockerFragment,
+        R.id.settingsLanguageFragment,
+        R.id.settingsThemeFragment,
+        R.id.settingsPrivacyFragment
+    )
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false).isTrue()) {
@@ -156,6 +166,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         isSavedInstanceStateNull = savedInstanceState.isNull()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        onBackPressedDispatcher.addCallback(this, callback)
         setAnimatorListener()
         if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
             mainViewModel.getOnBoardingSeen()
@@ -242,7 +253,7 @@ class MainActivity : AppCompatActivity() {
             checkBottomBarVisibility(destination)
             setToolbarMenu(destination)
             binding?.progressBar?.isVisible = false
-            loadAdBanner(toolbar?.isVisible.isTrue() && navigationScreens.contains(destination.id).not())
+            loadAdBanner(toolbar?.isVisible.isTrue() && (settingsScreens.contains(destination.id) || R.id.infoFragment == destination.id))
         }
     }
 
@@ -406,12 +417,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //TODO
-    override fun onBackPressed() {
-        if (navController?.isBackPressedScreen().isTrue()) {
-            navController?.navigate(MainNavigationDirections.startAppExitDialog())
-        } else {
-            navController?.popBackStack()
+    val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (navController?.isBackPressedScreen().isTrue()) {
+                navController?.navigate(MainNavigationDirections.startAppExitDialog())
+            } else {
+                navController?.popBackStack()
+            }
         }
     }
 }
