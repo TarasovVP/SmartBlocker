@@ -30,5 +30,9 @@ interface DataStoreRepository {
 
     suspend fun getCountryCode(): Flow<CountryCode?>
 
+    suspend fun setReviewVoted(isReviewVoted: Boolean)
+
+    suspend fun reviewVoted(): Flow<Boolean?>
+
     suspend fun clearDataByKeys(keys: List<Preferences.Key<*>>)
 }

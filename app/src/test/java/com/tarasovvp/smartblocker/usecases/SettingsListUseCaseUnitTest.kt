@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.usecases
 import com.tarasovvp.smartblocker.UnitTestUtils
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
-import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
@@ -48,11 +48,11 @@ class SettingsListUseCaseUnitTest {
 
     @Test
     fun insertReviewTest() {
-        val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
-        every { realDataBaseRepository.insertReview(eq(review), any()) } answers {
+        val feedback = Feedback(TEST_EMAIL, TEST_REVIEW, 1000)
+        every { realDataBaseRepository.insertFeedback(eq(feedback), any()) } answers {
             resultMock.invoke(Result.Success())
         }
-        settingsListUseCase.insertReview(review, resultMock)
+        settingsListUseCase.insertFeedback(feedback, resultMock)
         verify { resultMock.invoke(Result.Success()) }
     }
 }

@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.END_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.GET_IT_TELEPHONY
@@ -159,18 +160,18 @@ fun ViewGroup.hideKeyboardWithLayoutTouch() {
     }
 }
 
-//TODO implement after releasing
-fun Activity.launchReviewFlow() {
+fun Activity.launchReviewFlow(result: (Result<Unit>) -> Unit) {
     ReviewManagerFactory.create(this).apply {
         val request = requestReviewFlow()
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val flow = launchReviewFlow(this@launchReviewFlow, task.result)
-                flow.addOnCompleteListener {
-
+                launchReviewFlow(this@launchReviewFlow, task.result).addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener {
+                    result.invoke(Result.Failure(it.localizedMessage))
                 }
             } else {
-
+                result.invoke(Result.Failure(task.exception?.localizedMessage))
             }
         }
     }

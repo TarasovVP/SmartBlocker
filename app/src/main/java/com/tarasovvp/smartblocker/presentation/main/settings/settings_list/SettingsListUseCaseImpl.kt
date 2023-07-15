@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_list
 
-import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
@@ -16,7 +16,7 @@ class SettingsListUseCaseImpl @Inject constructor(
         return dataStoreRepository.getAppLang()
     }
 
-    override fun insertReview(review: Review, result: (Result<Unit>) -> Unit) = realDataBaseRepository.insertReview(review) {
+    override fun insertFeedback(feedback: Feedback, result: (Result<Unit>) -> Unit) = realDataBaseRepository.insertFeedback(feedback) {
         result.invoke(it)
     }
 }

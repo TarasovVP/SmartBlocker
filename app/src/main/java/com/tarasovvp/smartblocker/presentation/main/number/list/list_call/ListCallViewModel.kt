@@ -28,6 +28,7 @@ class ListCallViewModel @Inject constructor(
     val callListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
     val filteredCallListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
     val successDeleteNumberLiveData = MutableLiveData<Boolean>()
+    val isReviewVoteLiveData = MutableLiveData<Boolean>()
 
     fun getCallList(refreshing: Boolean) {
         if (refreshing.not()) showProgress()
@@ -62,6 +63,22 @@ class ListCallViewModel @Inject constructor(
                     is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
                 }
                 hideProgress()
+            }
+        }
+    }
+
+    fun getReviewVoted() {
+        launch {
+            listCallUseCase.getReviewVoted().collect { reviewVote ->
+                isReviewVoteLiveData.postValue(reviewVote)
+            }
+        }
+    }
+
+    fun setReviewVoted() {
+        launch {
+            listCallUseCase.setReviewVoted { operationResult ->
+                if (operationResult is Result.Failure) operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
             }
         }
     }

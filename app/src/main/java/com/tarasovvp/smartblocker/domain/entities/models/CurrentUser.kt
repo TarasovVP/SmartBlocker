@@ -12,5 +12,6 @@ data class CurrentUser(
     var filteredCallList: ArrayList<FilteredCall> = arrayListOf(),
     var isBlockerTurnOn: Boolean = true,
     var isBlockHidden: Boolean = false,
-    var countryCode: CountryCode = CountryCode()
+    var countryCode: CountryCode = CountryCode(),
+    var isReviewVoted: Boolean = false
 ) : Parcelable

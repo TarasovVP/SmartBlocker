@@ -17,13 +17,13 @@ import com.tarasovvp.smartblocker.data.repositoryImpl.RealDataBaseRepositoryImpl
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
-import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FEEDBACK
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -261,10 +261,10 @@ class RealDataBaseRepositoryUnitTest {
 
     @Test
     fun insertReviewTest() {
-        val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
+        val feedback = Feedback(TEST_EMAIL, TEST_REVIEW, 1000)
         val task = mockk<Task<Void>>(relaxed = true)
         every {
-            firebaseDatabase.reference.child(REVIEWS).child(review.time.toString()).setValue(review)
+            firebaseDatabase.reference.child(FEEDBACK).child(feedback.time.toString()).setValue(feedback)
         } returns task
         every { task.isSuccessful } returns true
         every { task.addOnCompleteListener(any()) } answers {
@@ -272,7 +272,7 @@ class RealDataBaseRepositoryUnitTest {
             listener.onComplete(task)
             task
         }
-        realDataBaseRepository.insertReview(review, resultMock)
+        realDataBaseRepository.insertFeedback(feedback, resultMock)
         verify { task.addOnCompleteListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }

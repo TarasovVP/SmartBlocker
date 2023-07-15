@@ -310,12 +310,14 @@ object AppModule {
         filteredCallRepository: FilteredCallRepository,
         realDataBaseRepository: RealDataBaseRepository,
         firebaseAuth: FirebaseAuth,
+        dataStoreRepository: DataStoreRepository
     ): ListCallUseCase {
         return ListCallUseCaseImpl(
             logCallRepository,
             filteredCallRepository,
             realDataBaseRepository,
-            firebaseAuth
+            firebaseAuth,
+            dataStoreRepository
         )
     }
 

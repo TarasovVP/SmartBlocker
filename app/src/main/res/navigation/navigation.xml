@@ -241,8 +241,8 @@
             android:id="@+id/startSettingsThemeFragment"
             app:destination="@id/settingsThemeFragment" />
         <action
-            android:id="@+id/startSettingsReviewDialog"
-            app:destination="@id/settingsReviewDialog" />
+            android:id="@+id/startSettingsFeedbackDialog"
+            app:destination="@id/settingsFeedbackDialog" />
         <action
             android:id="@+id/startSettingsPrivacyFragment"
             app:destination="@id/settingsPrivacyFragment" />
@@ -300,8 +300,8 @@
         android:label="@string/settings_theme" />
 
     <dialog
-        android:id="@+id/settingsReviewDialog"
-        android:name="com.tarasovvp.smartblocker.presentation.dialogs.SettingsReviewDialog" />
+        android:id="@+id/settingsFeedbackDialog"
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.SettingsFeedbackDialog" />
 
     <fragment
         android:id="@+id/settingsPrivacyFragment"

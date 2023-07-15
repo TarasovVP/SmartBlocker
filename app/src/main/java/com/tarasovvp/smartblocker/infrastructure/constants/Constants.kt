@@ -56,7 +56,8 @@ object Constants {
 
     //Real data base
     const val USERS = "users"
-    const val REVIEWS = "reviews"
+    const val FEEDBACK = "feedback"
+    const val REVIEW_VOTE = "reviewVote"
     const val PRIVACY_POLICY = "privacyPolicy"
     const val BLOCK_HIDDEN = "blockHidden"
     const val FILTER_LIST = "filterList"
@@ -103,7 +104,7 @@ object Constants {
     const val APP_LANG = "appLang"
     const val APP_THEME = "appTheme"
     const val BLOCK_TURN_ON = "blockTurnOff"
-    const val SETTINGS_REVIEW = "settingsReview"
+    const val SETTINGS_FEEDBACK = "settingsFeedBack"
 
     //WebView
     const val MIME_TYPE = "text/html; charset=utf-8"

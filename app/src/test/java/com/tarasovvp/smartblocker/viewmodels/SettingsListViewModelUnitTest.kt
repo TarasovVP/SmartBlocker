@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListViewModel
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -40,14 +40,14 @@ class SettingsListViewModelUnitTest: BaseViewModelUnitTest<SettingsListViewModel
     @Test
     fun insertReviewTest()  {
         val expectedResult = Result.Success<Unit>()
-        val review = Review(TEST_EMAIL, TEST_REVIEW, 1000)
+        val feedback = Feedback(TEST_EMAIL, TEST_REVIEW, 1000)
         every { application.isNetworkAvailable } returns true
-        coEvery { useCase.insertReview(eq(review), any()) } answers {
+        coEvery { useCase.insertFeedback(eq(feedback), any()) } answers {
             val callback = secondArg<(Result<Unit>) -> Unit>()
             callback.invoke(expectedResult)
         }
-        viewModel.insertReview(review)
-        coVerify { useCase.insertReview(review, any()) }
-        assertEquals(review.message, viewModel.successReviewLiveData.getOrAwaitValue())
+        viewModel.insertFeedback(feedback)
+        coVerify { useCase.insertFeedback(feedback, any()) }
+        assertEquals(feedback.message, viewModel.successFeedbackLiveData.getOrAwaitValue())
     }
 }

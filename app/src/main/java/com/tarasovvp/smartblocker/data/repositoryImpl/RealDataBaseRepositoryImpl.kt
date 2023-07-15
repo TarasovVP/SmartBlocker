@@ -6,16 +6,17 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
-import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_ON
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FEEDBACK
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PRIVACY_POLICY
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEW_VOTE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import javax.inject.Inject
@@ -80,6 +81,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
                             BLOCK_TURN_ON -> currentUser.isBlockerTurnOn = snapshot.getValue(Boolean::class.java).isTrue()
                             BLOCK_HIDDEN -> currentUser.isBlockHidden = snapshot.getValue(Boolean::class.java).isTrue()
                             COUNTRY_CODE -> currentUser.countryCode = snapshot.getValue(CountryCode::class.java) ?: CountryCode()
+                            REVIEW_VOTE -> currentUser.isReviewVoted = snapshot.getValue(Boolean::class.java).isTrue()
                         }
                     }
                     result.invoke(Result.Success(currentUser))
@@ -173,6 +175,15 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
             }
     }
 
+    override fun setReviewVoted(result: (Result<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(REVIEW_VOTE).setValue(true)
+            .addOnSuccessListener {
+                result.invoke(Result.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
+
     override fun getPrivacyPolicy(appLang: String, result: (Result<String>) -> Unit) {
         firebaseDatabase.reference.child(PRIVACY_POLICY).child(appLang).get()
             .addOnCompleteListener { task ->
@@ -182,8 +193,8 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
             }
     }
 
-    override fun insertReview(review: Review, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(REVIEWS).child(review.time.toString()).setValue(review)
+    override fun insertFeedback(feedback: Feedback, result: (Result<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(FEEDBACK).child(feedback.time.toString()).setValue(feedback)
             .addOnSuccessListener {
                 result.invoke(Result.Success())
             }.addOnFailureListener { exception ->

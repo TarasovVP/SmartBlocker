@@ -41,6 +41,8 @@ class MainUseCaseImpl @Inject constructor(
         result.invoke(operationResult)
     }
 
+    override suspend fun setReviewVoted(isReviewVoted: Boolean) = dataStoreRepository.setReviewVoted(isReviewVoted)
+
     override suspend fun getSystemCountryCodes(result: (Int, Int) -> Unit) = countryCodeRepository.getSystemCountryCodeList { size, position ->
         result.invoke(size, position)
     }

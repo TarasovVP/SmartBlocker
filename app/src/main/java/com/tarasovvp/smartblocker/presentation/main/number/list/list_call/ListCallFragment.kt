@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentListCallBinding
 import com.tarasovvp.smartblocker.domain.enums.Info
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_DELETE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_DELETE_MODE
@@ -153,6 +154,7 @@ class ListCallFragment :
             callListLiveData.safeSingleObserve(viewLifecycleOwner) { callListData ->
                 callWithFilterList = callListData
                 searchDataList()
+                getReviewVoted()
             }
             filteredCallListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCallList ->
                 setCallListData(filteredCallList)
@@ -160,6 +162,18 @@ class ListCallFragment :
             successDeleteNumberLiveData.safeSingleObserve(viewLifecycleOwner) {
                 (activity as? MainActivity)?.getAllData()
                 changeDeleteMode()
+            }
+            isReviewVoteLiveData.safeSingleObserve(viewLifecycleOwner) { reviewVoted ->
+                if (reviewVoted.not() && callWithFilterList?.filter { it.isFilteredCall }.orEmpty().size >= 3) {
+                    (activity as MainActivity).apply {
+                        launchReviewFlow { operationResult ->
+                            when(operationResult) {
+                                is Result.Success -> setReviewVoted()
+                                is Result.Failure -> showInfoMessage(operationResult.errorMessage.orEmpty(), true)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

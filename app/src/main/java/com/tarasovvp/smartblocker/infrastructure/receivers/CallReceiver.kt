@@ -9,16 +9,14 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_RECEIVE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -26,6 +24,9 @@ open class CallReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var filterRepository: FilterRepository
+
+    @Inject
+    lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @Inject
     lateinit var filteredCallRepository: FilteredCallRepository
@@ -45,9 +46,13 @@ open class CallReceiver : BroadcastReceiver() {
                         breakCall(context)
                     } else if (telephony.isCallStateIdle()) {
                         delay(SECOND)
-                        val test = context.createFilteredCall(number, filter)
-                        test?.
-                        let { filteredCallRepository.insertFilteredCall(it) }
+                        context.createFilteredCall(number, filter)?.let { filteredCall ->
+                            realDataBaseRepository.insertFilteredCall(filteredCall) {
+                                runBlocking {
+                                    filteredCallRepository.insertFilteredCall(filteredCall)
+                                }
+                            }
+                        }
                         context.sendBroadcast(Intent(CALL_RECEIVE))
                     }
                 }

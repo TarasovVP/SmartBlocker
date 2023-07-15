@@ -11,6 +11,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_ON
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ON_BOARDING_SEEN
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEW_VOTE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
@@ -97,6 +98,19 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
                 } catch (e: java.lang.Exception) {
                     CountryCode()
                 }
+            }.take(1)
+    }
+
+    override suspend fun setReviewVoted(isReviewVoted: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[booleanPreferencesKey(REVIEW_VOTE)] = isReviewVoted
+        }
+    }
+
+    override suspend fun reviewVoted(): Flow<Boolean?> {
+        return dataStore.data
+            .map { preferences ->
+                preferences[booleanPreferencesKey(REVIEW_VOTE)]
             }.take(1)
     }
 

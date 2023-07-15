@@ -4,7 +4,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
-import com.tarasovvp.smartblocker.domain.entities.models.Review
+import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
 interface RealDataBaseRepository {
@@ -31,7 +31,9 @@ interface RealDataBaseRepository {
 
     fun changeCountryCode(countryCode: CountryCode, result: (Result<Unit>) -> Unit)
 
-    fun insertReview(review: Review, result: (Result<Unit>) -> Unit)
+    fun setReviewVoted(result: (Result<Unit>) -> Unit)
+
+    fun insertFeedback(feedback: Feedback, result: (Result<Unit>) -> Unit)
 
     fun getPrivacyPolicy(appLang: String, result: (Result<String>) -> Unit)
 }

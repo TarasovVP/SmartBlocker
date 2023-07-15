@@ -18,6 +18,8 @@ interface MainUseCase {
 
     fun getCurrentUser(result: (Result<CurrentUser>) -> Unit)
 
+    suspend fun setReviewVoted(isReviewVoted: Boolean)
+
     suspend fun getSystemCountryCodes(result: (Int, Int) -> Unit): List<CountryCode>
 
     suspend fun getCurrentCountryCode(): Flow<CountryCode?>

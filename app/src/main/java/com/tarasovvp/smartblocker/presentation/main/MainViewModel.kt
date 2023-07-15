@@ -23,6 +23,7 @@ class MainViewModel @Inject constructor(
     private val application: Application,
     private val mainUseCase: MainUseCase
 ) : BaseViewModel(application) {
+
     val onBoardingSeenLiveData = MutableLiveData<Boolean>()
     val blockerTurnOnLiveData = MutableLiveData<Boolean>()
     val successAllDataLiveData = MutableLiveData<Boolean>()
@@ -58,6 +59,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
+
+
     private fun setCurrentUserData(currentUser: CurrentUser, isInit: Boolean = false) {
         launch {
             insertUserFilters(currentUser.filterList)
@@ -65,6 +68,7 @@ class MainViewModel @Inject constructor(
             mainUseCase.setBlockerTurnOn(currentUser.isBlockerTurnOn)
             mainUseCase.setBlockHidden(currentUser.isBlockHidden)
             mainUseCase.setCurrentCountryCode(currentUser.countryCode)
+            mainUseCase.setReviewVoted(currentUser.isReviewVoted)
             getAllData(isInit)
         }
     }

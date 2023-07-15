@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
-import com.tarasovvp.smartblocker.domain.entities.models.Review
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_REVIEW
+import com.tarasovvp.smartblocker.domain.entities.models.Feedback
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_FEEDBACK
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,22 +34,22 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
 
     fun initViews() {
         binding?.apply {
-            settingsReview.isVisible = firebaseAuth.isAuthorisedUser()
+            settingsFeedback.isVisible = firebaseAuth.isAuthorisedUser()
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener {
                     val direction = when (it.id) {
                         settingsAccount.id -> SettingsListFragmentDirections.startSettingsAccountFragment()
                         settingsLanguage.id -> SettingsListFragmentDirections.startSettingsLanguageFragment()
                         settingsTheme.id -> SettingsListFragmentDirections.startSettingsThemeFragment()
-                        settingsReview.id -> SettingsListFragmentDirections.startSettingsReviewDialog()
+                        settingsFeedback.id -> SettingsListFragmentDirections.startSettingsFeedbackDialog()
                         settingsPrivacy.id -> SettingsListFragmentDirections.startSettingsPrivacyFragment()
                         else -> SettingsListFragmentDirections.startSettingsBlockerFragment()
                     }
                     findNavController().navigate(direction)
                 }
             }
-            setFragmentResultListener(SETTINGS_REVIEW) { _, bundle ->
-                viewModel.insertReview(Review(firebaseAuth.currentUser?.email.orEmpty(), bundle.getString(SETTINGS_REVIEW, String.EMPTY), Date().time))
+            setFragmentResultListener(SETTINGS_FEEDBACK) { _, bundle ->
+                viewModel.insertFeedback(Feedback(firebaseAuth.currentUser?.email.orEmpty(), bundle.getString(SETTINGS_FEEDBACK, String.EMPTY), Date().time))
             }
         }
     }
@@ -60,8 +60,8 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
                 binding?.settingsLanguage?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language, 0, appLang.flagDrawable(), 0)
             }
         }
-        viewModel.successReviewLiveData.safeSingleObserve(viewLifecycleOwner) { review ->
-            showMessage(String.format(getString(R.string.settings_review_send_success), review),
+        viewModel.successFeedbackLiveData.safeSingleObserve(viewLifecycleOwner) { feedback ->
+            showMessage(String.format(getString(R.string.settings_feedback_send_success), feedback),
                 false)
         }
     }
