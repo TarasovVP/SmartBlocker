@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -98,15 +97,12 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
         with(viewModel) {
             filtersLiveData.safeSingleObserve(viewLifecycleOwner) { filters ->
                 currentUser.filterList.addAll(filters)
-                Log.e("blockHiddenTAG", "SettingsSignUpFragment observeLiveData filtersLiveData currentUser $currentUser")
             }
             filteredCallsLiveData.safeSingleObserve(viewLifecycleOwner) { filteredCalls ->
                 currentUser.filteredCallList.addAll(filteredCalls)
-                Log.e("blockHiddenTAG", "SettingsSignUpFragment observeLiveData filteredCallsLiveData currentUser $currentUser")
             }
             blockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { isBlockHidden ->
                 currentUser.isBlockHidden = isBlockHidden
-                Log.e("blockHiddenTAG", "SettingsSignUpFragment observeLiveData blockHiddenLiveData currentUser $currentUser")
             }
             createEmailAccountLiveData.safeSingleObserve(viewLifecycleOwner) {
                 viewModel.createUserWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())

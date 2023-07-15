@@ -29,6 +29,10 @@ class MainUseCaseImpl @Inject constructor(
         return dataStoreRepository.blockerTurnOn()
     }
 
+    override suspend fun setBlockerTurnOn(blockTurnOn: Boolean) {
+        dataStoreRepository.setBlockerTurnOn(blockTurnOn)
+    }
+
     override suspend fun setBlockHidden(blockHidden: Boolean) {
         dataStoreRepository.setBlockHidden(blockHidden)
     }

@@ -6,6 +6,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -19,7 +21,9 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CHANGE_PASSWORD
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CURRENT_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DELETE_ACCOUNT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
@@ -106,6 +110,7 @@ class SettingsAccountFragment :
                 viewModel.deleteUser()
             }
             successLiveData.safeSingleObserve(viewLifecycleOwner) {
+                viewModel.clearDataByKeys(listOf(stringPreferencesKey(COUNTRY_CODE), booleanPreferencesKey(BLOCK_HIDDEN)))
                 (activity as? MainActivity)?.apply {
                     AppDatabase.getDatabase(this).clearAllTables()
                     stopBlocker()

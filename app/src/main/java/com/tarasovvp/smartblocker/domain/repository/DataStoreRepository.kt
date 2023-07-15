@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.domain.repository
 
+import androidx.datastore.preferences.core.Preferences
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import kotlinx.coroutines.flow.Flow
 
@@ -28,4 +29,6 @@ interface DataStoreRepository {
     suspend fun setCountryCode(countryCode: CountryCode)
 
     suspend fun getCountryCode(): Flow<CountryCode?>
+
+    suspend fun clearDataByKeys(keys: List<Preferences.Key<*>>)
 }

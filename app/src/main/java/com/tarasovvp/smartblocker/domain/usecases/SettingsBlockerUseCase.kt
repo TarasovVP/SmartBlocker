@@ -8,15 +8,13 @@ interface SettingsBlockerUseCase {
 
     suspend fun getBlockerTurnOn(): Flow<Boolean?>
 
-    suspend fun setBlockerTurnOn(blockerTurnOff: Boolean)
+    suspend fun changeBlockTurnOn(blockTurnOn: Boolean, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 
     suspend fun getBlockHidden(): Flow<Boolean?>
 
-    suspend fun setBlockHidden(blockHidden: Boolean)
-
-    fun changeBlockHidden(blockHidden: Boolean, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
+    suspend fun changeBlockHidden(blockHidden: Boolean, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 
     suspend fun getCurrentCountryCode(): Flow<CountryCode?>
 
-    suspend fun setCurrentCountryCode(countryCode: CountryCode)
+    suspend fun changeCountryCode(countryCode: CountryCode, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit)
 }

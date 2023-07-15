@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
@@ -10,12 +10,14 @@ import com.tarasovvp.smartblocker.domain.entities.models.Review
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_ON
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTERED_CALL_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PRIVACY_POLICY
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.REVIEWS
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import javax.inject.Inject
 
 class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase, private val firebaseAuth: FirebaseAuth) :
@@ -29,7 +31,9 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
         currentUser.filteredCallList.forEach { filteredCall ->
             currentUserMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
         }
+        currentUserMap[BLOCK_TURN_ON] = currentUser.isBlockerTurnOn
         currentUserMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
+        currentUserMap[COUNTRY_CODE] = currentUser.countryCode
         firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).setValue(currentUser)
             .addOnSuccessListener {
                 result.invoke(Result.Success())
@@ -46,7 +50,9 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
         currentUser.filteredCallList.forEach { filteredCall ->
             updatesMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
         }
+        updatesMap[BLOCK_TURN_ON] = currentUser.isBlockerTurnOn
         updatesMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
+        updatesMap[COUNTRY_CODE] = currentUser.countryCode
         firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).updateChildren(updatesMap)
             .addOnSuccessListener {
                 result.invoke(Result.Success())
@@ -65,19 +71,15 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
                     val currentUser = CurrentUser()
                     task.result.children.forEach { snapshot ->
                         when (snapshot.key) {
-                            FILTER_LIST -> {
-                                snapshot.children.forEach { child ->
-                                    child.getValue(Filter::class.java)?.let { currentUser.filterList.add(it) }
-                                }
+                            FILTER_LIST -> snapshot.children.forEach { child ->
+                                child.getValue(Filter::class.java)?.let { currentUser.filterList.add(it) }
                             }
-                            FILTERED_CALL_LIST -> {
-                                snapshot.children.forEach { child ->
-                                    child.getValue(FilteredCall::class.java)?.let { currentUser.filteredCallList.add(it) }
-                                }
+                            FILTERED_CALL_LIST -> snapshot.children.forEach { child ->
+                                child.getValue(FilteredCall::class.java)?.let { currentUser.filteredCallList.add(it) }
                             }
-                            BLOCK_HIDDEN -> {
-                                currentUser.isBlockHidden = snapshot.getValue(Boolean::class.java).isNotNull()
-                            }
+                            BLOCK_TURN_ON -> currentUser.isBlockerTurnOn = snapshot.getValue(Boolean::class.java).isTrue()
+                            BLOCK_HIDDEN -> currentUser.isBlockHidden = snapshot.getValue(Boolean::class.java).isTrue()
+                            COUNTRY_CODE -> currentUser.countryCode = snapshot.getValue(CountryCode::class.java) ?: CountryCode()
                         }
                     }
                     result.invoke(Result.Success(currentUser))
@@ -92,7 +94,6 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
             .addOnSuccessListener {
                 result.invoke(Result.Success())
             }.addOnFailureListener { exception ->
-                Log.e("deleteAccTAG","RealDataBaseRepositoryImpl deleteCurrentUser exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
     }
@@ -145,8 +146,26 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
             }
     }
 
-    override fun changeBlockHidden(blockUnanimous: Boolean, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(BLOCK_HIDDEN).setValue(blockUnanimous)
+    override fun changeBlockTurnOn(blockTurnOn: Boolean, result: (Result<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(BLOCK_TURN_ON).setValue(blockTurnOn)
+            .addOnSuccessListener {
+                result.invoke(Result.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
+
+    override fun changeBlockHidden(blockHidden: Boolean, result: (Result<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(BLOCK_HIDDEN).setValue(blockHidden)
+            .addOnSuccessListener {
+                result.invoke(Result.Success())
+            }.addOnFailureListener { exception ->
+                result.invoke(Result.Failure(exception.localizedMessage))
+            }
+    }
+
+    override fun changeCountryCode(countryCode: CountryCode, result: (Result<Unit>) -> Unit) {
+        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(COUNTRY_CODE).setValue(countryCode)
             .addOnSuccessListener {
                 result.invoke(Result.Success())
             }.addOnFailureListener { exception ->

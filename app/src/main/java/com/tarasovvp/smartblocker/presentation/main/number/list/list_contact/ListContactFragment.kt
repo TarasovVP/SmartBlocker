@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.presentation.main.number.list.list_contact
 
-import android.util.Log
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.tarasovvp.smartblocker.R
@@ -37,14 +36,11 @@ open class ListContactFragment :
 
     override fun onStop() {
         super.onStop()
-        Log.e("liveDataTAG","ListContactFragment onStop before contactListLiveData ${viewModel.contactListLiveData.value?.size} filteredContactListLiveData ${viewModel.filteredContactListLiveData.value?.size} savedStateHandle ${viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST)?.size}")
         viewModel.savedStateHandle[LIST_STATE] = recyclerView?.layoutManager?.onSaveInstanceState()
         viewModel.savedStateHandle[SAVED_LIST] = viewModel.contactListLiveData.value
-        Log.e("liveDataTAG","ListContactFragment onStop after contactListLiveData ${viewModel.contactListLiveData.value?.size} filteredContactListLiveData ${viewModel.filteredContactListLiveData.value?.size} savedStateHandle ${viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST)?.size}")
     }
 
     override fun initViews() {
-        Log.e("liveDataTAG","ListContactFragment initViews contactListLiveData ${viewModel.contactListLiveData.value?.size} filteredContactListLiveData ${viewModel.filteredContactListLiveData.value?.size} savedStateHandle ${viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST)?.size}")
         binding?.apply {
             swipeRefresh = listContactRefresh
             recyclerView = listContactRecyclerView
@@ -90,12 +86,10 @@ open class ListContactFragment :
     override fun observeLiveData() {
         with(viewModel) {
             contactListLiveData.safeSingleObserve(viewLifecycleOwner) { contactList ->
-                Log.e("liveDataTAG","ListContactFragment observeLiveData contactList contactListLiveData ${viewModel.contactListLiveData.value?.size} filteredContactListLiveData ${viewModel.filteredContactListLiveData.value?.size} savedStateHandle ${viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST)?.size}")
                 this@ListContactFragment.contactWithFilterList = contactList
                 searchDataList()
             }
             filteredContactListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredContactList ->
-                Log.e("liveDataTAG","ListContactFragment observeLiveData filteredContactList contactListLiveData ${viewModel.contactListLiveData.value?.size} filteredContactListLiveData ${viewModel.filteredContactListLiveData.value?.size} savedStateHandle ${viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST)?.size}")
                 setContactListData(filteredContactList)
             }
         }
@@ -111,7 +105,6 @@ open class ListContactFragment :
     }
 
     override fun getData(allDataChange: Boolean) {
-        Log.e("liveDataTAG","ListContactFragment getData allDataChange $allDataChange contactListLiveData ${viewModel.contactListLiveData.value?.size} filteredContactListLiveData ${viewModel.filteredContactListLiveData.value?.size} savedStateHandle ${viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST)?.size}")
         viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull()  && allDataChange.not()}?.let {
             viewModel.contactListLiveData.postValue(it)
             viewModel.savedStateHandle[SAVED_LIST] = null

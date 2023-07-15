@@ -34,6 +34,7 @@ class ListFilterUseCaseImpl @Inject constructor(
                     }
                 }
             } else {
+                filterRepository.deleteFilterList(filterList)
                 result.invoke(Result.Failure())
             }
         } else {

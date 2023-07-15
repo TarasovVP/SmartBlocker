@@ -34,6 +34,7 @@ class DetailsFilterUseCaseImpl @Inject constructor(
                     }
                 }
             } else {
+                filterRepository.deleteFilterList(listOf(filter))
                 result.invoke(Result.Failure())
             }
         } else {
@@ -52,6 +53,7 @@ class DetailsFilterUseCaseImpl @Inject constructor(
                     }
                 }
             } else {
+                filterRepository.updateFilter(filter)
                 result.invoke(Result.Failure())
             }
         } else {

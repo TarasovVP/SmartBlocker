@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.domain.repository
 
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
@@ -24,7 +25,11 @@ interface RealDataBaseRepository {
 
     fun deleteFilteredCallList(filteredCallIdList: List<String>, result: (Result<Unit>) -> Unit)
 
-    fun changeBlockHidden(blockUnanimous: Boolean, result: (Result<Unit>) -> Unit)
+    fun changeBlockTurnOn(blockTurnOn: Boolean, result: (Result<Unit>) -> Unit)
+
+    fun changeBlockHidden(blockHidden: Boolean, result: (Result<Unit>) -> Unit)
+
+    fun changeCountryCode(countryCode: CountryCode, result: (Result<Unit>) -> Unit)
 
     fun insertReview(review: Review, result: (Result<Unit>) -> Unit)
 

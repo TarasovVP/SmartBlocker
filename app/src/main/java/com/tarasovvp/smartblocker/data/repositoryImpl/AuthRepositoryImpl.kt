@@ -1,6 +1,5 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
-import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
@@ -89,7 +88,6 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             ?.addOnSuccessListener {
                 result.invoke(Result.Success())
             }?.addOnFailureListener { exception ->
-                Log.e("deleteAccTAG","AuthRepository reAuthenticate exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
     }
@@ -99,7 +97,6 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             ?.addOnSuccessListener {
                 signOut(result)
             }?.addOnFailureListener { exception ->
-                Log.e("deleteAccTAG","AuthRepository deleteUser exception ${exception.localizedMessage}")
                 result.invoke(Result.Failure(exception.localizedMessage))
             }
     }
@@ -109,7 +106,6 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             firebaseAuth.signOut()
             result.invoke(Result.Success())
         }.addOnFailureListener { exception ->
-            Log.e("deleteAccTAG","AuthRepository signOut exception ${exception.localizedMessage}")
             result.invoke(Result.Failure(exception.localizedMessage))
         }
     }

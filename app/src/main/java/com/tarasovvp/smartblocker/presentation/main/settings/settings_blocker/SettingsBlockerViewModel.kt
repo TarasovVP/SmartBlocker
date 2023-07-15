@@ -23,7 +23,6 @@ class SettingsBlockerViewModel @Inject constructor(
 
     val blockerTurnOnLiveData = MutableLiveData<Boolean>()
     val blockHiddenLiveData = MutableLiveData<Boolean>()
-    val successBlockHiddenLiveData = MutableLiveData<Boolean>()
     val currentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
     val successCurrentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
 
@@ -35,10 +34,16 @@ class SettingsBlockerViewModel @Inject constructor(
         }
     }
 
-    fun setBlockerTurnOn(blockerTurnOn: Boolean) {
+    fun changeBlockTurnOn(blockTurnOn: Boolean) {
+        showProgress()
         launch {
-            settingsBlockerUseCase.setBlockerTurnOn(blockerTurnOn)
-            blockerTurnOnLiveData.postValue(blockerTurnOn)
+            settingsBlockerUseCase.changeBlockTurnOn(blockTurnOn, application.isNetworkAvailable()) { result ->
+                when (result) {
+                    is Result.Success -> blockerTurnOnLiveData.postValue(blockTurnOn)
+                    is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                }
+            }
+            hideProgress()
         }
     }
 
@@ -50,22 +55,17 @@ class SettingsBlockerViewModel @Inject constructor(
         }
     }
 
-    fun setBlockHidden(blockHidden: Boolean) {
-        launch {
-            settingsBlockerUseCase.setBlockHidden(blockHidden)
-            blockHiddenLiveData.postValue(blockHidden)
-        }
-    }
-
     fun changeBlockHidden(blockHidden: Boolean) {
         showProgress()
-        settingsBlockerUseCase.changeBlockHidden(blockHidden, application.isNetworkAvailable()) { result ->
-            when (result) {
-                is Result.Success -> successBlockHiddenLiveData.postValue(blockHidden)
-                is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        launch {
+            settingsBlockerUseCase.changeBlockHidden(blockHidden, application.isNetworkAvailable()) { result ->
+                when (result) {
+                    is Result.Success -> blockHiddenLiveData.postValue(blockHidden)
+                    is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                }
             }
+            hideProgress()
         }
-        hideProgress()
     }
 
     fun getCurrentCountryCode() {
@@ -76,10 +76,16 @@ class SettingsBlockerViewModel @Inject constructor(
         }
     }
 
-    fun setCurrentCountryCode(countryCode: CountryCodeUIModel) {
+    fun changeCountryCode(countryCode: CountryCodeUIModel) {
+        showProgress()
         launch {
-            settingsBlockerUseCase.setCurrentCountryCode(countryCodeUIMapper.mapFromUIModel(countryCode))
-            successCurrentCountryCodeLiveData.postValue(countryCode)
+            settingsBlockerUseCase.changeCountryCode(countryCodeUIMapper.mapFromUIModel(countryCode), application.isNetworkAvailable()) { result ->
+                when (result) {
+                    is Result.Success -> successCurrentCountryCodeLiveData.postValue(countryCode)
+                    is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                }
+            }
+            hideProgress()
         }
     }
 }

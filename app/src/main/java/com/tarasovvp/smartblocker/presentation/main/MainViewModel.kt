@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
@@ -63,8 +62,9 @@ class MainViewModel @Inject constructor(
         launch {
             insertUserFilters(currentUser.filterList)
             insertUserFilteredCalls(currentUser.filteredCallList)
-            Log.e("blockHiddenTAG", "MainViewModel setCurrentUserData currentUser $currentUser")
+            mainUseCase.setBlockerTurnOn(currentUser.isBlockerTurnOn)
             mainUseCase.setBlockHidden(currentUser.isBlockHidden)
+            mainUseCase.setCurrentCountryCode(currentUser.countryCode)
             getAllData(isInit)
         }
     }

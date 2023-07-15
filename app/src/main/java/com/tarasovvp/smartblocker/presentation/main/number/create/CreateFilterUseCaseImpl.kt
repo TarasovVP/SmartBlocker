@@ -44,6 +44,7 @@ class CreateFilterUseCaseImpl @Inject constructor(
                     }
                 }
             } else {
+                filterRepository.insertFilter(filter)
                 result.invoke(Result.Failure())
             }
         } else {
@@ -62,6 +63,7 @@ class CreateFilterUseCaseImpl @Inject constructor(
                     }
                 }
             } else {
+                filterRepository.updateFilter(filter)
                 result.invoke(Result.Failure())
             }
         } else {
@@ -80,6 +82,7 @@ class CreateFilterUseCaseImpl @Inject constructor(
                     }
                 }
             } else {
+                filterRepository.deleteFilterList(listOf(filter))
                 result.invoke(Result.Failure())
             }
         } else {

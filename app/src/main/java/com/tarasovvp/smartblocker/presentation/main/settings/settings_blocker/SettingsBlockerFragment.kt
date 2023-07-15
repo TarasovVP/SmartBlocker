@@ -41,7 +41,7 @@ class SettingsBlockerFragment :
                 setBlockHiddenDisabling(blockerTurnOn)
             }
             settingsBlockerSwitch.setSafeOnClickListener {
-                viewModel.setBlockerTurnOn(settingsBlockerSwitch.isChecked)
+                viewModel.changeBlockTurnOn(settingsBlockerSwitch.isChecked)
             }
         }
     }
@@ -73,7 +73,7 @@ class SettingsBlockerFragment :
     private fun setCountryCodeSettings(countryCode: CountryCodeUIModel) {
         setFragmentResultListener(COUNTRY_CODE) { _, bundle ->
             bundle.parcelable<CountryCodeUIModel>(COUNTRY_CODE)?.let { currentCountryCode ->
-                viewModel.setCurrentCountryCode(currentCountryCode)
+                viewModel.changeCountryCode(currentCountryCode)
             }
         }
         binding?.apply {
@@ -100,9 +100,6 @@ class SettingsBlockerFragment :
             }
             blockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
                 setBlockHiddenSettings(blockHidden)
-            }
-            successBlockHiddenLiveData.safeSingleObserve(viewLifecycleOwner) { blockHidden ->
-                setBlockHidden(blockHidden)
             }
             currentCountryCodeLiveData.safeSingleObserve(viewLifecycleOwner) { currentCountryCode ->
                 setCountryCodeSettings(currentCountryCode)

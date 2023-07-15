@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_account
 
 import android.app.Application
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.AuthCredential
 import com.tarasovvp.smartblocker.R
@@ -78,6 +79,12 @@ class SettingsAccountViewModel @Inject constructor(
             }
         } else {
             exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+
+    fun clearDataByKeys(keys: List<Preferences.Key<*>>) {
+        launch {
+            settingsAccountUseCase.clearDataByKeys(keys)
         }
     }
 }

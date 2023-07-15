@@ -138,8 +138,9 @@ object AppModule {
     fun provideSettingsAccountUseCase(
         authRepository: AuthRepository,
         realDataBaseRepository: RealDataBaseRepository,
+        dataStoreRepository: DataStoreRepository
     ): SettingsAccountUseCase {
-        return SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository)
+        return SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository, dataStoreRepository)
     }
 
     @Singleton

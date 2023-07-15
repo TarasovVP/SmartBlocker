@@ -8,6 +8,7 @@ import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SettingsBlockerUseCaseImpl @Inject constructor(
@@ -20,25 +21,39 @@ class SettingsBlockerUseCaseImpl @Inject constructor(
         return dataStoreRepository.blockerTurnOn()
     }
 
-    override suspend fun setBlockerTurnOn(blockerTurnOff: Boolean) {
-        dataStoreRepository.setBlockerTurnOn(blockerTurnOff)
+    override suspend fun changeBlockHidden(blockHidden: Boolean, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
+        if (firebaseAuth.isAuthorisedUser()) {
+            if (isNetworkAvailable) {
+                realDataBaseRepository.changeBlockHidden(blockHidden) {
+                    runBlocking {
+                        dataStoreRepository.setBlockHidden(blockHidden)
+                    }
+                    result.invoke(Result.Success())
+                }
+            } else {
+                result.invoke(Result.Failure())
+            }
+        } else {
+            dataStoreRepository.setBlockHidden(blockHidden)
+            result.invoke(Result.Success())
+        }
     }
 
     override suspend fun getBlockHidden(): Flow<Boolean?> {
         return dataStoreRepository.blockHidden()
     }
 
-    override suspend fun setBlockHidden(blockHidden: Boolean) {
-        dataStoreRepository.setBlockHidden(blockHidden)
-    }
-
-    override fun changeBlockHidden(blockHidden: Boolean, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
+    override suspend fun changeBlockTurnOn(blockTurnOn: Boolean, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
         if (firebaseAuth.isAuthorisedUser()) {
             if (isNetworkAvailable) {
-                realDataBaseRepository.changeBlockHidden(blockHidden) {
+                realDataBaseRepository.changeBlockTurnOn(blockTurnOn) {
+                    runBlocking {
+                        dataStoreRepository.setBlockerTurnOn(blockTurnOn)
+                    }
                     result.invoke(Result.Success())
                 }
             } else {
+                dataStoreRepository.setBlockerTurnOn(blockTurnOn)
                 result.invoke(Result.Failure())
             }
         } else {
@@ -50,7 +65,21 @@ class SettingsBlockerUseCaseImpl @Inject constructor(
         return dataStoreRepository.getCountryCode()
     }
 
-    override suspend fun setCurrentCountryCode(countryCode: CountryCode) {
-        dataStoreRepository.setCountryCode(countryCode)
+    override suspend fun changeCountryCode(countryCode: CountryCode, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
+        if (firebaseAuth.isAuthorisedUser()) {
+            if (isNetworkAvailable) {
+                realDataBaseRepository.changeCountryCode(countryCode) {
+                    runBlocking {
+                        dataStoreRepository.setCountryCode(countryCode)
+                    }
+                    result.invoke(Result.Success())
+                }
+            } else {
+                dataStoreRepository.setCountryCode(countryCode)
+                result.invoke(Result.Failure())
+            }
+        } else {
+            result.invoke(Result.Success())
+        }
     }
 }

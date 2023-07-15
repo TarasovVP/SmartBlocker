@@ -99,4 +99,12 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
                 }
             }.take(1)
     }
+
+    override suspend fun clearDataByKeys(keys: List<Preferences.Key<*>>) {
+            dataStore.edit { preferences ->
+                keys.forEach { key ->
+                    preferences.remove(key)
+                }
+            }
+    }
 }

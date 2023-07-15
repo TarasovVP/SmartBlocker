@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
+import androidx.datastore.preferences.core.Preferences
 import com.google.firebase.auth.AuthCredential
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 
@@ -12,4 +13,6 @@ interface SettingsAccountUseCase {
     fun reAuthenticate(authCredential: AuthCredential, result: (Result<Unit>) -> Unit)
 
     fun deleteUser(result: (Result<Unit>) -> Unit)
+
+    suspend fun clearDataByKeys(keys: List<Preferences.Key<*>>)
 }

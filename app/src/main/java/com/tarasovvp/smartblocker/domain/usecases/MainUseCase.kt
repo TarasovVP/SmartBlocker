@@ -12,6 +12,8 @@ interface MainUseCase {
 
     suspend fun getBlockerTurnOn(): Flow<Boolean?>
 
+    suspend fun setBlockerTurnOn(blockTurnOn: Boolean)
+
     suspend fun setBlockHidden(blockHidden: Boolean)
 
     fun getCurrentUser(result: (Result<CurrentUser>) -> Unit)
