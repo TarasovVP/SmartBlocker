@@ -233,7 +233,8 @@ open class CreateFilterFragment :
             showInterstitial()
             getAllData()
             if (findNavController().previousBackStackEntry?.destination?.id == R.id.detailsNumberDataFragment) {
-                findNavController().popBackStack(navController?.graph?.startDestinationId.orZero(), false)
+                val directions = if (filterWithFilteredNumberUIModel.isBlocker()) CreateFilterFragmentDirections.startListBlockerFragment() else CreateFilterFragmentDirections.startListPermissionFragment()
+                findNavController().navigate(directions)
             } else {
                 findNavController().navigateUp()
             }

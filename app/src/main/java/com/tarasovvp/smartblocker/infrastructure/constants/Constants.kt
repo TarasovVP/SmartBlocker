@@ -13,6 +13,7 @@ object Constants {
     const val IS_DELETE_MODE = "isDeleteMode"
 
     //Telephony
+    const val EXTRA_INCOMING_NUMBER = "incoming_number"
     const val LOG_CALL_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"
     const val END_CALL = "endCall"

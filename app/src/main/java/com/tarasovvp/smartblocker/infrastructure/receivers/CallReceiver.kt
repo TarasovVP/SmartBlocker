@@ -12,6 +12,7 @@ import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_RECEIVE
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXTRA_INCOMING_NUMBER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
 import com.tarasovvp.smartblocker.utils.extensions.*
@@ -35,9 +36,9 @@ open class CallReceiver : BroadcastReceiver() {
     lateinit var dataStoreRepository: DataStoreRepository
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (context.checkPermissions().not() || intent.hasExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).not()) return
+        if (context.checkPermissions().not() || intent.hasExtra(EXTRA_INCOMING_NUMBER).not()) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER).orEmpty()
+        val number = intent.getStringExtra(EXTRA_INCOMING_NUMBER).orEmpty()
         CoroutineScope(Dispatchers.IO).launch {
             dataStoreRepository.blockHidden().collect { isBlockHidden ->
                 val matchedFilter = matchedFilter(number, isBlockHidden)

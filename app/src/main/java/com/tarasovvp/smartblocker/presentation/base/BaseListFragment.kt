@@ -124,10 +124,7 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                         menu?.findItem(R.id.settings_menu_item)?.isVisible = hasFocus.not()
                         setContentInsetsAbsolute(if (hasFocus) 0 else contentInsetLeft,
                             contentInsetRight)
-                        setPadding(if (hasFocus) dpToPx(16f).toInt() else 0,
-                            0,
-                             0,
-                            0)
+                        setPadding(if (hasFocus) dpToPx(16f).toInt() else 0, 0, 0, 0)
                     }
                     clearFocus()
                 }

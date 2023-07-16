@@ -202,7 +202,7 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     override fun afterTextChanged(s: Editable) {
-        Log.e("maskTAG", "MaskedEditText onTextChanged s $s text $text")
+        Log.e("maskTAG", "MaskedEditText afterTextChanged s $s text $text")
         if (mask.isNullOrEmpty().not()) {
             if (editingAfter.not() && editingBefore && editingOnChanged) {
                 editingAfter = true
