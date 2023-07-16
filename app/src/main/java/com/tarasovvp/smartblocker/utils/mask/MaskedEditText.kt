@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -154,6 +155,7 @@ class MaskedEditText @JvmOverloads constructor(
         s: CharSequence, start: Int, count: Int,
         after: Int,
     ) {
+        Log.e("maskTAG", "MaskedEditText beforeTextChanged s $s text $text")
         if (mask.isNullOrEmpty().not()) {
             if (editingBefore.not()) {
                 editingBefore = true
@@ -176,6 +178,7 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count1: Int) {
+        Log.e("maskTAG", "MaskedEditText onTextChanged s $s text $text")
         if (mask.isNullOrEmpty().not()) {
             var count = count1
             if (editingOnChanged.not() && editingBefore) {
@@ -199,6 +202,7 @@ class MaskedEditText @JvmOverloads constructor(
     }
 
     override fun afterTextChanged(s: Editable) {
+        Log.e("maskTAG", "MaskedEditText onTextChanged s $s text $text")
         if (mask.isNullOrEmpty().not()) {
             if (editingAfter.not() && editingBefore && editingOnChanged) {
                 editingAfter = true

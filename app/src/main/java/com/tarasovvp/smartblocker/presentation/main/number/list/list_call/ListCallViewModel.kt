@@ -8,6 +8,7 @@ import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
@@ -15,6 +16,7 @@ import com.tarasovvp.smartblocker.utils.extensions.isContaining
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,6 +72,7 @@ class ListCallViewModel @Inject constructor(
     fun getReviewVoted() {
         launch {
             listCallUseCase.getReviewVoted().collect { reviewVote ->
+                delay(SECOND)
                 isReviewVoteLiveData.postValue(reviewVote)
             }
         }
