@@ -25,6 +25,9 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     @MockK
     private lateinit var countryCodeUIMapper: CountryCodeUIMapper
 
+    @MockK(relaxed = true)
+    private lateinit var resultMock: (Result<Unit>) -> Unit
+
     override fun createViewModel() = SettingsBlockerViewModel(application, useCase, countryCodeUIMapper)
 
     @Test
@@ -40,10 +43,11 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     @Test
     fun setBlockerTurnOnTest() = runTest {
         val blockerTurnOn = true
-        coEvery { useCase.setBlockerTurnOn(blockerTurnOn) } just Runs
-        viewModel.setBlockerTurnOn(blockerTurnOn)
+        every { application.isNetworkAvailable } returns true
+        coEvery { useCase.changeBlockTurnOn(blockerTurnOn, true, resultMock) } just Runs
+        viewModel.changeBlockTurnOn(blockerTurnOn)
         advanceUntilIdle()
-        coVerify { useCase.setBlockerTurnOn(blockerTurnOn) }
+        coVerify { useCase.changeBlockTurnOn(blockerTurnOn, true, resultMock) }
         assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
     }
 
@@ -60,10 +64,11 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     @Test
     fun setBlockHiddenTest() = runTest {
         val blockHidden = true
-        coEvery { useCase.setBlockHidden(blockHidden) } just Runs
-        viewModel.setBlockHidden(blockHidden)
+        every { application.isNetworkAvailable } returns true
+        coEvery { useCase.changeBlockHidden(blockHidden, true, resultMock) } just Runs
+        viewModel.changeBlockHidden(blockHidden)
         advanceUntilIdle()
-        coVerify { useCase.setBlockHidden(blockHidden) }
+        coVerify { useCase.changeBlockHidden(blockHidden, true, resultMock) }
         assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
     }
     @Test
@@ -71,13 +76,13 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
         val blockHidden = true
         val expectedResult = Result.Success<Unit>()
         every { application.isNetworkAvailable } returns true
-        every { useCase.changeBlockHidden(eq(blockHidden), eq(true), any()) } answers {
+        coEvery { useCase.changeBlockHidden(eq(blockHidden), eq(true), any()) } answers {
             val callback = thirdArg<(Result<Unit>) -> Unit>()
             callback.invoke(expectedResult)
         }
         viewModel.changeBlockHidden(blockHidden)
-        verify { useCase.changeBlockHidden(blockHidden, true, any()) }
-        assertEquals(blockHidden, viewModel.successBlockHiddenLiveData.getOrAwaitValue())
+        coVerify { useCase.changeBlockHidden(blockHidden, true, any()) }
+        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
     }
 
     @Test
@@ -96,11 +101,12 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     fun setCurrentCountryCodeTest() = runTest {
         val countryCode = CountryCode()
         val countryCodeUIModel = CountryCodeUIModel()
-        coEvery { useCase.setCurrentCountryCode(countryCode) } just Runs
+        every { application.isNetworkAvailable } returns true
+        coEvery { useCase.changeCountryCode(countryCode, true, resultMock) } just Runs
         coEvery { countryCodeUIMapper.mapFromUIModel(countryCodeUIModel) } returns countryCode
-        viewModel.setCurrentCountryCode(countryCodeUIModel)
+        viewModel.changeCountryCode(countryCodeUIModel)
         advanceUntilIdle()
-        coVerify { useCase.setCurrentCountryCode(countryCode) }
+        coVerify { useCase.changeCountryCode(countryCode, true, resultMock) }
         assertEquals(countryCodeUIModel, viewModel.successCurrentCountryCodeLiveData.getOrAwaitValue())
     }
 }

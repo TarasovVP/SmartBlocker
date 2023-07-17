@@ -5,6 +5,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.models.Call
+import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
@@ -32,6 +33,9 @@ class ListCallUseCaseUnitTest {
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
     @MockK
+    private lateinit var dataBaseRepository: DataStoreRepository
+
+    @MockK
     private lateinit var firebaseAuth: FirebaseAuth
 
     @MockK(relaxed = true)
@@ -44,7 +48,7 @@ class ListCallUseCaseUnitTest {
         MockKAnnotations.init(this)
         mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
         every { firebaseAuth.isAuthorisedUser() } returns true
-        listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth)
+        listCallUseCase = ListCallUseCaseImpl(logCallRepository, filteredCallRepository, realDataBaseRepository, firebaseAuth, dataBaseRepository)
     }
 
     @Test

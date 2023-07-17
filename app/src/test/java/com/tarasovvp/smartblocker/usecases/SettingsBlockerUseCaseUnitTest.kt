@@ -54,7 +54,7 @@ class SettingsBlockerUseCaseUnitTest {
     fun setBlockerTurnOffTest() = runBlocking{
         val blockerTurnOff = true
         coEvery { dataStoreRepository.setBlockerTurnOn(blockerTurnOff) } just Runs
-        settingsBlockerUseCase.setBlockerTurnOn(blockerTurnOff)
+        settingsBlockerUseCase.changeBlockTurnOn(blockerTurnOff, true, resultMock)
         coVerify { dataStoreRepository.setBlockerTurnOn(blockerTurnOff) }
     }
 
@@ -71,12 +71,12 @@ class SettingsBlockerUseCaseUnitTest {
     fun setBlockHiddenTest() = runBlocking{
         val blockHidden = true
         coEvery { dataStoreRepository.setBlockHidden(blockHidden) } just Runs
-        settingsBlockerUseCase.setBlockHidden(blockHidden)
+        settingsBlockerUseCase.changeBlockHidden(blockHidden, true, resultMock)
         coVerify { dataStoreRepository.setBlockHidden(blockHidden) }
     }
 
     @Test
-    fun changeBlockHiddenTest() {
+    fun changeBlockHiddenTest() = runBlocking{
         every { firebaseAuth.currentUser } returns mockk()
         every { realDataBaseRepository.changeBlockHidden(eq(true), any()) } answers {
             resultMock.invoke(Result.Success())
@@ -99,7 +99,7 @@ class SettingsBlockerUseCaseUnitTest {
     fun setCurrentCountryCodeTest() = runBlocking{
         val countryCode = CountryCode()
         coEvery { dataStoreRepository.setCountryCode(countryCode) } just Runs
-        settingsBlockerUseCase.setCurrentCountryCode(countryCode)
+        settingsBlockerUseCase.changeCountryCode(countryCode, true, resultMock)
         coVerify { dataStoreRepository.setCountryCode(countryCode) }
     }
 }

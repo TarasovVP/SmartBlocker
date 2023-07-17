@@ -94,13 +94,14 @@ class AuthRepositoryUnitTest {
     @Test
     fun createUserWithEmailAndPasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
+        val result: (Result<String>) -> Unit = mockk()
         every { firebaseAuth.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<AuthResult>>()
             listener.onComplete(task)
             task
         }
-        authRepository.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, resultMock)
+        authRepository.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, result)
         verify { task.addOnCompleteListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
@@ -108,13 +109,14 @@ class AuthRepositoryUnitTest {
     @Test
     fun changePasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
+        val result: (Result<String>) -> Unit = mockk()
         every { firebaseAuth.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<AuthResult>>()
             listener.onComplete(task)
             task
         }
-        authRepository.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, resultMock)
+        authRepository.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, result)
         verify { task.addOnCompleteListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "865166794508-tvaqo2geebsv1s9gf1lkldkrquu9ckla.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tarasovvp.smartblocker",
+            "certificate_hash": "2afc94373a4f9d356ade024c19027e57ae0c9290"
+          }
+        },
+        {
           "client_id": "865166794508-5muqsbokmlifd918hpq0u1g0co38ck4c.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -41,7 +49,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-8778007212154570~3428856965"
     }
   ],
   "configuration_version": "1"

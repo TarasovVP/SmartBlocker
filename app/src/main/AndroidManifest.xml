@@ -43,6 +43,7 @@
         <meta-data
             android:name="firebase_performance_collection_enabled"
             android:value="true" />
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
     </application>
 
 </manifest>

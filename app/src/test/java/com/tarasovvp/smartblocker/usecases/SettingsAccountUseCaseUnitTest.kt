@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
+import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
@@ -21,6 +22,9 @@ class SettingsAccountUseCaseUnitTest {
     @MockK
     private lateinit var realDataBaseRepository: RealDataBaseRepository
 
+    @MockK
+    private lateinit var dataStoreRepository: DataStoreRepository
+
     @MockK(relaxed = true)
     private lateinit var resultMock: (Result<Unit>) -> Unit
 
@@ -29,7 +33,7 @@ class SettingsAccountUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        settingsAccountUseCase = SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository)
+        settingsAccountUseCase = SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository, dataStoreRepository)
     }
 
     @Test
