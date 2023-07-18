@@ -15,14 +15,12 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentLoginBinding
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EMAIL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOUNT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FORGOT_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.UNAUTHORIZED_ENTER
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpFragmentDirections
 import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -107,11 +105,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 findNavController().navigate(LoginFragmentDirections.startExistAccountDialog(description = getString(R.string.authorization_account_not_exist)))
             }
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
+                findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
                 (activity as? MainActivity)?.apply {
                     getAllData(true)
                     startBlocker()
+                    setStartDestination(true)
                 }
-                findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
             }
             successPasswordResetLiveData.safeSingleObserve(viewLifecycleOwner) {
                 showMessage(getString(R.string.authorization_password_reset_success), false)

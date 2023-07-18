@@ -81,9 +81,9 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
 
     private fun setGetDataRequest() {
         (activity as? MainActivity)?.apply {
-            if (intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isNotTrue()) getData(allDataChangeLiveData?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
+            if (intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isNotTrue()) getData(allDataChangeStateList?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
             mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                this@BaseListFragment.getData(allDataChangeLiveData?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
+                this@BaseListFragment.getData(allDataChangeStateList?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
             }
         }
     }

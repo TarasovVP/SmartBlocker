@@ -89,11 +89,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                 viewModel.createCurrentUser(CurrentUser())
             }
             createCurrentUserLiveData.safeSingleObserve(viewLifecycleOwner) {
+                findNavController().navigate(R.id.listBlockerFragment)
                 (activity as? MainActivity)?.apply {
                     getAllData(true)
                     startBlocker()
+                    setStartDestination(true)
                 }
-                findNavController().navigate(R.id.listBlockerFragment)
             }
         }
     }

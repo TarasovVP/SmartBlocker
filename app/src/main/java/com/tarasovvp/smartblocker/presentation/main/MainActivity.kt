@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     private var bottomNavigationView: BottomNavigationView? = null
     private var bottomNavigationDivider: View? = null
     var toolbar: androidx.appcompat.widget.Toolbar? = null
-    var allDataChangeLiveData: ArrayList<String>? = null
+    var allDataChangeStateList: ArrayList<String>? = null
 
     val mainViewModel: MainViewModel by viewModels()
 
@@ -201,7 +201,7 @@ class MainActivity : AppCompatActivity() {
         ) as NavHostFragment).navController
     }
 
-    private fun setStartDestination(isOnBoardingSeen: Boolean) {
+    fun setStartDestination(isOnBoardingSeen: Boolean) {
         navController?.apply {
             val navGraph = this.navInflater.inflate(R.navigation.navigation)
             navGraph.setStartDestination(
@@ -224,6 +224,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView = binding?.bottomNav
         bottomNavigationDivider = binding?.bottomNavDivider
         navController?.let { bottomNavigationView?.setupWithNavController(it) }
+        bottomNavigationView?.setOnItemReselectedListener {
+        }
         (bottomNavigationView?.getChildAt(0) as? BottomNavigationMenuView)?.children?.forEach {
             it.findViewById<TextView>(com.google.android.material.R.id.navigation_bar_item_large_label_view)
                 .apply {
@@ -314,7 +316,7 @@ class MainActivity : AppCompatActivity() {
             }
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 setMainProgressVisibility(false)
-                allDataChangeLiveData = arrayListOf(ListBlockerFragment::class.java.simpleName, ListPermissionFragment::class.java.simpleName, ListCallFragment::class.java.simpleName, ListContactFragment::class.java.simpleName)
+                allDataChangeStateList = arrayListOf(ListBlockerFragment::class.java.simpleName, ListPermissionFragment::class.java.simpleName, ListCallFragment::class.java.simpleName, ListContactFragment::class.java.simpleName)
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showInfoMessage(errorMessage, true)
