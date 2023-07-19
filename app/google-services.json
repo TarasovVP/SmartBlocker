@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "865166794508-k0j7r6leiu1nalhvptn3hnq8lns1uj9f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tarasovvp.smartblocker",
+            "certificate_hash": "eceec41b62a8ecc648795609b0f28b4e22cfd0e4"
+          }
+        },
+        {
           "client_id": "865166794508-osj31asdpbqrg4273ilceflnsnso1ohh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tarasovvp.smartblocker",
             "certificate_hash": "6f00bae36143f3ac8c5ac1af0f5a02fb779ac8cb"
-          }
-        },
-        {
-          "client_id": "865166794508-tvaqo2geebsv1s9gf1lkldkrquu9ckla.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tarasovvp.smartblocker",
-            "certificate_hash": "2afc94373a4f9d356ade024c19027e57ae0c9290"
           }
         },
         {

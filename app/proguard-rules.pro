@@ -16,6 +16,10 @@
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
 
+-printmapping mapping.txt
+-keep class com.tarasovvp.smartblocker.presentation.ui_models.** { *; }
+-keep class com.tarasovvp.smartblocker.domain.enums.** { *; }
+
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
