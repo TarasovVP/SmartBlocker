@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "865166794508-a5cqjal2llr8mkpmfam10job7c9dvuv3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tarasovvp.smartblocker",
+            "certificate_hash": "043aaa7458a87a7f736be6b1307a17d3e5c20d00"
+          }
+        },
+        {
           "client_id": "865166794508-k0j7r6leiu1nalhvptn3hnq8lns1uj9f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
