@@ -38,6 +38,7 @@
                 android:paddingTop="@dimen/padding_16"
                 android:paddingBottom="@dimen/padding_8"
                 app:icon="@drawable/ic_close_small"
+                android:contentDescription="@string/button_close"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

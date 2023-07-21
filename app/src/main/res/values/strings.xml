@@ -13,6 +13,7 @@
     <string name="button_accept">Allow</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_ok">OK</string>
+    <string name="button_close">Close</string>
     <!--Onboarding-->
     <string name="onboarding_intro"><![CDATA[Hello! I am Smart Blocker. I will be your assistant in blocking unwanted calls and my smart filters will help me with this.]]></string>
     <string name="onboarding_filter_conditions"><![CDATA[Smart filters will analyze incoming calls based on criteria you specify and block or permit them.]]></string>
@@ -22,10 +23,12 @@
     <string name="authorization_entrance">Entrance</string>
     <string name="authorization_with_google_account">With Google</string>
     <string name="authorization_enter">Login</string>
+    <string name="authorization_login_with_google_description">Login with Google</string>
     <string name="authorization_or">Or</string>
     <string name="authorization_email">Email</string>
     <string name="authorization_password">Password</string>
     <string name="authorization_sign_up">Sign up</string>
+    <string name="authorization_sign_up_with_google_description">Sign up with Google</string>
     <string name="authorization_forgot_password">Forgot your password?</string>
     <string name="authorization_continue_without_account">Without authorisation</string>
     <string name="authorization_forgot_password_title">Enter your email, and we will send you instructions.</string>
@@ -132,7 +135,9 @@
     <string name="progress_update_calls">Call list updating</string>
     <!--List screens-->
     <string name="list_blocker">Blockers</string>
+    <string name="list_blocker_item_description">Blockers screen</string>
     <string name="list_permission">Permissions</string>
+    <string name="list_permission_item_description">Permissions screen</string>
     <plurals name="list_filter_delete_amount">
         <item quantity="one">%s filter</item>
         <item quantity="few">%s filters</item>
@@ -140,12 +145,14 @@
     </plurals>
     <string name="list_filter_search_hint">Enter number</string>
     <string name="list_call">Log</string>
+    <string name="list_call_item_description">Log screen</string>
     <string name="list_call_delete_info">Only filtered calls can be deleted</string>
     <plurals name="list_call_delete_amount">
         <item quantity="one">Delete the filtered call %s from the log?</item>
         <item quantity="other">Do you want to delete %s filtered calls from the log?</item>
     </plurals>
     <string name="list_contact">Contacts</string>
+    <string name="list_contact_item_description">Contacts screen</string>
     <string name="list_number_search_hint">Enter number or name</string>
     <!--Creating filter-->
     <string name="creating_filter">Creating a filter</string>

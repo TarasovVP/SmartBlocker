@@ -13,6 +13,7 @@
     <string name="button_accept">Разрешить</string>
     <string name="button_cancel">Отмена</string>
     <string name="button_ok">OK</string>
+    <string name="button_close">Закрыть</string>
     <!--Onboarding-->
     <string name="onboarding_intro"><![CDATA[Привет! Я - Smart Blocker. Я буду Вашим помощником в блокировании нежелательных звонков и в этом мне помогут мои умные фильтры.]]></string>
     <string name="onboarding_filter_conditions"><![CDATA[Умные фильтры будут анализировать входящие вызовы по заданным Вами признакам и блокировать или разрешать их.]]></string>
@@ -22,10 +23,12 @@
     <string name="authorization_entrance">Вход</string>
     <string name="authorization_with_google_account">С помощью Google</string>
     <string name="authorization_enter">Войти</string>
+    <string name="authorization_login_with_google_description">Войти с помощью Google</string>
     <string name="authorization_or">Или</string>
     <string name="authorization_email">Email</string>
     <string name="authorization_password">Пароль</string>
     <string name="authorization_sign_up">Регистрация</string>
+    <string name="authorization_sign_up_with_google_description">Регистрация с помощью Google</string>
     <string name="authorization_forgot_password">Забыли пароль?</string>
     <string name="authorization_continue_without_account">Без авторизации</string>
     <string name="authorization_forgot_password_title">Введите ваш Email и мы отправим Вам инструкции.</string>
@@ -132,7 +135,9 @@
     <string name="progress_update_calls">Обновление списка звонков</string>
     <!--List screens-->
     <string name="list_blocker">Блокировщики</string>
+    <string name="list_blocker_item_description">Экран Блокировщики</string>
     <string name="list_permission">Разрешения</string>
+    <string name="list_permission_item_description">Экран Разрешения</string>
     <plurals name="list_filter_delete_amount">
         <item quantity="one">%s фильтр</item>
         <item quantity="few">%s фильтра</item>
@@ -141,6 +146,7 @@
     </plurals>
     <string name="list_filter_search_hint">Введите номер</string>
     <string name="list_call">Журнал</string>
+    <string name="list_call_item_description">Экран Журнал</string>
     <string name="list_call_delete_info">Можно удалить только отфильтрованные вызовы</string>
     <plurals name="list_call_delete_amount">
         <item quantity="one">Удалить отфильтрованный вызов %s из журнала?</item>
@@ -149,6 +155,7 @@
         <item quantity="many">Удалить %s отфильтрованныx вызовов из журнала?</item>
     </plurals>
     <string name="list_contact">Контакты</string>
+    <string name="list_contact_item_description">Экран Контакты</string>
     <string name="list_number_search_hint">Введите номер или имя</string>
     <!--Creating filter-->
     <string name="creating_filter">Создание фильтра</string>

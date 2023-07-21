@@ -45,6 +45,7 @@
                 app:backgroundTint="@color/button_bg"
                 app:icon="@drawable/ic_blocker_white"
                 app:iconGravity="textEnd"
+                android:contentDescription="@string/creating_blocker"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/details_number_data_create_permission"
                 app:layout_constraintTop_toBottomOf="@+id/details_number_data_item_contact" />
@@ -60,6 +61,7 @@
                 app:backgroundTint="@color/button_bg"
                 app:icon="@drawable/ic_permission_white"
                 app:iconGravity="textEnd"
+                android:contentDescription="@string/creating_permission"
                 app:layout_constraintStart_toEndOf="@+id/details_number_data_create_blocker"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/details_number_data_create_blocker"

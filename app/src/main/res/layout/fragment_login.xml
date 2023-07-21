@@ -55,6 +55,7 @@
                 android:elevation="@dimen/padding_1"
                 android:text="@string/authorization_enter"
                 android:layout_marginTop="@dimen/margin_8"
+                android:contentDescription="@string/authorization_login_with_google_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_google_title"  />
