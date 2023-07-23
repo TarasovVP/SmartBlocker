@@ -25,6 +25,8 @@
     <string name="authorization_enter">Войти</string>
     <string name="authorization_login_with_google_description">Войти с помощью Google</string>
     <string name="authorization_or">Или</string>
+    <string name="authorization_or_with_email_password_description">Или с Email и паролем</string>
+    <string name="authorization_or_without_account_description">Или войти без авторизации</string>
     <string name="authorization_email">Email</string>
     <string name="authorization_password">Пароль</string>
     <string name="authorization_sign_up">Регистрация</string>
@@ -134,6 +136,7 @@
     <string name="progress_update_contacts">Обновление списка контактов</string>
     <string name="progress_update_calls">Обновление списка звонков</string>
     <!--List screens-->
+    <string name="list_title_description">Название экрана: %s</string>
     <string name="list_blocker">Блокировщики</string>
     <string name="list_blocker_item_description">Экран Блокировщики</string>
     <string name="list_permission">Разрешения</string>
@@ -164,6 +167,8 @@
     <string name="creating_filter_enter_hint">Введите номер</string>
     <string name="creating_country_code_hint">Название или код</string>
     <string name="creating_filter_no_data">Нет данных</string>
+    <string name="creating_country_description">Страна %s</string>
+    <string name="creating_country_code_description">Код страны %s</string>
     <!--Details number-->
     <string name="details_number">Номер</string>
     <string name="details_number_incomplete">Неполный</string>

@@ -59,7 +59,7 @@
                     android:minWidth="@dimen/padding_48"
                     android:visibility="@{filterWithCountryCode.filterWithFilteredNumberUIModel.typeContain ? View.GONE : View.VISIBLE}"
                     app:drawableEndCompat="@drawable/ic_drop_down"
-                    android:contentDescription="@string/creating_country_code_hint"
+                    android:contentDescription="@{String.format(@string/creating_country_description, filterWithCountryCode.countryCodeUIModel.country)}"
                     app:layout_constraintBottom_toBottomOf="@+id/create_filter_input"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/create_filter_input" />
@@ -71,6 +71,7 @@
                     android:gravity="center"
                     android:visibility="@{filterWithCountryCode.filterWithFilteredNumberUIModel.typeContain ? View.GONE : View.VISIBLE}"
                     android:text="@{filterWithCountryCode.countryCodeUIModel.countryCode}"
+                    android:contentDescription="@{String.format(@string/creating_country_code_description, filterWithCountryCode.countryCodeUIModel.countryCode)}"
                     android:textColor="@color/text_color_grey"
                     android:textSize="@dimen/text_size_16"
                     android:minWidth="@dimen/padding_48"

@@ -94,7 +94,7 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
         NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL)
 
     builder.setSmallIcon(R.drawable.ic_logo)
-        .setColor(ContextCompat.getColor(this, R.color.blue))
+        .setColor(ContextCompat.getColor(this, R.color.cornflower_blue))
         .setContentTitle(getString(R.string.app_is_active))
         .setContentIntent(pendingIntent)
 

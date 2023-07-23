@@ -171,7 +171,8 @@
     <fragment
         android:id="@+id/listCallFragment"
         android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment"
-        android:label="@string/list_call">
+        android:label="@string/list_call"
+        >
         <action
             android:id="@+id/startDetailsNumberDataFragment"
             app:destination="@id/detailsNumberDataFragment" />

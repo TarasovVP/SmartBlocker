@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="blue">#267DFF</color>
+    //colors
+    <color name="cornflower_blue">#6B86E4</color>
+    <color name="sunset">#F45553</color>
+    <color name="islamic_green">#06AA0E</color>
 
-    //custom project colors
+    //view colors
     <color name="main_bg_start">@color/tiber</color>
     <color name="main_bg_end">@color/cyprus</color>
     <color name="text_color_grey">@color/light_steel_blue</color>
     <color name="text_color_black">@color/white</color>
-    <color name="item_color">#021228</color>
+    <color name="item_color">@color/dark_green</color>
     <color name="input_bg">@color/midnight_blue</color>
     <color name="avatar_bg">@color/midnight_blue</color>
     <color name="avatar_icon_bg">@color/light_steel_blue</color>

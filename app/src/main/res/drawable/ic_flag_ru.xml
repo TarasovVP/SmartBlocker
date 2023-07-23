@@ -16,7 +16,7 @@
         android:pathData="M1.924,5.273H22.076V9.424H1.924V5.273Z"
         android:strokeWidth="0.5"
         android:fillColor="#ffffff"
-        android:strokeColor="#B4C5E3"/>
+        android:strokeColor="@color/light_steel_blue"/>
     <path
         android:pathData="M1.674,14.325H22.326V18.976H1.674V14.325Z"
         android:fillColor="#D80027"/>

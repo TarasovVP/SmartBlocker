@@ -485,7 +485,7 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
 
     private fun checkFilterWithCountryCodeArg(filterCondition: Int, filterType: Int) {
         val number = contactWithFilter?.number.orEmpty()
-        val filterWithCountryCode = FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(
+        FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(
             filter = number,
             conditionType = filterCondition,
             filterType = filterType)

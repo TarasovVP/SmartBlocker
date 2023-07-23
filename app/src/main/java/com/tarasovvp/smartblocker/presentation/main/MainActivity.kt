@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -261,6 +262,11 @@ class MainActivity : AppCompatActivity() {
         toolbar?.isVisible =
             destination.id notEquals R.id.onBoardingFragment && destination.id notEquals R.id.loginFragment && destination.id notEquals R.id.signUpFragment
         binding?.toolbarDivider?.isVisible = toolbar?.isVisible.isTrue()
+        toolbar?.forEach {
+            if (it is TextView && navigationScreens.contains(destination.id)) {
+                it.contentDescription = getString(R.string.list_title_description, it.text)
+            }
+        }
     }
 
     private fun checkBottomBarVisibility(destination: NavDestination) {
