@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.telephony.TelephonyManager
+import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
@@ -22,6 +24,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 open class CallReceiver : BroadcastReceiver() {
+
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
 
     @Inject
     lateinit var filterRepository: FilterRepository
@@ -48,17 +53,25 @@ open class CallReceiver : BroadcastReceiver() {
                     } else if (telephony.isCallStateIdle()) {
                         delay(SECOND)
                         context.createFilteredCall(number, filter)?.let { filteredCall ->
-                            realDataBaseRepository.insertFilteredCall(filteredCall) {
-                                runBlocking {
-                                    filteredCallRepository.insertFilteredCall(filteredCall)
-                                }
-                            }
+                            insertFilteredCall(filteredCall)
                         }
                         context.sendBroadcast(Intent(CALL_RECEIVE))
                     }
                 }
                 if (telephony.isCallStateIdle() && matchedFilter.isNull()) context.sendBroadcast(Intent(CALL_RECEIVE))
             }
+        }
+    }
+
+    private suspend fun insertFilteredCall(filteredCall: FilteredCall) {
+        if (firebaseAuth.isAuthorisedUser()) {
+            realDataBaseRepository.insertFilteredCall(filteredCall) {
+                runBlocking {
+                    filteredCallRepository.insertFilteredCall(filteredCall)
+                }
+            }
+        } else {
+            filteredCallRepository.insertFilteredCall(filteredCall)
         }
     }
 
