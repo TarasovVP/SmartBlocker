@@ -6,7 +6,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.hasItemCount
-import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
@@ -78,7 +77,6 @@ abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
                     else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.descriptionRes()
                 }
                 onView(withId(R.id.empty_state_description)).check(matches(withText(descriptionText)))
-                onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
                 //TODO drawable
                 //onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
             } else {

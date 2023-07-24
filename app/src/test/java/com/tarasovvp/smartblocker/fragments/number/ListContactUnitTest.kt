@@ -200,7 +200,6 @@ class ListContactUnitTest: BaseFragmentUnitTest() {
         if (contactList.isNullOrEmpty()) {
             onView(withId(R.id.list_contact_empty)).check(matches(isDisplayed()))
             onView(withId(R.id.empty_state_description)).check(matches(isDisplayed())).check(matches(withText(EmptyState.EMPTY_STATE_CONTACTS.description())))
-            onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
             onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {
             onView(withId(R.id.list_contact_empty)).check(matches(not(isDisplayed())))

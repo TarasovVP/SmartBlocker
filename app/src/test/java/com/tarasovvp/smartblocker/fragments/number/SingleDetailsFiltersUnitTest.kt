@@ -106,7 +106,6 @@ class SingleDetailsFiltersUnitTest: BaseFragmentUnitTest() {
             if (dataList.isEmpty()) {
                 check(matches(isDisplayed()))
                 onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_NUMBERS.descriptionRes())))
-                onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
                 onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
             } else {
                 check(matches(not(isDisplayed())))

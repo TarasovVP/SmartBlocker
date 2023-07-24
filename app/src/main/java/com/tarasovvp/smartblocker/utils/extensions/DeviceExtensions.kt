@@ -32,6 +32,7 @@ import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import dagger.hilt.android.testing.HiltTestApplication
 import java.util.*
 
+
 fun Context.registerForNetworkUpdates(isNetworkAvailable: (Boolean) -> Unit) {
     val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

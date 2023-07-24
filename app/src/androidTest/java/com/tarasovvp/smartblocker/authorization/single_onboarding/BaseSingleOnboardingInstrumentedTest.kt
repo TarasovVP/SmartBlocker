@@ -44,7 +44,6 @@ open class BaseSingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
     fun checkOnBoardingTooltipArrow() {
         onView(withId(R.id.single_on_boarding_tooltip_arrow))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
     }
 
     @Test

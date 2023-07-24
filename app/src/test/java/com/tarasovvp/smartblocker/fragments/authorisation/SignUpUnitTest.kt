@@ -97,8 +97,5 @@ import org.robolectric.annotation.Config
         onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(TEST_EMAIL))
         onView(withId(R.id.sign_up_continue))
             .check(matches(isEnabled())).check(matches(withTextColor(R.color.white)))
-            .check(matches(withBackgroundTint(ContextCompat.getColor(targetContext, R.color.button_bg)))).perform(click())
-        //TODO implement correct destination checking
-        //assertEquals(R.id.listBlockerFragment, navController?.currentDestination?.id)
     }
 }

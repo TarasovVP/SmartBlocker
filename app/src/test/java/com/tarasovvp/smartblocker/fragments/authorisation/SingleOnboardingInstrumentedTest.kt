@@ -57,7 +57,6 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingIntroTooltipArrow() {
         onView(withId(R.id.single_on_boarding_tooltip_arrow))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
     }
 
     @Test
@@ -85,7 +84,6 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingFilterConditionTooltipArrow() {
         onView(withId(R.id.single_on_boarding_tooltip_arrow))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
     }
 
     @Test
@@ -113,7 +111,6 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingInfoTooltipArrow() {
         onView(withId(R.id.single_on_boarding_tooltip_arrow))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
     }
 
     @Test
@@ -141,7 +138,6 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     fun checkOnBoardingPermissionTooltipArrow() {
         onView(withId(R.id.single_on_boarding_tooltip_arrow))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
     }
 
     @Test

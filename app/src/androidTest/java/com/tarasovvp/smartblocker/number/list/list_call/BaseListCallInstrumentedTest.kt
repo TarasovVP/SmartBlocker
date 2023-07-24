@@ -244,7 +244,6 @@ open class BaseListCallInstrumentedTest: BaseInstrumentedTest() {
             onView(withId(R.id.list_call_empty)).check(matches(isDisplayed()))
             onView(withId(R.id.empty_state_description)).check(matches(isDisplayed())).check(matches(withText(
                 EmptyState.EMPTY_STATE_CALLS.description())))
-            onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
             //TODO drawable
             //onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {

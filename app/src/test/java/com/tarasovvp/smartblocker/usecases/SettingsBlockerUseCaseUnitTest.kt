@@ -54,8 +54,9 @@ class SettingsBlockerUseCaseUnitTest {
     fun setBlockerTurnOffTest() = runBlocking{
         val blockerTurnOff = true
         coEvery { dataStoreRepository.setBlockerTurnOn(blockerTurnOff) } just Runs
+        every { realDataBaseRepository.changeBlockTurnOn(any(), any()) } just Runs
         settingsBlockerUseCase.changeBlockTurnOn(blockerTurnOff, true, resultMock)
-        coVerify { dataStoreRepository.setBlockerTurnOn(blockerTurnOff) }
+        coVerify {  realDataBaseRepository.changeBlockTurnOn(any(), any()) }
     }
 
     @Test
@@ -70,9 +71,9 @@ class SettingsBlockerUseCaseUnitTest {
     @Test
     fun setBlockHiddenTest() = runBlocking{
         val blockHidden = true
-        coEvery { dataStoreRepository.setBlockHidden(blockHidden) } just Runs
+        every { realDataBaseRepository.changeBlockHidden(eq(blockHidden), any()) } just Runs
         settingsBlockerUseCase.changeBlockHidden(blockHidden, true, resultMock)
-        coVerify { dataStoreRepository.setBlockHidden(blockHidden) }
+        verify { realDataBaseRepository.changeBlockHidden(eq(blockHidden), any()) }
     }
 
     @Test
@@ -98,8 +99,8 @@ class SettingsBlockerUseCaseUnitTest {
     @Test
     fun setCurrentCountryCodeTest() = runBlocking{
         val countryCode = CountryCode()
-        coEvery { dataStoreRepository.setCountryCode(countryCode) } just Runs
+        coEvery { realDataBaseRepository.changeCountryCode(eq(countryCode), any()) } just Runs
         settingsBlockerUseCase.changeCountryCode(countryCode, true, resultMock)
-        coVerify { dataStoreRepository.setCountryCode(countryCode) }
+        verify { realDataBaseRepository.changeCountryCode(eq(countryCode), any()) }
     }
 }
