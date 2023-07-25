@@ -11,7 +11,6 @@ object PermissionUtil {
     fun permissionsArray(): Array<String> {
         val permissionsArray: ArrayList<String> = arrayListOf(
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.WRITE_CALL_LOG,
             Manifest.permission.READ_CALL_LOG,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CALL_PHONE

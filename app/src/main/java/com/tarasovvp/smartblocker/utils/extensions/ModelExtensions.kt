@@ -5,7 +5,6 @@ import android.database.Cursor
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
@@ -27,9 +26,7 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ASC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_ID
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_CALL_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
@@ -144,17 +141,6 @@ fun Context.createFilteredCall(
                     this.isFilteredCall = true
                     this.phoneNumberValue = number
                     this.isPhoneNumberValid = true
-                }
-                if (filter.filterType == BLOCKER) {
-                    try {
-                        this.contentResolver.delete(
-                            Uri.parse(LOG_CALL_CALL),
-                            "${CALL_ID}'${filteredCall.callId}'",
-                            null
-                        )
-                    } catch (e: java.lang.Exception) {
-                        e.printStackTrace()
-                    }
                 }
                 return filteredCall
             }
