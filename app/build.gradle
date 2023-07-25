@@ -19,7 +19,7 @@ android {
         applicationId "com.tarasovvp.smartblocker"
         minSdk 21
         targetSdk 33
-        versionCode 8
+        versionCode 9
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "com.tarasovvp.smartblocker.HiltTestRunner"
