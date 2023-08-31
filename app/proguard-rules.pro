@@ -18,6 +18,7 @@
 
 -printmapping mapping.txt
 -keep class com.tarasovvp.smartblocker.presentation.ui_models.** { *; }
+-keep class com.tarasovvp.smartblocker.domain.entities.db_entities.** { *; }
 -keep class com.tarasovvp.smartblocker.domain.enums.** { *; }
 
 # If you keep the line number information, uncomment this to

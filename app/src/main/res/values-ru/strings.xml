@@ -254,7 +254,7 @@
     <string name="settings_theme_night">Темная</string>
     <string name="settings_theme_auto">Согласно настроек телефона</string>
     <!--Settings review-->
-    <string name="settings_feedback_title">Усли у вас есть предложения или замечания вы можете их описать ниже</string>
+    <string name="settings_feedback_title">Если у вас есть предложения или замечания вы можете их описать ниже</string>
     <string name="settings_feedback_hint">Сообщение</string>
     <string name="settings_feedback_send_button">Отправить</string>
     <string name="settings_feedback_send_success">Сообщение %s успешно отправлено!</string>

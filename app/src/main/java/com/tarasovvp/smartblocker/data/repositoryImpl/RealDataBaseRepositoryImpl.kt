@@ -1,5 +1,6 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
@@ -167,6 +168,7 @@ class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabas
     }
 
     override fun changeCountryCode(countryCode: CountryCode, result: (Result<Unit>) -> Unit) {
+        Log.e("filteredCallTAG", "CallReceiver changeCountryCode countryCode $countryCode")
         firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(COUNTRY_CODE).setValue(countryCode)
             .addOnSuccessListener {
                 result.invoke(Result.Success())
