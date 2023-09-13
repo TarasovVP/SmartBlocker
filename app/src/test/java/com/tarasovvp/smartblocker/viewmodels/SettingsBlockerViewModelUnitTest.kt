@@ -7,7 +7,9 @@ import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,17 +43,6 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     }
 
     @Test
-    fun setBlockerTurnOnTest() = runTest {
-        val blockerTurnOn = true
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.changeBlockTurnOn(blockerTurnOn, true, resultMock) } just Runs
-        viewModel.changeBlockTurnOn(blockerTurnOn)
-        advanceUntilIdle()
-        coVerify { useCase.changeBlockTurnOn(blockerTurnOn, true, resultMock) }
-        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
-    }
-
-    @Test
     fun getBlockHiddenTest() = runTest {
         val blockHidden = true
         coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
@@ -62,17 +53,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     }
 
     @Test
-    fun setBlockHiddenTest() = runTest {
-        val blockHidden = true
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.changeBlockHidden(blockHidden, true, resultMock) } just Runs
-        viewModel.changeBlockHidden(blockHidden)
-        advanceUntilIdle()
-        coVerify { useCase.changeBlockHidden(blockHidden, true, resultMock) }
-        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
-    }
-    @Test
-    fun changeBlockHiddenTest() {
+    fun changeBlockHiddenTest() = runTest {
         val blockHidden = true
         val expectedResult = Result.Success<Unit>()
         every { application.isNetworkAvailable } returns true
@@ -81,6 +62,7 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
             callback.invoke(expectedResult)
         }
         viewModel.changeBlockHidden(blockHidden)
+        advanceUntilIdle()
         coVerify { useCase.changeBlockHidden(blockHidden, true, any()) }
         assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
     }
@@ -101,12 +83,16 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     fun setCurrentCountryCodeTest() = runTest {
         val countryCode = CountryCode()
         val countryCodeUIModel = CountryCodeUIModel()
+        val expectedResult = Result.Success<Unit>()
         every { application.isNetworkAvailable } returns true
-        coEvery { useCase.changeCountryCode(countryCode, true, resultMock) } just Runs
+        coEvery { useCase.changeCountryCode(eq(countryCode), eq(true), any()) } answers {
+            val callback = thirdArg<(Result<Unit>) -> Unit>()
+            callback.invoke(expectedResult)
+        }
         coEvery { countryCodeUIMapper.mapFromUIModel(countryCodeUIModel) } returns countryCode
         viewModel.changeCountryCode(countryCodeUIModel)
         advanceUntilIdle()
-        coVerify { useCase.changeCountryCode(countryCode, true, resultMock) }
+        coVerify { useCase.changeCountryCode(eq(countryCode), eq(true), any()) }
         assertEquals(countryCodeUIModel, viewModel.successCurrentCountryCodeLiveData.getOrAwaitValue())
     }
 }

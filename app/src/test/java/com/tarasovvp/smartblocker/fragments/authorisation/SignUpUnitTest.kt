@@ -4,9 +4,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.firebase.FirebaseApp
@@ -17,6 +15,7 @@ import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundTint
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
+import com.tarasovvp.smartblocker.fragments.ScrollActions.nestedScrollTo
 import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -78,7 +77,7 @@ import org.robolectric.annotation.Config
 
     @Test
     fun checkSignUpEntranceTitle() {
-        onView(withId(R.id.sign_up_entrance_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_entrance_title)))
+        onView(withId(R.id.sign_up_entrance_title)).perform(nestedScrollTo()).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_entrance_title)))
         onView(withId(R.id.sign_up_entrance)).check(matches(isDisplayed()))
             .check(matches(withText(R.string.authorization_entrance)))
             .check(matches(withTextColor(R.color.button_bg))).perform(click())
@@ -89,12 +88,12 @@ import org.robolectric.annotation.Config
     fun checkSignUpContinue() {
         onView(withId(R.id.sign_up_continue)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_signing_up)))
             .check(matches(not(isEnabled()))).check(matches(withTextColor(R.color.inactive_bg))).check(matches(withBackgroundTint(ContextCompat.getColor(targetContext, R.color.transparent))))
-        onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(TEST_EMAIL))
+        onView(withId(R.id.sign_up_email)).perform(replaceText(TEST_EMAIL))
         onView(withId(R.id.sign_up_continue)).check(matches(not(isEnabled())))
-        onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(String.EMPTY))
-        onView(withId(R.id.sign_up_password)).perform(ViewActions.replaceText(TEST_PASSWORD))
+        onView(withId(R.id.sign_up_email)).perform(replaceText(String.EMPTY))
+        onView(withId(R.id.sign_up_password)).perform(replaceText(TEST_PASSWORD))
         onView(withId(R.id.sign_up_continue)).check(matches(not(isEnabled())))
-        onView(withId(R.id.sign_up_email)).perform(ViewActions.replaceText(TEST_EMAIL))
+        onView(withId(R.id.sign_up_email)).perform(replaceText(TEST_EMAIL))
         onView(withId(R.id.sign_up_continue))
             .check(matches(isEnabled())).check(matches(withTextColor(R.color.white)))
     }

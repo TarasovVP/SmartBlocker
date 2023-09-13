@@ -21,7 +21,8 @@ object UnitTestUtils {
     const val TEST_PASSWORD = "Ua12345!"
     const val TEST_REVIEW = "review"
     const val TEST_USER_ID = "testUserId"
-    const val IS_LOG_OUT = "isLogOut"
+    const val IS_AUTHORISED = "isAuthorised"
+    const val IS_GOOGLE_AUTH = "isGoogleAuth"
     const val EMPTY = "Empty"
     const val TEST_ERROR_MESSAGE = "testErrorMessage"
 

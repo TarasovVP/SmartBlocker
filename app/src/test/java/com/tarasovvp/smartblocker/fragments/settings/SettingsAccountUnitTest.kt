@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.fragments.settings
 
 import android.os.Build
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
@@ -9,8 +10,10 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.UnitTestUtils.IS_LOG_OUT
+import com.tarasovvp.smartblocker.UnitTestUtils.IS_AUTHORISED
+import com.tarasovvp.smartblocker.UnitTestUtils.IS_GOOGLE_AUTH
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
@@ -18,10 +21,7 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHi
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
-import com.tarasovvp.smartblocker.utils.extensions.currentUserEmail
-import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
-import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
-import com.tarasovvp.smartblocker.utils.extensions.nameInitial
+import com.tarasovvp.smartblocker.utils.extensions.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -55,6 +55,9 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
         FirebaseApp.initializeApp(targetContext)
         mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
         every { mockFirebaseAuth.isAuthorisedUser() } returns true
+        val mockUserInfo = mockk<UserInfo>()
+        every { mockFirebaseAuth.currentUser?.providerData } returns listOf(mockUserInfo)
+        every { mockUserInfo.providerId } returns "providerId"
         every { mockFirebaseAuth.currentUser } returns if (name.methodName.contains("Empty")) null else mockk()
         if (name.methodName.contains("Empty").not()) every { mockFirebaseAuth.currentUser?.email } returns TEST_EMAIL
         launchFragmentInHiltContainer<SettingsAccountFragment> {
@@ -80,7 +83,12 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
     fun checkSettingsAccountAvatar() {
         onView(withId(R.id.settings_account_avatar)).apply {
             check(matches(isDisplayed()))
-            check(matches(withBitmap(targetContext.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial()).toBitmap())))
+            val avatar = when {
+                mockFirebaseAuth.isGoogleAuthUser() -> ContextCompat.getDrawable(targetContext, R.drawable.ic_logo_google)?.toBitmap()
+                mockFirebaseAuth.isAuthorisedUser() -> ContextCompat.getDrawable(targetContext, R.drawable.ic_email)?.toBitmap()
+                else -> targetContext.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial()).toBitmap()
+            }
+            check(matches(withBitmap(avatar)))
         }
     }
 
@@ -99,7 +107,7 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
             check(matches(withText(R.string.settings_account_log_out_title)))
             perform(click())
             assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
-            assertEquals(true, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
+            assertEquals(true, navController?.backStack?.last()?.arguments?.getBoolean(IS_AUTHORISED))
         }
     }
 
@@ -124,8 +132,8 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_delete_title)))
                 perform(click())
-                assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
-                assertEquals(false, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
+                assertEquals(R.id.deleteAccountDialog, navController?.currentDestination?.id)
+                assertEquals(false, navController?.backStack?.last()?.arguments?.getBoolean(IS_GOOGLE_AUTH))
             } else {
                 check(matches(not(isDisplayed())))
             }

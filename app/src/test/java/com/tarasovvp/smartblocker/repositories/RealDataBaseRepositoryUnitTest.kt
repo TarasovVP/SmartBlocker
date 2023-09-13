@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.repositories
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -97,9 +98,9 @@ class RealDataBaseRepositoryUnitTest {
         every { firebaseAuth.currentUser } returns currentUser
         every { currentUser.uid } returns TEST_USER_ID
         every { task.isSuccessful } returns true
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = arg<OnCompleteListener<Void>>(0)
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = arg<OnSuccessListener<in Void>>(0)
+            listener.onSuccess(null)
             task
         }
         val exception = mockk<Exception>()
@@ -112,7 +113,7 @@ class RealDataBaseRepositoryUnitTest {
         every { task.exception } returns exception
         every { exception.localizedMessage } returns TEST_ERROR_MESSAGE
         realDataBaseRepository.deleteCurrentUser(resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -121,19 +122,18 @@ class RealDataBaseRepositoryUnitTest {
         val filter = Filter(TEST_FILTER)
         val task = mockk<Task<Void>>(relaxed = true)
         val currentUser = mockk<FirebaseUser>()
-        every { task.isSuccessful } returns true
         every { firebaseAuth.currentUser } returns currentUser
         every { currentUser.uid } returns TEST_USER_ID
         every {
             firebaseDatabase.reference.child(USERS).child(any()).child(FILTER_LIST).child(filter.filter).setValue(filter)
         } returns task
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         realDataBaseRepository.insertFilter(filter, resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -167,9 +167,6 @@ class RealDataBaseRepositoryUnitTest {
         realDataBaseRepository.deleteFilterList(filterList, resultMock)
         verify { task.addOnCompleteListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
-        //TODO check
-        //verify { child1.ref.removeValue() }
-        //verify { child2.ref.removeValue() }
     }
 
     @Test
@@ -180,16 +177,15 @@ class RealDataBaseRepositoryUnitTest {
             firebaseDatabase.reference.child(USERS).child(any()).child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
         } returns task
         val currentUser = mockk<FirebaseUser>()
-        every { task.isSuccessful } returns true
         every { firebaseAuth.currentUser } returns currentUser
         every { currentUser.uid } returns TEST_USER_ID
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         realDataBaseRepository.insertFilteredCall(filteredCall, resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -228,9 +224,6 @@ class RealDataBaseRepositoryUnitTest {
 
         realDataBaseRepository.deleteFilteredCallList(filteredCallIdList, resultMock)
 
-        //TODO check
-        //verify { databaseReference.child(callId1) }
-        //verify { databaseReference.child(callId2) }
         verify { child1.removeValue() }
         verify { child2.removeValue() }
         verify { resultMock.invoke(Result.Success()) }
@@ -243,19 +236,18 @@ class RealDataBaseRepositoryUnitTest {
             firebaseDatabase.reference.child(USERS).child(any()).child(BLOCK_HIDDEN).setValue(any())
         } returns task
         val currentUser = mockk<FirebaseUser>()
-        every { task.isSuccessful } returns true
         every { firebaseAuth.currentUser } returns currentUser
         every { currentUser.uid } returns TEST_USER_ID
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         realDataBaseRepository.changeBlockHidden(true, resultMock)
         verify {
             firebaseDatabase.reference.child(USERS).child(any()).child(BLOCK_HIDDEN).setValue(true)
         }
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -266,14 +258,13 @@ class RealDataBaseRepositoryUnitTest {
         every {
             firebaseDatabase.reference.child(FEEDBACK).child(feedback.time.toString()).setValue(feedback)
         } returns task
-        every { task.isSuccessful } returns true
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         realDataBaseRepository.insertFeedback(feedback, resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 }

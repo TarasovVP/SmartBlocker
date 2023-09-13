@@ -1,7 +1,9 @@
 package com.tarasovvp.smartblocker.repositories
 
+import android.text.TextUtils
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -39,13 +41,13 @@ class AuthRepositoryUnitTest {
     fun sendPasswordResetEmailTest() {
         val task = mockk<Task<Void>>(relaxed = true)
         every { firebaseAuth.sendPasswordResetEmail(TEST_EMAIL) } returns task
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         authRepository.sendPasswordResetEmail(TEST_EMAIL, resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -53,13 +55,13 @@ class AuthRepositoryUnitTest {
     fun signInWithEmailAndPasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
         every { firebaseAuth.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<AuthResult>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         authRepository.signInWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -67,13 +69,13 @@ class AuthRepositoryUnitTest {
     fun signInWithGoogleTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
         every { firebaseAuth.signInWithCredential(any()) } returns task
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<AuthResult>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         authRepository.signInWithGoogle(TEST_EMAIL, resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -81,21 +83,25 @@ class AuthRepositoryUnitTest {
     fun signInAnonymously() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
         every { firebaseAuth.signInAnonymously() } returns task
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<AuthResult>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         authRepository.signInAnonymously(resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
     @Test
     fun createUserWithEmailAndPasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
-        val result: (Result<String>) -> Unit = mockk()
+        val result: (Result<String>) -> Unit = mockk(relaxed = true)
         every { firebaseAuth.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
+        every { task.isSuccessful } returns true
+        every { task.result } returns mockk()
+        every { task.result.user } returns mockk()
+        every { task.result.user?.uid } returns TEST_EMAIL
         every { task.addOnCompleteListener(any()) } answers {
             val listener = firstArg<OnCompleteListener<AuthResult>>()
             listener.onComplete(task)
@@ -103,22 +109,29 @@ class AuthRepositoryUnitTest {
         }
         authRepository.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, result)
         verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke(Result.Success()) }
+        verify { result.invoke(Result.Success(TEST_EMAIL)) }
     }
 
     @Test
     fun changePasswordTest() {
+        mockkStatic(TextUtils::class)
+        every { TextUtils.isEmpty(any()) } returns false
         val task = mockk<Task<AuthResult>>(relaxed = true)
-        val result: (Result<String>) -> Unit = mockk()
+        val task2 = mockk<Task<Void>>(relaxed = true)
+        val currentUser = mockk<FirebaseUser>()
+        every { firebaseAuth.currentUser } returns currentUser
+        every { currentUser.email } returns TEST_EMAIL
+        every { currentUser.reauthenticateAndRetrieveData(any()) } returns task
+        every { currentUser.updatePassword(TEST_PASSWORD) } returns task2
         every { firebaseAuth.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<AuthResult>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
-        authRepository.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, result)
-        verify { task.addOnCompleteListener(any()) }
-        verify { resultMock.invoke(Result.Success()) }
+        val resultCallback: (Result<Unit>) -> Unit = mockk(relaxed = true)
+        authRepository.changePassword(TEST_EMAIL, TEST_PASSWORD, resultCallback)
+        verify { task.addOnSuccessListener(any()) }
     }
 
     @Test
@@ -128,21 +141,21 @@ class AuthRepositoryUnitTest {
         every { firebaseAuth.currentUser } returns currentUser
         every { authRepository.signOut(resultMock) } just Runs
         every { currentUser.delete() } returns deleteTask
-        every { deleteTask.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(deleteTask)
+        every { deleteTask.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             deleteTask
         }
         val task = mockk<Task<Void>>(relaxed = true)
         every { googleSignInClient.signOut() } returns task
         every { firebaseAuth.signOut() } returns Unit
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         authRepository.deleteUser(resultMock)
-        verify { deleteTask.addOnCompleteListener(any()) }
+        verify { deleteTask.addOnSuccessListener(any()) }
         verify { resultMock.invoke(Result.Success()) }
     }
 
@@ -151,13 +164,13 @@ class AuthRepositoryUnitTest {
         val task = mockk<Task<Void>>(relaxed = true)
         every { googleSignInClient.signOut() } returns task
         every { firebaseAuth.signOut() } returns Unit
-        every { task.addOnCompleteListener(any()) } answers {
-            val listener = firstArg<OnCompleteListener<Void>>()
-            listener.onComplete(task)
+        every { task.addOnSuccessListener(any()) } answers {
+            val listener = firstArg<OnSuccessListener<in Void>>()
+            listener.onSuccess(null)
             task
         }
         authRepository.signOut(resultMock)
-        verify { task.addOnCompleteListener(any()) }
+        verify { task.addOnSuccessListener(any()) }
         verify { firebaseAuth.signOut() }
         verify { resultMock.invoke(Result.Success()) }
     }
