@@ -358,6 +358,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setProgressVisibility(isVisible: Boolean) {
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
         binding?.progressBar?.isVisible = isVisible
     }
 

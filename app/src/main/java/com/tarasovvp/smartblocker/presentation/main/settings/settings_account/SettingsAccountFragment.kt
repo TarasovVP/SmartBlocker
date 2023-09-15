@@ -21,6 +21,7 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.data.database.AppDatabase
 import com.tarasovvp.smartblocker.databinding.FragmentSettingsAccountBinding
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CHANGE_PASSWORD
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE
@@ -60,7 +61,7 @@ class SettingsAccountFragment :
            viewModel.signOut()
         }
         setFragmentResultListener(DELETE_ACCOUNT) { _, bundle ->
-            if (firebaseAuth.isGoogleAuthUser()) {
+            if (firebaseAuth.isGoogleAuthUser(activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue())) {
                 googleSignInLauncher.launch(googleSignInClient.signInIntent)
             } else {
                 val authCredential = EmailAuthProvider.getCredential(firebaseAuth.currentUser?.email.orEmpty(), bundle.getString(CURRENT_PASSWORD, String.EMPTY))
@@ -78,12 +79,14 @@ class SettingsAccountFragment :
             isLoggedInUser = firebaseAuth.isAuthorisedUser()
             settingsAccountName.text = if (isLoggedInUser.isTrue()) firebaseAuth.currentUser?.currentUserEmail() else getString(R.string.settings_account_unauthorised)
             when {
-                firebaseAuth.isGoogleAuthUser() -> settingsAccountAvatar.setImageResource(R.drawable.ic_logo_google)
+                firebaseAuth.isGoogleAuthUser(activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue()) -> settingsAccountAvatar.setImageResource(R.drawable.ic_logo_google)
                 firebaseAuth.isAuthorisedUser() -> settingsAccountAvatar.setImageResource(R.drawable.ic_email)
                 else -> settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable(firebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())
             }
             executePendingBindings()
-            settingsAccountChangePassword.isVisible = firebaseAuth.isAuthorisedUser() && firebaseAuth.isGoogleAuthUser().not()
+            settingsAccountChangePassword.isVisible = firebaseAuth.isAuthorisedUser() && firebaseAuth.isGoogleAuthUser(
+                activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue()
+            ).not()
         }
     }
 
@@ -93,7 +96,10 @@ class SettingsAccountFragment :
                 findNavController().navigate(SettingsAccountFragmentDirections.startLogOutDialog(isAuthorised = firebaseAuth.isAuthorisedUser()))
             }
             settingsAccountDelete.setSafeOnClickListener {
-                findNavController().navigate(SettingsAccountFragmentDirections.startDeleteAccountDialog(isGoogleAuth = firebaseAuth.isGoogleAuthUser()))
+                findNavController().navigate(SettingsAccountFragmentDirections.startDeleteAccountDialog(isGoogleAuth = firebaseAuth.isGoogleAuthUser(
+                    activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue()
+                )
+                ))
             }
             settingsAccountChangePassword.setSafeOnClickListener {
                 findNavController().navigate(SettingsAccountFragmentDirections.startChangePasswordDialog())

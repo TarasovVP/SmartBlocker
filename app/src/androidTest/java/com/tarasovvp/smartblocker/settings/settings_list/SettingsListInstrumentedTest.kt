@@ -102,13 +102,13 @@ class SettingsListInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsReview() {
-        onView(withId(R.id.settings_review)).apply {
+        onView(withId(R.id.settings_feedback)).apply {
             if (mockFirebaseAuth.isAuthorisedUser()) {
                 check(matches(isDisplayed()))
-                check(matches(withText(R.string.settings_review)))
-                check(matches(withDrawable(R.drawable.ic_settings_review)))
+                check(matches(withText(R.string.settings_feedback)))
+                check(matches(withDrawable(R.drawable.ic_settings_feedback)))
                 perform(click())
-                assertEquals(R.id.settingsReviewDialog, navController?.currentDestination?.id)
+                assertEquals(R.id.settingsFeedbackDialog, navController?.currentDestination?.id)
             } else {
                 check(matches(not(isDisplayed())))
             }

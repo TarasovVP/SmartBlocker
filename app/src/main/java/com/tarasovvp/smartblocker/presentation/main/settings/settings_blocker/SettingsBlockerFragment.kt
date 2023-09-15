@@ -39,9 +39,9 @@ class SettingsBlockerFragment :
                 settingsBlockerDescribe.text =
                     getString(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off )
                 setBlockHiddenDisabling(blockerTurnOn)
-            }
-            settingsBlockerSwitch.setSafeOnClickListener {
-                viewModel.changeBlockTurnOn(settingsBlockerSwitch.isChecked)
+                settingsBlockerSwitch.setSafeOnClickListener {
+                    viewModel.changeBlockTurnOn(settingsBlockerSwitch.isChecked)
+                }
             }
         }
     }
@@ -63,9 +63,9 @@ class SettingsBlockerFragment :
                 settingsBlockerHiddenSwitch.isChecked = blockHidden
                 settingsBlockerHiddenDescribe.text =
                     getString(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)
-            }
-            settingsBlockerHiddenSwitch.setSafeOnClickListener {
-                viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked)
+                settingsBlockerHiddenSwitch.setSafeOnClickListener {
+                    viewModel.changeBlockHidden(settingsBlockerHiddenSwitch.isChecked)
+                }
             }
         }
     }

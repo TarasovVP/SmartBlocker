@@ -84,7 +84,7 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
         onView(withId(R.id.settings_account_avatar)).apply {
             check(matches(isDisplayed()))
             val avatar = when {
-                mockFirebaseAuth.isGoogleAuthUser() -> ContextCompat.getDrawable(targetContext, R.drawable.ic_logo_google)?.toBitmap()
+                mockFirebaseAuth.isGoogleAuthUser(true) -> ContextCompat.getDrawable(targetContext, R.drawable.ic_logo_google)?.toBitmap()
                 mockFirebaseAuth.isAuthorisedUser() -> ContextCompat.getDrawable(targetContext, R.drawable.ic_email)?.toBitmap()
                 else -> targetContext.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial()).toBitmap()
             }

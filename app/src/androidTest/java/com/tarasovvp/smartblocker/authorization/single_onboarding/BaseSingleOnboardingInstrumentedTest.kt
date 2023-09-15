@@ -30,7 +30,8 @@ open class BaseSingleOnboardingInstrumentedTest: BaseInstrumentedTest() {
             is SingleOnboardingInfoInstrumentedTest -> OnBoarding.ONBOARDING_INFO
             else -> OnBoarding.ONBOARDING_PERMISSIONS
         }
-        launchFragmentInHiltContainer<SingleOnBoardingFragment>(fragmentArgs = bundleOf(ON_BOARDING_PAGE to onBoardingPage)) {}
+        launchFragmentInHiltContainer<SingleOnBoardingFragment>(fragmentArgs = bundleOf(ON_BOARDING_PAGE to onBoardingPage)) {
+        }
     }
 
     @Test

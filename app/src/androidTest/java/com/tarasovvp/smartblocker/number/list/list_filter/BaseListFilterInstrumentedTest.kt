@@ -28,10 +28,7 @@ import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE_DEFAULT
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_FORMAT_DEFAULT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
@@ -148,7 +145,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             assertEquals(
                 FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
                     filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER),
-                    countryCodeUIModel = CountryCodeUIModel(COUNTRY_DEFAULT, COUNTRY_CODE_DEFAULT, NUMBER_FORMAT_DEFAULT, bundleResult?.countryCodeUIModel?.displayCountry.orEmpty())), bundleResult)
+                    countryCodeUIModel = CountryCodeUIModel()), bundleResult)
         }
     }
 
@@ -167,7 +164,7 @@ open class BaseListFilterInstrumentedTest: BaseInstrumentedTest() {
             assertEquals(
                 FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
                 filterType = if (this@BaseListFilterInstrumentedTest is ListPermissionInstrumentedTest) PERMISSION else BLOCKER),
-                    countryCodeUIModel = CountryCodeUIModel(COUNTRY_DEFAULT, COUNTRY_CODE_DEFAULT, NUMBER_FORMAT_DEFAULT, bundleResult?.countryCodeUIModel?.displayCountry.orEmpty())), bundleResult)
+                    countryCodeUIModel = CountryCodeUIModel()), bundleResult)
         }
     }
 

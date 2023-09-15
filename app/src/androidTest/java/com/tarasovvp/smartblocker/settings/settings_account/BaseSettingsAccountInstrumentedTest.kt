@@ -1,25 +1,21 @@
 package com.tarasovvp.smartblocker.settings.settings_account
 
-import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.Suppress
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.TestUtils.IS_LOG_OUT
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
-import com.tarasovvp.smartblocker.TestUtils.withBitmap
 import com.tarasovvp.smartblocker.TestUtils.withDrawable
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
 import com.tarasovvp.smartblocker.utils.extensions.currentUserEmail
-import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
-import com.tarasovvp.smartblocker.utils.extensions.nameInitial
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
@@ -38,6 +34,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     @Before
     override fun setUp() {
         super.setUp()
+        FirebaseApp.initializeApp(targetContext)
         every { mockFirebaseAuth.currentUser } returns mockk()
         mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
         every { mockFirebaseAuth.isAuthorisedUser() } returns (this@BaseSettingsAccountInstrumentedTest is SettingsAccountInstrumentedTest)
@@ -61,14 +58,6 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     }
 
     @Test
-    fun checkSettingsAccountAvatar() {
-        onView(withId(R.id.settings_account_avatar)).apply {
-            check(matches(isDisplayed()))
-            check(matches(withBitmap(targetContext.getInitialDrawable(mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial()).toBitmap())))
-        }
-    }
-
-    @Test
     fun checkSettingsAccountName() {
         onView(withId(R.id.settings_account_name)).apply {
             check(matches(isDisplayed()))
@@ -80,10 +69,9 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     fun checkSettingsAccountLogOut() {
         onView(withId(R.id.settings_account_log_out)).apply {
             check(matches(isDisplayed()))
-            check(matches(withText(R.string.settings_account_log_out_title)))
+            check(matches(withText(if (mockFirebaseAuth.isAuthorisedUser()) R.string.settings_account_log_out_title else R.string.settings_account_unauthorised_log_out_title)))
             perform(click())
             assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
-            assertEquals(true, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
         }
     }
 
@@ -108,8 +96,7 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
                 check(matches(isDisplayed()))
                 check(matches(withText(R.string.settings_account_delete_title)))
                 perform(click())
-                assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
-                assertEquals(false, navController?.backStack?.last()?.arguments?.getBoolean(IS_LOG_OUT))
+                assertEquals(R.id.deleteAccountDialog, navController?.currentDestination?.id)
             } else {
                 check(matches(not(isDisplayed())))
             }

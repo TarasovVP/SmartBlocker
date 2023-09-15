@@ -14,8 +14,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -28,8 +30,10 @@ import androidx.test.espresso.core.internal.deps.dagger.internal.Preconditions
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.viewpager2.widget.ViewPager2
+import com.tarasovvp.smartblocker.di.DataStoreEntryPoint
 import com.tarasovvp.smartblocker.domain.entities.db_entities.*
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IN_COMING_CALL
@@ -43,6 +47,8 @@ import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIMode
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.*
+import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
@@ -59,7 +65,6 @@ object TestUtils {
     const val TEST_COUNTRY = "UA"
     const val TEST_COUNTRY_CODE = "+380"
     const val TEST_PASSWORD = "testPassword"
-    const val IS_LOG_OUT = "isLogOut"
     const val FILTERING_LIST = "filteringList"
     const val FILTER_WITH_COUNTRY_CODE = "filterWithCountryCodeUIModel"
     const val FILTER_WITH_FILTERED_NUMBER = "filterWithFilteredNumberUIModel"
@@ -84,6 +89,12 @@ object TestUtils {
         )
 
         ActivityScenario.launch<MainActivity>(startActivityIntent).onActivity { activity ->
+            val dataStoreRepository = EntryPointAccessors.fromApplication( activity, DataStoreEntryPoint::class.java ).dataStoreRepository
+
+            runBlocking {
+                dataStoreRepository.clearDataByKeys(listOf(stringPreferencesKey(Constants.APP_LANG)))
+                dataStoreRepository.setAppTheme(AppCompatDelegate.MODE_NIGHT_NO)
+            }
             val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
                 Preconditions.checkNotNull(T::class.java.classLoader) as ClassLoader,
                 T::class.java.name

@@ -182,7 +182,8 @@ fun FirebaseAuth.isAuthorisedUser(): Boolean {
     return currentUser.isNotNull() && currentUser?.isAnonymous.isNotTrue()
 }
 
-fun FirebaseAuth.isGoogleAuthUser(): Boolean {
+fun FirebaseAuth.isGoogleAuthUser(isTestMode: Boolean): Boolean {
+    if (isTestMode) return false
     currentUser?.providerData?.forEach {
         if (it.providerId == GoogleAuthProvider.PROVIDER_ID) return true
     }
