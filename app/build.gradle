@@ -153,6 +153,7 @@ dependencies {
     //GoogleServices
     implementation "com.google.android.gms:play-services-ads:22.1.0"
     implementation "com.google.android.gms:play-services-auth:20.5.0"
+    implementation 'com.google.android.gms:play-services-wearable:17.0.0'
 
     //Review
     implementation "com.google.android.play:review:$review"

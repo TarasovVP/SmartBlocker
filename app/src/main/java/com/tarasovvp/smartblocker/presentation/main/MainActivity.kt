@@ -26,7 +26,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -398,7 +397,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadAd() {
-        adRequest?.let {
+        /*adRequest?.let {
             InterstitialAd.load(
                 this,
                 BuildConfig.INTERSTITIAL_AD,
@@ -418,7 +417,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             )
-        }
+        }*/
     }
 
     val callback = object : OnBackPressedCallback(true) {
