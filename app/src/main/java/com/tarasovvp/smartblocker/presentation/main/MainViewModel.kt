@@ -2,6 +2,7 @@ package com.tarasovvp.smartblocker.presentation.main
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -90,6 +91,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @AddTrace(name = "setCountryCodeData", enabled = true)
     suspend fun setCountryCodeData(isInit: Boolean = false) {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = if (isInit) R.string.progress_collect_localizations else R.string.progress_update_localizations
@@ -104,12 +106,14 @@ class MainViewModel @Inject constructor(
         mainUseCase.insertAllCountryCodes(countryCodeList)
     }
 
+    @AddTrace(name = "setCurrentCountryCode", enabled = true)
     suspend fun setCurrentCountryCode(countryCodeList: List<CountryCode>) {
         mainUseCase.getCurrentCountryCode().collect { countryCode ->
             if (countryCode.isNull()) mainUseCase.setCurrentCountryCode(countryCodeList.firstOrNull { it.country == getApplication<Application>().getUserCountry() } ?: CountryCode())
         }
     }
 
+    @AddTrace(name = "setContactData", enabled = true)
     suspend fun setContactData(isInit: Boolean = false) {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = if (isInit) R.string.progress_collect_contacts else R.string.progress_update_contacts
@@ -123,6 +127,7 @@ class MainViewModel @Inject constructor(
         mainUseCase.insertAllContacts(contactList)
     }
 
+    @AddTrace(name = "setLogCallData", enabled = true)
     suspend fun setLogCallData(isInit: Boolean = false) {
         progressStatusLiveData.postValue(mainProgress.apply {
             progressDescription = if (isInit) R.string.progress_collect_calls else R.string.progress_update_calls

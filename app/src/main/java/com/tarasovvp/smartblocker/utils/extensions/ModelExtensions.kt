@@ -2,9 +2,14 @@ package com.tarasovvp.smartblocker.utils.extensions
 
 import android.content.Context
 import android.database.Cursor
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
@@ -13,6 +18,7 @@ import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
@@ -21,6 +27,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_RU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG_UK
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ASC
@@ -33,7 +40,7 @@ import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIMode
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
-import java.util.*
+import java.util.Locale
 import kotlin.math.max
 
 fun Context.systemContactList(appPhoneNumberUtil: AppPhoneNumberUtil, country: String, result: (Int, Int) -> Unit): ArrayList<Contact> {
@@ -142,6 +149,17 @@ fun Context.createFilteredCall(
                     this.phoneNumberValue = number
                     this.isPhoneNumberValid = true
                 }
+                if (filter.filterType == BLOCKER) {
+                    try {
+                        this.contentResolver.delete(
+                            Uri.parse(Constants.LOG_CALL_CALL),
+                            "${Constants.CALL_ID}'${filteredCall.callId}'",
+                            null
+                        )
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
                 return filteredCall
             }
         }
@@ -149,6 +167,7 @@ fun Context.createFilteredCall(
     return null
 }
 
+@AddTrace(name = "getInitialDrawable", enabled = true)
 fun Context.getInitialDrawable(text: String): Drawable {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.TRANSPARENT

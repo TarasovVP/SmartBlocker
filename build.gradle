@@ -12,7 +12,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
         classpath 'com.google.gms:google-services:4.3.15'
@@ -20,6 +20,7 @@ buildscript {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath 'com.google.firebase:perf-plugin:1.4.2'
         classpath 'org.jacoco:org.jacoco.core:0.8.8'
+        classpath 'com.newrelic.agent.android:agent-gradle-plugin:7.2.0'
     }
 }
 

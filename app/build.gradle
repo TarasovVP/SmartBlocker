@@ -10,6 +10,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.firebase.firebase-perf'
     id 'jacoco'
+    id 'newrelic'
 }
 
 android {
@@ -54,11 +55,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_17
     }
     dataBinding {
         enabled = true
@@ -100,6 +101,9 @@ android {
                 ]
         ))
     }
+    buildFeatures {
+        aidl true
+    }
 }
 
 dependencies {
@@ -122,7 +126,7 @@ dependencies {
     implementation "androidx.test.ext:junit:1.1.5"
 
     testImplementation "org.hamcrest:hamcrest:2.2"
-    testImplementation "io.mockk:mockk:1.13.5"
+    testImplementation "io.mockk:mockk:1.13.7"
     testImplementation 'org.robolectric:robolectric:4.10.3'
     testImplementation "androidx.test.espresso:espresso-core:$espresso"
     testImplementation ("androidx.test.espresso:espresso-contrib:$espresso") {
@@ -207,4 +211,7 @@ dependencies {
 
     //DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //Memory leak
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }

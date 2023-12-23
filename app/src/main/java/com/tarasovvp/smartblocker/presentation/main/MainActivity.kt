@@ -24,11 +24,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.newrelic.agent.android.NewRelic
 import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
@@ -46,12 +51,20 @@ import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.List
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
+import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.notEquals
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setAppLocale
+import com.tarasovvp.smartblocker.utils.extensions.showMessage
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -170,6 +183,9 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.getOnBoardingSeen()
         }
         observeLiveData()
+        NewRelic.withApplicationToken(
+            "eu01xx2e35edf7982f7b975d50d1ebb208fee2c0c0-NRMA"
+        ).start(this.applicationContext)
     }
 
     private fun setAnimatorListener() {
