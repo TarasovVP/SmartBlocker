@@ -19,9 +19,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.android.internal.telephony.ITelephony
+import com.appsflyer.AppsFlyerLib
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
@@ -64,6 +66,13 @@ fun Application.isNetworkAvailable(): Boolean {
         is HiltTestApplication -> true
         else -> false
     }
+}
+
+fun Application.initAppsFlyerLib() {
+    AppsFlyerLib.getInstance().init(BuildConfig.APPS_FLYER_DEV_KEY, null, this)
+    AppsFlyerLib.getInstance().waitForCustomerUserId(true)
+    AppsFlyerLib.getInstance().start(this)
+    AppsFlyerLib.getInstance().setCustomerUserId(BuildConfig.APPLICATION_ID)
 }
 
 fun Context.createNotificationChannel() {

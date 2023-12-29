@@ -5,6 +5,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.appsflyer.AFInAppEventType
+import com.appsflyer.AppsFlyerLib
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.databinding.FragmentCreateFilterBinding
 import com.tarasovvp.smartblocker.domain.enums.FilterAction
@@ -24,10 +26,21 @@ import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboardWithLayoutTouch
+import com.tarasovvp.smartblocker.utils.extensions.inputText
+import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.parcelable
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.serializable
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
+import com.tarasovvp.smartblocker.utils.extensions.setupClearButtonWithAction
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 open class CreateFilterFragment :
@@ -166,7 +179,7 @@ open class CreateFilterFragment :
     private fun isNonUniqueInput(
         filterWithCountryCode: FilterWithCountryCodeUIModel?,
         inputText: String,
-        editable: String
+        editable: String,
     ): Boolean {
         return filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter == inputText
                 && isHintInput(filterWithCountryCode, editable).not()
@@ -231,6 +244,7 @@ open class CreateFilterFragment :
                 .orEmpty(),
                 filterWithFilteredNumberUIModel.filter, filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) }), false)
             showInterstitial()
+            definePreviousScreen()
             getAllData()
             if (findNavController().previousBackStackEntry?.destination?.id == R.id.detailsNumberDataFragment) {
                 val directions = if (filterWithFilteredNumberUIModel.isBlocker()) CreateFilterFragmentDirections.startListBlockerFragment() else CreateFilterFragmentDirections.startListPermissionFragment()
@@ -251,5 +265,15 @@ open class CreateFilterFragment :
             findNavController().navigate(
                 DetailsNumberDataFragmentDirections.startInfoFragment(info = info))
         }
+    }
+
+    private fun definePreviousScreen() {
+        val eventValues: MutableMap<String, Any> = HashMap()
+        eventValues["previous_screen"] = findNavController().previousBackStackEntry?.destination?.label.toString()
+
+        AppsFlyerLib.getInstance().logEvent(
+            context,
+            AFInAppEventType.AD_VIEW, eventValues
+        )
     }
 }

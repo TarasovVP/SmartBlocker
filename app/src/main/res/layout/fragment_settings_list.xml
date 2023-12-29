@@ -91,6 +91,19 @@
                 app:drawableStartCompat="@drawable/ic_settings_privacy"
                 app:layout_constraintTop_toBottomOf="@+id/settings_feedback" />
 
+            <TextView
+                android:id="@+id/settings_talk_to_ai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/bg_rounded"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_12"
+                android:text="@string/settings_talk_to_ai"
+                app:drawableStartCompat="@drawable/ic_settings_talk_to_ai"
+                app:layout_constraintTop_toBottomOf="@+id/settings_feedback" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

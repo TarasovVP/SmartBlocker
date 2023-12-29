@@ -33,7 +33,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.newrelic.agent.android.NewRelic
 import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.MainNavigationDirections
 import com.tarasovvp.smartblocker.R
@@ -183,9 +182,6 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.getOnBoardingSeen()
         }
         observeLiveData()
-        NewRelic.withApplicationToken(
-            "eu01xx2e35edf7982f7b975d50d1ebb208fee2c0c0-NRMA"
-        ).start(this.applicationContext)
     }
 
     private fun setAnimatorListener() {

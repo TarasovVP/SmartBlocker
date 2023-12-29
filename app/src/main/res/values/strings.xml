@@ -215,6 +215,7 @@
     <string name="settings_theme">Selecting a theme</string>
     <string name="settings_feedback">Contact developer</string>
     <string name="settings_privacy">Privacy Policy</string>
+    <string name="settings_talk_to_ai">Talk To AI</string>
     <!--Settings blocker-->
     <string name="settings_blocker_title">Activate Smart Blocker</string>
     <string name="settings_blocker_on">Smart Blocker will manage incoming calls according to your filters</string>

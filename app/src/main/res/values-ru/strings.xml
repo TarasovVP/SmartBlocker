@@ -218,6 +218,7 @@
     <string name="settings_theme">Выбор темы</string>
     <string name="settings_feedback">Написать разработчику</string>
     <string name="settings_privacy">Политика конфиденциальности</string>
+    <string name="settings_talk_to_ai">Talk To AI</string>
     <!--Settings blocker-->
     <string name="settings_blocker_title">Активировать Smart Blocker</string>
     <string name="settings_blocker_on">Smart Blocker будет управлять входящими вызовами согласно ваших фильтров</string>

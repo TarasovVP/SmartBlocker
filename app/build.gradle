@@ -10,7 +10,6 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.firebase.firebase-perf'
     id 'jacoco'
-    id 'newrelic'
 }
 
 android {
@@ -28,6 +27,7 @@ android {
         buildConfigField('String', 'SERVER_CLIENT_ID', SERVER_CLIENT_ID)
         buildConfigField('String', 'REALTIME_DATABASE', REALTIME_DATABASE)
         buildConfigField('String', 'INTERSTITIAL_AD', INTERSTITIAL_AD)
+        buildConfigField('String', 'APPS_FLYER_DEV_KEY', APPS_FLYER_DEV_KEY)
         versionNameSuffix '/Users/vladimirtarasov/Untitled'
     }
     packagingOptions {
@@ -214,4 +214,7 @@ dependencies {
 
     //Memory leak
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    //Apps Flyer
+    implementation 'com.appsflyer:af-android-sdk:6.12.1'
 }

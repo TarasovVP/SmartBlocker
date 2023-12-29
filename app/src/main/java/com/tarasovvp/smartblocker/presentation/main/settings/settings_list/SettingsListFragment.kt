@@ -1,5 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.main.settings.settings_list
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -12,9 +14,14 @@ import com.tarasovvp.smartblocker.databinding.FragmentSettingsListBinding
 import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SETTINGS_FEEDBACK
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.flagDrawable
+import com.tarasovvp.smartblocker.utils.extensions.getViewsFromLayout
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,6 +44,10 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
             settingsFeedback.isVisible = firebaseAuth.isAuthorisedUser()
             container.getViewsFromLayout(TextView::class.java).forEach {
                 it.setSafeOnClickListener {
+                    if (it.id == settingsTalkToAi.id) {
+                        launchOtherApp()
+                        return@setSafeOnClickListener
+                    }
                     val direction = when (it.id) {
                         settingsAccount.id -> SettingsListFragmentDirections.startSettingsAccountFragment()
                         settingsLanguage.id -> SettingsListFragmentDirections.startSettingsLanguageFragment()
@@ -64,6 +75,11 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
             showMessage(String.format(getString(R.string.settings_feedback_send_success), feedback),
                 false)
         }
+    }
+
+    private fun launchOtherApp() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://smartblocker.onelink.me/kUoF?af_xp=app&pid=Cross_sale&c=Talk%20To%20AI&af_dp=talktoai%3A%2F%2Fcom.vnstudio.talktoai"))
+        startActivity(intent)
     }
 
 }
