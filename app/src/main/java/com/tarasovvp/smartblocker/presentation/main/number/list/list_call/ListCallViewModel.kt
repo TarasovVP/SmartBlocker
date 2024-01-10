@@ -73,7 +73,7 @@ class ListCallViewModel @Inject constructor(
         launch {
             listCallUseCase.getReviewVoted().collect { reviewVote ->
                 delay(SECOND)
-                isReviewVoteLiveData.postValue(reviewVote)
+                isReviewVoteLiveData.postValue(reviewVote.isTrue())
             }
         }
     }
