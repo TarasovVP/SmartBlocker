@@ -18,21 +18,25 @@ jobs:
           rm testfile
 
           TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
-          mkdir "${TMP_KEYSTORE_FILE_PATH}"
-          echo "Created directory:"
-          ls -la "${RUNNER_TEMP}"
-
-          echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/upload-keystore.jks
-          echo "Keystore file contents:"
+          echo "TMP_KEYSTORE_FILE_PATH is set to ${TMP_KEYSTORE_FILE_PATH}"
+          mkdir -p "${TMP_KEYSTORE_FILE_PATH}"
+          echo "Contents of TMP_KEYSTORE_FILE_PATH directory:"
           ls -la "${TMP_KEYSTORE_FILE_PATH}"
-          test -f "${TMP_KEYSTORE_FILE_PATH}/upload-keystore.jks" && echo "Keystore file exists" || echo "Keystore file does not exist"
+
+          KEYPATH="${TMP_KEYSTORE_FILE_PATH}/upload-keystore.jks"
+          echo "KEYPATH is set to ${KEYPATH}"
+          echo $ENCODED_STRING | base64 -di > "${KEYPATH}"
+          echo "Keystore file contents:"
           
-          KEY_PATH="${TMP_KEYSTORE_FILE_PATH}/upload-keystore.jks"
-          if [ -f "KEY_PATH" ]; then
-          echo "Keystore file exists at KEY_PATH"
+          echo "Contents of the directory where the keystore should be:"
+          ls -la "${TMP_KEYSTORE_FILE_PATH}"
+
+          if [ -f "$KEYPATH" ]; then
+          echo "Keystore file exists at $KEYPATH"
           else
-          echo "Keystore file does not exist"
+          echo "Keystore file does not exist at $KEYPATH"
           fi
+
       - name: List files in the directory
         run: ls ${TMP_KEYSTORE_FILE_PATH}
       - uses: actions/checkout@v2
