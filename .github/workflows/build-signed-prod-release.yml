@@ -10,10 +10,23 @@ jobs:
         env:
           ENCODED_STRING: ${{ secrets.KEYSTORE }}
         run: |
+          echo "Checking current directory permissions:"
+          ls -l
+          
+          echo "Testing write permissions:"
+          touch testfile && echo "Write permissions are available" || echo "Write permissions are not available"
+          rm testfile
+
           TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
           mkdir "${TMP_KEYSTORE_FILE_PATH}"
-          ls ${TMP_KEYSTORE_FILE_PATH}
+          echo "Created directory:"
+          ls -la "${RUNNER_TEMP}"
+
           echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/upload-keystore.jks
+          echo "Keystore file contents:"
+          ls -la "${TMP_KEYSTORE_FILE_PATH}"
+          test -f "${TMP_KEYSTORE_FILE_PATH}/upload-keystore.jks" && echo "Keystore file exists" || echo "Keystore file does not exist"
+
       - name: List files in the directory
         run: ls ${TMP_KEYSTORE_FILE_PATH}
       - uses: actions/checkout@v2
