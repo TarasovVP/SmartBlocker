@@ -9,7 +9,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 @Dao
 interface CountryCodeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllCountryCodes(countryCodes: List<CountryCode>?)
+    suspend fun insertAllCountryCodes(countryCodes: List<CountryCode>)
 
     @Query("SELECT * FROM country_codes")
     suspend fun allCountryCodes(): List<CountryCode>

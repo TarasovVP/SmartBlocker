@@ -13,12 +13,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.tarasovvp.smartblocker"
         minSdk 29
-        targetSdk 33
+        targetSdk 34
         versionCode 9
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -190,9 +190,11 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:4.15.1"
 
     //Room
-    implementation "androidx.room:room-runtime:2.5.1"
-    kapt "androidx.room:room-compiler:2.5.1"
-    implementation "androidx.room:room-ktx:2.5.1"
+    implementation "androidx.room:room-runtime:2.6.1"
+    kapt "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
+    implementation "net.zetetic:android-database-sqlcipher:4.4.0"
+    implementation "androidx.sqlite:sqlite-ktx:2.4.0"
 
     //Phone number
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.13'

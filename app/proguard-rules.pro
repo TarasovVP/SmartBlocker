@@ -33,8 +33,14 @@
 #JaCoCo
 -keep class org.jacoco.** { *; }
 
+#NewRelic
 -keep class com.newrelic.** { *; }
 -dontwarn com.newrelic.**
 -keepattributes Exceptions, Signature, InnerClasses, LineNumberTable
 
+#AppsFlyer
 -keep class com.appsflyer.** { *; }
+
+#SQLCipher
+-keep class net.sqlcipher.** { *; }
+-keep class net.sqlcipher.database.** { *; }

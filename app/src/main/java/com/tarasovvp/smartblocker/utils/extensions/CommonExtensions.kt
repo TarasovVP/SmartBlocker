@@ -28,6 +28,8 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MIME_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.QUESTION_CHAR
 import kotlinx.coroutines.*
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -166,3 +168,5 @@ inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = whe
 infix fun String?.isContaining(searchQuery: String?) = this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
 
 infix fun Any?.notEquals(any: Any?) = this != any
+
+fun String?.supportFactory(): SupportFactory = SupportFactory(SQLiteDatabase.getBytes(this?.toCharArray()))

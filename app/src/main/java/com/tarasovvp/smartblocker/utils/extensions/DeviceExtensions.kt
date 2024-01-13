@@ -82,8 +82,8 @@ fun Context.createNotificationChannel() {
             Constants.FOREGROUND_CALL_SERVICE, NotificationManager.IMPORTANCE_HIGH
         )
         channel.lightColor = Color.BLUE
-        channel.importance = NotificationManager.IMPORTANCE_DEFAULT
-        channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        channel.importance = NotificationManager.IMPORTANCE_NONE
+        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         channel.setShowBadge(false)
         val service = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(channel)
@@ -105,10 +105,8 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
 
     builder.setSmallIcon(R.drawable.ic_logo)
         .setColor(ContextCompat.getColor(this, R.color.cornflower_blue))
-        .setContentTitle("Time tracker demo.")
+        .setContentTitle(getString(R.string.app_is_active))
         .setContentIntent(pendingIntent)
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        .setAutoCancel(true)
 
     return builder
 }

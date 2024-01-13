@@ -8,7 +8,7 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
 @Dao
 interface LogCallDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllLogCalls(logCalls: List<LogCall>?)
+    suspend fun insertAllLogCalls(logCalls: List<LogCall>)
 
     @RewriteQueriesToDropUnusedColumns
     @SuppressLint("RoomWarnings.CURSOR_MISMATCH")
