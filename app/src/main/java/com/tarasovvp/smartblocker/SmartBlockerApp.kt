@@ -4,7 +4,6 @@ import android.app.Application
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.tarasovvp.smartblocker.utils.extensions.createNotificationChannel
-import com.tarasovvp.smartblocker.utils.extensions.initAppsFlyerLib
 import com.tarasovvp.smartblocker.utils.extensions.registerForNetworkUpdates
 import dagger.hilt.android.HiltAndroidApp
 
@@ -17,7 +16,7 @@ class SmartBlockerApp : Application() {
     override fun onCreate() {
         super.onCreate()
         MobileAds.initialize(this)
-        initAppsFlyerLib()
+        //initAppsFlyerLib()
         FirebaseAnalytics.getInstance(this)
         createNotificationChannel()
         registerForNetworkUpdates { isAvailable ->

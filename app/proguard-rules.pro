@@ -38,6 +38,11 @@
 -dontwarn com.newrelic.**
 -keepattributes Exceptions, Signature, InnerClasses, LineNumberTable
 
+#NewRelic
+-keep class com.newrelic.** { *; }
+-dontwarn com.newrelic.**
+-keepattributes Exceptions, Signature, InnerClasses, LineNumberTable
+
 #AppsFlyer
 -keep class com.appsflyer.** { *; }
 

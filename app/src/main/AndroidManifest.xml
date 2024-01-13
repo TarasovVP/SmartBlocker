@@ -18,9 +18,6 @@
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-    <uses-sdk
-        android:minSdkVersion="26"
-        android:targetSdkVersion="33" />
 
     <application
         android:allowBackup="false"
@@ -32,6 +29,7 @@
         android:theme="@style/Theme.SmartBlocker"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:fullBackupContent" >
         <activity
             android:name="com.tarasovvp.smartblocker.presentation.main.MainActivity"
