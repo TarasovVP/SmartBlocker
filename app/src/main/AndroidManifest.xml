@@ -30,8 +30,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartBlocker"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:fullBackupContent" >
         <activity
             android:name="com.tarasovvp.smartblocker.presentation.main.MainActivity"
