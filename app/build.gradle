@@ -194,7 +194,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.6.1"
     implementation "androidx.room:room-ktx:2.6.1"
     implementation "net.zetetic:android-database-sqlcipher:4.4.0"
-    implementation "androidx.sqlite:sqlite-ktx:2.4.0"
 
     //Phone number
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.13'
