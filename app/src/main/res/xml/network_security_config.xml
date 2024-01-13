@@ -1,7 +1,6 @@
 <network-security-config>
-    <debug-overrides>
-        <trust-anchors>
-            <certificates src="user" />
-        </trust-anchors>
-    </debug-overrides>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true" >
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
 </network-security-config>

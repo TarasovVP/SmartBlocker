@@ -18,6 +18,9 @@
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
+    <uses-sdk
+        android:minSdkVersion="26"
+        android:targetSdkVersion="33" />
 
     <application
         android:allowBackup="false"

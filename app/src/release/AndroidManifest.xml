@@ -5,6 +5,7 @@
     <application tools:ignore="MissingApplicationIcon">
         <activity
             android:name=".EmptyActivity"
-            android:exported="true"/>
+            android:exported="false"
+            android:taskAffinity="" />
     </application>
 </manifest>

@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "com.tarasovvp.smartblocker"
-        minSdk 21
+        minSdk 29
         targetSdk 33
         versionCode 9
         versionName "1.0"
@@ -35,11 +35,13 @@ android {
     }
     signingConfigs {
         release {
-            def keystoreFilePath = System.getenv("RUNNER_TEMP") + "/keystore/upload-keystore.jks"
-            storeFile = file(keystoreFilePath)
-            storePassword System.getenv("SIGNING_STORE_PASSWORD")
-            keyAlias System.getenv("SIGNING_KEY_ALIAS")
-            keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+            def propertiesFile = rootProject.file('gradle.properties')
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(propertiesFile))
+            storeFile file(keystoreProperties['STORE_FILE'])
+            storePassword keystoreProperties['STORE_PASSWORD']
+            keyAlias keystoreProperties['KEY_FILE']
+            keyPassword keystoreProperties['KEY_PASSWORD']
         }
     }
     buildTypes {
