@@ -11,7 +11,6 @@ import com.tarasovvp.smartblocker.infrastructure.receivers.CallReceiver
 import com.tarasovvp.smartblocker.utils.extensions.notificationBuilder
 
 class ForegroundCallService : Service() {
-
     private var callReceiver: CallReceiver? = null
     private var notificationBuilder: NotificationCompat.Builder? = null
 
@@ -31,7 +30,11 @@ class ForegroundCallService : Service() {
         callReceiver = null
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int,
+    ): Int {
         startForeground(FOREGROUND_ID, notificationBuilder?.build())
         return START_STICKY
     }

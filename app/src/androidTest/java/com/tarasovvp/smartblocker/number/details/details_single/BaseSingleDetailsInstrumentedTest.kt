@@ -18,8 +18,7 @@ import org.junit.rules.TestName
 
 @androidx.test.filters.Suppress
 @HiltAndroidTest
-abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
-
+abstract class BaseSingleDetailsInstrumentedTest : BaseInstrumentedTest() {
     @get:Rule
     var name: TestName = TestName()
 
@@ -71,14 +70,15 @@ abstract class BaseSingleDetailsInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.single_details_list_empty)).apply {
             if (dataList.isEmpty()) {
                 check(matches(isDisplayed()))
-                val descriptionText = when(this@BaseSingleDetailsInstrumentedTest) {
-                    is SingleDetailsFiltersInstrumentedTest -> EmptyState.EMPTY_STATE_NUMBERS.descriptionRes()
-                    is SingleDetailsNumberDataInstrumentedTestUIModel -> EmptyState.EMPTY_STATE_FILTERS.descriptionRes()
-                    else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.descriptionRes()
-                }
+                val descriptionText =
+                    when (this@BaseSingleDetailsInstrumentedTest) {
+                        is SingleDetailsFiltersInstrumentedTest -> EmptyState.EMPTY_STATE_NUMBERS.descriptionRes()
+                        is SingleDetailsNumberDataInstrumentedTestUIModel -> EmptyState.EMPTY_STATE_FILTERS.descriptionRes()
+                        else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.descriptionRes()
+                    }
                 onView(withId(R.id.empty_state_description)).check(matches(withText(descriptionText)))
-                //TODO drawable
-                //onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
+                // TODO drawable
+                // onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
             } else {
                 check(matches(not(isDisplayed())))
             }

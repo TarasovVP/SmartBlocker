@@ -17,13 +17,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ListPermissionFragment : BaseListFilterFragment<ListPermissionFilterViewModel>() {
-
     override val viewModelClass = ListPermissionFilterViewModel::class.java
 
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                filterWithFilteredNumberUIModels = filterList as? ArrayList<FilterWithFilteredNumberUIModel>
+                filterWithFilteredNumberUIModels =
+                    filterList as? ArrayList<FilterWithFilteredNumberUIModel>
                 searchDataList()
             }
             filteredFilterListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredFilterList ->
@@ -56,30 +56,51 @@ class ListPermissionFragment : BaseListFilterFragment<ListPermissionFilterViewMo
     }
 
     override fun startDetailsFilterScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
-        findNavController().navigate(ListPermissionFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel))
+        findNavController().navigate(
+            ListPermissionFragmentDirections.startDetailsFilterFragment(
+                filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel,
+            ),
+        )
     }
 
     override fun startCreateFilterScreen() {
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = String.EMPTY
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = Constants.PERMISSION
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction = FilterAction.FILTER_ACTION_INVALID
-        findNavController().navigate(ListPermissionFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel))
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType =
+            Constants.PERMISSION
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction =
+            FilterAction.FILTER_ACTION_INVALID
+        findNavController().navigate(
+            ListPermissionFragmentDirections.startCreateFilterFragment(
+                filterWithCountryCodeUIModel,
+            ),
+        )
     }
 
     override fun startFilterActionScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
-        findNavController().navigate(ListPermissionFragmentDirections.startFilterActionDialog(filterWithFilteredNumberUIModel.apply { filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE }))
+        findNavController().navigate(
+            ListPermissionFragmentDirections.startFilterActionDialog(
+                filterWithFilteredNumberUIModel.apply {
+                    filterAction = FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                },
+            ),
+        )
     }
 
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
-        viewModel.getFilteredFilterList(filterWithFilteredNumberUIModels.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
+        viewModel.getFilteredFilterList(
+            filterWithFilteredNumberUIModels.orEmpty(),
+            searchQuery.orEmpty(),
+            filterIndexes ?: arrayListOf(),
+        )
     }
 
     override fun getData(allDataChange: Boolean) {
-        viewModel.savedStateHandle.get<List<FilterWithFilteredNumberUIModel>>(SAVED_LIST).takeIf { it.isNotNull()  && allDataChange.not()}?.let {
-            viewModel.filterListLiveData.postValue(it)
-            viewModel.savedStateHandle[SAVED_LIST] = null
-        } ?: viewModel.getFilterList(false, swipeRefresh?.isRefreshing.isTrue())
+        viewModel.savedStateHandle.get<List<FilterWithFilteredNumberUIModel>>(SAVED_LIST)
+            .takeIf { it.isNotNull() && allDataChange.not() }?.let {
+                viewModel.filterListLiveData.postValue(it)
+                viewModel.savedStateHandle[SAVED_LIST] = null
+            } ?: viewModel.getFilterList(false, swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {

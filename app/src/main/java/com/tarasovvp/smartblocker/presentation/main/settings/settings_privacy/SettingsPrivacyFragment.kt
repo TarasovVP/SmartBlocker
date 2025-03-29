@@ -13,12 +13,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SettingsPrivacyFragment :
     BaseFragment<FragmentSettingsPrivacyBinding, SettingsPrivacyPolicyViewModel>() {
-
     override var layoutId = R.layout.fragment_settings_privacy
     override val viewModelClass = SettingsPrivacyPolicyViewModel::class.java
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAppLanguage()
     }

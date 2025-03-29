@@ -10,7 +10,7 @@ import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @Parcelize
 data class FilterWithFilteredNumberUIModel(
@@ -21,9 +21,8 @@ data class FilterWithFilteredNumberUIModel(
     var country: String = String.EMPTY,
     var created: Long = 0,
     var filteredContacts: Int = 0,
-    var filteredCalls: Int = 0
+    var filteredCalls: Int = 0,
 ) : Parcelable, NumberDataUIModel() {
-
     @IgnoredOnParcel
     var isCheckedForDelete = false
 
@@ -32,7 +31,6 @@ data class FilterWithFilteredNumberUIModel(
 
     @IgnoredOnParcel
     var filterAction: FilterAction? = null
-
 
     fun filterTypeTitle(): Int {
         return when (filterType) {
@@ -56,29 +54,40 @@ data class FilterWithFilteredNumberUIModel(
     }
 
     fun filteredNumbersText(context: Context): String {
-        return context.resources.getQuantityString(when (filterType) {
-            Constants.PERMISSION -> R.plurals.details_number_permit_contacts
-            else -> R.plurals.details_number_block_contacts
-        }, filteredContacts, filteredContacts )
+        return context.resources.getQuantityString(
+            when (filterType) {
+                Constants.PERMISSION -> R.plurals.details_number_permit_contacts
+                else -> R.plurals.details_number_block_contacts
+            },
+            filteredContacts,
+            filteredContacts,
+        )
     }
 
     fun filteredCallsText(context: Context): String {
-        return context.resources.getQuantityString(when (filterType) {
-            Constants.PERMISSION -> R.plurals.details_number_permitted_calls
-            else -> R.plurals.details_number_blocked_calls
-        }, filteredCalls, filteredCalls)
+        return context.resources.getQuantityString(
+            when (filterType) {
+                Constants.PERMISSION -> R.plurals.details_number_permitted_calls
+                else -> R.plurals.details_number_blocked_calls
+            },
+            filteredCalls,
+            filteredCalls,
+        )
     }
 
     fun conditionTypeName(): Int? {
-        return conditionType.takeIf { it >= 0 }?.let { FilterCondition.values()[conditionType].title() }
+        return conditionType.takeIf { it >= 0 }
+            ?.let { FilterCondition.values()[conditionType].title() }
     }
 
     fun conditionTypeIcon(): Int? {
-        return conditionType.takeIf { it >= 0 }?.let { FilterCondition.values()[conditionType].mainIcon() }
+        return conditionType.takeIf { it >= 0 }
+            ?.let { FilterCondition.values()[conditionType].mainIcon() }
     }
 
     fun conditionTypeSmallIcon(): Int? {
-        return conditionType.takeIf { it >= 0 }?.let { FilterCondition.values()[conditionType].smallIcon(isBlocker()) }
+        return conditionType.takeIf { it >= 0 }
+            ?.let { FilterCondition.values()[conditionType].smallIcon(isBlocker()) }
     }
 
     fun filterCreatedDate(): String {

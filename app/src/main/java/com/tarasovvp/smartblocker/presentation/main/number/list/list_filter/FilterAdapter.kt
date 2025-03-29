@@ -7,16 +7,19 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemFilterBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
+import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class FilterAdapter(val filterClickListener: FilterClickListener) :
     BaseAdapter<FilterWithFilteredNumberUIModel>() {
-
     var isDeleteMode: Boolean = false
     var searchQuery = String.EMPTY
 
@@ -26,24 +29,29 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
     ): RecyclerView.ViewHolder {
         return if (viewType == HEADER_TYPE) {
             HeaderViewHolder(
-                DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent.context),
+                DataBindingUtil.inflate<ItemHeaderBinding>(
+                    LayoutInflater.from(parent.context),
                     R.layout.item_header,
                     parent,
-                    false).root
+                    false,
+                ).root,
             )
         } else {
             ViewHolder(
-                DataBindingUtil.inflate<ItemFilterBinding>(LayoutInflater.from(parent.context),
+                DataBindingUtil.inflate<ItemFilterBinding>(
+                    LayoutInflater.from(parent.context),
                     R.layout.item_filter,
                     parent,
-                    false).root
+                    false,
+                ).root,
             )
         }
     }
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
-        position: Int) {
+        position: Int,
+    ) {
         if (holder is ViewHolder) {
             holder.bindData(position)
         }
@@ -52,13 +60,17 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
 
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-
         fun bindData(position: Int) {
             val filterWithFilteredNumberUIModel = getDataInPosition(position)
             DataBindingUtil.bind<ItemFilterBinding>(itemView)?.apply {
                 filterWithFilteredNumberUIModel.isDeleteMode = isDeleteMode
                 filterWithFilteredNumberUIModel.searchText = searchQuery
-                filterWithFilteredNumberUIModel.highlightedSpanned = filterWithFilteredNumberUIModel.filter.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                filterWithFilteredNumberUIModel.highlightedSpanned =
+                    filterWithFilteredNumberUIModel.filter.highlightedSpanned(
+                        searchQuery,
+                        null,
+                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                    )
                 this.filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel
                 root.setSafeOnClickListener {
                     if (isDeleteMode) {
@@ -72,7 +84,8 @@ class FilterAdapter(val filterClickListener: FilterClickListener) :
                         filterWithFilteredNumberUIModel.isCheckedForDelete = true
                         filterClickListener.onFilterLongClick()
                     }
-                    return@setOnLongClickListener filterWithFilteredNumberUIModel.isDeleteMode.isTrue().not()
+                    return@setOnLongClickListener filterWithFilteredNumberUIModel.isDeleteMode.isTrue()
+                        .not()
                 }
                 itemFilterDelete.setOnCheckedChangeListener { _, checked ->
                     filterWithFilteredNumberUIModel.isCheckedForDelete = checked

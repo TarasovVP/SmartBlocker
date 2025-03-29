@@ -9,24 +9,25 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsThemeViewModel @Inject constructor(
-    application: Application,
-    private val settingsThemeUseCase: SettingsThemeUseCase
-) : BaseViewModel(application) {
+class SettingsThemeViewModel
+    @Inject
+    constructor(
+        application: Application,
+        private val settingsThemeUseCase: SettingsThemeUseCase,
+    ) : BaseViewModel(application) {
+        val appThemeLiveData = MutableLiveData<Int>()
 
-    val appThemeLiveData = MutableLiveData<Int>()
+        fun getAppTheme() {
+            launch {
+                settingsThemeUseCase.getAppTheme().collect { appTheme ->
+                    appThemeLiveData.postValue(appTheme ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                }
+            }
+        }
 
-    fun getAppTheme() {
-        launch {
-            settingsThemeUseCase.getAppTheme().collect { appTheme ->
-                appThemeLiveData.postValue(appTheme ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        fun setAppTheme(appTheme: Int) {
+            launch {
+                settingsThemeUseCase.setAppTheme(appTheme)
             }
         }
     }
-
-    fun setAppTheme(appTheme: Int) {
-        launch {
-            settingsThemeUseCase.setAppTheme(appTheme)
-        }
-    }
-}

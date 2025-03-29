@@ -20,11 +20,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SettingsBlockerFragment :
     BaseFragment<FragmentSettingsBlockerBinding, SettingsBlockerViewModel>() {
-
     override var layoutId = R.layout.fragment_settings_blocker
     override val viewModelClass = SettingsBlockerViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         observeLiveData()
         viewModel.getBlockerTurnOn()
@@ -37,7 +39,7 @@ class SettingsBlockerFragment :
             activity?.runOnUiThread {
                 settingsBlockerSwitch.isChecked = blockerTurnOn
                 settingsBlockerDescribe.text =
-                    getString(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off )
+                    getString(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off)
                 setBlockHiddenDisabling(blockerTurnOn)
                 settingsBlockerSwitch.setSafeOnClickListener {
                     viewModel.changeBlockTurnOn(settingsBlockerSwitch.isChecked)
@@ -51,8 +53,16 @@ class SettingsBlockerFragment :
             settingsBlockerHiddenSwitch.isEnabled = isEnabled
             settingsBlockerHiddenContainer.alpha = if (isEnabled) 1f else 0.6f
             context?.let {
-                settingsBlockerHiddenContainer.backgroundTintList = ContextCompat.getColorStateList(it, if (isEnabled) R.color.item_color else R.color.disabled_bg)
-                settingsBlockerHiddenDivider.backgroundTintList = ContextCompat.getColorStateList(it, if (isEnabled) R.color.light_steel_blue else R.color.disabled_bg)
+                settingsBlockerHiddenContainer.backgroundTintList =
+                    ContextCompat.getColorStateList(
+                        it,
+                        if (isEnabled) R.color.item_color else R.color.disabled_bg,
+                    )
+                settingsBlockerHiddenDivider.backgroundTintList =
+                    ContextCompat.getColorStateList(
+                        it,
+                        if (isEnabled) R.color.light_steel_blue else R.color.disabled_bg,
+                    )
             }
         }
     }

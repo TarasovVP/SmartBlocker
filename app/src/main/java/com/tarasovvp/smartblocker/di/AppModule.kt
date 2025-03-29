@@ -12,10 +12,45 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.data.database.AppDatabase
-import com.tarasovvp.smartblocker.data.database.dao.*
-import com.tarasovvp.smartblocker.data.repositoryImpl.*
-import com.tarasovvp.smartblocker.domain.repository.*
-import com.tarasovvp.smartblocker.domain.usecases.*
+import com.tarasovvp.smartblocker.data.database.dao.ContactDao
+import com.tarasovvp.smartblocker.data.database.dao.CountryCodeDao
+import com.tarasovvp.smartblocker.data.database.dao.FilterDao
+import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
+import com.tarasovvp.smartblocker.data.database.dao.LogCallDao
+import com.tarasovvp.smartblocker.data.repositoryImpl.AuthRepositoryImpl
+import com.tarasovvp.smartblocker.data.repositoryImpl.ContactRepositoryImpl
+import com.tarasovvp.smartblocker.data.repositoryImpl.CountryCodeRepositoryImpl
+import com.tarasovvp.smartblocker.data.repositoryImpl.DataStoreRepositoryImpl
+import com.tarasovvp.smartblocker.data.repositoryImpl.FilterRepositoryImpl
+import com.tarasovvp.smartblocker.data.repositoryImpl.FilteredCallRepositoryImpl
+import com.tarasovvp.smartblocker.data.repositoryImpl.LogCallRepositoryImpl
+import com.tarasovvp.smartblocker.data.repositoryImpl.RealDataBaseRepositoryImpl
+import com.tarasovvp.smartblocker.domain.repository.AuthRepository
+import com.tarasovvp.smartblocker.domain.repository.ContactRepository
+import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
+import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
+import com.tarasovvp.smartblocker.domain.repository.FilterRepository
+import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
+import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
+import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
+import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
+import com.tarasovvp.smartblocker.domain.usecases.CreateFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecases.DetailsFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecases.DetailsNumberDataUseCase
+import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
+import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
+import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
+import com.tarasovvp.smartblocker.domain.usecases.LoginUseCase
+import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
+import com.tarasovvp.smartblocker.domain.usecases.OnBoardingUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsLanguageUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsPrivacyPolicyUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsSignUpUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SettingsThemeUseCase
+import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.MainUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginUseCaseImpl
@@ -34,8 +69,14 @@ import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.Setti
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_privacy.SettingsPrivacyPolicyUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpUseCaseImpl
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeUseCaseImpl
-import com.tarasovvp.smartblocker.presentation.mapperImpl.*
-import com.tarasovvp.smartblocker.presentation.mappers.*
+import com.tarasovvp.smartblocker.presentation.mapperImpl.CallWithFilterUIMapperImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.ContactWithFilterUIMapperImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.CountryCodeUIMapperImpl
+import com.tarasovvp.smartblocker.presentation.mapperImpl.FilterWithFilteredNumberUIMapperImpl
+import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
+import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import dagger.Module
 import dagger.Provides
@@ -48,17 +89,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    //Avoid duplicate data store exception in instrumented tests
+    // Avoid duplicate data store exception in instrumented tests
     private var dataStore: DataStore<Preferences>? = null
 
     @Singleton
     @Provides
-    fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+    fun providePreferencesDataStore(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> {
         if (dataStore == null) {
-            dataStore = PreferenceDataStoreFactory.create(produceFile = {
-                context.preferencesDataStoreFile(context.packageName)
-            })
+            dataStore =
+                PreferenceDataStoreFactory.create(produceFile = {
+                    context.preferencesDataStoreFile(context.packageName)
+                })
         }
         return dataStore!!
     }
@@ -71,7 +114,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext appContext: Context): AppDatabase {
+    fun provideDatabase(
+        @ApplicationContext appContext: Context,
+    ): AppDatabase {
         return AppDatabase.getDatabase(appContext)
     }
 
@@ -83,11 +128,14 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
-            .requestEmail()
-            .build()
+    fun provideGoogleSignInClient(
+        @ApplicationContext context: Context,
+    ): GoogleSignInClient {
+        val gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
+                .requestEmail()
+                .build()
         return GoogleSignIn.getClient(context, gso)
     }
 
@@ -138,9 +186,13 @@ object AppModule {
     fun provideSettingsAccountUseCase(
         authRepository: AuthRepository,
         realDataBaseRepository: RealDataBaseRepository,
-        dataStoreRepository: DataStoreRepository
+        dataStoreRepository: DataStoreRepository,
     ): SettingsAccountUseCase {
-        return SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository, dataStoreRepository)
+        return SettingsAccountUseCaseImpl(
+            authRepository,
+            realDataBaseRepository,
+            dataStoreRepository,
+        )
     }
 
     @Singleton
@@ -170,7 +222,7 @@ object AppModule {
             logCallRepository,
             filteredCallRepository,
             realDataBaseRepository,
-            dataStoreRepository
+            dataStoreRepository,
         )
     }
 
@@ -208,9 +260,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFilterRepository(
-        filterDao: FilterDao,
-    ): FilterRepository {
+    fun provideFilterRepository(filterDao: FilterDao): FilterRepository {
         return FilterRepositoryImpl(filterDao)
     }
 
@@ -232,7 +282,7 @@ object AppModule {
             filterRepository,
             realDataBaseRepository,
             firebaseAuth,
-            dataStoreRepository
+            dataStoreRepository,
         )
     }
 
@@ -250,7 +300,7 @@ object AppModule {
             phoneNumberUtil,
             filterRepository,
             realDataBaseRepository,
-            firebaseAuth
+            firebaseAuth,
         )
     }
 
@@ -268,7 +318,7 @@ object AppModule {
             filterRepository,
             realDataBaseRepository,
             filteredCallRepository,
-            firebaseAuth
+            firebaseAuth,
         )
     }
 
@@ -291,9 +341,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFilteredCallRepository(
-        filteredCallDao: FilteredCallDao,
-    ): FilteredCallRepository {
+    fun provideFilteredCallRepository(filteredCallDao: FilteredCallDao): FilteredCallRepository {
         return FilteredCallRepositoryImpl(filteredCallDao)
     }
 
@@ -310,17 +358,16 @@ object AppModule {
         filteredCallRepository: FilteredCallRepository,
         realDataBaseRepository: RealDataBaseRepository,
         firebaseAuth: FirebaseAuth,
-        dataStoreRepository: DataStoreRepository
+        dataStoreRepository: DataStoreRepository,
     ): ListCallUseCase {
         return ListCallUseCaseImpl(
             logCallRepository,
             filteredCallRepository,
             realDataBaseRepository,
             firebaseAuth,
-            dataStoreRepository
+            dataStoreRepository,
         )
     }
-
 
     @Singleton
     @Provides
@@ -359,7 +406,7 @@ object AppModule {
             countryCodeRepository,
             filterRepository,
             filteredCallRepository,
-            dataStoreRepository
+            dataStoreRepository,
         )
     }
 
@@ -387,7 +434,7 @@ object AppModule {
             filteredCallRepository,
             dataStoreRepository,
             authRepository,
-            realDataBaseRepository
+            realDataBaseRepository,
         )
     }
 

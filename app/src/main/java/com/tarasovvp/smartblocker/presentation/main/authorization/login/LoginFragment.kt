@@ -27,14 +27,16 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
-
     @Inject
     lateinit var googleSignInClient: GoogleSignInClient
 
     override var layoutId = R.layout.fragment_login
     override val viewModelClass = LoginViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setOnClickListeners()
         setOnFragmentResultListeners()
@@ -95,14 +97,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     override fun observeLiveData() {
         with(viewModel) {
             isEmailAccountExistLiveData.safeSingleObserve(viewLifecycleOwner) {
-                viewModel.signInWithEmailAndPassword(binding?.loginEmailInput.inputText(),
-                    binding?.loginPasswordInput.inputText())
+                viewModel.signInWithEmailAndPassword(
+                    binding?.loginEmailInput.inputText(),
+                    binding?.loginPasswordInput.inputText(),
+                )
             }
             isGoogleAccountExistLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
                 viewModel.signInAuthWithGoogle(idToken)
             }
             accountExistLiveData.safeSingleObserve(viewLifecycleOwner) {
-                findNavController().navigate(LoginFragmentDirections.startExistAccountDialog(description = getString(R.string.authorization_account_not_exist)))
+                findNavController().navigate(
+                    LoginFragmentDirections.startExistAccountDialog(
+                        description = getString(R.string.authorization_account_not_exist),
+                    ),
+                )
             }
             successSignInLiveData.safeSingleObserve(viewLifecycleOwner) {
                 findNavController().navigate(LoginFragmentDirections.startListBlockerFragment())
@@ -128,5 +136,4 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 showMessage(CommonStatusCodes.getStatusCodeString(e.statusCode), true)
             }
         }
-
 }

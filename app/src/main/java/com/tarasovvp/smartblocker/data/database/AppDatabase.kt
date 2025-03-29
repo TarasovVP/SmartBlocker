@@ -24,20 +24,29 @@ import com.tarasovvp.smartblocker.utils.extensions.supportFactory
     entities = [LogCall::class, FilteredCall::class, Contact::class, Filter::class, CountryCode::class],
     views = [ContactWithFilter::class, CallWithFilter::class, FilterWithFilteredNumber::class],
     version = 2,
-    exportSchema = false
+    exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun logCallDao(): LogCallDao
+
     abstract fun filteredCallDao(): FilteredCallDao
+
     abstract fun contactDao(): ContactDao
+
     abstract fun filterDao(): FilterDao
+
     abstract fun countryCodeDao(): CountryCodeDao
 
     companion object {
-        @Volatile private var instance: AppDatabase? = null
+        @Volatile
+        private var instance: AppDatabase? = null
 
         fun getDatabase(context: Context): AppDatabase =
-            instance ?: synchronized(this) { instance ?: buildDatabase(context).also { instance = it } }
+            instance ?: synchronized(this) {
+                instance ?: buildDatabase(context).also {
+                    instance = it
+                }
+            }
 
         private fun buildDatabase(appContext: Context) =
             Room.databaseBuilder(appContext, AppDatabase::class.java, appContext.packageName)

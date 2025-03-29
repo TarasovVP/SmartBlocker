@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingHorizontal="@dimen/padding_16"
-            android:paddingVertical="@dimen/padding_8"/>
+            android:paddingVertical="@dimen/padding_8" />
 
     </androidx.core.widget.NestedScrollView>
 </layout>

@@ -8,7 +8,11 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasChildCount
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
@@ -27,11 +31,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class SettingsThemeUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class SettingsThemeUnitTest : BaseFragmentUnitTest() {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
@@ -68,9 +73,29 @@ class SettingsThemeUnitTest: BaseFragmentUnitTest() {
         onView(withId(R.id.app_theme_day)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_theme_day)))
-            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_NO) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appThemeLiveData?.getOrAwaitValue() == AppCompatDelegate.MODE_NIGHT_NO) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
             perform(click())
-            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_NO) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appThemeLiveData?.getOrAwaitValue() == AppCompatDelegate.MODE_NIGHT_NO) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
         }
     }
 
@@ -79,9 +104,29 @@ class SettingsThemeUnitTest: BaseFragmentUnitTest() {
         onView(withId(R.id.app_theme_night)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_theme_night)))
-            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_YES) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appThemeLiveData?.getOrAwaitValue() == AppCompatDelegate.MODE_NIGHT_YES) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
             perform(click())
-            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_YES) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appThemeLiveData?.getOrAwaitValue() == AppCompatDelegate.MODE_NIGHT_YES) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
         }
     }
 
@@ -90,9 +135,29 @@ class SettingsThemeUnitTest: BaseFragmentUnitTest() {
         onView(withId(R.id.app_theme_auto)).apply {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_theme_auto)))
-            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appThemeLiveData?.getOrAwaitValue() == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
             perform(click())
-            check(matches(if ( appThemeLiveData?.getOrAwaitValue() ==  AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appThemeLiveData?.getOrAwaitValue() == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
         }
     }
 }

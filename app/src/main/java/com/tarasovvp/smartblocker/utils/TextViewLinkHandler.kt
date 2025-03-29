@@ -1,15 +1,25 @@
 package com.tarasovvp.smartblocker.utils
 
-import android.text.method.LinkMovementMethod
-import android.widget.TextView
 import android.text.Spannable
-import android.view.MotionEvent
+import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
+import android.view.MotionEvent
+import android.widget.TextView
 import com.tarasovvp.smartblocker.utils.extensions.notEquals
 
 abstract class TextViewLinkHandler : LinkMovementMethod() {
-    override fun onTouchEvent(textView: TextView, buffer: Spannable, event: MotionEvent): Boolean {
-        if (event.action notEquals MotionEvent.ACTION_UP) return super.onTouchEvent(textView, buffer, event)
+    override fun onTouchEvent(
+        textView: TextView,
+        buffer: Spannable,
+        event: MotionEvent,
+    ): Boolean {
+        if (event.action notEquals MotionEvent.ACTION_UP) {
+            return super.onTouchEvent(
+                textView,
+                buffer,
+                event,
+            )
+        }
         var x = event.x.toInt()
         var y = event.y.toInt()
         x -= textView.totalPaddingLeft

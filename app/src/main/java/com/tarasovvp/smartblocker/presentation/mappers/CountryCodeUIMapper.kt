@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.mappers
 
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 
 interface CountryCodeUIMapper : BaseMapper<CountryCode, CountryCodeUIModel>

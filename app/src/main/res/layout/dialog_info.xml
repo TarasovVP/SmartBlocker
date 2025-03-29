@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="@dimen/padding_2"
-        app:cardCornerRadius="@dimen/padding_8" >
+        app:cardCornerRadius="@dimen/padding_8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container"
@@ -21,7 +21,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/dialog_info_description"/>
+                app:layout_constraintBottom_toTopOf="@+id/dialog_info_description" />
 
             <TextView
                 android:id="@+id/dialog_info_description"

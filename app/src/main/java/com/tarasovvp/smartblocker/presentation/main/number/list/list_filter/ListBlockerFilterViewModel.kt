@@ -9,10 +9,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ListBlockerFilterViewModel @Inject constructor(
-    application: Application,
-    listFilterUseCase: ListFilterUseCase,
-    filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    countryCodeUIMapper: CountryCodeUIMapper,
-    val savedStateHandle: SavedStateHandle
-) : BaseListFilterViewModel(application, listFilterUseCase, filterWithFilteredNumberUIMapper, countryCodeUIMapper)
+class ListBlockerFilterViewModel
+    @Inject
+    constructor(
+        application: Application,
+        listFilterUseCase: ListFilterUseCase,
+        filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
+        countryCodeUIMapper: CountryCodeUIMapper,
+        val savedStateHandle: SavedStateHandle,
+    ) : BaseListFilterViewModel(
+            application,
+            listFilterUseCase,
+            filterWithFilteredNumberUIMapper,
+            countryCodeUIMapper,
+        )

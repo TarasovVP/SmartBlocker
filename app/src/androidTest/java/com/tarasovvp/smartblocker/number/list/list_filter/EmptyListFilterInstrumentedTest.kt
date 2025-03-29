@@ -12,15 +12,14 @@ import org.junit.Before
 import org.junit.Rule
 
 @HiltAndroidTest
-class EmptyListFilterInstrumentedTest: BaseListFilterInstrumentedTest() {
-
+class EmptyListFilterInstrumentedTest : BaseListFilterInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Before
     override fun setUp() {
         super.setUp()
-        filterList =  arrayListOf()
+        filterList = arrayListOf()
         launchFragmentInHiltContainer<ListBlockerFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listPermissionFragment)

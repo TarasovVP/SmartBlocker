@@ -9,7 +9,8 @@ enum class NumberDataFiltering {
     CALL_BLOCKED,
     CALL_PERMITTED,
     CONTACT_WITH_BLOCKER,
-    CONTACT_WITH_PERMISSION;
+    CONTACT_WITH_PERMISSION,
+    ;
 
     fun title(): Int {
         return titleRes()

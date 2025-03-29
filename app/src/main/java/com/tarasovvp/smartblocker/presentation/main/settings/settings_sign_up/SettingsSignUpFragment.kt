@@ -22,13 +22,20 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOU
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ID_TOKEN
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.getViewsFromLayout
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboard
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboardWithLayoutTouch
+import com.tarasovvp.smartblocker.utils.extensions.inputText
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, SettingSignUpViewModel>() {
-
+class SettingsSignUpFragment :
+    BaseFragment<FragmentSettingsSignUpBinding, SettingSignUpViewModel>() {
     @Inject
     lateinit var googleSignInClient: GoogleSignInClient
 
@@ -37,7 +44,10 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
 
     private val currentUser: CurrentUser by lazy { CurrentUser() }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
@@ -79,15 +89,21 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
 
     private fun setTransferDataSwitch() {
         binding?.settingsTransferDataSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            binding?.settingsTransferDataDescribe?.text = getString( if (isChecked) R.string.settings_account_transfer_data_turn_on else R.string.settings_account_transfer_data_turn_off)
+            binding?.settingsTransferDataDescribe?.text =
+                getString(if (isChecked) R.string.settings_account_transfer_data_turn_on else R.string.settings_account_transfer_data_turn_off)
         }
     }
 
     private fun setFragmentResultListeners() {
         setFragmentResultListener(EXIST_ACCOUNT) { _, bundle ->
-            when(val idToken = bundle.getString(ID_TOKEN, String.EMPTY)) {
+            when (val idToken = bundle.getString(ID_TOKEN, String.EMPTY)) {
                 CANCEL -> googleSignInClient.signOut()
-                String.EMPTY -> viewModel.signInWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())
+                String.EMPTY ->
+                    viewModel.signInWithEmailAndPassword(
+                        binding?.settingsSignUpEmail.inputText(),
+                        binding?.settingsSignUpPassword.inputText(),
+                    )
+
                 else -> viewModel.createUserWithGoogle(idToken, true)
             }
         }
@@ -105,19 +121,27 @@ class SettingsSignUpFragment : BaseFragment<FragmentSettingsSignUpBinding, Setti
                 currentUser.isBlockHidden = isBlockHidden
             }
             createEmailAccountLiveData.safeSingleObserve(viewLifecycleOwner) {
-                viewModel.createUserWithEmailAndPassword(binding?.settingsSignUpEmail.inputText(), binding?.settingsSignUpPassword.inputText())
+                viewModel.createUserWithEmailAndPassword(
+                    binding?.settingsSignUpEmail.inputText(),
+                    binding?.settingsSignUpPassword.inputText(),
+                )
             }
             createGoogleAccountLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
                 viewModel.createUserWithGoogle(idToken, false)
             }
             accountExistLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
-                findNavController().navigate(SettingsSignUpFragmentDirections.startExistAccountDialog(idToken = idToken, description = getString(R.string.settings_account_exist)))
+                findNavController().navigate(
+                    SettingsSignUpFragmentDirections.startExistAccountDialog(
+                        idToken = idToken,
+                        description = getString(R.string.settings_account_exist),
+                    ),
+                )
             }
             successAuthorisationLiveData.safeSingleObserve(viewLifecycleOwner) { isExistUser ->
                 if (isExistUser) {
-                    viewModel.updateCurrentUser( if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
+                    viewModel.updateCurrentUser(if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
                 } else {
-                    viewModel.createCurrentUser( if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
+                    viewModel.createCurrentUser(if (binding?.settingsTransferDataSwitch?.isChecked.isTrue()) currentUser else CurrentUser())
                 }
             }
             createCurrentUserLiveData.safeSingleObserve(viewLifecycleOwner) {

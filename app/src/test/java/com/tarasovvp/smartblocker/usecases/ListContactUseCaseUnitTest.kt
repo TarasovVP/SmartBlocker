@@ -15,7 +15,6 @@ import org.junit.Before
 import org.junit.Test
 
 class ListContactUseCaseUnitTest {
-
     @MockK
     private lateinit var contactRepository: ContactRepository
 
@@ -28,10 +27,11 @@ class ListContactUseCaseUnitTest {
     }
 
     @Test
-    fun allContactWithFiltersTest() = runBlocking {
-        val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)))
-        coEvery { contactRepository.allContactWithFilters() } returns contactList
-        val result = listContactUseCase.allContactWithFilters()
-        assertEquals(contactList, result)
-    }
+    fun allContactWithFiltersTest() =
+        runBlocking {
+            val contactList = listOf(ContactWithFilter(contact = Contact(name = TEST_NAME)))
+            coEvery { contactRepository.allContactWithFilters() } returns contactList
+            val result = listContactUseCase.allContactWithFilters()
+            assertEquals(contactList, result)
+        }
 }

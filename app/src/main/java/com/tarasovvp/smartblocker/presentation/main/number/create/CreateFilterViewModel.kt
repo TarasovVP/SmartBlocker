@@ -20,79 +20,121 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateFilterViewModel @Inject constructor(
-    private val application: Application,
-    private val createFilterUseCase: CreateFilterUseCase,
-    private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    private val contactWithFilterUIMapper: ContactWithFilterUIMapper
-) : BaseViewModel(application) {
+class CreateFilterViewModel
+    @Inject
+    constructor(
+        private val application: Application,
+        private val createFilterUseCase: CreateFilterUseCase,
+        private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
+        private val contactWithFilterUIMapper: ContactWithFilterUIMapper,
+    ) : BaseViewModel(application) {
+        val contactWithFilterLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
+        val existingFilterLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
+        val filterActionLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
 
-    val contactWithFilterLiveData = MutableLiveData<List<ContactWithFilterUIModel>>()
-    val existingFilterLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
-    val filterActionLiveData = MutableLiveData<FilterWithFilteredNumberUIModel>()
-
-    fun getMatchedContactWithFilterList(filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel?) {
-        showProgress()
-        launch {
-            val contactWithFilters =  createFilterUseCase.allContactsWithFiltersByCreateFilter(
-                filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter.orEmpty(),
-                filterWithCountryCodeUIModel?.countryCodeUIModel?.country.orEmpty(),
-                filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode.orEmpty(),
-                filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue())
-            contactWithFilterLiveData.postValue(contactWithFilterUIMapper.mapToUIModelList(contactWithFilters))
-            hideProgress()
+        fun getMatchedContactWithFilterList(filterWithCountryCodeUIModel: FilterWithCountryCodeUIModel?) {
+            showProgress()
+            launch {
+                val contactWithFilters =
+                    createFilterUseCase.allContactsWithFiltersByCreateFilter(
+                        filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.filter.orEmpty(),
+                        filterWithCountryCodeUIModel?.countryCodeUIModel?.country.orEmpty(),
+                        filterWithCountryCodeUIModel?.countryCodeUIModel?.countryCode.orEmpty(),
+                        filterWithCountryCodeUIModel?.filterWithFilteredNumberUIModel?.isTypeContain()
+                            .isTrue(),
+                    )
+                contactWithFilterLiveData.postValue(
+                    contactWithFilterUIMapper.mapToUIModelList(
+                        contactWithFilters,
+                    ),
+                )
+                hideProgress()
+            }
         }
-    }
 
-    fun checkFilterExist(filter: String) {
-        launch {
-            val existingFilter = createFilterUseCase.getFilter(filter) ?: FilterWithFilteredNumber(Filter(filterType = DEFAULT_FILTER))
-            existingFilterLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModel(existingFilter))
+        fun checkFilterExist(filter: String) {
+            launch {
+                val existingFilter =
+                    createFilterUseCase.getFilter(filter) ?: FilterWithFilteredNumber(
+                        Filter(filterType = DEFAULT_FILTER),
+                    )
+                existingFilterLiveData.postValue(
+                    filterWithFilteredNumberUIMapper.mapToUIModel(
+                        existingFilter,
+                    ),
+                )
+            }
         }
-    }
 
-    fun createFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
-        showProgress()
-        launch {
-            filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                createFilterUseCase.createFilter(filter, application.isNetworkAvailable()) { operationResult ->
-                    when(operationResult) {
-                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
-                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        fun createFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
+            showProgress()
+            launch {
+                filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
+                    createFilterUseCase.createFilter(
+                        filter,
+                        application.isNetworkAvailable(),
+                    ) { operationResult ->
+                        when (operationResult) {
+                            is Result.Success ->
+                                filterWithCountryCode.let {
+                                    filterActionLiveData.postValue(
+                                        it,
+                                    )
+                                }
+
+                            is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                        }
                     }
                 }
+                hideProgress()
             }
-            hideProgress()
         }
-    }
 
-    fun updateFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
-        showProgress()
-        launch {
-            filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                createFilterUseCase.updateFilter(filter, application.isNetworkAvailable()) { operationResult ->
-                    when(operationResult) {
-                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
-                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        fun updateFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
+            showProgress()
+            launch {
+                filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
+                    createFilterUseCase.updateFilter(
+                        filter,
+                        application.isNetworkAvailable(),
+                    ) { operationResult ->
+                        when (operationResult) {
+                            is Result.Success ->
+                                filterWithCountryCode.let {
+                                    filterActionLiveData.postValue(
+                                        it,
+                                    )
+                                }
+
+                            is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                        }
                     }
                 }
+                hideProgress()
             }
-            hideProgress()
         }
-    }
 
-    fun deleteFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
-        showProgress()
-        launch {
-            filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
-                createFilterUseCase.deleteFilter(filter, application.isNetworkAvailable()) { operationResult ->
-                    when(operationResult) {
-                        is Result.Success -> filterWithCountryCode.let { filterActionLiveData.postValue(it) }
-                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        fun deleteFilter(filterWithCountryCode: FilterWithFilteredNumberUIModel) {
+            showProgress()
+            launch {
+                filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithCountryCode).filter?.let { filter ->
+                    createFilterUseCase.deleteFilter(
+                        filter,
+                        application.isNetworkAvailable(),
+                    ) { operationResult ->
+                        when (operationResult) {
+                            is Result.Success ->
+                                filterWithCountryCode.let {
+                                    filterActionLiveData.postValue(
+                                        it,
+                                    )
+                                }
+
+                            is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                        }
                     }
                 }
+                hideProgress()
             }
-            hideProgress()
         }
     }
-}

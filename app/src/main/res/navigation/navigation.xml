@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginFragment" >
+        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.login.LoginFragment">
         <action
             android:id="@+id/startListBlockerFragment"
             app:destination="@id/listBlockerFragment"
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment" >
+        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment">
         <action
             android:id="@+id/startExistAccountDialog"
             app:destination="@id/existAccountDialog" />
@@ -117,7 +117,7 @@
 
     <fragment
         android:id="@+id/createFilterFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment" >
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment">
         <argument
             android:name="filterWithCountryCodeUIModel"
             android:defaultValue="@null"
@@ -171,8 +171,7 @@
     <fragment
         android:id="@+id/listCallFragment"
         android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment"
-        android:label="@string/list_call"
-        >
+        android:label="@string/list_call">
         <action
             android:id="@+id/startDetailsNumberDataFragment"
             app:destination="@id/detailsNumberDataFragment" />
@@ -212,7 +211,7 @@
 
     <fragment
         android:id="@+id/infoFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment" >
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.info.InfoFragment">
         <argument
             android:name="info"
             app:argType="com.tarasovvp.smartblocker.domain.enums.Info" />
@@ -359,7 +358,7 @@
 
     <dialog
         android:id="@+id/existAccountDialog"
-        android:name="com.tarasovvp.smartblocker.presentation.dialogs.ExistAccountDialog" >
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.ExistAccountDialog">
         <argument
             android:name="description"
             android:defaultValue=""
@@ -411,7 +410,7 @@
 
     <dialog
         android:id="@+id/countryCodeSearchDialog"
-        android:name="com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchDialog" >
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchDialog">
         <argument
             android:name="countryCodeList"
             android:defaultValue="@null"

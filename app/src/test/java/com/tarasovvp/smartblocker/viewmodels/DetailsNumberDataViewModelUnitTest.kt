@@ -32,8 +32,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDataViewModel>() {
-
+class DetailsNumberDataViewModelUnitTest : BaseViewModelUnitTest<DetailsNumberDataViewModel>() {
     @MockK
     private lateinit var useCase: DetailsNumberDataUseCase
 
@@ -46,55 +45,85 @@ class DetailsNumberDataViewModelUnitTest: BaseViewModelUnitTest<DetailsNumberDat
     @MockK
     private lateinit var countryCodeUIMapper: CountryCodeUIMapper
 
-    override fun createViewModel() = DetailsNumberDataViewModel(application, useCase, filterWithFilteredNumberUIMapper, callWithFilterUIMapper, countryCodeUIMapper)
+    override fun createViewModel() =
+        DetailsNumberDataViewModel(
+            application,
+            useCase,
+            filterWithFilteredNumberUIMapper,
+            callWithFilterUIMapper,
+            countryCodeUIMapper,
+        )
 
     @Test
-    fun filterListWithNumberTest() = runTest {
-        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
-        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
-        coEvery { useCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterList
-        every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
-        viewModel.filterListWithNumber(TEST_NUMBER)
-        advanceUntilIdle()
-        coVerify { useCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) }
-        verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
-        assertEquals(filterUIModelList, viewModel.filterListLiveData.getOrAwaitValue())
-    }
+    fun filterListWithNumberTest() =
+        runTest {
+            val filterList =
+                listOf(
+                    FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)),
+                    FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")),
+                )
+            val filterUIModelList =
+                listOf(
+                    FilterWithFilteredNumberUIModel(filter = TEST_FILTER),
+                    FilterWithFilteredNumberUIModel(filter = "mockFilter2"),
+                )
+            coEvery { useCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterList
+            every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
+            viewModel.filterListWithNumber(TEST_NUMBER)
+            advanceUntilIdle()
+            coVerify { useCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) }
+            verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
+            assertEquals(filterUIModelList, viewModel.filterListLiveData.getOrAwaitValue())
+        }
 
     @Test
-    fun filteredCallsByNumberTest() = runTest {
-        val filteredCallList = listOf(CallWithFilter().apply { call = FilteredCall().apply { this.number = TEST_NUMBER } })
-        val filteredCallUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER))
-        coEvery { useCase.allFilteredCallsByNumber(TEST_FILTER, TEST_NAME) } returns filteredCallList
-        every { callWithFilterUIMapper.mapToUIModelList(filteredCallList) } returns filteredCallUIModelList
-        viewModel.filteredCallsByNumber(TEST_FILTER, TEST_NAME)
-        advanceUntilIdle()
-        coVerify { useCase.allFilteredCallsByNumber(TEST_FILTER, TEST_NAME) }
-        verify { callWithFilterUIMapper.mapToUIModelList(filteredCallList) }
-        assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
-    }
+    fun filteredCallsByNumberTest() =
+        runTest {
+            val filteredCallList =
+                listOf(
+                    CallWithFilter().apply {
+                        call = FilteredCall().apply { this.number = TEST_NUMBER }
+                    },
+                )
+            val filteredCallUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER))
+            coEvery {
+                useCase.allFilteredCallsByNumber(
+                    TEST_FILTER,
+                    TEST_NAME,
+                )
+            } returns filteredCallList
+            every { callWithFilterUIMapper.mapToUIModelList(filteredCallList) } returns filteredCallUIModelList
+            viewModel.filteredCallsByNumber(TEST_FILTER, TEST_NAME)
+            advanceUntilIdle()
+            coVerify { useCase.allFilteredCallsByNumber(TEST_FILTER, TEST_NAME) }
+            verify { callWithFilterUIMapper.mapToUIModelList(filteredCallList) }
+            assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
+        }
 
     @Test
-    fun getCountryCodeTest() = runTest {
-        val code = 123
-        val countryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        val countryCodeUIModel = CountryCodeUIModel(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        coEvery { useCase.getCountryCodeByCode(code) } returns countryCode
-        every { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
-        viewModel.getCountryCode(code)
-        advanceUntilIdle()
-        coVerify { useCase.getCountryCodeByCode(code) }
-        verify { countryCodeUIMapper.mapToUIModel(countryCode) }
-        assertEquals(countryCodeUIModel, viewModel.countryCodeLiveData.getOrAwaitValue())
-    }
+    fun getCountryCodeTest() =
+        runTest {
+            val code = 123
+            val countryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
+            val countryCodeUIModel =
+                CountryCodeUIModel(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
+            coEvery { useCase.getCountryCodeByCode(code) } returns countryCode
+            every { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
+            viewModel.getCountryCode(code)
+            advanceUntilIdle()
+            coVerify { useCase.getCountryCodeByCode(code) }
+            verify { countryCodeUIMapper.mapToUIModel(countryCode) }
+            assertEquals(countryCodeUIModel, viewModel.countryCodeLiveData.getOrAwaitValue())
+        }
 
     @Test
-    fun getBlockHiddenTest() = runTest {
-        val blockHidden = true
-        coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
-        viewModel.getBlockHidden()
-        advanceUntilIdle()
-        coVerify { useCase.getBlockHidden() }
-        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
-    }
+    fun getBlockHiddenTest() =
+        runTest {
+            val blockHidden = true
+            coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
+            viewModel.getBlockHidden()
+            advanceUntilIdle()
+            coVerify { useCase.getBlockHidden() }
+            assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
+        }
 }

@@ -5,12 +5,15 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="androidx.core.content.ContextCompat" />
-        <import type="com.tarasovvp.smartblocker.domain.enums.EmptyState"/>
+
+        <import type="com.tarasovvp.smartblocker.domain.enums.EmptyState" />
 
         <variable
             name="filterToInput"
             type="Boolean" />
+
         <variable
             name="filterWithCountryCode"
             type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
@@ -42,7 +45,7 @@
             app:cardElevation="@dimen/padding_2"
             app:strokeWidth="@dimen/padding_1"
             app:strokeColor="@color/cornflower_blue"
-            app:layout_constraintTop_toBottomOf="@id/create_filter_item_filter" >
+            app:layout_constraintTop_toBottomOf="@id/create_filter_item_filter">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

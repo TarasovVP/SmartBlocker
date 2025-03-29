@@ -1,7 +1,7 @@
 buildscript {
-    ext.kotlin_version = '1.8.0'
+    ext.kotlin_version = '2.0.0'
     ext.lifecycle = '2.6.1'
-    ext.hilt_version = '2.46.1'
+    ext.hilt_version = '2.50'
     ext.espresso = '3.5.1'
     ext.review = '2.0.1'
     ext.navigation = '2.5.3'

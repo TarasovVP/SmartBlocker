@@ -14,16 +14,17 @@ import org.junit.Before
 import org.junit.Rule
 
 @HiltAndroidTest
-class ListBlockerInstrumentedTest: BaseListFilterInstrumentedTest() {
-
+class ListBlockerInstrumentedTest : BaseListFilterInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
+
     @Before
     override fun setUp() {
         super.setUp()
-        filterList = filterWithFilteredNumberUIModelList().onEach {
-            it.filterType =  Constants.BLOCKER
-        }
+        filterList =
+            filterWithFilteredNumberUIModelList().onEach {
+                it.filterType = Constants.BLOCKER
+            }
         launchFragmentInHiltContainer<ListBlockerFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listPermissionFragment)

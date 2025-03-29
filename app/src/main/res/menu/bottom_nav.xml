@@ -4,20 +4,20 @@
         android:id="@+id/listBlockerFragment"
         android:title="@string/list_blocker"
         android:icon="@drawable/ic_blocker_list"
-        android:contentDescription="@string/list_blocker_item_description"/>
+        android:contentDescription="@string/list_blocker_item_description" />
     <item
         android:id="@+id/listPermissionFragment"
         android:title="@string/list_permission"
         android:icon="@drawable/ic_permission_list"
-        android:contentDescription="@string/list_permission_item_description"/>
+        android:contentDescription="@string/list_permission_item_description" />
     <item
         android:id="@+id/listCallFragment"
         android:title="@string/list_call"
         android:icon="@drawable/ic_call"
-        android:contentDescription="@string/list_call_item_description"/>
+        android:contentDescription="@string/list_call_item_description" />
     <item
         android:id="@+id/listContactFragment"
         android:title="@string/list_contact"
         android:icon="@drawable/ic_contact_list"
-        android:contentDescription="@string/list_contact_item_description"/>
+        android:contentDescription="@string/list_contact_item_description" />
 </menu>

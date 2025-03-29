@@ -5,7 +5,9 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.Info
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
@@ -26,11 +28,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class InfoUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class InfoUnitTest : BaseFragmentUnitTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 

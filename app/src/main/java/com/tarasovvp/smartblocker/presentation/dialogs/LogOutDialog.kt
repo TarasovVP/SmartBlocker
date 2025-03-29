@@ -11,7 +11,6 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDialog
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class LogOutDialog : BaseDialog<DialogConfirmBinding>() {
-
     private val args: LogOutDialogArgs by navArgs()
 
     override var layoutId = R.layout.dialog_confirm

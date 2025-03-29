@@ -15,7 +15,6 @@ import org.junit.Before
 import org.junit.Test
 
 class SignUpUseCaseUnitTest {
-
     @MockK
     private lateinit var authRepository: AuthRepository
 
@@ -35,7 +34,13 @@ class SignUpUseCaseUnitTest {
 
     @Test
     fun createUserWithEmailAndPasswordTest() {
-        every { authRepository.createUserWithEmailAndPassword(eq(TEST_EMAIL), eq(TEST_PASSWORD), any()) } answers {
+        every {
+            authRepository.createUserWithEmailAndPassword(
+                eq(TEST_EMAIL),
+                eq(TEST_PASSWORD),
+                any(),
+            )
+        } answers {
             resultMock.invoke(Result.Success())
         }
         signUpUseCase.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD, resultMock)

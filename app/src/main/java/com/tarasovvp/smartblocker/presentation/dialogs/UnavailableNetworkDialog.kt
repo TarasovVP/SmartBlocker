@@ -8,7 +8,6 @@ import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class UnavailableNetworkDialog : BaseDialog<DialogConfirmBinding>() {
-
     override var layoutId = R.layout.dialog_confirm
 
     override fun initUI() {

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="com.tarasovvp.smartblocker.domain.enums.EmptyState" />
     </data>
 
@@ -27,7 +28,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/country_code_search_cancel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/country_code_search_cancel"
-                app:layout_constraintBottom_toBottomOf="@+id/country_code_search_cancel"/>
+                app:layout_constraintBottom_toBottomOf="@+id/country_code_search_cancel" />
 
             <Button
                 android:id="@+id/country_code_search_cancel"
@@ -60,7 +61,7 @@
                     android:inputType="text"
                     android:textSize="@dimen/text_size_16"
                     android:hint="@string/creating_country_code_hint"
-                    android:importantForAutofill="no"/>
+                    android:importantForAutofill="no" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View

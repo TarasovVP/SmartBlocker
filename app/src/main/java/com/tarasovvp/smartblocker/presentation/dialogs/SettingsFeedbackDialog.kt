@@ -12,7 +12,6 @@ import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class SettingsFeedbackDialog :
     BaseDialog<DialogSettingsFeedbackBinding>() {
-
     override var layoutId = R.layout.dialog_settings_feedback
 
     override fun initUI() {
@@ -35,8 +34,10 @@ class SettingsFeedbackDialog :
             }
             settingsFeedbackSend.setSafeOnClickListener {
                 findNavController().navigateUp()
-                setFragmentResult(SETTINGS_FEEDBACK,
-                    bundleOf(SETTINGS_FEEDBACK to settingsFeedbackInput.text.toString()))
+                setFragmentResult(
+                    SETTINGS_FEEDBACK,
+                    bundleOf(SETTINGS_FEEDBACK to settingsFeedbackInput.text.toString()),
+                )
             }
         }
     }

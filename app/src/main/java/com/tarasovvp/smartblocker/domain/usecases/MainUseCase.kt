@@ -1,13 +1,16 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
 import android.app.Application
-import com.tarasovvp.smartblocker.domain.entities.db_entities.*
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
+import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import kotlinx.coroutines.flow.Flow
 
 interface MainUseCase {
-
     suspend fun getOnBoardingSeen(): Flow<Boolean?>
 
     suspend fun getBlockerTurnOn(): Flow<Boolean?>
@@ -30,11 +33,17 @@ interface MainUseCase {
 
     suspend fun getAllFilters(): List<Filter>
 
-    suspend fun getSystemContacts(application: Application, result: (Int, Int) -> Unit): List<Contact>
+    suspend fun getSystemContacts(
+        application: Application,
+        result: (Int, Int) -> Unit,
+    ): List<Contact>
 
     suspend fun insertAllContacts(contactList: List<Contact>)
 
-    suspend fun getSystemLogCalls(application: Application, result: (Int, Int) -> Unit): List<LogCall>
+    suspend fun getSystemLogCalls(
+        application: Application,
+        result: (Int, Int) -> Unit,
+    ): List<LogCall>
 
     suspend fun insertAllLogCalls(logCallList: List<LogCall>)
 

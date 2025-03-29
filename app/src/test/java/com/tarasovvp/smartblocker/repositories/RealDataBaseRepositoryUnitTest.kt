@@ -35,7 +35,6 @@ import org.junit.Before
 import org.junit.Test
 
 class RealDataBaseRepositoryUnitTest {
-
     @MockK
     private lateinit var firebaseDatabase: FirebaseDatabase
 
@@ -125,7 +124,8 @@ class RealDataBaseRepositoryUnitTest {
         every { firebaseAuth.currentUser } returns currentUser
         every { currentUser.uid } returns TEST_USER_ID
         every {
-            firebaseDatabase.reference.child(USERS).child(any()).child(FILTER_LIST).child(filter.filter).setValue(filter)
+            firebaseDatabase.reference.child(USERS).child(any()).child(FILTER_LIST)
+                .child(filter.filter).setValue(filter)
         } returns task
         every { task.addOnSuccessListener(any()) } answers {
             val listener = firstArg<OnSuccessListener<in Void>>()
@@ -174,7 +174,8 @@ class RealDataBaseRepositoryUnitTest {
         val filteredCall = FilteredCall(callId = 1)
         val task = mockk<Task<Void>>(relaxed = true)
         every {
-            firebaseDatabase.reference.child(USERS).child(any()).child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
+            firebaseDatabase.reference.child(USERS).child(any()).child(FILTERED_CALL_LIST)
+                .child(filteredCall.callId.toString()).setValue(filteredCall)
         } returns task
         val currentUser = mockk<FirebaseUser>()
         every { firebaseAuth.currentUser } returns currentUser
@@ -256,7 +257,8 @@ class RealDataBaseRepositoryUnitTest {
         val feedback = Feedback(TEST_EMAIL, TEST_REVIEW, 1000)
         val task = mockk<Task<Void>>(relaxed = true)
         every {
-            firebaseDatabase.reference.child(FEEDBACK).child(feedback.time.toString()).setValue(feedback)
+            firebaseDatabase.reference.child(FEEDBACK).child(feedback.time.toString())
+                .setValue(feedback)
         } returns task
         every { task.addOnSuccessListener(any()) } answers {
             val listener = firstArg<OnSuccessListener<in Void>>()

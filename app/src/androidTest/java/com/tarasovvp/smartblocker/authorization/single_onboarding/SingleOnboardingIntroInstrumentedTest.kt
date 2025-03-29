@@ -5,8 +5,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 
 @HiltAndroidTest
-class SingleOnboardingIntroInstrumentedTest: BaseSingleOnboardingInstrumentedTest() {
-
+class SingleOnboardingIntroInstrumentedTest : BaseSingleOnboardingInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 }

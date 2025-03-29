@@ -11,10 +11,12 @@ import com.tarasovvp.smartblocker.utils.extensions.serializable
 
 class SingleOnBoardingFragment :
     BaseBindingFragment<FragmentSingleOnBoardingBinding>() {
-
     override var layoutId = R.layout.fragment_single_on_boarding
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding?.onBoarding = arguments?.serializable(ON_BOARDING_PAGE) as? OnBoarding
     }
@@ -23,9 +25,10 @@ class SingleOnBoardingFragment :
         @JvmStatic
         fun newInstance(onBoarding: OnBoarding): SingleOnBoardingFragment {
             return SingleOnBoardingFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(ON_BOARDING_PAGE, onBoarding)
-                }
+                arguments =
+                    Bundle().apply {
+                        putSerializable(ON_BOARDING_PAGE, onBoarding)
+                    }
             }
         }
     }

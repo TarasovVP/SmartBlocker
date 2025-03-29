@@ -8,10 +8,12 @@ import com.tarasovvp.smartblocker.presentation.main.MainActivity
 
 abstract class BaseDetailsFragment<B : ViewDataBinding, T : BaseViewModel> :
     BaseNumberDataFragment<B, T>() {
-
     abstract fun createAdapter()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         createAdapter()
         setInfoMenu()

@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.infrastructure.constants
 
 object Constants {
-    //General
+    // General
     const val ACCEPT_PERMISSIONS_SCREEN = 3
     const val APP_EXIT = "appExit"
     const val DIALOG = "dialog"
@@ -12,7 +12,7 @@ object Constants {
     const val SAVED_LIST = "savedList"
     const val IS_DELETE_MODE = "isDeleteMode"
 
-    //Telephony
+    // Telephony
     const val EXTRA_INCOMING_NUMBER = "incoming_number"
     const val LOG_CALL_CALL = "content://call_log/calls"
     const val GET_IT_TELEPHONY = "getITelephony"
@@ -21,18 +21,18 @@ object Constants {
     const val CALL_ID = "_ID="
     const val CALL_RECEIVE = "callReceive"
 
-    //Call type
+    // Call type
     const val IN_COMING_CALL = "1"
     const val MISSED_CALL = "3"
     const val REJECTED_CALL = "5"
     const val BLOCKED_CALL = "6"
 
-    //Notification
+    // Notification
     const val NOTIFICATION_CHANNEL = "NOTIFICATION_CHANNEL"
     const val FOREGROUND_CALL_SERVICE = "foregroundCallService"
     const val FOREGROUND_ID = 99
 
-    //Auth
+    // Auth
     const val ON_BOARDING_PAGE = "onBoardingPage"
     const val UNAUTHORIZED_ENTER = "unauthorizedEnter"
     const val EMAIL = "email"
@@ -42,20 +42,20 @@ object Constants {
     const val ID_TOKEN = "idToken"
     const val CANCEL = "cancel"
 
-    //Passwords
+    // Passwords
     const val FORGOT_PASSWORD = "forgotPassword"
     const val CHANGE_PASSWORD = "changePassword"
     const val CURRENT_PASSWORD = "currentPassword"
     const val NEW_PASSWORD = "newPassword"
 
-    //Data base
+    // Data base
     const val CONTACTS = "contacts"
     const val FILTERS = "filters"
     const val LOG_CALLS = "log_calls"
     const val FILTERED_CALLS = "filtered_calls"
     const val COUNTRY_CODES = "country_codes"
 
-    //Real data base
+    // Real data base
     const val USERS = "users"
     const val FEEDBACK = "feedback"
     const val REVIEW_VOTE = "reviewVote"
@@ -66,7 +66,7 @@ object Constants {
     const val DESC = "DESC"
     const val ASC = "ASC"
 
-    //Filter
+    // Filter
     const val DEFAULT_FILTER = -1
     const val BLOCKER = 1
     const val PERMISSION = 2
@@ -74,14 +74,14 @@ object Constants {
     const val FILTER_ACTION = "filterAction"
     const val CALL_DELETE = "callDelete"
 
-    //CountryCode
+    // CountryCode
     const val COUNTRY_CODE_START = "+%s"
     const val COUNTRY_CODE = "countryCode"
     const val COUNTRY_DEFAULT = "UA"
     const val COUNTRY_CODE_DEFAULT = "+380"
     const val NUMBER_FORMAT_DEFAULT = "50 123 4567"
 
-    //Number
+    // Number
     const val PLUS_CHAR = '+'
     const val MASK_CHAR = '#'
     const val QUESTION_CHAR = '?'
@@ -90,24 +90,24 @@ object Constants {
     const val HEADER_TYPE = 1
     const val NUMBER_TYPE = "numberType"
 
-    //DateTime
+    // DateTime
     const val TIME_FORMAT = "HH:mm:ss"
     const val DATE_FORMAT = "dd.MM.yyyy"
     const val SECOND = 1000L
 
-    //App languages
+    // App languages
     const val APP_LANG_RU = "ru"
     const val APP_LANG_UK = "uk"
     const val APP_LANG_EN = "en"
 
-    //Settings
+    // Settings
     const val ON_BOARDING_SEEN = "onBoardingSeen"
     const val APP_LANG = "appLang"
     const val APP_THEME = "appTheme"
     const val BLOCK_TURN_ON = "blockTurnOff"
     const val SETTINGS_FEEDBACK = "settingsFeedBack"
 
-    //WebView
+    // WebView
     const val MIME_TYPE = "text/html; charset=utf-8"
     const val ENCODING = "UTF-8"
     const val DRAWABLE = "drawable"

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
@@ -58,7 +59,7 @@
                 android:contentDescription="@string/authorization_login_with_google_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_google_title"  />
+                app:layout_constraintTop_toBottomOf="@id/login_google_title" />
 
             <View
                 android:id="@+id/login_left_divider"
@@ -68,7 +69,7 @@
                 app:layout_constraintTop_toTopOf="@+id/login_divider_title"
                 app:layout_constraintBottom_toBottomOf="@+id/login_divider_title"
                 app:layout_constraintEnd_toStartOf="@+id/login_divider_title"
-                app:layout_constraintStart_toStartOf="parent"  />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/login_divider_title"
@@ -90,7 +91,7 @@
                 app:layout_constraintTop_toTopOf="@+id/login_divider_title"
                 app:layout_constraintBottom_toBottomOf="@+id/login_divider_title"
                 app:layout_constraintStart_toEndOf="@+id/login_divider_title"
-                app:layout_constraintEnd_toEndOf="parent"  />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_email_input_container"
@@ -179,7 +180,7 @@
                 app:layout_constraintTop_toTopOf="@+id/login_divider_title_unauthorized"
                 app:layout_constraintBottom_toBottomOf="@+id/login_divider_title_unauthorized"
                 app:layout_constraintEnd_toStartOf="@+id/login_divider_title_unauthorized"
-                app:layout_constraintStart_toStartOf="parent"  />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/login_divider_title_unauthorized"
@@ -201,7 +202,7 @@
                 app:layout_constraintTop_toTopOf="@+id/login_divider_title_unauthorized"
                 app:layout_constraintBottom_toBottomOf="@+id/login_divider_title_unauthorized"
                 app:layout_constraintStart_toEndOf="@+id/login_divider_title_unauthorized"
-                app:layout_constraintEnd_toEndOf="parent"  />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
                 android:id="@+id/login_continue_without_acc"

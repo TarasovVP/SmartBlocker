@@ -7,7 +7,8 @@ import com.tarasovvp.smartblocker.utils.extensions.titleRes
 enum class FilterCondition {
     FILTER_CONDITION_FULL,
     FILTER_CONDITION_START,
-    FILTER_CONDITION_CONTAIN;
+    FILTER_CONDITION_CONTAIN,
+    ;
 
     fun title(): Int {
         return titleRes()

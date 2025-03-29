@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker
 
-import androidx.annotation.*
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import java.util.concurrent.CountDownLatch
@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 object UnitTestUtils {
-
     const val TEST_TOKEN = "testToken"
     const val TEST_NUMBER = "12345678"
     const val TEST_FILTER = "87654321"
@@ -34,13 +33,14 @@ object UnitTestUtils {
     ): T {
         var data: T? = null
         val latch = CountDownLatch(1)
-        val observer = object : Observer<T> {
-            override fun onChanged(value: T) {
-                data = value
-                latch.countDown()
-                this@getOrAwaitValue.removeObserver(this)
+        val observer =
+            object : Observer<T> {
+                override fun onChanged(value: T) {
+                    data = value
+                    latch.countDown()
+                    this@getOrAwaitValue.removeObserver(this)
+                }
             }
-        }
         this.observeForever(observer)
 
         try {

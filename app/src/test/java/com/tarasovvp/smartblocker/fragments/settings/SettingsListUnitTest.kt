@@ -7,7 +7,9 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.R
@@ -35,11 +37,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class SettingsListUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class SettingsListUnitTest : BaseFragmentUnitTest() {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 

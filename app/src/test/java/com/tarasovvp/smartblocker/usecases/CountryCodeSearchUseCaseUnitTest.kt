@@ -20,7 +20,6 @@ import org.junit.Before
 import org.junit.Test
 
 class CountryCodeSearchUseCaseUnitTest {
-
     @MockK
     private lateinit var countryCodeRepository: CountryCodeRepository
 
@@ -32,23 +31,30 @@ class CountryCodeSearchUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        countryCodeSearchUseCase = CountryCodeSearchUseCaseImpl(countryCodeRepository, dataStoreRepository)
+        countryCodeSearchUseCase =
+            CountryCodeSearchUseCaseImpl(countryCodeRepository, dataStoreRepository)
     }
 
     @Test
-    fun getAppLanguageTest() = runBlocking{
-        val appLanguage = TEST_APP_LANGUAGE
-        coEvery { dataStoreRepository.getAppLang() } returns flowOf(appLanguage)
-        val result = countryCodeSearchUseCase.getAppLanguage().single()
-        assertEquals(appLanguage, result)
-        coVerify { dataStoreRepository.getAppLang() }
-    }
+    fun getAppLanguageTest() =
+        runBlocking {
+            val appLanguage = TEST_APP_LANGUAGE
+            coEvery { dataStoreRepository.getAppLang() } returns flowOf(appLanguage)
+            val result = countryCodeSearchUseCase.getAppLanguage().single()
+            assertEquals(appLanguage, result)
+            coVerify { dataStoreRepository.getAppLang() }
+        }
 
     @Test
-    fun getCountryCodeListTest() = runBlocking{
-        val countryCodeList = listOf(CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY), CountryCode(countryCode = "+123", country = "AI"))
-        coEvery { countryCodeRepository.allCountryCodes() } returns countryCodeList
-        val result = countryCodeSearchUseCase.getCountryCodeList()
-        assertEquals(countryCodeList, result)
-    }
+    fun getCountryCodeListTest() =
+        runBlocking {
+            val countryCodeList =
+                listOf(
+                    CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY),
+                    CountryCode(countryCode = "+123", country = "AI"),
+                )
+            coEvery { countryCodeRepository.allCountryCodes() } returns countryCodeList
+            val result = countryCodeSearchUseCase.getCountryCodeList()
+            assertEquals(countryCodeList, result)
+        }
 }

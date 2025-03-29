@@ -13,22 +13,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchDialog
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
 
 abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
-
     abstract var layoutId: Int
     var binding: B? = null
 
     abstract fun initUI()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater, layoutId, container, false
-        )
+        binding =
+            DataBindingUtil.inflate(
+                inflater, layoutId, container, false,
+            )
         initUI()
         return binding?.root
     }
@@ -44,13 +46,18 @@ abstract class BaseDialog<B : ViewDataBinding> : DialogFragment() {
         if (dialog.isNotNull() && dialog?.window.isNotNull()) {
             val width = Resources.getSystem().displayMetrics.widthPixels
             val height = Resources.getSystem().displayMetrics.heightPixels
-            dialog?.window?.setLayout((width * 0.9).toInt(),
-                if (this is CountryCodeSearchDialog) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT)
+            dialog?.window?.setLayout(
+                (width * 0.9).toInt(),
+                if (this is CountryCodeSearchDialog) (height * 0.6).toInt() else LinearLayout.LayoutParams.WRAP_CONTENT,
+            )
             dialog?.window?.setGravity(Gravity.CENTER)
-            dialog?.window?.setBackgroundDrawable(context?.let {
-                ContextCompat.getColor(it, R.color.transparent)
-            }?.let { ColorDrawable(it) })
-            (binding?.root as? ViewGroup)?.getChildAt(0)?.background = context?.let { ContextCompat.getDrawable(it, R.drawable.bg_main) }
+            dialog?.window?.setBackgroundDrawable(
+                context?.let {
+                    ContextCompat.getColor(it, R.color.transparent)
+                }?.let { ColorDrawable(it) },
+            )
+            (binding?.root as? ViewGroup)?.getChildAt(0)?.background =
+                context?.let { ContextCompat.getDrawable(it, R.drawable.bg_main) }
             dialog?.setCancelable(true)
         }
     }

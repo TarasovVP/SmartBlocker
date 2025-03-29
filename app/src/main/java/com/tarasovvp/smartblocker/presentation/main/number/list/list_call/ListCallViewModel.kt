@@ -20,69 +20,98 @@ import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
-class ListCallViewModel @Inject constructor(
-    private val application: Application,
-    private val listCallUseCase: ListCallUseCase,
-    private val callWithFilterUIMapper: CallWithFilterUIMapper,
-    val savedStateHandle: SavedStateHandle
-) : BaseViewModel(application) {
+class ListCallViewModel
+    @Inject
+    constructor(
+        private val application: Application,
+        private val listCallUseCase: ListCallUseCase,
+        private val callWithFilterUIMapper: CallWithFilterUIMapper,
+        val savedStateHandle: SavedStateHandle,
+    ) : BaseViewModel(application) {
+        val callListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
+        val filteredCallListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
+        val successDeleteNumberLiveData = MutableLiveData<Boolean>()
+        val isReviewVoteLiveData = MutableLiveData<Boolean>()
 
-    val callListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
-    val filteredCallListLiveData = MutableLiveData<List<CallWithFilterUIModel>>()
-    val successDeleteNumberLiveData = MutableLiveData<Boolean>()
-    val isReviewVoteLiveData = MutableLiveData<Boolean>()
-
-    fun getCallList(refreshing: Boolean) {
-        if (refreshing.not()) showProgress()
-        launch {
-            val callList = listCallUseCase.allCallWithFilters()
-            callListLiveData.postValue(callWithFilterUIMapper.mapToUIModelList(callList))
-            hideProgress()
-        }
-    }
-
-    fun getFilteredCallList(callList: List<CallWithFilterUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
-        launch {
-            val filteredCallList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) callList else callList.filter { callWithFilter ->
-                (callWithFilter.callName isContaining searchQuery || callWithFilter.number isContaining searchQuery)
-                        && ((callWithFilter.isFilteredCall.isTrue() && callWithFilter.type == Constants.BLOCKED_CALL && filterIndexes.contains(
-                    NumberDataFiltering.CALL_BLOCKED.ordinal).isTrue())
-                        || (callWithFilter.isFilteredCall.isTrue() && callWithFilter.type != Constants.BLOCKED_CALL && filterIndexes.contains(
-                    NumberDataFiltering.CALL_PERMITTED.ordinal).isTrue())
-                        || filterIndexes.isEmpty())
-            }
-            filteredCallListLiveData.postValue(filteredCallList)
-            hideProgress()
-        }
-    }
-
-    fun deleteCallList(filteredCallIdList: List<Int>) {
-        showProgress()
-        launch {
-            listCallUseCase.deleteCallList(filteredCallIdList, application.isNetworkAvailable()) { operationResult ->
-                when(operationResult) {
-                    is Result.Success -> successDeleteNumberLiveData.postValue(true)
-                    is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
-                }
+        fun getCallList(refreshing: Boolean) {
+            if (refreshing.not()) showProgress()
+            launch {
+                val callList = listCallUseCase.allCallWithFilters()
+                callListLiveData.postValue(callWithFilterUIMapper.mapToUIModelList(callList))
                 hideProgress()
             }
         }
-    }
 
-    fun getReviewVoted() {
-        launch {
-            listCallUseCase.getReviewVoted().collect { reviewVote ->
-                delay(SECOND)
-                isReviewVoteLiveData.postValue(reviewVote.isTrue())
+        fun getFilteredCallList(
+            callList: List<CallWithFilterUIModel>,
+            searchQuery: String,
+            filterIndexes: ArrayList<Int>,
+        ) {
+            launch {
+                val filteredCallList =
+                    if (searchQuery.isBlank() && filterIndexes.isEmpty()) {
+                        callList
+                    } else {
+                        callList.filter { callWithFilter ->
+                            (callWithFilter.callName isContaining searchQuery || callWithFilter.number isContaining searchQuery) &&
+                                (
+                                    (
+                                        callWithFilter.isFilteredCall.isTrue() && callWithFilter.type == Constants.BLOCKED_CALL &&
+                                            filterIndexes.contains(
+                                                NumberDataFiltering.CALL_BLOCKED.ordinal,
+                                            ).isTrue()
+                                    ) ||
+                                        (
+                                            callWithFilter.isFilteredCall.isTrue() && callWithFilter.type != Constants.BLOCKED_CALL &&
+                                                filterIndexes.contains(
+                                                    NumberDataFiltering.CALL_PERMITTED.ordinal,
+                                                ).isTrue()
+                                        ) ||
+                                        filterIndexes.isEmpty()
+                                )
+                        }
+                    }
+                filteredCallListLiveData.postValue(filteredCallList)
+                hideProgress()
+            }
+        }
+
+        fun deleteCallList(filteredCallIdList: List<Int>) {
+            showProgress()
+            launch {
+                listCallUseCase.deleteCallList(
+                    filteredCallIdList,
+                    application.isNetworkAvailable(),
+                ) { operationResult ->
+                    when (operationResult) {
+                        is Result.Success -> successDeleteNumberLiveData.postValue(true)
+                        is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+                    }
+                    hideProgress()
+                }
+            }
+        }
+
+        fun getReviewVoted() {
+            launch {
+                listCallUseCase.getReviewVoted().collect { reviewVote ->
+                    delay(SECOND)
+                    isReviewVoteLiveData.postValue(reviewVote.isTrue())
+                }
+            }
+        }
+
+        fun setReviewVoted() {
+            launch {
+                listCallUseCase.setReviewVoted { operationResult ->
+                    if (operationResult is Result.Failure) {
+                        operationResult.errorMessage?.let {
+                            exceptionLiveData.postValue(
+                                it,
+                            )
+                        }
+                    }
+                }
             }
         }
     }
-
-    fun setReviewVoted() {
-        launch {
-            listCallUseCase.setReviewVoted { operationResult ->
-                if (operationResult is Result.Failure) operationResult.errorMessage?.let { exceptionLiveData.postValue(it) }
-            }
-        }
-    }
-}

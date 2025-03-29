@@ -4,7 +4,9 @@ import android.os.Build
 import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.OnBoarding
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
@@ -24,11 +26,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class SingleOnboardingInstrumentedTest : BaseFragmentUnitTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -37,13 +40,19 @@ class SingleOnboardingInstrumentedTest: BaseFragmentUnitTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        onBoardingPage = when {
-            name.methodName.contains("Intro") -> OnBoarding.ONBOARDING_INTRO
-            name.methodName.contains("FilterCondition") -> OnBoarding.ONBOARDING_FILTER_CONDITIONS
-            name.methodName.contains("Info") -> OnBoarding.ONBOARDING_INFO
-            else -> OnBoarding.ONBOARDING_PERMISSIONS
-        }
-        launchFragmentInHiltContainer<SingleOnBoardingFragment>(fragmentArgs = bundleOf(ON_BOARDING_PAGE to onBoardingPage)) {}
+        onBoardingPage =
+            when {
+                name.methodName.contains("Intro") -> OnBoarding.ONBOARDING_INTRO
+                name.methodName.contains("FilterCondition") -> OnBoarding.ONBOARDING_FILTER_CONDITIONS
+                name.methodName.contains("Info") -> OnBoarding.ONBOARDING_INFO
+                else -> OnBoarding.ONBOARDING_PERMISSIONS
+            }
+        launchFragmentInHiltContainer<SingleOnBoardingFragment>(
+            fragmentArgs =
+                bundleOf(
+                    ON_BOARDING_PAGE to onBoardingPage,
+                ),
+        ) {}
     }
 
     @Test

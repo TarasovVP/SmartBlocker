@@ -7,8 +7,14 @@ import com.tarasovvp.smartblocker.data.repositoryImpl.CountryCodeRepositoryImpl
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -17,7 +23,6 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class CountryCodeRepositoryUnitTest {
-
     @MockK
     private lateinit var appPhoneNumberUtil: AppPhoneNumberUtil
 
@@ -33,42 +38,46 @@ class CountryCodeRepositoryUnitTest {
     }
 
     @Test
-    fun getSystemCountryCodeListTest() = runBlocking {
-        val countryCodeList = arrayListOf(CountryCode(country = TEST_COUNTRY), CountryCode())
-        val resultMock = mockk<(Int, Int) -> Unit>(relaxed = true)
-        coEvery { appPhoneNumberUtil.countryCodeList(any()) } answers {
-            val result: (Int, Int) -> Unit = arg(0)
-            for (i in countryCodeList.indices) {
-                result.invoke(countryCodeList.size, i)
+    fun getSystemCountryCodeListTest() =
+        runBlocking {
+            val countryCodeList = arrayListOf(CountryCode(country = TEST_COUNTRY), CountryCode())
+            val resultMock = mockk<(Int, Int) -> Unit>(relaxed = true)
+            coEvery { appPhoneNumberUtil.countryCodeList(any()) } answers {
+                val result: (Int, Int) -> Unit = arg(0)
+                for (i in countryCodeList.indices) {
+                    result.invoke(countryCodeList.size, i)
+                }
+                countryCodeList
             }
-            countryCodeList
+            val result = countryCodeRepository.getSystemCountryCodeList(resultMock)
+            verify(exactly = countryCodeList.size) { resultMock.invoke(any(), any()) }
+            assertEquals(countryCodeList, result)
         }
-        val result = countryCodeRepository.getSystemCountryCodeList(resultMock)
-        verify(exactly = countryCodeList.size) { resultMock.invoke(any(), any()) }
-        assertEquals(countryCodeList, result)
-    }
 
     @Test
-    fun insertAllCountryCodesTest() = runBlocking {
-        val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
-        coEvery { countryCodeDao.insertAllCountryCodes(countryCodeList) } just Runs
-        countryCodeRepository.insertAllCountryCodes(countryCodeList)
-        coVerify(exactly = 1) { countryCodeDao.insertAllCountryCodes(countryCodeList) }
-    }
+    fun insertAllCountryCodesTest() =
+        runBlocking {
+            val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
+            coEvery { countryCodeDao.insertAllCountryCodes(countryCodeList) } just Runs
+            countryCodeRepository.insertAllCountryCodes(countryCodeList)
+            coVerify(exactly = 1) { countryCodeDao.insertAllCountryCodes(countryCodeList) }
+        }
 
     @Test
-    fun getAllCountryCodesTest() = runBlocking {
-        val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
-        coEvery { countryCodeDao.allCountryCodes() } returns countryCodeList
-        val result = countryCodeRepository.allCountryCodes()
-        assertEquals(countryCodeList, result)
-    }
+    fun getAllCountryCodesTest() =
+        runBlocking {
+            val countryCodeList = listOf(CountryCode(country = TEST_COUNTRY), CountryCode())
+            coEvery { countryCodeDao.allCountryCodes() } returns countryCodeList
+            val result = countryCodeRepository.allCountryCodes()
+            assertEquals(countryCodeList, result)
+        }
 
     @Test
-    fun getCountryCodeByCodeTest() = runBlocking {
-        val countryCode = CountryCode(country = TEST_COUNTRY, countryCode = TEST_COUNTRY)
-        coEvery { countryCodeDao.getCountryCodeByCode(TEST_COUNTRY_CODE) } returns countryCode
-        val result = countryCodeRepository.getCountryCodeByCode(380)
-        assertEquals(countryCode, result)
-    }
+    fun getCountryCodeByCodeTest() =
+        runBlocking {
+            val countryCode = CountryCode(country = TEST_COUNTRY, countryCode = TEST_COUNTRY)
+            coEvery { countryCodeDao.getCountryCodeByCode(TEST_COUNTRY_CODE) } returns countryCode
+            val result = countryCodeRepository.getCountryCodeByCode(380)
+            assertEquals(countryCode, result)
+        }
 }

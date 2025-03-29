@@ -5,6 +5,6 @@
     <application tools:ignore="MissingApplicationIcon">
         <activity
             android:name=".EmptyActivity"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 </manifest>

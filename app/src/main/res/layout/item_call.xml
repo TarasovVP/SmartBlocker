@@ -5,6 +5,7 @@
     <data>
 
         <import type="androidx.core.content.ContextCompat" />
+
         <import type="android.view.View" />
 
         <variable

@@ -7,14 +7,16 @@ import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.receivers.CallReceiver
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
 class CallReceiverUnitTest {
-
     @MockK
     private lateinit var filterRepository: FilterRepository
 
@@ -41,9 +43,10 @@ class CallReceiverUnitTest {
         val isBlockHidden = true
         val expectedFilter = Filter(filterType = BLOCKER)
 
-        coEvery { filterRepository.allFilterWithFilteredNumbersByNumber(number) } returns listOf(
-            FilterWithFilteredNumber(filter = expectedFilter)
-        )
+        coEvery { filterRepository.allFilterWithFilteredNumbersByNumber(number) } returns
+            listOf(
+                FilterWithFilteredNumber(filter = expectedFilter),
+            )
 
         val result = runBlocking { callReceiver.matchedFilter(number, isBlockHidden) }
 

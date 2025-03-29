@@ -2,9 +2,9 @@ package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
+import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsAccountUseCase
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountViewModel
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
@@ -13,8 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class SettingsAccountViewModelUnitTest: BaseViewModelUnitTest<SettingsAccountViewModel>() {
-
+class SettingsAccountViewModelUnitTest : BaseViewModelUnitTest<SettingsAccountViewModel>() {
     @MockK
     private lateinit var useCase: SettingsAccountUseCase
 

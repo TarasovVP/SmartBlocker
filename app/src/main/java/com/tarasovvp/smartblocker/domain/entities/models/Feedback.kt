@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 data class Feedback(
     var user: String = String.EMPTY,
     var message: String = String.EMPTY,
-    var time: Long = 0
+    var time: Long = 0,
 ) : Parcelable

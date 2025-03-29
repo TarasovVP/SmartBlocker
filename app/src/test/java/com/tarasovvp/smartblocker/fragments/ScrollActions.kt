@@ -10,12 +10,14 @@ import androidx.core.widget.NestedScrollView
 import androidx.test.espresso.PerformException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.Visibility
+import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
+import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.util.HumanReadables
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
-
 
 object ScrollActions {
     fun nestedScrollTo(): ViewAction {
@@ -23,31 +25,43 @@ object ScrollActions {
             override fun getConstraints(): Matcher<View> {
                 return Matchers.allOf(
                     isDescendantOfA(isAssignableFrom(NestedScrollView::class.java)),
-                    withEffectiveVisibility(Visibility.VISIBLE))
+                    withEffectiveVisibility(Visibility.VISIBLE),
+                )
             }
 
             override fun getDescription(): String {
                 return "Find parent with type " + NestedScrollView::class.java +
-                        " of matched view and programmatically scroll to it."
+                    " of matched view and programmatically scroll to it."
             }
 
-            override fun perform(uiController: UiController, view: View) {
+            override fun perform(
+                uiController: UiController,
+                view: View,
+            ) {
                 try {
-                    val nestedScrollView = findFirstParentLayoutOfClass(view,
-                        NestedScrollView::class.java) as NestedScrollView?
+                    val nestedScrollView =
+                        findFirstParentLayoutOfClass(
+                            view,
+                            NestedScrollView::class.java,
+                        ) as NestedScrollView?
                     if (nestedScrollView != null) {
-                        val coordinatorLayout = findFirstParentLayoutOfClass(view,
-                            CoordinatorLayout::class.java) as CoordinatorLayout?
+                        val coordinatorLayout =
+                            findFirstParentLayoutOfClass(
+                                view,
+                                CoordinatorLayout::class.java,
+                            ) as CoordinatorLayout?
                         if (coordinatorLayout != null) {
                             val collapsingToolbarLayout =
                                 findCollapsingToolbarLayoutChildIn(coordinatorLayout)
                             if (collapsingToolbarLayout != null) {
                                 val toolbarHeight = collapsingToolbarLayout.height
                                 nestedScrollView.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
-                                nestedScrollView.dispatchNestedPreScroll(0,
+                                nestedScrollView.dispatchNestedPreScroll(
+                                    0,
                                     toolbarHeight,
                                     null,
-                                    null)
+                                    null,
+                                )
                             }
                         }
                         nestedScrollView.scrollTo(0, view.top)
@@ -78,16 +92,20 @@ object ScrollActions {
         return null
     }
 
-    private fun findFirstParentLayoutOfClass(view: View, parentClass: Class<out View?>): View? {
+    private fun findFirstParentLayoutOfClass(
+        view: View,
+        parentClass: Class<out View?>,
+    ): View? {
         var parent: ViewParent? = FrameLayout(view.context)
         var incrementView: ViewParent? = null
         var i = 0
         while (parent != null && parent.javaClass != parentClass) {
-            parent = if (i == 0) {
-                findParent(view)
-            } else {
-                incrementView?.let { findParent(it) }
-            }
+            parent =
+                if (i == 0) {
+                    findParent(view)
+                } else {
+                    incrementView?.let { findParent(it) }
+                }
             incrementView = parent
             i++
         }

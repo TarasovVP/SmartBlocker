@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class MainProgress(
     var progressDescription: Int = 0,
     var progressMax: Int = 0,
-    var progressPosition: Int = 0
+    var progressPosition: Int = 0,
 ) : Parcelable

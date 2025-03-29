@@ -5,8 +5,8 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 
 @HiltAndroidTest
-class FilterNumberDataUIModelFilteringInstrumentedTest: BaseNumberDataUIModelFilteringInstrumentedTest() {
-
+class FilterNumberDataUIModelFilteringInstrumentedTest :
+    BaseNumberDataUIModelFilteringInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 }

@@ -13,7 +13,8 @@ enum class EmptyState {
     EMPTY_STATE_NUMBERS,
     EMPTY_STATE_FILTERED_CALLS,
     EMPTY_STATE_HIDDEN,
-    EMPTY_STATE_ACCOUNT;
+    EMPTY_STATE_ACCOUNT,
+    ;
 
     fun description(): Int {
         return descriptionRes()

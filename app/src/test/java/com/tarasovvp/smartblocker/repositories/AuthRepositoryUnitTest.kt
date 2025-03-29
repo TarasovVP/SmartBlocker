@@ -13,13 +13,18 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.data.repositoryImpl.AuthRepositoryImpl
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
 import com.tarasovvp.smartblocker.domain.sealed_classes.Result
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.Runs
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
 class AuthRepositoryUnitTest {
-
     @MockK
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -97,7 +102,12 @@ class AuthRepositoryUnitTest {
     fun createUserWithEmailAndPasswordTest() {
         val task = mockk<Task<AuthResult>>(relaxed = true)
         val result: (Result<String>) -> Unit = mockk(relaxed = true)
-        every { firebaseAuth.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
+        every {
+            firebaseAuth.createUserWithEmailAndPassword(
+                TEST_EMAIL,
+                TEST_PASSWORD,
+            )
+        } returns task
         every { task.isSuccessful } returns true
         every { task.result } returns mockk()
         every { task.result.user } returns mockk()
@@ -123,7 +133,12 @@ class AuthRepositoryUnitTest {
         every { currentUser.email } returns TEST_EMAIL
         every { currentUser.reauthenticateAndRetrieveData(any()) } returns task
         every { currentUser.updatePassword(TEST_PASSWORD) } returns task2
-        every { firebaseAuth.createUserWithEmailAndPassword(TEST_EMAIL, TEST_PASSWORD) } returns task
+        every {
+            firebaseAuth.createUserWithEmailAndPassword(
+                TEST_EMAIL,
+                TEST_PASSWORD,
+            )
+        } returns task
         every { task.addOnSuccessListener(any()) } answers {
             val listener = firstArg<OnSuccessListener<in Void>>()
             listener.onSuccess(null)

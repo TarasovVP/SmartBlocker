@@ -17,38 +17,57 @@ import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class CreateFilterAdapter(
     var contactWithFilterUIModels: ArrayList<ContactWithFilterUIModel>? = null,
-    private val contactWithFilterClick: (ContactWithFilterUIModel) -> Unit
+    private val contactWithFilterClick: (ContactWithFilterUIModel) -> Unit,
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     var filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ContactViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_contact, parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
+        return ContactViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_contact, parent, false),
+        )
     }
 
     override fun getItemViewType(position: Int): Int {
-        return contactWithFilterUIModels?.get(position)?.let { it::class.java.simpleName.hashCode() }.orZero()
-
+        return contactWithFilterUIModels?.get(position)
+            ?.let { it::class.java.simpleName.hashCode() }.orZero()
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         (holder as ContactViewHolder).bindData(contactWithFilterUIModels?.get(position))
-
     }
 
     internal inner class ContactViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemContactBinding? = DataBindingUtil.bind(itemView)
+
         fun bindData(contactWithFilter: ContactWithFilterUIModel?) {
             binding?.apply {
                 this.contactWithFilter = contactWithFilter
                 this.contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned
-                    ?: this.contactWithFilter?.highlightedSpanned(filterWithFilteredNumberUIModel, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                    ?: this.contactWithFilter?.highlightedSpanned(
+                        filterWithFilteredNumberUIModel,
+                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                    )
                 root.setSafeOnClickListener {
-                    contactWithFilter?.let { it1 -> contactWithFilterClick.invoke(it1.apply {
-                        highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                    }) }
+                    contactWithFilter?.let { it1 ->
+                        contactWithFilterClick.invoke(
+                            it1.apply {
+                                highlightedSpanned =
+                                    number.highlightedSpanned(
+                                        String.EMPTY,
+                                        null,
+                                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                                    )
+                            },
+                        )
+                    }
                 }
                 executePendingBindings()
             }

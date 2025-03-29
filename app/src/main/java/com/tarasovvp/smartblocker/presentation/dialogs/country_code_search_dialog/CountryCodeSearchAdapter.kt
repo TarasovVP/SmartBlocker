@@ -13,18 +13,23 @@ import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class CountryCodeSearchAdapter(
     var countryCodeList: List<CountryCodeUIModel>? = null,
-    private val countryCodeClick: (CountryCodeUIModel) -> Unit
+    private val countryCodeClick: (CountryCodeUIModel) -> Unit,
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
         return CountryCodeViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_country_code, parent, false)
+                .inflate(R.layout.item_country_code, parent, false),
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         val countryCode = countryCodeList?.get(position)
         (holder as CountryCodeViewHolder).bindData(countryCode)
     }
@@ -34,6 +39,7 @@ class CountryCodeSearchAdapter(
     internal inner class CountryCodeViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemCountryCodeBinding? = DataBindingUtil.bind(itemView)
+
         fun bindData(countryCode: CountryCodeUIModel?) {
             binding?.countryCode = countryCode
             binding?.root?.setSafeOnClickListener {

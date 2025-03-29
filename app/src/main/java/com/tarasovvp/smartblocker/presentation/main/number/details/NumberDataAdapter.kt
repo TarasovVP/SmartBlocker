@@ -21,39 +21,54 @@ import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class NumberDataAdapter(
     private var numberDataUIModelList: ArrayList<NumberDataUIModel>? = null,
-    private val numberDataClick: (NumberDataUIModel) -> Unit
+    private val numberDataClick: (NumberDataUIModel) -> Unit,
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     var isFilteredCallDetails: Boolean = false
     var isFilteredCallItemDisable: Boolean = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): RecyclerView.ViewHolder {
         return when (viewType) {
-            ContactWithFilterUIModel::class.java.simpleName.hashCode() -> ContactViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_contact, parent, false)
-            )
-            CallWithFilterUIModel::class.java.simpleName.hashCode() -> CallViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_call, parent, false)
-            )
-            else -> FilterViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_filter, parent, false)
-            )
+            ContactWithFilterUIModel::class.java.simpleName.hashCode() ->
+                ContactViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_contact, parent, false),
+                )
+
+            CallWithFilterUIModel::class.java.simpleName.hashCode() ->
+                CallViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_call, parent, false),
+                )
+
+            else ->
+                FilterViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_filter, parent, false),
+                )
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return numberDataUIModelList?.get(position)?.let { it::class.java.simpleName.hashCode() }.orZero()
-
+        return numberDataUIModelList?.get(position)?.let { it::class.java.simpleName.hashCode() }
+            .orZero()
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+    ) {
         val numberData = numberDataUIModelList?.get(position)
         when (holder) {
-            is FilterViewHolder -> holder.bindData(numberData as? FilterWithFilteredNumberUIModel, position)
+            is FilterViewHolder ->
+                holder.bindData(
+                    numberData as? FilterWithFilteredNumberUIModel,
+                    position,
+                )
+
             is ContactViewHolder -> holder.bindData(numberData as? ContactWithFilterUIModel)
             is CallViewHolder -> holder.bindData(numberData as? CallWithFilterUIModel)
         }
@@ -62,17 +77,30 @@ class NumberDataAdapter(
     internal inner class FilterViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemFilterBinding? = DataBindingUtil.bind(itemView)
+
         fun bindData(
-            filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel?, position: Int) {
+            filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel?,
+            position: Int,
+        ) {
             binding?.apply {
-                this.filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel?.apply {
-                    highlightedSpanned =
-                        highlightedSpanned ?: filterWithFilteredNumberUIModel.highlightedSpanned(filterWithFilteredNumberUIModel, R.color.text_color_black)
-                }
-                itemFilterContainer.strokeColor = ContextCompat.getColor(
-                    root.context,
-                    if (position == 0) filterWithFilteredNumberUIModel?.filterTypeTint() ?: R.color.transparent
-                    else R.color.transparent)
+                this.filterWithFilteredNumberUIModel =
+                    filterWithFilteredNumberUIModel?.apply {
+                        highlightedSpanned =
+                            highlightedSpanned ?: filterWithFilteredNumberUIModel.highlightedSpanned(
+                                filterWithFilteredNumberUIModel,
+                                R.color.text_color_black,
+                            )
+                    }
+                itemFilterContainer.strokeColor =
+                    ContextCompat.getColor(
+                        root.context,
+                        if (position == 0) {
+                            filterWithFilteredNumberUIModel?.filterTypeTint()
+                                ?: R.color.transparent
+                        } else {
+                            R.color.transparent
+                        },
+                    )
                 root.setSafeOnClickListener {
                     filterWithFilteredNumberUIModel?.let { it1 -> numberDataClick.invoke(it1) }
                 }
@@ -84,16 +112,29 @@ class NumberDataAdapter(
     internal inner class ContactViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemContactBinding? = DataBindingUtil.bind(itemView)
+
         fun bindData(contactWithFilter: ContactWithFilterUIModel?) {
             binding?.apply {
                 this.contactWithFilter = contactWithFilter
                 this.contactWithFilter?.highlightedSpanned = contactWithFilter?.highlightedSpanned
-                    ?: this.contactWithFilter?.highlightedSpanned(contactWithFilter?.filterWithFilteredNumberUIModel, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                    ?: this.contactWithFilter?.highlightedSpanned(
+                        contactWithFilter?.filterWithFilteredNumberUIModel,
+                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                    )
                 root.setSafeOnClickListener {
-                    contactWithFilter?.let { it1 -> numberDataClick.invoke(it1.apply {
-                        searchText = String.EMPTY
-                        highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                    }) }
+                    contactWithFilter?.let { it1 ->
+                        numberDataClick.invoke(
+                            it1.apply {
+                                searchText = String.EMPTY
+                                highlightedSpanned =
+                                    number.highlightedSpanned(
+                                        String.EMPTY,
+                                        null,
+                                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                                    )
+                            },
+                        )
+                    }
                 }
                 executePendingBindings()
             }
@@ -103,6 +144,7 @@ class NumberDataAdapter(
     internal inner class CallViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var binding: ItemCallBinding? = DataBindingUtil.bind(itemView)
+
         fun bindData(callWithFilter: CallWithFilterUIModel?) {
             binding?.apply {
                 root.isEnabled = isFilteredCallItemDisable.not()
@@ -110,11 +152,19 @@ class NumberDataAdapter(
                 this.callWithFilter?.isExtract = isFilteredCallDetails.not()
                 this.callWithFilter?.isFilteredCallDetails = isFilteredCallDetails
                 this.callWithFilter?.highlightedSpanned = callWithFilter?.highlightedSpanned
-                    ?:this.callWithFilter?.highlightedSpanned( if (isFilteredCallDetails) null else callWithFilter?.filterWithFilteredNumberUIModel, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                    ?: this.callWithFilter?.highlightedSpanned(
+                        if (isFilteredCallDetails) null else callWithFilter?.filterWithFilteredNumberUIModel,
+                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                    )
                 root.setSafeOnClickListener {
                     this.callWithFilter?.apply {
                         searchText = String.EMPTY
-                        highlightedSpanned = number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                        highlightedSpanned =
+                            number.highlightedSpanned(
+                                String.EMPTY,
+                                null,
+                                ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                            )
                         numberDataClick.invoke(this)
                     }
                 }

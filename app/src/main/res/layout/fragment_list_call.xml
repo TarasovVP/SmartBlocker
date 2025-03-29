@@ -6,7 +6,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/padding_8" >
+        android:paddingTop="@dimen/padding_8">
 
         <CheckBox
             android:id="@+id/list_call_check"
@@ -15,7 +15,7 @@
             style="@style/FilterCheckBoxStyle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/list_call_info"/>
+            app:layout_constraintEnd_toStartOf="@+id/list_call_info" />
 
         <ImageButton
             android:id="@+id/list_call_info"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="@+id/list_call_check"
             app:layout_constraintBottom_toBottomOf="@+id/list_call_check"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/list_call_check"/>
+            app:layout_constraintStart_toEndOf="@+id/list_call_check" />
 
         <com.tarasovvp.smartblocker.utils.EmptyStateView
             android:id="@+id/list_call_empty"
@@ -36,7 +36,7 @@
             android:layout_height="@dimen/size_0"
             android:layout_marginHorizontal="@dimen/margin_16"
             app:layout_constraintTop_toBottomOf="@+id/list_call_check"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/list_call_refresh"

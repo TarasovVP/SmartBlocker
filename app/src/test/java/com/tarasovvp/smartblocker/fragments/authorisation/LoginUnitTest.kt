@@ -5,12 +5,19 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.*
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withHint
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
@@ -33,18 +40,22 @@ import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class LoginUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class LoginUnitTest : BaseFragmentUnitTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -55,10 +66,14 @@ class LoginUnitTest: BaseFragmentUnitTest() {
         launchFragmentInHiltContainer<LoginFragment> {
             val mockGoogleSignInClient: GoogleSignInClient = mockk()
             (this as LoginFragment).googleSignInClient = mockGoogleSignInClient
-            val signInIntent = Intent().apply {
-                action = "com.google.android.gms.auth.GOOGLE_SIGN_IN"
-                setClassName("com.google.android.gms.auth.api.signin.internal", "com.google.android.gms.auth.api.signin.internal.SignInHubActivity")
-            }
+            val signInIntent =
+                Intent().apply {
+                    action = "com.google.android.gms.auth.GOOGLE_SIGN_IN"
+                    setClassName(
+                        "com.google.android.gms.auth.api.signin.internal",
+                        "com.google.android.gms.auth.api.signin.internal.SignInHubActivity",
+                    )
+                }
             every { mockGoogleSignInClient.signInIntent } returns signInIntent
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.loginFragment)
@@ -97,16 +112,35 @@ class LoginUnitTest: BaseFragmentUnitTest() {
         intended(
             allOf(
                 hasAction("com.google.android.gms.auth.GOOGLE_SIGN_IN"),
-                hasComponent("com.google.android.gms.auth.api.signin.internal.SignInHubActivity")
-            )
+                hasComponent("com.google.android.gms.auth.api.signin.internal.SignInHubActivity"),
+            ),
         )
     }
 
     @Test
     fun checkLoginDivider() {
-        onView(withId(R.id.login_left_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.cornflower_blue))))
-        onView(withId(R.id.login_divider_title)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_or)))
-        onView(withId(R.id.login_right_divider)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, (R.color.cornflower_blue)))))
+        onView(withId(R.id.login_left_divider)).check(matches(isDisplayed())).check(
+            matches(
+                withBackgroundColor(
+                    ContextCompat.getColor(
+                        targetContext,
+                        R.color.cornflower_blue,
+                    ),
+                ),
+            ),
+        )
+        onView(withId(R.id.login_divider_title)).check(matches(isDisplayed()))
+            .check(matches(withText(R.string.authorization_or)))
+        onView(withId(R.id.login_right_divider)).check(matches(isDisplayed())).check(
+            matches(
+                withBackgroundColor(
+                    ContextCompat.getColor(
+                        targetContext,
+                        (R.color.cornflower_blue),
+                    ),
+                ),
+            ),
+        )
     }
 
     @Test
@@ -159,7 +193,16 @@ class LoginUnitTest: BaseFragmentUnitTest() {
             .check(matches(withText(R.string.authorization_enter)))
             .check(matches(not(isEnabled())))
             .check(matches(withTextColor(R.color.inactive_bg)))
-            .check(matches(withBackgroundTint(ContextCompat.getColor(targetContext, R.color.transparent))))
+            .check(
+                matches(
+                    withBackgroundTint(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.transparent,
+                        ),
+                    ),
+                ),
+            )
         onView(withId(R.id.login_email_input)).perform(replaceText(TEST_EMAIL))
         onView(withId(R.id.login_enter)).check(matches(not(isEnabled())))
         onView(withId(R.id.login_email_input)).perform(replaceText(String.EMPTY))
@@ -168,16 +211,45 @@ class LoginUnitTest: BaseFragmentUnitTest() {
         onView(withId(R.id.login_email_input)).perform(replaceText(TEST_EMAIL))
         onView(withId(R.id.login_enter)).apply {
             check(matches(isEnabled())).check(matches(withTextColor(R.color.white)))
-            check(matches(withBackgroundTint(ContextCompat.getColor(targetContext, R.color.button_bg))))
+            check(
+                matches(
+                    withBackgroundTint(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.button_bg,
+                        ),
+                    ),
+                ),
+            )
             perform(click())
         }
     }
 
     @Test
     fun checkLoginDividerUnauthorized() {
-        onView(withId(R.id.login_left_divider_unauthorized)).perform(nestedScrollTo()).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.cornflower_blue))))
-        onView(withId(R.id.login_divider_title_unauthorized)).check(matches(isDisplayed())).check(matches(withText(R.string.authorization_or)))
-        onView(withId(R.id.login_right_divider_unauthorized)).check(matches(isDisplayed())).check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.cornflower_blue))))
+        onView(withId(R.id.login_left_divider_unauthorized)).perform(nestedScrollTo())
+            .check(matches(isDisplayed())).check(
+                matches(
+                    withBackgroundColor(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.cornflower_blue,
+                        ),
+                    ),
+                ),
+            )
+        onView(withId(R.id.login_divider_title_unauthorized)).check(matches(isDisplayed()))
+            .check(matches(withText(R.string.authorization_or)))
+        onView(withId(R.id.login_right_divider_unauthorized)).check(matches(isDisplayed())).check(
+            matches(
+                withBackgroundColor(
+                    ContextCompat.getColor(
+                        targetContext,
+                        R.color.cornflower_blue,
+                    ),
+                ),
+            ),
+        )
     }
 
     @Test

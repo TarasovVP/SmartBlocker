@@ -13,7 +13,13 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.EMPTY
@@ -39,7 +45,10 @@ import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.List
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
+import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.parcelable
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -55,11 +64,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class ListFilterUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class ListFilterUnitTest : BaseFragmentUnitTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -71,9 +81,14 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
     override fun setUp() {
         super.setUp()
         FirebaseApp.initializeApp(targetContext)
-        filterList = if (name.methodName.contains(EMPTY)) arrayListOf() else filterWithFilteredNumberUIModelList().onEach {
-            it.filterType =  if (name.methodName.contains("Permission")) PERMISSION else BLOCKER
-        }
+        filterList =
+            if (name.methodName.contains(EMPTY)) {
+                arrayListOf()
+            } else {
+                filterWithFilteredNumberUIModelList().onEach {
+                    it.filterType = if (name.methodName.contains("Permission")) PERMISSION else BLOCKER
+                }
+            }
         if (name.methodName.contains("Permission")) {
             launchFragmentInHiltContainer<ListPermissionFragment> {
                 navController?.setGraph(R.navigation.navigation)
@@ -128,7 +143,7 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             filterIndexList.add(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal)
             fragment?.setFragmentResult(
                 FILTER_CONDITION_LIST,
-                bundleOf(FILTER_CONDITION_LIST to filterIndexList)
+                bundleOf(FILTER_CONDITION_LIST to filterIndexList),
             )
             if (filterList.isNullOrEmpty()) {
                 check(matches(not(isEnabled())))
@@ -147,10 +162,13 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             filterIndexList.add(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
             fragment?.setFragmentResult(
                 FILTER_CONDITION_LIST,
-                bundleOf(FILTER_CONDITION_LIST to arrayListOf<Int>().apply {
-                    add(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal)
-                    add(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
-                })
+                bundleOf(
+                    FILTER_CONDITION_LIST to
+                        arrayListOf<Int>().apply {
+                            add(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal)
+                            add(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
+                        },
+                ),
             )
             if (filterList.isNullOrEmpty()) {
                 check(matches(not(isEnabled())))
@@ -180,12 +198,21 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_full)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            val result = (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            val result =
+                (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
             result?.let { countryCodeUIModel ->
                 assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
                 assertEquals(
-                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
-                        filterType = BLOCKER), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                    FilterWithCountryCodeUIModel(
+                        filterWithFilteredNumberUIModel =
+                            FilterWithFilteredNumberUIModel(
+                                conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+                                filterType = BLOCKER,
+                            ),
+                        countryCodeUIModel = countryCodeUIModel,
+                    ),
+                    navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE),
+                )
             }
         }
     }
@@ -200,12 +227,21 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_full)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            val result = (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            val result =
+                (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
             result?.let { countryCodeUIModel ->
                 assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
                 assertEquals(
-                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
-                        filterType = PERMISSION), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                    FilterWithCountryCodeUIModel(
+                        filterWithFilteredNumberUIModel =
+                            FilterWithFilteredNumberUIModel(
+                                conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+                                filterType = PERMISSION,
+                            ),
+                        countryCodeUIModel = countryCodeUIModel,
+                    ),
+                    navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE),
+                )
             }
         }
     }
@@ -220,12 +256,21 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_start)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            val result = (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            val result =
+                (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
             result?.let { countryCodeUIModel ->
                 assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
                 assertEquals(
-                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
-                    filterType = BLOCKER), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                    FilterWithCountryCodeUIModel(
+                        filterWithFilteredNumberUIModel =
+                            FilterWithFilteredNumberUIModel(
+                                conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
+                                filterType = BLOCKER,
+                            ),
+                        countryCodeUIModel = countryCodeUIModel,
+                    ),
+                    navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE),
+                )
             }
         }
     }
@@ -240,12 +285,21 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_start)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            val result = (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            val result =
+                (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
             result?.let { countryCodeUIModel ->
                 assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
                 assertEquals(
-                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
-                        filterType = PERMISSION), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                    FilterWithCountryCodeUIModel(
+                        filterWithFilteredNumberUIModel =
+                            FilterWithFilteredNumberUIModel(
+                                conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
+                                filterType = PERMISSION,
+                            ),
+                        countryCodeUIModel = countryCodeUIModel,
+                    ),
+                    navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE),
+                )
             }
         }
     }
@@ -260,12 +314,21 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_contain)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            val result = (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            val result =
+                (fragment as? ListBlockerFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
             result?.let { countryCodeUIModel ->
                 assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
                 assertEquals(
-                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
-                        filterType = BLOCKER), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                    FilterWithCountryCodeUIModel(
+                        filterWithFilteredNumberUIModel =
+                            FilterWithFilteredNumberUIModel(
+                                conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                                filterType = BLOCKER,
+                            ),
+                        countryCodeUIModel = countryCodeUIModel,
+                    ),
+                    navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE),
+                )
             }
         }
     }
@@ -280,12 +343,21 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             check(matches(withDrawable(R.drawable.ic_condition_contain)))
             onView(isRoot()).perform(waitFor(501))
             perform(click())
-            val result = (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
+            val result =
+                (fragment as? ListPermissionFragment)?.viewModel?.currentCountryCodeLiveData?.getOrAwaitValue()
             result?.let { countryCodeUIModel ->
                 assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
                 assertEquals(
-                    FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
-                        filterType = PERMISSION), countryCodeUIModel = countryCodeUIModel), navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE))
+                    FilterWithCountryCodeUIModel(
+                        filterWithFilteredNumberUIModel =
+                            FilterWithFilteredNumberUIModel(
+                                conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                                filterType = PERMISSION,
+                            ),
+                        countryCodeUIModel = countryCodeUIModel,
+                    ),
+                    navController?.backStack?.last()?.arguments?.parcelable(FILTER_WITH_COUNTRY_CODE),
+                )
             }
         }
     }
@@ -371,18 +443,102 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
         } else {
             onView(withId(R.id.list_filter_recycler_view)).apply {
-                check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_filter_delete),
-                    if (filterList?.firstOrNull()?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
-                    if (filterList?.firstOrNull()?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
-                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, longClick()))
-                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-                check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_filter_delete),
-                    if (filterList?.firstOrNull()?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
-                    if (filterList?.firstOrNull()?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
-                perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-                check(matches(atPosition(0, hasDescendant(allOf(withId(R.id.item_filter_delete),
-                    if (filterList?.firstOrNull()?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
-                    if (filterList?.firstOrNull()?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
+                check(
+                    matches(
+                        atPosition(
+                            0,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_filter_delete),
+                                    if (filterList?.firstOrNull()?.isDeleteMode.isTrue()) {
+                                        isDisplayed()
+                                    } else {
+                                        not(
+                                            isDisplayed(),
+                                        )
+                                    },
+                                    if (filterList?.firstOrNull()?.isCheckedForDelete.isTrue()) {
+                                        isChecked()
+                                    } else {
+                                        not(
+                                            isChecked(),
+                                        )
+                                    },
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                perform(
+                    RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                        0,
+                        longClick(),
+                    ),
+                )
+                perform(
+                    RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                        0,
+                        click(),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            0,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_filter_delete),
+                                    if (filterList?.firstOrNull()?.isDeleteMode.isTrue()) {
+                                        isDisplayed()
+                                    } else {
+                                        not(
+                                            isDisplayed(),
+                                        )
+                                    },
+                                    if (filterList?.firstOrNull()?.isCheckedForDelete.isTrue()) {
+                                        isChecked()
+                                    } else {
+                                        not(
+                                            isChecked(),
+                                        )
+                                    },
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                perform(
+                    RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                        0,
+                        click(),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            0,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_filter_delete),
+                                    if (filterList?.firstOrNull()?.isDeleteMode.isTrue()) {
+                                        isDisplayed()
+                                    } else {
+                                        not(
+                                            isDisplayed(),
+                                        )
+                                    },
+                                    if (filterList?.firstOrNull()?.isCheckedForDelete.isTrue()) {
+                                        isChecked()
+                                    } else {
+                                        not(
+                                            isChecked(),
+                                        )
+                                    },
+                                ),
+                            ),
+                        ),
+                    ),
+                )
             }
         }
     }
@@ -393,44 +549,170 @@ class ListFilterUnitTest: BaseFragmentUnitTest() {
             onView(withId(R.id.list_filter_empty)).check(matches(isDisplayed()))
             onView(withId(R.id.empty_state_description)).check(matches(isDisplayed()))
                 .check(matches(withText(EmptyState.EMPTY_STATE_BLOCKERS.description())))
-            //TODO drawable
-            //onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
+            // TODO drawable
+            // onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
         } else {
             onView(withId(R.id.list_filter_empty)).check(matches(not(isDisplayed())))
         }
     }
 
-    private fun checkFilterItem(position: Int, filterWithFilteredNumber: FilterWithFilteredNumberUIModel?) {
+    private fun checkFilterItem(
+        position: Int,
+        filterWithFilteredNumber: FilterWithFilteredNumberUIModel?,
+    ) {
         onView(withId(R.id.list_filter_recycler_view)).apply {
-            //TODO drawable
+            // TODO drawable
             /*check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
                 isDisplayed(),
-                *//*withDrawable(filterWithFilteredNumber?.conditionTypeIcon())*//*)))))*/
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_filter),
-                isDisplayed(),
-                withDrawable(filterWithFilteredNumber?.filterTypeIcon()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_value),
-                isDisplayed(),
-                withText(filterWithFilteredNumber?.filter))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_name),
-                isDisplayed(),
-                withText(targetContext.getString(filterWithFilteredNumber?.conditionTypeName().orZero())))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_delete),
-                if (filterWithFilteredNumber?.isDeleteMode.isTrue()) isDisplayed() else not(isDisplayed()),
-                if (filterWithFilteredNumber?.isCheckedForDelete.isTrue()) isChecked() else not(isChecked()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_divider),
-                isDisplayed(),
-                withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_contacts),
-                isDisplayed(),
-                withText(filterWithFilteredNumber?.filteredNumbersText(targetContext)),
-                withTextColor(if (filterWithFilteredNumber?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_created),
-                isDisplayed(),
-                withText(String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumber?.filterCreatedDate())))))))
-            perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
+             */
+            // withDrawable(filterWithFilteredNumber?.conditionTypeIcon())
+            // )))))
+            check(
+                matches(
+                    atPosition(
+                        position,
+                        hasDescendant(
+                            allOf(
+                                withId(R.id.item_filter_filter),
+                                isDisplayed(),
+                                withDrawable(filterWithFilteredNumber?.filterTypeIcon()),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            check(
+                matches(
+                    atPosition(
+                        position,
+                        hasDescendant(
+                            allOf(
+                                withId(R.id.item_filter_value),
+                                isDisplayed(),
+                                withText(filterWithFilteredNumber?.filter),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            check(
+                matches(
+                    atPosition(
+                        position,
+                        hasDescendant(
+                            allOf(
+                                withId(R.id.item_filter_name),
+                                isDisplayed(),
+                                withText(
+                                    targetContext.getString(
+                                        filterWithFilteredNumber?.conditionTypeName().orZero(),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            check(
+                matches(
+                    atPosition(
+                        position,
+                        hasDescendant(
+                            allOf(
+                                withId(R.id.item_filter_delete),
+                                if (filterWithFilteredNumber?.isDeleteMode.isTrue()) {
+                                    isDisplayed()
+                                } else {
+                                    not(
+                                        isDisplayed(),
+                                    )
+                                },
+                                if (filterWithFilteredNumber?.isCheckedForDelete.isTrue()) {
+                                    isChecked()
+                                } else {
+                                    not(
+                                        isChecked(),
+                                    )
+                                },
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            check(
+                matches(
+                    atPosition(
+                        position,
+                        hasDescendant(
+                            allOf(
+                                withId(R.id.item_filter_divider),
+                                isDisplayed(),
+                                withBackgroundColor(
+                                    ContextCompat.getColor(
+                                        targetContext,
+                                        R.color.light_steel_blue,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            check(
+                matches(
+                    atPosition(
+                        position,
+                        hasDescendant(
+                            allOf(
+                                withId(R.id.item_filter_contacts),
+                                isDisplayed(),
+                                withText(filterWithFilteredNumber?.filteredNumbersText(targetContext)),
+                                withTextColor(
+                                    if (filterWithFilteredNumber?.isBlocker()
+                                            .isTrue()
+                                    ) {
+                                        R.color.sunset
+                                    } else {
+                                        R.color.islamic_green
+                                    },
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            check(
+                matches(
+                    atPosition(
+                        position,
+                        hasDescendant(
+                            allOf(
+                                withId(R.id.item_filter_created),
+                                isDisplayed(),
+                                withText(
+                                    String.format(
+                                        targetContext.getString(R.string.filter_action_created),
+                                        filterWithFilteredNumber?.filterCreatedDate(),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                    position,
+                    click(),
+                ),
+            )
             assertEquals(R.id.detailsFilterFragment, navController?.currentDestination?.id)
-            assertEquals(filterWithFilteredNumber, navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(FILTER_WITH_FILTERED_NUMBER))
+            assertEquals(
+                filterWithFilteredNumber,
+                navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(
+                    FILTER_WITH_FILTERED_NUMBER,
+                ),
+            )
         }
     }
 }

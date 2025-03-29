@@ -15,7 +15,6 @@ class ViewIdlingResource(
     private val viewMatcher: Matcher<View?>?,
     private val idleMatcher: Matcher<View?>?,
 ) : IdlingResource {
-
     private var resourceCallback: IdlingResource.ResourceCallback? = null
 
     override fun isIdleNow(): Boolean {
@@ -32,7 +31,7 @@ class ViewIdlingResource(
     }
 
     override fun getName(): String {
-        return "$this ${viewMatcher.toString()}"
+        return "$this $viewMatcher"
     }
 
     private fun getView(viewMatcher: Matcher<View?>?): View? {
@@ -46,7 +45,6 @@ class ViewIdlingResource(
             null
         }
     }
-
 }
 
 fun waitUntilViewIsDisplayed(matcher: Matcher<View?>) {

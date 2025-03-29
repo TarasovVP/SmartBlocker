@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
-
     val exceptionLiveData = MutableLiveData<String>()
     val isProgressProcessLiveData = MutableLiveData<Boolean>()
     val isMainProgressProcessLiveData = MutableLiveData<Boolean>()
@@ -29,7 +28,10 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         block: suspend CoroutineScope.() -> Unit,
     ): Job = viewModelScope.launchIO(onError, block)
 
-    protected open fun onError(throwable: Throwable, block: suspend CoroutineScope.() -> Unit) {
+    protected open fun onError(
+        throwable: Throwable,
+        block: suspend CoroutineScope.() -> Unit,
+    ) {
         hideProgress()
         throwable.printStackTrace()
         exceptionLiveData.postValue(throwable.localizedMessage)

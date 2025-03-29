@@ -5,7 +5,9 @@
     <data>
 
         <import type="androidx.core.content.ContextCompat" />
+
         <import type="android.view.View" />
+
         <variable
             name="filterWithFilteredNumberUIModel"
             type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
@@ -106,7 +108,7 @@
                 android:text="@{filterWithFilteredNumberUIModel.filteredNumbersText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_filter_created"/>
+                app:layout_constraintEnd_toStartOf="@+id/item_filter_created" />
 
             <TextView
                 android:id="@+id/item_filter_created"
@@ -120,7 +122,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_filter_contacts"
                 app:layout_constraintTop_toTopOf="@+id/item_filter_contacts"
-                app:layout_constraintBottom_toBottomOf="@+id/item_filter_contacts"/>
+                app:layout_constraintBottom_toBottomOf="@+id/item_filter_contacts" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

@@ -9,24 +9,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class CountryCodeRepositoryImpl @Inject constructor(
-    private val appPhoneNumberUtil: AppPhoneNumberUtil,
-    private val countryCodeDao: CountryCodeDao
-) : CountryCodeRepository {
-
-    override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): List<CountryCode> =
-        withContext(Dispatchers.Default) {
-            appPhoneNumberUtil.countryCodeList { size, position ->
-                result.invoke(size, position)
+class CountryCodeRepositoryImpl
+    @Inject
+    constructor(
+        private val appPhoneNumberUtil: AppPhoneNumberUtil,
+        private val countryCodeDao: CountryCodeDao,
+    ) : CountryCodeRepository {
+        override suspend fun getSystemCountryCodeList(result: (Int, Int) -> Unit): List<CountryCode> =
+            withContext(Dispatchers.Default) {
+                appPhoneNumberUtil.countryCodeList { size, position ->
+                    result.invoke(size, position)
+                }
             }
-        }
 
-    override suspend fun insertAllCountryCodes(list: List<CountryCode>) =
-        countryCodeDao.insertAllCountryCodes(list)
+        override suspend fun insertAllCountryCodes(list: List<CountryCode>) = countryCodeDao.insertAllCountryCodes(list)
 
-    override suspend fun allCountryCodes(): List<CountryCode> =
-        countryCodeDao.allCountryCodes()
+        override suspend fun allCountryCodes(): List<CountryCode> = countryCodeDao.allCountryCodes()
 
-    override suspend fun getCountryCodeByCode(code: Int): CountryCode? =
-        countryCodeDao.getCountryCodeByCode(String.format(COUNTRY_CODE_START, code.toString()))
-}
+        override suspend fun getCountryCodeByCode(code: Int): CountryCode? =
+            countryCodeDao.getCountryCodeByCode(String.format(COUNTRY_CODE_START, code.toString()))
+    }

@@ -1,7 +1,11 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
@@ -17,7 +21,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
 
 class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : DataStoreRepository {
-
     override suspend fun setOnBoardingSeen(isOnBoardingSeen: Boolean) {
         dataStore.edit { preferences ->
             preferences[booleanPreferencesKey(ON_BOARDING_SEEN)] = isOnBoardingSeen
@@ -83,7 +86,6 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
             }.take(1)
     }
 
-
     override suspend fun setCountryCode(countryCode: CountryCode) {
         dataStore.edit { preferences ->
             preferences[stringPreferencesKey(COUNTRY_CODE)] = Gson().toJson(countryCode)
@@ -94,7 +96,10 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
         return dataStore.data
             .map { preferences ->
                 try {
-                    Gson().fromJson(preferences[stringPreferencesKey(COUNTRY_CODE)],  CountryCode::class.java)
+                    Gson().fromJson(
+                        preferences[stringPreferencesKey(COUNTRY_CODE)],
+                        CountryCode::class.java,
+                    )
                 } catch (e: java.lang.Exception) {
                     CountryCode()
                 }
@@ -115,10 +120,10 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
     }
 
     override suspend fun clearDataByKeys(keys: List<Preferences.Key<*>>) {
-            dataStore.edit { preferences ->
-                keys.forEach { key ->
-                    preferences.remove(key)
-                }
+        dataStore.edit { preferences ->
+            keys.forEach { key ->
+                preferences.remove(key)
             }
+        }
     }
 }

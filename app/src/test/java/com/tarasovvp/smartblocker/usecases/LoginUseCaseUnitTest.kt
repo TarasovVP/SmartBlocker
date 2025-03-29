@@ -13,7 +13,6 @@ import org.junit.Before
 import org.junit.Test
 
 class LoginUseCaseUnitTest {
-
     @MockK
     private lateinit var authRepository: AuthRepository
 
@@ -30,7 +29,12 @@ class LoginUseCaseUnitTest {
 
     @Test
     fun sendPasswordResetEmailTest() {
-        every { authRepository.sendPasswordResetEmail(eq(UnitTestUtils.TEST_EMAIL), any()) } answers {
+        every {
+            authRepository.sendPasswordResetEmail(
+                eq(UnitTestUtils.TEST_EMAIL),
+                any(),
+            )
+        } answers {
             resultMock.invoke(Result.Success())
         }
         loginUseCase.sendPasswordResetEmail(UnitTestUtils.TEST_EMAIL, resultMock)
@@ -39,10 +43,20 @@ class LoginUseCaseUnitTest {
 
     @Test
     fun signInWithEmailAndPasswordTest() {
-        every { authRepository.signInWithEmailAndPassword(eq(UnitTestUtils.TEST_EMAIL), eq(UnitTestUtils.TEST_PASSWORD), any()) } answers {
+        every {
+            authRepository.signInWithEmailAndPassword(
+                eq(UnitTestUtils.TEST_EMAIL),
+                eq(UnitTestUtils.TEST_PASSWORD),
+                any(),
+            )
+        } answers {
             resultMock.invoke(Result.Success())
         }
-        loginUseCase.signInWithEmailAndPassword(UnitTestUtils.TEST_EMAIL, UnitTestUtils.TEST_PASSWORD, resultMock)
+        loginUseCase.signInWithEmailAndPassword(
+            UnitTestUtils.TEST_EMAIL,
+            UnitTestUtils.TEST_PASSWORD,
+            resultMock,
+        )
         verify { resultMock.invoke(Result.Success()) }
     }
 

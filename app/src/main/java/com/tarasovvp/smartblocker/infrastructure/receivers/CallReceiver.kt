@@ -17,14 +17,24 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_RECEIV
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXTRA_INCOMING_NUMBER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.breakCallNougatAndLower
+import com.tarasovvp.smartblocker.utils.extensions.breakCallPieAndHigher
+import com.tarasovvp.smartblocker.utils.extensions.createFilteredCall
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
+import com.tarasovvp.smartblocker.utils.extensions.isCallStateIdle
+import com.tarasovvp.smartblocker.utils.extensions.isCallStateRinging
+import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
 open class CallReceiver : BroadcastReceiver() {
-
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
@@ -40,7 +50,10 @@ open class CallReceiver : BroadcastReceiver() {
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
         if (context.checkPermissions().not() || intent.hasExtra(EXTRA_INCOMING_NUMBER).not()) return
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val number = intent.getStringExtra(EXTRA_INCOMING_NUMBER).orEmpty()
@@ -58,7 +71,11 @@ open class CallReceiver : BroadcastReceiver() {
                         context.sendBroadcast(Intent(CALL_RECEIVE))
                     }
                 }
-                if (telephony.isCallStateIdle() && matchedFilter.isNull()) context.sendBroadcast(Intent(CALL_RECEIVE))
+                if (telephony.isCallStateIdle() && matchedFilter.isNull()) {
+                    context.sendBroadcast(
+                        Intent(CALL_RECEIVE),
+                    )
+                }
             }
         }
     }
@@ -75,7 +92,10 @@ open class CallReceiver : BroadcastReceiver() {
         }
     }
 
-    suspend fun matchedFilter(number: String, isBlockHidden: Boolean?): Filter? {
+    suspend fun matchedFilter(
+        number: String,
+        isBlockHidden: Boolean?,
+    ): Filter? {
         return if (number.isEmpty() && isBlockHidden.isTrue()) {
             Filter(filterType = BLOCKER)
         } else {

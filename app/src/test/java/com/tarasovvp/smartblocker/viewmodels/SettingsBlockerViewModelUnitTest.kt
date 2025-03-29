@@ -19,8 +19,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerViewModel>() {
-
+class SettingsBlockerViewModelUnitTest : BaseViewModelUnitTest<SettingsBlockerViewModel>() {
     @MockK
     private lateinit var useCase: SettingsBlockerUseCase
 
@@ -33,66 +32,74 @@ class SettingsBlockerViewModelUnitTest: BaseViewModelUnitTest<SettingsBlockerVie
     override fun createViewModel() = SettingsBlockerViewModel(application, useCase, countryCodeUIMapper)
 
     @Test
-    fun getBlockerTurnOnTest() = runTest {
-        val blockerTurnOn = true
-        coEvery { useCase.getBlockerTurnOn() } returns flowOf(blockerTurnOn)
-        viewModel.getBlockerTurnOn()
-        advanceUntilIdle()
-        coVerify { useCase.getBlockerTurnOn() }
-        assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
-    }
-
-    @Test
-    fun getBlockHiddenTest() = runTest {
-        val blockHidden = true
-        coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
-        viewModel.getBlockHidden()
-        advanceUntilIdle()
-        coVerify { useCase.getBlockHidden() }
-        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
-    }
-
-    @Test
-    fun changeBlockHiddenTest() = runTest {
-        val blockHidden = true
-        val expectedResult = Result.Success<Unit>()
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.changeBlockHidden(eq(blockHidden), eq(true), any()) } answers {
-            val callback = thirdArg<(Result<Unit>) -> Unit>()
-            callback.invoke(expectedResult)
+    fun getBlockerTurnOnTest() =
+        runTest {
+            val blockerTurnOn = true
+            coEvery { useCase.getBlockerTurnOn() } returns flowOf(blockerTurnOn)
+            viewModel.getBlockerTurnOn()
+            advanceUntilIdle()
+            coVerify { useCase.getBlockerTurnOn() }
+            assertEquals(blockerTurnOn, viewModel.blockerTurnOnLiveData.getOrAwaitValue())
         }
-        viewModel.changeBlockHidden(blockHidden)
-        advanceUntilIdle()
-        coVerify { useCase.changeBlockHidden(blockHidden, true, any()) }
-        assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
-    }
 
     @Test
-    fun getCurrentCountryCodeTest() = runTest{
-        val countryCode = CountryCode()
-        val countryCodeUIModel = CountryCodeUIModel()
-        coEvery { useCase.getCurrentCountryCode() } returns flowOf(countryCode)
-        coEvery { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
-        viewModel.getCurrentCountryCode()
-        advanceUntilIdle()
-        coVerify { useCase.getCurrentCountryCode() }
-        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
-    }
-
-    @Test
-    fun setCurrentCountryCodeTest() = runTest {
-        val countryCode = CountryCode()
-        val countryCodeUIModel = CountryCodeUIModel()
-        val expectedResult = Result.Success<Unit>()
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.changeCountryCode(eq(countryCode), eq(true), any()) } answers {
-            val callback = thirdArg<(Result<Unit>) -> Unit>()
-            callback.invoke(expectedResult)
+    fun getBlockHiddenTest() =
+        runTest {
+            val blockHidden = true
+            coEvery { useCase.getBlockHidden() } returns flowOf(blockHidden)
+            viewModel.getBlockHidden()
+            advanceUntilIdle()
+            coVerify { useCase.getBlockHidden() }
+            assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
         }
-        coEvery { countryCodeUIMapper.mapFromUIModel(countryCodeUIModel) } returns countryCode
-        viewModel.changeCountryCode(countryCodeUIModel)
-        advanceUntilIdle()
-        coVerify { useCase.changeCountryCode(eq(countryCode), eq(true), any()) }
-        assertEquals(countryCodeUIModel, viewModel.successCurrentCountryCodeLiveData.getOrAwaitValue())
-    }
+
+    @Test
+    fun changeBlockHiddenTest() =
+        runTest {
+            val blockHidden = true
+            val expectedResult = Result.Success<Unit>()
+            every { application.isNetworkAvailable } returns true
+            coEvery { useCase.changeBlockHidden(eq(blockHidden), eq(true), any()) } answers {
+                val callback = thirdArg<(Result<Unit>) -> Unit>()
+                callback.invoke(expectedResult)
+            }
+            viewModel.changeBlockHidden(blockHidden)
+            advanceUntilIdle()
+            coVerify { useCase.changeBlockHidden(blockHidden, true, any()) }
+            assertEquals(blockHidden, viewModel.blockHiddenLiveData.getOrAwaitValue())
+        }
+
+    @Test
+    fun getCurrentCountryCodeTest() =
+        runTest {
+            val countryCode = CountryCode()
+            val countryCodeUIModel = CountryCodeUIModel()
+            coEvery { useCase.getCurrentCountryCode() } returns flowOf(countryCode)
+            coEvery { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
+            viewModel.getCurrentCountryCode()
+            advanceUntilIdle()
+            coVerify { useCase.getCurrentCountryCode() }
+            assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
+        }
+
+    @Test
+    fun setCurrentCountryCodeTest() =
+        runTest {
+            val countryCode = CountryCode()
+            val countryCodeUIModel = CountryCodeUIModel()
+            val expectedResult = Result.Success<Unit>()
+            every { application.isNetworkAvailable } returns true
+            coEvery { useCase.changeCountryCode(eq(countryCode), eq(true), any()) } answers {
+                val callback = thirdArg<(Result<Unit>) -> Unit>()
+                callback.invoke(expectedResult)
+            }
+            coEvery { countryCodeUIMapper.mapFromUIModel(countryCodeUIModel) } returns countryCode
+            viewModel.changeCountryCode(countryCodeUIModel)
+            advanceUntilIdle()
+            coVerify { useCase.changeCountryCode(eq(countryCode), eq(true), any()) }
+            assertEquals(
+                countryCodeUIModel,
+                viewModel.successCurrentCountryCodeLiveData.getOrAwaitValue(),
+            )
+        }
 }

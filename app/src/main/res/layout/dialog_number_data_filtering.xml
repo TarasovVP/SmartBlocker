@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginHorizontal="@dimen/margin_16"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_filtering_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/dialog_number_data_filtering_title" />
 
             <Button
                 android:id="@+id/dialog_number_data_filtering_cancel"

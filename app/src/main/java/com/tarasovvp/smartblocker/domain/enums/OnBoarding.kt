@@ -10,7 +10,8 @@ enum class OnBoarding {
     ONBOARDING_INTRO,
     ONBOARDING_FILTER_CONDITIONS,
     ONBOARDING_INFO,
-    ONBOARDING_PERMISSIONS;
+    ONBOARDING_PERMISSIONS,
+    ;
 
     fun description(context: Context): Spanned {
         return descriptionText(context)

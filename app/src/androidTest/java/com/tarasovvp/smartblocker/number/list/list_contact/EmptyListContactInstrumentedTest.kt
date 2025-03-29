@@ -5,8 +5,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 
 @HiltAndroidTest
-class EmptyListContactInstrumentedTest: BaseListContactInstrumentedTest() {
-
+class EmptyListContactInstrumentedTest : BaseListContactInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 }

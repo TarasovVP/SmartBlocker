@@ -12,41 +12,48 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class ListCallUseCaseImpl @Inject constructor(
-    private val logCallRepository: LogCallRepository,
-    private val filteredCallRepository: FilteredCallRepository,
-    private val realDataBaseRepository: RealDataBaseRepository,
-    private val firebaseAuth: FirebaseAuth,
-    private val dataStoreRepository: DataStoreRepository
-): ListCallUseCase {
+class ListCallUseCaseImpl
+    @Inject
+    constructor(
+        private val logCallRepository: LogCallRepository,
+        private val filteredCallRepository: FilteredCallRepository,
+        private val realDataBaseRepository: RealDataBaseRepository,
+        private val firebaseAuth: FirebaseAuth,
+        private val dataStoreRepository: DataStoreRepository,
+    ) : ListCallUseCase {
+        override suspend fun allCallWithFilters() = logCallRepository.allCallWithFilters()
 
-    override suspend fun allCallWithFilters() = logCallRepository.allCallWithFilters()
-
-    override suspend fun deleteCallList(filteredCallIdList: List<Int>, isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.isAuthorisedUser()) {
-            if (isNetworkAvailable) {
-                realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map(Int::toString)) {
-                    runBlocking {
-                        filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
-                        result.invoke(Result.Success())
+        override suspend fun deleteCallList(
+            filteredCallIdList: List<Int>,
+            isNetworkAvailable: Boolean,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            if (firebaseAuth.isAuthorisedUser()) {
+                if (isNetworkAvailable) {
+                    realDataBaseRepository.deleteFilteredCallList(filteredCallIdList.map(Int::toString)) {
+                        runBlocking {
+                            filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
+                            result.invoke(Result.Success())
+                        }
                     }
+                } else {
+                    result.invoke(Result.Failure())
                 }
             } else {
-                result.invoke(Result.Failure())
+                filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
+                result.invoke(Result.Success())
             }
-        } else {
-            filteredCallRepository.deleteFilteredCalls(filteredCallIdList)
-            result.invoke(Result.Success())
         }
-    }
-    override suspend fun getReviewVoted() : Flow<Boolean?> {
-        return dataStoreRepository.reviewVoted()
-    }
 
-    override fun setReviewVoted(result: (Result<Unit>) -> Unit) = realDataBaseRepository.setReviewVoted { operationResult ->
-        runBlocking {
-            dataStoreRepository.setReviewVoted(true)
+        override suspend fun getReviewVoted(): Flow<Boolean?> {
+            return dataStoreRepository.reviewVoted()
         }
-        result.invoke(operationResult)
+
+        override fun setReviewVoted(result: (Result<Unit>) -> Unit) =
+            realDataBaseRepository.setReviewVoted { operationResult ->
+                runBlocking {
+                    dataStoreRepository.setReviewVoted(true)
+                }
+                result.invoke(operationResult)
+            }
     }
-}

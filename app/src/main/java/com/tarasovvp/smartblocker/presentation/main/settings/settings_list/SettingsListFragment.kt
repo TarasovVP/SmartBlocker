@@ -26,14 +26,16 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsListViewModel>() {
-
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
     override var layoutId = R.layout.fragment_settings_list
     override val viewModelClass = SettingsListViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAppLanguage()
         initViews()
@@ -48,19 +50,26 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
                         launchOtherApp()
                         return@setSafeOnClickListener
                     }
-                    val direction = when (it.id) {
-                        settingsAccount.id -> SettingsListFragmentDirections.startSettingsAccountFragment()
-                        settingsLanguage.id -> SettingsListFragmentDirections.startSettingsLanguageFragment()
-                        settingsTheme.id -> SettingsListFragmentDirections.startSettingsThemeFragment()
-                        settingsFeedback.id -> SettingsListFragmentDirections.startSettingsFeedbackDialog()
-                        settingsPrivacy.id -> SettingsListFragmentDirections.startSettingsPrivacyFragment()
-                        else -> SettingsListFragmentDirections.startSettingsBlockerFragment()
-                    }
+                    val direction =
+                        when (it.id) {
+                            settingsAccount.id -> SettingsListFragmentDirections.startSettingsAccountFragment()
+                            settingsLanguage.id -> SettingsListFragmentDirections.startSettingsLanguageFragment()
+                            settingsTheme.id -> SettingsListFragmentDirections.startSettingsThemeFragment()
+                            settingsFeedback.id -> SettingsListFragmentDirections.startSettingsFeedbackDialog()
+                            settingsPrivacy.id -> SettingsListFragmentDirections.startSettingsPrivacyFragment()
+                            else -> SettingsListFragmentDirections.startSettingsBlockerFragment()
+                        }
                     findNavController().navigate(direction)
                 }
             }
             setFragmentResultListener(SETTINGS_FEEDBACK) { _, bundle ->
-                viewModel.insertFeedback(Feedback(firebaseAuth.currentUser?.email.orEmpty(), bundle.getString(SETTINGS_FEEDBACK, String.EMPTY), Date().time))
+                viewModel.insertFeedback(
+                    Feedback(
+                        firebaseAuth.currentUser?.email.orEmpty(),
+                        bundle.getString(SETTINGS_FEEDBACK, String.EMPTY),
+                        Date().time,
+                    ),
+                )
             }
         }
     }
@@ -68,18 +77,30 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
     override fun observeLiveData() {
         with(viewModel) {
             appLanguageLiveData.safeSingleObserve(viewLifecycleOwner) { appLang ->
-                binding?.settingsLanguage?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_language, 0, appLang.flagDrawable(), 0)
+                binding?.settingsLanguage?.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_settings_language,
+                    0,
+                    appLang.flagDrawable(),
+                    0,
+                )
             }
         }
         viewModel.successFeedbackLiveData.safeSingleObserve(viewLifecycleOwner) { feedback ->
-            showMessage(String.format(getString(R.string.settings_feedback_send_success), feedback),
-                false)
+            showMessage(
+                String.format(getString(R.string.settings_feedback_send_success), feedback),
+                false,
+            )
         }
     }
 
     private fun launchOtherApp() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://smartblocker.onelink.me/kUoF?af_xp=app&pid=Cross_sale&c=Talk%20To%20AI&af_dp=talktoai%3A%2F%2Fcom.vnstudio.talktoai"))
+        val intent =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                    "https://smartblocker.onelink.me/kUoF?af_xp=app&pid=Cross_sale&c=Talk%20To%20AI&af_dp=talktoai%3A%2F%2Fcom.vnstudio.talktoai",
+                ),
+            )
         startActivity(intent)
     }
-
 }

@@ -41,11 +41,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Date
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 open class CreateFilterFragment :
     BaseDetailsFragment<FragmentCreateFilterBinding, CreateFilterViewModel>() {
-
     @Inject
     lateinit var appPhoneNumberUtil: AppPhoneNumberUtil
 
@@ -58,41 +56,71 @@ open class CreateFilterFragment :
     private var numberDataUIModelList: ArrayList<ContactWithFilterUIModel> = ArrayList()
 
     override fun createAdapter() {
-        createFilterAdapter = createFilterAdapter ?: CreateFilterAdapter(numberDataUIModelList) { contactWithFilter ->
-            binding?.apply {
-                binding?.filterToInput = true
-                filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
-                    if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
-                        filterWithCountryCode?.filterWithFilteredNumberUIModel = this.apply {
-                            this.filter = contactWithFilter.number.digitsTrimmed().replace(PLUS_CHAR.toString(), String.EMPTY)
-                        }
-                    } else {
-                        val phoneNumber = appPhoneNumberUtil.getPhoneNumber(contactWithFilter.number, filterWithCountryCode?.countryCodeUIModel?.country.orEmpty())
-                        if ((phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(COUNTRY_CODE_START, phoneNumber?.countryCode.toString()) == createFilterCountryCodeValue.text.toString()).not()) {
-                            filterWithCountryCode?.filterWithFilteredNumberUIModel = this.apply {
-                                this.filter = phoneNumber?.nationalNumber?.toString() ?: contactWithFilter.number.digitsTrimmed()
+        createFilterAdapter =
+            createFilterAdapter ?: CreateFilterAdapter(numberDataUIModelList) { contactWithFilter ->
+                binding?.apply {
+                    binding?.filterToInput = true
+                    filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
+                        if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain()
+                                .isTrue()
+                        ) {
+                            filterWithCountryCode?.filterWithFilteredNumberUIModel =
+                                this.apply {
+                                    this.filter =
+                                        contactWithFilter.number.digitsTrimmed()
+                                            .replace(PLUS_CHAR.toString(), String.EMPTY)
+                                }
+                        } else {
+                            val phoneNumber =
+                                appPhoneNumberUtil.getPhoneNumber(
+                                    contactWithFilter.number,
+                                    filterWithCountryCode?.countryCodeUIModel?.country.orEmpty(),
+                                )
+                            if ((
+                                    phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(
+                                        COUNTRY_CODE_START,
+                                        phoneNumber?.countryCode.toString(),
+                                    ) == createFilterCountryCodeValue.text.toString()
+                                ).not()
+                            ) {
+                                filterWithCountryCode?.filterWithFilteredNumberUIModel =
+                                    this.apply {
+                                        this.filter = phoneNumber?.nationalNumber?.toString()
+                                            ?: contactWithFilter.number.digitsTrimmed()
+                                    }
                             }
+                            binding?.executePendingBindings()
                         }
-                        binding?.executePendingBindings()
                     }
                 }
             }
-        }
         binding?.createFilterNumberList?.adapter = createFilterAdapter
     }
 
     override fun initViews() {
         binding?.apply {
             filterToInput = true
-            filterWithCountryCode = args.filterWithCountryCodeUIModel?.apply {
-                filterWithFilteredNumberUIModel.filterAction = this.filterWithFilteredNumberUIModel.filterAction ?: FilterAction.FILTER_ACTION_INVALID
-            }
+            filterWithCountryCode =
+                args.filterWithCountryCodeUIModel?.apply {
+                    filterWithFilteredNumberUIModel.filterAction =
+                        this.filterWithFilteredNumberUIModel.filterAction
+                            ?: FilterAction.FILTER_ACTION_INVALID
+                }
             if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) {
                 createFilterInput.setHint(R.string.creating_filter_enter_hint)
             } else {
                 setCountryCode(filterWithCountryCode?.countryCodeUIModel)
             }
-            (activity as? MainActivity)?.toolbar?.title = getString(if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.string.creating_blocker else R.string.creating_permission)
+            (activity as? MainActivity)?.toolbar?.title =
+                getString(
+                    if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isBlocker()
+                            .isTrue()
+                    ) {
+                        R.string.creating_blocker
+                    } else {
+                        R.string.creating_permission
+                    },
+                )
             setKeyboardHidden()
             setFilterTextChangeListener()
             executePendingBindings()
@@ -106,12 +134,20 @@ open class CreateFilterFragment :
             createFilterInput.setupClearButtonWithAction()
         }
     }
+
     override fun setClickListeners() {
         binding?.apply {
             createFilterSubmit.setSafeOnClickListener {
-                findNavController().navigate(CreateFilterFragmentDirections.startFilterActionDialog(filterWithFilteredNumberUIModel = filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
-                    filter = filterWithCountryCode?.createFilter().orEmpty()
-                    filterAction = filterAction ?: if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE }))
+                findNavController().navigate(
+                    CreateFilterFragmentDirections.startFilterActionDialog(
+                        filterWithFilteredNumberUIModel =
+                            filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
+                                filter = filterWithCountryCode?.createFilter().orEmpty()
+                                filterAction = filterAction
+                                    ?: if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                            },
+                    ),
+                )
             }
             createFilterCountryCodeValue.setSafeOnClickListener {
                 findNavController().navigate(CreateFilterFragmentDirections.startCountryCodeSearchDialog())
@@ -131,22 +167,34 @@ open class CreateFilterFragment :
                 when (val filterAction = bundle.serializable<FilterAction>(FILTER_ACTION)) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-                    -> viewModel.updateFilter(filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
-                        this.filterAction = filterAction
-                    })
+                    ->
+                        viewModel.updateFilter(
+                            filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
+                                this.filterAction = filterAction
+                            },
+                        )
+
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                    -> viewModel.deleteFilter(filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
-                        this.filterAction = filterAction
-                    })
+                    ->
+                        viewModel.deleteFilter(
+                            filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
+                                this.filterAction = filterAction
+                            },
+                        )
+
                     FilterAction.FILTER_ACTION_BLOCKER_CREATE,
                     FilterAction.FILTER_ACTION_PERMISSION_CREATE,
-                    -> viewModel.createFilter(filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
-                        this.filterAction = filterAction
-                        this.created = Date().time
-                        this.country = filterWithCountryCode.countryCodeUIModel.country
-                        this.countryCode = filterWithCountryCode.countryCodeUIModel.countryCode
-                    })
+                    ->
+                        viewModel.createFilter(
+                            filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
+                                this.filterAction = filterAction
+                                this.created = Date().time
+                                this.country = filterWithCountryCode.countryCodeUIModel.country
+                                this.countryCode = filterWithCountryCode.countryCodeUIModel.countryCode
+                            },
+                        )
+
                     else -> Unit
                 }
             }
@@ -160,18 +208,36 @@ open class CreateFilterFragment :
     private fun setFilterTextChangeListener() {
         binding?.apply {
             createFilterInput.doAfterTextChanged {
-                val inputText = if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain().isTrue()) createFilterInput.inputText() else createFilterInput.getRawText()
-                if (isNonUniqueInput(filterWithCountryCode, inputText, it.toString()) || inputText.contains(MASK_CHAR) || inputText.contains(SPACE)) {
+                val inputText =
+                    if (filterWithCountryCode?.filterWithFilteredNumberUIModel?.isTypeContain()
+                            .isTrue()
+                    ) {
+                        createFilterInput.inputText()
+                    } else {
+                        createFilterInput.getRawText()
+                    }
+                if (isNonUniqueInput(
+                        filterWithCountryCode,
+                        inputText,
+                        it.toString(),
+                    ) || inputText.contains(MASK_CHAR) || inputText.contains(SPACE)
+                ) {
                     return@doAfterTextChanged
                 }
-                    filterToInput = false
-                    filterWithCountryCode = filterWithCountryCode?.apply {
+                filterToInput = false
+                filterWithCountryCode =
+                    filterWithCountryCode?.apply {
                         filterWithFilteredNumberUIModel.filter = inputText
-                        if ((filterWithFilteredNumberUIModel.isTypeFull() && createFilterInput.inputText().contains(MASK_CHAR)).not()) {
+                        if ((
+                                filterWithFilteredNumberUIModel.isTypeFull() &&
+                                    createFilterInput.inputText()
+                                        .contains(MASK_CHAR)
+                            ).not()
+                        ) {
                             viewModel.checkFilterExist(createFilter())
                         }
                     }
-                    getData()
+                getData()
             }
         }
     }
@@ -181,27 +247,39 @@ open class CreateFilterFragment :
         inputText: String,
         editable: String,
     ): Boolean {
-        return filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter == inputText
-                && isHintInput(filterWithCountryCode, editable).not()
-                && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeContain().isNotTrue()
-                && binding?.filterToInput.isNotTrue()
+        return filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter == inputText &&
+            isHintInput(filterWithCountryCode, editable).not() &&
+            filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeContain().isNotTrue() &&
+            binding?.filterToInput.isNotTrue()
     }
-    private fun isHintInput(filterWithCountryCode: FilterWithCountryCodeUIModel?, inputText: String): Boolean {
-        return (filterWithCountryCode?.conditionTypeFullHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeFull())
-                || (filterWithCountryCode?.conditionTypeStartHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeStart())
+
+    private fun isHintInput(
+        filterWithCountryCode: FilterWithCountryCodeUIModel?,
+        inputText: String,
+    ): Boolean {
+        return (filterWithCountryCode?.conditionTypeFullHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeFull()) ||
+            (filterWithCountryCode?.conditionTypeStartHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeStart())
     }
 
     private fun setCountryCode(countryCode: CountryCodeUIModel?) {
         binding?.apply {
             filterToInput = true
-            filterWithCountryCode = filterWithCountryCode?.apply {
-                countryCode?.let { filterWithCountryCode?.countryCodeUIModel = countryCode }
-                createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
-                when {
-                    filterWithFilteredNumberUIModel.isTypeFull() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeFullHint().orEmpty())
-                    filterWithFilteredNumberUIModel.isTypeStart() -> createFilterInput.setNumberMask(filterWithCountryCode?.conditionTypeStartHint().orEmpty())
+            filterWithCountryCode =
+                filterWithCountryCode?.apply {
+                    countryCode?.let { filterWithCountryCode?.countryCodeUIModel = countryCode }
+                    createFilterCountryCodeSpinner.text = countryCode?.countryEmoji()
+                    when {
+                        filterWithFilteredNumberUIModel.isTypeFull() ->
+                            createFilterInput.setNumberMask(
+                                filterWithCountryCode?.conditionTypeFullHint().orEmpty(),
+                            )
+
+                        filterWithFilteredNumberUIModel.isTypeStart() ->
+                            createFilterInput.setNumberMask(
+                                filterWithCountryCode?.conditionTypeStartHint().orEmpty(),
+                            )
+                    }
                 }
-            }
         }
     }
 
@@ -212,13 +290,26 @@ open class CreateFilterFragment :
                 setNumberDataUIModelList()
             }
             existingFilterLiveData.safeSingleObserve(viewLifecycleOwner) { existingFilter ->
-                binding?.filterWithCountryCode = binding?.filterWithCountryCode?.apply {
-                    filterWithFilteredNumberUIModel.filterAction = when (existingFilter.filterType) {
-                        DEFAULT_FILTER -> if (binding?.filterWithCountryCode?.isInValidPhoneNumber(appPhoneNumberUtil).isTrue()) FilterAction.FILTER_ACTION_INVALID else if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
-                        filterWithFilteredNumberUIModel.filterType -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                        else -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
+                binding?.filterWithCountryCode =
+                    binding?.filterWithCountryCode?.apply {
+                        filterWithFilteredNumberUIModel.filterAction =
+                            when (existingFilter.filterType) {
+                                DEFAULT_FILTER ->
+                                    if (binding?.filterWithCountryCode?.isInValidPhoneNumber(
+                                            appPhoneNumberUtil,
+                                        ).isTrue()
+                                    ) {
+                                        FilterAction.FILTER_ACTION_INVALID
+                                    } else if (filterWithFilteredNumberUIModel.isBlocker()) {
+                                        FilterAction.FILTER_ACTION_BLOCKER_CREATE
+                                    } else {
+                                        FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                                    }
+
+                                filterWithFilteredNumberUIModel.filterType -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                                else -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
+                            }
                     }
-                }
             }
             filterActionLiveData.safeSingleObserve(viewLifecycleOwner) { filter ->
                 handleSuccessFilterAction(filter)
@@ -228,9 +319,11 @@ open class CreateFilterFragment :
 
     private fun setNumberDataUIModelList() {
         binding?.apply {
-            createFilterAdapter?.filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(
-                filter = binding?.filterWithCountryCode?.createFilter().toString(),
-                countryCode = binding?.createFilterCountryCodeValue?.text.toString())
+            createFilterAdapter?.filterWithFilteredNumberUIModel =
+                FilterWithFilteredNumberUIModel(
+                    filter = binding?.filterWithCountryCode?.createFilter().toString(),
+                    countryCode = binding?.createFilterCountryCodeValue?.text.toString(),
+                )
             createFilterAdapter?.contactWithFilterUIModels = numberDataUIModelList
             createFilterAdapter?.notifyDataSetChanged()
             createFilterNumberList.isVisible = numberDataUIModelList.isEmpty().not()
@@ -240,14 +333,22 @@ open class CreateFilterFragment :
 
     private fun handleSuccessFilterAction(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
         (activity as? MainActivity)?.apply {
-            showInfoMessage(String.format(filterWithFilteredNumberUIModel.filterAction?.successText()?.let { getString(it) }
-                .orEmpty(),
-                filterWithFilteredNumberUIModel.filter, filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) }), false)
+            showInfoMessage(
+                String.format(
+                    filterWithFilteredNumberUIModel.filterAction?.successText()
+                        ?.let { getString(it) }
+                        .orEmpty(),
+                    filterWithFilteredNumberUIModel.filter,
+                    filterWithFilteredNumberUIModel.conditionTypeName()?.let { getString(it) },
+                ),
+                false,
+            )
             showInterstitial()
             definePreviousScreen()
             getAllData()
             if (findNavController().previousBackStackEntry?.destination?.id == R.id.detailsNumberDataFragment) {
-                val directions = if (filterWithFilteredNumberUIModel.isBlocker()) CreateFilterFragmentDirections.startListBlockerFragment() else CreateFilterFragmentDirections.startListPermissionFragment()
+                val directions =
+                    if (filterWithFilteredNumberUIModel.isBlocker()) CreateFilterFragmentDirections.startListBlockerFragment() else CreateFilterFragmentDirections.startListPermissionFragment()
                 findNavController().navigate(directions)
             } else {
                 findNavController().navigateUp()
@@ -256,24 +357,28 @@ open class CreateFilterFragment :
     }
 
     override fun showInfoScreen() {
-         binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
-             val info = when {
-                isTypeStart() -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_START else Info.INFO_CREATE_PERMISSION_START
-                isTypeContain() -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_CONTAIN else Info.INFO_CREATE_PERMISSION_CONTAIN
-                else -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_FULL else Info.INFO_CREATE_PERMISSION_FULL
-            }
+        binding?.filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
+            val info =
+                when {
+                    isTypeStart() -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_START else Info.INFO_CREATE_PERMISSION_START
+                    isTypeContain() -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_CONTAIN else Info.INFO_CREATE_PERMISSION_CONTAIN
+                    else -> if (isBlocker()) Info.INFO_CREATE_BLOCKER_FULL else Info.INFO_CREATE_PERMISSION_FULL
+                }
             findNavController().navigate(
-                DetailsNumberDataFragmentDirections.startInfoFragment(info = info))
+                DetailsNumberDataFragmentDirections.startInfoFragment(info = info),
+            )
         }
     }
 
     private fun definePreviousScreen() {
         val eventValues: MutableMap<String, Any> = HashMap()
-        eventValues["previous_screen"] = findNavController().previousBackStackEntry?.destination?.label.toString()
+        eventValues["previous_screen"] =
+            findNavController().previousBackStackEntry?.destination?.label.toString()
 
         AppsFlyerLib.getInstance().logEvent(
             context,
-            AFInAppEventType.AD_VIEW, eventValues
+            AFInAppEventType.AD_VIEW,
+            eventValues,
         )
     }
 }

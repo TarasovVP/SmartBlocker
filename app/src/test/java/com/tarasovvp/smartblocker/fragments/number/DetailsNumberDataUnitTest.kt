@@ -10,7 +10,12 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withAlpha
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
@@ -31,9 +36,18 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CAL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
 import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
+import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.parcelable
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -49,11 +63,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class DetailsNumberDataUnitTest : BaseFragmentUnitTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -66,24 +81,52 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
         super.setUp()
         FirebaseApp.initializeApp(targetContext)
         isHiddenCall = name.methodName.contains("Hidden")
-        val numberData = if (isHiddenCall) CallWithFilterUIModel(
-            callId = 2, callName = "a Name", number = String.EMPTY, type = BLOCKED_CALL, callDate = "1678603872094", isFilteredCall = true, filteredNumber = "12345", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
-            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel())
-        else ContactWithFilterUIModel(
-            contactId = "5", contactName = "C Name", number = "+380502711344",
-            filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = "38050", filterType = PERMISSION, conditionType = FilterCondition.FILTER_CONDITION_START.ordinal)
-        )
-        launchFragmentInHiltContainer<DetailsNumberDataFragment> (fragmentArgs = bundleOf("numberData" to numberData)) {
+        val numberData =
+            if (isHiddenCall) {
+                CallWithFilterUIModel(
+                    callId = 2,
+                    callName = "a Name",
+                    number = String.EMPTY,
+                    type = BLOCKED_CALL,
+                    callDate = "1678603872094",
+                    isFilteredCall = true,
+                    filteredNumber = "12345",
+                    conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+                    filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(),
+                )
+            } else {
+                ContactWithFilterUIModel(
+                    contactId = "5",
+                    contactName = "C Name",
+                    number = "+380502711344",
+                    filterWithFilteredNumberUIModel =
+                        FilterWithFilteredNumberUIModel(
+                            filter = "38050",
+                            filterType = PERMISSION,
+                            conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
+                        ),
+                )
+            }
+        launchFragmentInHiltContainer<DetailsNumberDataFragment>(fragmentArgs = bundleOf("numberData" to numberData)) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsNumberDataFragment)
             Navigation.setViewNavController(requireView(), navController)
             val numberDataUIModelFromBundle = arguments?.parcelable<NumberDataUIModel>("numberData")
-            contactWithFilter = if (numberDataUIModelFromBundle is CallWithFilterUIModel) ContactWithFilterUIModel(
-                contactName = getString(R.string.details_number_from_call_log), photoUrl = numberDataUIModelFromBundle.photoUrl, number = numberDataUIModelFromBundle.number,
-                    filterWithFilteredNumberUIModel = numberDataUIModelFromBundle.filterWithFilteredNumberUIModel)
-            else numberDataUIModelFromBundle as ContactWithFilterUIModel
+            contactWithFilter =
+                if (numberDataUIModelFromBundle is CallWithFilterUIModel) {
+                    ContactWithFilterUIModel(
+                        contactName = getString(R.string.details_number_from_call_log),
+                        photoUrl = numberDataUIModelFromBundle.photoUrl,
+                        number = numberDataUIModelFromBundle.number,
+                        filterWithFilteredNumberUIModel = numberDataUIModelFromBundle.filterWithFilteredNumberUIModel,
+                    )
+                } else {
+                    numberDataUIModelFromBundle as ContactWithFilterUIModel
+                }
             (this as? DetailsNumberDataFragment)?.apply {
-                viewModel.filterListLiveData.postValue(numberDataWithFilterWithFilteredNumberUIModelList())
+                viewModel.filterListLiveData.postValue(
+                    numberDataWithFilterWithFilteredNumberUIModelList(),
+                )
                 viewModel.filteredCallListLiveData.postValue(numberDataWithFilteredCallUIModelList())
                 if (isHiddenCall) viewModel.blockHiddenLiveData.postValue(isHiddenCall)
                 fragment = this
@@ -109,14 +152,33 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
     fun checkDetailsNumberDataFilter() {
         onView(withId(R.id.item_contact_filter))
             .check(matches(isDisplayed()))
-            .check(matches(withDrawable(contactWithFilter?.filterWithFilteredNumberUIModel?.filterTypeIcon().orZero())))
+            .check(
+                matches(
+                    withDrawable(
+                        contactWithFilter?.filterWithFilteredNumberUIModel?.filterTypeIcon()
+                            .orZero(),
+                    ),
+                ),
+            )
     }
 
     @Test
     fun checkDetailsNumberDataNumber() {
         onView(withId(R.id.item_contact_number))
             .check(matches(isDisplayed()))
-            .check(matches(withText(if (isHiddenCall) targetContext.getString(R.string.details_number_hidden) else contactWithFilter?.highlightedSpanned.toString())))
+            .check(
+                matches(
+                    withText(
+                        if (isHiddenCall) {
+                            targetContext.getString(
+                                R.string.details_number_hidden,
+                            )
+                        } else {
+                            contactWithFilter?.highlightedSpanned.toString()
+                        },
+                    ),
+                ),
+            )
     }
 
     @Test
@@ -126,7 +188,15 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
                 check(matches(withText(String.EMPTY)))
             } else {
                 check(matches(isDisplayed()))
-                check(matches(withText(targetContext.getString(contactWithFilter?.phoneNumberValidity().orZero()))))
+                check(
+                    matches(
+                        withText(
+                            targetContext.getString(
+                                contactWithFilter?.phoneNumberValidity().orZero(),
+                            ),
+                        ),
+                    ),
+                )
             }
         }
     }
@@ -135,37 +205,102 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
     fun checkDetailsNumberDataName() {
         onView(withId(R.id.item_contact_name))
             .check(matches(isDisplayed()))
-            .check(matches(withText(if (contactWithFilter?.contactName.isNull()) targetContext.getString(R.string.details_number_not_from_contacts) else contactWithFilter?.contactName)))
+            .check(
+                matches(
+                    withText(
+                        if (contactWithFilter?.contactName.isNull()) {
+                            targetContext.getString(
+                                R.string.details_number_not_from_contacts,
+                            )
+                        } else {
+                            contactWithFilter?.contactName
+                        },
+                    ),
+                ),
+            )
     }
 
     @Test
     fun checkDetailsNumberDataDivider() {
         onView(withId(R.id.item_contact_divider))
             .check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
+            .check(
+                matches(
+                    withBackgroundColor(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.light_steel_blue,
+                        ),
+                    ),
+                ),
+            )
     }
 
     @Test
     fun checkDetailsNumberDataFilterTitle() {
-        val filterTitleText = when {
-            isHiddenCall ->targetContext.getString(R.string.details_number_hidden_on)
-            contactWithFilter?.filterWithFilteredNumberUIModel.isNull() -> targetContext.getString(R.string.details_number_contact_without_filter)
-            contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue() -> targetContext.getString(R.string.details_number_block_with_filter)
-            else -> targetContext.getString(R.string.details_number_permit_with_filter)
-        }
+        val filterTitleText =
+            when {
+                isHiddenCall -> targetContext.getString(R.string.details_number_hidden_on)
+                contactWithFilter?.filterWithFilteredNumberUIModel.isNull() ->
+                    targetContext.getString(
+                        R.string.details_number_contact_without_filter,
+                    )
+                contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker()
+                    .isTrue() -> targetContext.getString(R.string.details_number_block_with_filter)
+
+                else -> targetContext.getString(R.string.details_number_permit_with_filter)
+            }
         onView(withId(R.id.item_contact_filter_title))
             .check(matches(isDisplayed()))
             .check(matches(withText(filterTitleText)))
-            .check(matches(withTextColor(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) R.color.text_color_grey else if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green)))
+            .check(
+                matches(
+                    withTextColor(
+                        if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) {
+                            R.color.text_color_grey
+                        } else if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker()
+                                .isTrue()
+                        ) {
+                            R.color.sunset
+                        } else {
+                            R.color.islamic_green
+                        },
+                    ),
+                ),
+            )
     }
 
     @Test
     fun checkDetailsNumberDataFilterValue() {
         onView(withId(R.id.item_contact_filter_value))
             .check(matches(isDisplayed()))
-            .check(matches(withText(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilter?.filterWithFilteredNumberUIModel?.filter)))
-            .check(matches(withTextColor(if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green)))
-            .check(matches(withDrawable(if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) null else contactWithFilter?.filterWithFilteredNumberUIModel?.conditionTypeSmallIcon())))
+            .check(
+                matches(
+                    withText(
+                        if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilter?.filterWithFilteredNumberUIModel?.filter,
+                    ),
+                ),
+            )
+            .check(
+                matches(
+                    withTextColor(
+                        if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker()
+                                .isTrue()
+                        ) {
+                            R.color.sunset
+                        } else {
+                            R.color.islamic_green
+                        },
+                    ),
+                ),
+            )
+            .check(
+                matches(
+                    withDrawable(
+                        if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) null else contactWithFilter?.filterWithFilteredNumberUIModel?.conditionTypeSmallIcon(),
+                    ),
+                ),
+            )
     }
 
     @Test
@@ -354,7 +489,10 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
                 .check(matches(withText(R.string.filter_condition_start)))
                 .check(matches(withDrawable(R.drawable.ic_condition_start)))
                 .perform(click())
-            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_START.ordinal, PERMISSION)
+            checkFilterWithCountryCodeArg(
+                FilterCondition.FILTER_CONDITION_START.ordinal,
+                PERMISSION,
+            )
         }
     }
 
@@ -405,7 +543,10 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
                 .check(matches(withText(R.string.filter_condition_contain)))
                 .check(matches(withDrawable(R.drawable.ic_condition_contain)))
                 .perform(click())
-            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, PERMISSION)
+            checkFilterWithCountryCodeArg(
+                FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                PERMISSION,
+            )
         }
     }
 
@@ -421,7 +562,10 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
                 .check(matches(withText(R.string.filter_condition_contain)))
                 .check(matches(withDrawable(R.drawable.ic_condition_contain)))
                 .perform(click())
-            checkFilterWithCountryCodeArg(FilterCondition.FILTER_CONDITION_CONTAIN.ordinal, PERMISSION)
+            checkFilterWithCountryCodeArg(
+                FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                PERMISSION,
+            )
         }
     }
 
@@ -482,16 +626,31 @@ class DetailsNumberDataUnitTest: BaseFragmentUnitTest() {
         }
     }
 
-    private fun checkFilterWithCountryCodeArg(filterCondition: Int, filterType: Int) {
+    private fun checkFilterWithCountryCodeArg(
+        filterCondition: Int,
+        filterType: Int,
+    ) {
         val number = contactWithFilter?.number.orEmpty()
-        FilterWithCountryCodeUIModel(filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(
-            filter = number,
-            conditionType = filterCondition,
-            filterType = filterType)
+        FilterWithCountryCodeUIModel(
+            filterWithFilteredNumberUIModel =
+                FilterWithFilteredNumberUIModel(
+                    filter = number,
+                    conditionType = filterCondition,
+                    filterType = filterType,
+                ),
         )
         val appPhoneNumberUtil = AppPhoneNumberUtil()
-        val phoneNumber = if (appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY).isNull()) appPhoneNumberUtil.getPhoneNumber(number, targetContext.getUserCountry().orEmpty().uppercase())
-        else appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
+        val phoneNumber =
+            if (appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
+                    .isNull()
+            ) {
+                appPhoneNumberUtil.getPhoneNumber(
+                    number,
+                    targetContext.getUserCountry().orEmpty().uppercase(),
+                )
+            } else {
+                appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
+            }
         if (phoneNumber.isNull() || filterCondition == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal) {
             assertEquals(R.id.createFilterFragment, navController?.currentDestination?.id)
         } else {

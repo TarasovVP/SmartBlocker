@@ -33,18 +33,25 @@ import org.junit.Test
 
 @androidx.test.filters.Suppress
 @HiltAndroidTest
-open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
-
+open class BaseDetailsFilterInstrumentedTest : BaseInstrumentedTest() {
     private var filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel? = null
 
     @Before
     override fun setUp() {
         super.setUp()
-        filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModelList().firstOrNull()?.apply {
-            conditionType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) FilterCondition.FILTER_CONDITION_CONTAIN.ordinal else FilterCondition.FILTER_CONDITION_START.ordinal
-            filterType = if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) BLOCKER else PERMISSION
-        }
-        launchFragmentInHiltContainer<DetailsFilterFragment> (fragmentArgs = bundleOf(FILTER_WITH_FILTERED_NUMBER to filterWithFilteredNumberUIModel)) {
+        filterWithFilteredNumberUIModel =
+            filterWithFilteredNumberUIModelList().firstOrNull()?.apply {
+                conditionType =
+                    if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) FilterCondition.FILTER_CONDITION_CONTAIN.ordinal else FilterCondition.FILTER_CONDITION_START.ordinal
+                filterType =
+                    if (this@BaseDetailsFilterInstrumentedTest is DetailsFilterBlockerInstrumentedTest) BLOCKER else PERMISSION
+            }
+        launchFragmentInHiltContainer<DetailsFilterFragment>(
+            fragmentArgs =
+                bundleOf(
+                    FILTER_WITH_FILTERED_NUMBER to filterWithFilteredNumberUIModel,
+                ),
+        ) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -84,21 +91,45 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
     @Test
     fun checkItemDetailsFilterTypeTitle() {
         onView(withId(R.id.item_details_filter_name)).check(matches(isDisplayed()))
-            .check(matches(withText(filterWithFilteredNumberUIModel?.conditionTypeName().orZero() )))
+            .check(matches(withText(filterWithFilteredNumberUIModel?.conditionTypeName().orZero())))
     }
 
     @Test
     fun checkItemDetailsFilterDivider() {
         onView(withId(R.id.item_details_filter_divider)).check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
+            .check(
+                matches(
+                    withBackgroundColor(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.light_steel_blue,
+                        ),
+                    ),
+                ),
+            )
     }
 
     @Test
     fun checkItemDetailsFilterContactsDetails() {
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithFilteredNumberUIModel?.filterAction.isNull())
-                filterWithFilteredNumberUIModel?.filteredNumbersText(targetContext) else filterWithFilteredNumberUIModel?.filter)))
-            .check(matches(withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero() )))
+            .check(
+                matches(
+                    withText(
+                        if (filterWithFilteredNumberUIModel?.filterAction.isNull()) {
+                            filterWithFilteredNumberUIModel?.filteredNumbersText(targetContext)
+                        } else {
+                            filterWithFilteredNumberUIModel?.filter
+                        },
+                    ),
+                ),
+            )
+            .check(
+                matches(
+                    withTextColor(
+                        filterWithFilteredNumberUIModel?.filterTypeTint().orZero(),
+                    ),
+                ),
+            )
     }
 
     @Test
@@ -106,14 +137,33 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
         onView(withId(R.id.details_filter_view_pager)).perform(swipeLeft())
         onView(withId(R.id.item_details_filter_details)).check(matches(isDisplayed()))
             .check(matches(withText(filterWithFilteredNumberUIModel?.filteredCallsText(targetContext))))
-            .check(matches(withTextColor(filterWithFilteredNumberUIModel?.filterTypeTint().orZero())))
+            .check(
+                matches(
+                    withTextColor(
+                        filterWithFilteredNumberUIModel?.filterTypeTint().orZero(),
+                    ),
+                ),
+            )
     }
 
     @Test
     fun checkItemDetailsFilterCreated() {
         onView(withId(R.id.item_details_filter_created))
             .check(matches(isDisplayed()))
-            .check(matches(withText(if (filterWithFilteredNumberUIModel?.created == 0L) String.EMPTY else String.format(targetContext.getString(R.string.filter_action_created), filterWithFilteredNumberUIModel?.filterCreatedDate()))))
+            .check(
+                matches(
+                    withText(
+                        if (filterWithFilteredNumberUIModel?.created == 0L) {
+                            String.EMPTY
+                        } else {
+                            String.format(
+                                targetContext.getString(R.string.filter_action_created),
+                                filterWithFilteredNumberUIModel?.filterCreatedDate(),
+                            )
+                        },
+                    ),
+                ),
+            )
     }
 
     @Test
@@ -124,9 +174,19 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withTextColor(R.color.sunset)))
             .perform(click())
         assertEquals(R.id.filterActionDialog, navController?.currentDestination?.id)
-        assertEquals(filterWithFilteredNumberUIModel.apply { this?.filterAction = if (filterWithFilteredNumberUIModel?.isBlocker().isTrue())
-            FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE },
-            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(FILTER_WITH_FILTERED_NUMBER))
+        assertEquals(
+            filterWithFilteredNumberUIModel.apply {
+                this?.filterAction =
+                    if (filterWithFilteredNumberUIModel?.isBlocker().isTrue()) {
+                        FilterAction.FILTER_ACTION_BLOCKER_DELETE
+                    } else {
+                        FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                    }
+            },
+            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(
+                FILTER_WITH_FILTERED_NUMBER,
+            ),
+        )
     }
 
     @Test
@@ -136,9 +196,19 @@ open class BaseDetailsFilterInstrumentedTest: BaseInstrumentedTest() {
             .check(matches(withText(R.string.filter_action_transfer)))
             .perform(click())
         assertEquals(R.id.filterActionDialog, navController?.currentDestination?.id)
-        assertEquals(filterWithFilteredNumberUIModel.apply { this?.filterAction = if (filterWithFilteredNumberUIModel?.isBlocker().isTrue())
-            FilterAction.FILTER_ACTION_BLOCKER_TRANSFER else FilterAction.FILTER_ACTION_PERMISSION_TRANSFER },
-            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(FILTER_WITH_FILTERED_NUMBER))
+        assertEquals(
+            filterWithFilteredNumberUIModel.apply {
+                this?.filterAction =
+                    if (filterWithFilteredNumberUIModel?.isBlocker().isTrue()) {
+                        FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
+                    } else {
+                        FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
+                    }
+            },
+            navController?.backStack?.last()?.arguments?.parcelable<FilterWithFilteredNumberUIModel>(
+                FILTER_WITH_FILTERED_NUMBER,
+            ),
+        )
     }
 
     @Test

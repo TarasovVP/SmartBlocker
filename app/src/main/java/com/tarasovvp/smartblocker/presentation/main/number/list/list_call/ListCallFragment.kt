@@ -15,13 +15,21 @@ import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboard
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboardWithLayoutTouch
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.launchReviewFlow
+import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.restoreListInstantState
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ListCallFragment :
     BaseListFragment<FragmentListCallBinding, ListCallViewModel, CallWithFilterUIModel>() {
-
     override var layoutId = R.layout.fragment_list_call
     override val viewModelClass = ListCallViewModel::class.java
 
@@ -30,27 +38,35 @@ class ListCallFragment :
 
     override fun createAdapter(): BaseAdapter<CallWithFilterUIModel>? {
         return context?.let {
-             CallAdapter(object : CallClickListener {
-                override fun onCallClick(callWithFilter: CallWithFilterUIModel) {
-                    findNavController().navigate(ListCallFragmentDirections.startDetailsNumberDataFragment(callWithFilter))
-                }
+            CallAdapter(
+                object : CallClickListener {
+                    override fun onCallClick(callWithFilter: CallWithFilterUIModel) {
+                        findNavController().navigate(
+                            ListCallFragmentDirections.startDetailsNumberDataFragment(
+                                callWithFilter,
+                            ),
+                        )
+                    }
 
-                override fun onCallLongClick() {
-                    changeDeleteMode()
-                }
-
-                override fun onCallDeleteCheckChange(callWithFilter: CallWithFilterUIModel) {
-                    callWithFilterList?.find { it.callDate == callWithFilter.callDate }?.isCheckedForDelete =
-                        callWithFilter.isCheckedForDelete
-                    if (callWithFilterList?.any { it.isCheckedForDelete }.isNotTrue() && isDeleteMode.isTrue()) {
+                    override fun onCallLongClick() {
                         changeDeleteMode()
                     }
-                }
 
-                override fun onCallDeleteInfoClick() {
-                    showMessage(getString(R.string.list_call_delete_info), true)
-                }
-            })
+                    override fun onCallDeleteCheckChange(callWithFilter: CallWithFilterUIModel) {
+                        callWithFilterList?.find { it.callDate == callWithFilter.callDate }?.isCheckedForDelete =
+                            callWithFilter.isCheckedForDelete
+                        if (callWithFilterList?.any { it.isCheckedForDelete }
+                                .isNotTrue() && isDeleteMode.isTrue()
+                        ) {
+                            changeDeleteMode()
+                        }
+                    }
+
+                    override fun onCallDeleteInfoClick() {
+                        showMessage(getString(R.string.list_call_delete_info), true)
+                    }
+                },
+            )
         }
     }
 
@@ -72,11 +88,14 @@ class ListCallFragment :
     }
 
     private fun setCallListData(callWithFilterList: List<CallWithFilterUIModel>) {
-        binding?.listCallCheck?.isEnabled = callWithFilterList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
+        binding?.listCallCheck?.isEnabled =
+            callWithFilterList.isNotEmpty() || binding?.listCallCheck?.isChecked.isTrue()
         checkDataListEmptiness(callWithFilterList.isEmpty())
-        setDataList(callWithFilterList.sortedByDescending {
-            it.callDate
-        }.groupBy { it.dateFromCallDate() })
+        setDataList(
+            callWithFilterList.sortedByDescending {
+                it.callDate
+            }.groupBy { it.dateFromCallDate() },
+        )
         viewModel.savedStateHandle.restoreListInstantState(LIST_STATE, recyclerView?.layoutManager)
         viewModel.savedStateHandle.get<Boolean>(IS_DELETE_MODE)?.apply {
             isDeleteMode = this.not()
@@ -92,8 +111,8 @@ class ListCallFragment :
             findNavController().navigate(
                 ListCallFragmentDirections.startNumberDataFilteringDialog(
                     previousDestinationId = findNavController().currentDestination?.id.orZero(),
-                    filteringList = filterIndexes.orEmpty().toIntArray()
-                )
+                    filteringList = filterIndexes.orEmpty().toIntArray(),
+                ),
             )
         }
         binding?.listCallInfo?.setSafeOnClickListener {
@@ -103,7 +122,8 @@ class ListCallFragment :
 
     override fun setFragmentResultListeners() {
         setFragmentResultListener(CALL_DELETE) { _, _ ->
-            callWithFilterList?.filter { it.isCheckedForDelete }?.map { it.callId }?.let { viewModel.deleteCallList(it) }
+            callWithFilterList?.filter { it.isCheckedForDelete }?.map { it.callId }
+                ?.let { viewModel.deleteCallList(it) }
         }
         setFragmentResultListener(Constants.FILTER_CONDITION_LIST) { _, bundle ->
             filterIndexes = bundle.getIntegerArrayList(Constants.FILTER_CONDITION_LIST)
@@ -114,7 +134,8 @@ class ListCallFragment :
 
     private fun changeDeleteMode() {
         isDeleteMode = isDeleteMode.isNotTrue()
-        binding?.listCallCheck?.isEnabled = isDeleteMode.isNotTrue() && callWithFilterList.isNullOrEmpty().not()
+        binding?.listCallCheck?.isEnabled =
+            isDeleteMode.isNotTrue() && callWithFilterList.isNullOrEmpty().not()
         (adapter as CallAdapter).apply {
             isDeleteMode = this@ListCallFragment.isDeleteMode.isTrue()
             recyclerView?.post {
@@ -136,14 +157,27 @@ class ListCallFragment :
     private fun setDeleteMenuClickListener() {
         (activity as? MainActivity)?.toolbar?.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.delete_menu_item) {
-                val deleteCallCount = callWithFilterList?.filter { it.isCheckedForDelete.isTrue() }.orEmpty().size
+                val deleteCallCount =
+                    callWithFilterList?.filter { it.isCheckedForDelete.isTrue() }.orEmpty().size
                 this@ListCallFragment.findNavController()
-                    .navigate(ListCallFragmentDirections.startFilteredCallDeleteDialog(callDelete =
-                    resources.getQuantityString(R.plurals.list_call_delete_amount,
-                        deleteCallCount,
-                        if (deleteCallCount > 1) deleteCallCount else if (callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number.isNullOrEmpty()) getString(
-                            R.string.details_number_hidden
-                        ) else callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number)))
+                    .navigate(
+                        ListCallFragmentDirections.startFilteredCallDeleteDialog(
+                            callDelete =
+                                resources.getQuantityString(
+                                    R.plurals.list_call_delete_amount,
+                                    deleteCallCount,
+                                    if (deleteCallCount > 1) {
+                                        deleteCallCount
+                                    } else if (callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number.isNullOrEmpty()) {
+                                        getString(
+                                            R.string.details_number_hidden,
+                                        )
+                                    } else {
+                                        callWithFilterList?.firstOrNull { it.isCheckedForDelete }?.number
+                                    },
+                                ),
+                        ),
+                    )
             }
             true
         }
@@ -164,12 +198,18 @@ class ListCallFragment :
                 changeDeleteMode()
             }
             isReviewVoteLiveData.safeSingleObserve(viewLifecycleOwner) { reviewVoted ->
-                if (reviewVoted.not() && callWithFilterList?.filter { it.isFilteredCall }.orEmpty().size >= 3) {
+                if (reviewVoted.not() && callWithFilterList?.filter { it.isFilteredCall }
+                        .orEmpty().size >= 3
+                ) {
                     (activity as MainActivity).apply {
                         launchReviewFlow { operationResult ->
-                            when(operationResult) {
+                            when (operationResult) {
                                 is Result.Success -> setReviewVoted()
-                                is Result.Failure -> showInfoMessage(operationResult.errorMessage.orEmpty(), true)
+                                is Result.Failure ->
+                                    showInfoMessage(
+                                        operationResult.errorMessage.orEmpty(),
+                                        true,
+                                    )
                             }
                         }
                     }
@@ -184,18 +224,24 @@ class ListCallFragment :
 
     override fun searchDataList() {
         (adapter as? CallAdapter)?.searchQuery = searchQuery.orEmpty()
-        viewModel.getFilteredCallList(callWithFilterList.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
+        viewModel.getFilteredCallList(
+            callWithFilterList.orEmpty(),
+            searchQuery.orEmpty(),
+            filterIndexes ?: arrayListOf(),
+        )
     }
 
     override fun getData(allDataChange: Boolean) {
-        viewModel.savedStateHandle.get<List<CallWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull() && allDataChange.not()}?.let {
-            viewModel.callListLiveData.postValue(it)
-            viewModel.savedStateHandle[SAVED_LIST] = null
-        } ?: viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())
+        viewModel.savedStateHandle.get<List<CallWithFilterUIModel>>(SAVED_LIST)
+            .takeIf { it.isNotNull() && allDataChange.not() }?.let {
+                viewModel.callListLiveData.postValue(it)
+                viewModel.savedStateHandle[SAVED_LIST] = null
+            } ?: viewModel.getCallList(swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {
         findNavController().navigate(
-            ListCallFragmentDirections.startInfoFragment(info = Info.INFO_LIST_CALL))
+            ListCallFragmentDirections.startInfoFragment(info = Info.INFO_LIST_CALL),
+        )
     }
 }

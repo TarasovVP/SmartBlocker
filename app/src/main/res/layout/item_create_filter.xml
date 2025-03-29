@@ -5,7 +5,9 @@
     <data>
 
         <import type="androidx.core.content.ContextCompat" />
+
         <import type="android.view.View" />
+
         <variable
             name="filterWithCountryCodeUIModel"
             type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />

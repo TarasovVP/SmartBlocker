@@ -11,23 +11,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LogCallRepositoryImpl @Inject constructor(
-    private val appPhoneNumberUtil: AppPhoneNumberUtil,
-    private val logCallDao: LogCallDao) : LogCallRepository {
-
-    override suspend fun getSystemLogCallList(context: Context, country: String, result: (Int, Int) -> Unit): List<LogCall> =
-        withContext(Dispatchers.Default) {
-            context.systemLogCallList(appPhoneNumberUtil, country) { size, position ->
-                result.invoke(size, position)
+class LogCallRepositoryImpl
+    @Inject
+    constructor(
+        private val appPhoneNumberUtil: AppPhoneNumberUtil,
+        private val logCallDao: LogCallDao,
+    ) : LogCallRepository {
+        override suspend fun getSystemLogCallList(
+            context: Context,
+            country: String,
+            result: (Int, Int) -> Unit,
+        ): List<LogCall> =
+            withContext(Dispatchers.Default) {
+                context.systemLogCallList(appPhoneNumberUtil, country) { size, position ->
+                    result.invoke(size, position)
+                }
             }
-        }
 
-    override suspend fun insertAllLogCalls(logCallList: List<LogCall>) =
-        logCallDao.insertAllLogCalls(logCallList)
+        override suspend fun insertAllLogCalls(logCallList: List<LogCall>) = logCallDao.insertAllLogCalls(logCallList)
 
-    override suspend fun allCallWithFilters(): List<CallWithFilter> =
-        logCallDao.allCallWithFilters()
+        override suspend fun allCallWithFilters(): List<CallWithFilter> = logCallDao.allCallWithFilters()
 
-    override suspend fun allCallWithFiltersByFilter(filter: String) =
-        logCallDao.allCallWithFiltersByFilter(filter)
-}
+        override suspend fun allCallWithFiltersByFilter(filter: String) = logCallDao.allCallWithFiltersByFilter(filter)
+    }

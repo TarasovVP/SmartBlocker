@@ -1,2 +1,17 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "org.jetbrains.kotlin.jvm") {
+                useVersion("2.0.0")
+            }
+        }
+    }
+}
+
 rootProject.name = "SmartBlocker"
-include ':app'
+include ':app', ':lint-checks'

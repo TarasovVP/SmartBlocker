@@ -5,8 +5,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 
 @HiltAndroidTest
-class SettingsAccountInstrumentedTest: BaseSettingsAccountInstrumentedTest() {
-
+class SettingsAccountInstrumentedTest : BaseSettingsAccountInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 }

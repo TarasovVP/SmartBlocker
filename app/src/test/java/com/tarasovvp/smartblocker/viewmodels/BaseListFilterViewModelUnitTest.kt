@@ -27,8 +27,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class BaseListFilterViewModelUnitTest: BaseViewModelUnitTest<BaseListFilterViewModel>() {
-
+class BaseListFilterViewModelUnitTest : BaseViewModelUnitTest<BaseListFilterViewModel>() {
     @MockK
     private lateinit var useCase: ListFilterUseCase
 
@@ -38,69 +37,118 @@ class BaseListFilterViewModelUnitTest: BaseViewModelUnitTest<BaseListFilterViewM
     @MockK
     private lateinit var countryCodeUIMapper: CountryCodeUIMapper
 
-    override fun createViewModel() = BaseListFilterViewModel(application, useCase, filterWithFilteredNumberUIMapper, countryCodeUIMapper)
-
-    @Test
-    fun getFilterListTest() = runTest {
-        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
-        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
-        coEvery { useCase.allFilterWithFilteredNumbersByType(true) } returns filterList
-        every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
-        viewModel.getFilterList(isBlackList = true, refreshing = false)
-        advanceUntilIdle()
-        coVerify { useCase.allFilterWithFilteredNumbersByType(true) }
-        verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
-        assertEquals(filterUIModelList, viewModel.filterListLiveData.getOrAwaitValue())
-    }
-
-    @Test
-    fun getFilteredFilterListTest() = runTest {
-        val filterList = listOf(
-            FilterWithFilteredNumberUIModel(filter = "filter1", conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal),
-            FilterWithFilteredNumberUIModel(filter = "filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal),
-            FilterWithFilteredNumberUIModel(filter = "filter3", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal),
-            FilterWithFilteredNumberUIModel(filter = "filter4", conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal)
+    override fun createViewModel() =
+        BaseListFilterViewModel(
+            application,
+            useCase,
+            filterWithFilteredNumberUIMapper,
+            countryCodeUIMapper,
         )
-        val searchQuery = "filter"
-        val filterIndexes = arrayListOf(
-            NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal,
-            NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal
-        )
-        val expectedFilteredList = listOf(
-            FilterWithFilteredNumberUIModel(filter = "filter1",  conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal), FilterWithFilteredNumberUIModel(filter = "filter2", conditionType = FilterCondition.FILTER_CONDITION_START.ordinal))
-        viewModel.getFilteredFilterList(filterList, searchQuery, filterIndexes)
-        advanceUntilIdle()
-        assertEquals(expectedFilteredList, viewModel.filteredFilterListLiveData.getOrAwaitValue())
-    }
 
     @Test
-    fun deleteFilterListTest() = runTest {
-        val expectedResult = Result.Success<Unit>()
-        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
-        val filterUIModelList = listOf(FilterWithFilteredNumberUIModel(filter = TEST_FILTER), FilterWithFilteredNumberUIModel(filter = "mockFilter2"))
-        val filterIdList = filterList.mapNotNull { it.filter }
-        every { application.isNetworkAvailable } returns true
-        every { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) } returns filterList
-        coEvery { useCase.deleteFilterList(eq(filterIdList), any(), any()) } answers {
-            val result = thirdArg<(Result<Unit>) -> Unit>()
-            result.invoke(expectedResult)
+    fun getFilterListTest() =
+        runTest {
+            val filterList =
+                listOf(
+                    FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)),
+                    FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")),
+                )
+            val filterUIModelList =
+                listOf(
+                    FilterWithFilteredNumberUIModel(filter = TEST_FILTER),
+                    FilterWithFilteredNumberUIModel(filter = "mockFilter2"),
+                )
+            coEvery { useCase.allFilterWithFilteredNumbersByType(true) } returns filterList
+            every { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) } returns filterUIModelList
+            viewModel.getFilterList(isBlackList = true, refreshing = false)
+            advanceUntilIdle()
+            coVerify { useCase.allFilterWithFilteredNumbersByType(true) }
+            verify { filterWithFilteredNumberUIMapper.mapToUIModelList(filterList) }
+            assertEquals(filterUIModelList, viewModel.filterListLiveData.getOrAwaitValue())
         }
-        viewModel.deleteFilterList(filterUIModelList)
-        advanceUntilIdle()
-        coVerify { useCase.deleteFilterList(eq(filterIdList), any(), any()) }
-        verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
-        assertEquals(true, viewModel.successDeleteFilterLiveData.getOrAwaitValue())
-    }
 
     @Test
-    fun getCurrentCountryCodeTest() = runTest{
-        val countryCode = CountryCode()
-        val countryCodeUIModel = CountryCodeUIModel()
-        coEvery { useCase.getCurrentCountryCode() } returns flowOf(countryCode)
-        coEvery { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
-        viewModel.getCurrentCountryCode()
-        advanceUntilIdle()
-        coVerify { useCase.getCurrentCountryCode() }
-        assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
-    }
+    fun getFilteredFilterListTest() =
+        runTest {
+            val filterList =
+                listOf(
+                    FilterWithFilteredNumberUIModel(
+                        filter = "filter1",
+                        conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+                    ),
+                    FilterWithFilteredNumberUIModel(
+                        filter = "filter2",
+                        conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
+                    ),
+                    FilterWithFilteredNumberUIModel(
+                        filter = "filter3",
+                        conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                    ),
+                    FilterWithFilteredNumberUIModel(
+                        filter = "filter4",
+                        conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal,
+                    ),
+                )
+            val searchQuery = "filter"
+            val filterIndexes =
+                arrayListOf(
+                    NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal,
+                    NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal,
+                )
+            val expectedFilteredList =
+                listOf(
+                    FilterWithFilteredNumberUIModel(
+                        filter = "filter1",
+                        conditionType = FilterCondition.FILTER_CONDITION_FULL.ordinal,
+                    ),
+                    FilterWithFilteredNumberUIModel(
+                        filter = "filter2",
+                        conditionType = FilterCondition.FILTER_CONDITION_START.ordinal,
+                    ),
+                )
+            viewModel.getFilteredFilterList(filterList, searchQuery, filterIndexes)
+            advanceUntilIdle()
+            assertEquals(expectedFilteredList, viewModel.filteredFilterListLiveData.getOrAwaitValue())
+        }
+
+    @Test
+    fun deleteFilterListTest() =
+        runTest {
+            val expectedResult = Result.Success<Unit>()
+            val filterList =
+                listOf(
+                    FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)),
+                    FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")),
+                )
+            val filterUIModelList =
+                listOf(
+                    FilterWithFilteredNumberUIModel(filter = TEST_FILTER),
+                    FilterWithFilteredNumberUIModel(filter = "mockFilter2"),
+                )
+            val filterIdList = filterList.mapNotNull { it.filter }
+            every { application.isNetworkAvailable } returns true
+            every { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) } returns filterList
+            coEvery { useCase.deleteFilterList(eq(filterIdList), any(), any()) } answers {
+                val result = thirdArg<(Result<Unit>) -> Unit>()
+                result.invoke(expectedResult)
+            }
+            viewModel.deleteFilterList(filterUIModelList)
+            advanceUntilIdle()
+            coVerify { useCase.deleteFilterList(eq(filterIdList), any(), any()) }
+            verify { filterWithFilteredNumberUIMapper.mapFromUIModelList(filterUIModelList) }
+            assertEquals(true, viewModel.successDeleteFilterLiveData.getOrAwaitValue())
+        }
+
+    @Test
+    fun getCurrentCountryCodeTest() =
+        runTest {
+            val countryCode = CountryCode()
+            val countryCodeUIModel = CountryCodeUIModel()
+            coEvery { useCase.getCurrentCountryCode() } returns flowOf(countryCode)
+            coEvery { countryCodeUIMapper.mapToUIModel(countryCode) } returns countryCodeUIModel
+            viewModel.getCurrentCountryCode()
+            advanceUntilIdle()
+            coVerify { useCase.getCurrentCountryCode() }
+            assertEquals(countryCodeUIModel, viewModel.currentCountryCodeLiveData.getOrAwaitValue())
+        }
 }

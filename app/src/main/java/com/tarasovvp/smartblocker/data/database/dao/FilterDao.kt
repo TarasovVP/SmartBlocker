@@ -1,6 +1,13 @@
 package com.tarasovvp.smartblocker.data.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.RewriteQueriesToDropUnusedColumns
+import androidx.room.Transaction
+import androidx.room.Update
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
 import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 
@@ -29,7 +36,9 @@ interface FilterDao {
 
     @RewriteQueriesToDropUnusedColumns
     @Transaction
-    @Query("SELECT * FROM FilterWithFilteredNumber WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2) ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)")
+    @Query(
+        "SELECT * FROM FilterWithFilteredNumber WHERE (filter = :number AND conditionType = 0) OR (:number LIKE filter || '%' AND conditionType = 1) OR (:number LIKE '%' || filter || '%' AND conditionType = 2) ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)",
+    )
     suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumber>
 
     @Delete

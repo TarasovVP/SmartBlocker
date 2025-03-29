@@ -8,15 +8,18 @@ import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 
 abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : BaseBindingFragment<B>() {
-
     abstract val viewModelClass: Class<VM>
+
     abstract fun observeLiveData()
 
     open val viewModel: VM by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this)[viewModelClass]
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setExceptionMessageDisplaying()
         observeLiveData()

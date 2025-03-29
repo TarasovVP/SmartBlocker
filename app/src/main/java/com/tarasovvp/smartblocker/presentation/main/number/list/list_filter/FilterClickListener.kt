@@ -4,6 +4,8 @@ import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumbe
 
 interface FilterClickListener {
     fun onFilterClick(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel)
+
     fun onFilterLongClick()
+
     fun onFilterDeleteCheckChange(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel)
 }

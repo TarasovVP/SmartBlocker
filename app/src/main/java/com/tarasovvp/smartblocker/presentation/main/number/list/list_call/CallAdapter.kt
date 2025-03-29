@@ -7,19 +7,18 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.databinding.ItemCallBinding
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
+import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
+import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.highlightedSpanned
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
-import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
 
 class CallAdapter(val callClickListener: CallClickListener) :
     BaseAdapter<CallWithFilterUIModel>() {
-
     var isDeleteMode: Boolean = false
     var searchQuery = String.EMPTY
 
@@ -29,17 +28,21 @@ class CallAdapter(val callClickListener: CallClickListener) :
     ): RecyclerView.ViewHolder {
         return if (viewType == HEADER_TYPE) {
             HeaderViewHolder(
-                DataBindingUtil.inflate<ItemHeaderBinding>(LayoutInflater.from(parent.context),
+                DataBindingUtil.inflate<ItemHeaderBinding>(
+                    LayoutInflater.from(parent.context),
                     R.layout.item_header,
                     parent,
-                    false).root
+                    false,
+                ).root,
             )
         } else {
             ViewHolder(
-                DataBindingUtil.inflate<ItemCallBinding>(LayoutInflater.from(parent.context),
+                DataBindingUtil.inflate<ItemCallBinding>(
+                    LayoutInflater.from(parent.context),
                     R.layout.item_call,
                     parent,
-                    false).root
+                    false,
+                ).root,
             )
         }
     }
@@ -51,20 +54,24 @@ class CallAdapter(val callClickListener: CallClickListener) :
         super.onBindViewHolder(holder, position)
         if (holder is ViewHolder) {
             holder.bindData(
-                position
+                position,
             )
         }
     }
 
     internal inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-
         fun bindData(position: Int) {
             val callWithFilter = getDataInPosition(position)
             DataBindingUtil.bind<ItemCallBinding>(itemView)?.apply {
                 callWithFilter.isDeleteMode = isDeleteMode
                 callWithFilter.searchText = searchQuery
-                callWithFilter.highlightedSpanned = callWithFilter.number.highlightedSpanned(searchQuery, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
+                callWithFilter.highlightedSpanned =
+                    callWithFilter.number.highlightedSpanned(
+                        searchQuery,
+                        null,
+                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                    )
                 callWithFilter.isExtract = false
                 this.callWithFilter = callWithFilter
                 root.setSafeOnClickListener {
@@ -75,11 +82,20 @@ class CallAdapter(val callClickListener: CallClickListener) :
                             callClickListener.onCallDeleteInfoClick()
                         }
                     } else {
-                        callClickListener.onCallClick(callWithFilter.apply {
-                            callWithFilter.searchText = String.EMPTY
-                            callWithFilter.highlightedSpanned =
-                                callWithFilter.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(itemView.context, R.color.text_color_black))
-                        })
+                        callClickListener.onCallClick(
+                            callWithFilter.apply {
+                                callWithFilter.searchText = String.EMPTY
+                                callWithFilter.highlightedSpanned =
+                                    callWithFilter.number.highlightedSpanned(
+                                        String.EMPTY,
+                                        null,
+                                        ContextCompat.getColor(
+                                            itemView.context,
+                                            R.color.text_color_black,
+                                        ),
+                                    )
+                            },
+                        )
                     }
                 }
                 root.setOnLongClickListener {

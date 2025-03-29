@@ -30,9 +30,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel>() {
-
-
+class CreateFilterViewModelUnitTest : BaseViewModelUnitTest<CreateFilterViewModel>() {
     @MockK
     private lateinit var useCase: CreateFilterUseCase
 
@@ -42,93 +40,172 @@ class CreateFilterViewModelUnitTest: BaseViewModelUnitTest<CreateFilterViewModel
     @MockK
     private lateinit var contactWithFilterUIMapper: ContactWithFilterUIMapper
 
-    override fun createViewModel() = CreateFilterViewModel(application, useCase, filterWithFilteredNumberUIMapper, contactWithFilterUIMapper)
+    override fun createViewModel() =
+        CreateFilterViewModel(
+            application,
+            useCase,
+            filterWithFilteredNumberUIMapper,
+            contactWithFilterUIMapper,
+        )
 
     @Test
-    fun getMatchedContactWithFilterListTest() = runTest {
-        val filterWithCountryCodeUIModel = FilterWithCountryCodeUIModel().apply {
-            filterWithFilteredNumberUIModel.filter = TEST_FILTER
-            filterWithFilteredNumberUIModel.conditionType = FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
-            countryCodeUIModel.country = TEST_COUNTRY
-            countryCodeUIModel.countryCode = TEST_COUNTRY_CODE
+    fun getMatchedContactWithFilterListTest() =
+        runTest {
+            val filterWithCountryCodeUIModel =
+                FilterWithCountryCodeUIModel().apply {
+                    filterWithFilteredNumberUIModel.filter = TEST_FILTER
+                    filterWithFilteredNumberUIModel.conditionType =
+                        FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
+                    countryCodeUIModel.country = TEST_COUNTRY
+                    countryCodeUIModel.countryCode = TEST_COUNTRY_CODE
+                }
+            val contactWithFilters =
+                arrayListOf(
+                    ContactWithFilter(contact = Contact(number = TEST_NUMBER)),
+                    ContactWithFilter(contact = Contact(number = TEST_NUMBER)),
+                )
+            val contactWithFilterUIModels = arrayListOf(ContactWithFilterUIModel(number = TEST_NUMBER))
+            coEvery {
+                useCase.allContactsWithFiltersByCreateFilter(
+                    TEST_FILTER,
+                    TEST_COUNTRY,
+                    TEST_COUNTRY_CODE,
+                    true,
+                )
+            } returns contactWithFilters
+            coEvery { contactWithFilterUIMapper.mapToUIModelList(contactWithFilters) } returns contactWithFilterUIModels
+            viewModel.getMatchedContactWithFilterList(filterWithCountryCodeUIModel)
+            advanceUntilIdle()
+            val result = viewModel.contactWithFilterLiveData.getOrAwaitValue()
+            assertEquals(contactWithFilterUIModels, result)
+            coVerify {
+                useCase.allContactsWithFiltersByCreateFilter(
+                    TEST_FILTER,
+                    TEST_COUNTRY,
+                    TEST_COUNTRY_CODE,
+                    true,
+                )
+            }
+            coVerify { contactWithFilterUIMapper.mapToUIModelList(contactWithFilters) }
         }
-        val contactWithFilters = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), ContactWithFilter(contact = Contact(number = TEST_NUMBER)))
-        val contactWithFilterUIModels = arrayListOf(ContactWithFilterUIModel(number = TEST_NUMBER))
-        coEvery { useCase.allContactsWithFiltersByCreateFilter(TEST_FILTER, TEST_COUNTRY, TEST_COUNTRY_CODE, true) } returns contactWithFilters
-        coEvery { contactWithFilterUIMapper.mapToUIModelList(contactWithFilters) } returns contactWithFilterUIModels
-        viewModel.getMatchedContactWithFilterList(filterWithCountryCodeUIModel)
-        advanceUntilIdle()
-        val result = viewModel.contactWithFilterLiveData.getOrAwaitValue()
-        assertEquals(contactWithFilterUIModels, result)
-        coVerify { useCase.allContactsWithFiltersByCreateFilter(TEST_FILTER, TEST_COUNTRY, TEST_COUNTRY_CODE, true) }
-        coVerify { contactWithFilterUIMapper.mapToUIModelList(contactWithFilters) }
-    }
 
     @Test
-    fun checkFilterExistTest() = runTest {
-        val filterValue = TEST_FILTER
-        val filter = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
-        val filterUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
-        coEvery { useCase.getFilter(filterValue) } returns filter
-        every { filterWithFilteredNumberUIMapper.mapToUIModel(filter) } returns filterUIModel
-        viewModel.checkFilterExist(filterValue)
-        advanceUntilIdle()
-        coVerify { useCase.getFilter(filterValue) }
-        verify { filterWithFilteredNumberUIMapper.mapToUIModel(filter) }
-        assertEquals(filterUIModel, viewModel.existingFilterLiveData.getOrAwaitValue())
-    }
-
-    @Test
-    fun createFilterTest() = runTest {
-        val expectedResult = Result.Success<Unit>()
-        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
-        val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.createFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
-            val result = thirdArg<(Result<Unit>) -> Unit>()
-            result.invoke(expectedResult)
+    fun checkFilterExistTest() =
+        runTest {
+            val filterValue = TEST_FILTER
+            val filter = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
+            val filterUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            coEvery { useCase.getFilter(filterValue) } returns filter
+            every { filterWithFilteredNumberUIMapper.mapToUIModel(filter) } returns filterUIModel
+            viewModel.checkFilterExist(filterValue)
+            advanceUntilIdle()
+            coVerify { useCase.getFilter(filterValue) }
+            verify { filterWithFilteredNumberUIMapper.mapToUIModel(filter) }
+            assertEquals(filterUIModel, viewModel.existingFilterLiveData.getOrAwaitValue())
         }
-        every { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) } returns filterWithFilteredNumber
-        viewModel.createFilter(filterWithFilteredNumberUIModel)
-        advanceUntilIdle()
-        coVerify { useCase.createFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
-        verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
-    }
 
     @Test
-    fun updateFilterTest() = runTest {
-        val expectedResult = Result.Success<Unit>()
-        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
-        val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.updateFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
-            val result = thirdArg<(Result<Unit>) -> Unit>()
-            result.invoke(expectedResult)
+    fun createFilterTest() =
+        runTest {
+            val expectedResult = Result.Success<Unit>()
+            val filterWithFilteredNumber =
+                FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
+            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            every { application.isNetworkAvailable } returns true
+            coEvery {
+                useCase.createFilter(
+                    eq(filterWithFilteredNumber.filter ?: Filter()),
+                    eq(true),
+                    any(),
+                )
+            } answers {
+                val result = thirdArg<(Result<Unit>) -> Unit>()
+                result.invoke(expectedResult)
+            }
+            every { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) } returns filterWithFilteredNumber
+            viewModel.createFilter(filterWithFilteredNumberUIModel)
+            advanceUntilIdle()
+            coVerify {
+                useCase.createFilter(
+                    eq(filterWithFilteredNumber.filter ?: Filter()),
+                    eq(true),
+                    any(),
+                )
+            }
+            verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
+            assertEquals(
+                filterWithFilteredNumberUIModel,
+                viewModel.filterActionLiveData.getOrAwaitValue(),
+            )
         }
-        every { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) } returns filterWithFilteredNumber
-        viewModel.updateFilter(filterWithFilteredNumberUIModel)
-        advanceUntilIdle()
-        coVerify { useCase.updateFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
-        verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
-    }
 
     @Test
-    fun deleteFilterTest() = runTest {
-        val expectedResult = Result.Success<Unit>()
-        val filterWithFilteredNumber = FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
-        val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.deleteFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) } answers {
-            val result = thirdArg<(Result<Unit>) -> Unit>()
-            result.invoke(expectedResult)
+    fun updateFilterTest() =
+        runTest {
+            val expectedResult = Result.Success<Unit>()
+            val filterWithFilteredNumber =
+                FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
+            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            every { application.isNetworkAvailable } returns true
+            coEvery {
+                useCase.updateFilter(
+                    eq(filterWithFilteredNumber.filter ?: Filter()),
+                    eq(true),
+                    any(),
+                )
+            } answers {
+                val result = thirdArg<(Result<Unit>) -> Unit>()
+                result.invoke(expectedResult)
+            }
+            every { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) } returns filterWithFilteredNumber
+            viewModel.updateFilter(filterWithFilteredNumberUIModel)
+            advanceUntilIdle()
+            coVerify {
+                useCase.updateFilter(
+                    eq(filterWithFilteredNumber.filter ?: Filter()),
+                    eq(true),
+                    any(),
+                )
+            }
+            verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
+            assertEquals(
+                filterWithFilteredNumberUIModel,
+                viewModel.filterActionLiveData.getOrAwaitValue(),
+            )
         }
-        every { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) } returns filterWithFilteredNumber
-        viewModel.deleteFilter(filterWithFilteredNumberUIModel)
-        advanceUntilIdle()
-        coVerify { useCase.deleteFilter(eq(filterWithFilteredNumber.filter ?: Filter()), eq(true), any()) }
-        verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
-        assertEquals(filterWithFilteredNumberUIModel, viewModel.filterActionLiveData.getOrAwaitValue())
-    }
+
+    @Test
+    fun deleteFilterTest() =
+        runTest {
+            val expectedResult = Result.Success<Unit>()
+            val filterWithFilteredNumber =
+                FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
+            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            every { application.isNetworkAvailable } returns true
+            coEvery {
+                useCase.deleteFilter(
+                    eq(filterWithFilteredNumber.filter ?: Filter()),
+                    eq(true),
+                    any(),
+                )
+            } answers {
+                val result = thirdArg<(Result<Unit>) -> Unit>()
+                result.invoke(expectedResult)
+            }
+            every { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) } returns filterWithFilteredNumber
+            viewModel.deleteFilter(filterWithFilteredNumberUIModel)
+            advanceUntilIdle()
+            coVerify {
+                useCase.deleteFilter(
+                    eq(filterWithFilteredNumber.filter ?: Filter()),
+                    eq(true),
+                    any(),
+                )
+            }
+            verify { filterWithFilteredNumberUIMapper.mapFromUIModel(filterWithFilteredNumberUIModel) }
+            assertEquals(
+                filterWithFilteredNumberUIModel,
+                viewModel.filterActionLiveData.getOrAwaitValue(),
+            )
+        }
 }

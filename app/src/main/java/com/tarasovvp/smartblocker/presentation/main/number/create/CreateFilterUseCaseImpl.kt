@@ -13,81 +13,104 @@ import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class CreateFilterUseCaseImpl @Inject constructor(
-    private val contactRepository: ContactRepository,
-    private val phoneNumberUtil: AppPhoneNumberUtil,
-    private val filterRepository: FilterRepository,
-    private val realDataBaseRepository: RealDataBaseRepository,
-    private val firebaseAuth: FirebaseAuth
-) : CreateFilterUseCase {
-
-    override suspend fun allContactsWithFiltersByCreateFilter(filter: String, country: String, countryCode: String, isContain: Boolean): List<ContactWithFilter> {
-        val contactWithFilters = contactRepository.allContactsWithFiltersByCreateFilter(filter)
-        val  filteredContactWithFilters = when {
-            isContain -> contactWithFilters
-            else -> contactWithFilters.filter { contactWithFilter ->
-                    phoneNumberUtil.phoneNumberValue(contactWithFilter.contact?.number, phoneNumberUtil.getPhoneNumber(contactWithFilter.contact?.number, country)).startsWith("$countryCode$filter")
-            }
+class CreateFilterUseCaseImpl
+    @Inject
+    constructor(
+        private val contactRepository: ContactRepository,
+        private val phoneNumberUtil: AppPhoneNumberUtil,
+        private val filterRepository: FilterRepository,
+        private val realDataBaseRepository: RealDataBaseRepository,
+        private val firebaseAuth: FirebaseAuth,
+    ) : CreateFilterUseCase {
+        override suspend fun allContactsWithFiltersByCreateFilter(
+            filter: String,
+            country: String,
+            countryCode: String,
+            isContain: Boolean,
+        ): List<ContactWithFilter> {
+            val contactWithFilters = contactRepository.allContactsWithFiltersByCreateFilter(filter)
+            val filteredContactWithFilters =
+                when {
+                    isContain -> contactWithFilters
+                    else ->
+                        contactWithFilters.filter { contactWithFilter ->
+                            phoneNumberUtil.phoneNumberValue(
+                                contactWithFilter.contact?.number,
+                                phoneNumberUtil.getPhoneNumber(contactWithFilter.contact?.number, country),
+                            ).startsWith("$countryCode$filter")
+                        }
+                }
+            return filteredContactWithFilters
         }
-        return filteredContactWithFilters
-    }
 
-    override suspend fun getFilter(filter: String) = filterRepository.getFilter(filter)
+        override suspend fun getFilter(filter: String) = filterRepository.getFilter(filter)
 
-    override suspend fun createFilter(filter: Filter,  isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.isAuthorisedUser()) {
-            if (isNetworkAvailable) {
-                realDataBaseRepository.insertFilter(filter) {
-                    runBlocking {
-                        filterRepository.insertFilter(filter)
-                        result.invoke(Result.Success())
+        override suspend fun createFilter(
+            filter: Filter,
+            isNetworkAvailable: Boolean,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            if (firebaseAuth.isAuthorisedUser()) {
+                if (isNetworkAvailable) {
+                    realDataBaseRepository.insertFilter(filter) {
+                        runBlocking {
+                            filterRepository.insertFilter(filter)
+                            result.invoke(Result.Success())
+                        }
                     }
+                } else {
+                    filterRepository.insertFilter(filter)
+                    result.invoke(Result.Failure())
                 }
             } else {
                 filterRepository.insertFilter(filter)
-                result.invoke(Result.Failure())
+                result.invoke(Result.Success())
             }
-        } else {
-            filterRepository.insertFilter(filter)
-            result.invoke(Result.Success())
         }
-    }
 
-    override suspend fun updateFilter(filter: Filter,  isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.isAuthorisedUser()) {
-            if (isNetworkAvailable) {
-                realDataBaseRepository.insertFilter(filter) {
-                    runBlocking {
-                        filterRepository.updateFilter(filter)
-                        result.invoke(Result.Success())
+        override suspend fun updateFilter(
+            filter: Filter,
+            isNetworkAvailable: Boolean,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            if (firebaseAuth.isAuthorisedUser()) {
+                if (isNetworkAvailable) {
+                    realDataBaseRepository.insertFilter(filter) {
+                        runBlocking {
+                            filterRepository.updateFilter(filter)
+                            result.invoke(Result.Success())
+                        }
                     }
+                } else {
+                    filterRepository.updateFilter(filter)
+                    result.invoke(Result.Failure())
                 }
             } else {
                 filterRepository.updateFilter(filter)
-                result.invoke(Result.Failure())
+                result.invoke(Result.Success())
             }
-        } else {
-            filterRepository.updateFilter(filter)
-            result.invoke(Result.Success())
         }
-    }
 
-    override suspend fun deleteFilter(filter: Filter,  isNetworkAvailable: Boolean, result: (Result<Unit>) -> Unit) {
-        if (firebaseAuth.isAuthorisedUser()) {
-            if (isNetworkAvailable) {
-                realDataBaseRepository.deleteFilterList(listOf(filter)) {
-                    runBlocking {
-                        filterRepository.deleteFilterList(listOf(filter))
-                        result.invoke(Result.Success())
+        override suspend fun deleteFilter(
+            filter: Filter,
+            isNetworkAvailable: Boolean,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            if (firebaseAuth.isAuthorisedUser()) {
+                if (isNetworkAvailable) {
+                    realDataBaseRepository.deleteFilterList(listOf(filter)) {
+                        runBlocking {
+                            filterRepository.deleteFilterList(listOf(filter))
+                            result.invoke(Result.Success())
+                        }
                     }
+                } else {
+                    filterRepository.deleteFilterList(listOf(filter))
+                    result.invoke(Result.Failure())
                 }
             } else {
                 filterRepository.deleteFilterList(listOf(filter))
-                result.invoke(Result.Failure())
+                result.invoke(Result.Success())
             }
-        } else {
-            filterRepository.deleteFilterList(listOf(filter))
-            result.invoke(Result.Success())
         }
     }
-}

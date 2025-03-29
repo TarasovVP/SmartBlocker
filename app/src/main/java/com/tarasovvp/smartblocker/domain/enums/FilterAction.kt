@@ -1,6 +1,11 @@
 package com.tarasovvp.smartblocker.domain.enums
 
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.colorRes
+import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
+import com.tarasovvp.smartblocker.utils.extensions.iconRes
+import com.tarasovvp.smartblocker.utils.extensions.requestRes
+import com.tarasovvp.smartblocker.utils.extensions.successRes
+import com.tarasovvp.smartblocker.utils.extensions.titleRes
 
 enum class FilterAction {
     FILTER_ACTION_INVALID,
@@ -9,7 +14,9 @@ enum class FilterAction {
     FILTER_ACTION_BLOCKER_DELETE,
     FILTER_ACTION_PERMISSION_DELETE,
     FILTER_ACTION_PERMISSION_TRANSFER,
-    FILTER_ACTION_BLOCKER_TRANSFER;
+    FILTER_ACTION_BLOCKER_TRANSFER,
+    ;
+
     fun title(): Int {
         return titleRes()
     }

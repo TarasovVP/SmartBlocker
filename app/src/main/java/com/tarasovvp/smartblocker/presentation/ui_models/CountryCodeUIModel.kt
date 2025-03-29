@@ -10,9 +10,8 @@ data class CountryCodeUIModel(
     var country: String = String.EMPTY,
     var countryCode: String = String.EMPTY,
     var numberFormat: String = String.EMPTY,
-    var displayCountry: String = String.EMPTY
+    var displayCountry: String = String.EMPTY,
 ) : Parcelable {
-
     fun countryEmoji(): String = String.format("%s %s", country.flagEmoji(), country)
 
     fun countryNameEmoji(): String = String.format("%s %s", country.flagEmoji(), displayCountry)

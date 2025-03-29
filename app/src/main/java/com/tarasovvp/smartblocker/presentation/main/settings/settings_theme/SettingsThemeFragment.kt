@@ -13,20 +13,23 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SettingsThemeFragment :
     BaseFragment<FragmentSettingsThemeBinding, SettingsThemeViewModel>() {
-
     override var layoutId = R.layout.fragment_settings_theme
     override val viewModelClass = SettingsThemeViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAppTheme()
         binding?.appThemeGroup?.setOnCheckedChangeListener { radioGroup, rbId ->
             if (radioGroup.findViewById<RadioButton>(rbId).isPressed.not()) return@setOnCheckedChangeListener
-            val mode = when (rbId) {
-                R.id.app_theme_day -> AppCompatDelegate.MODE_NIGHT_NO
-                R.id.app_theme_night -> AppCompatDelegate.MODE_NIGHT_YES
-                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
+            val mode =
+                when (rbId) {
+                    R.id.app_theme_day -> AppCompatDelegate.MODE_NIGHT_NO
+                    R.id.app_theme_night -> AppCompatDelegate.MODE_NIGHT_YES
+                    else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
             viewModel.setAppTheme(mode)
             activity?.recreate()
         }
@@ -34,11 +37,12 @@ class SettingsThemeFragment :
 
     override fun observeLiveData() {
         viewModel.appThemeLiveData.safeSingleObserve(viewLifecycleOwner) { appTheme ->
-            val radioButtonId = when (appTheme) {
-                AppCompatDelegate.MODE_NIGHT_YES ->R.id.app_theme_night
-                AppCompatDelegate.MODE_NIGHT_NO -> R.id.app_theme_day
-                else -> R.id.app_theme_auto
-            }
+            val radioButtonId =
+                when (appTheme) {
+                    AppCompatDelegate.MODE_NIGHT_YES -> R.id.app_theme_night
+                    AppCompatDelegate.MODE_NIGHT_NO -> R.id.app_theme_day
+                    else -> R.id.app_theme_auto
+                }
             activity?.runOnUiThread {
                 binding?.appThemeGroup?.check(radioButtonId)
             }

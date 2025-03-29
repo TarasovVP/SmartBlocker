@@ -11,13 +11,20 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SAVED_LIST
 import com.tarasovvp.smartblocker.presentation.base.BaseAdapter
 import com.tarasovvp.smartblocker.presentation.base.BaseListFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboard
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboardWithLayoutTouch
+import com.tarasovvp.smartblocker.utils.extensions.isNotNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.restoreListInstantState
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 open class ListContactFragment :
     BaseListFragment<FragmentListContactBinding, ListContactViewModel, ContactWithFilterUIModel>() {
-
     override var layoutId = R.layout.fragment_list_contact
     override val viewModelClass = ListContactViewModel::class.java
 
@@ -28,7 +35,8 @@ open class ListContactFragment :
             ContactAdapter { numberData ->
                 findNavController().navigate(
                     ListContactFragmentDirections.startDetailsNumberDataFragment(
-                    numberData)
+                        numberData,
+                    ),
                 )
             }
         }
@@ -51,23 +59,27 @@ open class ListContactFragment :
     }
 
     private fun setContactListData(contactWithFilterList: List<ContactWithFilterUIModel>) {
-        binding?.listContactCheck?.isEnabled = contactWithFilterList.isNotEmpty() || binding?.listContactCheck?.isChecked.isTrue()
+        binding?.listContactCheck?.isEnabled =
+            contactWithFilterList.isNotEmpty() || binding?.listContactCheck?.isChecked.isTrue()
         checkDataListEmptiness(contactWithFilterList.isEmpty())
-        setDataList(contactWithFilterList.groupBy {
-            if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
-        })
+        setDataList(
+            contactWithFilterList.groupBy {
+                if (it.contactName.isEmpty()) String.EMPTY else it.contactName[0].toString()
+            },
+        )
         viewModel.savedStateHandle.restoreListInstantState(LIST_STATE, recyclerView?.layoutManager)
     }
 
     override fun setClickListeners() {
         binding?.listContactCheck?.setSafeOnClickListener {
             binding?.root?.hideKeyboard()
-            binding?.listContactCheck?.isChecked = binding?.listContactCheck?.isChecked.isTrue().not()
+            binding?.listContactCheck?.isChecked =
+                binding?.listContactCheck?.isChecked.isTrue().not()
             findNavController().navigate(
                 ListContactFragmentDirections.startNumberDataFilteringDialog(
                     previousDestinationId = findNavController().currentDestination?.id.orZero(),
-                    filteringList = filterIndexes.orEmpty().toIntArray()
-                )
+                    filteringList = filterIndexes.orEmpty().toIntArray(),
+                ),
             )
         }
         binding?.listContactInfo?.setSafeOnClickListener {
@@ -101,18 +113,24 @@ open class ListContactFragment :
 
     override fun searchDataList() {
         (adapter as? ContactAdapter)?.searchQuery = searchQuery.orEmpty()
-        viewModel.getFilteredContactList(contactWithFilterList.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
+        viewModel.getFilteredContactList(
+            contactWithFilterList.orEmpty(),
+            searchQuery.orEmpty(),
+            filterIndexes ?: arrayListOf(),
+        )
     }
 
     override fun getData(allDataChange: Boolean) {
-        viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST).takeIf { it.isNotNull()  && allDataChange.not()}?.let {
-            viewModel.contactListLiveData.postValue(it)
-            viewModel.savedStateHandle[SAVED_LIST] = null
-        } ?: viewModel.getContactsWithFilters(swipeRefresh?.isRefreshing.isTrue())
+        viewModel.savedStateHandle.get<List<ContactWithFilterUIModel>>(SAVED_LIST)
+            .takeIf { it.isNotNull() && allDataChange.not() }?.let {
+                viewModel.contactListLiveData.postValue(it)
+                viewModel.savedStateHandle[SAVED_LIST] = null
+            } ?: viewModel.getContactsWithFilters(swipeRefresh?.isRefreshing.isTrue())
     }
 
     override fun showInfoScreen() {
         findNavController().navigate(
-            ListContactFragmentDirections.startInfoFragment(info = Info.INFO_LIST_CONTACT))
+            ListContactFragmentDirections.startInfoFragment(info = Info.INFO_LIST_CONTACT),
+        )
     }
 }

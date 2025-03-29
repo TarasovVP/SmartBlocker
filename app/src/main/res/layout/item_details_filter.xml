@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="androidx.core.content.ContextCompat" />
+
         <import type="android.view.View" />
+
         <variable
             name="isFilteredCallDetails"
             type="Boolean" />
+
         <variable
             name="filterWithFilteredNumberUIModel"
             type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
@@ -77,7 +81,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/item_details_filter_value"
                 app:layout_constraintStart_toStartOf="@id/item_details_filter_value"
                 app:layout_constraintTop_toBottomOf="@+id/item_details_filter_value"
-                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_avatar"/>
+                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_avatar" />
 
             <View
                 android:id="@+id/item_details_filter_divider"
@@ -99,7 +103,7 @@
                 android:text="@{isFilteredCallDetails ? filterWithFilteredNumberUIModel.filteredNumbersText(context) : filterWithFilteredNumberUIModel.filteredCallsText(context)}"
                 app:layout_constraintTop_toBottomOf="@+id/item_details_filter_divider"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_details_filter_created"/>
+                app:layout_constraintEnd_toStartOf="@+id/item_details_filter_created" />
 
             <TextView
                 android:id="@+id/item_details_filter_created"
@@ -113,7 +117,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_details_filter_details"
                 app:layout_constraintTop_toTopOf="@+id/item_details_filter_details"
-                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_details"/>
+                app:layout_constraintBottom_toBottomOf="@+id/item_details_filter_details" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

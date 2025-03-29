@@ -3,19 +3,24 @@ package com.tarasovvp.smartblocker.presentation.mapperImpl
 import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.*
+import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import java.util.*
+import java.util.Locale
 
-class CountryCodeUIMapperImpl(private val dataStoreRepository: DataStoreRepository) : CountryCodeUIMapper {
-
+class CountryCodeUIMapperImpl(private val dataStoreRepository: DataStoreRepository) :
+    CountryCodeUIMapper {
     override fun mapToUIModel(from: CountryCode): CountryCodeUIModel {
-        val appLang = runBlocking {
-            dataStoreRepository.getAppLang().first()
-        }.orEmpty()
-        return CountryCodeUIModel(from.country, from.countryCode.orEmpty(),
-            from.numberFormat.orEmpty(), Locale(appLang, from.country).displayCountry)
+        val appLang =
+            runBlocking {
+                dataStoreRepository.getAppLang().first()
+            }.orEmpty()
+        return CountryCodeUIModel(
+            from.country,
+            from.countryCode.orEmpty(),
+            from.numberFormat.orEmpty(),
+            Locale(appLang, from.country).displayCountry,
+        )
     }
 
     override fun mapFromUIModel(to: CountryCodeUIModel): CountryCode {

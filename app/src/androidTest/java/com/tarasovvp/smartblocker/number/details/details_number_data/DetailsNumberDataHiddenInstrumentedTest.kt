@@ -5,8 +5,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 
 @HiltAndroidTest
-class DetailsNumberDataHiddenInstrumentedTest: BaseDetailsNumberDataInstrumentedTest() {
-
+class DetailsNumberDataHiddenInstrumentedTest : BaseDetailsNumberDataInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 }

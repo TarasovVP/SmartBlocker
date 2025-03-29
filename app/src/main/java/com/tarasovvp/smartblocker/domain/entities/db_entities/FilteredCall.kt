@@ -10,5 +10,5 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = FILTERED_CALLS)
 @Parcelize
 data class FilteredCall(
-    @PrimaryKey override var callId: Int = 0
+    @PrimaryKey override var callId: Int = 0,
 ) : Call(), Parcelable

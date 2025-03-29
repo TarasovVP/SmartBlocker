@@ -7,7 +7,9 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserInfo
@@ -21,7 +23,11 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHi
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.currentUserEmail
+import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
+import com.tarasovvp.smartblocker.utils.extensions.isGoogleAuthUser
+import com.tarasovvp.smartblocker.utils.extensions.nameInitial
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -39,11 +45,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class SettingsAccountUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class SettingsAccountUnitTest : BaseFragmentUnitTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -59,7 +66,11 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
         every { mockFirebaseAuth.currentUser?.providerData } returns listOf(mockUserInfo)
         every { mockUserInfo.providerId } returns "providerId"
         every { mockFirebaseAuth.currentUser } returns if (name.methodName.contains("Empty")) null else mockk()
-        if (name.methodName.contains("Empty").not()) every { mockFirebaseAuth.currentUser?.email } returns TEST_EMAIL
+        if (name.methodName.contains("Empty")
+                .not()
+        ) {
+            every { mockFirebaseAuth.currentUser?.email } returns TEST_EMAIL
+        }
         launchFragmentInHiltContainer<SettingsAccountFragment> {
             (this as SettingsAccountFragment).firebaseAuth = mockFirebaseAuth
             this.initViews()
@@ -83,11 +94,25 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
     fun checkSettingsAccountAvatar() {
         onView(withId(R.id.settings_account_avatar)).apply {
             check(matches(isDisplayed()))
-            val avatar = when {
-                mockFirebaseAuth.isGoogleAuthUser(true) -> ContextCompat.getDrawable(targetContext, R.drawable.ic_logo_google)?.toBitmap()
-                mockFirebaseAuth.isAuthorisedUser() -> ContextCompat.getDrawable(targetContext, R.drawable.ic_email)?.toBitmap()
-                else -> targetContext.getInitialDrawable( mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial()).toBitmap()
-            }
+            val avatar =
+                when {
+                    mockFirebaseAuth.isGoogleAuthUser(true) ->
+                        ContextCompat.getDrawable(
+                            targetContext,
+                            R.drawable.ic_logo_google,
+                        )?.toBitmap()
+
+                    mockFirebaseAuth.isAuthorisedUser() ->
+                        ContextCompat.getDrawable(
+                            targetContext,
+                            R.drawable.ic_email,
+                        )?.toBitmap()
+
+                    else ->
+                        targetContext.getInitialDrawable(
+                            mockFirebaseAuth.currentUser?.currentUserEmail().nameInitial(),
+                        ).toBitmap()
+                }
             check(matches(withBitmap(avatar)))
         }
     }
@@ -96,7 +121,19 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
     fun checkSettingsAccountName() {
         onView(withId(R.id.settings_account_name)).apply {
             check(matches(isDisplayed()))
-            check(matches(withText(if (mockFirebaseAuth.isAuthorisedUser()) mockFirebaseAuth.currentUser?.currentUserEmail() else targetContext.getString(R.string.settings_account_unauthorised))))
+            check(
+                matches(
+                    withText(
+                        if (mockFirebaseAuth.isAuthorisedUser()) {
+                            mockFirebaseAuth.currentUser?.currentUserEmail()
+                        } else {
+                            targetContext.getString(
+                                R.string.settings_account_unauthorised,
+                            )
+                        },
+                    ),
+                ),
+            )
         }
     }
 
@@ -107,7 +144,10 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
             check(matches(withText(R.string.settings_account_log_out_title)))
             perform(click())
             assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
-            assertEquals(true, navController?.backStack?.last()?.arguments?.getBoolean(IS_AUTHORISED))
+            assertEquals(
+                true,
+                navController?.backStack?.last()?.arguments?.getBoolean(IS_AUTHORISED),
+            )
         }
     }
 
@@ -133,7 +173,10 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
                 check(matches(withText(R.string.settings_account_delete_title)))
                 perform(click())
                 assertEquals(R.id.deleteAccountDialog, navController?.currentDestination?.id)
-                assertEquals(false, navController?.backStack?.last()?.arguments?.getBoolean(IS_GOOGLE_AUTH))
+                assertEquals(
+                    false,
+                    navController?.backStack?.last()?.arguments?.getBoolean(IS_GOOGLE_AUTH),
+                )
             } else {
                 check(matches(not(isDisplayed())))
             }
@@ -147,8 +190,10 @@ class SettingsAccountUnitTest: BaseFragmentUnitTest() {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))
-                onView(withId(R.id.empty_state_description)).check(matches(isDisplayed())).check(matches(withText(EmptyState.EMPTY_STATE_ACCOUNT.description())))
-                onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
+                onView(withId(R.id.empty_state_description)).check(matches(isDisplayed()))
+                    .check(matches(withText(EmptyState.EMPTY_STATE_ACCOUNT.description())))
+                onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed()))
+                    .check(matches(withDrawable(R.drawable.ic_empty_state)))
             }
         }
     }

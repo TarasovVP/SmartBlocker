@@ -4,7 +4,11 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
@@ -20,8 +24,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class OnboardingInstrumentedTest: BaseInstrumentedTest() {
-
+class OnboardingInstrumentedTest : BaseInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 

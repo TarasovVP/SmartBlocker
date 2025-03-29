@@ -19,20 +19,28 @@ import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXIST_ACCOUNT
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.getViewsFromLayout
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboard
+import com.tarasovvp.smartblocker.utils.extensions.hideKeyboardWithLayoutTouch
+import com.tarasovvp.smartblocker.utils.extensions.inputText
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
-
     @Inject
     lateinit var googleSignInClient: GoogleSignInClient
 
     override var layoutId = R.layout.fragment_sign_up
     override val viewModelClass = SignUpViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
         (binding?.root as? ViewGroup)?.hideKeyboardWithLayoutTouch()
@@ -77,13 +85,20 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     override fun observeLiveData() {
         with(viewModel) {
             createEmailAccountLiveData.safeSingleObserve(viewLifecycleOwner) {
-                viewModel.createUserWithEmailAndPassword(binding?.signUpEmail.inputText(), binding?.signUpPassword.inputText())
+                viewModel.createUserWithEmailAndPassword(
+                    binding?.signUpEmail.inputText(),
+                    binding?.signUpPassword.inputText(),
+                )
             }
             createGoogleAccountLiveData.safeSingleObserve(viewLifecycleOwner) { idToken ->
                 viewModel.createUserWithGoogle(idToken)
             }
             accountExistLiveData.safeSingleObserve(viewLifecycleOwner) {
-                findNavController().navigate(SignUpFragmentDirections.startExistAccountDialog(description = getString(R.string.authorization_account_exist)))
+                findNavController().navigate(
+                    SignUpFragmentDirections.startExistAccountDialog(
+                        description = getString(R.string.authorization_account_exist),
+                    ),
+                )
             }
             successSignUpLiveData.safeSingleObserve(viewLifecycleOwner) {
                 viewModel.createCurrentUser(CurrentUser())

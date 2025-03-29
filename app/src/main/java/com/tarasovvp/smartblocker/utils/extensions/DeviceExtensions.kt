@@ -1,7 +1,13 @@
 package com.tarasovvp.smartblocker.utils.extensions
 
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.Activity
+import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -32,36 +38,38 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.END_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.GET_IT_TELEPHONY
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
 import dagger.hilt.android.testing.HiltTestApplication
-import java.util.*
-
+import java.util.Locale
 
 fun Context.registerForNetworkUpdates(isNetworkAvailable: (Boolean) -> Unit) {
-    val networkRequest = NetworkRequest.Builder()
-        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-        .build()
-    val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            super.onAvailable(network)
-            isNetworkAvailable.invoke(true)
-        }
+    val networkRequest =
+        NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
+    val networkCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                isNetworkAvailable.invoke(true)
+            }
 
-        override fun onLost(network: Network) {
-            super.onLost(network)
-            isNetworkAvailable.invoke(false)
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                isNetworkAvailable.invoke(false)
+            }
         }
-    }
-    val connectivityManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        getSystemService(ConnectivityManager::class.java) as ConnectivityManager
-    } else {
-        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    }
+    val connectivityManager =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        } else {
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        }
     connectivityManager.requestNetwork(networkRequest, networkCallback)
 }
 
 fun Application.isNetworkAvailable(): Boolean {
-    return when(this) {
+    return when (this) {
         is SmartBlockerApp -> isNetworkAvailable.isTrue()
         is HiltTestApplication -> true
         else -> false
@@ -77,10 +85,12 @@ fun Application.initAppsFlyerLib() {
 
 fun Context.createNotificationChannel() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel = NotificationChannel(
-            Constants.NOTIFICATION_CHANNEL,
-            Constants.FOREGROUND_CALL_SERVICE, NotificationManager.IMPORTANCE_HIGH
-        )
+        val channel =
+            NotificationChannel(
+                Constants.NOTIFICATION_CHANNEL,
+                Constants.FOREGROUND_CALL_SERVICE,
+                NotificationManager.IMPORTANCE_HIGH,
+            )
         channel.lightColor = Color.BLUE
         channel.importance = NotificationManager.IMPORTANCE_NONE
         channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
@@ -98,7 +108,7 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
             this,
             0,
             notificationIntent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0,
         )
     val builder: NotificationCompat.Builder =
         NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL)

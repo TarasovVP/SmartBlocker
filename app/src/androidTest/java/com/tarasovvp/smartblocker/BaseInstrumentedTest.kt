@@ -11,7 +11,6 @@ import org.junit.BeforeClass
 
 @Suppress
 open class BaseInstrumentedTest {
-
     protected var navController: TestNavHostController? = null
     protected val targetContext: Context by lazy { InstrumentationRegistry.getInstrumentation().targetContext }
 

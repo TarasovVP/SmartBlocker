@@ -6,10 +6,12 @@ import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNum
 import kotlinx.coroutines.flow.Flow
 
 interface DetailsNumberDataUseCase {
-
     suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumber>
 
-    suspend fun allFilteredCallsByNumber(number: String, name: String): List<CallWithFilter>
+    suspend fun allFilteredCallsByNumber(
+        number: String,
+        name: String,
+    ): List<CallWithFilter>
 
     suspend fun getCurrentCountryCode(): Flow<CountryCode?>
 

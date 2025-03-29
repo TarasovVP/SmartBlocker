@@ -10,7 +10,6 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDialog
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class UnauthorizedEnterDialog : BaseDialog<DialogConfirmBinding>() {
-
     override var layoutId = R.layout.dialog_confirm
 
     override fun initUI() {

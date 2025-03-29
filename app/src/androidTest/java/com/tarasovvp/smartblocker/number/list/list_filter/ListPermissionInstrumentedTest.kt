@@ -14,17 +14,17 @@ import org.junit.Before
 import org.junit.Rule
 
 @HiltAndroidTest
-class ListPermissionInstrumentedTest: BaseListFilterInstrumentedTest() {
-
+class ListPermissionInstrumentedTest : BaseListFilterInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Before
     override fun setUp() {
         super.setUp()
-        filterList = filterWithFilteredNumberUIModelList().onEach {
-            it.filterType = Constants.PERMISSION
-        }
+        filterList =
+            filterWithFilteredNumberUIModelList().onEach {
+                it.filterType = Constants.PERMISSION
+            }
         launchFragmentInHiltContainer<ListPermissionFragment> {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.listPermissionFragment)

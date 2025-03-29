@@ -13,7 +13,6 @@ import com.tarasovvp.smartblocker.presentation.base.BaseDialog
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class ExistAccountDialog : BaseDialog<DialogConfirmBinding>() {
-
     override var layoutId = R.layout.dialog_confirm
 
     private val args: ExistAccountDialogArgs by navArgs()

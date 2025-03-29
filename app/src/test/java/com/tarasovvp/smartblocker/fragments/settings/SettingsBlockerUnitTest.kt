@@ -8,7 +8,11 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
@@ -33,11 +37,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class SettingsBlockerUnitTest : BaseFragmentUnitTest() {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
@@ -61,7 +66,6 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
                 blockHiddenLiveData = viewModel.blockHiddenLiveData
                 currentCountryCodeLiveData = viewModel.currentCountryCodeLiveData
             }
-
         }
     }
 
@@ -84,7 +88,17 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
             check(matches(if (blockerTurnOn) isChecked() else not(isChecked())))
             perform(click())
             blockerTurnOnLiveData?.postValue(blockerTurnOn.not())
-            check(matches(if (blockerTurnOnLiveData?.getOrAwaitValue().isTrue()) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (blockerTurnOnLiveData?.getOrAwaitValue().isTrue()) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
         }
     }
 
@@ -92,7 +106,16 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
     fun checkSettingsBlockerTurnOnDivider() {
         onView(withId(R.id.settings_blocker_divider))
             .check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
+            .check(
+                matches(
+                    withBackgroundColor(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.light_steel_blue,
+                        ),
+                    ),
+                ),
+            )
     }
 
     @Test
@@ -100,10 +123,22 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
         val blockerTurnOn = blockerTurnOnLiveData?.getOrAwaitValue().isTrue()
         onView(withId(R.id.settings_blocker_describe)).apply {
             check(matches(isDisplayed()))
-            check(matches(withText( if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off)))
+            check(matches(withText(if (blockerTurnOn) R.string.settings_blocker_on else R.string.settings_blocker_off)))
             onView(withId(R.id.settings_blocker_switch)).perform(click())
             blockerTurnOnLiveData?.postValue(blockerTurnOn.not())
-            check(matches(withText( if (blockerTurnOnLiveData?.getOrAwaitValue().isTrue()) R.string.settings_blocker_on else R.string.settings_blocker_off)))
+            check(
+                matches(
+                    withText(
+                        if (blockerTurnOnLiveData?.getOrAwaitValue()
+                                .isTrue()
+                        ) {
+                            R.string.settings_blocker_on
+                        } else {
+                            R.string.settings_blocker_off
+                        },
+                    ),
+                ),
+            )
         }
     }
 
@@ -121,7 +156,17 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
             check(matches(if (blockHidden) isChecked() else not(isChecked())))
             perform(click())
             blockHiddenLiveData?.postValue(blockHidden.not())
-            check(matches(if (blockHiddenLiveData?.getOrAwaitValue().isTrue()) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (blockHiddenLiveData?.getOrAwaitValue().isTrue()) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
         }
     }
 
@@ -129,7 +174,16 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
     fun checkSettingsBlockerHiddenDivider() {
         onView(withId(R.id.settings_blocker_hidden_divider))
             .check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
+            .check(
+                matches(
+                    withBackgroundColor(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.light_steel_blue,
+                        ),
+                    ),
+                ),
+            )
     }
 
     @Test
@@ -140,7 +194,19 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
             check(matches(withText(if (blockHidden) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
             onView(withId(R.id.settings_blocker_hidden_switch)).perform(click())
             blockHiddenLiveData?.postValue(blockHidden.not())
-            check(matches(withText(if (blockHiddenLiveData?.getOrAwaitValue().isTrue()) R.string.settings_block_hidden_on else R.string.settings_block_hidden_off)))
+            check(
+                matches(
+                    withText(
+                        if (blockHiddenLiveData?.getOrAwaitValue()
+                                .isTrue()
+                        ) {
+                            R.string.settings_block_hidden_on
+                        } else {
+                            R.string.settings_block_hidden_off
+                        },
+                    ),
+                ),
+            )
         }
     }
 
@@ -162,7 +228,17 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
         val countryCode = currentCountryCodeLiveData?.getOrAwaitValue()
         onView(withId(R.id.settings_blocker_country))
             .check(matches(isDisplayed()))
-            .check(matches(withText(String.format("%s %s", countryCode?.country?.uppercase()?.flagEmoji(), countryCode?.country?.uppercase()))))
+            .check(
+                matches(
+                    withText(
+                        String.format(
+                            "%s %s",
+                            countryCode?.country?.uppercase()?.flagEmoji(),
+                            countryCode?.country?.uppercase(),
+                        ),
+                    ),
+                ),
+            )
             .perform(click())
         assertEquals(R.id.countryCodeSearchDialog, navController?.currentDestination?.id)
     }
@@ -171,7 +247,16 @@ class SettingsBlockerUnitTest: BaseFragmentUnitTest() {
     fun checkSettingsBlockerCountryDivider() {
         onView(withId(R.id.settings_blocker_country_divider))
             .check(matches(isDisplayed()))
-            .check(matches(withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue))))
+            .check(
+                matches(
+                    withBackgroundColor(
+                        ContextCompat.getColor(
+                            targetContext,
+                            R.color.light_steel_blue,
+                        ),
+                    ),
+                ),
+            )
     }
 
     @Test

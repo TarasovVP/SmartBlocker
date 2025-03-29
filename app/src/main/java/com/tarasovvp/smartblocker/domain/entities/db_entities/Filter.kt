@@ -16,5 +16,5 @@ data class Filter(
     var filterType: Int? = DEFAULT_FILTER,
     var countryCode: String? = String.EMPTY,
     var country: String? = String.EMPTY,
-    var created: Long? = null
+    var created: Long? = null,
 ) : Parcelable

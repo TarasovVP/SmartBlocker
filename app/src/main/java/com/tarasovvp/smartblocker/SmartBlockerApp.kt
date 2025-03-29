@@ -7,16 +7,14 @@ import com.tarasovvp.smartblocker.utils.extensions.createNotificationChannel
 import com.tarasovvp.smartblocker.utils.extensions.registerForNetworkUpdates
 import dagger.hilt.android.HiltAndroidApp
 
-
 @HiltAndroidApp
 class SmartBlockerApp : Application() {
-
     var isNetworkAvailable: Boolean? = null
 
     override fun onCreate() {
         super.onCreate()
         MobileAds.initialize(this)
-        //initAppsFlyerLib()
+        // initAppsFlyerLib()
         FirebaseAnalytics.getInstance(this)
         createNotificationChannel()
         registerForNetworkUpdates { isAvailable ->

@@ -14,5 +14,5 @@ import kotlinx.parcelize.Parcelize
 data class CountryCode(
     @PrimaryKey var country: String = COUNTRY_DEFAULT,
     var countryCode: String? = COUNTRY_CODE_DEFAULT,
-    var numberFormat: String? = NUMBER_FORMAT_DEFAULT
+    var numberFormat: String? = NUMBER_FORMAT_DEFAULT,
 ) : Parcelable

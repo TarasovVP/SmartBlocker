@@ -23,7 +23,8 @@ enum class Info {
     INFO_LIST_CONTACT,
     INFO_DETAILS_NUMBER_DATA,
     INFO_PRIORITY_RULES,
-    INFO_INCOMPLETE_NUMBERS;
+    INFO_INCOMPLETE_NUMBERS,
+    ;
 
     fun description(): Int {
         return descriptionRes()

@@ -27,37 +27,54 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.ENCODING
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.MIME_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.QUESTION_CHAR
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 import java.io.Serializable
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 fun CoroutineScope.launchIO(
     onError: (Throwable, suspend CoroutineScope.() -> Unit) -> Any?,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ): Job =
-    launch(CoroutineExceptionHandler { _, exception ->
-        onError(exception, block)
-    }) {
+    launch(
+        CoroutineExceptionHandler { _, exception ->
+            onError(exception, block)
+        },
+    ) {
         withContext(Dispatchers.IO) {
             block()
         }
     }
 
-fun <T> LiveData<T>.safeObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
+fun <T> LiveData<T>.safeObserve(
+    owner: LifecycleOwner,
+    observer: (t: T) -> Unit,
+) {
     this.observe(owner) {
         it?.let(observer)
     }
 }
 
-fun <T> MutableLiveData<T>.safeSingleObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
+fun <T> MutableLiveData<T>.safeSingleObserve(
+    owner: LifecycleOwner,
+    observer: (t: T) -> Unit,
+) {
     safeObserve(owner, observer)
     value = null
 }
 
-fun SavedStateHandle.restoreListInstantState(key: String, layoutManager: RecyclerView.LayoutManager?) {
+fun SavedStateHandle.restoreListInstantState(
+    key: String,
+    layoutManager: RecyclerView.LayoutManager?,
+) {
     val restoreState = get<Parcelable>(key)
     layoutManager?.onRestoreInstanceState(restoreState)
     this[key] = null
@@ -92,7 +109,8 @@ val String.Companion.EMPTY: String
     get() = ""
 
 fun String?.nameInitial(): String =
-    this?.takeIf { it.isEmpty() }?.let { QUESTION_CHAR.toString() } ?: this?.split(Regex(" "))?.take(2)?.filter { it.firstOrNull()?.isLetter().isTrue() }
+    this?.takeIf { it.isEmpty() }?.let { QUESTION_CHAR.toString() } ?: this?.split(Regex(" "))
+        ?.take(2)?.filter { it.firstOrNull()?.isLetter().isTrue() }
         ?.mapNotNull { it.firstOrNull() }
         ?.joinToString(String.EMPTY)?.uppercase(Locale.getDefault()).orEmpty()
 
@@ -123,10 +141,21 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
                 drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
             } else if (iconName.contains("item")) {
                 val width = Resources.getSystem().displayMetrics.widthPixels - dpToPx(32f).toInt()
-                val height = (width * (drawable?.intrinsicHeight.orZero().toFloat() / drawable?.intrinsicWidth?.takeIf { it > 0 }.orZero())).toInt()
+                val height =
+                    (
+                        width * (
+                            drawable?.intrinsicHeight.orZero()
+                                .toFloat() / drawable?.intrinsicWidth?.takeIf { it > 0 }.orZero()
+                        )
+                    ).toInt()
                 drawable?.setBounds(0, 0, width, height)
             } else {
-                drawable?.setBounds(0, -dpToPx(10f).toInt(), dpToPx(26f).toInt(), dpToPx(16f).toInt())
+                drawable?.setBounds(
+                    0,
+                    -dpToPx(10f).toInt(),
+                    dpToPx(26f).toInt(),
+                    dpToPx(16f).toInt(),
+                )
             }
             drawable
         } else {
@@ -136,34 +165,57 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
 }
 
 @SuppressLint("SetJavaScriptEnabled")
-fun WebView.initWebView(webUrl: String, onPageFinished: () -> Unit) {
+fun WebView.initWebView(
+    webUrl: String,
+    onPageFinished: () -> Unit,
+) {
     setBackgroundColor(Color.TRANSPARENT)
     settings.javaScriptEnabled = true
-    webViewClient = object : WebViewClient() {
-        override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
-        }
+    webViewClient =
+        object : WebViewClient() {
+            override fun onPageStarted(
+                view: WebView,
+                url: String,
+                favicon: Bitmap?,
+            ) {
+            }
 
-        override fun onPageFinished(view: WebView, url: String) {
-            loadUrl(
-                if (context.isDarkMode()
-                        .isTrue()
-                ) Constants.DARK_MODE_TEXT else Constants.WHITE_MODE_TEXT
-            )
-            onPageFinished.invoke()
+            override fun onPageFinished(
+                view: WebView,
+                url: String,
+            ) {
+                loadUrl(
+                    if (context.isDarkMode()
+                            .isTrue()
+                    ) {
+                        Constants.DARK_MODE_TEXT
+                    } else {
+                        Constants.WHITE_MODE_TEXT
+                    },
+                )
+                onPageFinished.invoke()
+            }
         }
-    }
     loadDataWithBaseURL(DRAWABLE_RES, webUrl, MIME_TYPE, ENCODING, null)
 }
 
-inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
-    SDK_INT >= 33 -> getParcelable(key, T::class.java)
-    else -> @Suppress("DEPRECATION") getParcelable(key) as? T
-}
+inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? =
+    when {
+        SDK_INT >= 33 -> getParcelable(key, T::class.java)
+        else ->
+            @Suppress("DEPRECATION")
+            getParcelable(key)
+                as? T
+    }
 
-inline fun <reified T : Serializable> Bundle.serializable(key: String): T? = when {
-    SDK_INT >= 33 -> getSerializable(key, T::class.java)
-    else -> @Suppress("DEPRECATION") getSerializable(key) as? T
-}
+inline fun <reified T : Serializable> Bundle.serializable(key: String): T? =
+    when {
+        SDK_INT >= 33 -> getSerializable(key, T::class.java)
+        else ->
+            @Suppress("DEPRECATION")
+            getSerializable(key)
+                as? T
+    }
 
 infix fun String?.isContaining(searchQuery: String?) = this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
 

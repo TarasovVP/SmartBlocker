@@ -5,13 +5,12 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.databinding.DialogFilterActionBinding
-import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
+import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_ACTION
 import com.tarasovvp.smartblocker.presentation.base.BaseDialog
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
-
     override var layoutId = R.layout.dialog_filter_action
 
     private val args: FilterActionDialogArgs by navArgs()
@@ -24,7 +23,10 @@ class FilterActionDialog : BaseDialog<DialogFilterActionBinding>() {
             }
             filterActionConfirm.setSafeOnClickListener {
                 findNavController().navigateUp()
-                setFragmentResult(FILTER_ACTION, bundleOf(FILTER_ACTION to filterWithFilteredNumberUIModel?.filterAction))
+                setFragmentResult(
+                    FILTER_ACTION,
+                    bundleOf(FILTER_ACTION to filterWithFilteredNumberUIModel?.filterAction),
+                )
             }
         }
     }

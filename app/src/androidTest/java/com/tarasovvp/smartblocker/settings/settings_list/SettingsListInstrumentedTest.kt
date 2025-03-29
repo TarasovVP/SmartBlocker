@@ -6,7 +6,9 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
@@ -28,8 +30,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SettingsListInstrumentedTest: BaseInstrumentedTest() {
-
+class SettingsListInstrumentedTest : BaseInstrumentedTest() {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 

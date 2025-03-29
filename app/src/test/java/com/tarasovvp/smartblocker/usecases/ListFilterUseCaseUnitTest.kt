@@ -13,8 +13,16 @@ import com.tarasovvp.smartblocker.domain.usecases.ListFilterUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListFilterUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.single
@@ -23,7 +31,6 @@ import org.junit.Before
 import org.junit.Test
 
 class ListFilterUseCaseUnitTest {
-
     @MockK
     private lateinit var filterRepository: FilterRepository
 
@@ -46,41 +53,54 @@ class ListFilterUseCaseUnitTest {
         MockKAnnotations.init(this)
         mockkStatic("com.tarasovvp.smartblocker.utils.extensions.DeviceExtensionsKt")
         every { firebaseAuth.isAuthorisedUser() } returns true
-        listFilterUseCase = ListFilterUseCaseImpl(filterRepository, realDataBaseRepository, firebaseAuth, dataStoreRepository)
+        listFilterUseCase =
+            ListFilterUseCaseImpl(
+                filterRepository,
+                realDataBaseRepository,
+                firebaseAuth,
+                dataStoreRepository,
+            )
     }
 
     @Test
-    fun allFilterWithFilteredNumbersByTypeTest() = runBlocking {
-        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
-        coEvery { filterRepository.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterList
-        val result = listFilterUseCase.allFilterWithFilteredNumbersByType(isBlockerList = true)
-        assertEquals(TEST_FILTER, result?.get(0)?.filter?.filter)
-    }
-
-    @Test
-    fun deleteFilterListTest() = runBlocking {
-        val filterList = listOf(Filter())
-        every { firebaseAuth.currentUser } returns mockk()
-        val expectedResult = Result.Success<Unit>()
-        coEvery { realDataBaseRepository.deleteFilterList(eq(filterList), any()) } coAnswers {
-            val callback = secondArg<(Result<Unit>) -> Unit>()
-            callback.invoke(expectedResult)
+    fun allFilterWithFilteredNumbersByTypeTest() =
+        runBlocking {
+            val filterList =
+                listOf(
+                    FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER)),
+                    FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")),
+                )
+            coEvery { filterRepository.allFilterWithFilteredNumbersByType(BLOCKER) } returns filterList
+            val result = listFilterUseCase.allFilterWithFilteredNumbersByType(isBlockerList = true)
+            assertEquals(TEST_FILTER, result?.get(0)?.filter?.filter)
         }
-        coEvery { filterRepository.deleteFilterList(eq(filterList)) } just Runs
-
-        listFilterUseCase.deleteFilterList(filterList, true, resultMock)
-
-        verify { realDataBaseRepository.deleteFilterList(eq(filterList), any()) }
-        coVerify { filterRepository.deleteFilterList(eq(filterList)) }
-        verify { resultMock.invoke(expectedResult) }
-    }
 
     @Test
-    fun getCurrentCountryCodeTest() = runBlocking{
-        val countryCode = CountryCode()
-        coEvery { dataStoreRepository.getCountryCode() } returns flowOf(countryCode)
-        val result = listFilterUseCase.getCurrentCountryCode().single()
-        assertEquals(countryCode, result)
-        coVerify { dataStoreRepository.getCountryCode() }
-    }
+    fun deleteFilterListTest() =
+        runBlocking {
+            val filterList = listOf(Filter())
+            every { firebaseAuth.currentUser } returns mockk()
+            val expectedResult = Result.Success<Unit>()
+            coEvery { realDataBaseRepository.deleteFilterList(eq(filterList), any()) } coAnswers {
+                val callback = secondArg<(Result<Unit>) -> Unit>()
+                callback.invoke(expectedResult)
+            }
+            coEvery { filterRepository.deleteFilterList(eq(filterList)) } just Runs
+
+            listFilterUseCase.deleteFilterList(filterList, true, resultMock)
+
+            verify { realDataBaseRepository.deleteFilterList(eq(filterList), any()) }
+            coVerify { filterRepository.deleteFilterList(eq(filterList)) }
+            verify { resultMock.invoke(expectedResult) }
+        }
+
+    @Test
+    fun getCurrentCountryCodeTest() =
+        runBlocking {
+            val countryCode = CountryCode()
+            coEvery { dataStoreRepository.getCountryCode() } returns flowOf(countryCode)
+            val result = listFilterUseCase.getCurrentCountryCode().single()
+            assertEquals(countryCode, result)
+            coVerify { dataStoreRepository.getCountryCode() }
+        }
 }

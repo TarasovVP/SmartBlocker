@@ -5,8 +5,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 
 @HiltAndroidTest
-class DetailsFilterBlockerInstrumentedTest: BaseDetailsFilterInstrumentedTest() {
-
+class DetailsFilterBlockerInstrumentedTest : BaseDetailsFilterInstrumentedTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 }

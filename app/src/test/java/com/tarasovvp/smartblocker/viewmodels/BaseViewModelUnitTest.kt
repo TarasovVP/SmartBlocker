@@ -7,14 +7,15 @@ import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 
 @ExperimentalCoroutinesApi
-abstract class BaseViewModelUnitTest<VM: BaseViewModel> {
-
+abstract class BaseViewModelUnitTest<VM : BaseViewModel> {
     @Rule
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
@@ -22,7 +23,7 @@ abstract class BaseViewModelUnitTest<VM: BaseViewModel> {
     @MockK
     protected lateinit var application: SmartBlockerApp
 
-    protected lateinit var viewModel:VM
+    protected lateinit var viewModel: VM
 
     abstract fun createViewModel(): VM
 

@@ -26,11 +26,16 @@ import com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 import com.tarasovvp.smartblocker.utils.EmptyStateView
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
+import com.tarasovvp.smartblocker.utils.extensions.dpToPx
+import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
+import com.tarasovvp.smartblocker.utils.extensions.orZero
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
 
 abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : NumberDataUIModel> :
     BaseNumberDataFragment<B, T>() {
-
     protected val adapter: BaseAdapter<D>? by lazy { createAdapter() }
 
     protected var swipeRefresh: SwipeRefreshLayout? = null
@@ -41,7 +46,9 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     var filterIndexes: ArrayList<Int>? = null
 
     abstract fun createAdapter(): BaseAdapter<D>?
+
     abstract fun searchDataList()
+
     abstract fun isFiltered(): Boolean
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -53,14 +60,18 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        filterIndexes = filterIndexes ?: savedInstanceState?.getIntegerArrayList(Constants.FILTER_INDEXES)
+        filterIndexes =
+            filterIndexes ?: savedInstanceState?.getIntegerArrayList(Constants.FILTER_INDEXES)
         searchQuery = searchQuery ?: savedInstanceState?.getString(Constants.SEARCH_QUERY)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         setSearchViewMenu()
@@ -81,9 +92,17 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
 
     private fun setGetDataRequest() {
         (activity as? MainActivity)?.apply {
-            if (intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isNotTrue()) getData(allDataChangeStateList?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
+            if (intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST, false).isNotTrue()) {
+                getData(
+                    allDataChangeStateList?.remove(this@BaseListFragment::class.java.simpleName)
+                        .isTrue(),
+                )
+            }
             mainViewModel.successAllDataLiveData.safeSingleObserve(viewLifecycleOwner) {
-                this@BaseListFragment.getData(allDataChangeStateList?.remove(this@BaseListFragment::class.java.simpleName).isTrue())
+                this@BaseListFragment.getData(
+                    allDataChangeStateList?.remove(this@BaseListFragment::class.java.simpleName)
+                        .isTrue(),
+                )
             }
         }
     }
@@ -101,8 +120,10 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         with(activity as? MainActivity) {
             this?.toolbar?.apply {
                 SearchView(this@with).apply {
-                    if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) inputType =
-                        InputType.TYPE_CLASS_NUMBER
+                    if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) {
+                        inputType =
+                            InputType.TYPE_CLASS_NUMBER
+                    }
                     findViewById<AutoCompleteTextView>(androidx.appcompat.R.id.search_src_text)?.apply {
                         textSize = 16f
                     }
@@ -115,15 +136,19 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                     }
                     queryHint =
                         getString(if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) R.string.list_filter_search_hint else R.string.list_number_search_hint)
-                    setOnQueryTextListener(DebouncingQueryTextListener(lifecycle) {
-                        searchQuery = it
-                        searchDataList()
-                    })
+                    setOnQueryTextListener(
+                        DebouncingQueryTextListener(lifecycle) {
+                            searchQuery = it
+                            searchDataList()
+                        },
+                    )
                     val contentInsetLeft = contentInsetLeft
                     setOnQueryTextFocusChangeListener { _, hasFocus ->
                         menu?.findItem(R.id.settings_menu_item)?.isVisible = hasFocus.not()
-                        setContentInsetsAbsolute(if (hasFocus) 0 else contentInsetLeft,
-                            contentInsetRight)
+                        setContentInsetsAbsolute(
+                            if (hasFocus) 0 else contentInsetLeft,
+                            contentInsetRight,
+                        )
                         setPadding(if (hasFocus) dpToPx(16f).toInt() else 0, 0, 0, 0)
                     }
                     clearFocus()
@@ -144,12 +169,17 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
         emptyStateContainer?.isVisible = isEmpty
         recyclerView?.isVisible = isEmpty.not()
         emptyStateContainer?.setDescription(
-            if (searchQuery.isNullOrEmpty() && isFiltered().not()) when (this) {
-                is ListPermissionFragment -> EmptyState.EMPTY_STATE_PERMISSIONS.descriptionRes()
-                is ListContactFragment -> EmptyState.EMPTY_STATE_CONTACTS.descriptionRes()
-                is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS.descriptionRes()
-                else -> EmptyState.EMPTY_STATE_BLOCKERS.descriptionRes()
-            } else EmptyState.EMPTY_STATE_QUERY.descriptionRes())
+            if (searchQuery.isNullOrEmpty() && isFiltered().not()) {
+                when (this) {
+                    is ListPermissionFragment -> EmptyState.EMPTY_STATE_PERMISSIONS.descriptionRes()
+                    is ListContactFragment -> EmptyState.EMPTY_STATE_CONTACTS.descriptionRes()
+                    is ListCallFragment -> EmptyState.EMPTY_STATE_CALLS.descriptionRes()
+                    else -> EmptyState.EMPTY_STATE_BLOCKERS.descriptionRes()
+                }
+            } else {
+                EmptyState.EMPTY_STATE_QUERY.descriptionRes()
+            },
+        )
         if (isEmpty) {
             adapter?.clearData()
             adapter?.notifyDataSetChanged()
@@ -163,8 +193,8 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
             adapter?.setHeaderAndData(
                 dataEntry.value,
                 HeaderDataItem(
-                    header = dataEntry.key
-                )
+                    header = dataEntry.key,
+                ),
             )
         }
         adapter?.notifyDataSetChanged()

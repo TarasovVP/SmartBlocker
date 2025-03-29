@@ -10,7 +10,7 @@
         <item name="colorSecondary">@color/cornflower_blue</item>
         <item name="colorOnSecondary">@color/dark_green</item>
 
-        <item name="android:statusBarColor" >@color/item_color</item>
+        <item name="android:statusBarColor">@color/item_color</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="android:textColor">@color/text_color_black</item>

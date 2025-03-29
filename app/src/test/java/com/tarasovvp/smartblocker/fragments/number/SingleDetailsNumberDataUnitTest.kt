@@ -9,7 +9,10 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.google.firebase.FirebaseApp
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.UnitTestUtils.EMPTY
@@ -26,7 +29,11 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
 import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
+import com.tarasovvp.smartblocker.utils.extensions.isNull
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.orZero
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -42,11 +49,12 @@ import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE,
+@Config(
+    manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.O_MR1],
-    application = HiltTestApplication::class)
-class SingleDetailsNumberDataUnitTest: BaseFragmentUnitTest() {
-
+    application = HiltTestApplication::class,
+)
+class SingleDetailsNumberDataUnitTest : BaseFragmentUnitTest() {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -56,11 +64,18 @@ class SingleDetailsNumberDataUnitTest: BaseFragmentUnitTest() {
     override fun setUp() {
         super.setUp()
         FirebaseApp.initializeApp(targetContext)
-        dataList = if (name.methodName.contains(EMPTY)) arrayListOf() else arrayListOf<NumberDataUIModel>().apply {
-            addAll(FragmentTestUtils.contactWithFilterUIModelList())
-            addAll(FragmentTestUtils.callWithFilterUIModelList())
-        }
-        launchFragmentInHiltContainer<SingleDetailsFragment> (fragmentArgs = bundleOf(NUMBER_TYPE to NumberDataUIModel::class.simpleName.orEmpty())) {
+        dataList =
+            if (name.methodName.contains(EMPTY)) {
+                arrayListOf()
+            } else {
+                arrayListOf<NumberDataUIModel>().apply {
+                    addAll(FragmentTestUtils.contactWithFilterUIModelList())
+                    addAll(FragmentTestUtils.callWithFilterUIModelList())
+                }
+            }
+        launchFragmentInHiltContainer<SingleDetailsFragment>(
+            fragmentArgs = bundleOf(NUMBER_TYPE to NumberDataUIModel::class.simpleName.orEmpty()),
+        ) {
             (this as SingleDetailsFragment).updateNumberDataList(dataList)
         }
     }
@@ -119,37 +134,192 @@ class SingleDetailsNumberDataUnitTest: BaseFragmentUnitTest() {
 
     private fun checkListItem(position: Int) {
         (dataList[position] as? ContactWithFilterUIModel)?.let { contactWithFilterUIModel ->
-        onView(withId(R.id.single_details_list)).apply {
-            perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_avatar),
-                isDisplayed(),
-                withBitmap(contactWithFilterUIModel.placeHolder(targetContext)?.toBitmap()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter),
-                isDisplayed(),
-                withDrawable(contactWithFilterUIModel.filterWithFilteredNumberUIModel.filterTypeIcon()))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_number),
-                isDisplayed(),
-                /*withText(contactWithFilter.contact?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(targetContext, R.color.text_color_black)).toString())*/)))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_validity),
-                if (contactWithFilterUIModel.phoneNumberValidity().isNull()) not(isDisplayed()) else isDisplayed(),
-                withText(if (contactWithFilterUIModel.phoneNumberValidity().isNull()) String.EMPTY else targetContext.getString(contactWithFilterUIModel.phoneNumberValidity().orZero())))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_name),
-                isDisplayed(),
-                withText(contactWithFilterUIModel.contactName.ifEmpty { targetContext.getString(R.string.details_number_not_from_contacts) }))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_divider),
-                isDisplayed(),
-                withBackgroundColor(ContextCompat.getColor(targetContext, R.color.light_steel_blue)))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_title),
-                isDisplayed(),
-                withText(if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) targetContext.getString(R.string.details_number_contact_without_filter) else if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isBlocker()) targetContext.getString(R.string.details_number_block_with_filter) else targetContext.getString(R.string.details_number_permit_with_filter)),
-                withTextColor(if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) R.color.text_color_grey else if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isBlocker()) R.color.sunset else R.color.islamic_green))))))
-            check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_contact_filter_value),
-                isDisplayed(),
-                withText(if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter),
-                withTextColor(if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isBlocker().isTrue()) R.color.sunset else R.color.islamic_green),
-                withDrawable(if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter.isNull()) null else contactWithFilterUIModel.filterWithFilteredNumberUIModel.conditionTypeSmallIcon()))))))
-            perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
-        }
+            onView(withId(R.id.single_details_list)).apply {
+                perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(position))
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_avatar),
+                                    isDisplayed(),
+                                    withBitmap(
+                                        contactWithFilterUIModel.placeHolder(targetContext)
+                                            ?.toBitmap(),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_filter),
+                                    isDisplayed(),
+                                    withDrawable(contactWithFilterUIModel.filterWithFilteredNumberUIModel.filterTypeIcon()),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_number),
+                                    isDisplayed(),
+                                    // withText(contactWithFilter.contact?.number.highlightedSpanned(String.EMPTY, null, ContextCompat.getColor(targetContext, R.color.text_color_black)).toString())
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_validity),
+                                    if (contactWithFilterUIModel.phoneNumberValidity()
+                                            .isNull()
+                                    ) {
+                                        not(isDisplayed())
+                                    } else {
+                                        isDisplayed()
+                                    },
+                                    withText(
+                                        if (contactWithFilterUIModel.phoneNumberValidity()
+                                                .isNull()
+                                        ) {
+                                            String.EMPTY
+                                        } else {
+                                            targetContext.getString(
+                                                contactWithFilterUIModel.phoneNumberValidity().orZero(),
+                                            )
+                                        },
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_name),
+                                    isDisplayed(),
+                                    withText(
+                                        contactWithFilterUIModel.contactName.ifEmpty {
+                                            targetContext.getString(
+                                                R.string.details_number_not_from_contacts,
+                                            )
+                                        },
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_divider),
+                                    isDisplayed(),
+                                    withBackgroundColor(
+                                        ContextCompat.getColor(
+                                            targetContext,
+                                            R.color.light_steel_blue,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_filter_title),
+                                    isDisplayed(),
+                                    withText(
+                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) {
+                                            targetContext.getString(
+                                                R.string.details_number_contact_without_filter,
+                                            )
+                                        } else if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isBlocker()) {
+                                            targetContext.getString(
+                                                R.string.details_number_block_with_filter,
+                                            )
+                                        } else {
+                                            targetContext.getString(R.string.details_number_permit_with_filter)
+                                        },
+                                    ),
+                                    withTextColor(
+                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) {
+                                            R.color.text_color_grey
+                                        } else if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isBlocker()) {
+                                            R.color.sunset
+                                        } else {
+                                            R.color.islamic_green
+                                        },
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                check(
+                    matches(
+                        atPosition(
+                            position,
+                            hasDescendant(
+                                allOf(
+                                    withId(R.id.item_contact_filter_value),
+                                    isDisplayed(),
+                                    withText(
+                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter,
+                                    ),
+                                    withTextColor(
+                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isBlocker()
+                                                .isTrue()
+                                        ) {
+                                            R.color.sunset
+                                        } else {
+                                            R.color.islamic_green
+                                        },
+                                    ),
+                                    withDrawable(
+                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter.isNull()) null else contactWithFilterUIModel.filterWithFilteredNumberUIModel.conditionTypeSmallIcon(),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+                perform(
+                    RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                        position,
+                        click(),
+                    ),
+                )
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package com.tarasovvp.smartblocker.presentation.mappers
 
 interface BaseMapper<From, To> {
-
     fun mapToUIModel(from: From): To
 
     fun mapFromUIModel(to: To): From

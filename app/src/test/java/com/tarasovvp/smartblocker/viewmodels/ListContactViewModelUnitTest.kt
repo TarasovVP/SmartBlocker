@@ -26,9 +26,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class ListContactViewModelUnitTest: BaseViewModelUnitTest<ListContactViewModel>() {
-
-
+class ListContactViewModelUnitTest : BaseViewModelUnitTest<ListContactViewModel>() {
     @MockK
     private lateinit var useCase: ListContactUseCase
 
@@ -38,36 +36,47 @@ class ListContactViewModelUnitTest: BaseViewModelUnitTest<ListContactViewModel>(
     @MockK
     private lateinit var savedStateHandle: SavedStateHandle
 
-    override fun createViewModel() =
-        ListContactViewModel(application, useCase, contactWithFilterUIMapper, savedStateHandle)
+    override fun createViewModel() = ListContactViewModel(application, useCase, contactWithFilterUIMapper, savedStateHandle)
 
     @Test
-    fun getContactsWithFiltersTest() = runTest {
-        val contactList = listOf(
-            ContactWithFilter(contact = Contact(name = TEST_NAME)),
-            ContactWithFilter(contact = Contact(name = TEST_NUMBER))
-        )
-        val contactUIModelList = listOf(
-            ContactWithFilterUIModel(contactName = TEST_NAME),
-            ContactWithFilterUIModel(contactName = TEST_NUMBER)
-        )
-        coEvery { useCase.allContactWithFilters() } returns contactList
-        every { contactWithFilterUIMapper.mapToUIModelList(contactList) } returns contactUIModelList
-        viewModel.getContactsWithFilters(false)
-        advanceUntilIdle()
-        coVerify { useCase.allContactWithFilters() }
-        verify { contactWithFilterUIMapper.mapToUIModelList(contactList) }
-        assertEquals(contactUIModelList, viewModel.contactListLiveData.getOrAwaitValue())
-    }
+    fun getContactsWithFiltersTest() =
+        runTest {
+            val contactList =
+                listOf(
+                    ContactWithFilter(contact = Contact(name = TEST_NAME)),
+                    ContactWithFilter(contact = Contact(name = TEST_NUMBER)),
+                )
+            val contactUIModelList =
+                listOf(
+                    ContactWithFilterUIModel(contactName = TEST_NAME),
+                    ContactWithFilterUIModel(contactName = TEST_NUMBER),
+                )
+            coEvery { useCase.allContactWithFilters() } returns contactList
+            every { contactWithFilterUIMapper.mapToUIModelList(contactList) } returns contactUIModelList
+            viewModel.getContactsWithFilters(false)
+            advanceUntilIdle()
+            coVerify { useCase.allContactWithFilters() }
+            verify { contactWithFilterUIMapper.mapToUIModelList(contactList) }
+            assertEquals(contactUIModelList, viewModel.contactListLiveData.getOrAwaitValue())
+        }
 
     @Test
-    fun getFilteredContactListTest() = runTest {
-        val contactList = listOf(ContactWithFilterUIModel(contactName = TEST_NAME, filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filterType = Constants.BLOCKER)), ContactWithFilterUIModel(contactName = "zxy"))
-        val searchQuery = String.EMPTY
-        val filterIndexes = arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
-        val expectedContactList = contactList.filter { it.filterWithFilteredNumberUIModel.filterType == Constants.BLOCKER }
-        viewModel.getFilteredContactList(contactList, searchQuery, filterIndexes)
-        advanceUntilIdle()
-        assertEquals(expectedContactList, viewModel.filteredContactListLiveData.getOrAwaitValue())
-    }
+    fun getFilteredContactListTest() =
+        runTest {
+            val contactList =
+                listOf(
+                    ContactWithFilterUIModel(
+                        contactName = TEST_NAME,
+                        filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filterType = Constants.BLOCKER),
+                    ),
+                    ContactWithFilterUIModel(contactName = "zxy"),
+                )
+            val searchQuery = String.EMPTY
+            val filterIndexes = arrayListOf(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
+            val expectedContactList =
+                contactList.filter { it.filterWithFilteredNumberUIModel.filterType == Constants.BLOCKER }
+            viewModel.getFilteredContactList(contactList, searchQuery, filterIndexes)
+            advanceUntilIdle()
+            assertEquals(expectedContactList, viewModel.filteredContactListLiveData.getOrAwaitValue())
+        }
 }

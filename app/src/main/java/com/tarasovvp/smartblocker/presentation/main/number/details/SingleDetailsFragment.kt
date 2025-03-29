@@ -13,32 +13,38 @@ import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 
 class SingleDetailsFragment :
     BaseBindingFragment<FragmentSingleNumberDataDetailsBinding>() {
-
     override var layoutId = R.layout.fragment_single_number_data_details
 
     private var numberDataAdapter: NumberDataAdapter? = null
     private var numberDataClickListener: NumberDataClickListener? = null
 
-    fun updateNumberDataList(numberDataUIModelList: ArrayList<NumberDataUIModel>, isFilteredCallItemDisable: Boolean = false) {
+    fun updateNumberDataList(
+        numberDataUIModelList: ArrayList<NumberDataUIModel>,
+        isFilteredCallItemDisable: Boolean = false,
+    ) {
         val numberType = arguments?.getString(NUMBER_TYPE)
         binding?.apply {
             singleDetailsList.adapter =
                 numberDataAdapter ?: NumberDataAdapter(numberDataUIModelList) { numberData ->
                     numberDataClickListener?.onNumberDataClick(numberData)
                 }.apply {
-                    this.isFilteredCallDetails = numberType == CallWithFilterUIModel::class.simpleName
+                    this.isFilteredCallDetails =
+                        numberType == CallWithFilterUIModel::class.simpleName
                     this.isFilteredCallItemDisable = isFilteredCallItemDisable
                 }
-            singleDetailsList.contentDescription = when (numberType) {
-                FilterWithFilteredNumberUIModel::class.simpleName -> getString(R.string.list_blocker)
-                NumberDataUIModel::class.simpleName -> getString(R.string.list_contact)
-                else -> getString(R.string.list_call)
-            }
-            singleDetailsListEmpty.setDescription( when (numberType) {
-                FilterWithFilteredNumberUIModel::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description()
-                NumberDataUIModel::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description()
-                else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description()
-            })
+            singleDetailsList.contentDescription =
+                when (numberType) {
+                    FilterWithFilteredNumberUIModel::class.simpleName -> getString(R.string.list_blocker)
+                    NumberDataUIModel::class.simpleName -> getString(R.string.list_contact)
+                    else -> getString(R.string.list_call)
+                }
+            singleDetailsListEmpty.setDescription(
+                when (numberType) {
+                    FilterWithFilteredNumberUIModel::class.simpleName -> EmptyState.EMPTY_STATE_NUMBERS.description()
+                    NumberDataUIModel::class.simpleName -> EmptyState.EMPTY_STATE_FILTERS.description()
+                    else -> EmptyState.EMPTY_STATE_FILTERED_CALLS.description()
+                },
+            )
             singleDetailsListEmpty.isVisible = numberDataUIModelList.isEmpty()
         }
     }
@@ -51,9 +57,10 @@ class SingleDetailsFragment :
         @JvmStatic
         fun newInstance(numberType: String): SingleDetailsFragment {
             return SingleDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(NUMBER_TYPE, numberType)
-                }
+                arguments =
+                    Bundle().apply {
+                        putString(NUMBER_TYPE, numberType)
+                    }
             }
         }
     }

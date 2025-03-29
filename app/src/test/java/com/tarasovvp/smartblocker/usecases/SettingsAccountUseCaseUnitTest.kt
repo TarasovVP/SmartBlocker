@@ -15,7 +15,6 @@ import org.junit.Before
 import org.junit.Test
 
 class SettingsAccountUseCaseUnitTest {
-
     @MockK
     private lateinit var authRepository: AuthRepository
 
@@ -33,7 +32,8 @@ class SettingsAccountUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        settingsAccountUseCase = SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository, dataStoreRepository)
+        settingsAccountUseCase =
+            SettingsAccountUseCaseImpl(authRepository, realDataBaseRepository, dataStoreRepository)
     }
 
     @Test

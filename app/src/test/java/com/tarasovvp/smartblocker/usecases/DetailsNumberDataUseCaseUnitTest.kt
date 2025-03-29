@@ -28,7 +28,6 @@ import org.junit.Before
 import org.junit.Test
 
 class DetailsNumberDataUseCaseUnitTest {
-
     @MockK
     private lateinit var countryCodeRepository: CountryCodeRepository
 
@@ -46,42 +45,69 @@ class DetailsNumberDataUseCaseUnitTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        detailsNumberDataUseCase = DetailsNumberDataUseCaseImpl(countryCodeRepository, filterRepository, filteredCallRepository, dataStoreRepository)
+        detailsNumberDataUseCase =
+            DetailsNumberDataUseCaseImpl(
+                countryCodeRepository,
+                filterRepository,
+                filteredCallRepository,
+                dataStoreRepository,
+            )
     }
 
     @Test
-    fun filterWithFilteredNumbersTest() = runBlocking {
-        val filterList = listOf(FilterWithFilteredNumber(filter = Filter(filter = UnitTestUtils.TEST_FILTER)), FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")))
-        coEvery { filterRepository.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterList
-        val result = detailsNumberDataUseCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER)
-        assertEquals(filterList, result)
-    }
+    fun filterWithFilteredNumbersTest() =
+        runBlocking {
+            val filterList =
+                listOf(
+                    FilterWithFilteredNumber(filter = Filter(filter = UnitTestUtils.TEST_FILTER)),
+                    FilterWithFilteredNumber(filter = Filter(filter = "mockFilter2")),
+                )
+            coEvery { filterRepository.allFilterWithFilteredNumbersByNumber(TEST_NUMBER) } returns filterList
+            val result = detailsNumberDataUseCase.allFilterWithFilteredNumbersByNumber(TEST_NUMBER)
+            assertEquals(filterList, result)
+        }
 
     @Test
-    fun filteredCallsByNumberTest() = runBlocking {
-        val filteredCallList = listOf(CallWithFilter().apply { call = FilteredCall().apply { this.number =
-            TEST_NUMBER
-        } })
-        coEvery { filteredCallRepository.allFilteredCallsByNumber(TEST_NUMBER, TEST_NAME) } returns filteredCallList
-        val result = detailsNumberDataUseCase.allFilteredCallsByNumber(TEST_NUMBER, TEST_NAME)
-        assertEquals(filteredCallList, result)
-    }
+    fun filteredCallsByNumberTest() =
+        runBlocking {
+            val filteredCallList =
+                listOf(
+                    CallWithFilter().apply {
+                        call =
+                            FilteredCall().apply {
+                                this.number =
+                                    TEST_NUMBER
+                            }
+                    },
+                )
+            coEvery {
+                filteredCallRepository.allFilteredCallsByNumber(
+                    TEST_NUMBER,
+                    TEST_NAME,
+                )
+            } returns filteredCallList
+            val result = detailsNumberDataUseCase.allFilteredCallsByNumber(TEST_NUMBER, TEST_NAME)
+            assertEquals(filteredCallList, result)
+        }
 
     @Test
-    fun getCountryCodeTest() = runBlocking {
-        val countryCode = 123
-        val expectedCountryCode = CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
-        coEvery { countryCodeRepository.getCountryCodeByCode(countryCode) } returns expectedCountryCode
-        val result = detailsNumberDataUseCase.getCountryCodeByCode(countryCode)
-        assertEquals(expectedCountryCode, result)
-    }
+    fun getCountryCodeTest() =
+        runBlocking {
+            val countryCode = 123
+            val expectedCountryCode =
+                CountryCode(countryCode = TEST_COUNTRY_CODE, country = TEST_COUNTRY)
+            coEvery { countryCodeRepository.getCountryCodeByCode(countryCode) } returns expectedCountryCode
+            val result = detailsNumberDataUseCase.getCountryCodeByCode(countryCode)
+            assertEquals(expectedCountryCode, result)
+        }
 
     @Test
-    fun getBlockHiddenTest() = runBlocking {
-        val blockHidden = true
-        coEvery { dataStoreRepository.blockHidden() } returns flowOf(blockHidden)
-        val result = detailsNumberDataUseCase.getBlockHidden().single()
-        assertEquals(blockHidden, result)
-        coVerify { dataStoreRepository.blockHidden() }
-    }
+    fun getBlockHiddenTest() =
+        runBlocking {
+            val blockHidden = true
+            coEvery { dataStoreRepository.blockHidden() } returns flowOf(blockHidden)
+            val result = detailsNumberDataUseCase.getBlockHidden().single()
+            assertEquals(blockHidden, result)
+            coVerify { dataStoreRepository.blockHidden() }
+        }
 }

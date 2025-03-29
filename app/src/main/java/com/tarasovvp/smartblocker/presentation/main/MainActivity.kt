@@ -1,6 +1,7 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -68,7 +69,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
@@ -88,24 +88,28 @@ class MainActivity : AppCompatActivity() {
 
     val mainViewModel: MainViewModel by viewModels()
 
-    private var navigationScreens = arrayListOf(
-        R.id.listCallFragment,
-        R.id.listContactFragment,
-        R.id.listBlockerFragment,
-        R.id.listPermissionFragment
-    )
+    private var navigationScreens =
+        arrayListOf(
+            R.id.listCallFragment,
+            R.id.listContactFragment,
+            R.id.listBlockerFragment,
+            R.id.listPermissionFragment,
+        )
 
-    private var settingsScreens = arrayListOf(
-        R.id.settingsListFragment,
-        R.id.settingsAccountFragment,
-        R.id.settingsBlockerFragment,
-        R.id.settingsLanguageFragment,
-        R.id.settingsThemeFragment,
-        R.id.settingsPrivacyFragment
-    )
+    private var settingsScreens =
+        arrayListOf(
+            R.id.settingsListFragment,
+            R.id.settingsAccountFragment,
+            R.id.settingsBlockerFragment,
+            R.id.settingsLanguageFragment,
+            R.id.settingsThemeFragment,
+            R.id.settingsPrivacyFragment,
+        )
 
     private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions(),
+        ) { isGranted: Map<String, @JvmSuppressWildcards Boolean>? ->
             if (isGranted?.values?.contains(false).isTrue()) {
                 showInfoMessage(getString(R.string.app_need_permissions), true)
             } else {
@@ -114,24 +118,37 @@ class MainActivity : AppCompatActivity() {
         }
 
     override fun attachBaseContext(newBase: Context) {
-        val dataStoreRepository = EntryPointAccessors.fromApplication( newBase, DataStoreEntryPoint::class.java ).dataStoreRepository
-        val appTheme = runBlocking {
-            dataStoreRepository.getAppTheme().first()
-        } ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        val dataStoreRepository =
+            EntryPointAccessors.fromApplication(
+                newBase,
+                DataStoreEntryPoint::class.java,
+            ).dataStoreRepository
+        val appTheme =
+            runBlocking {
+                dataStoreRepository.getAppTheme().first()
+            } ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         AppCompatDelegate.setDefaultNightMode(appTheme)
-        val appLang = runBlocking {
-            dataStoreRepository.getAppLang().first()
-        } ?: Locale.getDefault().language
+        val appLang =
+            runBlocking {
+                dataStoreRepository.getAppLang().first()
+            } ?: Locale.getDefault().language
         super.attachBaseContext(ContextWrapper(newBase.setAppLocale(appLang)))
     }
 
     override fun onStart() {
         super.onStart()
-        callHandleReceiver = CallHandleReceiver {
-            mainViewModel.getAllData()
+        callHandleReceiver =
+            CallHandleReceiver {
+                mainViewModel.getAllData()
+            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                callHandleReceiver,
+                IntentFilter(Constants.CALL_RECEIVE),
+                Context.RECEIVER_EXPORTED,
+            )
         }
-        registerReceiver(callHandleReceiver, IntentFilter(Constants.CALL_RECEIVE))
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST, false).not()) {
             setMobileAds()
         }
     }
@@ -143,8 +160,9 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         if (BuildConfig.DEBUG) {
-            val configuration = RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
+            val configuration =
+                RequestConfiguration.Builder()
+                    .setTestDeviceIds(listOf("33BE2250B43518CCDA7DE426D04EE231")).build()
             MobileAds.setRequestConfiguration(configuration)
         }
         adRequest = AdRequest.Builder().build()
@@ -178,25 +196,30 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         onBackPressedDispatcher.addCallback(this, callback)
         setAnimatorListener()
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not()) {
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST, false).not()) {
             mainViewModel.getOnBoardingSeen()
         }
         observeLiveData()
     }
 
     private fun setAnimatorListener() {
-        binding?.mainSplash?.addAnimatorListener(object : Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator) {
-                binding?.mainSplash?.isVisible = false
-                binding?.mainContainer?.isVisible = true
-            }
-            override fun onAnimationStart(p0: Animator) {
-            }
-            override fun onAnimationCancel(p0: Animator) {
-            }
-            override fun onAnimationRepeat(p0: Animator) {
-            }
-        })
+        binding?.mainSplash?.addAnimatorListener(
+            object : Animator.AnimatorListener {
+                override fun onAnimationEnd(p0: Animator) {
+                    binding?.mainSplash?.isVisible = false
+                    binding?.mainContainer?.isVisible = true
+                }
+
+                override fun onAnimationStart(p0: Animator) {
+                }
+
+                override fun onAnimationCancel(p0: Animator) {
+                }
+
+                override fun onAnimationRepeat(p0: Animator) {
+                }
+            },
+        )
     }
 
     private fun setNavigationComponents(isOnBoardingSeen: Boolean) {
@@ -208,9 +231,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setNavController() {
-        navController = (supportFragmentManager.findFragmentById(
-            R.id.host_main_fragment
-        ) as NavHostFragment).navController
+        navController =
+            (
+                supportFragmentManager.findFragmentById(
+                    R.id.host_main_fragment,
+                ) as NavHostFragment
+            ).navController
     }
 
     fun setStartDestination(isOnBoardingSeen: Boolean) {
@@ -221,7 +247,7 @@ class MainActivity : AppCompatActivity() {
                     isOnBoardingSeen.not() -> R.id.onBoardingFragment
                     firebaseAuth.currentUser.isNotNull() -> R.id.listBlockerFragment
                     else -> R.id.loginFragment
-                }
+                },
             )
             this.setGraph(navGraph, intent.extras)
         }
@@ -232,6 +258,7 @@ class MainActivity : AppCompatActivity() {
         navController?.let { toolbar?.setupWithNavController(it) }
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setBottomNavigationView() {
         bottomNavigationView = binding?.bottomNav
         bottomNavigationDivider = binding?.bottomNavDivider
@@ -281,11 +308,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkBottomBarVisibility(destination: NavDestination) {
-        bottomNavigationView?.isVisible = try {
-            navigationScreens.contains(destination.id)
-        } catch (e: Exception) {
-            false
-        }
+        bottomNavigationView?.isVisible =
+            try {
+                navigationScreens.contains(destination.id)
+            } catch (e: Exception) {
+                false
+            }
         bottomNavigationDivider?.isVisible = bottomNavigationView?.isVisible.isTrue()
     }
 
@@ -322,7 +350,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             blockerTurnOnLiveData.safeSingleObserve(this@MainActivity) { blockerTurnOn ->
-                if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false).not() && blockerTurnOn && isBlockerLaunched().not()) {
+                if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST, false)
+                        .not() && blockerTurnOn && isBlockerLaunched().not()
+                ) {
                     callIntent = Intent(this@MainActivity, ForegroundCallService::class.java)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(callIntent)
@@ -333,7 +363,13 @@ class MainActivity : AppCompatActivity() {
             }
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {
                 setMainProgressVisibility(false)
-                allDataChangeStateList = arrayListOf(ListBlockerFragment::class.java.simpleName, ListPermissionFragment::class.java.simpleName, ListCallFragment::class.java.simpleName, ListContactFragment::class.java.simpleName)
+                allDataChangeStateList =
+                    arrayListOf(
+                        ListBlockerFragment::class.java.simpleName,
+                        ListPermissionFragment::class.java.simpleName,
+                        ListCallFragment::class.java.simpleName,
+                        ListContactFragment::class.java.simpleName,
+                    )
             }
             exceptionLiveData.safeSingleObserve(this@MainActivity) { errorMessage ->
                 showInfoMessage(errorMessage, true)
@@ -360,7 +396,10 @@ class MainActivity : AppCompatActivity() {
         return callIntent.isNotNull()
     }
 
-    fun showInfoMessage(message: String, isError: Boolean) {
+    fun showInfoMessage(
+        message: String,
+        isError: Boolean,
+    ) {
         this.showMessage(message, isError)
     }
 
@@ -369,12 +408,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setProgressVisibility(isVisible: Boolean) {
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST, false)) return
         binding?.progressBar?.isVisible = isVisible
     }
 
     fun getAllData(isInit: Boolean = false) {
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST, false)) return
         if (checkPermissions().isTrue()) {
             setMainProgressVisibility(true)
             if (firebaseAuth.isAuthorisedUser()) {
@@ -388,7 +427,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showInterstitial() {
-        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST,false)) return
+        if (intent.getBooleanExtra(IS_INSTRUMENTAL_TEST, false)) return
         interstitialAd?.apply {
             fullScreenContentCallback =
                 object : FullScreenContentCallback() {
@@ -432,13 +471,14 @@ class MainActivity : AppCompatActivity() {
         }*/
     }
 
-    val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            if (navController?.isBackPressedScreen().isTrue()) {
-                navController?.navigate(MainNavigationDirections.startAppExitDialog())
-            } else {
-                navController?.popBackStack()
+    val callback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (navController?.isBackPressedScreen().isTrue()) {
+                    navController?.navigate(MainNavigationDirections.startAppExitDialog())
+                } else {
+                    navController?.popBackStack()
+                }
             }
         }
-    }
 }

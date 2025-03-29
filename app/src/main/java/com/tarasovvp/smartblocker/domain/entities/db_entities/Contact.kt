@@ -16,5 +16,5 @@ data class Contact(
     var number: String? = String.EMPTY,
     var digitsTrimmedNumber: String? = String.EMPTY,
     var phoneNumberValue: String? = String.EMPTY,
-    var isPhoneNumberValid: Boolean? = false
+    var isPhoneNumberValid: Boolean? = false,
 ) : Parcelable

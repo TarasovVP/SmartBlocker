@@ -31,14 +31,22 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.LOG_OUT
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NEW_PASSWORD
 import com.tarasovvp.smartblocker.presentation.base.BaseFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
+import com.tarasovvp.smartblocker.utils.extensions.currentUserEmail
+import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
+import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
+import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
+import com.tarasovvp.smartblocker.utils.extensions.isGoogleAuthUser
+import com.tarasovvp.smartblocker.utils.extensions.isTrue
+import com.tarasovvp.smartblocker.utils.extensions.nameInitial
+import com.tarasovvp.smartblocker.utils.extensions.safeSingleObserve
+import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsAccountFragment :
     BaseFragment<FragmentSettingsAccountBinding, SettingsAccountViewModel>() {
-
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
@@ -48,7 +56,10 @@ class SettingsAccountFragment :
     override var layoutId = R.layout.fragment_settings_account
     override val viewModelClass = SettingsAccountViewModel::class.java
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding?.includeEmptyState?.setDescription(EmptyState.EMPTY_STATE_ACCOUNT.descriptionRes())
         initViews()
@@ -58,48 +69,90 @@ class SettingsAccountFragment :
 
     private fun setFragmentResults() {
         setFragmentResultListener(LOG_OUT) { _, _ ->
-           viewModel.signOut()
+            viewModel.signOut()
         }
         setFragmentResultListener(DELETE_ACCOUNT) { _, bundle ->
-            if (firebaseAuth.isGoogleAuthUser(activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue())) {
+            if (firebaseAuth.isGoogleAuthUser(
+                    activity?.intent?.getBooleanExtra(
+                        Constants.IS_INSTRUMENTAL_TEST,
+                        false,
+                    ).isTrue(),
+                )
+            ) {
                 googleSignInLauncher.launch(googleSignInClient.signInIntent)
             } else {
-                val authCredential = EmailAuthProvider.getCredential(firebaseAuth.currentUser?.email.orEmpty(), bundle.getString(CURRENT_PASSWORD, String.EMPTY))
+                val authCredential =
+                    EmailAuthProvider.getCredential(
+                        firebaseAuth.currentUser?.email.orEmpty(),
+                        bundle.getString(CURRENT_PASSWORD, String.EMPTY),
+                    )
                 viewModel.reAuthenticate(authCredential)
             }
         }
         setFragmentResultListener(CHANGE_PASSWORD) { _, bundle ->
-            viewModel.changePassword(bundle.getString(CURRENT_PASSWORD, String.EMPTY),
-                bundle.getString(NEW_PASSWORD, String.EMPTY))
+            viewModel.changePassword(
+                bundle.getString(CURRENT_PASSWORD, String.EMPTY),
+                bundle.getString(NEW_PASSWORD, String.EMPTY),
+            )
         }
     }
 
     fun initViews() {
         binding?.apply {
             isLoggedInUser = firebaseAuth.isAuthorisedUser()
-            settingsAccountName.text = if (isLoggedInUser.isTrue()) firebaseAuth.currentUser?.currentUserEmail() else getString(R.string.settings_account_unauthorised)
+            settingsAccountName.text =
+                if (isLoggedInUser.isTrue()) {
+                    firebaseAuth.currentUser?.currentUserEmail()
+                } else {
+                    getString(
+                        R.string.settings_account_unauthorised,
+                    )
+                }
             when {
-                firebaseAuth.isGoogleAuthUser(activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue()) -> settingsAccountAvatar.setImageResource(R.drawable.ic_logo_google)
+                firebaseAuth.isGoogleAuthUser(
+                    activity?.intent?.getBooleanExtra(
+                        Constants.IS_INSTRUMENTAL_TEST,
+                        false,
+                    ).isTrue(),
+                ) -> settingsAccountAvatar.setImageResource(R.drawable.ic_logo_google)
+
                 firebaseAuth.isAuthorisedUser() -> settingsAccountAvatar.setImageResource(R.drawable.ic_email)
-                else -> settingsAccountAvatar.setImageBitmap(context?.getInitialDrawable(firebaseAuth.currentUser?.currentUserEmail().nameInitial())?.toBitmap())
+                else ->
+                    settingsAccountAvatar.setImageBitmap(
+                        context?.getInitialDrawable(
+                            firebaseAuth.currentUser?.currentUserEmail().nameInitial(),
+                        )?.toBitmap(),
+                    )
             }
             executePendingBindings()
-            settingsAccountChangePassword.isVisible = firebaseAuth.isAuthorisedUser() && firebaseAuth.isGoogleAuthUser(
-                activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue()
-            ).not()
+            settingsAccountChangePassword.isVisible =
+                firebaseAuth.isAuthorisedUser() &&
+                firebaseAuth.isGoogleAuthUser(
+                    activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST, false)
+                        .isTrue(),
+                ).not()
         }
     }
 
     private fun setOnclickListeners() {
         binding?.apply {
             settingsAccountLogOut.setSafeOnClickListener {
-                findNavController().navigate(SettingsAccountFragmentDirections.startLogOutDialog(isAuthorised = firebaseAuth.isAuthorisedUser()))
+                findNavController().navigate(
+                    SettingsAccountFragmentDirections.startLogOutDialog(
+                        isAuthorised = firebaseAuth.isAuthorisedUser(),
+                    ),
+                )
             }
             settingsAccountDelete.setSafeOnClickListener {
-                findNavController().navigate(SettingsAccountFragmentDirections.startDeleteAccountDialog(isGoogleAuth = firebaseAuth.isGoogleAuthUser(
-                    activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST,false).isTrue()
+                findNavController().navigate(
+                    SettingsAccountFragmentDirections.startDeleteAccountDialog(
+                        isGoogleAuth =
+                            firebaseAuth.isGoogleAuthUser(
+                                activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST, false)
+                                    .isTrue(),
+                            ),
+                    ),
                 )
-                ))
             }
             settingsAccountChangePassword.setSafeOnClickListener {
                 findNavController().navigate(SettingsAccountFragmentDirections.startChangePasswordDialog())
@@ -119,8 +172,10 @@ class SettingsAccountFragment :
                 logOut()
             }
             successChangePasswordLiveData.safeSingleObserve(viewLifecycleOwner) {
-                showMessage(String.format(getString(R.string.settings_account_change_password_succeed)),
-                    false)
+                showMessage(
+                    String.format(getString(R.string.settings_account_change_password_succeed)),
+                    false,
+                )
             }
         }
     }
@@ -128,7 +183,12 @@ class SettingsAccountFragment :
     private fun logOut() {
         (activity as? MainActivity)?.apply {
             binding?.root?.isVisible = false
-            viewModel.clearDataByKeys(listOf(stringPreferencesKey(COUNTRY_CODE), booleanPreferencesKey(BLOCK_HIDDEN)))
+            viewModel.clearDataByKeys(
+                listOf(
+                    stringPreferencesKey(COUNTRY_CODE),
+                    booleanPreferencesKey(BLOCK_HIDDEN),
+                ),
+            )
             AppDatabase.getDatabase(this).clearAllTables()
             stopBlocker()
             findNavController().navigate(SettingsAccountFragmentDirections.startLoginScreen())

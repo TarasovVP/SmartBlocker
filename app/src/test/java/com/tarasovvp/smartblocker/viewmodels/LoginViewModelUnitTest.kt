@@ -16,8 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class LoginViewModelUnitTest: BaseViewModelUnitTest<LoginViewModel>() {
-
+class LoginViewModelUnitTest : BaseViewModelUnitTest<LoginViewModel>() {
     @MockK
     private lateinit var useCase: LoginUseCase
 
@@ -40,7 +39,13 @@ class LoginViewModelUnitTest: BaseViewModelUnitTest<LoginViewModel>() {
     @Test
     fun signInWithEmailAndPasswordTest() {
         every { application.isNetworkAvailable } returns true
-        coEvery { useCase.signInWithEmailAndPassword(eq(TEST_EMAIL), eq(TEST_PASSWORD), any()) } answers {
+        coEvery {
+            useCase.signInWithEmailAndPassword(
+                eq(TEST_EMAIL),
+                eq(TEST_PASSWORD),
+                any(),
+            )
+        } answers {
             val result = thirdArg<(Result<Unit>) -> Unit>()
             result.invoke(expectedResult)
         }

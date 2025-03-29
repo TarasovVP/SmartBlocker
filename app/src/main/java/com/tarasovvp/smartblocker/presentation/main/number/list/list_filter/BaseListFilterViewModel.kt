@@ -20,32 +20,50 @@ open class BaseListFilterViewModel(
     private val application: Application,
     private val listFilterUseCase: ListFilterUseCase,
     private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-    private val countryCodeUIMapper: CountryCodeUIMapper
+    private val countryCodeUIMapper: CountryCodeUIMapper,
 ) : BaseViewModel(application) {
-
     val filterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>?>()
     val successDeleteFilterLiveData = MutableLiveData<Boolean>()
     val filteredFilterListLiveData = MutableLiveData<List<FilterWithFilteredNumberUIModel>>()
     val currentCountryCodeLiveData = MutableLiveData<CountryCodeUIModel>()
 
-    fun getFilterList(isBlackList: Boolean, refreshing: Boolean) {
+    fun getFilterList(
+        isBlackList: Boolean,
+        refreshing: Boolean,
+    ) {
         if (refreshing.not()) showProgress()
         launch {
-            val allFiltersByType = listFilterUseCase.allFilterWithFilteredNumbersByType(isBlackList).orEmpty()
-            filterListLiveData.postValue(filterWithFilteredNumberUIMapper.mapToUIModelList(allFiltersByType))
+            val allFiltersByType =
+                listFilterUseCase.allFilterWithFilteredNumbersByType(isBlackList).orEmpty()
+            filterListLiveData.postValue(
+                filterWithFilteredNumberUIMapper.mapToUIModelList(
+                    allFiltersByType,
+                ),
+            )
             hideProgress()
         }
     }
 
-    fun getFilteredFilterList(filterList: List<FilterWithFilteredNumberUIModel>, searchQuery: String, filterIndexes: ArrayList<Int>) {
+    fun getFilteredFilterList(
+        filterList: List<FilterWithFilteredNumberUIModel>,
+        searchQuery: String,
+        filterIndexes: ArrayList<Int>,
+    ) {
         launch {
-            val filteredFilterList = if (searchQuery.isBlank() && filterIndexes.isEmpty()) filterList else filterList.filter { filterWithCountryCode ->
-                (filterWithCountryCode.filter isContaining  searchQuery)
-                        && (filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal
-                        || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_START.ordinal
-                        || filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal
-                        || filterIndexes.isEmpty())
-            }
+            val filteredFilterList =
+                if (searchQuery.isBlank() && filterIndexes.isEmpty()) {
+                    filterList
+                } else {
+                    filterList.filter { filterWithCountryCode ->
+                        (filterWithCountryCode.filter isContaining searchQuery) &&
+                            (
+                                filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal ||
+                                    filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_START.ordinal ||
+                                    filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) && filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal ||
+                                    filterIndexes.isEmpty()
+                            )
+                    }
+                }
             filteredFilterListLiveData.postValue(filteredFilterList)
         }
     }
@@ -53,9 +71,14 @@ open class BaseListFilterViewModel(
     fun deleteFilterList(filterList: List<FilterWithFilteredNumberUIModel>) {
         showProgress()
         launch {
-            val filterListToDelete = filterWithFilteredNumberUIMapper.mapFromUIModelList(filterList).mapNotNull { it.filter }
-            listFilterUseCase.deleteFilterList(filterListToDelete, application.isNetworkAvailable()) { operationResult ->
-                when(operationResult) {
+            val filterListToDelete =
+                filterWithFilteredNumberUIMapper.mapFromUIModelList(filterList)
+                    .mapNotNull { it.filter }
+            listFilterUseCase.deleteFilterList(
+                filterListToDelete,
+                application.isNetworkAvailable(),
+            ) { operationResult ->
+                when (operationResult) {
                     is Result.Success -> successDeleteFilterLiveData.postValue(true)
                     is Result.Failure -> exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
                 }
@@ -67,7 +90,10 @@ open class BaseListFilterViewModel(
     fun getCurrentCountryCode() {
         launch {
             listFilterUseCase.getCurrentCountryCode().collect { countryCode ->
-                currentCountryCodeLiveData.postValue(countryCode.takeIf { it.isNotNull() }?.let { countryCodeUIMapper.mapToUIModel(it) } ?: CountryCodeUIModel())
+                currentCountryCodeLiveData.postValue(
+                    countryCode.takeIf { it.isNotNull() }
+                        ?.let { countryCodeUIMapper.mapToUIModel(it) } ?: CountryCodeUIModel(),
+                )
             }
         }
     }

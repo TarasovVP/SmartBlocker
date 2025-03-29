@@ -7,14 +7,14 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 
 object PermissionUtil {
-
     fun permissionsArray(): Array<String> {
-        val permissionsArray: ArrayList<String> = arrayListOf(
-            Manifest.permission.READ_CONTACTS,
-            Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CALL_PHONE
-        )
+        val permissionsArray: ArrayList<String> =
+            arrayListOf(
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.READ_CALL_LOG,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.CALL_PHONE,
+            )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             permissionsArray.add(Manifest.permission.ANSWER_PHONE_CALLS)
         }
@@ -34,7 +34,7 @@ object PermissionUtil {
         }
         return ContextCompat.checkSelfPermission(
             this,
-            permission
+            permission,
         ) == PackageManager.PERMISSION_GRANTED
     }
 }

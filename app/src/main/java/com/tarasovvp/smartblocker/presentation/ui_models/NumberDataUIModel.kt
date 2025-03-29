@@ -10,7 +10,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 open class NumberDataUIModel : Parcelable {
-
     @IgnoredOnParcel
     @get:Exclude
     @Ignore

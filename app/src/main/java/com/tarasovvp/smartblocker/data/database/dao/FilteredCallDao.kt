@@ -28,7 +28,10 @@ interface FilteredCallDao {
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM callWithFilter WHERE isFilteredCall = 1 AND number = :number AND callName = :name ORDER BY callDate DESC")
-    suspend fun allFilteredCallsByNumber(number: String, name: String): List<CallWithFilter>
+    suspend fun allFilteredCallsByNumber(
+        number: String,
+        name: String,
+    ): List<CallWithFilter>
 
     @Query("delete from filtered_calls where callId in (:callIdList)")
     fun deleteFilteredCalls(callIdList: List<Int>)

@@ -24,8 +24,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
-
+class ListCallViewModelUnitTest : BaseViewModelUnitTest<ListCallViewModel>() {
     @MockK
     private lateinit var useCase: ListCallUseCase
 
@@ -38,35 +37,53 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
     override fun createViewModel() = ListCallViewModel(application, useCase, callWithFilterUIMapper, savedStateHandle)
 
     @Test
-    fun getCallListTest() = runTest {
-        val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "1234")))
-        val callUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER), CallWithFilterUIModel(number = "1234"))
-        coEvery { useCase.allCallWithFilters() } returns callList
-        every { callWithFilterUIMapper.mapToUIModelList(callList) } returns callUIModelList
-        viewModel.getCallList(false)
-        advanceUntilIdle()
-        coVerify { useCase.allCallWithFilters() }
-        verify { callWithFilterUIMapper.mapToUIModelList(callList) }
-        assertEquals(callUIModelList, viewModel.callListLiveData.getOrAwaitValue())
-    }
+    fun getCallListTest() =
+        runTest {
+            val callList =
+                listOf(
+                    CallWithFilter(call = Call(number = TEST_NUMBER)),
+                    CallWithFilter(call = Call(number = "1234")),
+                )
+            val callUIModelList =
+                listOf(
+                    CallWithFilterUIModel(number = TEST_NUMBER),
+                    CallWithFilterUIModel(number = "1234"),
+                )
+            coEvery { useCase.allCallWithFilters() } returns callList
+            every { callWithFilterUIMapper.mapToUIModelList(callList) } returns callUIModelList
+            viewModel.getCallList(false)
+            advanceUntilIdle()
+            coVerify { useCase.allCallWithFilters() }
+            verify { callWithFilterUIMapper.mapToUIModelList(callList) }
+            assertEquals(callUIModelList, viewModel.callListLiveData.getOrAwaitValue())
+        }
 
     @Test
-    fun getFilteredCallListTest() = runTest {
-        val callList = listOf(
-            CallWithFilterUIModel(number = TEST_NUMBER, type = Constants.BLOCKED_CALL, isFilteredCall = true),
-            CallWithFilterUIModel( number = "567" )
-        )
-        val searchQuery = String.EMPTY
-        val filterIndexes = arrayListOf(
-            NumberDataFiltering.CALL_BLOCKED.ordinal)
-        val expectedCallList = listOf(callList[0])
-        viewModel.getFilteredCallList(callList, searchQuery, filterIndexes)
-        advanceUntilIdle()
-        assertEquals(expectedCallList, viewModel.filteredCallListLiveData.getOrAwaitValue())
-    }
+    fun getFilteredCallListTest() =
+        runTest {
+            val callList =
+                listOf(
+                    CallWithFilterUIModel(
+                        number = TEST_NUMBER,
+                        type = Constants.BLOCKED_CALL,
+                        isFilteredCall = true,
+                    ),
+                    CallWithFilterUIModel(number = "567"),
+                )
+            val searchQuery = String.EMPTY
+            val filterIndexes =
+                arrayListOf(
+                    NumberDataFiltering.CALL_BLOCKED.ordinal,
+                )
+            val expectedCallList = listOf(callList[0])
+            viewModel.getFilteredCallList(callList, searchQuery, filterIndexes)
+            advanceUntilIdle()
+            assertEquals(expectedCallList, viewModel.filteredCallListLiveData.getOrAwaitValue())
+        }
 
     @Test
-    fun deleteCallListTest() = runTest {
+    fun deleteCallListTest() =
+        runTest {
         /*val expectedResult = Result.Success<Unit>()
         val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "1234")))
         val callUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER), CallWithFilterUIModel(number = "1234"))
@@ -81,5 +98,5 @@ class ListCallViewModelUnitTest: BaseViewModelUnitTest<ListCallViewModel>() {
         coVerify { useCase.deleteCallList(eq(callUIModelList.map { it.callId.orZero() }), any(), any()) }
         verify { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) }
         assertEquals(true, viewModel.successDeleteNumberLiveData.value)*/
-    }
+        }
 }

@@ -6,7 +6,11 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasChildCount
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.getOrAwaitValue
@@ -24,8 +28,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
-
+class SettingsLanguageInstrumentedTest : BaseInstrumentedTest() {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
@@ -41,7 +44,8 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.settingsLanguageFragment)
             Navigation.setViewNavController(requireView(), navController)
-            appLanguageLiveData = (this as? SettingsLanguageFragment)?.viewModel?.appLanguageLiveData
+            appLanguageLiveData =
+                (this as? SettingsLanguageFragment)?.viewModel?.appLanguageLiveData
         }
     }
 
@@ -52,10 +56,11 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
 
     @Test
     fun checkSettingsLanguagesRg() {
-        onView(withId(R.id.settings_languages_rg)).check(matches(isDisplayed())).check(matches(
-            hasChildCount(3)
-        ))
-
+        onView(withId(R.id.settings_languages_rg)).check(matches(isDisplayed())).check(
+            matches(
+                hasChildCount(3),
+            ),
+        )
     }
 
     @Test
@@ -64,7 +69,17 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_language_russian)))
             check(matches(withDrawable(R.drawable.ic_flag_ru)))
-            check(matches(if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_RU) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_RU) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
             perform(click())
             check(matches(isChecked()))
         }
@@ -76,7 +91,17 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_language_ukrainian)))
             check(matches(withDrawable(R.drawable.ic_flag_ua)))
-            check(matches(if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_UK) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_UK) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
             perform(click())
             check(matches(isChecked()))
         }
@@ -88,7 +113,17 @@ class SettingsLanguageInstrumentedTest: BaseInstrumentedTest() {
             check(matches(isDisplayed()))
             check(matches(withText(R.string.settings_language_english)))
             check(matches(withDrawable(R.drawable.ic_flag_en)))
-            check(matches(if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_EN) isChecked() else not(isChecked())))
+            check(
+                matches(
+                    if (appLanguageLiveData?.getOrAwaitValue() == APP_LANG_EN) {
+                        isChecked()
+                    } else {
+                        not(
+                            isChecked(),
+                        )
+                    },
+                ),
+            )
             perform(click())
             check(matches(isChecked()))
         }

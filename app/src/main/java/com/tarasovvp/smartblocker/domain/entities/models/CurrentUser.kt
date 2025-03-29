@@ -13,5 +13,5 @@ data class CurrentUser(
     var isBlockerTurnOn: Boolean = true,
     var isBlockHidden: Boolean = false,
     var countryCode: CountryCode = CountryCode(),
-    var isReviewVoted: Boolean = false
+    var isReviewVoted: Boolean = false,
 ) : Parcelable

@@ -4,16 +4,15 @@ import android.os.Parcelable
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_DATA_TYPE
-import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem
 import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
 import kotlinx.parcelize.Parcelize
 
 abstract class BaseAdapter<D : NumberDataUIModel> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     private var mData: ArrayList<NumberDataUIModel>? = null
 
     override fun getItemViewType(position: Int): Int {
@@ -26,26 +25,27 @@ abstract class BaseAdapter<D : NumberDataUIModel> :
     ) {
         if (holder is BaseAdapter<*>.HeaderViewHolder) {
             holder.bindData(
-                position
+                position,
             )
         }
     }
 
     internal inner class HeaderViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-
         fun bindData(position: Int) {
             DataBindingUtil.bind<ItemHeaderBinding>(itemView)?.headerDataItem =
                 getHeaderDataInPosition(position)
         }
-
     }
 
     override fun getItemCount(): Int {
         return mData?.size ?: 0
     }
 
-    fun setHeaderAndData(dataList: List<D>, header: HeaderDataItem) {
+    fun setHeaderAndData(
+        dataList: List<D>,
+        header: HeaderDataItem,
+    ) {
         mData = mData ?: ArrayList()
         if (header.header.isNotEmpty()) mData?.add(header)
         mData?.addAll(dataList as Collection<NumberDataUIModel>)
@@ -66,5 +66,4 @@ abstract class BaseAdapter<D : NumberDataUIModel> :
 
     @Parcelize
     open class HeaderData : NumberDataUIModel(), Parcelable
-
 }

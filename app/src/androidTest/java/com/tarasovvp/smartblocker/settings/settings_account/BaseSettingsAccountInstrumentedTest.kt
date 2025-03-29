@@ -4,7 +4,9 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.filters.Suppress
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -27,8 +29,7 @@ import org.junit.Test
 
 @Suppress
 @HiltAndroidTest
-open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
-
+open class BaseSettingsAccountInstrumentedTest : BaseInstrumentedTest() {
     private val mockFirebaseAuth: FirebaseAuth = mockk()
 
     @Before
@@ -61,7 +62,19 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     fun checkSettingsAccountName() {
         onView(withId(R.id.settings_account_name)).apply {
             check(matches(isDisplayed()))
-            check(matches(withText(if (mockFirebaseAuth.isAuthorisedUser()) mockFirebaseAuth.currentUser?.currentUserEmail() else targetContext.getString(R.string.settings_account_unauthorised))))
+            check(
+                matches(
+                    withText(
+                        if (mockFirebaseAuth.isAuthorisedUser()) {
+                            mockFirebaseAuth.currentUser?.currentUserEmail()
+                        } else {
+                            targetContext.getString(
+                                R.string.settings_account_unauthorised,
+                            )
+                        },
+                    ),
+                ),
+            )
         }
     }
 
@@ -69,7 +82,13 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
     fun checkSettingsAccountLogOut() {
         onView(withId(R.id.settings_account_log_out)).apply {
             check(matches(isDisplayed()))
-            check(matches(withText(if (mockFirebaseAuth.isAuthorisedUser()) R.string.settings_account_log_out_title else R.string.settings_account_unauthorised_log_out_title)))
+            check(
+                matches(
+                    withText(
+                        if (mockFirebaseAuth.isAuthorisedUser()) R.string.settings_account_log_out_title else R.string.settings_account_unauthorised_log_out_title,
+                    ),
+                ),
+            )
             perform(click())
             assertEquals(R.id.logOutDialog, navController?.currentDestination?.id)
         }
@@ -110,8 +129,10 @@ open class BaseSettingsAccountInstrumentedTest: BaseInstrumentedTest() {
                 check(matches(not(isDisplayed())))
             } else {
                 check(matches(isDisplayed()))
-                onView(withId(R.id.empty_state_description)).check(matches(isDisplayed())).check(matches(withText(EmptyState.EMPTY_STATE_ACCOUNT.description())))
-                onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed())).check(matches(withDrawable(R.drawable.ic_empty_state)))
+                onView(withId(R.id.empty_state_description)).check(matches(isDisplayed()))
+                    .check(matches(withText(EmptyState.EMPTY_STATE_ACCOUNT.description())))
+                onView(withId(R.id.empty_state_icon)).check(matches(isDisplayed()))
+                    .check(matches(withDrawable(R.drawable.ic_empty_state)))
             }
         }
     }

@@ -9,38 +9,39 @@ import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
 import com.tarasovvp.smartblocker.presentation.base.BaseViewModel
 import com.tarasovvp.smartblocker.utils.extensions.isNetworkAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsListViewModel @Inject constructor(
-    private val application: Application,
-    private val settingsListUseCase: SettingsListUseCase
-) : BaseViewModel(application) {
+class SettingsListViewModel
+    @Inject
+    constructor(
+        private val application: Application,
+        private val settingsListUseCase: SettingsListUseCase,
+    ) : BaseViewModel(application) {
+        val appLanguageLiveData = MutableLiveData<String>()
+        val successFeedbackLiveData = MutableLiveData<String>()
 
-    val appLanguageLiveData = MutableLiveData<String>()
-    val successFeedbackLiveData = MutableLiveData<String>()
-
-    fun getAppLanguage() {
-        launch {
-            settingsListUseCase.getAppLanguage().collect { appLang ->
-                appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
-            }
-        }
-    }
-
-    fun insertFeedback(feedback: Feedback) {
-        if (application.isNetworkAvailable()) {
-            showProgress()
-            settingsListUseCase.insertFeedback(feedback) { result ->
-                when (result) {
-                    is Result.Success -> successFeedbackLiveData.postValue(feedback.message)
-                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
+        fun getAppLanguage() {
+            launch {
+                settingsListUseCase.getAppLanguage().collect { appLang ->
+                    appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
                 }
             }
-            hideProgress()
-        } else {
-            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+
+        fun insertFeedback(feedback: Feedback) {
+            if (application.isNetworkAvailable()) {
+                showProgress()
+                settingsListUseCase.insertFeedback(feedback) { result ->
+                    when (result) {
+                        is Result.Success -> successFeedbackLiveData.postValue(feedback.message)
+                        is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
+                    }
+                }
+                hideProgress()
+            } else {
+                exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+            }
         }
     }
-}

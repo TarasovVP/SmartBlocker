@@ -17,14 +17,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ListBlockerFragment : BaseListFilterFragment<ListBlockerFilterViewModel>() {
-
     override val viewModelClass = ListBlockerFilterViewModel::class.java
-
 
     override fun observeLiveData() {
         with(viewModel) {
             filterListLiveData.safeSingleObserve(viewLifecycleOwner) { filterList ->
-                filterWithFilteredNumberUIModels = filterList as? ArrayList<FilterWithFilteredNumberUIModel>
+                filterWithFilteredNumberUIModels =
+                    filterList as? ArrayList<FilterWithFilteredNumberUIModel>
                 searchDataList()
             }
             filteredFilterListLiveData.safeSingleObserve(viewLifecycleOwner) { filteredFilterList ->
@@ -57,31 +56,52 @@ class ListBlockerFragment : BaseListFilterFragment<ListBlockerFilterViewModel>()
     }
 
     override fun startDetailsFilterScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
-        findNavController().navigate(ListBlockerFragmentDirections.startDetailsFilterFragment(filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel))
+        findNavController().navigate(
+            ListBlockerFragmentDirections.startDetailsFilterFragment(
+                filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel,
+            ),
+        )
     }
 
     override fun startCreateFilterScreen() {
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filter = String.EMPTY
         filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterType = Constants.BLOCKER
-        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction = FilterAction.FILTER_ACTION_INVALID
-        findNavController().navigate(ListBlockerFragmentDirections.startCreateFilterFragment(filterWithCountryCodeUIModel))
+        filterWithCountryCodeUIModel.filterWithFilteredNumberUIModel.filterAction =
+            FilterAction.FILTER_ACTION_INVALID
+        findNavController().navigate(
+            ListBlockerFragmentDirections.startCreateFilterFragment(
+                filterWithCountryCodeUIModel,
+            ),
+        )
     }
 
     override fun startFilterActionScreen(filterWithFilteredNumberUIModel: FilterWithFilteredNumberUIModel) {
-        findNavController().navigate(ListBlockerFragmentDirections.startFilterActionDialog(filterWithFilteredNumberUIModel.apply { filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE }))
+        findNavController().navigate(
+            ListBlockerFragmentDirections.startFilterActionDialog(
+                filterWithFilteredNumberUIModel.apply {
+                    filterAction = FilterAction.FILTER_ACTION_BLOCKER_DELETE
+                },
+            ),
+        )
     }
 
     override fun searchDataList() {
         (adapter as? FilterAdapter)?.searchQuery = searchQuery.orEmpty()
-        viewModel.getFilteredFilterList(filterWithFilteredNumberUIModels.orEmpty(), searchQuery.orEmpty(), filterIndexes ?: arrayListOf())
+        viewModel.getFilteredFilterList(
+            filterWithFilteredNumberUIModels.orEmpty(),
+            searchQuery.orEmpty(),
+            filterIndexes ?: arrayListOf(),
+        )
     }
 
     override fun getData(allDataChange: Boolean) {
-        viewModel.savedStateHandle.get<List<FilterWithFilteredNumberUIModel>>(SAVED_LIST).takeIf { it.isNotNull()  && allDataChange.not()}?.let {
-            viewModel.filterListLiveData.postValue(it)
-            viewModel.savedStateHandle[SAVED_LIST] = null
-        } ?: viewModel.getFilterList(true, swipeRefresh?.isRefreshing.isTrue())
+        viewModel.savedStateHandle.get<List<FilterWithFilteredNumberUIModel>>(SAVED_LIST)
+            .takeIf { it.isNotNull() && allDataChange.not() }?.let {
+                viewModel.filterListLiveData.postValue(it)
+                viewModel.savedStateHandle[SAVED_LIST] = null
+            } ?: viewModel.getFilterList(true, swipeRefresh?.isRefreshing.isTrue())
     }
+
     override fun showInfoScreen() {
         findNavController().navigate(ListBlockerFragmentDirections.startInfoFragment(info = Info.INFO_LIST_BLOCKER))
     }

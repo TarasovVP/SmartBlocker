@@ -11,9 +11,8 @@ import com.tarasovvp.smartblocker.utils.extensions.serializable
 class OnBoardingAdapter(
     list: ArrayList<SingleOnBoardingFragment>,
     fm: FragmentManager,
-    lifecycle: Lifecycle
+    lifecycle: Lifecycle,
 ) : FragmentStateAdapter(fm, lifecycle) {
-
     private val fragmentList = list
 
     override fun getItemCount(): Int {
@@ -27,5 +26,4 @@ class OnBoardingAdapter(
     fun getItemBundle(position: Int): OnBoarding? {
         return fragmentList[position].arguments?.serializable(ON_BOARDING_PAGE)
     }
-
 }

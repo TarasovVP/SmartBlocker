@@ -1,10 +1,9 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
+import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
 
 interface FilterRepository {
-
     suspend fun insertAllFilters(filterList: List<Filter>)
 
     suspend fun allFilters(): List<Filter>

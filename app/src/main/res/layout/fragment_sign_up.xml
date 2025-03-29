@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
@@ -57,7 +58,7 @@
                 android:contentDescription="@string/authorization_sign_up_with_google_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sign_up_google_title"  />
+                app:layout_constraintTop_toBottomOf="@id/sign_up_google_title" />
 
             <View
                 android:id="@+id/sign_up_left_divider"
@@ -67,7 +68,7 @@
                 app:layout_constraintTop_toTopOf="@+id/sign_up_divider_title"
                 app:layout_constraintBottom_toBottomOf="@+id/sign_up_divider_title"
                 app:layout_constraintEnd_toStartOf="@+id/sign_up_divider_title"
-                app:layout_constraintStart_toStartOf="parent"  />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/sign_up_divider_title"
@@ -88,14 +89,14 @@
                 app:layout_constraintTop_toTopOf="@+id/sign_up_divider_title"
                 app:layout_constraintBottom_toBottomOf="@+id/sign_up_divider_title"
                 app:layout_constraintStart_toEndOf="@+id/sign_up_divider_title"
-                app:layout_constraintEnd_toEndOf="parent"  />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_up_email_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintTop_toBottomOf="@+id/sign_up_divider_title" >
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_divider_title">
 
                 <EditText
                     android:id="@+id/sign_up_email"

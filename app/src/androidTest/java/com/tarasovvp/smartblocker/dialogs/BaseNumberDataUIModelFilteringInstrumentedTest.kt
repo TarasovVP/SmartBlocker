@@ -8,7 +8,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withTagValue
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.FILTERING_LIST
@@ -22,27 +26,33 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Test
 
 @androidx.test.filters.Suppress
 @HiltAndroidTest
-open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest() {
-
+open class BaseNumberDataUIModelFilteringInstrumentedTest : BaseInstrumentedTest() {
     private var fragment: Fragment? = null
     private var previousDestination = 0
 
     @Before
     override fun setUp() {
         super.setUp()
-        val previousDestinationId = when(this) {
-            is CallNumberDataUIModelFilteringInstrumentedTest -> R.id.listCallFragment
-            is ContactNumberDataUIModelFilteringInstrumentedTest -> R.id.listContactFragment
-            else -> R.id.listBlockerFragment
-        }
+        val previousDestinationId =
+            when (this) {
+                is CallNumberDataUIModelFilteringInstrumentedTest -> R.id.listCallFragment
+                is ContactNumberDataUIModelFilteringInstrumentedTest -> R.id.listContactFragment
+                else -> R.id.listBlockerFragment
+            }
         launchFragmentInHiltContainer<NumberDataFilteringDialog>(
-            bundleOf("previousDestinationId" to previousDestinationId, FILTERING_LIST to arrayListOf<Int>())) {
+            bundleOf(
+                "previousDestinationId" to previousDestinationId,
+                FILTERING_LIST to arrayListOf<Int>(),
+            ),
+        ) {
             navController?.setGraph(R.navigation.navigation)
             navController?.setCurrentDestination(R.id.detailsFilterFragment)
             Navigation.setViewNavController(requireView(), navController)
@@ -58,14 +68,18 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
 
     @Test
     fun checkDialogNumberDataFilteringTitle() {
-        onView(withId(R.id.dialog_number_data_filtering_title)).check(matches(isDisplayed())).check(matches(withText(R.string.filter_condition_title)))
+        onView(withId(R.id.dialog_number_data_filtering_title)).check(matches(isDisplayed()))
+            .check(matches(withText(R.string.filter_condition_title)))
     }
+
     @Test
     fun checkDialogNumberDataConditionFull() {
-        onView(allOf(
-            withId(R.id.item_check_box),
-            childOf(withId(R.id.dialog_number_data_filtering_container), 0)
-        )).apply {
+        onView(
+            allOf(
+                withId(R.id.item_check_box),
+                childOf(withId(R.id.dialog_number_data_filtering_container), 0),
+            ),
+        ).apply {
             if (previousDestination == R.id.listBlockerFragment) {
                 check(matches(isDisplayed()))
                 check(matches(withText(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.title())))
@@ -81,10 +95,12 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
 
     @Test
     fun checkDialogNumberDataConditionStart() {
-        onView(allOf(
-            withId(R.id.item_check_box),
-            childOf(withId(R.id.dialog_number_data_filtering_container), 1)
-        )).apply {
+        onView(
+            allOf(
+                withId(R.id.item_check_box),
+                childOf(withId(R.id.dialog_number_data_filtering_container), 1),
+            ),
+        ).apply {
             if (previousDestination == R.id.listBlockerFragment) {
                 check(matches(isDisplayed()))
                 check(matches(withText(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.title())))
@@ -100,10 +116,12 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
 
     @Test
     fun checkDialogNumberDataConditionContain() {
-        onView(allOf(
-            withId(R.id.item_check_box),
-            childOf(withId(R.id.dialog_number_data_filtering_container), 2)
-        )).apply {
+        onView(
+            allOf(
+                withId(R.id.item_check_box),
+                childOf(withId(R.id.dialog_number_data_filtering_container), 2),
+            ),
+        ).apply {
             if (previousDestination == R.id.listBlockerFragment) {
                 check(matches(isDisplayed()))
                 check(matches(withText(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.title())))
@@ -117,13 +135,14 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
         }
     }
 
-
     @Test
     fun checkDialogNumberDataWithBlocker() {
-        onView(allOf(
-            withId(R.id.item_check_box),
-            childOf(withId(R.id.dialog_number_data_filtering_container), 0)
-        )).apply {
+        onView(
+            allOf(
+                withId(R.id.item_check_box),
+                childOf(withId(R.id.dialog_number_data_filtering_container), 0),
+            ),
+        ).apply {
             if (previousDestination == R.id.listContactFragment) {
                 check(matches(isDisplayed()))
                 check(matches(withText(NumberDataFiltering.CONTACT_WITH_BLOCKER.title())))
@@ -139,10 +158,12 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
 
     @Test
     fun checkDialogNumberDataWithPermission() {
-        onView(allOf(
-            withId(R.id.item_check_box),
-            childOf(withId(R.id.dialog_number_data_filtering_container), 1)
-        )).apply {
+        onView(
+            allOf(
+                withId(R.id.item_check_box),
+                childOf(withId(R.id.dialog_number_data_filtering_container), 1),
+            ),
+        ).apply {
             if (previousDestination == R.id.listContactFragment) {
                 check(matches(isDisplayed()))
                 check(matches(withText(NumberDataFiltering.CONTACT_WITH_PERMISSION.title())))
@@ -158,10 +179,12 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
 
     @Test
     fun checkDialogNumberDataByBlocker() {
-        onView(allOf(
-            withId(R.id.item_check_box),
-            childOf(withId(R.id.dialog_number_data_filtering_container), 0)
-        )).apply {
+        onView(
+            allOf(
+                withId(R.id.item_check_box),
+                childOf(withId(R.id.dialog_number_data_filtering_container), 0),
+            ),
+        ).apply {
             if (previousDestination == R.id.listCallFragment) {
                 check(matches(isDisplayed()))
                 check(matches(withText(NumberDataFiltering.CALL_BLOCKED.title())))
@@ -177,10 +200,12 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
 
     @Test
     fun checkDialogNumberDataByPermission() {
-        onView(allOf(
-            withId(R.id.item_check_box),
-            childOf(withId(R.id.dialog_number_data_filtering_container), 1)
-        )).apply {
+        onView(
+            allOf(
+                withId(R.id.item_check_box),
+                childOf(withId(R.id.dialog_number_data_filtering_container), 1),
+            ),
+        ).apply {
             if (previousDestination == R.id.listCallFragment) {
                 check(matches(isDisplayed()))
                 check(matches(withText(NumberDataFiltering.CALL_PERMITTED.title())))
@@ -205,7 +230,6 @@ open class BaseNumberDataUIModelFilteringInstrumentedTest: BaseInstrumentedTest(
             .check(matches(isDisplayed()))
             .check(matches(withText(R.string.button_ok)))
             .perform(click())
-
     }
 
     @Test

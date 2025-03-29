@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.domain.entities.models
 
 import android.os.Parcelable
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DEFAULT_FILTER
-import com.tarasovvp.smartblocker.utils.extensions.*
+import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -17,5 +17,5 @@ open class Call(
     var filteredNumber: String? = String.EMPTY,
     var filteredConditionType: Int? = DEFAULT_FILTER,
     var phoneNumberValue: String? = String.EMPTY,
-    var isPhoneNumberValid: Boolean? = false
+    var isPhoneNumberValid: Boolean? = false,
 ) : Parcelable

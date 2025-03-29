@@ -16,7 +16,6 @@ import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.setSafeOnClickListener
 
 class DeleteAccountDialog : BaseDialog<DialogDeleteAccountBinding>() {
-
     override var layoutId = R.layout.dialog_delete_account
 
     private val args: DeleteAccountDialogArgs by navArgs()
@@ -30,8 +29,12 @@ class DeleteAccountDialog : BaseDialog<DialogDeleteAccountBinding>() {
 
     private fun setConfirmButton() {
         binding?.apply {
-            deleteAccountTitle.text = getString( if (args.isGoogleAuth) R.string.settings_account_google_delete else R.string.settings_account_email_delete)
-            isInactive = args.isGoogleAuth.not() && binding?.deleteAccountCurrentInput?.text?.isBlank().isTrue()
+            deleteAccountTitle.text =
+                getString(if (args.isGoogleAuth) R.string.settings_account_google_delete else R.string.settings_account_email_delete)
+            isInactive =
+                args.isGoogleAuth.not() &&
+                binding?.deleteAccountCurrentInput?.text?.isBlank()
+                    .isTrue()
             deleteAccountCurrentContainer.isVisible = args.isGoogleAuth.not()
             deleteAccountCurrentInput.doAfterTextChanged {
                 isInactive = it?.isBlank()
@@ -40,7 +43,8 @@ class DeleteAccountDialog : BaseDialog<DialogDeleteAccountBinding>() {
                 findNavController().navigateUp()
                 setFragmentResult(
                     DELETE_ACCOUNT,
-                    bundleOf(CURRENT_PASSWORD to binding?.deleteAccountCurrentInput?.inputText()))
+                    bundleOf(CURRENT_PASSWORD to binding?.deleteAccountCurrentInput?.inputText()),
+                )
             }
         }
     }

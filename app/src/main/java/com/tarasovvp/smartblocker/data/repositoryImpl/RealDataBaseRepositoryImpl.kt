@@ -22,185 +22,254 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.USERS
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import javax.inject.Inject
 
-class RealDataBaseRepositoryImpl @Inject constructor(private val firebaseDatabase: FirebaseDatabase, private val firebaseAuth: FirebaseAuth) :
+class RealDataBaseRepositoryImpl
+    @Inject
+    constructor(
+        private val firebaseDatabase: FirebaseDatabase,
+        private val firebaseAuth: FirebaseAuth,
+    ) :
     RealDataBaseRepository {
-
-    override fun createCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit) {
-        val currentUserMap = hashMapOf<String, Any>()
-        currentUser.filterList.forEach { filter ->
-            currentUserMap["$FILTER_LIST/${filter.filter}"] = filter
-        }
-        currentUser.filteredCallList.forEach { filteredCall ->
-            currentUserMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
-        }
-        currentUserMap[BLOCK_TURN_ON] = currentUser.isBlockerTurnOn
-        currentUserMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
-        currentUserMap[COUNTRY_CODE] = currentUser.countryCode
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).setValue(currentUser)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
+        override fun createCurrentUser(
+            currentUser: CurrentUser,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            val currentUserMap = hashMapOf<String, Any>()
+            currentUser.filterList.forEach { filter ->
+                currentUserMap["$FILTER_LIST/${filter.filter}"] = filter
             }
-    }
-
-    override fun updateCurrentUser(currentUser: CurrentUser, result: (Result<Unit>) -> Unit) {
-        val updatesMap = hashMapOf<String, Any>()
-        currentUser.filterList.forEach { filter ->
-            updatesMap["$FILTER_LIST/${filter.filter}"] = filter
-        }
-        currentUser.filteredCallList.forEach { filteredCall ->
-            updatesMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
-        }
-        updatesMap[BLOCK_TURN_ON] = currentUser.isBlockerTurnOn
-        updatesMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
-        updatesMap[COUNTRY_CODE] = currentUser.countryCode
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).updateChildren(updatesMap)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
+            currentUser.filteredCallList.forEach { filteredCall ->
+                currentUserMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
             }
-    }
-
-    override fun getCurrentUser(result: (Result<CurrentUser>) -> Unit) {
-        var currentUserDatabase = firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
-        if (currentUserDatabase.key != firebaseAuth.currentUser?.uid.orEmpty()) currentUserDatabase =
+            currentUserMap[BLOCK_TURN_ON] = currentUser.isBlockerTurnOn
+            currentUserMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
+            currentUserMap[COUNTRY_CODE] = currentUser.countryCode
             firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
-        currentUserDatabase.get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val currentUser = CurrentUser()
-                    task.result.children.forEach { snapshot ->
-                        when (snapshot.key) {
-                            FILTER_LIST -> snapshot.children.forEach { child ->
-                                child.getValue(Filter::class.java)?.let { currentUser.filterList.add(it) }
-                            }
-                            FILTERED_CALL_LIST -> snapshot.children.forEach { child ->
-                                child.getValue(FilteredCall::class.java)?.let { currentUser.filteredCallList.add(it) }
-                            }
-                            BLOCK_TURN_ON -> currentUser.isBlockerTurnOn = snapshot.getValue(Boolean::class.java).isTrue()
-                            BLOCK_HIDDEN -> currentUser.isBlockHidden = snapshot.getValue(Boolean::class.java).isTrue()
-                            COUNTRY_CODE -> currentUser.countryCode = snapshot.getValue(CountryCode::class.java) ?: CountryCode()
-                            REVIEW_VOTE -> currentUser.isReviewVoted = snapshot.getValue(Boolean::class.java).isTrue()
-                        }
-                    }
-                    result.invoke(Result.Success(currentUser))
-                }
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
-
-    override fun deleteCurrentUser(result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).removeValue()
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
-
-    override fun insertFilter(filter: Filter, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTER_LIST).child(filter.filter).setValue(filter)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
-
-    override fun deleteFilterList(filterList: List<Filter?>, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTER_LIST).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    task.result.children.forEach { snapshot ->
-                        if (filterList.map { it?.filter }.contains(snapshot.key)) {
-                            snapshot.ref.removeValue()
-                        }
-                    }
+                .setValue(currentUser)
+                .addOnSuccessListener {
                     result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
                 }
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
+        }
 
-    override fun insertFilteredCall(filteredCall: FilteredCall, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
+        override fun updateCurrentUser(
+            currentUser: CurrentUser,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            val updatesMap = hashMapOf<String, Any>()
+            currentUser.filterList.forEach { filter ->
+                updatesMap["$FILTER_LIST/${filter.filter}"] = filter
             }
-    }
-
-    override fun deleteFilteredCallList(filteredCallIdList: List<String>, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(FILTERED_CALL_LIST).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    task.result.children.forEach { snapshot ->
-                        if (filteredCallIdList.contains(snapshot.key)) snapshot.ref.removeValue()
-                    }
+            currentUser.filteredCallList.forEach { filteredCall ->
+                updatesMap["$FILTERED_CALL_LIST/${filteredCall.callId}"] = filteredCall
+            }
+            updatesMap[BLOCK_TURN_ON] = currentUser.isBlockerTurnOn
+            updatesMap[BLOCK_HIDDEN] = currentUser.isBlockHidden
+            updatesMap[COUNTRY_CODE] = currentUser.countryCode
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .updateChildren(updatesMap)
+                .addOnSuccessListener {
                     result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
                 }
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
+        }
 
-    override fun changeBlockTurnOn(blockTurnOn: Boolean, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(BLOCK_TURN_ON).setValue(blockTurnOn)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
+        override fun getCurrentUser(result: (Result<CurrentUser>) -> Unit) {
+            var currentUserDatabase =
+                firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+            if (currentUserDatabase.key != firebaseAuth.currentUser?.uid.orEmpty()) {
+                currentUserDatabase =
+                    firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
             }
-    }
+            currentUserDatabase.get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val currentUser = CurrentUser()
+                        task.result.children.forEach { snapshot ->
+                            when (snapshot.key) {
+                                FILTER_LIST ->
+                                    snapshot.children.forEach { child ->
+                                        child.getValue(Filter::class.java)
+                                            ?.let { currentUser.filterList.add(it) }
+                                    }
 
-    override fun changeBlockHidden(blockHidden: Boolean, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(BLOCK_HIDDEN).setValue(blockHidden)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
+                                FILTERED_CALL_LIST ->
+                                    snapshot.children.forEach { child ->
+                                        child.getValue(FilteredCall::class.java)
+                                            ?.let { currentUser.filteredCallList.add(it) }
+                                    }
 
-    override fun changeCountryCode(countryCode: CountryCode, result: (Result<Unit>) -> Unit) {
-        Log.e("filteredCallTAG", "CallReceiver changeCountryCode countryCode $countryCode")
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(COUNTRY_CODE).setValue(countryCode)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
+                                BLOCK_TURN_ON ->
+                                    currentUser.isBlockerTurnOn =
+                                        snapshot.getValue(Boolean::class.java).isTrue()
 
-    override fun setReviewVoted(result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty()).child(REVIEW_VOTE).setValue(true)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
+                                BLOCK_HIDDEN ->
+                                    currentUser.isBlockHidden =
+                                        snapshot.getValue(Boolean::class.java).isTrue()
 
-    override fun getPrivacyPolicy(appLang: String, result: (Result<String>) -> Unit) {
-        firebaseDatabase.reference.child(PRIVACY_POLICY).child(appLang).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) result.invoke(Result.Success(task.result.value as? String))
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
-    }
+                                COUNTRY_CODE ->
+                                    currentUser.countryCode =
+                                        snapshot.getValue(CountryCode::class.java) ?: CountryCode()
 
-    override fun insertFeedback(feedback: Feedback, result: (Result<Unit>) -> Unit) {
-        firebaseDatabase.reference.child(FEEDBACK).child(feedback.time.toString()).setValue(feedback)
-            .addOnSuccessListener {
-                result.invoke(Result.Success())
-            }.addOnFailureListener { exception ->
-                result.invoke(Result.Failure(exception.localizedMessage))
-            }
+                                REVIEW_VOTE ->
+                                    currentUser.isReviewVoted =
+                                        snapshot.getValue(Boolean::class.java).isTrue()
+                            }
+                        }
+                        result.invoke(Result.Success(currentUser))
+                    }
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun deleteCurrentUser(result: (Result<Unit>) -> Unit) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .removeValue()
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun insertFilter(
+            filter: Filter,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(FILTER_LIST).child(filter.filter).setValue(filter)
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun deleteFilterList(
+            filterList: List<Filter?>,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(FILTER_LIST).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result.children.forEach { snapshot ->
+                            if (filterList.map { it?.filter }.contains(snapshot.key)) {
+                                snapshot.ref.removeValue()
+                            }
+                        }
+                        result.invoke(Result.Success())
+                    }
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun insertFilteredCall(
+            filteredCall: FilteredCall,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(FILTERED_CALL_LIST).child(filteredCall.callId.toString()).setValue(filteredCall)
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun deleteFilteredCallList(
+            filteredCallIdList: List<String>,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(FILTERED_CALL_LIST).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result.children.forEach { snapshot ->
+                            if (filteredCallIdList.contains(snapshot.key)) snapshot.ref.removeValue()
+                        }
+                        result.invoke(Result.Success())
+                    }
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun changeBlockTurnOn(
+            blockTurnOn: Boolean,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(BLOCK_TURN_ON).setValue(blockTurnOn)
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun changeBlockHidden(
+            blockHidden: Boolean,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(BLOCK_HIDDEN).setValue(blockHidden)
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun changeCountryCode(
+            countryCode: CountryCode,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            Log.e("filteredCallTAG", "CallReceiver changeCountryCode countryCode $countryCode")
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(COUNTRY_CODE).setValue(countryCode)
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun setReviewVoted(result: (Result<Unit>) -> Unit) {
+            firebaseDatabase.reference.child(USERS).child(firebaseAuth.currentUser?.uid.orEmpty())
+                .child(REVIEW_VOTE).setValue(true)
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun getPrivacyPolicy(
+            appLang: String,
+            result: (Result<String>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(PRIVACY_POLICY).child(appLang).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) result.invoke(Result.Success(task.result.value as? String))
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
+
+        override fun insertFeedback(
+            feedback: Feedback,
+            result: (Result<Unit>) -> Unit,
+        ) {
+            firebaseDatabase.reference.child(FEEDBACK).child(feedback.time.toString())
+                .setValue(feedback)
+                .addOnSuccessListener {
+                    result.invoke(Result.Success())
+                }.addOnFailureListener { exception ->
+                    result.invoke(Result.Failure(exception.localizedMessage))
+                }
+        }
     }
-}
