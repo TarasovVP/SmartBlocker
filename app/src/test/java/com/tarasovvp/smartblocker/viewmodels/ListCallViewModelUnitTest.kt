@@ -3,14 +3,14 @@ package com.tarasovvp.smartblocker.viewmodels
 import androidx.lifecycle.SavedStateHandle
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallViewModel
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcall.ListCallViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CallWithFilterUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import io.mockk.coEvery
 import io.mockk.coVerify

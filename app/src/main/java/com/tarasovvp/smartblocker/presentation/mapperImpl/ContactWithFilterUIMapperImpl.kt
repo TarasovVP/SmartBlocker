@@ -1,12 +1,12 @@
 package com.tarasovvp.smartblocker.presentation.mapperImpl
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Contact
+import com.tarasovvp.smartblocker.domain.entities.dbviews.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbviews.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.presentation.mappers.ContactWithFilterUIMapper
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 
 class ContactWithFilterUIMapperImpl(private val filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper) :

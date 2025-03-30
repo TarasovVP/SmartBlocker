@@ -12,7 +12,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.data.repositoryImpl.AuthRepositoryImpl
 import com.tarasovvp.smartblocker.domain.repository.AuthRepository
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.every

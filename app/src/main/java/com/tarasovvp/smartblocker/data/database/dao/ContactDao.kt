@@ -6,8 +6,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Contact
+import com.tarasovvp.smartblocker.domain.entities.dbviews.ContactWithFilter
 
 @Dao
 interface ContactDao {

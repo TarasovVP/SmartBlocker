@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 
 interface SignUpUseCase {
     fun fetchSignInMethodsForEmail(

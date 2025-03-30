@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.repository
 
 import com.google.firebase.auth.AuthCredential
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 
 interface AuthRepository {
     fun sendPasswordResetEmail(

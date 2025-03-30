@@ -3,7 +3,7 @@ package com.tarasovvp.smartblocker.usecases
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.usecases.SettingsLanguageUseCase
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.settings.settingslanguage.SettingsLanguageUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery

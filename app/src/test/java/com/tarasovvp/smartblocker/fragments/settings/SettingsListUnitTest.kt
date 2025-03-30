@@ -17,7 +17,7 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListFragment
+import com.tarasovvp.smartblocker.presentation.main.settings.settingslist.SettingsListFragment
 import com.tarasovvp.smartblocker.utils.extensions.flagDrawable
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import dagger.hilt.android.testing.HiltAndroidRule

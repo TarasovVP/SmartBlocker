@@ -1,9 +1,9 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Filter
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbviews.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 
 interface DetailsFilterUseCase {
     suspend fun allContactsWithFiltersByFilter(filter: String): List<ContactWithFilter>

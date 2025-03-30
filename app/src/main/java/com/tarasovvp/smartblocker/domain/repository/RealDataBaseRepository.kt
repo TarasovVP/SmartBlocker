@@ -1,11 +1,11 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Filter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.models.Feedback
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 
 interface RealDataBaseRepository {
     fun createCurrentUser(

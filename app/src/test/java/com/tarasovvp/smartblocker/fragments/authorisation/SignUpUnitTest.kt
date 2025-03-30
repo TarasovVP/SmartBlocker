@@ -22,7 +22,7 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHi
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundTint
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.fragments.ScrollActions.nestedScrollTo
-import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment
+import com.tarasovvp.smartblocker.presentation.main.authorization.signup.SignUpFragment
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

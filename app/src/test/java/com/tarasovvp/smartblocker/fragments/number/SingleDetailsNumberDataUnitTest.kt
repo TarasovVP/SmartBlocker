@@ -27,8 +27,8 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
 import com.tarasovvp.smartblocker.utils.extensions.isNull
@@ -202,7 +202,8 @@ class SingleDetailsNumberDataUnitTest : BaseFragmentUnitTest() {
                                             String.EMPTY
                                         } else {
                                             targetContext.getString(
-                                                contactWithFilterUIModel.phoneNumberValidity().orZero(),
+                                                contactWithFilterUIModel.phoneNumberValidity()
+                                                    .orZero(),
                                             )
                                         },
                                     ),
@@ -294,7 +295,11 @@ class SingleDetailsNumberDataUnitTest : BaseFragmentUnitTest() {
                                     withId(R.id.item_contact_filter_value),
                                     isDisplayed(),
                                     withText(
-                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter,
+                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isNull()) {
+                                            String.EMPTY
+                                        } else {
+                                            contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter
+                                        },
                                     ),
                                     withTextColor(
                                         if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.isBlocker()
@@ -306,7 +311,11 @@ class SingleDetailsNumberDataUnitTest : BaseFragmentUnitTest() {
                                         },
                                     ),
                                     withDrawable(
-                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter.isNull()) null else contactWithFilterUIModel.filterWithFilteredNumberUIModel.conditionTypeSmallIcon(),
+                                        if (contactWithFilterUIModel.filterWithFilteredNumberUIModel.filter.isNull()) {
+                                            null
+                                        } else {
+                                            contactWithFilterUIModel.filterWithFilteredNumberUIModel.conditionTypeSmallIcon()
+                                        },
                                     ),
                                 ),
                             ),

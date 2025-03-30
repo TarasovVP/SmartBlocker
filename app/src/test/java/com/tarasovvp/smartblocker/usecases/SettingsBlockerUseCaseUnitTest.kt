@@ -1,12 +1,12 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.google.firebase.auth.FirebaseAuth
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.settings.settingsblocker.SettingsBlockerUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import io.mockk.MockKAnnotations
 import io.mockk.Runs

@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.repository
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
 
 interface FilteredCallRepository {
     suspend fun insertAllFilteredCalls(filteredCallList: List<FilteredCall>)

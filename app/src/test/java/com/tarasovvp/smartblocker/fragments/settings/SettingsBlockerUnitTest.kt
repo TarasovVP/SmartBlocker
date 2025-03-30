@@ -19,8 +19,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColor
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.main.settings.settingsblocker.SettingsBlockerFragment
+import com.tarasovvp.smartblocker.presentation.uimodels.CountryCodeUIModel
 import com.tarasovvp.smartblocker.utils.extensions.flagEmoji
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import dagger.hilt.android.testing.HiltAndroidRule

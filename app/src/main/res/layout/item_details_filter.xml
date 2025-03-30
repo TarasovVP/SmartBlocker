@@ -14,7 +14,7 @@
 
         <variable
             name="filterWithFilteredNumberUIModel"
-            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel" />
+            type="com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

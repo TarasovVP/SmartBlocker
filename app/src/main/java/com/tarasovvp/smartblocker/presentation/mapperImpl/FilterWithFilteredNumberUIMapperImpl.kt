@@ -1,9 +1,9 @@
 package com.tarasovvp.smartblocker.presentation.mapperImpl
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Filter
+import com.tarasovvp.smartblocker.domain.entities.dbviews.FilterWithFilteredNumber
 import com.tarasovvp.smartblocker.presentation.mappers.FilterWithFilteredNumberUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 
 class FilterWithFilteredNumberUIMapperImpl : FilterWithFilteredNumberUIMapper {

@@ -1,11 +1,11 @@
 package com.tarasovvp.smartblocker.presentation.main
 
 import android.app.Application
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Contact
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Filter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.dbentities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import com.tarasovvp.smartblocker.domain.repository.CountryCodeRepository
@@ -14,7 +14,7 @@ import com.tarasovvp.smartblocker.domain.repository.FilterRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.domain.usecases.MainUseCase
 import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
 import kotlinx.coroutines.flow.Flow

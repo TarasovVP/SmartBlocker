@@ -3,13 +3,13 @@ package com.tarasovvp.smartblocker.data.repositoryImpl
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Filter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.FilteredCall
 import com.tarasovvp.smartblocker.domain.entities.models.CurrentUser
 import com.tarasovvp.smartblocker.domain.entities.models.Feedback
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_HIDDEN
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCK_TURN_ON
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.COUNTRY_CODE

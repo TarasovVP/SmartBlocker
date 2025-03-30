@@ -1,6 +1,6 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbviews.ContactWithFilter
 
 interface ListContactUseCase {
     suspend fun allContactWithFilters(): List<ContactWithFilter>

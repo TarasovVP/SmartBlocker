@@ -35,12 +35,12 @@ import com.tarasovvp.smartblocker.fragments.ScrollActions.nestedScrollTo
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.main.number.details.detailsnumberdata.DetailsNumberDataFragment
+import com.tarasovvp.smartblocker.presentation.uimodels.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.getUserCountry
@@ -245,6 +245,7 @@ class DetailsNumberDataUnitTest : BaseFragmentUnitTest() {
                     targetContext.getString(
                         R.string.details_number_contact_without_filter,
                     )
+
                 contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker()
                     .isTrue() -> targetContext.getString(R.string.details_number_block_with_filter)
 
@@ -277,7 +278,11 @@ class DetailsNumberDataUnitTest : BaseFragmentUnitTest() {
             .check(
                 matches(
                     withText(
-                        if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilter?.filterWithFilteredNumberUIModel?.filter,
+                        if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) {
+                            String.EMPTY
+                        } else {
+                            contactWithFilter?.filterWithFilteredNumberUIModel?.filter
+                        },
                     ),
                 ),
             )
@@ -297,7 +302,11 @@ class DetailsNumberDataUnitTest : BaseFragmentUnitTest() {
             .check(
                 matches(
                     withDrawable(
-                        if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) null else contactWithFilter?.filterWithFilteredNumberUIModel?.conditionTypeSmallIcon(),
+                        if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) {
+                            null
+                        } else {
+                            contactWithFilter?.filterWithFilteredNumberUIModel?.conditionTypeSmallIcon()
+                        },
                     ),
                 ),
             )

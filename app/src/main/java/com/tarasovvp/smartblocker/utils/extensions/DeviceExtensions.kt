@@ -32,7 +32,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.tarasovvp.smartblocker.BuildConfig
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.SmartBlockerApp
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.END_CALL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.GET_IT_TELEPHONY

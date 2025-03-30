@@ -28,10 +28,10 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
@@ -369,33 +369,6 @@ class CreateFilterUnitTest : BaseFragmentUnitTest() {
                 ),
             )
     }
-
-    // TODO numberDataUIModelList?
-    /*@Test
-    fun checkCreateFilterNumberList() {
-        if (numberDataUIModelList.isEmpty()) {
-            onView(withId(R.id.create_filter_empty_list)).check(matches(isDisplayed()))
-        } else {
-            onView(withId(R.id.create_filter_number_list))
-                .check(matches(isDisplayed()))
-                .check(matches(hasItemCount(numberDataUIModelList.size)))
-        }
-    }*/
-
-    // TODO numberDataUIModelList?
-    /*@Test
-    fun checkCreateFilterListEmpty() {
-        onView(withId(R.id.create_filter_empty_list)).apply {
-            if (numberDataUIModelList.isEmpty()) {
-                check(matches(isDisplayed()))
-                onView(withId(R.id.empty_state_description)).check(matches(withText(EmptyState.EMPTY_STATE_CREATE_FILTER.description())))
-                onView(withId(R.id.empty_state_tooltip_arrow)).check(matches(withDrawable(R.drawable.ic_tooltip_arrow)))
-                onView(withId(R.id.empty_state_icon)).check(matches(withDrawable(R.drawable.ic_empty_state)))
-            } else {
-                check(matches(not(isDisplayed())))
-            }
-        }
-    }*/
 
     @After
     override fun tearDown() {

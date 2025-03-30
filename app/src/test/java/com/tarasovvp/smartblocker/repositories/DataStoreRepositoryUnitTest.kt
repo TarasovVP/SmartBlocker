@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_LANGUAGE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_APP_THEME
 import com.tarasovvp.smartblocker.data.repositoryImpl.DataStoreRepositoryImpl
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME

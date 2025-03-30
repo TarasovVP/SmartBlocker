@@ -10,7 +10,7 @@
 
         <variable
             name="filterWithCountryCodeUIModel"
-            type="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel" />
+            type="com.tarasovvp.smartblocker.presentation.uimodels.FilterWithCountryCodeUIModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

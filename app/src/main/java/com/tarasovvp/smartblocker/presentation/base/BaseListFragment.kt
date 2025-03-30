@@ -18,12 +18,12 @@ import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcall.ListCallFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcontact.ListContactFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListBlockerFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListPermissionFragment
+import com.tarasovvp.smartblocker.presentation.uimodels.HeaderDataItem
+import com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.DebouncingQueryTextListener
 import com.tarasovvp.smartblocker.utils.EmptyStateView
 import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
@@ -135,7 +135,15 @@ abstract class BaseListFragment<B : ViewDataBinding, T : BaseViewModel, D : Numb
                         maxWidth = Integer.MAX_VALUE
                     }
                     queryHint =
-                        getString(if (this@BaseListFragment is ListBlockerFragment || this@BaseListFragment is ListPermissionFragment) R.string.list_filter_search_hint else R.string.list_number_search_hint)
+                        getString(
+                            if (this@BaseListFragment is ListBlockerFragment ||
+                                this@BaseListFragment is ListPermissionFragment
+                            ) {
+                                R.string.list_filter_search_hint
+                            } else {
+                                R.string.list_number_search_hint
+                            },
+                        )
                     setOnQueryTextListener(
                         DebouncingQueryTextListener(lifecycle) {
                             searchQuery = it

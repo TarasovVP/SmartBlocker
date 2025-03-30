@@ -5,9 +5,9 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_REVIEW
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
 import com.tarasovvp.smartblocker.domain.entities.models.Feedback
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsListUseCase
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListViewModel
+import com.tarasovvp.smartblocker.presentation.main.settings.settingslist.SettingsListViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

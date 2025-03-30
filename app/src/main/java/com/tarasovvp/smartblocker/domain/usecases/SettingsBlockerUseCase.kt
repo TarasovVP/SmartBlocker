@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsBlockerUseCase {

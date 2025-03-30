@@ -1,12 +1,12 @@
 package com.tarasovvp.smartblocker.viewmodels
 
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.domain.usecases.SettingsBlockerUseCase
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerViewModel
+import com.tarasovvp.smartblocker.presentation.main.settings.settingsblocker.SettingsBlockerViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CountryCodeUIModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

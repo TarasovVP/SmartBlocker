@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_LANG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.APP_THEME
@@ -101,6 +101,7 @@ class DataStoreRepositoryImpl(private val dataStore: DataStore<Preferences>) : D
                         CountryCode::class.java,
                     )
                 } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
                     CountryCode()
                 }
             }.take(1)

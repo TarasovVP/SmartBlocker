@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.data.repositoryImpl
 
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import javax.inject.Inject
 

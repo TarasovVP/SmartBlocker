@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tarasovvp.smartblocker.databinding.ItemHeaderBinding
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.HEADER_TYPE
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_DATA_TYPE
-import com.tarasovvp.smartblocker.presentation.ui_models.HeaderDataItem
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.HeaderDataItem
+import com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel
 import kotlinx.parcelize.Parcelize
 
 abstract class BaseAdapter<D : NumberDataUIModel> :

@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment">
+        android:name="com.tarasovvp.smartblocker.presentation.main.authorization.signup.SignUpFragment">
         <action
             android:id="@+id/startExistAccountDialog"
             app:destination="@id/existAccountDialog" />
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/listBlockerFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListBlockerFragment"
         android:label="@string/list_blocker">
         <action
             android:id="@+id/startCreateFilterFragment"
@@ -67,7 +67,7 @@
 
     <fragment
         android:id="@+id/listPermissionFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListPermissionFragment"
         android:label="@string/list_permission">
         <action
             android:id="@+id/startCreateFilterFragment"
@@ -88,11 +88,11 @@
 
     <fragment
         android:id="@+id/detailsFilterFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.details.details_filter.DetailsFilterFragment">
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.details.detailsfilter.DetailsFilterFragment">
         <argument
             android:name="filterWithFilteredNumberUIModel"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel"
+            app:argType="com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel"
             app:nullable="true" />
         <action
             android:id="@+id/startDetailsNumberDataFragment"
@@ -121,7 +121,7 @@
         <argument
             android:name="filterWithCountryCodeUIModel"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel"
+            app:argType="com.tarasovvp.smartblocker.presentation.uimodels.FilterWithCountryCodeUIModel"
             app:nullable="true" />
         <action
             android:id="@+id/startCountryCodeSearchDialog"
@@ -155,7 +155,7 @@
 
     <fragment
         android:id="@+id/listContactFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.listcontact.ListContactFragment"
         android:label="@string/list_contact">
         <action
             android:id="@+id/startDetailsNumberDataFragment"
@@ -170,7 +170,7 @@
 
     <fragment
         android:id="@+id/listCallFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.list.listcall.ListCallFragment"
         android:label="@string/list_call">
         <action
             android:id="@+id/startDetailsNumberDataFragment"
@@ -188,12 +188,12 @@
 
     <fragment
         android:id="@+id/detailsNumberDataFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.number.details.detailsnumberdata.DetailsNumberDataFragment"
         android:label="@string/details_number">
         <argument
             android:name="numberData"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel"
+            app:argType="com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel"
             app:nullable="true" />
         <action
             android:id="@+id/startCreateFilterFragment"
@@ -226,7 +226,7 @@
 
     <fragment
         android:id="@+id/settingsListFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_list.SettingsListFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settingslist.SettingsListFragment"
         android:label="@string/settings">
         <action
             android:id="@+id/startSettingsBlockerFragment"
@@ -250,7 +250,7 @@
 
     <fragment
         android:id="@+id/settingsBlockerFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_blocker.SettingsBlockerFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settingsblocker.SettingsBlockerFragment"
         android:label="@string/settings_blocker">
         <action
             android:id="@+id/startCountryCodeSearchDialog"
@@ -259,7 +259,7 @@
 
     <fragment
         android:id="@+id/settingsAccountFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settingsaccount.SettingsAccountFragment"
         android:label="@string/settings_account">
         <action
             android:id="@+id/startLogOutDialog"
@@ -282,7 +282,7 @@
 
     <fragment
         android:id="@+id/settingsSignUpFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_sign_up.SettingsSignUpFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settingssignup.SettingsSignUpFragment"
         android:label="@string/authorization_sign_up">
         <action
             android:id="@+id/startExistAccountDialog"
@@ -291,12 +291,12 @@
 
     <fragment
         android:id="@+id/settingsLanguageFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_language.SettingsLanguageFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settingslanguage.SettingsLanguageFragment"
         android:label="@string/settings_language" />
 
     <fragment
         android:id="@+id/settingsThemeFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_theme.SettingsThemeFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settingstheme.SettingsThemeFragment"
         android:label="@string/settings_theme" />
 
     <dialog
@@ -305,7 +305,7 @@
 
     <fragment
         android:id="@+id/settingsPrivacyFragment"
-        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settings_privacy.SettingsPrivacyFragment"
+        android:name="com.tarasovvp.smartblocker.presentation.main.settings.settingsprivacy.SettingsPrivacyFragment"
         android:label="@string/settings_privacy" />
 
     <dialog
@@ -394,7 +394,7 @@
         <argument
             android:name="filterWithFilteredNumberUIModel"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel"
+            app:argType="com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel"
             app:nullable="true" />
     </dialog>
 
@@ -410,11 +410,11 @@
 
     <dialog
         android:id="@+id/countryCodeSearchDialog"
-        android:name="com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchDialog">
+        android:name="com.tarasovvp.smartblocker.presentation.dialogs.countrycodesearchdialog.CountryCodeSearchDialog">
         <argument
             android:name="countryCodeList"
             android:defaultValue="@null"
-            app:argType="com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel[]"
+            app:argType="com.tarasovvp.smartblocker.presentation.uimodels.CountryCodeUIModel[]"
             app:nullable="true" />
     </dialog>
 

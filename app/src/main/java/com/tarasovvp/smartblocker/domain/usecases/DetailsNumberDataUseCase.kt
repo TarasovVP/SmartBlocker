@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.domain.usecases
 
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
-import com.tarasovvp.smartblocker.domain.entities.db_views.FilterWithFilteredNumber
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbviews.FilterWithFilteredNumber
 import kotlinx.coroutines.flow.Flow
 
 interface DetailsNumberDataUseCase {

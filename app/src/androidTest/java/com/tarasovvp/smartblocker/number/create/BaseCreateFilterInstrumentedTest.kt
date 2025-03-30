@@ -6,7 +6,11 @@ import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withAlpha
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.tarasovvp.smartblocker.BaseInstrumentedTest
 import com.tarasovvp.smartblocker.R
 import com.tarasovvp.smartblocker.TestUtils.FILTER_WITH_COUNTRY_CODE
@@ -24,10 +28,10 @@ import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.presentation.main.number.create.CreateFilterFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.orZero
@@ -259,18 +263,6 @@ open class BaseCreateFilterInstrumentedTest : BaseInstrumentedTest() {
                 ),
             )
     }
-
-    // TODO numberDataUIModelList?
-    /*@Test
-    fun checkCreateFilterNumberList() {
-        if (numberDataUIModelList.isEmpty()) {
-            onView(withId(R.id.create_filter_empty_list)).check(matches(isDisplayed()))
-        } else {
-            onView(withId(R.id.create_filter_number_list))
-                .check(matches(isDisplayed()))
-                .check(matches(hasItemCount(numberDataUIModelList.size)))
-        }
-    }*/
 
     @Test
     fun checkCreateFilterListEmpty() {

@@ -2,16 +2,16 @@ package com.tarasovvp.smartblocker.usecases
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
-import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.repository.DataStoreRepository
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import com.tarasovvp.smartblocker.domain.repository.LogCallRepository
 import com.tarasovvp.smartblocker.domain.repository.RealDataBaseRepository
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.domain.usecases.ListCallUseCase
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcall.ListCallUseCaseImpl
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser
 import com.tarasovvp.smartblocker.utils.extensions.orZero
 import io.mockk.MockKAnnotations

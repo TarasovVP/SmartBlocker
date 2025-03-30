@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.domain.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Contact
+import com.tarasovvp.smartblocker.domain.entities.dbviews.ContactWithFilter
 
 interface ContactRepository {
     suspend fun getSystemContactList(

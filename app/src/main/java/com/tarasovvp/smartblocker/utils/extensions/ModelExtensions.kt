@@ -20,10 +20,10 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.perf.metrics.AddTrace
 import com.tarasovvp.smartblocker.R
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Filter
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Contact
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Filter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.dbentities.LogCall
 import com.tarasovvp.smartblocker.domain.entities.models.Call
 import com.tarasovvp.smartblocker.domain.enums.FilterCondition
 import com.tarasovvp.smartblocker.domain.enums.NumberDataFiltering
@@ -35,10 +35,10 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKED_CAL
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DESC
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import java.util.Locale
 import kotlin.math.max
@@ -250,7 +250,8 @@ fun Context.numberDataFilteringText(filterIndexes: ArrayList<Int>): String {
         getString(R.string.filter_no_filter)
     } else {
         filterIndexes.joinToString { index ->
-            NumberDataFiltering.values().find { it.ordinal == index }?.title()?.let { getString(it) }
+            NumberDataFiltering.values().find { it.ordinal == index }?.title()
+                ?.let { getString(it) }
                 ?: String.EMPTY
         }
     }
@@ -277,7 +278,8 @@ fun NumberDataUIModel.highlightedSpanned(
 
         is ContactWithFilterUIModel -> {
             when {
-                filterWithFilteredNumberUIModel?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal && isPhoneNumberValid.isTrue() &&
+                filterWithFilteredNumberUIModel?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal &&
+                    isPhoneNumberValid.isTrue() &&
                     number.startsWith(
                         PLUS_CHAR,
                     ).isNotTrue()

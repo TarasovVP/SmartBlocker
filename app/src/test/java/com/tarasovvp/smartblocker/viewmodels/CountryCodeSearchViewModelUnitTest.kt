@@ -3,11 +3,11 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_COUNTRY_CODE
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
 import com.tarasovvp.smartblocker.domain.usecases.CountryCodeSearchUseCase
-import com.tarasovvp.smartblocker.presentation.dialogs.country_code_search_dialog.CountryCodeSearchViewModel
+import com.tarasovvp.smartblocker.presentation.dialogs.countrycodesearchdialog.CountryCodeSearchViewModel
 import com.tarasovvp.smartblocker.presentation.mappers.CountryCodeUIMapper
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CountryCodeUIModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

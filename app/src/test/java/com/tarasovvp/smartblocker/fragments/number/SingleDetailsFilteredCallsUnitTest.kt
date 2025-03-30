@@ -30,8 +30,8 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.main.number.details.SingleDetailsFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.descriptionRes
 import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
@@ -143,7 +143,13 @@ class SingleDetailsFilteredCallsUnitTest : BaseFragmentUnitTest() {
                                 withId(R.id.item_call_container),
                                 isDisplayed(),
                                 withAlpha(
-                                    if (callWithFilterUIModel?.isDeleteMode.isTrue() && callWithFilterUIModel?.isFilteredCall.isNotTrue()) 0.5f else 1f,
+                                    if (callWithFilterUIModel?.isDeleteMode.isTrue() &&
+                                        callWithFilterUIModel?.isFilteredCall.isNotTrue()
+                                    ) {
+                                        0.5f
+                                    } else {
+                                        1f
+                                    },
                                 ),
                             ),
                         ),
@@ -173,7 +179,9 @@ class SingleDetailsFilteredCallsUnitTest : BaseFragmentUnitTest() {
                         hasDescendant(
                             allOf(
                                 withId(R.id.item_call_filter),
-                                if (callWithFilterUIModel?.isExtract.isNotTrue() || callWithFilterUIModel?.filterWithFilteredNumberUIModel?.filterType == 0) {
+                                if (callWithFilterUIModel?.isExtract.isNotTrue() ||
+                                    callWithFilterUIModel?.filterWithFilteredNumberUIModel?.filterType == 0
+                                ) {
                                     not(
                                         isDisplayed(),
                                     )
@@ -380,7 +388,13 @@ class SingleDetailsFilteredCallsUnitTest : BaseFragmentUnitTest() {
                                 withId(R.id.item_call_container),
                                 isDisplayed(),
                                 withAlpha(
-                                    if (callWithFilterUIModel?.isDeleteMode.isTrue() && callWithFilterUIModel?.isFilteredCall.isNotTrue()) 0.5f else 1f,
+                                    if (callWithFilterUIModel?.isDeleteMode.isTrue() &&
+                                        callWithFilterUIModel?.isFilteredCall.isNotTrue()
+                                    ) {
+                                        0.5f
+                                    } else {
+                                        1f
+                                    },
                                 ),
                             ),
                         ),

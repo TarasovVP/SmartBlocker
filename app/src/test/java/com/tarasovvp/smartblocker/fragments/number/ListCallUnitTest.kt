@@ -38,8 +38,8 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcall.ListCallFragment
+import com.tarasovvp.smartblocker.presentation.uimodels.CallWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNotTrue
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -183,10 +183,7 @@ class ListCallUnitTest : BaseFragmentUnitTest() {
                 .check(
                     matches(
                         hasItemCount(
-                            callList?.size.orZero() +
-                                callList?.groupBy {
-                                    it.dateFromCallDate()
-                                }?.size.orZero(),
+                            callList?.size.orZero() + callList?.groupBy { it.dateFromCallDate() }?.size.orZero(),
                         ),
                     ),
                 )
@@ -451,7 +448,9 @@ class ListCallUnitTest : BaseFragmentUnitTest() {
                         hasDescendant(
                             allOf(
                                 withId(R.id.item_call_filter),
-                                if (callWithFilter?.isExtract.isNotTrue() || callWithFilter?.filterWithFilteredNumberUIModel?.filterType == 0) {
+                                if (callWithFilter?.isExtract.isNotTrue() ||
+                                    callWithFilter?.filterWithFilteredNumberUIModel?.filterType == 0
+                                ) {
                                     not(
                                         isDisplayed(),
                                     )

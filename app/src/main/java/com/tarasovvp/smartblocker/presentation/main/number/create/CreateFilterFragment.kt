@@ -20,11 +20,11 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PLUS_CHAR
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SPACE
 import com.tarasovvp.smartblocker.presentation.base.BaseDetailsFragment
 import com.tarasovvp.smartblocker.presentation.main.MainActivity
-import com.tarasovvp.smartblocker.presentation.main.number.details.details_number_data.DetailsNumberDataFragmentDirections
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.CountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.main.number.details.detailsnumberdata.DetailsNumberDataFragmentDirections
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.AppPhoneNumberUtil
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.digitsTrimmed
@@ -76,7 +76,8 @@ open class CreateFilterFragment :
                                     contactWithFilter.number,
                                     filterWithCountryCode?.countryCodeUIModel?.country.orEmpty(),
                                 )
-                            if ((
+                            if (
+                                (
                                     phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(
                                         COUNTRY_CODE_START,
                                         phoneNumber?.countryCode.toString(),
@@ -144,7 +145,11 @@ open class CreateFilterFragment :
                             filterWithCountryCode?.filterWithFilteredNumberUIModel?.apply {
                                 filter = filterWithCountryCode?.createFilter().orEmpty()
                                 filterAction = filterAction
-                                    ?: if (isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_CREATE else FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                                    ?: if (isBlocker()) {
+                                        FilterAction.FILTER_ACTION_BLOCKER_CREATE
+                                    } else {
+                                        FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                                    }
                             },
                     ),
                 )
@@ -191,7 +196,8 @@ open class CreateFilterFragment :
                                 this.filterAction = filterAction
                                 this.created = Date().time
                                 this.country = filterWithCountryCode.countryCodeUIModel.country
-                                this.countryCode = filterWithCountryCode.countryCodeUIModel.countryCode
+                                this.countryCode =
+                                    filterWithCountryCode.countryCodeUIModel.countryCode
                             },
                         )
 
@@ -257,8 +263,14 @@ open class CreateFilterFragment :
         filterWithCountryCode: FilterWithCountryCodeUIModel?,
         inputText: String,
     ): Boolean {
-        return (filterWithCountryCode?.conditionTypeFullHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeFull()) ||
-            (filterWithCountryCode?.conditionTypeStartHint() == inputText && filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeStart())
+        return (
+            filterWithCountryCode?.conditionTypeFullHint() == inputText &&
+                filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeFull()
+        ) ||
+            (
+                filterWithCountryCode?.conditionTypeStartHint() == inputText &&
+                    filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeStart()
+            )
     }
 
     private fun setCountryCode(countryCode: CountryCodeUIModel?) {
@@ -306,8 +318,19 @@ open class CreateFilterFragment :
                                         FilterAction.FILTER_ACTION_PERMISSION_CREATE
                                     }
 
-                                filterWithFilteredNumberUIModel.filterType -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_BLOCKER_DELETE else FilterAction.FILTER_ACTION_PERMISSION_DELETE
-                                else -> if (filterWithFilteredNumberUIModel.isBlocker()) FilterAction.FILTER_ACTION_PERMISSION_TRANSFER else FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
+                                filterWithFilteredNumberUIModel.filterType ->
+                                    if (filterWithFilteredNumberUIModel.isBlocker()) {
+                                        FilterAction.FILTER_ACTION_BLOCKER_DELETE
+                                    } else {
+                                        FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                                    }
+
+                                else ->
+                                    if (filterWithFilteredNumberUIModel.isBlocker()) {
+                                        FilterAction.FILTER_ACTION_PERMISSION_TRANSFER
+                                    } else {
+                                        FilterAction.FILTER_ACTION_BLOCKER_TRANSFER
+                                    }
                             }
                     }
             }
@@ -348,7 +371,11 @@ open class CreateFilterFragment :
             getAllData()
             if (findNavController().previousBackStackEntry?.destination?.id == R.id.detailsNumberDataFragment) {
                 val directions =
-                    if (filterWithFilteredNumberUIModel.isBlocker()) CreateFilterFragmentDirections.startListBlockerFragment() else CreateFilterFragmentDirections.startListPermissionFragment()
+                    if (filterWithFilteredNumberUIModel.isBlocker()) {
+                        CreateFilterFragmentDirections.startListBlockerFragment()
+                    } else {
+                        CreateFilterFragmentDirections.startListPermissionFragment()
+                    }
                 findNavController().navigate(directions)
             } else {
                 findNavController().navigateUp()

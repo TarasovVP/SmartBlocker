@@ -10,7 +10,7 @@
 
         <variable
             name="contactWithFilter"
-            type="com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel" />
+            type="com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

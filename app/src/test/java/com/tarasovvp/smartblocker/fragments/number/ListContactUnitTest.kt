@@ -34,8 +34,8 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBackgroundColo
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.ContactWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcontact.ListContactFragment
+import com.tarasovvp.smartblocker.presentation.uimodels.ContactWithFilterUIModel
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import com.tarasovvp.smartblocker.utils.extensions.isNull
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
@@ -178,7 +178,11 @@ class ListContactUnitTest : BaseFragmentUnitTest() {
                         hasItemCount(
                             contactList?.size.orZero() +
                                 contactList?.groupBy {
-                                    if (it.contactName.isEmpty()) String.EMPTY else it.contactName.firstOrNull()
+                                    if (it.contactName.isEmpty()) {
+                                        String.EMPTY
+                                    } else {
+                                        it.contactName.firstOrNull()
+                                    }
                                 }?.size.orZero(),
                         ),
                     ),
@@ -412,7 +416,11 @@ class ListContactUnitTest : BaseFragmentUnitTest() {
                                 withId(R.id.item_contact_filter_value),
                                 isDisplayed(),
                                 withText(
-                                    if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) String.EMPTY else contactWithFilter?.filterWithFilteredNumberUIModel?.filter,
+                                    if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) {
+                                        String.EMPTY
+                                    } else {
+                                        contactWithFilter?.filterWithFilteredNumberUIModel?.filter
+                                    },
                                 ),
                                 withTextColor(
                                     if (contactWithFilter?.filterWithFilteredNumberUIModel?.isBlocker()
@@ -424,7 +432,11 @@ class ListContactUnitTest : BaseFragmentUnitTest() {
                                     },
                                 ),
                                 withDrawable(
-                                    if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) null else contactWithFilter?.filterWithFilteredNumberUIModel?.conditionTypeSmallIcon(),
+                                    if (contactWithFilter?.filterWithFilteredNumberUIModel.isNull()) {
+                                        null
+                                    } else {
+                                        contactWithFilter?.filterWithFilteredNumberUIModel?.conditionTypeSmallIcon()
+                                    },
                                 ),
                             ),
                         ),

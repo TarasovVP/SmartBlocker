@@ -5,8 +5,8 @@ import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NUMBER
 import com.tarasovvp.smartblocker.data.database.dao.FilteredCallDao
 import com.tarasovvp.smartblocker.data.repositoryImpl.FilteredCallRepositoryImpl
-import com.tarasovvp.smartblocker.domain.entities.db_entities.FilteredCall
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.FilteredCall
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
 import com.tarasovvp.smartblocker.domain.repository.FilteredCallRepository
 import io.mockk.MockKAnnotations
 import io.mockk.Runs

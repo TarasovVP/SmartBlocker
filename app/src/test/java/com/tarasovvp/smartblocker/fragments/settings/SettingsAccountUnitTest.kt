@@ -22,7 +22,7 @@ import com.tarasovvp.smartblocker.fragments.BaseFragmentUnitTest
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withBitmap
 import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withDrawable
-import com.tarasovvp.smartblocker.presentation.main.settings.settings_account.SettingsAccountFragment
+import com.tarasovvp.smartblocker.presentation.main.settings.settingsaccount.SettingsAccountFragment
 import com.tarasovvp.smartblocker.utils.extensions.currentUserEmail
 import com.tarasovvp.smartblocker.utils.extensions.getInitialDrawable
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser

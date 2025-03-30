@@ -141,9 +141,26 @@ fun FilterCondition.mainIconRes(): Int {
 
 fun FilterCondition.smallIconRes(isBlocker: Boolean): Int {
     return when (this) {
-        FilterCondition.FILTER_CONDITION_FULL -> if (isBlocker) R.drawable.ic_condition_full_blocker_small else R.drawable.ic_condition_full_permission_small
-        FilterCondition.FILTER_CONDITION_START -> if (isBlocker) R.drawable.ic_condition_start_blocker_small else R.drawable.ic_condition_start_permission_small
-        FilterCondition.FILTER_CONDITION_CONTAIN -> if (isBlocker) R.drawable.ic_condition_contain_blocker_small else R.drawable.ic_condition_contain_permission_small
+        FilterCondition.FILTER_CONDITION_FULL ->
+            if (isBlocker) {
+                R.drawable.ic_condition_full_blocker_small
+            } else {
+                R.drawable.ic_condition_full_permission_small
+            }
+
+        FilterCondition.FILTER_CONDITION_START ->
+            if (isBlocker) {
+                R.drawable.ic_condition_start_blocker_small
+            } else {
+                R.drawable.ic_condition_start_permission_small
+            }
+
+        FilterCondition.FILTER_CONDITION_CONTAIN ->
+            if (isBlocker) {
+                R.drawable.ic_condition_contain_blocker_small
+            } else {
+                R.drawable.ic_condition_contain_permission_small
+            }
     }
 }
 

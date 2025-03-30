@@ -1,8 +1,8 @@
 package com.tarasovvp.smartblocker.domain.repository
 
 import android.content.Context
-import com.tarasovvp.smartblocker.domain.entities.db_entities.LogCall
-import com.tarasovvp.smartblocker.domain.entities.db_views.CallWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.LogCall
+import com.tarasovvp.smartblocker.domain.entities.dbviews.CallWithFilter
 
 interface LogCallRepository {
     suspend fun getSystemLogCallList(

@@ -2,7 +2,7 @@ package com.tarasovvp.smartblocker.domain.usecases
 
 import androidx.datastore.preferences.core.Preferences
 import com.google.firebase.auth.AuthCredential
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 
 interface SettingsAccountUseCase {
     fun signOut(result: (Result<Unit>) -> Unit)

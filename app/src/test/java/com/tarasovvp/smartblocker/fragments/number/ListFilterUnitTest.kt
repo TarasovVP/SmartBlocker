@@ -41,10 +41,10 @@ import com.tarasovvp.smartblocker.fragments.FragmentTestUtils.withTextColor
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.BLOCKER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.FILTER_CONDITION_LIST
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.PERMISSION
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithCountryCodeUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListBlockerFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListPermissionFragment
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithCountryCodeUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
 import com.tarasovvp.smartblocker.utils.extensions.isTrue
 import com.tarasovvp.smartblocker.utils.extensions.numberDataFilteringText
 import com.tarasovvp.smartblocker.utils.extensions.orZero
@@ -561,12 +561,6 @@ class ListFilterUnitTest : BaseFragmentUnitTest() {
         filterWithFilteredNumber: FilterWithFilteredNumberUIModel?,
     ) {
         onView(withId(R.id.list_filter_recycler_view)).apply {
-            // TODO drawable
-            /*check(matches(atPosition(position, hasDescendant(allOf(withId(R.id.item_filter_avatar),
-                isDisplayed(),
-             */
-            // withDrawable(filterWithFilteredNumber?.conditionTypeIcon())
-            // )))))
             check(
                 matches(
                     atPosition(

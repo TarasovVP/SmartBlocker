@@ -1,7 +1,7 @@
 package com.tarasovvp.smartblocker.domain.repository
 
 import androidx.datastore.preferences.core.Preferences
-import com.tarasovvp.smartblocker.domain.entities.db_entities.CountryCode
+import com.tarasovvp.smartblocker.domain.entities.dbentities.CountryCode
 import kotlinx.coroutines.flow.Flow
 
 interface DataStoreRepository {

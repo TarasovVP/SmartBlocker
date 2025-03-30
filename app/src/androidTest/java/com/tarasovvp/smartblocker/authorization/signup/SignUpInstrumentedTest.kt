@@ -19,7 +19,7 @@ import com.tarasovvp.smartblocker.TestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.TestUtils.launchFragmentInHiltContainer
 import com.tarasovvp.smartblocker.TestUtils.withBackgroundTint
 import com.tarasovvp.smartblocker.TestUtils.withTextColor
-import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpFragment
+import com.tarasovvp.smartblocker.presentation.main.authorization.signup.SignUpFragment
 import com.tarasovvp.smartblocker.utils.extensions.EMPTY
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

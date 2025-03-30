@@ -3,9 +3,9 @@ package com.tarasovvp.smartblocker.viewmodels
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_EMAIL
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_PASSWORD
 import com.tarasovvp.smartblocker.UnitTestUtils.getOrAwaitValue
-import com.tarasovvp.smartblocker.domain.sealed_classes.Result
+import com.tarasovvp.smartblocker.domain.sealedclasses.Result
 import com.tarasovvp.smartblocker.domain.usecases.SignUpUseCase
-import com.tarasovvp.smartblocker.presentation.main.authorization.sign_up.SignUpViewModel
+import com.tarasovvp.smartblocker.presentation.main.authorization.signup.SignUpViewModel
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify

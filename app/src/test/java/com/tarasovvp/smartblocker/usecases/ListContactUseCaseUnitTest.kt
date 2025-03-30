@@ -1,11 +1,11 @@
 package com.tarasovvp.smartblocker.usecases
 
 import com.tarasovvp.smartblocker.UnitTestUtils.TEST_NAME
-import com.tarasovvp.smartblocker.domain.entities.db_entities.Contact
-import com.tarasovvp.smartblocker.domain.entities.db_views.ContactWithFilter
+import com.tarasovvp.smartblocker.domain.entities.dbentities.Contact
+import com.tarasovvp.smartblocker.domain.entities.dbviews.ContactWithFilter
 import com.tarasovvp.smartblocker.domain.repository.ContactRepository
 import com.tarasovvp.smartblocker.domain.usecases.ListContactUseCase
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactUseCaseImpl
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcontact.ListContactUseCaseImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

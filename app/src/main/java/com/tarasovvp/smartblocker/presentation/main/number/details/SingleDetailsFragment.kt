@@ -7,9 +7,9 @@ import com.tarasovvp.smartblocker.databinding.FragmentSingleNumberDataDetailsBin
 import com.tarasovvp.smartblocker.domain.enums.EmptyState
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.NUMBER_TYPE
 import com.tarasovvp.smartblocker.presentation.base.BaseBindingFragment
-import com.tarasovvp.smartblocker.presentation.ui_models.CallWithFilterUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.FilterWithFilteredNumberUIModel
-import com.tarasovvp.smartblocker.presentation.ui_models.NumberDataUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.CallWithFilterUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.FilterWithFilteredNumberUIModel
+import com.tarasovvp.smartblocker.presentation.uimodels.NumberDataUIModel
 
 class SingleDetailsFragment :
     BaseBindingFragment<FragmentSingleNumberDataDetailsBinding>() {

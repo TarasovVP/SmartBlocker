@@ -44,10 +44,10 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.DIALOG
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.IS_INSTRUMENTAL_TEST
 import com.tarasovvp.smartblocker.infrastructure.receivers.CallHandleReceiver
 import com.tarasovvp.smartblocker.infrastructure.services.ForegroundCallService
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_call.ListCallFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_contact.ListContactFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListBlockerFragment
-import com.tarasovvp.smartblocker.presentation.main.number.list.list_filter.ListPermissionFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcall.ListCallFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listcontact.ListContactFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListBlockerFragment
+import com.tarasovvp.smartblocker.presentation.main.number.list.listfilter.ListPermissionFragment
 import com.tarasovvp.smartblocker.utils.BackPressedUtil.isBackPressedScreen
 import com.tarasovvp.smartblocker.utils.PermissionUtil
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
@@ -232,11 +232,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setNavController() {
         navController =
-            (
-                supportFragmentManager.findFragmentById(
-                    R.id.host_main_fragment,
-                ) as NavHostFragment
-            ).navController
+            (supportFragmentManager.findFragmentById(R.id.host_main_fragment) as NavHostFragment).navController
     }
 
     fun setStartDestination(isOnBoardingSeen: Boolean) {
@@ -298,7 +294,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setToolbarVisibility(destination: NavDestination) {
         toolbar?.isVisible =
-            destination.id notEquals R.id.onBoardingFragment && destination.id notEquals R.id.loginFragment && destination.id notEquals R.id.signUpFragment
+            destination.id notEquals R.id.onBoardingFragment &&
+            destination.id notEquals R.id.loginFragment &&
+            destination.id notEquals R.id.signUpFragment
         binding?.toolbarDivider?.isVisible = toolbar?.isVisible.isTrue()
         toolbar?.forEach {
             if (it is TextView && navigationScreens.contains(destination.id)) {
