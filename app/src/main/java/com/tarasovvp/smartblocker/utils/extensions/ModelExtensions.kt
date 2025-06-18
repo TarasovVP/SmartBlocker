@@ -98,9 +98,7 @@ fun Context.systemCallLogCursor(): Cursor? {
             CallLog.Calls.TYPE,
             CallLog.Calls.DATE,
         )
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        projection.add(CallLog.Calls.CACHED_PHOTO_URI)
-    }
+    projection.add(CallLog.Calls.CACHED_PHOTO_URI)
 
     return this.contentResolver.query(
         CallLog.Calls.CONTENT_URI,
@@ -118,9 +116,7 @@ fun Cursor.createCallObject(isFilteredCall: Boolean): Call {
     logCall.number = this.getString(2)
     logCall.type = this.getString(3)
     logCall.callDate = this.getString(4)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        logCall.photoUrl = this.getString(5)
-    }
+    logCall.photoUrl = this.getString(5)
     return logCall
 }
 

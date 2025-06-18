@@ -16,7 +16,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.os.Build
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.view.View
@@ -60,11 +59,7 @@ fun Context.registerForNetworkUpdates(isNetworkAvailable: (Boolean) -> Unit) {
             }
         }
     val connectivityManager =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getSystemService(ConnectivityManager::class.java) as ConnectivityManager
-        } else {
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        }
+        getSystemService(ConnectivityManager::class.java) as ConnectivityManager
     connectivityManager.requestNetwork(networkRequest, networkCallback)
 }
 
@@ -84,20 +79,18 @@ fun Application.initAppsFlyerLib() {
 }
 
 fun Context.createNotificationChannel() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel =
-            NotificationChannel(
-                Constants.NOTIFICATION_CHANNEL,
-                Constants.FOREGROUND_CALL_SERVICE,
-                NotificationManager.IMPORTANCE_HIGH,
-            )
-        channel.lightColor = Color.BLUE
-        channel.importance = NotificationManager.IMPORTANCE_NONE
-        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-        channel.setShowBadge(false)
-        val service = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(channel)
-    }
+    val channel =
+        NotificationChannel(
+            Constants.NOTIFICATION_CHANNEL,
+            Constants.FOREGROUND_CALL_SERVICE,
+            NotificationManager.IMPORTANCE_HIGH,
+        )
+    channel.lightColor = Color.BLUE
+    channel.importance = NotificationManager.IMPORTANCE_NONE
+    channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+    channel.setShowBadge(false)
+    val service = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+    service.createNotificationChannel(channel)
 }
 
 fun Context.notificationBuilder(): NotificationCompat.Builder {
@@ -108,7 +101,7 @@ fun Context.notificationBuilder(): NotificationCompat.Builder {
             this,
             0,
             notificationIntent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0,
+            PendingIntent.FLAG_IMMUTABLE,
         )
     val builder: NotificationCompat.Builder =
         NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL)

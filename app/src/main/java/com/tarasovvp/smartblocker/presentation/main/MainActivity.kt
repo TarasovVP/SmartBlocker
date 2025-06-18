@@ -352,11 +352,7 @@ class MainActivity : AppCompatActivity() {
                         .not() && blockerTurnOn && isBlockerLaunched().not()
                 ) {
                     callIntent = Intent(this@MainActivity, ForegroundCallService::class.java)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(callIntent)
-                    } else {
-                        startService(callIntent)
-                    }
+                    startForegroundService(callIntent)
                 }
             }
             successAllDataLiveData.safeSingleObserve(this@MainActivity) {

@@ -104,10 +104,6 @@ open class CallReceiver : BroadcastReceiver() {
     }
 
     private fun breakCall(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            context.breakCallPieAndHigher()
-        } else {
-            context.breakCallNougatAndLower()
-        }
+        context.breakCallPieAndHigher()
     }
 }
