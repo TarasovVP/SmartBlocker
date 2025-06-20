@@ -163,8 +163,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-accessibility:$espresso") {
         exclude module: "protobuf-lite"
     }
-    androidTestImplementation "androidx.fragment:fragment-testing:1.5.7"
-    androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
+    androidTestImplementation "androidx.fragment:fragment-testing:1.8.8"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.9.0"
 
     //GoogleServices
     implementation "com.google.android.gms:play-services-ads:22.1.0"
@@ -224,7 +224,7 @@ dependencies {
     testAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.1.7"
 
     //Memory leak
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
