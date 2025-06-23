@@ -164,16 +164,16 @@ data class CallWithFilterUIModel(
     fun callFilterTint(filter: FilterWithFilteredNumberUIModel?): Int {
         return when {
             (isCallFiltered() && isBlockedCall()) || (
-                isExtract &&
-                    filter?.isBlocker()
-                        .isTrue()
-            ) -> R.color.sunset
+                    isExtract &&
+                            filter?.isBlocker()
+                                .isTrue()
+                    ) -> R.color.sunset
 
             (isCallFiltered() && isPermittedCall()) || (
-                isExtract &&
-                    filter?.isPermission()
-                        .isTrue()
-            ) -> R.color.islamic_green
+                    isExtract &&
+                            filter?.isPermission()
+                                .isTrue()
+                    ) -> R.color.islamic_green
 
             else -> R.color.text_color_grey
         }

@@ -114,9 +114,9 @@ open class BaseListContactInstrumentedTest : BaseInstrumentedTest() {
                     FILTER_CONDITION_LIST,
                     bundleOf(
                         FILTER_CONDITION_LIST to
-                            arrayListOf<Int>().apply {
-                                add(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
-                            },
+                                arrayListOf<Int>().apply {
+                                    add(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
+                                },
                     ),
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
@@ -140,10 +140,10 @@ open class BaseListContactInstrumentedTest : BaseInstrumentedTest() {
                     FILTER_CONDITION_LIST,
                     bundleOf(
                         FILTER_CONDITION_LIST to
-                            arrayListOf<Int>().apply {
-                                add(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
-                                add(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal)
-                            },
+                                arrayListOf<Int>().apply {
+                                    add(NumberDataFiltering.CONTACT_WITH_BLOCKER.ordinal)
+                                    add(NumberDataFiltering.CONTACT_WITH_PERMISSION.ordinal)
+                                },
                     ),
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
@@ -189,13 +189,13 @@ open class BaseListContactInstrumentedTest : BaseInstrumentedTest() {
                     matches(
                         hasItemCount(
                             contactList?.size.orZero() +
-                                contactList?.groupBy {
-                                    if (it.contactName.isEmpty()) {
-                                        String.EMPTY
-                                    } else {
-                                        it.contactName.firstOrNull()
-                                    }
-                                }?.size.orZero(),
+                                    contactList?.groupBy {
+                                        if (it.contactName.isEmpty()) {
+                                            String.EMPTY
+                                        } else {
+                                            it.contactName.firstOrNull()
+                                        }
+                                    }?.size.orZero(),
                         ),
                     ),
                 )

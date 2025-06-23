@@ -34,7 +34,8 @@ class ListCallViewModelUnitTest : BaseViewModelUnitTest<ListCallViewModel>() {
     @MockK
     private lateinit var savedStateHandle: SavedStateHandle
 
-    override fun createViewModel() = ListCallViewModel(application, useCase, callWithFilterUIMapper, savedStateHandle)
+    override fun createViewModel() =
+        ListCallViewModel(application, useCase, callWithFilterUIMapper, savedStateHandle)
 
     @Test
     fun getCallListTest() =
@@ -84,19 +85,19 @@ class ListCallViewModelUnitTest : BaseViewModelUnitTest<ListCallViewModel>() {
     @Test
     fun deleteCallListTest() =
         runTest {
-        /*val expectedResult = Result.Success<Unit>()
-        val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "1234")))
-        val callUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER), CallWithFilterUIModel(number = "1234"))
-        every { application.isNetworkAvailable } returns true
-        coEvery { useCase.deleteCallList(eq(callUIModelList.map { it.callId.orZero() }), any(), any()) } answers {
-            val result = thirdArg<(Result<Unit>) -> Unit>()
-            result.invoke(expectedResult)
-        }
-        every { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) } returns callList
-        viewModel.deleteCallList(callUIModelList.map { it.callId.orZero() })
-        advanceUntilIdle()
-        coVerify { useCase.deleteCallList(eq(callUIModelList.map { it.callId.orZero() }), any(), any()) }
-        verify { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) }
-        assertEquals(true, viewModel.successDeleteNumberLiveData.value)*/
+            /*val expectedResult = Result.Success<Unit>()
+            val callList = listOf(CallWithFilter(call = Call(number = TEST_NUMBER)), CallWithFilter(call = Call(number = "1234")))
+            val callUIModelList = listOf(CallWithFilterUIModel(number = TEST_NUMBER), CallWithFilterUIModel(number = "1234"))
+            every { application.isNetworkAvailable } returns true
+            coEvery { useCase.deleteCallList(eq(callUIModelList.map { it.callId.orZero() }), any(), any()) } answers {
+                val result = thirdArg<(Result<Unit>) -> Unit>()
+                result.invoke(expectedResult)
+            }
+            every { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) } returns callList
+            viewModel.deleteCallList(callUIModelList.map { it.callId.orZero() })
+            advanceUntilIdle()
+            coVerify { useCase.deleteCallList(eq(callUIModelList.map { it.callId.orZero() }), any(), any()) }
+            verify { callWithFilterUIMapper.mapFromUIModelList(callUIModelList) }
+            assertEquals(true, viewModel.successDeleteNumberLiveData.value)*/
         }
 }

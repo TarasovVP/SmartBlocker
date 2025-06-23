@@ -3,7 +3,6 @@ package com.tarasovvp.smartblocker.infrastructure.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.telephony.TelephonyManager
 import com.google.firebase.auth.FirebaseAuth
 import com.tarasovvp.smartblocker.domain.entities.dbentities.Filter
@@ -17,7 +16,6 @@ import com.tarasovvp.smartblocker.infrastructure.constants.Constants.CALL_RECEIV
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.EXTRA_INCOMING_NUMBER
 import com.tarasovvp.smartblocker.infrastructure.constants.Constants.SECOND
 import com.tarasovvp.smartblocker.utils.PermissionUtil.checkPermissions
-import com.tarasovvp.smartblocker.utils.extensions.breakCallNougatAndLower
 import com.tarasovvp.smartblocker.utils.extensions.breakCallPieAndHigher
 import com.tarasovvp.smartblocker.utils.extensions.createFilteredCall
 import com.tarasovvp.smartblocker.utils.extensions.isAuthorisedUser

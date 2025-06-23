@@ -53,7 +53,7 @@ class DetailsFilterFragment :
                 when (val filterAction = bundle.serializable(FILTER_ACTION) as? FilterAction) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-                    -> {
+                        -> {
                         viewModel.updateFilter(
                             filterWithFilteredNumberUIModel.apply {
                                 this.filterType =
@@ -65,7 +65,7 @@ class DetailsFilterFragment :
 
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                    ->
+                        ->
                         viewModel.deleteFilter(
                             filterWithFilteredNumberUIModel.apply {
                                 filterWithFilteredNumberUIModel.filterAction = filterAction

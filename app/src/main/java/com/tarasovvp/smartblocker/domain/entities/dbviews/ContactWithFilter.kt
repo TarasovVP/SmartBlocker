@@ -8,11 +8,11 @@ import kotlinx.parcelize.Parcelize
 
 @DatabaseView(
     "SELECT contacts.*, filters.* FROM contacts " +
-        "LEFT JOIN filters ON (filters.filter = contacts.phoneNumberValue AND filters.conditionType = 0) " +
-        "OR (contacts.phoneNumberValue LIKE filters.filter || '%' AND filters.conditionType = 1) " +
-        "OR (contacts.phoneNumberValue LIKE '%' || filters.filter || '%' AND filters.conditionType = 2) " +
-        "WHERE filters.filter = (SELECT filter FROM filters WHERE contacts.phoneNumberValue LIKE filter || '%' " +
-        "OR contacts.phoneNumberValue LIKE '%' || filter || '%' ORDER BY LENGTH(filter) DESC LIMIT 1) OR filters.filter IS NULL",
+            "LEFT JOIN filters ON (filters.filter = contacts.phoneNumberValue AND filters.conditionType = 0) " +
+            "OR (contacts.phoneNumberValue LIKE filters.filter || '%' AND filters.conditionType = 1) " +
+            "OR (contacts.phoneNumberValue LIKE '%' || filters.filter || '%' AND filters.conditionType = 2) " +
+            "WHERE filters.filter = (SELECT filter FROM filters WHERE contacts.phoneNumberValue LIKE filter || '%' " +
+            "OR contacts.phoneNumberValue LIKE '%' || filter || '%' ORDER BY LENGTH(filter) DESC LIMIT 1) OR filters.filter IS NULL",
 )
 @Parcelize
 data class ContactWithFilter(

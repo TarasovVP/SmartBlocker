@@ -47,12 +47,14 @@ class NumberDataFilteringDialog : BaseDialog<DialogNumberDataFilteringBinding>()
                     FILTER_CONDITION_LIST,
                     bundleOf(
                         FILTER_CONDITION_LIST to
-                            arrayListOf<Int>().apply {
-                                dialogNumberDataFilteringContainer.getViewsFromLayout(CheckBox::class.java)
-                                    .forEach { checkBox ->
-                                        if (checkBox.isChecked) add(checkBox.tag.toString().toInt())
-                                    }
-                            },
+                                arrayListOf<Int>().apply {
+                                    dialogNumberDataFilteringContainer.getViewsFromLayout(CheckBox::class.java)
+                                        .forEach { checkBox ->
+                                            if (checkBox.isChecked) add(
+                                                checkBox.tag.toString().toInt()
+                                            )
+                                        }
+                                },
                     ),
                 )
             }

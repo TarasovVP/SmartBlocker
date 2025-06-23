@@ -20,7 +20,7 @@ interface LogCallDao {
     @Transaction
     @Query(
         "SELECT DISTINCT callId, * FROM callWithFilter " + "WHERE isFilteredCall = 1 " +
-            "OR callId NOT IN (SELECT callId FROM callWithFilter " + "WHERE isFilteredCall = 1)",
+                "OR callId NOT IN (SELECT callId FROM callWithFilter " + "WHERE isFilteredCall = 1)",
     )
     suspend fun allCallWithFilters(): List<CallWithFilter>
 

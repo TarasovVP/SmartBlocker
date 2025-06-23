@@ -123,7 +123,10 @@ class DataStoreRepositoryUnitTest {
             coEvery { dataStore.updateData(any()) } returns flowOf(preferences).first()
             coEvery { dataStore.data } returns flowOf(preferences)
             dataStoreRepository.setBlockerTurnOn(blockerTurnOff)
-            assertEquals(blockerTurnOff, dataStore.data.first()[booleanPreferencesKey(BLOCK_TURN_ON)])
+            assertEquals(
+                blockerTurnOff,
+                dataStore.data.first()[booleanPreferencesKey(BLOCK_TURN_ON)]
+            )
         }
 
     @Test

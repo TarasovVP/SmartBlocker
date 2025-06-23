@@ -88,9 +88,9 @@ open class BaseListFilterInstrumentedTest : BaseInstrumentedTest() {
                     FILTER_CONDITION_LIST,
                     bundleOf(
                         FILTER_CONDITION_LIST to
-                            arrayListOf<Int>().apply {
-                                add(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal)
-                            },
+                                arrayListOf<Int>().apply {
+                                    add(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal)
+                                },
                     ),
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
@@ -114,10 +114,10 @@ open class BaseListFilterInstrumentedTest : BaseInstrumentedTest() {
                     FILTER_CONDITION_LIST,
                     bundleOf(
                         FILTER_CONDITION_LIST to
-                            arrayListOf<Int>().apply {
-                                add(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal)
-                                add(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
-                            },
+                                arrayListOf<Int>().apply {
+                                    add(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal)
+                                    add(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
+                                },
                     ),
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->

@@ -99,7 +99,7 @@ class SettingsListFragment : BaseFragment<FragmentSettingsListBinding, SettingsL
                 Intent.ACTION_VIEW,
                 Uri.parse(
                     "https://smartblocker.onelink.me/kUoF?af_xp=app&pid=Cross_sale&c=Talk%20To%20AI&af_dp" +
-                        "=talktoai%3A%2F%2Fcom.vnstudio.talktoai",
+                            "=talktoai%3A%2F%2Fcom.vnstudio.talktoai",
                 ),
             )
         startActivity(intent)

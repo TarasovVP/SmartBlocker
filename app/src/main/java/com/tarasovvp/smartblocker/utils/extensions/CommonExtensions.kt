@@ -143,11 +143,12 @@ fun Context.htmlWithImages(htmlText: String): Spanned {
                 val width = Resources.getSystem().displayMetrics.widthPixels - dpToPx(32f).toInt()
                 val height =
                     (
-                        width * (
-                            drawable?.intrinsicHeight.orZero()
-                                .toFloat() / drawable?.intrinsicWidth?.takeIf { it > 0 }.orZero()
-                        )
-                    ).toInt()
+                            width * (
+                                    drawable?.intrinsicHeight.orZero()
+                                        .toFloat() / drawable?.intrinsicWidth?.takeIf { it > 0 }
+                                        .orZero()
+                                    )
+                            ).toInt()
                 drawable?.setBounds(0, 0, width, height)
             } else {
                 drawable?.setBounds(
@@ -205,7 +206,7 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? =
         else ->
             @Suppress("DEPRECATION")
             getParcelable(key)
-                as? T
+                    as? T
     }
 
 inline fun <reified T : Serializable> Bundle.serializable(key: String): T? =
@@ -214,11 +215,13 @@ inline fun <reified T : Serializable> Bundle.serializable(key: String): T? =
         else ->
             @Suppress("DEPRECATION")
             getSerializable(key)
-                as? T
+                    as? T
     }
 
-infix fun String?.isContaining(searchQuery: String?) = this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
+infix fun String?.isContaining(searchQuery: String?) =
+    this?.lowercase()?.contains(searchQuery?.lowercase().orEmpty()).isTrue()
 
 infix fun Any?.notEquals(any: Any?) = this != any
 
-fun String?.supportFactory(): SupportFactory = SupportFactory(SQLiteDatabase.getBytes(this?.toCharArray()))
+fun String?.supportFactory(): SupportFactory =
+    SupportFactory(SQLiteDatabase.getBytes(this?.toCharArray()))

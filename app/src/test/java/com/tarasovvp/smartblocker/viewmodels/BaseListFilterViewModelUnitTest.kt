@@ -108,7 +108,10 @@ class BaseListFilterViewModelUnitTest : BaseViewModelUnitTest<BaseListFilterView
                 )
             viewModel.getFilteredFilterList(filterList, searchQuery, filterIndexes)
             advanceUntilIdle()
-            assertEquals(expectedFilteredList, viewModel.filteredFilterListLiveData.getOrAwaitValue())
+            assertEquals(
+                expectedFilteredList,
+                viewModel.filteredFilterListLiveData.getOrAwaitValue()
+            )
         }
 
     @Test

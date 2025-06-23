@@ -10,24 +10,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsLanguageViewModel
-    @Inject
-    constructor(
-        application: Application,
-        private val settingsLanguageUseCase: SettingsLanguageUseCase,
-    ) : BaseViewModel(application) {
-        val appLanguageLiveData = MutableLiveData<String>()
+@Inject
+constructor(
+    application: Application,
+    private val settingsLanguageUseCase: SettingsLanguageUseCase,
+) : BaseViewModel(application) {
+    val appLanguageLiveData = MutableLiveData<String>()
 
-        fun getAppLanguage() {
-            launch {
-                settingsLanguageUseCase.getAppLanguage().collect { appLang ->
-                    appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
-                }
-            }
-        }
-
-        fun setAppLanguage(appLang: String) {
-            launch {
-                settingsLanguageUseCase.setAppLanguage(appLang)
+    fun getAppLanguage() {
+        launch {
+            settingsLanguageUseCase.getAppLanguage().collect { appLang ->
+                appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
             }
         }
     }
+
+    fun setAppLanguage(appLang: String) {
+        launch {
+            settingsLanguageUseCase.setAppLanguage(appLang)
+        }
+    }
+}

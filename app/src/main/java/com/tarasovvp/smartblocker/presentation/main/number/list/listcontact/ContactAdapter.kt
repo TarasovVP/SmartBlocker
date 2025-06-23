@@ -78,7 +78,10 @@ class ContactAdapter(private val contactClick: (ContactWithFilterUIModel) -> Uni
                                 number.highlightedSpanned(
                                     String.EMPTY,
                                     null,
-                                    ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                                    ContextCompat.getColor(
+                                        itemView.context,
+                                        R.color.text_color_black
+                                    ),
                                 )
                         },
                     )

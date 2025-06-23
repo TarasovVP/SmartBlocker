@@ -177,13 +177,13 @@ class ListContactUnitTest : BaseFragmentUnitTest() {
                     matches(
                         hasItemCount(
                             contactList?.size.orZero() +
-                                contactList?.groupBy {
-                                    if (it.contactName.isEmpty()) {
-                                        String.EMPTY
-                                    } else {
-                                        it.contactName.firstOrNull()
-                                    }
-                                }?.size.orZero(),
+                                    contactList?.groupBy {
+                                        if (it.contactName.isEmpty()) {
+                                            String.EMPTY
+                                        } else {
+                                            it.contactName.firstOrNull()
+                                        }
+                                    }?.size.orZero(),
                         ),
                     ),
                 )

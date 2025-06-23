@@ -14,34 +14,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsListViewModel
-    @Inject
-    constructor(
-        private val application: Application,
-        private val settingsListUseCase: SettingsListUseCase,
-    ) : BaseViewModel(application) {
-        val appLanguageLiveData = MutableLiveData<String>()
-        val successFeedbackLiveData = MutableLiveData<String>()
+@Inject
+constructor(
+    private val application: Application,
+    private val settingsListUseCase: SettingsListUseCase,
+) : BaseViewModel(application) {
+    val appLanguageLiveData = MutableLiveData<String>()
+    val successFeedbackLiveData = MutableLiveData<String>()
 
-        fun getAppLanguage() {
-            launch {
-                settingsListUseCase.getAppLanguage().collect { appLang ->
-                    appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
-                }
-            }
-        }
-
-        fun insertFeedback(feedback: Feedback) {
-            if (application.isNetworkAvailable()) {
-                showProgress()
-                settingsListUseCase.insertFeedback(feedback) { result ->
-                    when (result) {
-                        is Result.Success -> successFeedbackLiveData.postValue(feedback.message)
-                        is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
-                    }
-                }
-                hideProgress()
-            } else {
-                exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+    fun getAppLanguage() {
+        launch {
+            settingsListUseCase.getAppLanguage().collect { appLang ->
+                appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
             }
         }
     }
+
+    fun insertFeedback(feedback: Feedback) {
+        if (application.isNetworkAvailable()) {
+            showProgress()
+            settingsListUseCase.insertFeedback(feedback) { result ->
+                when (result) {
+                    is Result.Success -> successFeedbackLiveData.postValue(feedback.message)
+                    is Result.Failure -> exceptionLiveData.postValue(result.errorMessage.orEmpty())
+                }
+            }
+            hideProgress()
+        } else {
+            exceptionLiveData.postValue(application.getString(R.string.app_network_unavailable_repeat))
+        }
+    }
+}

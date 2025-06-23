@@ -52,13 +52,13 @@ class DetailsFilterViewModelUnitTest : BaseViewModelUnitTest<DetailsFilterViewMo
     @Test
     fun getQueryContactCallListTest() =
         runTest {
-        /*val filter = Filter(filter = TEST_FILTER)
-        val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
-        coEvery { useCase.numberDataListByFilter(filter) } returns numberDataList
-        viewModel.getQueryContactCallList(filter)
-        advanceUntilIdle()
-        val result = viewModel.numberDataListLiveDataUIModel.getOrAwaitValue()
-        assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)*/
+            /*val filter = Filter(filter = TEST_FILTER)
+            val numberDataList = arrayListOf(ContactWithFilter(contact = Contact(number = TEST_NUMBER)), CallWithFilter().apply { call = Call(number = TEST_FILTER) })
+            coEvery { useCase.numberDataListByFilter(filter) } returns numberDataList
+            viewModel.getQueryContactCallList(filter)
+            advanceUntilIdle()
+            val result = viewModel.numberDataListLiveDataUIModel.getOrAwaitValue()
+            assertEquals(TEST_NUMBER, (result[0] as ContactWithFilter).contact?.number)*/
         }
 
     @Test
@@ -77,14 +77,18 @@ class DetailsFilterViewModelUnitTest : BaseViewModelUnitTest<DetailsFilterViewMo
             advanceUntilIdle()
             coVerify { useCase.allFilteredCallsByFilter(TEST_FILTER) }
             verify { callWithFilterUIMapper.mapToUIModelList(filteredCallList) }
-            assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
+            assertEquals(
+                filteredCallUIModelList,
+                viewModel.filteredCallListLiveData.getOrAwaitValue()
+            )
         }
 
     @Test
     fun updateFilterTest() =
         runTest {
             val expectedResult = Result.Success<Unit>()
-            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            val filterWithFilteredNumberUIModel =
+                FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
             val filterWithFilteredNumber =
                 FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
             every { application.isNetworkAvailable } returns true
@@ -119,7 +123,8 @@ class DetailsFilterViewModelUnitTest : BaseViewModelUnitTest<DetailsFilterViewMo
     fun deleteFilterTest() =
         runTest {
             val expectedResult = Result.Success<Unit>()
-            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            val filterWithFilteredNumberUIModel =
+                FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
             val filterWithFilteredNumber =
                 FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
             every { application.isNetworkAvailable } returns true

@@ -10,7 +10,6 @@ import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
 import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
@@ -275,11 +274,11 @@ fun NumberDataUIModel.highlightedSpanned(
         is ContactWithFilterUIModel -> {
             when {
                 filterWithFilteredNumberUIModel?.conditionType != FilterCondition.FILTER_CONDITION_CONTAIN.ordinal &&
-                    isPhoneNumberValid.isTrue() &&
-                    number.startsWith(
-                        PLUS_CHAR,
-                    ).isNotTrue()
-                ->
+                        isPhoneNumberValid.isTrue() &&
+                        number.startsWith(
+                            PLUS_CHAR,
+                        ).isNotTrue()
+                    ->
                     number.highlightedSpanned(
                         filterWithFilteredNumberUIModel?.countryCode?.takeIf {
                             filterWithFilteredNumberUIModel.filter.length > filterWithFilteredNumberUIModel.countryCode.length

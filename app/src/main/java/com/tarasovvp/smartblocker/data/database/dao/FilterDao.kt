@@ -38,10 +38,10 @@ interface FilterDao {
     @Transaction
     @Query(
         "SELECT * FROM FilterWithFilteredNumber " +
-            "WHERE (filter = :number AND conditionType = 0) " +
-            "OR (:number LIKE filter || '%' AND conditionType = 1) " +
-            "OR (:number LIKE '%' || filter || '%' AND conditionType = 2) " +
-            "ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)",
+                "WHERE (filter = :number AND conditionType = 0) " +
+                "OR (:number LIKE filter || '%' AND conditionType = 1) " +
+                "OR (:number LIKE '%' || filter || '%' AND conditionType = 2) " +
+                "ORDER BY LENGTH(filter) DESC, INSTR(:number, filter)",
     )
     suspend fun allFilterWithFilteredNumbersByNumber(number: String): List<FilterWithFilteredNumber>
 

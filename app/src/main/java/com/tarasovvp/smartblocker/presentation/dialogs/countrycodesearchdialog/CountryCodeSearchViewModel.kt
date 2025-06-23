@@ -12,27 +12,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CountryCodeSearchViewModel
-    @Inject
-    constructor(
-        application: Application,
-        private val countryCodeSearchUseCase: CountryCodeSearchUseCase,
-        private val countryCodeUIMapper: CountryCodeUIMapper,
-    ) : BaseViewModel(application) {
-        val appLangLiveDataLiveData = MutableLiveData<String>()
-        val countryCodeListLiveData = MutableLiveData<List<CountryCodeUIModel>>()
+@Inject
+constructor(
+    application: Application,
+    private val countryCodeSearchUseCase: CountryCodeSearchUseCase,
+    private val countryCodeUIMapper: CountryCodeUIMapper,
+) : BaseViewModel(application) {
+    val appLangLiveDataLiveData = MutableLiveData<String>()
+    val countryCodeListLiveData = MutableLiveData<List<CountryCodeUIModel>>()
 
-        fun getAppLanguage() {
-            launch {
-                countryCodeSearchUseCase.getAppLanguage().collect { appLang ->
-                    appLangLiveDataLiveData.postValue(appLang ?: Locale.getDefault().language)
-                }
-            }
-        }
-
-        fun getCountryCodeList() {
-            launch {
-                val countryCodeList = countryCodeSearchUseCase.getCountryCodeList()
-                countryCodeListLiveData.postValue(countryCodeUIMapper.mapToUIModelList(countryCodeList))
+    fun getAppLanguage() {
+        launch {
+            countryCodeSearchUseCase.getAppLanguage().collect { appLang ->
+                appLangLiveDataLiveData.postValue(appLang ?: Locale.getDefault().language)
             }
         }
     }
+
+    fun getCountryCodeList() {
+        launch {
+            val countryCodeList = countryCodeSearchUseCase.getCountryCodeList()
+            countryCodeListLiveData.postValue(countryCodeUIMapper.mapToUIModelList(countryCodeList))
+        }
+    }
+}

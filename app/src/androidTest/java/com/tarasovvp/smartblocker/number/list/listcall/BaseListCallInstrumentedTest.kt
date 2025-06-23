@@ -118,9 +118,9 @@ open class BaseListCallInstrumentedTest : BaseInstrumentedTest() {
                     FILTER_CONDITION_LIST,
                     bundleOf(
                         FILTER_CONDITION_LIST to
-                            arrayListOf<Int>().apply {
-                                add(NumberDataFiltering.CALL_BLOCKED.ordinal)
-                            },
+                                arrayListOf<Int>().apply {
+                                    add(NumberDataFiltering.CALL_BLOCKED.ordinal)
+                                },
                     ),
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
@@ -144,10 +144,10 @@ open class BaseListCallInstrumentedTest : BaseInstrumentedTest() {
                     FILTER_CONDITION_LIST,
                     bundleOf(
                         FILTER_CONDITION_LIST to
-                            arrayListOf<Int>().apply {
-                                add(NumberDataFiltering.CALL_BLOCKED.ordinal)
-                                add(NumberDataFiltering.CALL_PERMITTED.ordinal)
-                            },
+                                arrayListOf<Int>().apply {
+                                    add(NumberDataFiltering.CALL_BLOCKED.ordinal)
+                                    add(NumberDataFiltering.CALL_PERMITTED.ordinal)
+                                },
                     ),
                 )
                 fragment?.setFragmentResultListener(FILTER_CONDITION_LIST) { _, _ ->
@@ -193,9 +193,9 @@ open class BaseListCallInstrumentedTest : BaseInstrumentedTest() {
                     matches(
                         hasItemCount(
                             callList?.size.orZero() +
-                                callList?.groupBy {
-                                    it.dateFromCallDate()
-                                }?.size.orZero(),
+                                    callList?.groupBy {
+                                        it.dateFromCallDate()
+                                    }?.size.orZero(),
                         ),
                     ),
                 )

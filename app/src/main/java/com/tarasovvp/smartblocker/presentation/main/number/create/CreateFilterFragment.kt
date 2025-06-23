@@ -78,11 +78,11 @@ open class CreateFilterFragment :
                                 )
                             if (
                                 (
-                                    phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(
-                                        COUNTRY_CODE_START,
-                                        phoneNumber?.countryCode.toString(),
-                                    ) == createFilterCountryCodeValue.text.toString()
-                                ).not()
+                                        phoneNumber?.nationalNumber.toString() == createFilterInput.getRawText() && String.format(
+                                            COUNTRY_CODE_START,
+                                            phoneNumber?.countryCode.toString(),
+                                        ) == createFilterCountryCodeValue.text.toString()
+                                        ).not()
                             ) {
                                 filterWithCountryCode?.filterWithFilteredNumberUIModel =
                                     this.apply {
@@ -172,7 +172,7 @@ open class CreateFilterFragment :
                 when (val filterAction = bundle.serializable<FilterAction>(FILTER_ACTION)) {
                     FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
                     FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-                    ->
+                        ->
                         viewModel.updateFilter(
                             filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
                                 this.filterAction = filterAction
@@ -181,7 +181,7 @@ open class CreateFilterFragment :
 
                     FilterAction.FILTER_ACTION_BLOCKER_DELETE,
                     FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-                    ->
+                        ->
                         viewModel.deleteFilter(
                             filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
                                 this.filterAction = filterAction
@@ -190,7 +190,7 @@ open class CreateFilterFragment :
 
                     FilterAction.FILTER_ACTION_BLOCKER_CREATE,
                     FilterAction.FILTER_ACTION_PERMISSION_CREATE,
-                    ->
+                        ->
                         viewModel.createFilter(
                             filterWithCountryCode.filterWithFilteredNumberUIModel.apply {
                                 this.filterAction = filterAction
@@ -235,10 +235,10 @@ open class CreateFilterFragment :
                     filterWithCountryCode?.apply {
                         filterWithFilteredNumberUIModel.filter = inputText
                         if ((
-                                filterWithFilteredNumberUIModel.isTypeFull() &&
-                                    createFilterInput.inputText()
-                                        .contains(MASK_CHAR)
-                            ).not()
+                                    filterWithFilteredNumberUIModel.isTypeFull() &&
+                                            createFilterInput.inputText()
+                                                .contains(MASK_CHAR)
+                                    ).not()
                         ) {
                             viewModel.checkFilterExist(createFilter())
                         }
@@ -254,9 +254,9 @@ open class CreateFilterFragment :
         editable: String,
     ): Boolean {
         return filterWithCountryCode?.filterWithFilteredNumberUIModel?.filter == inputText &&
-            isHintInput(filterWithCountryCode, editable).not() &&
-            filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeContain().isNotTrue() &&
-            binding?.filterToInput.isNotTrue()
+                isHintInput(filterWithCountryCode, editable).not() &&
+                filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeContain().isNotTrue() &&
+                binding?.filterToInput.isNotTrue()
     }
 
     private fun isHintInput(
@@ -264,13 +264,13 @@ open class CreateFilterFragment :
         inputText: String,
     ): Boolean {
         return (
-            filterWithCountryCode?.conditionTypeFullHint() == inputText &&
-                filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeFull()
-        ) ||
-            (
-                filterWithCountryCode?.conditionTypeStartHint() == inputText &&
-                    filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeStart()
-            )
+                filterWithCountryCode?.conditionTypeFullHint() == inputText &&
+                        filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeFull()
+                ) ||
+                (
+                        filterWithCountryCode?.conditionTypeStartHint() == inputText &&
+                                filterWithCountryCode.filterWithFilteredNumberUIModel.isTypeStart()
+                        )
     }
 
     private fun setCountryCode(countryCode: CountryCodeUIModel?) {

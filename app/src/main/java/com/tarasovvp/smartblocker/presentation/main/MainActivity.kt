@@ -295,8 +295,8 @@ class MainActivity : AppCompatActivity() {
     private fun setToolbarVisibility(destination: NavDestination) {
         toolbar?.isVisible =
             destination.id notEquals R.id.onBoardingFragment &&
-            destination.id notEquals R.id.loginFragment &&
-            destination.id notEquals R.id.signUpFragment
+                    destination.id notEquals R.id.loginFragment &&
+                    destination.id notEquals R.id.signUpFragment
         binding?.toolbarDivider?.isVisible = toolbar?.isVisible.isTrue()
         toolbar?.forEach {
             if (it is TextView && navigationScreens.contains(destination.id)) {

@@ -29,7 +29,8 @@ class SettingsBlockerViewModelUnitTest : BaseViewModelUnitTest<SettingsBlockerVi
     @MockK(relaxed = true)
     private lateinit var resultMock: (Result<Unit>) -> Unit
 
-    override fun createViewModel() = SettingsBlockerViewModel(application, useCase, countryCodeUIMapper)
+    override fun createViewModel() =
+        SettingsBlockerViewModel(application, useCase, countryCodeUIMapper)
 
     @Test
     fun getBlockerTurnOnTest() =

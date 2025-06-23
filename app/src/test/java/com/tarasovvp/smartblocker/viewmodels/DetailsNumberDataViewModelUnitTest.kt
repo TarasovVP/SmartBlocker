@@ -97,7 +97,10 @@ class DetailsNumberDataViewModelUnitTest : BaseViewModelUnitTest<DetailsNumberDa
             advanceUntilIdle()
             coVerify { useCase.allFilteredCallsByNumber(TEST_FILTER, TEST_NAME) }
             verify { callWithFilterUIMapper.mapToUIModelList(filteredCallList) }
-            assertEquals(filteredCallUIModelList, viewModel.filteredCallListLiveData.getOrAwaitValue())
+            assertEquals(
+                filteredCallUIModelList,
+                viewModel.filteredCallListLiveData.getOrAwaitValue()
+            )
         }
 
     @Test

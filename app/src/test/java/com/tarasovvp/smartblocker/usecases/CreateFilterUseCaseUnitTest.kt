@@ -142,7 +142,12 @@ class CreateFilterUseCaseUnitTest {
             val filter = Filter(filter = TEST_FILTER)
             val expectedResult = Result.Success<Unit>()
             every { firebaseAuth.currentUser } returns mockk()
-            coEvery { realDataBaseRepository.deleteFilterList(eq(listOf(filter)), any()) } coAnswers {
+            coEvery {
+                realDataBaseRepository.deleteFilterList(
+                    eq(listOf(filter)),
+                    any()
+                )
+            } coAnswers {
                 val callback = secondArg<(Result<Unit>) -> Unit>()
                 callback.invoke(expectedResult)
             }

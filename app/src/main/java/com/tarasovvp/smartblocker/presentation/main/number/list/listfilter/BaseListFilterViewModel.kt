@@ -56,15 +56,15 @@ open class BaseListFilterViewModel(
                 } else {
                     filterList.filter { filterWithCountryCode ->
                         (filterWithCountryCode.filter isContaining searchQuery) &&
-                            (
-                                filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) &&
-                                    filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal ||
-                                    filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) &&
-                                    filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_START.ordinal ||
-                                    filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) &&
-                                    filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal ||
-                                    filterIndexes.isEmpty()
-                            )
+                                (
+                                        filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_FULL_FILTERING.ordinal) &&
+                                                filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_FULL.ordinal ||
+                                                filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal) &&
+                                                filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_START.ordinal ||
+                                                filterIndexes.contains(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal) &&
+                                                filterWithCountryCode.conditionType == FilterCondition.FILTER_CONDITION_CONTAIN.ordinal ||
+                                                filterIndexes.isEmpty()
+                                        )
                     }
                 }
             filteredFilterListLiveData.postValue(filteredFilterList)

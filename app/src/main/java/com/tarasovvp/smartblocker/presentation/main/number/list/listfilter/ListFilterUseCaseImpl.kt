@@ -16,40 +16,40 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class ListFilterUseCaseImpl
-    @Inject
-    constructor(
-        private val filterRepository: FilterRepository,
-        private val realDataBaseRepository: RealDataBaseRepository,
-        private val firebaseAuth: FirebaseAuth,
-        private val dataStoreRepository: DataStoreRepository,
-    ) : ListFilterUseCase {
-        override suspend fun allFilterWithFilteredNumbersByType(isBlockerList: Boolean) =
-            filterRepository.allFilterWithFilteredNumbersByType(if (isBlockerList) BLOCKER else PERMISSION)
+@Inject
+constructor(
+    private val filterRepository: FilterRepository,
+    private val realDataBaseRepository: RealDataBaseRepository,
+    private val firebaseAuth: FirebaseAuth,
+    private val dataStoreRepository: DataStoreRepository,
+) : ListFilterUseCase {
+    override suspend fun allFilterWithFilteredNumbersByType(isBlockerList: Boolean) =
+        filterRepository.allFilterWithFilteredNumbersByType(if (isBlockerList) BLOCKER else PERMISSION)
 
-        override suspend fun deleteFilterList(
-            filterList: List<Filter>,
-            isNetworkAvailable: Boolean,
-            result: (Result<Unit>) -> Unit,
-        ) {
-            if (firebaseAuth.isAuthorisedUser()) {
-                if (isNetworkAvailable) {
-                    realDataBaseRepository.deleteFilterList(filterList) {
-                        runBlocking {
-                            filterRepository.deleteFilterList(filterList)
-                            result.invoke(Result.Success())
-                        }
+    override suspend fun deleteFilterList(
+        filterList: List<Filter>,
+        isNetworkAvailable: Boolean,
+        result: (Result<Unit>) -> Unit,
+    ) {
+        if (firebaseAuth.isAuthorisedUser()) {
+            if (isNetworkAvailable) {
+                realDataBaseRepository.deleteFilterList(filterList) {
+                    runBlocking {
+                        filterRepository.deleteFilterList(filterList)
+                        result.invoke(Result.Success())
                     }
-                } else {
-                    filterRepository.deleteFilterList(filterList)
-                    result.invoke(Result.Failure())
                 }
             } else {
                 filterRepository.deleteFilterList(filterList)
-                result.invoke(Result.Success())
+                result.invoke(Result.Failure())
             }
-        }
-
-        override suspend fun getCurrentCountryCode(): Flow<CountryCode?> {
-            return dataStoreRepository.getCountryCode()
+        } else {
+            filterRepository.deleteFilterList(filterList)
+            result.invoke(Result.Success())
         }
     }
+
+    override suspend fun getCurrentCountryCode(): Flow<CountryCode?> {
+        return dataStoreRepository.getCountryCode()
+    }
+}

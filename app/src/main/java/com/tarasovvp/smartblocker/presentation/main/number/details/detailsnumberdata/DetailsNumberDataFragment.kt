@@ -60,7 +60,7 @@ class DetailsNumberDataFragment :
                 if (args.numberData is CallWithFilterUIModel) {
                     val callWithFilter = args.numberData as? CallWithFilterUIModel
                     isHiddenCall = callWithFilter?.callId.orZero() > 0 &&
-                        callWithFilter?.number?.isEmpty().isTrue()
+                            callWithFilter?.number?.isEmpty().isTrue()
                     callWithFilter?.filterWithFilteredNumberUIModel?.let { filterWithFilteredNumberUIModel ->
                         ContactWithFilterUIModel(
                             filterWithFilteredNumberUIModel = filterWithFilteredNumberUIModel,
@@ -256,7 +256,10 @@ class DetailsNumberDataFragment :
                 val phoneNumber =
                     when {
                         appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
-                            .isNull() -> appPhoneNumberUtil.getPhoneNumber(number, countryCode.country)
+                            .isNull() -> appPhoneNumberUtil.getPhoneNumber(
+                            number,
+                            countryCode.country
+                        )
 
                         else -> appPhoneNumberUtil.getPhoneNumber(number, String.EMPTY)
                     }

@@ -31,7 +31,7 @@ object ScrollActions {
 
             override fun getDescription(): String {
                 return "Find parent with type " + NestedScrollView::class.java +
-                    " of matched view and programmatically scroll to it."
+                        " of matched view and programmatically scroll to it."
             }
 
             override fun perform(

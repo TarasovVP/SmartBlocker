@@ -9,9 +9,9 @@ import kotlinx.parcelize.Parcelize
 
 @DatabaseView(
     "SELECT filters.*, (SELECT COUNT(*) " +
-        "FROM ContactWithFilter " +
-        "WHERE filter = filters.filter) filteredContacts " +
-        "FROM filters",
+            "FROM ContactWithFilter " +
+            "WHERE filter = filters.filter) filteredContacts " +
+            "FROM filters",
 )
 @Parcelize
 data class FilterWithFilteredNumber(

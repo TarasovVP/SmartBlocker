@@ -78,20 +78,20 @@ class CreateFilterUnitTest : BaseFragmentUnitTest() {
             fragmentArgs =
                 bundleOf(
                     FILTER_WITH_COUNTRY_CODE to
-                        FilterWithCountryCodeUIModel(
-                            filterWithFilteredNumberUIModel =
-                                FilterWithFilteredNumberUIModel(
-                                    filter = TEST_FILTER,
-                                    filterType = BLOCKER,
-                                    conditionType = filterCondition,
-                                ),
-                            countryCodeUIModel =
-                                CountryCodeUIModel(
-                                    country = TEST_COUNTRY,
-                                    countryCode = TEST_COUNTRY_CODE,
-                                    numberFormat = TEST_NUMBER,
-                                ),
-                        ),
+                            FilterWithCountryCodeUIModel(
+                                filterWithFilteredNumberUIModel =
+                                    FilterWithFilteredNumberUIModel(
+                                        filter = TEST_FILTER,
+                                        filterType = BLOCKER,
+                                        conditionType = filterCondition,
+                                    ),
+                                countryCodeUIModel =
+                                    CountryCodeUIModel(
+                                        country = TEST_COUNTRY,
+                                        countryCode = TEST_COUNTRY_CODE,
+                                        numberFormat = TEST_NUMBER,
+                                    ),
+                            ),
                 ),
         ) {
             navController?.setGraph(R.navigation.navigation)

@@ -86,10 +86,11 @@ class NumberDataAdapter(
                 this.filterWithFilteredNumberUIModel =
                     filterWithFilteredNumberUIModel?.apply {
                         highlightedSpanned =
-                            highlightedSpanned ?: filterWithFilteredNumberUIModel.highlightedSpanned(
-                                filterWithFilteredNumberUIModel,
-                                R.color.text_color_black,
-                            )
+                            highlightedSpanned
+                                ?: filterWithFilteredNumberUIModel.highlightedSpanned(
+                                    filterWithFilteredNumberUIModel,
+                                    R.color.text_color_black,
+                                )
                     }
                 itemFilterContainer.strokeColor =
                     ContextCompat.getColor(
@@ -130,7 +131,10 @@ class NumberDataAdapter(
                                     number.highlightedSpanned(
                                         String.EMPTY,
                                         null,
-                                        ContextCompat.getColor(itemView.context, R.color.text_color_black),
+                                        ContextCompat.getColor(
+                                            itemView.context,
+                                            R.color.text_color_black
+                                        ),
                                     )
                             },
                         )

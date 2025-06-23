@@ -36,7 +36,8 @@ class FilteredCallRepositoryUnitTest {
     @Test
     fun insertAllFilteredCallsTest() =
         runBlocking {
-            val filteredCallList = listOf(FilteredCall().apply { number = TEST_NUMBER }, FilteredCall())
+            val filteredCallList =
+                listOf(FilteredCall().apply { number = TEST_NUMBER }, FilteredCall())
             coEvery { filteredCallDao.insertAllFilteredCalls(filteredCallList) } just Runs
             filteredCallRepository.insertAllFilteredCalls(filteredCallList)
             coVerify(exactly = 1) { filteredCallRepository.insertAllFilteredCalls(filteredCallList) }

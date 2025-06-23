@@ -44,9 +44,9 @@ class CallReceiverUnitTest {
         val expectedFilter = Filter(filterType = BLOCKER)
 
         coEvery { filterRepository.allFilterWithFilteredNumbersByNumber(number) } returns
-            listOf(
-                FilterWithFilteredNumber(filter = expectedFilter),
-            )
+                listOf(
+                    FilterWithFilteredNumber(filter = expectedFilter),
+                )
 
         val result = runBlocking { callReceiver.matchedFilter(number, isBlockHidden) }
 

@@ -29,7 +29,11 @@ class InfoFragment :
                 object : TextViewLinkHandler() {
                     override fun onLinkClick(url: String?) {
                         url?.let { Info.valueOf(it) }?.apply {
-                            findNavController().navigate(InfoFragmentDirections.startInfoFragment(info = this))
+                            findNavController().navigate(
+                                InfoFragmentDirections.startInfoFragment(
+                                    info = this
+                                )
+                            )
                         }
                     }
                 }

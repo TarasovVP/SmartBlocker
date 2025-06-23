@@ -38,14 +38,14 @@ fun Info.titleRes(): Int {
         Info.INFO_CREATE_BLOCKER_FULL,
         Info.INFO_CREATE_BLOCKER_START,
         Info.INFO_CREATE_BLOCKER_CONTAIN,
-        -> R.string.info_create_blocker_title
+            -> R.string.info_create_blocker_title
 
         Info.INFO_LIST_PERMISSION -> R.string.info_list_permission_title
         Info.INFO_DETAILS_PERMISSION -> R.string.info_details_permission_title
         Info.INFO_CREATE_PERMISSION_FULL,
         Info.INFO_CREATE_PERMISSION_START,
         Info.INFO_CREATE_PERMISSION_CONTAIN,
-        -> R.string.info_create_permission_title
+            -> R.string.info_create_permission_title
 
         Info.INFO_LIST_CALL -> R.string.info_list_call_title
         Info.INFO_LIST_CONTACT -> R.string.info_list_contact_title
@@ -169,15 +169,15 @@ fun FilterAction.titleRes(): Int {
         FilterAction.FILTER_ACTION_INVALID,
         FilterAction.FILTER_ACTION_BLOCKER_CREATE,
         FilterAction.FILTER_ACTION_PERMISSION_CREATE,
-        -> R.string.filter_action_create
+            -> R.string.filter_action_create
 
         FilterAction.FILTER_ACTION_BLOCKER_DELETE,
         FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-        -> R.string.filter_action_delete
+            -> R.string.filter_action_delete
 
         FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
         FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
-        -> R.string.filter_action_transfer
+            -> R.string.filter_action_transfer
     }
 }
 
@@ -188,11 +188,11 @@ fun FilterAction.colorRes(): Int {
         FilterAction.FILTER_ACTION_PERMISSION_CREATE,
         FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
         FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
-        -> R.color.button_bg
+            -> R.color.button_bg
 
         FilterAction.FILTER_ACTION_BLOCKER_DELETE,
         FilterAction.FILTER_ACTION_PERMISSION_DELETE,
-        -> R.color.sunset
+            -> R.color.sunset
     }
 }
 
@@ -201,11 +201,11 @@ fun FilterAction.iconRes(): Int {
         FilterAction.FILTER_ACTION_INVALID -> R.drawable.ic_blocker_inactive
         FilterAction.FILTER_ACTION_BLOCKER_CREATE,
         FilterAction.FILTER_ACTION_BLOCKER_TRANSFER,
-        -> R.drawable.ic_blocker
+            -> R.drawable.ic_blocker
 
         FilterAction.FILTER_ACTION_PERMISSION_CREATE,
         FilterAction.FILTER_ACTION_PERMISSION_TRANSFER,
-        -> R.drawable.ic_permission
+            -> R.drawable.ic_permission
 
         FilterAction.FILTER_ACTION_BLOCKER_DELETE -> R.drawable.ic_delete
         FilterAction.FILTER_ACTION_PERMISSION_DELETE -> R.drawable.ic_delete

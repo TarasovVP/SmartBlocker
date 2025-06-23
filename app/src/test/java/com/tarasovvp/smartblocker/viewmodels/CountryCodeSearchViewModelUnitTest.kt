@@ -48,6 +48,9 @@ class CountryCodeSearchViewModelUnitTest : BaseViewModelUnitTest<CountryCodeSear
             viewModel.getCountryCodeList()
             advanceUntilIdle()
             coVerify { useCase.getCountryCodeList() }
-            assertEquals(countryCodeUIModelList, viewModel.countryCodeListLiveData.getOrAwaitValue())
+            assertEquals(
+                countryCodeUIModelList,
+                viewModel.countryCodeListLiveData.getOrAwaitValue()
+            )
         }
 }

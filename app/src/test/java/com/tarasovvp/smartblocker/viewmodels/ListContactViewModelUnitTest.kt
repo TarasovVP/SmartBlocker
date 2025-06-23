@@ -36,7 +36,8 @@ class ListContactViewModelUnitTest : BaseViewModelUnitTest<ListContactViewModel>
     @MockK
     private lateinit var savedStateHandle: SavedStateHandle
 
-    override fun createViewModel() = ListContactViewModel(application, useCase, contactWithFilterUIMapper, savedStateHandle)
+    override fun createViewModel() =
+        ListContactViewModel(application, useCase, contactWithFilterUIMapper, savedStateHandle)
 
     @Test
     fun getContactsWithFiltersTest() =
@@ -77,6 +78,9 @@ class ListContactViewModelUnitTest : BaseViewModelUnitTest<ListContactViewModel>
                 contactList.filter { it.filterWithFilteredNumberUIModel.filterType == Constants.BLOCKER }
             viewModel.getFilteredContactList(contactList, searchQuery, filterIndexes)
             advanceUntilIdle()
-            assertEquals(expectedContactList, viewModel.filteredContactListLiveData.getOrAwaitValue())
+            assertEquals(
+                expectedContactList,
+                viewModel.filteredContactListLiveData.getOrAwaitValue()
+            )
         }
 }

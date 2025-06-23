@@ -10,16 +10,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListPermissionFilterViewModel
-    @Inject
-    constructor(
-        application: Application,
-        listFilterUseCase: ListFilterUseCase,
-        filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
-        countryCodeUIMapper: CountryCodeUIMapper,
-        val savedStateHandle: SavedStateHandle,
-    ) : BaseListFilterViewModel(
-            application,
-            listFilterUseCase,
-            filterWithFilteredNumberUIMapper,
-            countryCodeUIMapper,
-        )
+@Inject
+constructor(
+    application: Application,
+    listFilterUseCase: ListFilterUseCase,
+    filterWithFilteredNumberUIMapper: FilterWithFilteredNumberUIMapper,
+    countryCodeUIMapper: CountryCodeUIMapper,
+    val savedStateHandle: SavedStateHandle,
+) : BaseListFilterViewModel(
+    application,
+    listFilterUseCase,
+    filterWithFilteredNumberUIMapper,
+    countryCodeUIMapper,
+)

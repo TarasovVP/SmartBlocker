@@ -127,10 +127,10 @@ class SettingsAccountFragment :
             executePendingBindings()
             settingsAccountChangePassword.isVisible =
                 firebaseAuth.isAuthorisedUser() &&
-                firebaseAuth.isGoogleAuthUser(
-                    activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST, false)
-                        .isTrue(),
-                ).not()
+                        firebaseAuth.isGoogleAuthUser(
+                            activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST, false)
+                                .isTrue(),
+                        ).not()
         }
     }
 
@@ -148,7 +148,10 @@ class SettingsAccountFragment :
                     SettingsAccountFragmentDirections.startDeleteAccountDialog(
                         isGoogleAuth =
                             firebaseAuth.isGoogleAuthUser(
-                                activity?.intent?.getBooleanExtra(Constants.IS_INSTRUMENTAL_TEST, false)
+                                activity?.intent?.getBooleanExtra(
+                                    Constants.IS_INSTRUMENTAL_TEST,
+                                    false
+                                )
                                     .isTrue(),
                             ),
                     ),

@@ -69,8 +69,8 @@ class CountryCodeSearchDialog : BaseDialog<DialogCountryCodeSearchBinding>() {
                         it.countryCode.contains(
                             searchText.toString().lowercase(),
                         ) ||
-                            Locale(appLang, it.country).displayCountry.lowercase()
-                                .contains(searchText.toString().lowercase())
+                                Locale(appLang, it.country).displayCountry.lowercase()
+                                    .contains(searchText.toString().lowercase())
                     }
                 countryCodeSearchAdapter?.notifyDataSetChanged()
                 countryCodeEmpty.isVisible =

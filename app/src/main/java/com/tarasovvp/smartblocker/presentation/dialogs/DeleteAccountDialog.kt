@@ -33,8 +33,8 @@ class DeleteAccountDialog : BaseDialog<DialogDeleteAccountBinding>() {
                 getString(if (args.isGoogleAuth) R.string.settings_account_google_delete else R.string.settings_account_email_delete)
             isInactive =
                 args.isGoogleAuth.not() &&
-                binding?.deleteAccountCurrentInput?.text?.isBlank()
-                    .isTrue()
+                        binding?.deleteAccountCurrentInput?.text?.isBlank()
+                            .isTrue()
             deleteAccountCurrentContainer.isVisible = args.isGoogleAuth.not()
             deleteAccountCurrentInput.doAfterTextChanged {
                 isInactive = it?.isBlank()

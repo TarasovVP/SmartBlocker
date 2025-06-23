@@ -86,7 +86,8 @@ class ListFilterUnitTest : BaseFragmentUnitTest() {
                 arrayListOf()
             } else {
                 filterWithFilteredNumberUIModelList().onEach {
-                    it.filterType = if (name.methodName.contains("Permission")) PERMISSION else BLOCKER
+                    it.filterType =
+                        if (name.methodName.contains("Permission")) PERMISSION else BLOCKER
                 }
             }
         if (name.methodName.contains("Permission")) {
@@ -164,10 +165,10 @@ class ListFilterUnitTest : BaseFragmentUnitTest() {
                 FILTER_CONDITION_LIST,
                 bundleOf(
                     FILTER_CONDITION_LIST to
-                        arrayListOf<Int>().apply {
-                            add(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal)
-                            add(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
-                        },
+                            arrayListOf<Int>().apply {
+                                add(NumberDataFiltering.FILTER_CONDITION_START_FILTERING.ordinal)
+                                add(NumberDataFiltering.FILTER_CONDITION_CONTAIN_FILTERING.ordinal)
+                            },
                 ),
             )
             if (filterList.isNullOrEmpty()) {

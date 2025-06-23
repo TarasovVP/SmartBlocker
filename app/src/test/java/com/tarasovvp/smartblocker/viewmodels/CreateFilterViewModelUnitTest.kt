@@ -64,7 +64,8 @@ class CreateFilterViewModelUnitTest : BaseViewModelUnitTest<CreateFilterViewMode
                     ContactWithFilter(contact = Contact(number = TEST_NUMBER)),
                     ContactWithFilter(contact = Contact(number = TEST_NUMBER)),
                 )
-            val contactWithFilterUIModels = arrayListOf(ContactWithFilterUIModel(number = TEST_NUMBER))
+            val contactWithFilterUIModels =
+                arrayListOf(ContactWithFilterUIModel(number = TEST_NUMBER))
             coEvery {
                 useCase.allContactsWithFiltersByCreateFilter(
                     TEST_FILTER,
@@ -110,7 +111,8 @@ class CreateFilterViewModelUnitTest : BaseViewModelUnitTest<CreateFilterViewMode
             val expectedResult = Result.Success<Unit>()
             val filterWithFilteredNumber =
                 FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
-            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            val filterWithFilteredNumberUIModel =
+                FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
             every { application.isNetworkAvailable } returns true
             coEvery {
                 useCase.createFilter(
@@ -145,7 +147,8 @@ class CreateFilterViewModelUnitTest : BaseViewModelUnitTest<CreateFilterViewMode
             val expectedResult = Result.Success<Unit>()
             val filterWithFilteredNumber =
                 FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
-            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            val filterWithFilteredNumberUIModel =
+                FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
             every { application.isNetworkAvailable } returns true
             coEvery {
                 useCase.updateFilter(
@@ -180,7 +183,8 @@ class CreateFilterViewModelUnitTest : BaseViewModelUnitTest<CreateFilterViewMode
             val expectedResult = Result.Success<Unit>()
             val filterWithFilteredNumber =
                 FilterWithFilteredNumber(filter = Filter(filter = TEST_FILTER))
-            val filterWithFilteredNumberUIModel = FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
+            val filterWithFilteredNumberUIModel =
+                FilterWithFilteredNumberUIModel(filter = TEST_FILTER)
             every { application.isNetworkAvailable } returns true
             coEvery {
                 useCase.deleteFilter(

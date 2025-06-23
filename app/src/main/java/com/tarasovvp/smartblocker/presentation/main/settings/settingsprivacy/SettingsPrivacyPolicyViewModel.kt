@@ -12,36 +12,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsPrivacyPolicyViewModel
-    @Inject
-    constructor(
-        private val application: Application,
-        private val settingsPrivacyPolicyUseCase: SettingsPrivacyPolicyUseCase,
-    ) : BaseViewModel(application) {
-        val appLanguageLiveData = MutableLiveData<String>()
-        val privacyPolicyLiveData = MutableLiveData<String>()
+@Inject
+constructor(
+    private val application: Application,
+    private val settingsPrivacyPolicyUseCase: SettingsPrivacyPolicyUseCase,
+) : BaseViewModel(application) {
+    val appLanguageLiveData = MutableLiveData<String>()
+    val privacyPolicyLiveData = MutableLiveData<String>()
 
-        fun getAppLanguage() {
-            launch {
-                settingsPrivacyPolicyUseCase.getAppLanguage().collect { appLang ->
-                    appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
-                }
-            }
-        }
-
-        fun getPrivacyPolicy(appLang: String) {
-            showProgress()
-            launch {
-                settingsPrivacyPolicyUseCase.getPrivacyPolicy(appLang) { operationResult ->
-                    when (operationResult) {
-                        is Result.Success ->
-                            privacyPolicyLiveData.postValue(
-                                operationResult.data ?: application.getString(R.string.privacy_policy),
-                            )
-
-                        is Result.Failure -> exceptionLiveData.postValue(operationResult.errorMessage.orEmpty())
-                    }
-                }
-                hideProgress()
+    fun getAppLanguage() {
+        launch {
+            settingsPrivacyPolicyUseCase.getAppLanguage().collect { appLang ->
+                appLanguageLiveData.postValue(appLang ?: Locale.getDefault().language)
             }
         }
     }
+
+    fun getPrivacyPolicy(appLang: String) {
+        showProgress()
+        launch {
+            settingsPrivacyPolicyUseCase.getPrivacyPolicy(appLang) { operationResult ->
+                when (operationResult) {
+                    is Result.Success ->
+                        privacyPolicyLiveData.postValue(
+                            operationResult.data ?: application.getString(R.string.privacy_policy),
+                        )
+
+                    is Result.Failure -> exceptionLiveData.postValue(operationResult.errorMessage.orEmpty())
+                }
+            }
+            hideProgress()
+        }
+    }
+}

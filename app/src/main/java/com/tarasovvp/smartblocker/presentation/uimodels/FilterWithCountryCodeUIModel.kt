@@ -21,10 +21,10 @@ data class FilterWithCountryCodeUIModel(
                 if (isInvalidFilterAction()) {
                     when {
                         filterWithFilteredNumberUIModel.isTypeContain() &&
-                            filterWithFilteredNumberUIModel.filter.isEmpty() -> R.string.filter_action_create_number_empty
+                                filterWithFilteredNumberUIModel.filter.isEmpty() -> R.string.filter_action_create_number_empty
 
                         filterWithFilteredNumberUIModel.isTypeFull() &&
-                            filterWithFilteredNumberUIModel.filter.length < countryCodeUIModel.numberFormat.digitsTrimmed().length ->
+                                filterWithFilteredNumberUIModel.filter.length < countryCodeUIModel.numberFormat.digitsTrimmed().length ->
                             R.string.filter_action_create_number_incomplete
 
                         else -> action.descriptionText()
@@ -60,18 +60,18 @@ data class FilterWithCountryCodeUIModel(
 
     fun isInValidPhoneNumber(appPhoneNumberUtil: AppPhoneNumberUtil): Boolean {
         return (
-            filterWithFilteredNumberUIModel.isTypeFull() &&
-                appPhoneNumberUtil.isPhoneNumberValid(
-                    appPhoneNumberUtil.getPhoneNumber(
-                        createFilter(),
-                        countryCodeUIModel.country,
-                    ),
-                ).not()
-        ) ||
-            (
-                filterWithFilteredNumberUIModel.isTypeStart().not() &&
-                    filterWithFilteredNumberUIModel.filter.isEmpty()
-            )
+                filterWithFilteredNumberUIModel.isTypeFull() &&
+                        appPhoneNumberUtil.isPhoneNumberValid(
+                            appPhoneNumberUtil.getPhoneNumber(
+                                createFilter(),
+                                countryCodeUIModel.country,
+                            ),
+                        ).not()
+                ) ||
+                (
+                        filterWithFilteredNumberUIModel.isTypeStart().not() &&
+                                filterWithFilteredNumberUIModel.filter.isEmpty()
+                        )
     }
 
     fun filterCreateTint(): Int {
@@ -97,11 +97,11 @@ data class FilterWithCountryCodeUIModel(
 
     private fun isCreateFilterAction(): Boolean {
         return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_BLOCKER_CREATE ||
-            filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
+                filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_CREATE
     }
 
     private fun isDeleteFilterAction(): Boolean {
         return filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_BLOCKER_DELETE ||
-            filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
+                filterWithFilteredNumberUIModel.filterAction == FilterAction.FILTER_ACTION_PERMISSION_DELETE
     }
 }
